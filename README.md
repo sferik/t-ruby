@@ -6,7 +6,7 @@ however it offers more commands than are available via SMS.
 [gem]: https://rubygems.org/gems/twitter
 [sms]: https://support.twitter.com/articles/14020-twitter-sms-command
 
-## <a name="history">History</a>
+## <a name="history"></a>History
 ![History](http://twitter.rubyforge.org/images/terminal_output.png "History")
 
 The [twitter gem][gem] previously contained a command-line interface, up until
@@ -16,15 +16,15 @@ John Nunemaker's original code.
 
 [removed]: https://github.com/jnunemaker/twitter/commit/dd2445e3e2c97f38b28a3f32ea902536b3897adf
 
-## <a name="installation">Installation</a>
+## <a name="installation"></a>Installation
     gem install t
 
-## <a name="ci">Continuous Integration</a>
+## <a name="ci"></a>Continuous Integration
 [![Build Status](https://secure.travis-ci.org/sferik/t.png)][travis]
 
 [travis]: http://travis-ci.org/sferik/t
 
-## <a name="examples">Usage Examples</a>
+## <a name="examples"></a>Usage Examples
 Typing `t help` will give you a list of all the available commands. You can
 type `t help TASK` to get help for a specific command.
 
@@ -53,63 +53,63 @@ You can easily switch between accounts.
 
 Incidentally, account information is stored in YAML format in `~/.trc`.
 
-### <a name="update">Update your status</a>
+### <a name="update"></a>Update your status
 
     t update "I'm tweeting from the command line, powered by @gem."
 
-### <a name="dm">Send a user a private message</a>
+### <a name="dm"></a>Send a user a private message
 
     t dm sferik "Want to get dinner together tonight?"
 
-### <a name="location">Update the location field in your profile</a>
+### <a name="location"></a>Update the location field in your profile
 
     t set location San Francisco
 
-### <a name="get">Retrieve the latest Tweet posted by a user</a>
+### <a name="get"></a>Retrieve the latest Tweet posted by a user
 
     t get sferik
 
-### <a name="whois">Retrieve profile information for a user</a>
+### <a name="whois"></a>Retrieve profile information for a user
 
     t whois sferik
 
-### <a name="stats">Get stats about a user</a>
+### <a name="stats"></a>Get stats about a user
 
     t stats sferik
 
-### <a name="suggest">Return a listing of users you might enjoy following</a>
+### <a name="suggest"></a>Return a listing of users you might enjoy following
 
     t suggest
 
-### <a name="follow">Start following a user</a>
+### <a name="follow"></a>Start following a user
 
     t follow sferik
 
-### <a name="leave">Stop following a user</a>
+### <a name="leave"></a>Stop following a user
 
     t unfollow sferik
 
-### <a name="timeline">Retrieve the timeline of status updates from users you are following</a>
+### <a name="timeline"></a>Retrieve the timeline of status updates from users you are following
 
     t timeline
 
-### <a name="mentions">Retrieve the timeline of status updates that mention you</a>
+### <a name="mentions"></a>Retrieve the timeline of status updates that mention you
 
     t mentions
 
-### <a name="reply">Reply to a Tweet</a>
+### <a name="reply"></a>Reply to a Tweet
 
     t reply sferik Thanks
 
-### <a name="retweet">Send another user's latest Tweet to your followers</a>
+### <a name="retweet"></a>Send another user's latest Tweet to your followers
 
     t retweet sferik
 
-### <a name="favorite">Mark a user's latest Tweet as one of your favorites</a>
+### <a name="favorite"></a>Mark a user's latest Tweet as one of your favorites
 
     t favorite sferik
 
-## <a name="contributing">Contributing</a>
+## <a name="contributing"></a>Contributing
 In the spirit of [free software][fsf], **everyone** is encouraged to help
 improve this project.
 
@@ -132,7 +132,7 @@ Here are some ways *you* can contribute:
 
 [issues]: https://github.com/sferik/t/issues
 
-## <a name="issues">Submitting an Issue</a>
+## <a name="issues"></a>Submitting an Issue
 We use the [GitHub issue tracker][issues] to track bugs and features. Before
 submitting a bug report or feature request, check to make sure it hasn't
 already been submitted. You can indicate support for an existing issuse by
@@ -142,7 +142,7 @@ that may be necessary to reproduce the bug, including your gem version, Ruby
 version, and operating system. Ideally, a bug report should include a pull
 request with failing specs.
 
-## <a name="pulls">Submitting a Pull Request</a>
+## <a name="pulls"></a>Submitting a Pull Request
 1. Fork the project.
 2. Create a topic branch.
 3. Implement your feature or bug fix.
@@ -157,7 +157,7 @@ request with failing specs.
    version, or history file. (If you want to create your own version for some
    reason, please do so in a separate commit.)
 
-## <a name="rubies">Supported Rubies</a>
+## <a name="versions"></a>Supported Ruby Versions
 This library aims to support and is [tested against][travis] the following Ruby
 implementations:
 
@@ -186,7 +186,7 @@ implementation, you will be personally responsible for providing patches in a
 timely fashion. If critical issues for a particular implementation exist at the
 time of a major release, support for that Ruby version may be dropped.
 
-## <a name="copyright">Copyright</a>
+## <a name="copyright"></a>Copyright
 Copyright (c) 2011 Erik Michaels-Ober. See [LICENSE][] for details.
 
 [license]: https://github.com/sferik/t/blob/master/LICENSE.md

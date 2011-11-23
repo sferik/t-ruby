@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+
+require 't'
+
+begin
+  T::CLI.start(ARGV)
+rescue Interrupt
+  puts "Quitting..."
+end

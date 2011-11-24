@@ -14,8 +14,9 @@ module T
     end
 
     desc "default USERNAME, CONSUMER_KEY", "Set your default account."
-    def default(username, consumer_key)
+    def default(username, consumer_key=nil)
       rcfile = RCFile.instance
+      consumer_key = rcfile[username].keys.last if consumer_key.nil?
       rcfile.default_profile = {'username' => username, 'consumer_key' => consumer_key}
       say "Default account has been changed."
     end

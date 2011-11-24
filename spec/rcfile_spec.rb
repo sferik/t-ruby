@@ -10,7 +10,7 @@ describe RCFile do
     RCFile.should be_a Class
     lambda do
       RCFile.new
-    end.should raise_error(NoMethodError, "private method `new' called for RCFile:Class")
+    end.should raise_error(NoMethodError, /private method `new' called/)
   end
 
   describe '#[]' do

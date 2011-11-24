@@ -30,7 +30,7 @@ type `t help TASK` to get help for a specific command.
 
     t help
 
-Because Twitter requires OAuth for most of it's functionality, you'll need to
+Because Twitter requires OAuth for most of its functionality, you'll need to
 register a new application at <http://dev.twitter.com/apps/new>. Once you
 create your application make sure to set the "Application Type" to "Read, Write
 and Access direct messages", otherwise you won't be able to post status updates
@@ -127,15 +127,13 @@ Here are some ways *you* can contribute:
 * by refactoring code
 * by closing [issues][]
 * by reviewing patches
-* by financially (please send bitcoin donations to
-  1KxSo9bGBfPVFEtWNLpnUK1bfLNNT4q31L)
 
 [issues]: https://github.com/sferik/t/issues
 
 ## <a name="issues"></a>Submitting an Issue
 We use the [GitHub issue tracker][issues] to track bugs and features. Before
 submitting a bug report or feature request, check to make sure it hasn't
-already been submitted. You can indicate support for an existing issuse by
+already been submitted. You can indicate support for an existing issue by
 voting it up. When submitting a bug report, please include a
 [Gist](https://gist.github.com/) that includes a stack trace and any details
 that may be necessary to reproduce the bug, including your gem version, Ruby

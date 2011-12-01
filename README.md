@@ -20,9 +20,14 @@ John Nunemaker's original code.
     gem install t
 
 ## <a name="ci"></a>Continuous Integration
-[![Build Status](https://secure.travis-ci.org/sferik/t.png)][travis]
+[![Build Status](https://secure.travis-ci.org/sferik/t.png)][ci]
 
-[travis]: http://travis-ci.org/sferik/t
+[ci]: http://travis-ci.org/sferik/t
+
+## <a name="dependencies"></a>Dependency Status
+[![Dependency Status](https://gemnasium.com/codeforamerica/adopt-a-hydrant.png)][gemnasium]
+
+[gemnasium]: https://gemnasium.com/codeforamerica/adopt-a-hydrant
 
 ## <a name="examples"></a>Usage Examples
 Typing `t help` will give you a list of all the available commands. You can
@@ -134,11 +139,12 @@ Here are some ways *you* can contribute:
 We use the [GitHub issue tracker][issues] to track bugs and features. Before
 submitting a bug report or feature request, check to make sure it hasn't
 already been submitted. You can indicate support for an existing issue by
-voting it up. When submitting a bug report, please include a
-[Gist](https://gist.github.com/) that includes a stack trace and any details
-that may be necessary to reproduce the bug, including your gem version, Ruby
-version, and operating system. Ideally, a bug report should include a pull
-request with failing specs.
+voting it up. When submitting a bug report, please include a [Gist][] that
+includes a stack trace and any details that may be necessary to reproduce the
+bug, including your gem version, Ruby version, and operating system. Ideally, a
+bug report should include a pull request with failing specs.
+
+[gist]: https://gist.github.com/
 
 ## <a name="pulls"></a>Submitting a Pull Request
 1. Fork the project.
@@ -156,12 +162,12 @@ request with failing specs.
    reason, please do so in a separate commit.)
 
 ## <a name="versions"></a>Supported Ruby Versions
-This library aims to support and is [tested against][travis] the following Ruby
+This library aims to support and is [tested against][ci] the following Ruby
 implementations:
 
 * Ruby 1.8.7
-* Ruby 1.9.1
 * Ruby 1.9.2
+* Ruby 1.9.3
 * [JRuby][]
 * [Rubinius][]
 * [Ruby Enterprise Edition][ree]

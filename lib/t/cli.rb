@@ -102,12 +102,10 @@ module T
     desc "favorite USERNAME", "Marks that user's last Tweet as one of your favorites."
     def favorite(username)
       status = client.user_timeline(username).first
-      begin
-        client.favorite(status.id)
-        say "You have favorited @#{username}'s latest tweet: #{status.text}"
-      rescue Twitter::Error::Forbidden => error
-        say "You have already favorited this status."
-      end
+      client.favorite(status.id)
+      say "You have favorited @#{username}'s latest tweet: #{status.text}"
+    rescue Twitter::Error::Forbidden => error
+      say error.message
     end
     map :fave => :favorite
 
@@ -150,6 +148,8 @@ module T
       in_reply_to_status = client.user_timeline(username).first
       status = client.update("@#{username} #{message}", :in_reply_to_status_id => in_reply_to_status.id)
       say "Reply created (#{time_ago_in_words(status.created_at)} ago)"
+    rescue Twitter::Error::Forbidden => error
+      say error.message
     end
 
     desc "retweet USERNAME", "Sends that user's latest Tweet to your followers."
@@ -216,6 +216,8 @@ module T
     def update(message)
       status = client.update(message)
       say "Tweet created (#{time_ago_in_words(status.created_at)} ago)"
+    rescue Twitter::Error::Forbidden => error
+      say error.message
     end
     map :post => :update
 

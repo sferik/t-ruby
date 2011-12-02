@@ -144,9 +144,13 @@ module T
     end
 
     desc "reply USERNAME MESSAGE", "Post your Tweet as a reply directed at another person."
+    option "location", :aliases => "-l", :type => :boolean, :default => true
     def reply(username, message)
+      hash = {}
+      hash.merge!(:lat => location.lat, :long => location.lng) if options['location']
       in_reply_to_status = client.user_timeline(username).first
-      status = client.update("@#{username} #{message}", :in_reply_to_status_id => in_reply_to_status.id)
+      hash.merge!(:in_reply_to_status_id => in_reply_to_status.id) if in_reply_to_status
+      status = client.update("@#{username} #{message}", options)
       say "Reply created (#{time_ago_in_words(status.created_at)} ago)"
     rescue Twitter::Error::Forbidden => error
       say error.message
@@ -213,8 +217,11 @@ module T
     map :defriend => :unfollow
 
     desc "update MESSAGE", "Post a Tweet."
+    option "location", :aliases => "-l", :type => :boolean, :default => true
     def update(message)
-      status = client.update(message)
+      hash = {}
+      hash.merge!(:lat => location.lat, :long => location.lng) if options['location']
+      status = client.update(message, hash)
       say "Tweet created (#{time_ago_in_words(status.created_at)} ago)"
     rescue Twitter::Error::Forbidden => error
       say error.message
@@ -282,6 +289,15 @@ module T
 
       def host
         options['host'] || DEFAULT_HOST
+      end
+
+      def location
+        require 'geokit'
+        require 'open-uri'
+        ip_address = Kernel::open("http://checkip.dyndns.org/") do |body|
+          /(?:\d{1,3}\.){3}\d{1,3}/.match(body.read)[0]
+        end
+        Geokit::Geocoders::MultiGeocoder.geocode(ip_address)
       end
 
       def pin_auth_parameters

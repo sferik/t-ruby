@@ -4,6 +4,7 @@ require File.expand_path("../lib/t/version", __FILE__)
 Gem::Specification.new do |gem|
   gem.add_dependency 'actionpack', '~> 3.1'
   gem.add_dependency 'launchy', '~> 2.0'
+  gem.add_dependency 'geokit', '~> 1.6'
   gem.add_dependency 'thor', '~> 0.15.0.rc2'
   gem.add_dependency 'twitter', ['~> 2.0', '>= 2.0.1']
   gem.add_dependency 'oauth', '~> 0.4'

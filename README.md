@@ -41,22 +41,32 @@ create your application make sure to set the "Application Type" to "Read, Write
 and Access direct messages", otherwise you won't be able to post status updates
 or send direct messages via the CLI.
 
-Once you have registered your application, you'll be assigned a consumer key
-and secret, which you can use to authorize your Twitter account.
+Once you have registered your application, you'll be given a consumer key and
+secret, which you can use to authorize your Twitter account.
 
     t authorize --consumer-key YOUR_CONSUMER_KEY --consumer-secret YOUR_CONSUMER_SECRET
 
-This will open a new browser window where you can authenticate to Twitter.
+This will open a new browser window where you can authenticate to Twitter and
+then enter the returned PIN back into the terminal.  Assuming all that works
+well, you will be authorized to make requests with the API.
 
 You can see a list of all the accounts you've authorized.
 
     t accounts
 
-You can easily switch between accounts.
+    sferik
+      UDfNTpOz5ZDG4a6w7dIWj
+      uuP7Xbl2mEfGMiDu1uIyFN
+    gem
+      thG9EfWoADtIr6NjbL9ON (default)
 
-    t set default sferik
+Notice that one account is marked as the default. To change the default use the
+`set` subcommand, passing either just the username, if it's unambiguous, or the
+username and consumer key pair:
 
-Incidentally, account information is stored in YAML format in `~/.trc`.
+    t set default sferik thG9EfWoADtIr6NjbL9ON
+
+Account information is stored in the YAML-formatted file `~/.trc`.
 
 ### <a name="update"></a>Update your status
 

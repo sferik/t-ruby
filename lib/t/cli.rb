@@ -109,6 +109,7 @@ module T
         say "You have already favorited this status."
       end
     end
+    map :fave => :favorite
 
     desc "follow USERNAME", "Allows you to start following a specific user."
     def follow(username)

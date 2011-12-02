@@ -25,9 +25,9 @@ John Nunemaker's original code.
 [ci]: http://travis-ci.org/sferik/t
 
 ## <a name="dependencies"></a>Dependency Status
-[![Dependency Status](https://gemnasium.com/codeforamerica/adopt-a-hydrant.png)][gemnasium]
+[![Dependency Status](https://gemnasium.com/sferik/t.png)][gemnasium]
 
-[gemnasium]: https://gemnasium.com/codeforamerica/adopt-a-hydrant
+[gemnasium]: https://gemnasium.com/sferik/t
 
 ## <a name="examples"></a>Usage Examples
 Typing `t help` will give you a list of all the available commands. You can

@@ -32,10 +32,10 @@ module T
     map %w(list ls) => :accounts
 
     desc "authorize", "Allows an application to request user authorization"
-    option "consumer-key", :aliases => "-c", :required => true
-    option "consumer-secret", :aliases => "-s", :required => true
-    option "access-token", :aliases => "-a"
-    option "token-secret", :aliases => "-S"
+    method_option "consumer-key", :aliases => "-c", :required => true
+    method_option "consumer-secret", :aliases => "-s", :required => true
+    method_option "access-token", :aliases => "-a"
+    method_option "token-secret", :aliases => "-S"
     def authorize
       request_token = consumer.get_request_token
       url = generate_authorize_url(request_token)
@@ -128,7 +128,7 @@ module T
     end
 
     desc "mentions", "Returns the 20 most recent Tweets mentioning you."
-    option "reverse", :aliases => "-r", :type => :boolean, :default => false
+    method_option "reverse", :aliases => "-r", :type => :boolean, :default => false
     def mentions
       timeline = client.mentions
       timeline.reverse! if options['reverse']
@@ -144,7 +144,7 @@ module T
     end
 
     desc "reply USERNAME MESSAGE", "Post your Tweet as a reply directed at another person."
-    option "location", :aliases => "-l", :type => :boolean, :default => true
+    method_option "location", :aliases => "-l", :type => :boolean, :default => true
     def reply(username, message)
       hash = {}
       hash.merge!(:lat => location.lat, :long => location.lng) if options['location']
@@ -184,7 +184,7 @@ module T
     end
 
     desc "timeline", "Returns the 20 most recent Tweets posted by you and the users you follow."
-    option "reverse", :aliases => "-r", :type => :boolean, :default => false
+    method_option "reverse", :aliases => "-r", :type => :boolean, :default => false
     def timeline
       timeline = client.home_timeline
       timeline.reverse! if options['reverse']
@@ -217,7 +217,7 @@ module T
     map :defriend => :unfollow
 
     desc "update MESSAGE", "Post a Tweet."
-    option "location", :aliases => "-l", :type => :boolean, :default => true
+    method_option "location", :aliases => "-l", :type => :boolean, :default => true
     def update(message)
       hash = {}
       hash.merge!(:lat => location.lat, :long => location.lng) if options['location']

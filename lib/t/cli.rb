@@ -37,6 +37,7 @@ module T
     method_option "consumer-key", :aliases => "-c", :required => true
     method_option "consumer-secret", :aliases => "-s", :required => true
     method_option "prompt", :aliases => "-p", :type => :boolean, :default => true
+    method_option "dry-run", :type => :boolean
     def authorize
       request_token = consumer.get_request_token
       url = generate_authorize_url(request_token)
@@ -50,27 +51,30 @@ module T
         say
         ask "Press [Enter] to open the Twitter app authorization page."
       end
-      Launchy.open(url)
-      pin = ask "\nPaste in the supplied PIN:"
-      access_token = request_token.get_access_token(:oauth_verifier => pin.chomp)
-      oauth_response = access_token.get('/1/account/verify_credentials.json')
-      username = oauth_response.body.match(/"screen_name"\s*:\s*"(.*?)"/).captures.first
-      rcfile = RCFile.instance
-      rcfile.path = options['profile'] if options['profile']
-      rcfile[username] = {
-        options['consumer-key'] => {
-          'username' => username,
-          'consumer_key' => options['consumer-key'],
-          'consumer_secret' => options['consumer-secret'],
-          'token' => access_token.token,
-          'secret' => access_token.secret,
+      if options['dry-run']
+        Launchy.open(url, :dry_run => true)
+      else
+        Launchy.open(url)
+        pin = ask "\nPaste in the supplied PIN:"
+        access_token = request_token.get_access_token(:oauth_verifier => pin.chomp)
+        oauth_response = access_token.get('/1/account/verify_credentials.json')
+        username = oauth_response.body.match(/"screen_name"\s*:\s*"(.*?)"/).captures.first
+        rcfile = RCFile.instance
+        rcfile.path = options['profile'] if options['profile']
+        rcfile[username] = {
+          options['consumer-key'] => {
+            'username' => username,
+            'consumer_key' => options['consumer-key'],
+            'consumer_secret' => options['consumer-secret'],
+            'token' => access_token.token,
+            'secret' => access_token.secret,
+          }
         }
-      }
-      rcfile.default_profile = {'username' => username, 'consumer_key' => options['consumer-key']}
-      say "Authorization successful"
+        rcfile.default_profile = {'username' => username, 'consumer_key' => options['consumer-key']}
+        say "Authorization successful"
+      end
     rescue OAuth::Unauthorized
-      raise Thor::Error, "Authorization failed. Check that your consumer key and secret are correct, as well as your username and password."
-      exit 1
+      raise Thor::Error, "Authorization failed. Check that your consumer key and secret are correct."
     end
 
     desc "block USERNAME", "Block a user."
@@ -109,7 +113,6 @@ module T
       say "You have favorited @#{username}'s latest tweet: #{status.text}"
     rescue Twitter::Error::Forbidden => error
       raise Thor::Error, error.message
-      exit 1
     end
     map %w(fave) => :favorite
 
@@ -158,7 +161,6 @@ module T
       say "Reply created (#{time_ago_in_words(status.created_at)} ago)"
     rescue Twitter::Error::Forbidden => error
       raise Thor::Error, error.message
-      exit 1
     end
 
     desc "retweet USERNAME", "Sends that user's latest Tweet to your followers."
@@ -230,7 +232,6 @@ module T
       say "Tweet created (#{time_ago_in_words(status.created_at)} ago)"
     rescue Twitter::Error::Forbidden => error
       raise Thor::Error, error.message
-      exit 1
     end
     map %w(post) => :update
 

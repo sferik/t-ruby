@@ -15,6 +15,7 @@ module T
 
     class_option "host", :aliases => "-H", :default => DEFAULT_HOST
     class_option "no-ssl", :aliases => "-U", :type => :boolean, :default => false
+    class_option "profile", :aliases => "-P"
 
     include ActionView::Helpers::DateHelper
     include ActionView::Helpers::NumberHelper
@@ -260,6 +261,7 @@ module T
 
       def client
         rcfile = RCFile.instance
+        rcfile.path = options['profile'] if options['profile']
         Twitter::Client.new(
           :endpoint => base_url,
           :consumer_key => rcfile.default_consumer_key,

@@ -68,7 +68,8 @@ module T
       rcfile.default_profile = {'username' => username, 'consumer_key' => options['consumer-key']}
       say "Authorization successful"
     rescue OAuth::Unauthorized
-      raise Exception, "Authorization failed. Check that your consumer key and secret are correct, as well as your username and password."
+      say "Authorization failed. Check that your consumer key and secret are correct, as well as your username and password."
+      exit 1
     end
 
     desc "block USERNAME", "Block a user."
@@ -107,6 +108,7 @@ module T
       say "You have favorited @#{username}'s latest tweet: #{status.text}"
     rescue Twitter::Error::Forbidden => error
       say error.message
+      exit 1
     end
     map :fave => :favorite
 
@@ -155,6 +157,7 @@ module T
       say "Reply created (#{time_ago_in_words(status.created_at)} ago)"
     rescue Twitter::Error::Forbidden => error
       say error.message
+      exit 1
     end
 
     desc "retweet USERNAME", "Sends that user's latest Tweet to your followers."
@@ -226,6 +229,7 @@ module T
       say "Tweet created (#{time_ago_in_words(status.created_at)} ago)"
     rescue Twitter::Error::Forbidden => error
       say error.message
+      exit 1
     end
     map :post => :update
 

@@ -1,7 +1,7 @@
 Feature: An user can list his or her accounts
 
   Scenario: List accounts
-    When I list my accounts using an authenticated profile
+    When I list my accounts using an authorized profile
     Then the stdout should contain:
       """
       testcli

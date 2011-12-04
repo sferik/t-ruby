@@ -103,7 +103,7 @@ module T
     desc "dm USERNAME MESSAGE", "Sends that person a Direct Message."
     def dm(username, message)
       direct_message = client.direct_message_create(username, message)
-      say "Direct Message sent to @#{username} (#{time_ago_in_words(status.created_at)} ago)"
+      say "Direct Message sent to @#{username} (#{time_ago_in_words(direct_message.created_at)} ago)"
     end
     map %w(m) => :dm
 

@@ -25,7 +25,7 @@ John Nunemaker's original code.
 [ci]: http://travis-ci.org/sferik/t
 
 ## <a name="dependencies"></a>Dependency Status
-[![Dependency Status](https://gemnasium.com/sferik/t.png)][gemnasium]
+[![Dependency Status](https://gemnasium.com/sferik/t.png?travis)][gemnasium]
 
 [gemnasium]: https://gemnasium.com/sferik/t
 

@@ -16,9 +16,9 @@ module T
     DEFAULT_HOST = 'api.twitter.com'
     DEFAULT_PROTOCOL = 'https'
 
-    class_option "host", :aliases => "-H", :default => DEFAULT_HOST
-    class_option "no-ssl", :aliases => "-U", :type => :boolean, :default => false
-    class_option "profile", :aliases => "-P"
+    class_option "host", :aliases => "-H", :type => :string, :default => DEFAULT_HOST, :desc => "Twitter API server"
+    class_option "no-ssl", :aliases => "-U", :type => :boolean, :default => false, :desc => "Disable SSL"
+    class_option "profile", :aliases => "-P", :type => :string, :default => File.join(File.expand_path("~"), RCFile::FILE_NAME), :desc => "Path to RC file", :banner => "FILE"
 
     desc "accounts", "List accounts"
     def accounts
@@ -36,20 +36,19 @@ module T
     desc "authorize", "Allows an application to request user authorization"
     method_option "consumer-key", :aliases => "-c", :required => true
     method_option "consumer-secret", :aliases => "-s", :required => true
-    method_option "access-token", :aliases => "-a"
-    method_option "token-secret", :aliases => "-S"
+    method_option "prompt", :aliases => "-p", :type => :boolean, :default => true
     def authorize
       request_token = consumer.get_request_token
       url = generate_authorize_url(request_token)
-      say "Authorize this app and copy the supplied PIN to complete the authorization process."
-      print "Your default web browser will open in "
-      9.downto(1) do |i|
-        sleep 0.2
-        print i
-        4.times do
-          sleep 0.2
-          print '.'
-        end
+      if options['prompt']
+        say "In a moment, your web browser will open to the Twitter app authorization page."
+        say "Perform the following steps to complete the authorization process:"
+        say "  1. Sign in to Twitter"
+        say "  2. Press \"Authorize app\""
+        say "  3. Copy or memorize the supplied PIN"
+        say "  4. Return to the terminal to enter the PIN"
+        say
+        ask "Press [Enter] to open the Twitter app authorization page."
       end
       Launchy.open(url)
       pin = ask "\nPaste in the supplied PIN:"

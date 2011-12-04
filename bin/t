@@ -4,6 +4,12 @@ require 't'
 
 begin
   T::CLI.start(ARGV)
+rescue Twitter::Error::Unauthorized => error
+  $stderr.puts error.message
+  $stderr.puts
+  $stderr.puts "Run `#{$0} authorize --consumer-key=CONSUMER-KEY --consumer-secret=CONSUMER-SECRET` to authorize."
+  exit 1
 rescue Interrupt
-  puts "Quitting..."
+  $stderr.puts "Quitting..."
+  exit 1
 end

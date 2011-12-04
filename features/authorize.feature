@@ -2,7 +2,6 @@ Feature: An user can authorize his or her account
 
   Scenario: Authorize account
     When I authorize my account
-    And I type ""
     Then the stdout should contain:
       """
       In a moment, your web browser will open to the Twitter app authorization page.
@@ -14,5 +13,4 @@ Feature: An user can authorize his or her account
 
       Press [Enter] to open the Twitter app authorization page.
       """
-    And the stdout should contain "https://api.twitter.com/oauth/authorize"
     And the exit status should be 0

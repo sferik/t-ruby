@@ -91,6 +91,7 @@ module T
         say "#{direct_message.sender.screen_name.rjust(20)}: #{direct_message.text} (#{time_ago_in_words(direct_message.created_at)} ago)"
       end
     end
+    map %w(dms) => :direct_messages
 
     desc "sent_messages", "Returns the 20 most recent Direct Messages sent to you."
     def sent_messages

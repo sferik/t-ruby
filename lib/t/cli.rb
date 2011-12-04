@@ -99,7 +99,7 @@ module T
       direct_message = client.direct_message_create(username, message)
       say "Direct Message sent to @#{username} (#{time_ago_in_words(status.created_at)} ago)"
     end
-    map :m => :dm
+    map %w(m) => :dm
 
     desc "favorite USERNAME", "Marks that user's last Tweet as one of your favorites."
     def favorite(username)
@@ -110,7 +110,7 @@ module T
       raise Thor::Error, error.message
       exit 1
     end
-    map :fave => :favorite
+    map %w(fave) => :favorite
 
     desc "follow USERNAME", "Allows you to start following a specific user."
     def follow(username)
@@ -122,7 +122,7 @@ module T
       status = client.user_timeline(username).first
       say "#{username}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
     end
-    map :befriend => :follow
+    map %w(befriend) => :follow
 
     desc "get USERNAME", "Retrieves the latest update posted by the user."
     def get(username)
@@ -139,7 +139,7 @@ module T
         say "#{status.user.screen_name.rjust(20)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
       end
     end
-    map :replies => :mentions
+    map %w(replies) => :mentions
 
     desc "open USERNAME", "Opens that user's profile in a web browser."
     def open(username)
@@ -166,7 +166,7 @@ module T
       client.retweet(status.id)
       say "You have retweeted @#{username}'s latest tweet: #{status.text}"
     end
-    map :rt => :retweet
+    map %w(rt) => :retweet
 
     desc "stats USERNAME", "Retrieves the given user's number of followers and how many people they're following."
     def stats(username)
@@ -196,7 +196,7 @@ module T
         say "#{status.user.screen_name.rjust(20)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
       end
     end
-    map :tl => :timeline
+    map %w(tl) => :timeline
 
     desc "unblock USERNAME", "Unblock a user."
     def unblock(username)
@@ -218,7 +218,7 @@ module T
       user = client.unfollow(username)
       say "You are no longer following @#{username}. Run `#{$0} follow #{username}` to follow again."
     end
-    map :defriend => :unfollow
+    map %w(defriend) => :unfollow
 
     desc "update MESSAGE", "Post a Tweet."
     method_option "location", :aliases => "-l", :type => :boolean, :default => true
@@ -231,7 +231,7 @@ module T
       raise Thor::Error, error.message
       exit 1
     end
-    map :post => :update
+    map %w(post) => :update
 
     desc "whois USERNAME", "Retrieves profile information for the user."
     def whois(username)

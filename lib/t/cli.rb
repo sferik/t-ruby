@@ -23,6 +23,7 @@ module T
     desc "accounts", "List accounts"
     def accounts
       rcfile = RCFile.instance
+      rcfile.path = options['profile'] if options['profile']
       rcfile.profiles.each do |profile|
         say profile[0]
         profile[1].keys.each do |key|
@@ -56,6 +57,7 @@ module T
       oauth_response = access_token.get('/1/account/verify_credentials.json')
       username = oauth_response.body.match(/"screen_name"\s*:\s*"(.*?)"/).captures.first
       rcfile = RCFile.instance
+      rcfile.path = options['profile'] if options['profile']
       rcfile[username] = {
         options['consumer-key'] => {
           'username' => username,

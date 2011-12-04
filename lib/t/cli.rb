@@ -10,15 +10,15 @@ require 'yaml'
 
 module T
   class CLI < Thor
+    include ActionView::Helpers::DateHelper
+    include ActionView::Helpers::NumberHelper
+
     DEFAULT_HOST = 'api.twitter.com'
     DEFAULT_PROTOCOL = 'https'
 
     class_option "host", :aliases => "-H", :default => DEFAULT_HOST
     class_option "no-ssl", :aliases => "-U", :type => :boolean, :default => false
     class_option "profile", :aliases => "-P"
-
-    include ActionView::Helpers::DateHelper
-    include ActionView::Helpers::NumberHelper
 
     desc "accounts", "List accounts"
     def accounts
@@ -68,7 +68,7 @@ module T
       rcfile.default_profile = {'username' => username, 'consumer_key' => options['consumer-key']}
       say "Authorization successful"
     rescue OAuth::Unauthorized
-      say "Authorization failed. Check that your consumer key and secret are correct, as well as your username and password."
+      raise Thor::Error, "Authorization failed. Check that your consumer key and secret are correct, as well as your username and password."
       exit 1
     end
 
@@ -107,7 +107,7 @@ module T
       client.favorite(status.id)
       say "You have favorited @#{username}'s latest tweet: #{status.text}"
     rescue Twitter::Error::Forbidden => error
-      say error.message
+      raise Thor::Error, error.message
       exit 1
     end
     map :fave => :favorite
@@ -156,7 +156,7 @@ module T
       status = client.update("@#{username} #{message}", options)
       say "Reply created (#{time_ago_in_words(status.created_at)} ago)"
     rescue Twitter::Error::Forbidden => error
-      say error.message
+      raise Thor::Error, error.message
       exit 1
     end
 
@@ -228,7 +228,7 @@ module T
       status = client.update(message, hash)
       say "Tweet created (#{time_ago_in_words(status.created_at)} ago)"
     rescue Twitter::Error::Forbidden => error
-      say error.message
+      raise Thor::Error, error.message
       exit 1
     end
     map :post => :update

@@ -114,7 +114,7 @@ Account information is stored in the YAML-formatted file `~/.trc`.
 
 ### <a name="reply"></a>Reply to a Tweet
 
-    t reply sferik Thanks
+    t reply sferik "Thanks Erik"
 
 ### <a name="retweet"></a>Send another user's latest Tweet to your followers
 

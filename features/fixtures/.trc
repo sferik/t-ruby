@@ -1,0 +1,13 @@
+---
+configuration:
+  default_profile:
+  - testcli
+  - MYCm5oNXkmaAPachb5HBhw
+profiles:
+  testcli:
+    MYCm5oNXkmaAPachb5HBhw:
+      username: testcli
+      consumer_key: MYCm5oNXkmaAPachb5HBhw
+      consumer_secret: GCv1ehkX9IqSWbbUAx5PpYR1zEyE1E1fbg6iOnv9ndg
+      token: 428004849-9Lwjp6ysUsY53B9ClUrv8Hjf0zwFf6YvUPQpBL4M
+      secret: NGpAqoJNf4Q4DhU1XKXNH4ganQXgqJ3DqQ36U0E

@@ -241,8 +241,12 @@ module T
     desc "unfavorite USERNAME", "Marks that user's last Tweet as one of your favorites."
     def unfavorite(username)
       status = client.user_timeline(username).first
-      client.unfavorite(status.id)
-      say "You have unfavorited @#{username}'s latest tweet: #{status.text}"
+      if status
+        client.unfavorite(status.id)
+        say "You have unfavorited @#{username}'s latest status: #{status.text}"
+      else
+        raise Thor::Error, "No status found"
+      end
     end
 
     desc "unfollow USERNAME", "Allows you to stop following a specific user."

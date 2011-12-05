@@ -13,7 +13,7 @@ module T
       say "Bio has been changed."
     end
 
-    desc "default USERNAME, CONSUMER_KEY", "Set your default account."
+    desc "default USERNAME [CONSUMER_KEY]", "Set your default account."
     def default(username, consumer_key=nil)
       rcfile = RCFile.instance
       consumer_key = rcfile[username].keys.last if consumer_key.nil?

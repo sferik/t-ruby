@@ -10,6 +10,24 @@ describe T::CLI do
     @t = T::CLI.new
   end
 
+  describe "#block" do
+    before do
+      stub_post("/1/blocks/create.json").
+        with(:body => {:screen_name => "sferik"}).
+        to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+    end
+    it "should request the correct resource" do
+      @t.block("sferik")
+      a_post("/1/blocks/create.json").
+        with(:body => {:screen_name => "sferik"}).
+        should have_been_made
+    end
+    it "should have the correct output" do
+      string = @t.block("sferik").string
+      string.should =~ /^Blocked @sferik$/
+    end
+  end
+
   describe "#direct_messages" do
     before do
       stub_get("/1/direct_messages.json").

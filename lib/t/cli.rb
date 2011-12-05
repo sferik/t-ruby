@@ -218,11 +218,13 @@ module T
     desc "suggest", "This command returns a listing of Twitter users' accounts we think you might enjoy following."
     def suggest
       recommendations = client.recommendations(:limit => 2)
-      say "Try following @#{recommendations[0].screen_name} or @#{recommendations[1].screen_name}."
-      say
-      say "Run `#{$0} follow USERNAME` to follow."
-      say "Run `#{$0} whois USERNAME` for profile."
-      say "Run `#{$0} suggest` for more."
+      if recommendations[0] && recommendations[1]
+        say "Try following @#{recommendations[0].screen_name} or @#{recommendations[1].screen_name}."
+        say
+        say "Run `#{$0} follow USERNAME` to follow."
+        say "Run `#{$0} whois USERNAME` for profile."
+        say "Run `#{$0} suggest` for more."
+      end
     end
 
     desc "timeline", "Returns the 20 most recent Tweets posted by you and the users you follow."

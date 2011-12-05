@@ -131,7 +131,9 @@ module T
     desc "follow USERNAME", "Allows you to start following a specific user."
     def follow(username)
       user = client.follow(username)
-      say "You're now following @#{username}. Run `#{$0} unfollow #{username}` to stop."
+      say "You're now following @#{username}."
+      say
+      say "Run `#{$0} unfollow #{username}` to stop."
       recommendations = client.recommendations(:user_id => user.id, :limit => 2)
       if recommendations[0] && recommendations[1]
         say
@@ -260,7 +262,9 @@ module T
     desc "unfollow USERNAME", "Allows you to stop following a specific user."
     def unfollow(username)
       client.unfollow(username)
-      say "You are no longer following @#{username}. Run `#{$0} follow #{username}` to follow again."
+      say "You are no longer following @#{username}."
+      say
+      say "Run `#{$0} follow #{username}` to follow again."
     end
     map %w(defriend) => :unfollow
 

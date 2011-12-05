@@ -9,6 +9,24 @@ describe T::CLI do
     @t = T::CLI.new
   end
 
+  describe "#unblock" do
+    before do
+      stub_delete("/1/blocks/destroy.json").
+        with(:query => {:screen_name => "sferik"}).
+        to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+    end
+    it "should request the correct resource" do
+      @t.unblock("sferik")
+      a_delete("/1/blocks/destroy.json").
+        with(:query => {:screen_name => "sferik"}).
+        should have_been_made
+    end
+    it "should have the correct output" do
+      string = @t.unblock("sferik").string
+      string.should =~ /^Unblocked @sferik/
+    end
+  end
+
   describe "#unfavorite" do
     before do
       stub_get("/1/statuses/user_timeline.json").

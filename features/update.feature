@@ -1,4 +1,4 @@
-Feature: An user can update his or her status
+Feature: A user can update his or her status
 
   Scenario: Successful Tweet
     When I update my status to "Testing" using an authorized profile

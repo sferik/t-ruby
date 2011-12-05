@@ -104,16 +104,26 @@ module T
     def dm(username, message)
       direct_message = client.direct_message_create(username, message)
       say "Direct Message sent to @#{username} (#{time_ago_in_words(direct_message.created_at)} ago)"
+    rescue Twitter::Error::Forbidden => error
+      raise Thor::Error, error.message
     end
     map %w(m) => :dm
 
     desc "favorite USERNAME", "Marks that user's last Tweet as one of your favorites."
     def favorite(username)
       status = client.user_timeline(username).first
-      client.favorite(status.id)
-      say "You have favorited @#{username}'s latest tweet: #{status.text}"
+      if status
+        client.favorite(status.id)
+        say "You have favorited @#{username}'s latest status: #{status.text}"
+      else
+        raise Thor::Error, "No status found"
+      end
     rescue Twitter::Error::Forbidden => error
-      raise Thor::Error, error.message
+      if error.message =~ /You have already favorited this status\./
+        say "You have favorited @#{username}'s latest status: #{status.text}"
+      else
+        raise Thor::Error, error.message
+      end
     end
     map %w(fave) => :favorite
 

@@ -95,9 +95,11 @@ module T
 
     desc "sent_messages", "Returns the 20 most recent Direct Messages sent to you."
     def sent_messages
-      client.direct_messages_sent.each do |direct_message|
-        say "#{direct_message.recipient.screen_name.rjust(20)}: #{direct_message.text} (#{time_ago_in_words(direct_message.created_at)} ago)"
+      sent_messages = client.direct_messages_sent
+      sent_messages.map! do |direct_message|
+        "#{direct_message.recipient.screen_name.rjust(20)}: #{direct_message.text} (#{time_ago_in_words(direct_message.created_at)} ago)"
       end
+      say sent_messages.join("\n")
     end
     map %w(sms) => :sent_messages
 

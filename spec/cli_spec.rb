@@ -10,6 +10,43 @@ describe T::CLI do
     @t = T::CLI.new
   end
 
+  describe "#sent_messages" do
+    before do
+      stub_get("/1/direct_messages/sent.json").
+        to_return(:body => fixture("direct_messages.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+    end
+    it "should request the correct resource" do
+      @t.sent_messages
+      a_get("/1/direct_messages/sent.json").
+        should have_been_made
+    end
+    it "should have the correct output" do
+      string = @t.sent_messages.string
+      string.should == <<-eos.gsub(/^/, ' ' * 3)
+        hurrycane: Sounds good. Meeting Tuesday is fine. (about 1 year ago)
+     technoweenie: if you want to add me to your GroupMe group, my phone number is 415-312-2382 (about 1 year ago)
+        hurrycane: That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does that work for you?  (about 1 year ago)
+        hurrycane: I asked Yehuda about the stipend. I believe it has already been sent. Glad you're feeling better.  (about 1 year ago)
+        hurrycane: Just checking in. How's everything going? (about 1 year ago)
+        hurrycane: Any luck completing graphs this weekend? There have been lots of commits to RailsAdmin since summer ended but none from you. How's it going? (about 1 year ago)
+        hurrycane: Not sure about the payment. Feel free to ask Leah or Yehuda directly. Think you'll be able to finish up your work on graphs this weekend? (about 1 year ago)
+        hurrycane: Looks good to me. I'm going to pull in the change now. My only concern is that we don't have any tests for auth. (about 1 year ago)
+        hurrycane: How are the graph enhancements coming? (about 1 year ago)
+        hurrycane: Changes pushed. You should pull and re-bundle when you have a minute. (about 1 year ago)
+        hurrycane: Glad to hear the new graphs are coming along. Can't wait to see them! (about 1 year ago)
+        hurrycane: I figured out what was wrong with the tests: I accidentally unbundled webrat. The problem had nothing to do with rspec-rails. (about 1 year ago)
+        hurrycane: After the upgrade 54/80 specs are failing. I'm working on fixing them now. (about 1 year ago)
+        hurrycane: a new version of rspec-rails just shipped with some nice features and fixes http://github.com/rspec/rspec-rails/blob/master/History.md (about 1 year ago)
+        hurrycane: How are the graphs coming? I'm really looking forward to seeing what you do with Raphaël. (about 1 year ago)
+        hurrycane: Awesome! Any luck duplicating the Gemfile.lock error with Ruby 1.9.2 final? (about 1 year ago)
+        hurrycane: I just committed a bunch of cleanup and fixes to RailsAdmin that touched many of files. Make sure you pull to avoid conflicts. (about 1 year ago)
+        hurrycane: Can you try upgrading to 1.9.2 final, re-installing Bundler 1.0.0.rc.6 (don't remove 1.0.0) and see if you can reproduce the problem? (about 1 year ago)
+        hurrycane: I'm trying to debug the issue you were having with the Bundler Gemfile.lock shortref. What version of Ruby and RubyGems are you running? (about 1 year ago)
+        hurrycane: Let's try to debug that problem during our session in 1.5 hours. In the mean time, try working on the graphs or internationalization. (about 1 year ago)
+      eos
+    end
+  end
+
   describe "#stats" do
     before do
       stub_get("/1/users/show.json").

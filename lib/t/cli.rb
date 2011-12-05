@@ -99,6 +99,7 @@ module T
         say "#{direct_message.recipient.screen_name.rjust(20)}: #{direct_message.text} (#{time_ago_in_words(direct_message.created_at)} ago)"
       end
     end
+    map %w(sms) => :sent_messages
 
     desc "dm USERNAME MESSAGE", "Sends that person a Direct Message."
     def dm(username, message)
@@ -165,8 +166,13 @@ module T
     map %w(replies) => :mentions
 
     desc "open USERNAME", "Opens that user's profile in a web browser."
+    method_option "dry-run", :type => :boolean
     def open(username)
-      Launchy.open("https://twitter.com/#{username}")
+      if options['dry-run']
+        Launchy.open("https://twitter.com/#{username}", :dry_run => true)
+      else
+        Launchy.open("https://twitter.com/#{username}")
+      end
     end
 
     desc "reply USERNAME MESSAGE", "Post your Tweet as a reply directed at another person."

@@ -47,6 +47,24 @@ describe T::CLI do
     end
   end
 
+  describe "#get" do
+    before do
+      stub_get("/1/statuses/user_timeline.json").
+        with(:query => {:screen_name => "sferik", :count => "1"}).
+        to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+    end
+    it "should request the correct resource" do
+      @t.get("sferik")
+      a_get("/1/statuses/user_timeline.json").
+        with(:query => {:screen_name => "sferik", :count => "1"}).
+        should have_been_made
+    end
+    it "should have the correct output" do
+      string = @t.get("sferik").string
+      string.chomp.should == "Ruby is the best programming language for hiding the ugly bits. (about 1 year ago)"
+    end
+  end
+
   describe "#mentions" do
     before do
       stub_get("/1/statuses/mentions.json").

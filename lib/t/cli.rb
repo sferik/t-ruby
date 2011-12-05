@@ -276,6 +276,12 @@ module T
     end
     map %w(post) => :update
 
+    desc "version", "Show version"
+    def version
+      say T::Version
+    end
+    map %w(-v --version) => :version
+
     desc "whois USERNAME", "Retrieves profile information for the user."
     def whois(username)
       user = client.user(username)
@@ -286,12 +292,6 @@ module T
       output << "web: #{user.url}"
       say output.join("\n")
     end
-
-    desc "version", "Show version"
-    def version
-      say T::Version
-    end
-    map %w(-v --version) => :version
 
     desc "set SUBCOMMAND ...ARGS", "Change various account settings."
     subcommand 'set', Set

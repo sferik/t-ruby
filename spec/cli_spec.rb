@@ -1,10 +1,19 @@
 require 'helper'
 
 describe T::CLI do
+
   before do
     $stdout = StringIO.new
     @t = T::CLI.new
   end
+
+  describe "#version" do
+    it "should output the gem version" do
+      string = @t.version.string
+      string.chomp.should == T::Version.to_s
+    end
+  end
+
   describe "#whois" do
     before do
       stub_get("/1/users/show.json").
@@ -25,4 +34,5 @@ describe T::CLI do
       string.should =~ /^web: /
     end
   end
+
 end

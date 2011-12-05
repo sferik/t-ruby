@@ -10,6 +10,30 @@ describe T::CLI do
     @t = T::CLI.new
   end
 
+  describe "#update" do
+    before do
+      stub_get("/1/statuses/user_timeline.json").
+        with(:query => {:screen_name => "sferik", :count => "1"}).
+        to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_post("/1/statuses/update.json").
+        with(:body => {:in_reply_to_status_id => "27558893223", :status => "@sferik Testing"}).
+        to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+    end
+    it "should request the correct resource" do
+      @t.reply("sferik", "Testing")
+      a_get("/1/statuses/user_timeline.json").
+        with(:query => {:screen_name => "sferik", :count => "1"}).
+        should have_been_made
+      a_post("/1/statuses/update.json").
+        with(:body => {:in_reply_to_status_id => "27558893223", :status => "@sferik Testing"}).
+        should have_been_made
+    end
+    it "should have the correct output" do
+      string = @t.reply("sferik", "Testing").string
+      string.chomp.should == "Reply created (about 1 year ago)"
+    end
+  end
+
   describe "#retweet" do
     before do
       stub_get("/1/statuses/user_timeline.json").

@@ -186,7 +186,7 @@ module T
       hash.merge!(:lat => location.lat, :long => location.lng) if options['location']
       in_reply_to_status = client.user_timeline(username, :count => 1).first
       hash.merge!(:in_reply_to_status_id => in_reply_to_status.id) if in_reply_to_status
-      status = client.update("@#{username} #{message}", options)
+      status = client.update("@#{username} #{message}", hash)
       say "Reply created (#{time_ago_in_words(status.created_at)} ago)"
     rescue Twitter::Error::Forbidden => error
       raise Thor::Error, error.message

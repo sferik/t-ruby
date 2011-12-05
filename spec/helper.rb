@@ -2,6 +2,7 @@ require 'simplecov'
 SimpleCov.start
 require 't'
 require 'rspec'
+require 'timecop'
 require 'webmock/rspec'
 
 def a_delete(path, endpoint=Twitter.endpoint)

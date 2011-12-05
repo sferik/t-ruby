@@ -257,7 +257,7 @@ module T
 
     desc "unfollow USERNAME", "Allows you to stop following a specific user."
     def unfollow(username)
-      user = client.unfollow(username)
+      client.unfollow(username)
       say "You are no longer following @#{username}. Run `#{$0} follow #{username}` to follow again."
     end
     map %w(defriend) => :unfollow

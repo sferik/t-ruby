@@ -163,9 +163,10 @@ module T
     def mentions
       timeline = client.mentions
       timeline.reverse! if options['reverse']
-      timeline.each do |status|
-        say "#{status.user.screen_name.rjust(20)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
+      timeline.map! do |status|
+        "#{status.user.screen_name.rjust(20)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
       end
+      say timeline.join("\n")
     end
     map %w(replies) => :mentions
 

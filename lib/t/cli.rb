@@ -185,8 +185,18 @@ module T
     desc "retweet USERNAME", "Sends that user's latest Tweet to your followers."
     def retweet(username)
       status = client.user_timeline(username).first
-      client.retweet(status.id)
-      say "You have retweeted @#{username}'s latest tweet: #{status.text}"
+      if status
+        client.retweet(status.id)
+        say "You have retweeted @#{username}'s latest status: #{status.text}"
+      else
+        raise Thor::Error, "No status found"
+      end
+    rescue Twitter::Error::Forbidden => error
+      if error.message =~ /sharing is not permissable for this status \(Share validations failed\)/
+        say "You have retweeted @#{username}'s latest status: #{status.text}"
+      else
+        raise Thor::Error, error.message
+      end
     end
     map %w(rt) => :retweet
 

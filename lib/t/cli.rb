@@ -114,7 +114,7 @@ module T
 
     desc "favorite USERNAME", "Marks that user's last Tweet as one of your favorites."
     def favorite(username)
-      status = client.user_timeline(username).first
+      status = client.user_timeline(username, :count => 1).first
       if status
         client.favorite(status.id)
         say "You have favorited @#{username}'s latest status: #{status.text}"
@@ -141,7 +141,7 @@ module T
         say
         say "Try following @#{recommendations[0].screen_name} or @#{recommendations[1].screen_name}."
       end
-      status = client.user_timeline(username).first
+      status = client.user_timeline(username, :count => 1).first
       if status
         say "#{username}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
       end
@@ -150,7 +150,7 @@ module T
 
     desc "get USERNAME", "Retrieves the latest update posted by the user."
     def get(username)
-      status = client.user_timeline(username).first
+      status = client.user_timeline(username, :count => 1).first
       if status
         say "#{status.text} (#{time_ago_in_words(status.created_at)} ago)"
       else
@@ -184,7 +184,7 @@ module T
     def reply(username, message)
       hash = {}
       hash.merge!(:lat => location.lat, :long => location.lng) if options['location']
-      in_reply_to_status = client.user_timeline(username).first
+      in_reply_to_status = client.user_timeline(username, :count => 1).first
       hash.merge!(:in_reply_to_status_id => in_reply_to_status.id) if in_reply_to_status
       status = client.update("@#{username} #{message}", options)
       say "Reply created (#{time_ago_in_words(status.created_at)} ago)"
@@ -194,7 +194,7 @@ module T
 
     desc "retweet USERNAME", "Sends that user's latest Tweet to your followers."
     def retweet(username)
-      status = client.user_timeline(username).first
+      status = client.user_timeline(username, :count => 1).first
       if status
         client.retweet(status.id)
         say "You have retweeted @#{username}'s latest status: #{status.text}"
@@ -253,7 +253,7 @@ module T
 
     desc "unfavorite USERNAME", "Marks that user's last Tweet as one of your favorites."
     def unfavorite(username)
-      status = client.user_timeline(username).first
+      status = client.user_timeline(username, :count => 1).first
       if status
         client.unfavorite(status.id)
         say "You have unfavorited @#{username}'s latest status: #{status.text}"

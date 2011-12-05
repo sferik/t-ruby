@@ -47,6 +47,24 @@ describe T::CLI do
     end
   end
 
+  describe "#dm" do
+    before do
+      stub_post("/1/direct_messages/new.json").
+        with(:body => {:screen_name => "pengwynn", :text => "Creating a fixture for the Twitter gem"}).
+        to_return(:body => fixture("direct_message.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+    end
+    it "should request the correct resource" do
+      @t.dm("pengwynn", "Creating a fixture for the Twitter gem")
+      a_post("/1/direct_messages/new.json").
+        with(:body => {:screen_name => "pengwynn", :text => "Creating a fixture for the Twitter gem"}).
+        should have_been_made
+    end
+    it "should have the correct output" do
+      string = @t.dm("pengwynn", "Creating a fixture for the Twitter gem").string
+      string.chomp.should == "Direct Message sent to @pengwynn (about 1 year ago)"
+    end
+  end
+
   describe "#favorite" do
     before do
       stub_get("/1/statuses/user_timeline.json").

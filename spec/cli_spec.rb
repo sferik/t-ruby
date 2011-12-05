@@ -7,6 +7,24 @@ describe T::CLI do
     @t = T::CLI.new
   end
 
+  describe "#unfollow" do
+    before do
+      stub_delete("/1/friendships/destroy.json").
+        with(:query => {:screen_name => "sferik"}).
+        to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+    end
+    it "should request the correct resource" do
+      @t.unfollow("sferik")
+      a_delete("/1/friendships/destroy.json").
+        with(:query => {:screen_name => "sferik"}).
+        should have_been_made
+    end
+    it "should output 'You are no longer following'" do
+      string = @t.unfollow("sferik").string.chomp
+      string.should =~ /^You are no longer following @sferik\./
+    end
+  end
+
   describe "#update" do
     before do
       stub_post("/1/statuses/update.json").

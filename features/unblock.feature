@@ -1,4 +1,4 @@
-Feature: An user can unblock an account
+Feature: A user can unblock an account
 
   Scenario: Unlock account
     When I unblock "spam"

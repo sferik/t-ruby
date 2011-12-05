@@ -1,4 +1,4 @@
-Feature: An user can block an account
+Feature: A user can block an account
 
   Scenario: Block account
     When I block "spam"

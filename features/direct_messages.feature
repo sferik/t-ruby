@@ -1,4 +1,4 @@
-Feature: An user can list his or her direct messages
+Feature: A user can list his or her direct messages
 
   Scenario: List direct messages
     When I list my direct messages using an authorized profile

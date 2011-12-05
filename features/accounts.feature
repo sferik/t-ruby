@@ -1,4 +1,4 @@
-Feature: An user can list his or her accounts
+Feature: A user can list his or her accounts
 
   Scenario: List accounts
     When I list my accounts using an authorized profile

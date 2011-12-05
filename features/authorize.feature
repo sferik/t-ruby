@@ -1,4 +1,4 @@
-Feature: An user can authorize his or her account
+Feature: A user can authorize his or her account
 
   Scenario: Authorize account
     When I authorize my account

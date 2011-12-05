@@ -146,7 +146,11 @@ module T
     desc "get USERNAME", "Retrieves the latest update posted by the user."
     def get(username)
       status = client.user_timeline(username).first
-      say "#{status.text} (#{time_ago_in_words(status.created_at)} ago)"
+      if status
+        say "#{status.text} (#{time_ago_in_words(status.created_at)} ago)"
+      else
+        raise Thor::Error, "No status found"
+      end
     end
 
     desc "mentions", "Returns the 20 most recent Tweets mentioning you."

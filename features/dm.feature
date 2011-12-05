@@ -1,4 +1,4 @@
-Feature: An user can send a direct message
+Feature: A user can send a direct message
 
   Scenario: Send direct message
     When I send the message "Testing" to "testcli2" using an authorized profile

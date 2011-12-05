@@ -1,4 +1,4 @@
-Feature: An user can follow another account
+Feature: A user can follow an account
 
   Scenario: Follow an account
     When I follow "testcli2" using an authorized profile

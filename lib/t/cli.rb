@@ -132,10 +132,14 @@ module T
       user = client.follow(username)
       say "You're now following @#{username}. Run `#{$0} unfollow #{username}` to stop."
       recommendations = client.recommendations(:user_id => user.id, :limit => 2)
-      say
-      say "Try following @#{recommendations[0].screen_name} or @#{recommendations[1].screen_name}."
+      if recommendations[0] && recommendations[1]
+        say
+        say "Try following @#{recommendations[0].screen_name} or @#{recommendations[1].screen_name}."
+      end
       status = client.user_timeline(username).first
-      say "#{username}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
+      if status
+        say "#{username}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
+      end
     end
     map %w(befriend) => :follow
 

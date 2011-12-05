@@ -10,6 +10,25 @@ describe T::CLI do
     @t = T::CLI.new
   end
 
+  describe "#stats" do
+    before do
+      stub_get("/1/users/show.json").
+        with(:query => {:screen_name => "sferik"}).
+        to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+    end
+    it "should request the correct resource" do
+      @t.stats("sferik")
+      a_get("/1/users/show.json").
+        with(:query => {:screen_name => "sferik"}).
+        should have_been_made
+    end
+    it "should have the correct output" do
+      string = @t.stats("sferik").string
+      string.should =~ /^Followers: 1,048$/
+      string.should =~ /^Following: 197$/
+    end
+  end
+
   describe "#suggest" do
     before do
       stub_get("/1/users/recommendations.json").
@@ -24,7 +43,7 @@ describe T::CLI do
     end
     it "should have the correct output" do
       string = @t.suggest.string
-      string.should =~ /Try following @jtrupiano or @mlroach\./
+      string.should =~ /^Try following @jtrupiano or @mlroach\.$/
     end
   end
 
@@ -78,7 +97,7 @@ describe T::CLI do
     end
     it "should have the correct output" do
       string = @t.unblock("sferik").string
-      string.should =~ /^Unblocked @sferik/
+      string.should =~ /^Unblocked @sferik$/
     end
   end
 
@@ -118,7 +137,7 @@ describe T::CLI do
     end
     it "should have the correct output" do
       string = @t.unfollow("sferik").string
-      string.should =~ /^You are no longer following @sferik\./
+      string.should =~ /^You are no longer following @sferik\.$/
     end
   end
 

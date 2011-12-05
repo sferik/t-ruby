@@ -10,6 +10,24 @@ describe T::CLI do
     @t = T::CLI.new
   end
 
+  describe "#suggest" do
+    before do
+      stub_get("/1/users/recommendations.json").
+        with(:query => {:limit => "2"}).
+        to_return(:body => fixture("recommendations.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+    end
+    it "should request the correct resource" do
+      @t.suggest
+      a_get("/1/users/recommendations.json").
+        with(:query => {:limit => "2"}).
+        should have_been_made
+    end
+    it "should have the correct output" do
+      string = @t.suggest.string
+      string.should =~ /Try following @jtrupiano or @mlroach\./
+    end
+  end
+
   describe "#timeline" do
     before do
       stub_get("/1/statuses/home_timeline.json").
@@ -132,13 +150,13 @@ describe T::CLI do
   describe "#whois" do
     before do
       stub_get("/1/users/show.json").
-        with(:query => {"screen_name" => "sferik"}).
+        with(:query => {:screen_name => "sferik"}).
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @t.whois("sferik")
       a_get("/1/users/show.json").
-        with(:query => {"screen_name" => "sferik"}).
+        with(:query => {:screen_name => "sferik"}).
         should have_been_made
     end
     it "should have the correct output" do

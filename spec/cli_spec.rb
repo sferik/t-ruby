@@ -47,6 +47,28 @@ describe T::CLI do
     end
   end
 
+  describe "#favorite" do
+    before do
+      stub_get("/1/statuses/user_timeline.json").
+        with(:query => {:screen_name => "sferik", :count => "1"}).
+        to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_post("/1/favorites/create/27558893223.json").
+        to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+    end
+    it "should request the correct resource" do
+      @t.favorite("sferik")
+      a_get("/1/statuses/user_timeline.json").
+        with(:query => {:screen_name => "sferik", :count => "1"}).
+        should have_been_made
+      a_post("/1/favorites/create/27558893223.json").
+        should have_been_made
+    end
+    it "should have the correct output" do
+      string = @t.favorite("sferik").string
+      string.chomp.should == "You have favorited @sferik's latest status: Ruby is the best programming language for hiding the ugly bits."
+    end
+  end
+
   describe "#follow" do
     before do
       stub_post("/1/friendships/create.json").

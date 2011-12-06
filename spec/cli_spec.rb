@@ -18,8 +18,10 @@ describe T::CLI do
   end
 
   describe "#account" do
-    it "should have the correct output" do
+    before do
       @t.options = @t.options.merge("profile" => File.expand_path('../fixtures/.trc', __FILE__))
+    end
+    it "should have the correct output" do
       @t.accounts
       $stdout.string.should == <<-eos.gsub(/^ {8}/, '')
         sferik
@@ -102,6 +104,7 @@ describe T::CLI do
 
   describe "#dm" do
     before do
+      @t.options = @t.options.merge("profile" => File.expand_path('../fixtures/.trc', __FILE__))
       stub_post("/1/direct_messages/new.json").
         with(:body => {:screen_name => "pengwynn", :text => "Creating a fixture for the Twitter gem"}).
         to_return(:body => fixture("direct_message.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -236,6 +239,7 @@ describe T::CLI do
 
   describe "#reply" do
     before do
+      @t.options = @t.options.merge("profile" => File.expand_path('../fixtures/.trc', __FILE__))
       stub_get("/1/statuses/user_timeline.json").
         with(:query => {:screen_name => "sferik", :count => "1"}).
         to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -450,6 +454,7 @@ describe T::CLI do
 
   describe "#update" do
     before do
+      @t.options = @t.options.merge("profile" => File.expand_path('../fixtures/.trc', __FILE__))
       stub_post("/1/statuses/update.json").
         with(:body => {:status => "Testing"}).
         to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})

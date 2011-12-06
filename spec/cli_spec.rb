@@ -4,20 +4,44 @@ require 'helper'
 describe T::CLI do
 
   before do
-    new_time = Time.local(2011, 11, 24, 16, 20, 0)
-    Timecop.freeze(new_time)
-    $stdout = StringIO.new
     @t = T::CLI.new
+    Timecop.freeze(Time.local(2011, 11, 24, 16, 20, 0))
+    @old_stderr = $stderr
+    $stderr = StringIO.new
+    @old_stdout = $stdout
+    $stdout = StringIO.new
+  end
+
+  after do
+    $stderr = @old_stderr
+    $stdout = @old_stdout
   end
 
   describe "#account" do
     it "should have the correct output" do
-      @t.options = @t.options.merge({"profile" => File.expand_path('../fixtures/.trc', __FILE__)})
-      string = @t.accounts.string
-      string.should == <<-eos.gsub(/^ {8}/, '')
+      @t.options = @t.options.merge("profile" => File.expand_path('../fixtures/.trc', __FILE__))
+      @t.accounts
+      $stdout.string.should == <<-eos.gsub(/^ {8}/, '')
         sferik
           abc123 (default)
       eos
+    end
+  end
+
+  describe "#authorize" do
+    before do
+      @t.options = @t.options.merge("dry-run" => true)
+      stub_post("/oauth/request_token").
+        to_return(:body => fixture("request_token"))
+    end
+    it "should request the correct resource" do
+      @t.authorize
+      a_post("/oauth/request_token").
+        should have_been_made
+    end
+    it "should have the correct output" do
+      @t.authorize
+      $stdout.string.should =~ /https:\/\/api\.twitter\.com\/oauth\/authorize/
     end
   end
 
@@ -34,8 +58,8 @@ describe T::CLI do
         should have_been_made
     end
     it "should have the correct output" do
-      string = @t.block("sferik").string
-      string.should =~ /^Blocked @sferik$/
+      @t.block("sferik")
+      $stdout.string.should =~ /^Blocked @sferik$/
     end
   end
 
@@ -50,8 +74,8 @@ describe T::CLI do
         should have_been_made
     end
     it "should have the correct output" do
-      string = @t.direct_messages.string
-      string.should == <<-eos.gsub(/^/, ' ' * 6)
+      @t.direct_messages
+      $stdout.string.should == <<-eos.gsub(/^/, ' ' * 6)
         sferik: Sounds good. Meeting Tuesday is fine. (about 1 year ago)
         sferik: if you want to add me to your GroupMe group, my phone number is 415-312-2382 (about 1 year ago)
         sferik: That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does that work for you?  (about 1 year ago)
@@ -89,8 +113,8 @@ describe T::CLI do
         should have_been_made
     end
     it "should have the correct output" do
-      string = @t.dm("pengwynn", "Creating a fixture for the Twitter gem").string
-      string.chomp.should == "Direct Message sent to @pengwynn (about 1 year ago)"
+      @t.dm("pengwynn", "Creating a fixture for the Twitter gem")
+      $stdout.string.chomp.should == "Direct Message sent to @pengwynn (about 1 year ago)"
     end
   end
 
@@ -111,8 +135,8 @@ describe T::CLI do
         should have_been_made
     end
     it "should have the correct output" do
-      string = @t.favorite("sferik").string
-      string.chomp.should == "You have favorited @sferik's latest status: Ruby is the best programming language for hiding the ugly bits."
+      @t.favorite("sferik")
+      $stdout.string.chomp.should == "You have favorited @sferik's latest status: Ruby is the best programming language for hiding the ugly bits."
     end
   end
 
@@ -141,10 +165,10 @@ describe T::CLI do
         should have_been_made
     end
     it "should have the correct output" do
-      string = @t.follow("sferik").string
-      string.should =~ /^You're now following @sferik\.$/
-      string.should =~ /^Try following @jtrupiano or @mlroach\.$/
-      string.should =~ /^sferik: Ruby is the best programming language for hiding the ugly bits\. \(about 1 year ago\)$/
+      @t.follow("sferik")
+      $stdout.string.should =~ /^You're now following @sferik\.$/
+      $stdout.string.should =~ /^Try following @jtrupiano or @mlroach\.$/
+      $stdout.string.should =~ /^sferik: Ruby is the best programming language for hiding the ugly bits\. \(about 1 year ago\)$/
     end
   end
 
@@ -161,8 +185,8 @@ describe T::CLI do
         should have_been_made
     end
     it "should have the correct output" do
-      string = @t.get("sferik").string
-      string.chomp.should == "Ruby is the best programming language for hiding the ugly bits. (about 1 year ago)"
+      @t.get("sferik")
+      $stdout.string.chomp.should == "Ruby is the best programming language for hiding the ugly bits. (about 1 year ago)"
     end
   end
 
@@ -177,8 +201,8 @@ describe T::CLI do
         should have_been_made
     end
     it "should have the correct output" do
-      string = @t.mentions.string
-      string.should == <<-eos.gsub(/^/, ' ' * 6)
+      @t.mentions
+      $stdout.string.should == <<-eos.gsub(/^/, ' ' * 6)
         sferik: Ruby is the best programming language for hiding the ugly bits. (about 1 year ago)
         sferik: There are 1.3 billion people in China; when people say there are 1 billion they are rounding off the entire population of the United States. (about 1 year ago)
         sferik: The new Windows Phone campaign is the best advertising from Microsoft since "Start Me Up" (1995). Great work by CP+B. http://t.co/tIzxopI (about 1 year ago)
@@ -202,7 +226,15 @@ describe T::CLI do
     end
   end
 
-  describe "#update" do
+  describe "#open" do
+    it "should have the correct output" do
+      @t.options = @t.options.merge("dry-run" => true)
+      @t.open("sferik")
+      $stdout.string.should =~ /https:\/\/twitter\.com\/sferik/
+    end
+  end
+
+  describe "#reply" do
     before do
       stub_get("/1/statuses/user_timeline.json").
         with(:query => {:screen_name => "sferik", :count => "1"}).
@@ -221,8 +253,8 @@ describe T::CLI do
         should have_been_made
     end
     it "should have the correct output" do
-      string = @t.reply("sferik", "Testing").string
-      string.chomp.should == "Reply created (about 1 year ago)"
+      @t.reply("sferik", "Testing")
+      $stdout.string.chomp.should == "Reply created (about 1 year ago)"
     end
   end
 
@@ -243,8 +275,8 @@ describe T::CLI do
         should have_been_made
     end
     it "should have the correct output" do
-      string = @t.retweet("sferik").string
-      string.chomp.should == "You have retweeted @sferik's latest status: Ruby is the best programming language for hiding the ugly bits."
+      @t.retweet("sferik")
+      $stdout.string.chomp.should == "You have retweeted @sferik's latest status: Ruby is the best programming language for hiding the ugly bits."
     end
   end
 
@@ -259,8 +291,8 @@ describe T::CLI do
         should have_been_made
     end
     it "should have the correct output" do
-      string = @t.sent_messages.string
-      string.should == <<-eos.gsub(/^/, ' ' * 3)
+      @t.sent_messages
+      $stdout.string.should == <<-eos.gsub(/^/, ' ' * 3)
         hurrycane: Sounds good. Meeting Tuesday is fine. (about 1 year ago)
      technoweenie: if you want to add me to your GroupMe group, my phone number is 415-312-2382 (about 1 year ago)
         hurrycane: That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does that work for you?  (about 1 year ago)
@@ -298,9 +330,9 @@ describe T::CLI do
         should have_been_made
     end
     it "should have the correct output" do
-      string = @t.stats("sferik").string
-      string.should =~ /^Followers: 1,048$/
-      string.should =~ /^Following: 197$/
+      @t.stats("sferik")
+      $stdout.string.should =~ /^Followers: 1,048$/
+      $stdout.string.should =~ /^Following: 197$/
     end
   end
 
@@ -317,8 +349,8 @@ describe T::CLI do
         should have_been_made
     end
     it "should have the correct output" do
-      string = @t.suggest.string
-      string.should =~ /^Try following @jtrupiano or @mlroach\.$/
+      @t.suggest
+      $stdout.string.should =~ /^Try following @jtrupiano or @mlroach\.$/
     end
   end
 
@@ -333,8 +365,8 @@ describe T::CLI do
         should have_been_made
     end
     it "should have the correct output" do
-      string = @t.timeline.string
-      string.should == <<-eos.gsub(/^/, ' ' * 6)
+      @t.timeline
+      $stdout.string.should == <<-eos.gsub(/^/, ' ' * 6)
         sferik: Ruby is the best programming language for hiding the ugly bits. (about 1 year ago)
         sferik: There are 1.3 billion people in China; when people say there are 1 billion they are rounding off the entire population of the United States. (about 1 year ago)
         sferik: The new Windows Phone campaign is the best advertising from Microsoft since "Start Me Up" (1995). Great work by CP+B. http://t.co/tIzxopI (about 1 year ago)
@@ -371,8 +403,8 @@ describe T::CLI do
         should have_been_made
     end
     it "should have the correct output" do
-      string = @t.unblock("sferik").string
-      string.should =~ /^Unblocked @sferik$/
+      @t.unblock("sferik")
+      $stdout.string.should =~ /^Unblocked @sferik$/
     end
   end
 
@@ -393,8 +425,8 @@ describe T::CLI do
         should have_been_made
     end
     it "should have the correct output" do
-      string = @t.unfavorite("sferik").string
-      string.chomp.should == "You have unfavorited @sferik's latest status: Ruby is the best programming language for hiding the ugly bits."
+      @t.unfavorite("sferik")
+      $stdout.string.chomp.should == "You have unfavorited @sferik's latest status: Ruby is the best programming language for hiding the ugly bits."
     end
   end
 
@@ -411,8 +443,8 @@ describe T::CLI do
         should have_been_made
     end
     it "should have the correct output" do
-      string = @t.unfollow("sferik").string
-      string.should =~ /^You are no longer following @sferik\.$/
+      @t.unfollow("sferik")
+      $stdout.string.should =~ /^You are no longer following @sferik\.$/
     end
   end
 
@@ -429,15 +461,15 @@ describe T::CLI do
         should have_been_made
     end
     it "should have the correct output" do
-      string = @t.update("Testing").string
-      string.chomp.should == "Tweet created (about 1 year ago)"
+      @t.update("Testing")
+      $stdout.string.chomp.should == "Tweet created (about 1 year ago)"
     end
   end
 
   describe "#version" do
     it "should have the correct output" do
-      string = @t.version.string
-      string.chomp.should == T::Version.to_s
+      @t.version
+      $stdout.string.chomp.should == T::Version.to_s
     end
   end
 
@@ -454,8 +486,8 @@ describe T::CLI do
         should have_been_made
     end
     it "should have the correct output" do
-      string = @t.whois("sferik").string
-      string.should == <<-eos.gsub(/^ {8}/, '')
+      @t.whois("sferik")
+      $stdout.string.should == <<-eos.gsub(/^ {8}/, '')
         Erik Michaels-Ober, since Jul 2007.
         bio: A mind forever voyaging through strange seas of thought, alone.
         location: San Francisco

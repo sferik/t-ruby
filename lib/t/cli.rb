@@ -2,6 +2,7 @@ require 'action_view'
 require 'launchy'
 require 'oauth'
 require 't/core_ext/string'
+require 't/delete'
 require 't/rcfile'
 require 't/set'
 require 'thor'
@@ -84,9 +85,11 @@ module T
     def block(username)
       username = username.strip_at
       client.block(username)
-      say "Blocked @#{username}"
+      rcfile = RCFile.instance
+      rcfile.path = options['profile'] if options['profile']
+      say "@#{rcfile.default_profile[0]} blocked @#{username}"
       say
-      say "Run `#{$0} unblock #{username}` to unblock."
+      say "Run `#{$0} delete block #{username}` to unblock."
     end
 
     desc "direct_messages", "Returns the 20 most recent Direct Messages sent to you."
@@ -116,6 +119,7 @@ module T
       username = username.strip_at
       direct_message = client.direct_message_create(username, message)
       rcfile = RCFile.instance
+      rcfile.path = options['profile'] if options['profile']
       say "Direct Message sent from @#{rcfile.default_profile[0]} to @#{username} (#{time_ago_in_words(direct_message.created_at)} ago)"
     rescue Twitter::Error::Forbidden => error
       raise Thor::Error, error.message
@@ -128,13 +132,19 @@ module T
       status = client.user_timeline(username, :count => 1).first
       if status
         client.favorite(status.id)
-        say "You have favorited @#{username}'s latest status: #{status.text}"
+        rcfile = RCFile.instance
+        rcfile.path = options['profile'] if options['profile']
+        say "@#{rcfile.default_profile[0]} favorited @#{username}'s latest status: #{status.text}"
+        say
+        say "Run `#{$0} delete favorite #{username}` to unfavorite."
       else
         raise Thor::Error, "No status found"
       end
     rescue Twitter::Error::Forbidden => error
       if error.message =~ /You have already favorited this status\./
-        say "You have favorited @#{username}'s latest status: #{status.text}"
+        rcfile = RCFile.instance
+        rcfile.path = options['profile'] if options['profile']
+        say "@#{rcfile.default_profile[0]} favorited @#{username}'s latest status: #{status.text}"
       else
         raise Thor::Error, error.message
       end
@@ -145,7 +155,9 @@ module T
     def follow(username)
       username = username.strip_at
       user = client.follow(username)
-      say "You're now following @#{username}."
+      rcfile = RCFile.instance
+      rcfile.path = options['profile'] if options['profile']
+      say "@#{rcfile.default_profile[0]} is now following @#{username}."
       say
       say "Run `#{$0} unfollow #{username}` to stop."
       recommendations = client.recommendations(:user_id => user.id, :limit => 2)
@@ -207,6 +219,7 @@ module T
       hash.merge!(:in_reply_to_status_id => in_reply_to_status.id) if in_reply_to_status
       status = client.update("@#{username} #{message}", hash)
       rcfile = RCFile.instance
+      rcfile.path = options['profile'] if options['profile']
       say "Reply created by @#{rcfile.default_profile[0]} (#{time_ago_in_words(status.created_at)} ago)"
     rescue Twitter::Error::Forbidden => error
       raise Thor::Error, error.message
@@ -218,13 +231,17 @@ module T
       status = client.user_timeline(username, :count => 1).first
       if status
         client.retweet(status.id)
-        say "You have retweeted @#{username}'s latest status: #{status.text}"
+        rcfile = RCFile.instance
+        rcfile.path = options['profile'] if options['profile']
+        say "@#{rcfile.default_profile[0]} retweeted @#{username}'s latest status: #{status.text}"
       else
         raise Thor::Error, "No status found"
       end
     rescue Twitter::Error::Forbidden => error
       if error.message =~ /sharing is not permissable for this status \(Share validations failed\)/
-        say "You have retweeted @#{username}'s latest status: #{status.text}"
+        rcfile = RCFile.instance
+        rcfile.path = options['profile'] if options['profile']
+        say "@#{rcfile.default_profile[0]} retweeted @#{username}'s latest status: #{status.text}"
       else
         raise Thor::Error, error.message
       end
@@ -266,32 +283,13 @@ module T
     end
     map %w(tl) => :timeline
 
-    desc "unblock USERNAME", "Unblock a user."
-    def unblock(username)
-      username = username.strip_at
-      client.unblock(username)
-      say "Unblocked @#{username}"
-      say
-      say "Run `#{$0} block #{username}` to block."
-    end
-
-    desc "unfavorite USERNAME", "Marks that user's last Tweet as one of your favorites."
-    def unfavorite(username)
-      username = username.strip_at
-      status = client.user_timeline(username, :count => 1).first
-      if status
-        client.unfavorite(status.id)
-        say "You have unfavorited @#{username}'s latest status: #{status.text}"
-      else
-        raise Thor::Error, "No status found"
-      end
-    end
-
     desc "unfollow USERNAME", "Allows you to stop following a specific user."
     def unfollow(username)
       username = username.strip_at
       client.unfollow(username)
-      say "You are no longer following @#{username}."
+      rcfile = RCFile.instance
+      rcfile.path = options['profile'] if options['profile']
+      say "@#{rcfile.default_profile[0]} is no longer following @#{username}."
       say
       say "Run `#{$0} follow #{username}` to follow again."
     end
@@ -304,6 +302,7 @@ module T
       hash.merge!(:lat => location.lat, :long => location.lng) if options['location']
       status = client.update(message, hash)
       rcfile = RCFile.instance
+      rcfile.path = options['profile'] if options['profile']
       say "Tweet created by @#{rcfile.default_profile[0]} (#{time_ago_in_words(status.created_at)} ago)"
     rescue Twitter::Error::Forbidden => error
       raise Thor::Error, error.message
@@ -327,6 +326,9 @@ module T
       output << "web: #{user.url}"
       say output.join("\n")
     end
+
+    desc "delete SUBCOMMAND ...ARGS", "Delete Tweets, Direct Messages, etc."
+    subcommand 'delete', Delete
 
     desc "set SUBCOMMAND ...ARGS", "Change various account settings."
     subcommand 'set', Set

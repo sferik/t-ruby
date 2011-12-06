@@ -24,7 +24,7 @@ describe T::CLI do
     it "should have the correct output" do
       @t.accounts
       $stdout.string.should == <<-eos.gsub(/^ {8}/, '')
-        sferik
+        testcli
           abc123 (default)
       eos
     end
@@ -50,6 +50,7 @@ describe T::CLI do
 
   describe "#block" do
     before do
+      @t.options = @t.options.merge("profile" => File.expand_path('../fixtures/.trc', __FILE__))
       stub_post("/1/blocks/create.json").
         with(:body => {:screen_name => "sferik"}).
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -62,7 +63,7 @@ describe T::CLI do
     end
     it "should have the correct output" do
       @t.block("sferik")
-      $stdout.string.should =~ /^Blocked @sferik$/
+      $stdout.string.should =~ /^@testcli blocked @sferik/
     end
   end
 
@@ -118,12 +119,13 @@ describe T::CLI do
     end
     it "should have the correct output" do
       @t.dm("pengwynn", "Creating a fixture for the Twitter gem")
-      $stdout.string.chomp.should == "Direct Message sent from @sferik to @pengwynn (about 1 year ago)"
+      $stdout.string.chomp.should == "Direct Message sent from @testcli to @pengwynn (about 1 year ago)"
     end
   end
 
   describe "#favorite" do
     before do
+      @t.options = @t.options.merge("profile" => File.expand_path('../fixtures/.trc', __FILE__))
       stub_get("/1/statuses/user_timeline.json").
         with(:query => {:screen_name => "sferik", :count => "1"}).
         to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -140,12 +142,13 @@ describe T::CLI do
     end
     it "should have the correct output" do
       @t.favorite("sferik")
-      $stdout.string.chomp.should == "You have favorited @sferik's latest status: Ruby is the best programming language for hiding the ugly bits."
+      $stdout.string.should =~ /^@testcli favorited @sferik's latest status: Ruby is the best programming language for hiding the ugly bits\.$/
     end
   end
 
   describe "#follow" do
     before do
+      @t.options = @t.options.merge("profile" => File.expand_path('../fixtures/.trc', __FILE__))
       stub_post("/1/friendships/create.json").
         with(:body => {:screen_name => "sferik"}).
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -170,7 +173,7 @@ describe T::CLI do
     end
     it "should have the correct output" do
       @t.follow("sferik")
-      $stdout.string.should =~ /^You're now following @sferik\.$/
+      $stdout.string.should =~ /^@testcli is now following @sferik\.$/
       $stdout.string.should =~ /^Try following @jtrupiano or @mlroach\.$/
       $stdout.string.should =~ /^sferik: Ruby is the best programming language for hiding the ugly bits\. \(about 1 year ago\)$/
     end
@@ -260,12 +263,13 @@ describe T::CLI do
     end
     it "should have the correct output" do
       @t.reply("sferik", "Testing")
-      $stdout.string.chomp.should == "Reply created by @sferik (about 1 year ago)"
+      $stdout.string.chomp.should == "Reply created by @testcli (about 1 year ago)"
     end
   end
 
   describe "#retweet" do
     before do
+      @t.options = @t.options.merge("profile" => File.expand_path('../fixtures/.trc', __FILE__))
       stub_get("/1/statuses/user_timeline.json").
         with(:query => {:screen_name => "sferik", :count => "1"}).
         to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -282,7 +286,7 @@ describe T::CLI do
     end
     it "should have the correct output" do
       @t.retweet("sferik")
-      $stdout.string.chomp.should == "You have retweeted @sferik's latest status: Ruby is the best programming language for hiding the ugly bits."
+      $stdout.string.chomp.should == "@testcli retweeted @sferik's latest status: Ruby is the best programming language for hiding the ugly bits."
     end
   end
 
@@ -396,48 +400,9 @@ describe T::CLI do
     end
   end
 
-  describe "#unblock" do
-    before do
-      stub_delete("/1/blocks/destroy.json").
-        with(:query => {:screen_name => "sferik"}).
-        to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-    end
-    it "should request the correct resource" do
-      @t.unblock("sferik")
-      a_delete("/1/blocks/destroy.json").
-        with(:query => {:screen_name => "sferik"}).
-        should have_been_made
-    end
-    it "should have the correct output" do
-      @t.unblock("sferik")
-      $stdout.string.should =~ /^Unblocked @sferik$/
-    end
-  end
-
-  describe "#unfavorite" do
-    before do
-      stub_get("/1/statuses/user_timeline.json").
-        with(:query => {:screen_name => "sferik", :count => "1"}).
-        to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_delete("/1/favorites/destroy/27558893223.json").
-        to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-    end
-    it "should request the correct resource" do
-      @t.unfavorite("sferik")
-      a_get("/1/statuses/user_timeline.json").
-        with(:query => {:screen_name => "sferik", :count => "1"}).
-        should have_been_made
-      a_delete("/1/favorites/destroy/27558893223.json").
-        should have_been_made
-    end
-    it "should have the correct output" do
-      @t.unfavorite("sferik")
-      $stdout.string.chomp.should == "You have unfavorited @sferik's latest status: Ruby is the best programming language for hiding the ugly bits."
-    end
-  end
-
   describe "#unfollow" do
     before do
+      @t.options = @t.options.merge("profile" => File.expand_path('../fixtures/.trc', __FILE__))
       stub_delete("/1/friendships/destroy.json").
         with(:query => {:screen_name => "sferik"}).
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -450,7 +415,7 @@ describe T::CLI do
     end
     it "should have the correct output" do
       @t.unfollow("sferik")
-      $stdout.string.should =~ /^You are no longer following @sferik\.$/
+      $stdout.string.should =~ /^@testcli is no longer following @sferik\.$/
     end
   end
 
@@ -469,7 +434,7 @@ describe T::CLI do
     end
     it "should have the correct output" do
       @t.update("Testing")
-      $stdout.string.chomp.should == "Tweet created by @sferik (about 1 year ago)"
+      $stdout.string.chomp.should == "Tweet created by @testcli (about 1 year ago)"
     end
   end
 

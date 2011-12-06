@@ -39,7 +39,7 @@ describe T::Set do
     it "should have the correct output" do
       rcfile = RCFile.instance
       rcfile.path = File.expand_path('../fixtures/.trc', __FILE__)
-      @t.set("default", "sferik", "abc123")
+      @t.set("default", "testcli", "abc123")
       $stdout.string.chomp.should == "Default account has been changed."
     end
   end

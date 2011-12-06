@@ -7,6 +7,8 @@ module T
     DEFAULT_HOST = 'api.twitter.com'
     DEFAULT_PROTOCOL = 'https'
 
+    class_option "profile", :aliases => "-P", :type => :string, :default => File.join(File.expand_path("~"), RCFile::FILE_NAME), :desc => "Path to RC file", :banner => "FILE"
+
     desc "bio DESCRIPTION", "Edits your Bio information on your Twitter profile."
     def bio(description)
       client.update_profile(:description => description)
@@ -16,6 +18,7 @@ module T
     desc "default USERNAME [CONSUMER_KEY]", "Set your default account."
     def default(username, consumer_key=nil)
       rcfile = RCFile.instance
+      rcfile.path = options['profile'] if options['profile']
       consumer_key = rcfile[username].keys.last if consumer_key.nil?
       rcfile.default_profile = {'username' => username, 'consumer_key' => consumer_key}
       say "Default account has been changed."
@@ -53,6 +56,7 @@ module T
 
       def client
         rcfile = RCFile.instance
+        rcfile.path = options['profile'] if options['profile']
         Twitter::Client.new(
           :endpoint => base_url,
           :consumer_key => rcfile.default_consumer_key,

@@ -18,7 +18,7 @@ describe RCFile do
     it 'should return the profiles for a user' do
       rcfile = RCFile.instance
       rcfile.path = File.expand_path('../fixtures/.trc', __FILE__)
-      rcfile['sferik'].keys.should == ['abc123']
+      rcfile['testcli'].keys.should == ['abc123']
     end
   end
 
@@ -26,23 +26,23 @@ describe RCFile do
     it 'should add a profile for a user' do
       rcfile = RCFile.instance
       rcfile.path = '/tmp/trc'
-      rcfile['sferik'] = {
+      rcfile['testcli'] = {
         'abc123' => {
-          :username => 'sferik',
+          :username => 'testcli',
           :consumer_key => 'abc123',
           :consumer_secret => 'def456',
           :token => 'ghi789',
           :secret => 'jkl012',
         }
       }
-      rcfile['sferik'].keys.should == ['abc123']
+      rcfile['testcli'].keys.should == ['abc123']
     end
     it 'should write the data to disk' do
       rcfile = RCFile.instance
       rcfile.path = '/tmp/trc'
-      rcfile['sferik'] = {
+      rcfile['testcli'] = {
         'abc123' => {
-          :username => 'sferik',
+          :username => 'testcli',
           :consumer_key => 'abc123',
           :consumer_secret => 'def456',
           :token => 'ghi789',
@@ -50,7 +50,7 @@ describe RCFile do
         }
       }
       rcfile.load
-      rcfile['sferik'].keys.should == ['abc123']
+      rcfile['testcli'].keys.should == ['abc123']
       rcfile.delete
     end
   end
@@ -83,7 +83,7 @@ describe RCFile do
     it 'should return default profile' do
       rcfile = RCFile.instance
       rcfile.path = File.expand_path('../fixtures/.trc', __FILE__)
-      rcfile.default_profile.should == ['sferik', 'abc123']
+      rcfile.default_profile.should == ['testcli', 'abc123']
     end
   end
 
@@ -93,15 +93,15 @@ describe RCFile do
       rcfile.path = File.expand_path('/tmp/trc', __FILE__)
       rcfile.load
       rcfile.delete
-      rcfile.default_profile = {'username' => 'sferik', 'consumer_key' => 'abc123'}
-      rcfile.default_profile.should == ['sferik', 'abc123']
+      rcfile.default_profile = {'username' => 'testcli', 'consumer_key' => 'abc123'}
+      rcfile.default_profile.should == ['testcli', 'abc123']
     end
     it 'should write the data to disk' do
       rcfile = RCFile.instance
       rcfile.path = '/tmp/trc'
-      rcfile.default_profile = {'username' => 'sferik', 'consumer_key' => 'abc123'}
+      rcfile.default_profile = {'username' => 'testcli', 'consumer_key' => 'abc123'}
       rcfile.load
-      rcfile.default_profile.should == ['sferik', 'abc123']
+      rcfile.default_profile.should == ['testcli', 'abc123']
       rcfile.delete
     end
   end
@@ -110,7 +110,7 @@ describe RCFile do
     it 'should return default token' do
       rcfile = RCFile.instance
       rcfile.path = File.expand_path('../fixtures/.trc', __FILE__)
-      rcfile.default_token.should == '7505382-cebdct6bwobn'
+      rcfile.default_token.should == '428004849-cebdct6bwobn'
     end
   end
 
@@ -156,7 +156,7 @@ describe RCFile do
       it 'should load data from file' do
         rcfile = RCFile.instance
         rcfile.path = File.expand_path('../fixtures/.trc', __FILE__)
-        rcfile.load['profiles']['sferik']['abc123']['username'].should == 'sferik'
+        rcfile.load['profiles']['testcli']['abc123']['username'].should == 'testcli'
       end
     end
     context 'when file does not exist at path' do
@@ -183,7 +183,7 @@ describe RCFile do
     it 'should reload data' do
       rcfile = RCFile.instance
       rcfile.path = File.expand_path('../fixtures/.trc', __FILE__)
-      rcfile['sferik']['abc123']['username'].should == 'sferik'
+      rcfile['testcli']['abc123']['username'].should == 'testcli'
     end
   end
 
@@ -191,7 +191,7 @@ describe RCFile do
     it 'should return profiles' do
       rcfile = RCFile.instance
       rcfile.path = File.expand_path('../fixtures/.trc', __FILE__)
-      rcfile.profiles.keys.should == ['sferik']
+      rcfile.profiles.keys.should == ['testcli']
     end
   end
 

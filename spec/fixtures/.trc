@@ -1,13 +1,13 @@
 ---
 profiles:
-  sferik:
+  testcli:
     abc123:
-      token: 7505382-cebdct6bwobn
+      token: 428004849-cebdct6bwobn
       consumer_key: abc123
-      username: sferik
+      username: testcli
       consumer_secret: asdfasd223sd2
       secret: epzrjvxtumoc
 configuration:
   default_profile:
-  - sferik
+  - testcli
   - abc123

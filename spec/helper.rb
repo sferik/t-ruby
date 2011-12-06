@@ -1,3 +1,4 @@
+ENV["T_ENV"] = "test"
 require 'simplecov'
 SimpleCov.start
 require 't'

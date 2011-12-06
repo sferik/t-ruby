@@ -93,6 +93,7 @@ module T
       direct_messages.map! do |direct_message|
         "#{direct_message.sender.screen_name.rjust(20)}: #{direct_message.text} (#{time_ago_in_words(direct_message.created_at)} ago)"
       end
+      run_pager
       say direct_messages.join("\n")
     end
     map %w(dms) => :direct_messages
@@ -103,6 +104,7 @@ module T
       sent_messages.map! do |direct_message|
         "#{direct_message.recipient.screen_name.rjust(20)}: #{direct_message.text} (#{time_ago_in_words(direct_message.created_at)} ago)"
       end
+      run_pager
       say sent_messages.join("\n")
     end
     map %w(sms) => :sent_messages
@@ -170,6 +172,7 @@ module T
       timeline.map! do |status|
         "#{status.user.screen_name.rjust(20)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
       end
+      run_pager
       say timeline.join("\n")
     end
     map %w(replies) => :mentions
@@ -244,6 +247,7 @@ module T
       timeline.map! do |status|
         "#{status.user.screen_name.rjust(20)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
       end
+      run_pager
       say timeline.join("\n")
     end
     map %w(tl) => :timeline
@@ -367,6 +371,33 @@ module T
 
       def protocol
         options['no-ssl'] ? 'http' : DEFAULT_PROTOCOL
+      end
+
+      def run_pager
+        return if RUBY_PLATFORM =~ /win32/
+        return if ENV["T_ENV"] == "test"
+        return unless STDOUT.tty?
+
+        read, write = IO.pipe
+
+        unless Kernel.fork # Child process
+          STDOUT.reopen(write)
+          STDERR.reopen(write) if STDERR.tty?
+          read.close
+          write.close
+          return
+        end
+
+        # Parent process, become pager
+        STDIN.reopen(read)
+        read.close
+        write.close
+
+        ENV['LESS'] = 'FSRX' # Don't page if the input is short enough
+
+        Kernel.select [STDIN] # Wait until we have input before we start the pager
+        pager = ENV['PAGER'] || 'less'
+        exec pager rescue exec "/bin/sh", "-c", pager
       end
 
     end

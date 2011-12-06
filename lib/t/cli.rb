@@ -151,6 +151,8 @@ module T
       if status
         say "#{username}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
       end
+    rescue Twitter::Error::Forbidden => error
+      raise Thor::Error, error.message
     end
     map %w(befriend) => :follow
 

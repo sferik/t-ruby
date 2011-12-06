@@ -41,9 +41,10 @@ describe T::CLI do
       a_post("/oauth/request_token").
         should have_been_made
     end
-    it "should have the correct output" do
-      @t.authorize
-      $stdout.string.should =~ /https:\/\/api\.twitter\.com\/oauth\/authorize/
+    it "should not raise error" do
+      lambda do
+        @t.authorize
+      end.should_not raise_error
     end
   end
 
@@ -230,10 +231,11 @@ describe T::CLI do
   end
 
   describe "#open" do
-    it "should have the correct output" do
+    it "should not raise error" do
       @t.options = @t.options.merge("dry-run" => true)
-      @t.open("sferik")
-      $stdout.string.should =~ /https:\/\/twitter\.com\/sferik/
+      lambda do
+        @t.open("sferik")
+      end.should_not raise_error
     end
   end
 

@@ -112,7 +112,8 @@ module T
     desc "dm USERNAME MESSAGE", "Sends that person a Direct Message."
     def dm(username, message)
       direct_message = client.direct_message_create(username, message)
-      say "Direct Message sent to @#{username} (#{time_ago_in_words(direct_message.created_at)} ago)"
+      rcfile = RCFile.instance
+      say "Direct Message sent from @#{rcfile.default_profile[0]} to @#{username} (#{time_ago_in_words(direct_message.created_at)} ago)"
     rescue Twitter::Error::Forbidden => error
       raise Thor::Error, error.message
     end
@@ -197,7 +198,8 @@ module T
       in_reply_to_status = client.user_timeline(username, :count => 1).first
       hash.merge!(:in_reply_to_status_id => in_reply_to_status.id) if in_reply_to_status
       status = client.update("@#{username} #{message}", hash)
-      say "Reply created (#{time_ago_in_words(status.created_at)} ago)"
+      rcfile = RCFile.instance
+      say "Reply created by @#{rcfile.default_profile[0]} (#{time_ago_in_words(status.created_at)} ago)"
     rescue Twitter::Error::Forbidden => error
       raise Thor::Error, error.message
     end
@@ -288,7 +290,8 @@ module T
       hash = {}
       hash.merge!(:lat => location.lat, :long => location.lng) if options['location']
       status = client.update(message, hash)
-      say "Tweet created (#{time_ago_in_words(status.created_at)} ago)"
+      rcfile = RCFile.instance
+      say "Tweet created by @#{rcfile.default_profile[0]} (#{time_ago_in_words(status.created_at)} ago)"
     rescue Twitter::Error::Forbidden => error
       raise Thor::Error, error.message
     end

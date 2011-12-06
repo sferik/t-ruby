@@ -114,7 +114,7 @@ describe T::CLI do
     end
     it "should have the correct output" do
       @t.dm("pengwynn", "Creating a fixture for the Twitter gem")
-      $stdout.string.chomp.should == "Direct Message sent to @pengwynn (about 1 year ago)"
+      $stdout.string.chomp.should == "Direct Message sent from @sferik to @pengwynn (about 1 year ago)"
     end
   end
 
@@ -254,7 +254,7 @@ describe T::CLI do
     end
     it "should have the correct output" do
       @t.reply("sferik", "Testing")
-      $stdout.string.chomp.should == "Reply created (about 1 year ago)"
+      $stdout.string.chomp.should == "Reply created by @sferik (about 1 year ago)"
     end
   end
 
@@ -462,7 +462,7 @@ describe T::CLI do
     end
     it "should have the correct output" do
       @t.update("Testing")
-      $stdout.string.chomp.should == "Tweet created (about 1 year ago)"
+      $stdout.string.chomp.should == "Tweet created by @sferik (about 1 year ago)"
     end
   end
 

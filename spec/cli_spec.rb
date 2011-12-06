@@ -10,6 +10,17 @@ describe T::CLI do
     @t = T::CLI.new
   end
 
+  describe "#account" do
+    it "should have the correct output" do
+      @t.options = @t.options.merge({"profile" => File.expand_path('../fixtures/.trc', __FILE__)})
+      string = @t.accounts.string
+      string.should == <<-eos.gsub(/^ {8}/, '')
+        sferik
+          abc123 (default)
+      eos
+    end
+  end
+
   describe "#block" do
     before do
       stub_post("/1/blocks/create.json").

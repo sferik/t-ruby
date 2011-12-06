@@ -24,12 +24,14 @@ module T
     def accounts
       rcfile = RCFile.instance
       rcfile.path = options['profile'] if options['profile']
+      profiles = []
       rcfile.profiles.each do |profile|
-        say profile[0]
+        profiles << profile[0]
         profile[1].keys.each do |key|
-          say "  #{key}#{rcfile.default_profile[0] == profile[0] && rcfile.default_profile[1] == key ? " (default)" : nil}"
+          profiles << "  #{key}#{rcfile.default_profile[0] == profile[0] && rcfile.default_profile[1] == key ? " (default)" : nil}"
         end
       end
+      say profiles.join("\n")
     end
     map %w(list ls) => :accounts
 

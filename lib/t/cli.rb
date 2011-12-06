@@ -1,6 +1,7 @@
 require 'action_view'
 require 'launchy'
 require 'oauth'
+require 't/core_ext/string'
 require 't/rcfile'
 require 't/set'
 require 'thor'
@@ -81,6 +82,7 @@ module T
 
     desc "block USERNAME", "Block a user."
     def block(username)
+      username = username.strip_at
       client.block(username)
       say "Blocked @#{username}"
       say
@@ -111,6 +113,7 @@ module T
 
     desc "dm USERNAME MESSAGE", "Sends that person a Direct Message."
     def dm(username, message)
+      username = username.strip_at
       direct_message = client.direct_message_create(username, message)
       rcfile = RCFile.instance
       say "Direct Message sent from @#{rcfile.default_profile[0]} to @#{username} (#{time_ago_in_words(direct_message.created_at)} ago)"
@@ -121,6 +124,7 @@ module T
 
     desc "favorite USERNAME", "Marks that user's last Tweet as one of your favorites."
     def favorite(username)
+      username = username.strip_at
       status = client.user_timeline(username, :count => 1).first
       if status
         client.favorite(status.id)
@@ -139,6 +143,7 @@ module T
 
     desc "follow USERNAME", "Allows you to start following a specific user."
     def follow(username)
+      username = username.strip_at
       user = client.follow(username)
       say "You're now following @#{username}."
       say
@@ -159,6 +164,7 @@ module T
 
     desc "get USERNAME", "Retrieves the latest update posted by the user."
     def get(username)
+      username = username.strip_at
       status = client.user_timeline(username, :count => 1).first
       if status
         say "#{status.text} (#{time_ago_in_words(status.created_at)} ago)"
@@ -183,6 +189,7 @@ module T
     desc "open USERNAME", "Opens that user's profile in a web browser."
     method_option "dry-run", :type => :boolean
     def open(username)
+      username = username.strip_at
       if options['dry-run']
         Launchy.open("https://twitter.com/#{username}", :dry_run => true)
       else
@@ -193,6 +200,7 @@ module T
     desc "reply USERNAME MESSAGE", "Post your Tweet as a reply directed at another person."
     method_option "location", :aliases => "-l", :type => :boolean, :default => true
     def reply(username, message)
+      username = username.strip_at
       hash = {}
       hash.merge!(:lat => location.lat, :long => location.lng) if options['location']
       in_reply_to_status = client.user_timeline(username, :count => 1).first
@@ -206,6 +214,7 @@ module T
 
     desc "retweet USERNAME", "Sends that user's latest Tweet to your followers."
     def retweet(username)
+      username = username.strip_at
       status = client.user_timeline(username, :count => 1).first
       if status
         client.retweet(status.id)
@@ -224,6 +233,7 @@ module T
 
     desc "stats USERNAME", "Retrieves the given user's number of followers and how many people they're following."
     def stats(username)
+      username = username.strip_at
       user = client.user(username)
       say "Followers: #{number_with_delimiter(user.followers_count)}"
       say "Following: #{number_with_delimiter(user.friends_count)}"
@@ -258,6 +268,7 @@ module T
 
     desc "unblock USERNAME", "Unblock a user."
     def unblock(username)
+      username = username.strip_at
       client.unblock(username)
       say "Unblocked @#{username}"
       say
@@ -266,6 +277,7 @@ module T
 
     desc "unfavorite USERNAME", "Marks that user's last Tweet as one of your favorites."
     def unfavorite(username)
+      username = username.strip_at
       status = client.user_timeline(username, :count => 1).first
       if status
         client.unfavorite(status.id)
@@ -277,6 +289,7 @@ module T
 
     desc "unfollow USERNAME", "Allows you to stop following a specific user."
     def unfollow(username)
+      username = username.strip_at
       client.unfollow(username)
       say "You are no longer following @#{username}."
       say
@@ -305,6 +318,7 @@ module T
 
     desc "whois USERNAME", "Retrieves profile information for the user."
     def whois(username)
+      username = username.strip_at
       user = client.user(username)
       output = []
       output << "#{user.name}, since #{user.created_at.strftime("%b %Y")}."

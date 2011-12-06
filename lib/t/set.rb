@@ -23,7 +23,7 @@ module T
 
     desc "language LANGUAGE_NAME", "Selects the language you'd like to receive notifications in."
     def language(language_name)
-      client.settings(:language => language_name)
+      client.settings(:lang => language_name)
       say "Language has been changed."
     end
 

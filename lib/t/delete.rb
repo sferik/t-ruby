@@ -28,10 +28,10 @@ module T
     desc "dm", "Delete the last Direct Message sent."
     def dm
       direct_message = client.direct_messages_sent(:count => 1).first
-      unless parent_options[:force]
-        exit unless yes?("Are you sure you want to permanently delete the direct message to @#{direct_message.recipient.screen_name}: #{direct_message.text}?")
-      end
       if direct_message
+        unless parent_options[:force]
+          exit unless yes?("Are you sure you want to permanently delete the direct message to @#{direct_message.recipient.screen_name}: #{direct_message.text}?")
+        end
         direct_message = client.direct_message_destroy(direct_message.id)
         say "@#{direct_message.sender.screen_name} deleted the direct message sent to @#{direct_message.recipient.screen_name}: #{direct_message.text}"
       else
@@ -45,10 +45,10 @@ module T
     desc "favorite", "Deletes the last favorite."
     def favorite
       status = client.favorites(:count => 1).first
-      unless parent_options[:force]
-        exit unless yes?("Are you sure you want to delete the favorite of @#{status.user.screen_name}: #{status.text}?")
-      end
       if status
+        unless parent_options[:force]
+          exit unless yes?("Are you sure you want to delete the favorite of @#{status.user.screen_name}: #{status.text}?")
+        end
         client.unfavorite(status.id)
         say "@#{@rcfile.default_profile[0]} unfavorited @#{status.user.screen_name}'s latest status: #{status.text}"
         say
@@ -62,10 +62,10 @@ module T
     desc "status", "Delete a Tweet."
     def status
       user = client.user
-      unless parent_options[:force]
-        exit unless yes?("Are you sure you want to permanently delete the status: #{user.status.text}?")
-      end
       if user
+        unless parent_options[:force]
+          exit unless yes?("Are you sure you want to permanently delete the status: #{user.status.text}?")
+        end
         status = client.status_destroy(user.status.id)
         say "@#{@rcfile.default_profile[0]} deleted the status: #{status.text}"
       else

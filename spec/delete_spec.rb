@@ -17,6 +17,29 @@ describe T::Delete do
     $stdout = @old_stdout
   end
 
+  describe "#dm" do
+    before do
+      @t.options = @t.options.merge("profile" => File.expand_path('../fixtures/.trc', __FILE__))
+      stub_get("/1/direct_messages/sent.json").
+        with(:query => {:count => "1"}).
+        to_return(:body => fixture("direct_messages.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_delete("/1/direct_messages/destroy/1773478249.json").
+        to_return(:body => fixture("direct_message.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+    end
+    it "should request the correct resource" do
+      @t.delete("dm")
+      a_get("/1/direct_messages/sent.json").
+        with(:query => {:count => "1"}).
+        should have_been_made
+      a_delete("/1/direct_messages/destroy/1773478249.json").
+        should have_been_made
+    end
+    it "should have the correct output" do
+      @t.delete("dm")
+      $stdout.string.chomp.should == "@sferik deleted the direct message sent to @pengwynn: Creating a fixture for the Twitter gem"
+    end
+  end
+
   describe "#block" do
     before do
       @t.options = @t.options.merge("profile" => File.expand_path('../fixtures/.trc', __FILE__))
@@ -56,6 +79,25 @@ describe T::Delete do
     it "should have the correct output" do
       @t.delete("favorite", "sferik")
       $stdout.string.should =~ /^@testcli unfavorited @sferik's latest status: Ruby is the best programming language for hiding the ugly bits\.$/
+    end
+  end
+
+  describe "#status" do
+    before do
+      @t.options = @t.options.merge("profile" => File.expand_path('../fixtures/.trc', __FILE__))
+      stub_delete("/1/blocks/destroy.json").
+        with(:query => {:screen_name => "sferik"}).
+        to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+    end
+    it "should request the correct resource" do
+      @t.delete("block", "sferik")
+      a_delete("/1/blocks/destroy.json").
+        with(:query => {:screen_name => "sferik"}).
+        should have_been_made
+    end
+    it "should have the correct output" do
+      @t.delete("block", "sferik")
+      $stdout.string.should =~ /^@testcli unblocked @sferik$/
     end
   end
 

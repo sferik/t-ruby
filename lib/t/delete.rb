@@ -20,7 +20,21 @@ module T
       say "Run `#{$0} block #{username}` to block."
     end
 
-    desc "favorite USERNAME", "Unmarks that user's last Tweet as one of your favorites."
+    desc "dm", "Delete the last Direct Message sent"
+    def dm
+      direct_message = client.direct_messages_sent(:count => 1).first
+      if direct_message
+        direct_message = client.direct_message_destroy(direct_message.id)
+        say "@#{direct_message.sender.screen_name} deleted the direct message sent to @#{direct_message.recipient.screen_name}: #{direct_message.text}"
+      else
+        raise Thor::Error, "No direct message found"
+      end
+    rescue Twitter::Error::Forbidden => error
+      raise Thor::Error, error.message
+    end
+    map %w(m) => :dm
+
+    desc "favorite USERNAME", "Deletes that user's last Tweet as one of your favorites."
     def favorite(username)
       username = username.strip_at
       status = client.user_timeline(username, :count => 1).first
@@ -35,6 +49,23 @@ module T
         raise Thor::Error, "No status found"
       end
     end
+    map %w(fave) => :favorite
+
+    desc "status", "Delete a Tweet."
+    def status
+      user = client.user
+      if user
+        status = client.status_destroy(user.status.id)
+        rcfile = RCFile.instance
+        rcfile.path = options['profile'] if options['profile']
+        say "@#{rcfile.default_profile[0]} deleted the status: #{status.text}"
+      else
+        raise Thor::Error, "No status found"
+      end
+    rescue Twitter::Error::Forbidden => error
+      raise Thor::Error, error.message
+    end
+    map %w(post tweet update) => :status
 
     no_tasks do
 

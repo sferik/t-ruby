@@ -18,9 +18,9 @@ module T
     DEFAULT_HOST = 'api.twitter.com'
     DEFAULT_PROTOCOL = 'https'
 
-    class_option :host, :aliases => :H, :type => :string, :default => DEFAULT_HOST, :desc => "Twitter API server"
-    class_option :no_ssl, :aliases => :U, :type => :boolean, :default => false, :desc => "Disable SSL"
-    class_option :profile, :aliases => :P, :type => :string, :default => File.join(File.expand_path("~"), RCFile::FILE_NAME), :desc => "Path to RC file", :banner => "FILE"
+    class_option :host, :aliases => "-H", :type => :string, :default => DEFAULT_HOST, :desc => "Twitter API server"
+    class_option :no_ssl, :aliases => "-U", :type => :boolean, :default => false, :desc => "Disable SSL"
+    class_option :profile, :aliases => "-P", :type => :string, :default => File.join(File.expand_path("~"), RCFile::FILE_NAME), :desc => "Path to RC file", :banner => "FILE"
 
     check_unknown_options!
 
@@ -42,9 +42,9 @@ module T
     map %w(list ls) => :accounts
 
     desc "authorize", "Allows an application to request user authorization"
-    method_option :consumer_key, :aliases => :c, :required => true
-    method_option :consumer_secret, :aliases => :s, :required => true
-    method_option :prompt, :aliases => :p, :type => :boolean, :default => true
+    method_option :consumer_key, :aliases => "-c", :required => true
+    method_option :consumer_secret, :aliases => "-s", :required => true
+    method_option :prompt, :aliases => "-p", :type => :boolean, :default => true
     method_option :dry_run, :type => :boolean
     def authorize
       request_token = consumer.get_request_token
@@ -166,7 +166,7 @@ module T
     end
 
     desc "mentions", "Returns the 20 most recent Tweets mentioning you."
-    method_option :reverse, :aliases => :r, :type => :boolean, :default => false
+    method_option :reverse, :aliases => "-r", :type => :boolean, :default => false
     def mentions
       timeline = client.mentions
       timeline.reverse! if options[:reverse]
@@ -189,7 +189,7 @@ module T
     end
 
     desc "reply USERNAME MESSAGE", "Post your Tweet as a reply directed at another person."
-    method_option :location, :aliases => :l, :type => :boolean, :default => true
+    method_option :location, :aliases => "-l", :type => :boolean, :default => true
     def reply(username, message)
       username = username.strip_at
       hash = {}
@@ -236,7 +236,7 @@ module T
     end
 
     desc "status MESSAGE", "Post a Tweet."
-    method_option :location, :aliases => :l, :type => :boolean, :default => true
+    method_option :location, :aliases => "-l", :type => :boolean, :default => true
     def status(message)
       hash = {}
       hash.merge!(:lat => location.lat, :long => location.lng) if options[:location]
@@ -260,7 +260,7 @@ module T
     end
 
     desc "timeline", "Returns the 20 most recent Tweets posted by you and the users you follow."
-    method_option :reverse, :aliases => :r, :type => :boolean, :default => false
+    method_option :reverse, :aliases => "-r", :type => :boolean, :default => false
     def timeline
       timeline = client.home_timeline
       timeline.reverse! if options[:reverse]
@@ -300,17 +300,13 @@ module T
     end
 
     desc "delete SUBCOMMAND ...ARGS", "Delete Tweets, Direct Messages, etc."
-    method_option :force, :aliases => :f, :type => :boolean
+    method_option :force, :aliases => "-f", :type => :boolean
     subcommand 'delete', Delete
 
     desc "set SUBCOMMAND ...ARGS", "Change various account settings."
     subcommand 'set', Set
 
     no_tasks do
-
-      def access_token
-        OAuth::AccessToken.new(consumer, token, secret)
-      end
 
       def base_url
         "#{protocol}://#{host}"

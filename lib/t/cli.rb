@@ -135,7 +135,7 @@ module T
       if error.message =~ /You have already favorited this status\./
         say "@#{@rcfile.default_profile[0]} favorited @#{user.screen_name}'s latest status: #{user.status.text}"
       else
-        raise Twitter::Error::Forbidden, error.message
+        raise
       end
     end
     map %w(fave) => :favorite
@@ -214,7 +214,7 @@ module T
       if error.message =~ /sharing is not permissable for this status \(Share validations failed\)/
         say "@#{@rcfile.default_profile[0]} retweeted @#{user.screen_name}'s latest status: #{user.status.text}"
       else
-        raise Twitter::Error::Forbidden, error.message
+        raise
       end
     end
     map %w(rt) => :retweet

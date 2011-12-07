@@ -88,11 +88,9 @@ module T
     def block(username)
       username = username.strip_at
       user = client.block(username)
-      if user
-        say "@#{@rcfile.default_profile[0]} blocked @#{user.screen_name}"
-        say
-        say "Run `#{$0} delete block #{user.screen_name}` to unblock."
-      end
+      say "@#{@rcfile.default_profile[0]} blocked @#{user.screen_name}"
+      say
+      say "Run `#{$0} delete block #{user.screen_name}` to unblock."
     end
 
     desc "direct_messages", "Returns the 20 most recent Direct Messages sent to you."
@@ -146,11 +144,9 @@ module T
     def follow(username)
       username = username.strip_at
       user = client.follow(username)
-      if user
-        say "@#{@rcfile.default_profile[0]} is now following @#{user.screen_name}."
-        say
-        say "Run `#{$0} unfollow #{user.screen_name}` to stop."
-      end
+      say "@#{@rcfile.default_profile[0]} is now following @#{user.screen_name}."
+      say
+      say "Run `#{$0} unfollow #{user.screen_name}` to stop."
     end
     map %w(befriend) => :follow
 
@@ -194,10 +190,10 @@ module T
       username = username.strip_at
       hash = {}
       hash.merge!(:lat => location.lat, :long => location.lng) if options[:location]
-      in_reply_to_status = client.user(username).status
-      hash.merge!(:in_reply_to_status_id => in_reply_to_status.id) if in_reply_to_status
-      status = client.update("@#{in_reply_to_status.user.screen_name} #{message}", hash)
-      say "Reply created by @#{@rcfile.default_profile[0]} (#{time_ago_in_words(status.created_at)} ago)"
+      user = client.user(username)
+      hash.merge!(:in_reply_to_status_id => user.status.id) if user.status
+      status = client.update("@#{user.screen_name} #{message}", hash)
+      say "Reply created by @#{@rcfile.default_profile[0]} to @#{user.screen_name} (#{time_ago_in_words(status.created_at)} ago)"
       say
       say "Run `#{$0} delete status` to delete."
     end
@@ -227,12 +223,10 @@ module T
     def stats(username)
       username = username.strip_at
       user = client.user(username)
-      if user
-        say "Followers: #{number_with_delimiter(user.followers_count)}"
-        say "Following: #{number_with_delimiter(user.friends_count)}"
-        say
-        say "Run `#{$0} whois #{user.screen_name}` to view profile."
-      end
+      say "Followers: #{number_with_delimiter(user.followers_count)}"
+      say "Following: #{number_with_delimiter(user.friends_count)}"
+      say
+      say "Run `#{$0} whois #{user.screen_name}` to view profile."
     end
 
     desc "status MESSAGE", "Post a Tweet."
@@ -249,13 +243,13 @@ module T
 
     desc "suggest", "This command returns a listing of Twitter users' accounts we think you might enjoy following."
     def suggest
-      recommendations = client.recommendations(:limit => 2)
-      if recommendations[0] && recommendations[1]
-        say "Try following @#{recommendations[0].screen_name} or @#{recommendations[1].screen_name}."
+      recommendation = client.recommendations(:limit => 1).first
+      if recommendation
+        say "Try following @#{recommendation.screen_name}."
         say
-        say "Run `#{$0} follow USERNAME` to follow."
-        say "Run `#{$0} whois USERNAME` for profile."
-        say "Run `#{$0} suggest` for more."
+        say "Run `#{$0} follow #{recommendation.screen_name}` to follow."
+        say "Run `#{$0} whois #{recommendation.screen_name}` for profile."
+        say "Run `#{$0} suggest` for another recommendation."
       end
     end
 
@@ -275,11 +269,9 @@ module T
     def unfollow(username)
       username = username.strip_at
       user = client.unfollow(username)
-      if user
-        say "@#{@rcfile.default_profile[0]} is no longer following @#{user.screen_name}."
-        say
-        say "Run `#{$0} follow #{user.screen_name}` to follow again."
-      end
+      say "@#{@rcfile.default_profile[0]} is no longer following @#{user.screen_name}."
+      say
+      say "Run `#{$0} follow #{user.screen_name}` to follow again."
     end
     map %w(defriend) => :unfollow
 

@@ -18,11 +18,9 @@ module T
     def block(username)
       username = username.strip_at
       user = client.unblock(username)
-      if user
-        say "@#{@rcfile.default_profile[0]} unblocked @#{user.screen_name}"
-        say
-        say "Run `#{$0} block #{user.screen_name}` to block."
-      end
+      say "@#{@rcfile.default_profile[0]} unblocked @#{user.screen_name}"
+      say
+      say "Run `#{$0} block #{user.screen_name}` to block."
     end
 
     desc "dm", "Delete the last Direct Message sent."

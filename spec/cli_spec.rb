@@ -249,7 +249,7 @@ describe T::CLI do
     end
     it "should have the correct output" do
       @t.reply("sferik", "Testing")
-      $stdout.string.should =~ /^Reply created by @testcli \(about 1 year ago\)$/
+      $stdout.string.should =~ /^Reply created by @testcli to @sferik \(about 1 year ago\)$/
     end
   end
 
@@ -354,18 +354,18 @@ describe T::CLI do
   describe "#suggest" do
     before do
       stub_get("/1/users/recommendations.json").
-        with(:query => {:limit => "2"}).
+        with(:query => {:limit => "1"}).
         to_return(:body => fixture("recommendations.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @t.suggest
       a_get("/1/users/recommendations.json").
-        with(:query => {:limit => "2"}).
+        with(:query => {:limit => "1"}).
         should have_been_made
     end
     it "should have the correct output" do
       @t.suggest
-      $stdout.string.should =~ /^Try following @jtrupiano or @mlroach\.$/
+      $stdout.string.should =~ /^Try following @jtrupiano\.$/
     end
   end
 

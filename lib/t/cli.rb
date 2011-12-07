@@ -84,12 +84,14 @@ module T
     desc "block USERNAME", "Block a user."
     def block(username)
       username = username.strip_at
-      client.block(username)
-      rcfile = RCFile.instance
-      rcfile.path = options[:profile] if options[:profile]
-      say "@#{rcfile.default_profile[0]} blocked @#{username}"
-      say
-      say "Run `#{$0} delete block #{username}` to unblock."
+      user = client.block(username)
+      if user
+        rcfile = RCFile.instance
+        rcfile.path = options[:profile] if options[:profile]
+        say "@#{rcfile.default_profile[0]} blocked @#{user.screen_name}"
+        say
+        say "Run `#{$0} delete block #{user.screen_name}` to unblock."
+      end
     end
 
     desc "direct_messages", "Returns the 20 most recent Direct Messages sent to you."
@@ -120,7 +122,7 @@ module T
       direct_message = client.direct_message_create(username, message)
       rcfile = RCFile.instance
       rcfile.path = options[:profile] if options[:profile]
-      say "Direct Message sent from @#{rcfile.default_profile[0]} to @#{username} (#{time_ago_in_words(direct_message.created_at)} ago)"
+      say "Direct Message sent from @#{rcfile.default_profile[0]} to @#{direct_message.recipient.screen_name} (#{time_ago_in_words(direct_message.created_at)} ago)"
     rescue Twitter::Error::Forbidden => error
       raise Thor::Error, error.message
     end
@@ -134,9 +136,9 @@ module T
         client.favorite(user.status.id)
         rcfile = RCFile.instance
         rcfile.path = options[:profile] if options[:profile]
-        say "@#{rcfile.default_profile[0]} favorited @#{username}'s latest status: #{user.status.text}"
+        say "@#{rcfile.default_profile[0]} favorited @#{user.screen_name}'s latest status: #{user.status.text}"
         say
-        say "Run `#{$0} delete favorite #{username}` to unfavorite."
+        say "Run `#{$0} delete favorite` to unfavorite."
       else
         raise Thor::Error, "No status found"
       end
@@ -144,7 +146,7 @@ module T
       if error.message =~ /You have already favorited this status\./
         rcfile = RCFile.instance
         rcfile.path = options[:profile] if options[:profile]
-        say "@#{rcfile.default_profile[0]} favorited @#{username}'s latest status: #{user.status.text}"
+        say "@#{rcfile.default_profile[0]} favorited @#{user.screen_name}'s latest status: #{user.status.text}"
       else
         raise Thor::Error, error.message
       end
@@ -155,18 +157,12 @@ module T
     def follow(username)
       username = username.strip_at
       user = client.follow(username)
-      rcfile = RCFile.instance
-      rcfile.path = options[:profile] if options[:profile]
-      say "@#{rcfile.default_profile[0]} is now following @#{username}."
-      say
-      say "Run `#{$0} unfollow #{username}` to stop."
-      recommendations = client.recommendations(:user_id => user.id, :limit => 2)
-      if recommendations[0] && recommendations[1]
-        say
-        say "Try following @#{recommendations[0].screen_name} or @#{recommendations[1].screen_name}."
-      end
       if user
-        say "#{username}: #{user.status.text} (#{time_ago_in_words(user.status.created_at)} ago)"
+        rcfile = RCFile.instance
+        rcfile.path = options[:profile] if options[:profile]
+        say "@#{rcfile.default_profile[0]} is now following @#{user.screen_name}."
+        say
+        say "Run `#{$0} unfollow #{user.screen_name}` to stop."
       end
     rescue Twitter::Error::Forbidden => error
       raise Thor::Error, error.message
@@ -216,7 +212,7 @@ module T
       hash.merge!(:lat => location.lat, :long => location.lng) if options[:location]
       in_reply_to_status = client.user(username).status
       hash.merge!(:in_reply_to_status_id => in_reply_to_status.id) if in_reply_to_status
-      status = client.update("@#{username} #{message}", hash)
+      status = client.update("@#{in_reply_to_status.user.screen_name} #{message}", hash)
       rcfile = RCFile.instance
       rcfile.path = options[:profile] if options[:profile]
       say "Reply created by @#{rcfile.default_profile[0]} (#{time_ago_in_words(status.created_at)} ago)"
@@ -234,7 +230,7 @@ module T
         client.retweet(user.status.id)
         rcfile = RCFile.instance
         rcfile.path = options[:profile] if options[:profile]
-        say "@#{rcfile.default_profile[0]} retweeted @#{username}'s latest status: #{user.status.text}"
+        say "@#{rcfile.default_profile[0]} retweeted @#{user.screen_name}'s latest status: #{user.status.text}"
         say
         say "Run `#{$0} delete status` to undo."
       else
@@ -244,7 +240,7 @@ module T
       if error.message =~ /sharing is not permissable for this status \(Share validations failed\)/
         rcfile = RCFile.instance
         rcfile.path = options[:profile] if options[:profile]
-        say "@#{rcfile.default_profile[0]} retweeted @#{username}'s latest status: #{user.status.text}"
+        say "@#{rcfile.default_profile[0]} retweeted @#{user.screen_name}'s latest status: #{user.status.text}"
       else
         raise Thor::Error, error.message
       end
@@ -255,10 +251,12 @@ module T
     def stats(username)
       username = username.strip_at
       user = client.user(username)
-      say "Followers: #{number_with_delimiter(user.followers_count)}"
-      say "Following: #{number_with_delimiter(user.friends_count)}"
-      say
-      say "Run `#{$0} whois #{username}` to view profile."
+      if user
+        say "Followers: #{number_with_delimiter(user.followers_count)}"
+        say "Following: #{number_with_delimiter(user.friends_count)}"
+        say
+        say "Run `#{$0} whois #{user.screen_name}` to view profile."
+      end
     end
 
     desc "status MESSAGE", "Post a Tweet."
@@ -305,12 +303,14 @@ module T
     desc "unfollow USERNAME", "Allows you to stop following a specific user."
     def unfollow(username)
       username = username.strip_at
-      client.unfollow(username)
-      rcfile = RCFile.instance
-      rcfile.path = options[:profile] if options[:profile]
-      say "@#{rcfile.default_profile[0]} is no longer following @#{username}."
-      say
-      say "Run `#{$0} follow #{username}` to follow again."
+      user = client.unfollow(username)
+      if user
+        rcfile = RCFile.instance
+        rcfile.path = options[:profile] if options[:profile]
+        say "@#{rcfile.default_profile[0]} is no longer following @#{user.screen_name}."
+        say
+        say "Run `#{$0} follow #{user.screen_name}` to follow again."
+      end
     end
     map %w(defriend) => :unfollow
 

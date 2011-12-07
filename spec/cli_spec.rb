@@ -152,24 +152,16 @@ describe T::CLI do
       stub_post("/1/friendships/create.json").
         with(:body => {:screen_name => "sferik"}).
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_get("/1/users/recommendations.json").
-        with(:query => {:limit => "2", :user_id => "7505382"}).
-        to_return(:body => fixture("recommendations.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @t.follow("sferik")
       a_post("/1/friendships/create.json").
         with(:body => {:screen_name => "sferik"}).
         should have_been_made
-      a_get("/1/users/recommendations.json").
-        with(:query => {:limit => "2", :user_id => "7505382"}).
-        should have_been_made
     end
     it "should have the correct output" do
       @t.follow("sferik")
       $stdout.string.should =~ /^@testcli is now following @sferik\.$/
-      $stdout.string.should =~ /^Try following @jtrupiano or @mlroach\.$/
-      $stdout.string.should =~ /^sferik: RT @tenderlove: \[ANN\] sqlite3-ruby =&gt; sqlite3 \(10 months ago\)$/
     end
   end
 

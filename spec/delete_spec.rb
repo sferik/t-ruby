@@ -61,43 +61,45 @@ describe T::Delete do
 
   describe "#favorite" do
     before do
-      @t.options = @t.options.merge(:profile => File.expand_path('../fixtures/.trc', __FILE__))
-      stub_get("/1/statuses/user_timeline.json").
-        with(:query => {:screen_name => "sferik", :count => "1"}).
-        to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_delete("/1/favorites/destroy/27558893223.json").
+      @t.options = @t.options.merge(:profile => File.expand_path('../fixtures/.trc', __FILE__), :force => true)
+      stub_get("/1/favorites.json").
+        with(:query => {:count => "1"}).
+        to_return(:body => fixture("favorites.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_delete("/1/favorites/destroy/28439861609.json").
         to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
-      @t.delete("favorite", "sferik")
-      a_get("/1/statuses/user_timeline.json").
-        with(:query => {:screen_name => "sferik", :count => "1"}).
+      @t.delete("favorite")
+      a_get("/1/favorites.json").
+        with(:query => {:count => "1"}).
         should have_been_made
-      a_delete("/1/favorites/destroy/27558893223.json").
+      a_delete("/1/favorites/destroy/28439861609.json").
         should have_been_made
     end
     it "should have the correct output" do
-      @t.delete("favorite", "sferik")
-      $stdout.string.should =~ /^@testcli unfavorited @sferik's latest status: Ruby is the best programming language for hiding the ugly bits\.$/
+      @t.delete("favorite")
+      $stdout.string.should =~ /^@testcli unfavorited @z's latest status: Spilled grilled onions on myself\.  I smell delicious!$/
     end
   end
 
   describe "#status" do
     before do
       @t.options = @t.options.merge(:profile => File.expand_path('../fixtures/.trc', __FILE__), :force => true)
-      stub_delete("/1/blocks/destroy.json").
-        with(:query => {:screen_name => "sferik"}).
+      stub_get("/1/account/verify_credentials.json").
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_delete("/1/statuses/destroy/26755176471724032.json").
+        to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
-      @t.delete("block", "sferik")
-      a_delete("/1/blocks/destroy.json").
-        with(:query => {:screen_name => "sferik"}).
+      @t.delete("status")
+      a_get("/1/account/verify_credentials.json").
+        should have_been_made
+      a_delete("/1/statuses/destroy/26755176471724032.json").
         should have_been_made
     end
     it "should have the correct output" do
-      @t.delete("block", "sferik")
-      $stdout.string.should =~ /^@testcli unblocked @sferik$/
+      @t.delete("status")
+      $stdout.string.chomp.should == "@testcli deleted the status: @noradio working on implementing #NewTwitter API methods in the twitter gem. Twurl is making it easy. Thank you!"
     end
   end
 

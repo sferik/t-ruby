@@ -10,15 +10,17 @@ module T
     desc "block USERNAME", "Unblock a user."
     def block(username)
       username = username.strip_at
-      client.unblock(username)
-      rcfile = RCFile.instance
-      rcfile.path = parent_options[:profile] if parent_options[:profile]
-      say "@#{rcfile.default_profile[0]} unblocked @#{username}"
-      say
-      say "Run `#{$0} block #{username}` to block."
+      user = client.unblock(username)
+      if user
+        rcfile = RCFile.instance
+        rcfile.path = parent_options[:profile] if parent_options[:profile]
+        say "@#{rcfile.default_profile[0]} unblocked @#{user.screen_name}"
+        say
+        say "Run `#{$0} block #{user.screen_name}` to block."
+      end
     end
 
-    desc "dm", "Delete the last Direct Message sent"
+    desc "dm", "Delete the last Direct Message sent."
     def dm
       direct_message = client.direct_messages_sent(:count => 1).first
       unless parent_options[:force]
@@ -35,17 +37,19 @@ module T
     end
     map %w(m) => :dm
 
-    desc "favorite USERNAME", "Deletes that user's last Tweet as one of your favorites."
-    def favorite(username)
-      username = username.strip_at
-      status = client.user_timeline(username, :count => 1).first
+    desc "favorite", "Deletes the last favorite."
+    def favorite
+      status = client.favorites(:count => 1).first
+      unless parent_options[:force]
+        exit unless yes?("Are you sure you want to delete the favorite of @#{status.user.screen_name}: #{status.text}?")
+      end
       if status
         client.unfavorite(status.id)
         rcfile = RCFile.instance
         rcfile.path = parent_options[:profile] if parent_options[:profile]
-        say "@#{rcfile.default_profile[0]} unfavorited @#{username}'s latest status: #{status.text}"
+        say "@#{rcfile.default_profile[0]} unfavorited @#{status.user.screen_name}'s latest status: #{status.text}"
         say
-        say "Run `#{$0} favorite #{username}` to favorite."
+        say "Run `#{$0} favorite #{status.user.screen_name}` to favorite."
       else
         raise Thor::Error, "No status found"
       end

@@ -18,21 +18,25 @@ module T
     DEFAULT_HOST = 'api.twitter.com'
     DEFAULT_PROTOCOL = 'https'
 
-    check_unknown_options!
-
     class_option :host, :aliases => :H, :type => :string, :default => DEFAULT_HOST, :desc => "Twitter API server"
     class_option :no_ssl, :aliases => :U, :type => :boolean, :default => false, :desc => "Disable SSL"
     class_option :profile, :aliases => :P, :type => :string, :default => File.join(File.expand_path("~"), RCFile::FILE_NAME), :desc => "Path to RC file", :banner => "FILE"
 
+    check_unknown_options!
+
+    def initialize(*)
+      super
+      @rcfile = RCFile.instance
+    end
+
     desc "accounts", "List accounts"
     def accounts
-      rcfile = RCFile.instance
-      rcfile.path = options[:profile] if options[:profile]
+      @rcfile.path = options[:profile] if options[:profile]
       profiles = []
-      rcfile.profiles.each do |profile|
+      @rcfile.profiles.each do |profile|
         profiles << profile[0]
         profile[1].keys.each do |key|
-          profiles << "  #{key}#{rcfile.default_profile[0] == profile[0] && rcfile.default_profile[1] == key ? " (default)" : nil}"
+          profiles << "  #{key}#{@rcfile.default_profile[0] == profile[0] && @rcfile.default_profile[1] == key ? " (default)" : nil}"
         end
       end
       say profiles.join("\n")
@@ -65,9 +69,8 @@ module T
         access_token = request_token.get_access_token(:oauth_verifier => pin.chomp)
         oauth_response = access_token.get('/1/account/verify_credentials.json')
         username = oauth_response.body.match(/"screen_name"\s*:\s*"(.*?)"/).captures.first
-        rcfile = RCFile.instance
-        rcfile.path = options[:profile] if options[:profile]
-        rcfile[username] = {
+        @rcfile.path = options[:profile] if options[:profile]
+        @rcfile[username] = {
           options[:consumer_key] => {
             'username' => username,
             'consumer_key' => options[:consumer_key],
@@ -76,7 +79,7 @@ module T
             'secret' => access_token.secret,
           }
         }
-        rcfile.default_profile = {'username' => username, 'consumer_key' => options[:consumer_key]}
+        @rcfile.default_profile = {'username' => username, 'consumer_key' => options[:consumer_key]}
         say "Authorization successful"
       end
     rescue OAuth::Unauthorized
@@ -88,9 +91,7 @@ module T
       username = username.strip_at
       user = client.block(username)
       if user
-        rcfile = RCFile.instance
-        rcfile.path = options[:profile] if options[:profile]
-        say "@#{rcfile.default_profile[0]} blocked @#{user.screen_name}"
+        say "@#{@rcfile.default_profile[0]} blocked @#{user.screen_name}"
         say
         say "Run `#{$0} delete block #{user.screen_name}` to unblock."
       end
@@ -122,9 +123,7 @@ module T
     def dm(username, message)
       username = username.strip_at
       direct_message = client.direct_message_create(username, message)
-      rcfile = RCFile.instance
-      rcfile.path = options[:profile] if options[:profile]
-      say "Direct Message sent from @#{rcfile.default_profile[0]} to @#{direct_message.recipient.screen_name} (#{time_ago_in_words(direct_message.created_at)} ago)"
+      say "Direct Message sent from @#{@rcfile.default_profile[0]} to @#{direct_message.recipient.screen_name} (#{time_ago_in_words(direct_message.created_at)} ago)"
     rescue Twitter::Error::Forbidden => error
       raise Thor::Error, error.message
     end
@@ -136,9 +135,7 @@ module T
       user = client.user(username)
       if user
         client.favorite(user.status.id)
-        rcfile = RCFile.instance
-        rcfile.path = options[:profile] if options[:profile]
-        say "@#{rcfile.default_profile[0]} favorited @#{user.screen_name}'s latest status: #{user.status.text}"
+        say "@#{@rcfile.default_profile[0]} favorited @#{user.screen_name}'s latest status: #{user.status.text}"
         say
         say "Run `#{$0} delete favorite` to unfavorite."
       else
@@ -146,9 +143,7 @@ module T
       end
     rescue Twitter::Error::Forbidden => error
       if error.message =~ /You have already favorited this status\./
-        rcfile = RCFile.instance
-        rcfile.path = options[:profile] if options[:profile]
-        say "@#{rcfile.default_profile[0]} favorited @#{user.screen_name}'s latest status: #{user.status.text}"
+        say "@#{@rcfile.default_profile[0]} favorited @#{user.screen_name}'s latest status: #{user.status.text}"
       else
         raise Thor::Error, error.message
       end
@@ -160,9 +155,7 @@ module T
       username = username.strip_at
       user = client.follow(username)
       if user
-        rcfile = RCFile.instance
-        rcfile.path = options[:profile] if options[:profile]
-        say "@#{rcfile.default_profile[0]} is now following @#{user.screen_name}."
+        say "@#{@rcfile.default_profile[0]} is now following @#{user.screen_name}."
         say
         say "Run `#{$0} unfollow #{user.screen_name}` to stop."
       end
@@ -215,9 +208,7 @@ module T
       in_reply_to_status = client.user(username).status
       hash.merge!(:in_reply_to_status_id => in_reply_to_status.id) if in_reply_to_status
       status = client.update("@#{in_reply_to_status.user.screen_name} #{message}", hash)
-      rcfile = RCFile.instance
-      rcfile.path = options[:profile] if options[:profile]
-      say "Reply created by @#{rcfile.default_profile[0]} (#{time_ago_in_words(status.created_at)} ago)"
+      say "Reply created by @#{@rcfile.default_profile[0]} (#{time_ago_in_words(status.created_at)} ago)"
       say
       say "Run `#{$0} delete status` to delete."
     rescue Twitter::Error::Forbidden => error
@@ -230,9 +221,7 @@ module T
       user = client.user(username)
       if user
         client.retweet(user.status.id)
-        rcfile = RCFile.instance
-        rcfile.path = options[:profile] if options[:profile]
-        say "@#{rcfile.default_profile[0]} retweeted @#{user.screen_name}'s latest status: #{user.status.text}"
+        say "@#{@rcfile.default_profile[0]} retweeted @#{user.screen_name}'s latest status: #{user.status.text}"
         say
         say "Run `#{$0} delete status` to undo."
       else
@@ -240,9 +229,7 @@ module T
       end
     rescue Twitter::Error::Forbidden => error
       if error.message =~ /sharing is not permissable for this status \(Share validations failed\)/
-        rcfile = RCFile.instance
-        rcfile.path = options[:profile] if options[:profile]
-        say "@#{rcfile.default_profile[0]} retweeted @#{user.screen_name}'s latest status: #{user.status.text}"
+        say "@#{@rcfile.default_profile[0]} retweeted @#{user.screen_name}'s latest status: #{user.status.text}"
       else
         raise Thor::Error, error.message
       end
@@ -267,9 +254,7 @@ module T
       hash = {}
       hash.merge!(:lat => location.lat, :long => location.lng) if options[:location]
       status = client.update(message, hash)
-      rcfile = RCFile.instance
-      rcfile.path = options[:profile] if options[:profile]
-      say "Tweet created by @#{rcfile.default_profile[0]} (#{time_ago_in_words(status.created_at)} ago)"
+      say "Tweet created by @#{@rcfile.default_profile[0]} (#{time_ago_in_words(status.created_at)} ago)"
       say
       say "Run `#{$0} delete status` to delete."
     rescue Twitter::Error::Forbidden => error
@@ -307,9 +292,7 @@ module T
       username = username.strip_at
       user = client.unfollow(username)
       if user
-        rcfile = RCFile.instance
-        rcfile.path = options[:profile] if options[:profile]
-        say "@#{rcfile.default_profile[0]} is no longer following @#{user.screen_name}."
+        say "@#{@rcfile.default_profile[0]} is no longer following @#{user.screen_name}."
         say
         say "Run `#{$0} follow #{user.screen_name}` to follow again."
       end
@@ -352,14 +335,14 @@ module T
       end
 
       def client
-        rcfile = RCFile.instance
-        rcfile.path = options[:profile] if options[:profile]
-        Twitter::Client.new(
+        return @client if @client
+        @rcfile.path = options[:profile] if options[:profile]
+        @client = Twitter::Client.new(
           :endpoint => base_url,
-          :consumer_key => rcfile.default_consumer_key,
-          :consumer_secret => rcfile.default_consumer_secret,
-          :oauth_token => rcfile.default_token,
-          :oauth_token_secret  => rcfile.default_secret
+          :consumer_key => @rcfile.default_consumer_key,
+          :consumer_secret => @rcfile.default_consumer_secret,
+          :oauth_token => @rcfile.default_token,
+          :oauth_token_secret  => @rcfile.default_secret
         )
       end
 

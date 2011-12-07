@@ -9,43 +9,47 @@ module T
 
     check_unknown_options!
 
+    def initialize(*)
+      super
+      @rcfile = RCFile.instance
+    end
+
     desc "bio DESCRIPTION", "Edits your Bio information on your Twitter profile."
     def bio(description)
       client.update_profile(:description => description)
-      say "Bio has been changed."
+      say "@#{@rcfile.default_profile[0]}'s bio has been updated."
     end
 
     desc "default USERNAME [CONSUMER_KEY]", "Set your default account."
     def default(username, consumer_key=nil)
-      rcfile = RCFile.instance
-      rcfile.path = options[:profile] if options[:profile]
+      @rcfile.path = parent_options[:profile] if parent_options[:profile]
       consumer_key = rcfile[username].keys.last if consumer_key.nil?
-      rcfile.default_profile = {'username' => username, 'consumer_key' => consumer_key}
-      say "Default account has been changed."
+      @rcfile.default_profile = {'username' => username, 'consumer_key' => consumer_key}
+      say "Default account has been updated."
     end
 
     desc "language LANGUAGE_NAME", "Selects the language you'd like to receive notifications in."
     def language(language_name)
       client.settings(:lang => language_name)
-      say "Language has been changed."
+      say "@#{@rcfile.default_profile[0]}'s language has been updated."
     end
 
     desc "location PLACE_NAME", "Updates the location field in your profile."
     def location(place_name)
       client.update_profile(:location => place_name)
-      say "Location has been changed."
+      say "@#{@rcfile.default_profile[0]}'s location has been updated."
     end
 
     desc "name NAME", "Sets the name field on your Twitter profile."
     def name(name)
       client.update_profile(:name => name)
-      say "Name has been changed."
+      say "@#{@rcfile.default_profile[0]}'s name has been updated."
     end
 
     desc "url URL", "Sets the URL field on your profile."
     def url(url)
       client.update_profile(:url => url)
-      say "URL has been changed."
+      say "@#{@rcfile.default_profile[0]}'s URL has been updated."
     end
 
     no_tasks do
@@ -55,14 +59,14 @@ module T
       end
 
       def client
-        rcfile = RCFile.instance
-        rcfile.path = options[:profile] if options[:profile]
-        Twitter::Client.new(
+        return @client if @client
+        @rcfile.path = parent_options[:profile] if parent_options[:profile]
+        @client = Twitter::Client.new(
           :endpoint => base_url,
-          :consumer_key => rcfile.default_consumer_key,
-          :consumer_secret => rcfile.default_consumer_secret,
-          :oauth_token => rcfile.default_token,
-          :oauth_token_secret  => rcfile.default_secret
+          :consumer_key => @rcfile.default_consumer_key,
+          :consumer_secret => @rcfile.default_consumer_secret,
+          :oauth_token => @rcfile.default_token,
+          :oauth_token_secret  => @rcfile.default_secret
         )
       end
 

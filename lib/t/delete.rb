@@ -9,14 +9,17 @@ module T
 
     check_unknown_options!
 
+    def initialize(*)
+      super
+      @rcfile = RCFile.instance
+    end
+
     desc "block USERNAME", "Unblock a user."
     def block(username)
       username = username.strip_at
       user = client.unblock(username)
       if user
-        rcfile = RCFile.instance
-        rcfile.path = parent_options[:profile] if parent_options[:profile]
-        say "@#{rcfile.default_profile[0]} unblocked @#{user.screen_name}"
+        say "@#{@rcfile.default_profile[0]} unblocked @#{user.screen_name}"
         say
         say "Run `#{$0} block #{user.screen_name}` to block."
       end
@@ -47,9 +50,7 @@ module T
       end
       if status
         client.unfavorite(status.id)
-        rcfile = RCFile.instance
-        rcfile.path = parent_options[:profile] if parent_options[:profile]
-        say "@#{rcfile.default_profile[0]} unfavorited @#{status.user.screen_name}'s latest status: #{status.text}"
+        say "@#{@rcfile.default_profile[0]} unfavorited @#{status.user.screen_name}'s latest status: #{status.text}"
         say
         say "Run `#{$0} favorite #{status.user.screen_name}` to favorite."
       else
@@ -66,9 +67,7 @@ module T
       end
       if user
         status = client.status_destroy(user.status.id)
-        rcfile = RCFile.instance
-        rcfile.path = parent_options[:profile] if parent_options[:profile]
-        say "@#{rcfile.default_profile[0]} deleted the status: #{status.text}"
+        say "@#{@rcfile.default_profile[0]} deleted the status: #{status.text}"
       else
         raise Thor::Error, "No status found"
       end
@@ -84,14 +83,14 @@ module T
       end
 
       def client
-        rcfile = RCFile.instance
-        rcfile.path = parent_options[:profile] if parent_options[:profile]
-        Twitter::Client.new(
+        return @client if @client
+        @rcfile.path = parent_options[:profile] if parent_options[:profile]
+        @client = Twitter::Client.new(
           :endpoint => base_url,
-          :consumer_key => rcfile.default_consumer_key,
-          :consumer_secret => rcfile.default_consumer_secret,
-          :oauth_token => rcfile.default_token,
-          :oauth_token_secret  => rcfile.default_secret
+          :consumer_key => @rcfile.default_consumer_key,
+          :consumer_secret => @rcfile.default_consumer_secret,
+          :oauth_token => @rcfile.default_token,
+          :oauth_token_secret  => @rcfile.default_secret
         )
       end
 

@@ -7,7 +7,7 @@ begin
 rescue Twitter::Error::Unauthorized => error
   $stderr.puts error.message
   $stderr.puts
-  $stderr.puts "Run `#{$0} authorize --consumer-key=CONSUMER-KEY --consumer-secret=CONSUMER-SECRET` to authorize."
+  $stderr.puts "Run `#{$0} authorize --consumer_key=CONSUMER_KEY --consumer_secret=CONSUMER_SECRET` to authorize."
   exit 1
 rescue Interrupt
   $stderr.puts "Quitting..."

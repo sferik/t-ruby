@@ -19,7 +19,7 @@ describe T::Delete do
 
   describe "#dm" do
     before do
-      @t.options = @t.options.merge("profile" => File.expand_path('../fixtures/.trc', __FILE__))
+      @t.options = @t.options.merge(:profile => File.expand_path('../fixtures/.trc', __FILE__), :force => true)
       stub_get("/1/direct_messages/sent.json").
         with(:query => {:count => "1"}).
         to_return(:body => fixture("direct_messages.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -42,7 +42,7 @@ describe T::Delete do
 
   describe "#block" do
     before do
-      @t.options = @t.options.merge("profile" => File.expand_path('../fixtures/.trc', __FILE__))
+      @t.options = @t.options.merge(:profile => File.expand_path('../fixtures/.trc', __FILE__))
       stub_delete("/1/blocks/destroy.json").
         with(:query => {:screen_name => "sferik"}).
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -61,7 +61,7 @@ describe T::Delete do
 
   describe "#favorite" do
     before do
-      @t.options = @t.options.merge("profile" => File.expand_path('../fixtures/.trc', __FILE__))
+      @t.options = @t.options.merge(:profile => File.expand_path('../fixtures/.trc', __FILE__))
       stub_get("/1/statuses/user_timeline.json").
         with(:query => {:screen_name => "sferik", :count => "1"}).
         to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -84,7 +84,7 @@ describe T::Delete do
 
   describe "#status" do
     before do
-      @t.options = @t.options.merge("profile" => File.expand_path('../fixtures/.trc', __FILE__))
+      @t.options = @t.options.merge(:profile => File.expand_path('../fixtures/.trc', __FILE__), :force => true)
       stub_delete("/1/blocks/destroy.json").
         with(:query => {:screen_name => "sferik"}).
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})

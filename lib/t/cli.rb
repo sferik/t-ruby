@@ -18,14 +18,14 @@ module T
     DEFAULT_HOST = 'api.twitter.com'
     DEFAULT_PROTOCOL = 'https'
 
-    class_option "host", :aliases => "-H", :type => :string, :default => DEFAULT_HOST, :desc => "Twitter API server"
-    class_option "no-ssl", :aliases => "-U", :type => :boolean, :default => false, :desc => "Disable SSL"
-    class_option "profile", :aliases => "-P", :type => :string, :default => File.join(File.expand_path("~"), RCFile::FILE_NAME), :desc => "Path to RC file", :banner => "FILE"
+    class_option :host, :aliases => :H, :type => :string, :default => DEFAULT_HOST, :desc => "Twitter API server"
+    class_option :no_ssl, :aliases => :U, :type => :boolean, :default => false, :desc => "Disable SSL"
+    class_option :profile, :aliases => :P, :type => :string, :default => File.join(File.expand_path("~"), RCFile::FILE_NAME), :desc => "Path to RC file", :banner => "FILE"
 
     desc "accounts", "List accounts"
     def accounts
       rcfile = RCFile.instance
-      rcfile.path = options['profile'] if options['profile']
+      rcfile.path = options[:profile] if options[:profile]
       profiles = []
       rcfile.profiles.each do |profile|
         profiles << profile[0]
@@ -38,14 +38,14 @@ module T
     map %w(list ls) => :accounts
 
     desc "authorize", "Allows an application to request user authorization"
-    method_option "consumer-key", :aliases => "-c", :required => true
-    method_option "consumer-secret", :aliases => "-s", :required => true
-    method_option "prompt", :aliases => "-p", :type => :boolean, :default => true
-    method_option "dry-run", :type => :boolean
+    method_option :consumer_key, :aliases => :c, :required => true
+    method_option :consumer_secret, :aliases => :s, :required => true
+    method_option :prompt, :aliases => :p, :type => :boolean, :default => true
+    method_option :dry_run, :type => :boolean
     def authorize
       request_token = consumer.get_request_token
       url = generate_authorize_url(request_token)
-      if options['prompt']
+      if options[:prompt]
         say "In a moment, your web browser will open to the Twitter app authorization page."
         say "Perform the following steps to complete the authorization process:"
         say "  1. Sign in to Twitter"
@@ -55,7 +55,7 @@ module T
         say
         ask "Press [Enter] to open the Twitter app authorization page."
       end
-      if options['dry-run']
+      if options[:dry_run]
         Launchy.open(url, :dry_run => true)
       else
         Launchy.open(url)
@@ -64,17 +64,17 @@ module T
         oauth_response = access_token.get('/1/account/verify_credentials.json')
         username = oauth_response.body.match(/"screen_name"\s*:\s*"(.*?)"/).captures.first
         rcfile = RCFile.instance
-        rcfile.path = options['profile'] if options['profile']
+        rcfile.path = options[:profile] if options[:profile]
         rcfile[username] = {
-          options['consumer-key'] => {
+          options[:consumer_key] => {
             'username' => username,
-            'consumer_key' => options['consumer-key'],
-            'consumer_secret' => options['consumer-secret'],
+            'consumer_key' => options[:consumer_key],
+            'consumer_secret' => options[:consumer_secret],
             'token' => access_token.token,
             'secret' => access_token.secret,
           }
         }
-        rcfile.default_profile = {'username' => username, 'consumer_key' => options['consumer-key']}
+        rcfile.default_profile = {'username' => username, 'consumer_key' => options[:consumer_key]}
         say "Authorization successful"
       end
     rescue OAuth::Unauthorized
@@ -86,7 +86,7 @@ module T
       username = username.strip_at
       client.block(username)
       rcfile = RCFile.instance
-      rcfile.path = options['profile'] if options['profile']
+      rcfile.path = options[:profile] if options[:profile]
       say "@#{rcfile.default_profile[0]} blocked @#{username}"
       say
       say "Run `#{$0} delete block #{username}` to unblock."
@@ -119,7 +119,7 @@ module T
       username = username.strip_at
       direct_message = client.direct_message_create(username, message)
       rcfile = RCFile.instance
-      rcfile.path = options['profile'] if options['profile']
+      rcfile.path = options[:profile] if options[:profile]
       say "Direct Message sent from @#{rcfile.default_profile[0]} to @#{username} (#{time_ago_in_words(direct_message.created_at)} ago)"
     rescue Twitter::Error::Forbidden => error
       raise Thor::Error, error.message
@@ -133,7 +133,7 @@ module T
       if user
         client.favorite(user.status.id)
         rcfile = RCFile.instance
-        rcfile.path = options['profile'] if options['profile']
+        rcfile.path = options[:profile] if options[:profile]
         say "@#{rcfile.default_profile[0]} favorited @#{username}'s latest status: #{user.status.text}"
         say
         say "Run `#{$0} delete favorite #{username}` to unfavorite."
@@ -143,7 +143,7 @@ module T
     rescue Twitter::Error::Forbidden => error
       if error.message =~ /You have already favorited this status\./
         rcfile = RCFile.instance
-        rcfile.path = options['profile'] if options['profile']
+        rcfile.path = options[:profile] if options[:profile]
         say "@#{rcfile.default_profile[0]} favorited @#{username}'s latest status: #{user.status.text}"
       else
         raise Thor::Error, error.message
@@ -156,7 +156,7 @@ module T
       username = username.strip_at
       user = client.follow(username)
       rcfile = RCFile.instance
-      rcfile.path = options['profile'] if options['profile']
+      rcfile.path = options[:profile] if options[:profile]
       say "@#{rcfile.default_profile[0]} is now following @#{username}."
       say
       say "Run `#{$0} unfollow #{username}` to stop."
@@ -185,10 +185,10 @@ module T
     end
 
     desc "mentions", "Returns the 20 most recent Tweets mentioning you."
-    method_option "reverse", :aliases => "-r", :type => :boolean, :default => false
+    method_option :reverse, :aliases => :r, :type => :boolean, :default => false
     def mentions
       timeline = client.mentions
-      timeline.reverse! if options['reverse']
+      timeline.reverse! if options[:reverse]
       timeline.map! do |status|
         "#{status.user.screen_name.rjust(20)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
       end
@@ -198,10 +198,10 @@ module T
     map %w(replies) => :mentions
 
     desc "open USERNAME", "Opens that user's profile in a web browser."
-    method_option "dry-run", :type => :boolean
+    method_option :dry_run, :type => :boolean
     def open(username)
       username = username.strip_at
-      if options['dry-run']
+      if options[:dry_run]
         Launchy.open("https://twitter.com/#{username}", :dry_run => true)
       else
         Launchy.open("https://twitter.com/#{username}")
@@ -209,16 +209,16 @@ module T
     end
 
     desc "reply USERNAME MESSAGE", "Post your Tweet as a reply directed at another person."
-    method_option "location", :aliases => "-l", :type => :boolean, :default => true
+    method_option :location, :aliases => :l, :type => :boolean, :default => true
     def reply(username, message)
       username = username.strip_at
       hash = {}
-      hash.merge!(:lat => location.lat, :long => location.lng) if options['location']
+      hash.merge!(:lat => location.lat, :long => location.lng) if options[:location]
       in_reply_to_status = client.user(username).status
       hash.merge!(:in_reply_to_status_id => in_reply_to_status.id) if in_reply_to_status
       status = client.update("@#{username} #{message}", hash)
       rcfile = RCFile.instance
-      rcfile.path = options['profile'] if options['profile']
+      rcfile.path = options[:profile] if options[:profile]
       say "Reply created by @#{rcfile.default_profile[0]} (#{time_ago_in_words(status.created_at)} ago)"
       say
       say "Run `#{$0} delete status` to delete."
@@ -233,7 +233,7 @@ module T
       if user
         client.retweet(user.status.id)
         rcfile = RCFile.instance
-        rcfile.path = options['profile'] if options['profile']
+        rcfile.path = options[:profile] if options[:profile]
         say "@#{rcfile.default_profile[0]} retweeted @#{username}'s latest status: #{user.status.text}"
         say
         say "Run `#{$0} delete status` to undo."
@@ -243,7 +243,7 @@ module T
     rescue Twitter::Error::Forbidden => error
       if error.message =~ /sharing is not permissable for this status \(Share validations failed\)/
         rcfile = RCFile.instance
-        rcfile.path = options['profile'] if options['profile']
+        rcfile.path = options[:profile] if options[:profile]
         say "@#{rcfile.default_profile[0]} retweeted @#{username}'s latest status: #{user.status.text}"
       else
         raise Thor::Error, error.message
@@ -262,13 +262,13 @@ module T
     end
 
     desc "status MESSAGE", "Post a Tweet."
-    method_option "location", :aliases => "-l", :type => :boolean, :default => true
+    method_option :location, :aliases => :l, :type => :boolean, :default => true
     def status(message)
       hash = {}
-      hash.merge!(:lat => location.lat, :long => location.lng) if options['location']
+      hash.merge!(:lat => location.lat, :long => location.lng) if options[:location]
       status = client.update(message, hash)
       rcfile = RCFile.instance
-      rcfile.path = options['profile'] if options['profile']
+      rcfile.path = options[:profile] if options[:profile]
       say "Tweet created by @#{rcfile.default_profile[0]} (#{time_ago_in_words(status.created_at)} ago)"
       say
       say "Run `#{$0} delete status` to delete."
@@ -290,10 +290,10 @@ module T
     end
 
     desc "timeline", "Returns the 20 most recent Tweets posted by you and the users you follow."
-    method_option "reverse", :aliases => "-r", :type => :boolean, :default => false
+    method_option :reverse, :aliases => :r, :type => :boolean, :default => false
     def timeline
       timeline = client.home_timeline
-      timeline.reverse! if options['reverse']
+      timeline.reverse! if options[:reverse]
       timeline.map! do |status|
         "#{status.user.screen_name.rjust(20)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
       end
@@ -307,7 +307,7 @@ module T
       username = username.strip_at
       client.unfollow(username)
       rcfile = RCFile.instance
-      rcfile.path = options['profile'] if options['profile']
+      rcfile.path = options[:profile] if options[:profile]
       say "@#{rcfile.default_profile[0]} is no longer following @#{username}."
       say
       say "Run `#{$0} follow #{username}` to follow again."
@@ -333,6 +333,7 @@ module T
     end
 
     desc "delete SUBCOMMAND ...ARGS", "Delete Tweets, Direct Messages, etc."
+    method_option :force, :aliases => :f, :type => :boolean
     subcommand 'delete', Delete
 
     desc "set SUBCOMMAND ...ARGS", "Change various account settings."
@@ -350,7 +351,7 @@ module T
 
       def client
         rcfile = RCFile.instance
-        rcfile.path = options['profile'] if options['profile']
+        rcfile.path = options[:profile] if options[:profile]
         Twitter::Client.new(
           :endpoint => base_url,
           :consumer_key => rcfile.default_consumer_key,
@@ -362,8 +363,8 @@ module T
 
       def consumer
         OAuth::Consumer.new(
-          options['consumer-key'],
-          options['consumer-secret'],
+          options[:consumer_key],
+          options[:consumer_secret],
           :site => base_url
         )
       end
@@ -379,7 +380,7 @@ module T
       end
 
       def host
-        options['host'] || DEFAULT_HOST
+        options[:host] || DEFAULT_HOST
       end
 
       def location
@@ -396,7 +397,7 @@ module T
       end
 
       def protocol
-        options['no-ssl'] ? 'http' : DEFAULT_PROTOCOL
+        options[:no_ssl] ? 'http' : DEFAULT_PROTOCOL
       end
 
       def run_pager

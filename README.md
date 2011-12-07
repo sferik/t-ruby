@@ -44,7 +44,7 @@ or send direct messages via the CLI.
 Once you have registered your application, you'll be given a consumer key and
 secret, which you can use to authorize your Twitter account.
 
-    t authorize --consumer-key YOUR_CONSUMER_KEY --consumer-secret YOUR_CONSUMER_SECRET
+    t authorize --consumer_key YOUR_CONSUMER_KEY --consumer_secret YOUR_CONSUMER_SECRET
 
 This will open a new browser window where you can authenticate to Twitter and
 then enter the returned PIN back into the terminal.  Assuming all that works

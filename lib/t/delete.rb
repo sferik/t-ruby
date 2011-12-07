@@ -37,8 +37,6 @@ module T
       else
         raise Thor::Error, "No direct message found"
       end
-    rescue Twitter::Error::Forbidden => error
-      raise Thor::Error, error.message
     end
     map %w(m) => :dm
 
@@ -62,7 +60,7 @@ module T
     desc "status", "Delete a Tweet."
     def status
       user = client.user
-      if user
+      if user.status
         unless parent_options[:force]
           exit unless yes?("Are you sure you want to permanently delete the status: #{user.status.text}?")
         end
@@ -71,8 +69,6 @@ module T
       else
         raise Thor::Error, "No status found"
       end
-    rescue Twitter::Error::Forbidden => error
-      raise Thor::Error, error.message
     end
     map %w(post tweet update) => :status
 

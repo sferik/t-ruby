@@ -118,8 +118,6 @@ module T
       username = username.strip_at
       direct_message = client.direct_message_create(username, message)
       say "Direct Message sent from @#{@rcfile.default_profile[0]} to @#{direct_message.recipient.screen_name} (#{time_ago_in_words(direct_message.created_at)} ago)"
-    rescue Twitter::Error::Forbidden => error
-      raise Thor::Error, error.message
     end
     map %w(m) => :dm
 
@@ -127,7 +125,7 @@ module T
     def favorite(username)
       username = username.strip_at
       user = client.user(username)
-      if user
+      if user.status
         client.favorite(user.status.id)
         say "@#{@rcfile.default_profile[0]} favorited @#{user.screen_name}'s latest status: #{user.status.text}"
         say
@@ -139,7 +137,7 @@ module T
       if error.message =~ /You have already favorited this status\./
         say "@#{@rcfile.default_profile[0]} favorited @#{user.screen_name}'s latest status: #{user.status.text}"
       else
-        raise Thor::Error, error.message
+        raise Twitter::Error::Forbidden, error.message
       end
     end
     map %w(fave) => :favorite
@@ -153,8 +151,6 @@ module T
         say
         say "Run `#{$0} unfollow #{user.screen_name}` to stop."
       end
-    rescue Twitter::Error::Forbidden => error
-      raise Thor::Error, error.message
     end
     map %w(befriend) => :follow
 
@@ -162,7 +158,7 @@ module T
     def get(username)
       username = username.strip_at
       user = client.user(username)
-      if user
+      if user.status
         say "#{user.status.text} (#{time_ago_in_words(user.status.created_at)} ago)"
       else
         raise Thor::Error, "No status found"
@@ -204,15 +200,13 @@ module T
       say "Reply created by @#{@rcfile.default_profile[0]} (#{time_ago_in_words(status.created_at)} ago)"
       say
       say "Run `#{$0} delete status` to delete."
-    rescue Twitter::Error::Forbidden => error
-      raise Thor::Error, error.message
     end
 
     desc "retweet USERNAME", "Sends that user's latest Tweet to your followers."
     def retweet(username)
       username = username.strip_at
       user = client.user(username)
-      if user
+      if user.status
         client.retweet(user.status.id)
         say "@#{@rcfile.default_profile[0]} retweeted @#{user.screen_name}'s latest status: #{user.status.text}"
         say
@@ -224,7 +218,7 @@ module T
       if error.message =~ /sharing is not permissable for this status \(Share validations failed\)/
         say "@#{@rcfile.default_profile[0]} retweeted @#{user.screen_name}'s latest status: #{user.status.text}"
       else
-        raise Thor::Error, error.message
+        raise Twitter::Error::Forbidden, error.message
       end
     end
     map %w(rt) => :retweet
@@ -250,8 +244,6 @@ module T
       say "Tweet created by @#{@rcfile.default_profile[0]} (#{time_ago_in_words(status.created_at)} ago)"
       say
       say "Run `#{$0} delete status` to delete."
-    rescue Twitter::Error::Forbidden => error
-      raise Thor::Error, error.message
     end
     map %w(post tweet update) => :status
 

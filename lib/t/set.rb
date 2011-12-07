@@ -7,6 +7,8 @@ module T
     DEFAULT_HOST = 'api.twitter.com'
     DEFAULT_PROTOCOL = 'https'
 
+    check_unknown_options!
+
     desc "bio DESCRIPTION", "Edits your Bio information on your Twitter profile."
     def bio(description)
       client.update_profile(:description => description)

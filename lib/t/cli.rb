@@ -18,6 +18,8 @@ module T
     DEFAULT_HOST = 'api.twitter.com'
     DEFAULT_PROTOCOL = 'https'
 
+    check_unknown_options!
+
     class_option :host, :aliases => :H, :type => :string, :default => DEFAULT_HOST, :desc => "Twitter API server"
     class_option :no_ssl, :aliases => :U, :type => :boolean, :default => false, :desc => "Disable SSL"
     class_option :profile, :aliases => :P, :type => :string, :default => File.join(File.expand_path("~"), RCFile::FILE_NAME), :desc => "Path to RC file", :banner => "FILE"

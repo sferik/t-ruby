@@ -7,6 +7,8 @@ module T
     DEFAULT_HOST = 'api.twitter.com'
     DEFAULT_PROTOCOL = 'https'
 
+    check_unknown_options!
+
     desc "block USERNAME", "Unblock a user."
     def block(username)
       username = username.strip_at

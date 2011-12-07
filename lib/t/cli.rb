@@ -129,12 +129,12 @@ module T
     desc "favorite USERNAME", "Marks that user's last Tweet as one of your favorites."
     def favorite(username)
       username = username.strip_at
-      status = client.user_timeline(username, :count => 1).first
-      if status
-        client.favorite(status.id)
+      user = client.user(username)
+      if user
+        client.favorite(user.status.id)
         rcfile = RCFile.instance
         rcfile.path = options['profile'] if options['profile']
-        say "@#{rcfile.default_profile[0]} favorited @#{username}'s latest status: #{status.text}"
+        say "@#{rcfile.default_profile[0]} favorited @#{username}'s latest status: #{user.status.text}"
         say
         say "Run `#{$0} delete favorite #{username}` to unfavorite."
       else
@@ -144,7 +144,7 @@ module T
       if error.message =~ /You have already favorited this status\./
         rcfile = RCFile.instance
         rcfile.path = options['profile'] if options['profile']
-        say "@#{rcfile.default_profile[0]} favorited @#{username}'s latest status: #{status.text}"
+        say "@#{rcfile.default_profile[0]} favorited @#{username}'s latest status: #{user.status.text}"
       else
         raise Thor::Error, error.message
       end
@@ -165,9 +165,8 @@ module T
         say
         say "Try following @#{recommendations[0].screen_name} or @#{recommendations[1].screen_name}."
       end
-      status = client.user_timeline(username, :count => 1).first
-      if status
-        say "#{username}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
+      if user
+        say "#{username}: #{user.status.text} (#{time_ago_in_words(user.status.created_at)} ago)"
       end
     rescue Twitter::Error::Forbidden => error
       raise Thor::Error, error.message
@@ -177,9 +176,9 @@ module T
     desc "get USERNAME", "Retrieves the latest update posted by the user."
     def get(username)
       username = username.strip_at
-      status = client.user_timeline(username, :count => 1).first
-      if status
-        say "#{status.text} (#{time_ago_in_words(status.created_at)} ago)"
+      user = client.user(username)
+      if user
+        say "#{user.status.text} (#{time_ago_in_words(user.status.created_at)} ago)"
       else
         raise Thor::Error, "No status found"
       end
@@ -215,12 +214,14 @@ module T
       username = username.strip_at
       hash = {}
       hash.merge!(:lat => location.lat, :long => location.lng) if options['location']
-      in_reply_to_status = client.user_timeline(username, :count => 1).first
+      in_reply_to_status = client.user(username).status
       hash.merge!(:in_reply_to_status_id => in_reply_to_status.id) if in_reply_to_status
       status = client.update("@#{username} #{message}", hash)
       rcfile = RCFile.instance
       rcfile.path = options['profile'] if options['profile']
       say "Reply created by @#{rcfile.default_profile[0]} (#{time_ago_in_words(status.created_at)} ago)"
+      say
+      say "Run `#{$0} delete status` to delete."
     rescue Twitter::Error::Forbidden => error
       raise Thor::Error, error.message
     end
@@ -228,12 +229,14 @@ module T
     desc "retweet USERNAME", "Sends that user's latest Tweet to your followers."
     def retweet(username)
       username = username.strip_at
-      status = client.user_timeline(username, :count => 1).first
-      if status
-        client.retweet(status.id)
+      user = client.user(username)
+      if user
+        client.retweet(user.status.id)
         rcfile = RCFile.instance
         rcfile.path = options['profile'] if options['profile']
-        say "@#{rcfile.default_profile[0]} retweeted @#{username}'s latest status: #{status.text}"
+        say "@#{rcfile.default_profile[0]} retweeted @#{username}'s latest status: #{user.status.text}"
+        say
+        say "Run `#{$0} delete status` to undo."
       else
         raise Thor::Error, "No status found"
       end
@@ -241,7 +244,7 @@ module T
       if error.message =~ /sharing is not permissable for this status \(Share validations failed\)/
         rcfile = RCFile.instance
         rcfile.path = options['profile'] if options['profile']
-        say "@#{rcfile.default_profile[0]} retweeted @#{username}'s latest status: #{status.text}"
+        say "@#{rcfile.default_profile[0]} retweeted @#{username}'s latest status: #{user.status.text}"
       else
         raise Thor::Error, error.message
       end
@@ -257,6 +260,22 @@ module T
       say
       say "Run `#{$0} whois #{username}` to view profile."
     end
+
+    desc "status MESSAGE", "Post a Tweet."
+    method_option "location", :aliases => "-l", :type => :boolean, :default => true
+    def status(message)
+      hash = {}
+      hash.merge!(:lat => location.lat, :long => location.lng) if options['location']
+      status = client.update(message, hash)
+      rcfile = RCFile.instance
+      rcfile.path = options['profile'] if options['profile']
+      say "Tweet created by @#{rcfile.default_profile[0]} (#{time_ago_in_words(status.created_at)} ago)"
+      say
+      say "Run `#{$0} delete status` to delete."
+    rescue Twitter::Error::Forbidden => error
+      raise Thor::Error, error.message
+    end
+    map %w(post tweet update) => :status
 
     desc "suggest", "This command returns a listing of Twitter users' accounts we think you might enjoy following."
     def suggest
@@ -294,20 +313,6 @@ module T
       say "Run `#{$0} follow #{username}` to follow again."
     end
     map %w(defriend) => :unfollow
-
-    desc "update MESSAGE", "Post a Tweet."
-    method_option "location", :aliases => "-l", :type => :boolean, :default => true
-    def update(message)
-      hash = {}
-      hash.merge!(:lat => location.lat, :long => location.lng) if options['location']
-      status = client.update(message, hash)
-      rcfile = RCFile.instance
-      rcfile.path = options['profile'] if options['profile']
-      say "Tweet created by @#{rcfile.default_profile[0]} (#{time_ago_in_words(status.created_at)} ago)"
-    rescue Twitter::Error::Forbidden => error
-      raise Thor::Error, error.message
-    end
-    map %w(post) => :update
 
     desc "version", "Show version"
     def version

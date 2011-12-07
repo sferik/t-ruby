@@ -126,23 +126,23 @@ describe T::CLI do
   describe "#favorite" do
     before do
       @t.options = @t.options.merge("profile" => File.expand_path('../fixtures/.trc', __FILE__))
-      stub_get("/1/statuses/user_timeline.json").
-        with(:query => {:screen_name => "sferik", :count => "1"}).
-        to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_post("/1/favorites/create/27558893223.json").
+      stub_get("/1/users/show.json").
+        with(:query => {:screen_name => "sferik"}).
+        to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_post("/1/favorites/create/26755176471724032.json").
         to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @t.favorite("sferik")
-      a_get("/1/statuses/user_timeline.json").
-        with(:query => {:screen_name => "sferik", :count => "1"}).
+      a_get("/1/users/show.json").
+        with(:query => {:screen_name => "sferik"}).
         should have_been_made
-      a_post("/1/favorites/create/27558893223.json").
+      a_post("/1/favorites/create/26755176471724032.json").
         should have_been_made
     end
     it "should have the correct output" do
       @t.favorite("sferik")
-      $stdout.string.should =~ /^@testcli favorited @sferik's latest status: Ruby is the best programming language for hiding the ugly bits\.$/
+      $stdout.string.should =~ /^@testcli favorited @sferik's latest status: RT @tenderlove: \[ANN\] sqlite3-ruby =&gt; sqlite3$/
     end
   end
 
@@ -155,9 +155,6 @@ describe T::CLI do
       stub_get("/1/users/recommendations.json").
         with(:query => {:limit => "2", :user_id => "7505382"}).
         to_return(:body => fixture("recommendations.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_get("/1/statuses/user_timeline.json").
-        with(:query => {:screen_name => "sferik", :count => "1"}).
-        to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @t.follow("sferik")
@@ -167,33 +164,30 @@ describe T::CLI do
       a_get("/1/users/recommendations.json").
         with(:query => {:limit => "2", :user_id => "7505382"}).
         should have_been_made
-      a_get("/1/statuses/user_timeline.json").
-        with(:query => {:screen_name => "sferik", :count => "1"}).
-        should have_been_made
     end
     it "should have the correct output" do
       @t.follow("sferik")
       $stdout.string.should =~ /^@testcli is now following @sferik\.$/
       $stdout.string.should =~ /^Try following @jtrupiano or @mlroach\.$/
-      $stdout.string.should =~ /^sferik: Ruby is the best programming language for hiding the ugly bits\. \(about 1 year ago\)$/
+      $stdout.string.should =~ /^sferik: RT @tenderlove: \[ANN\] sqlite3-ruby =&gt; sqlite3 \(10 months ago\)$/
     end
   end
 
   describe "#get" do
     before do
-      stub_get("/1/statuses/user_timeline.json").
-        with(:query => {:screen_name => "sferik", :count => "1"}).
-        to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1/users/show.json").
+        with(:query => {:screen_name => "sferik"}).
+        to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @t.get("sferik")
-      a_get("/1/statuses/user_timeline.json").
-        with(:query => {:screen_name => "sferik", :count => "1"}).
+      a_get("/1/users/show.json").
+        with(:query => {:screen_name => "sferik"}).
         should have_been_made
     end
     it "should have the correct output" do
       @t.get("sferik")
-      $stdout.string.chomp.should == "Ruby is the best programming language for hiding the ugly bits. (about 1 year ago)"
+      $stdout.string.chomp.should == "RT @tenderlove: [ANN] sqlite3-ruby =&gt; sqlite3 (10 months ago)"
     end
   end
 
@@ -245,48 +239,48 @@ describe T::CLI do
   describe "#reply" do
     before do
       @t.options = @t.options.merge("profile" => File.expand_path('../fixtures/.trc', __FILE__))
-      stub_get("/1/statuses/user_timeline.json").
-        with(:query => {:screen_name => "sferik", :count => "1"}).
-        to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1/users/show.json").
+        with(:query => {:screen_name => "sferik"}).
+        to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       stub_post("/1/statuses/update.json").
-        with(:body => {:in_reply_to_status_id => "27558893223", :status => "@sferik Testing"}).
+        with(:body => {:in_reply_to_status_id => "26755176471724032", :status => "@sferik Testing"}).
         to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @t.reply("sferik", "Testing")
-      a_get("/1/statuses/user_timeline.json").
-        with(:query => {:screen_name => "sferik", :count => "1"}).
+      a_get("/1/users/show.json").
+        with(:query => {:screen_name => "sferik"}).
         should have_been_made
       a_post("/1/statuses/update.json").
-        with(:body => {:in_reply_to_status_id => "27558893223", :status => "@sferik Testing"}).
+        with(:body => {:in_reply_to_status_id => "26755176471724032", :status => "@sferik Testing"}).
         should have_been_made
     end
     it "should have the correct output" do
       @t.reply("sferik", "Testing")
-      $stdout.string.chomp.should == "Reply created by @testcli (about 1 year ago)"
+      $stdout.string.should =~ /^Reply created by @testcli \(about 1 year ago\)$/
     end
   end
 
   describe "#retweet" do
     before do
       @t.options = @t.options.merge("profile" => File.expand_path('../fixtures/.trc', __FILE__))
-      stub_get("/1/statuses/user_timeline.json").
-        with(:query => {:screen_name => "sferik", :count => "1"}).
-        to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_post("/1/statuses/retweet/27558893223.json").
+      stub_get("/1/users/show.json").
+        with(:query => {:screen_name => "sferik"}).
+        to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_post("/1/statuses/retweet/26755176471724032.json").
         to_return(:body => fixture("retweet.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @t.retweet("sferik")
-      a_get("/1/statuses/user_timeline.json").
-        with(:query => {:screen_name => "sferik", :count => "1"}).
+      a_get("/1/users/show.json").
+        with(:query => {:screen_name => "sferik"}).
         should have_been_made
-      a_post("/1/statuses/retweet/27558893223.json").
+      a_post("/1/statuses/retweet/26755176471724032.json").
         should have_been_made
     end
     it "should have the correct output" do
       @t.retweet("sferik")
-      $stdout.string.chomp.should == "@testcli retweeted @sferik's latest status: Ruby is the best programming language for hiding the ugly bits."
+      $stdout.string.should =~ /^@testcli retweeted @sferik's latest status: RT @tenderlove: \[ANN\] sqlite3-ruby =&gt; sqlite3$/
     end
   end
 
@@ -343,6 +337,25 @@ describe T::CLI do
       @t.stats("sferik")
       $stdout.string.should =~ /^Followers: 1,048$/
       $stdout.string.should =~ /^Following: 197$/
+    end
+  end
+
+  describe "#status" do
+    before do
+      @t.options = @t.options.merge("profile" => File.expand_path('../fixtures/.trc', __FILE__))
+      stub_post("/1/statuses/update.json").
+        with(:body => {:status => "Testing"}).
+        to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+    end
+    it "should request the correct resource" do
+      @t.status("Testing")
+      a_post("/1/statuses/update.json").
+        with(:body => {:status => "Testing"}).
+        should have_been_made
+    end
+    it "should have the correct output" do
+      @t.status("Testing")
+      $stdout.string.should =~ /^Tweet created by @testcli \(about 1 year ago\)$/
     end
   end
 
@@ -416,25 +429,6 @@ describe T::CLI do
     it "should have the correct output" do
       @t.unfollow("sferik")
       $stdout.string.should =~ /^@testcli is no longer following @sferik\.$/
-    end
-  end
-
-  describe "#update" do
-    before do
-      @t.options = @t.options.merge("profile" => File.expand_path('../fixtures/.trc', __FILE__))
-      stub_post("/1/statuses/update.json").
-        with(:body => {:status => "Testing"}).
-        to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-    end
-    it "should request the correct resource" do
-      @t.update("Testing")
-      a_post("/1/statuses/update.json").
-        with(:body => {:status => "Testing"}).
-        should have_been_made
-    end
-    it "should have the correct output" do
-      @t.update("Testing")
-      $stdout.string.chomp.should == "Tweet created by @testcli (about 1 year ago)"
     end
   end
 

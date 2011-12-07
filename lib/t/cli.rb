@@ -32,14 +32,12 @@ module T
     desc "accounts", "List accounts"
     def accounts
       @rcfile.path = options[:profile] if options[:profile]
-      profiles = []
       @rcfile.profiles.each do |profile|
-        profiles << profile[0]
+        say profile[0]
         profile[1].keys.each do |key|
-          profiles << "  #{key}#{@rcfile.default_profile[0] == profile[0] && @rcfile.default_profile[1] == key ? " (default)" : nil}"
+          say "  #{key}#{@rcfile.default_profile[0] == profile[0] && @rcfile.default_profile[1] == key ? " (default)" : nil}"
         end
       end
-      say profiles.join("\n")
     end
     map %w(list ls) => :accounts
 
@@ -99,23 +97,19 @@ module T
 
     desc "direct_messages", "Returns the 20 most recent Direct Messages sent to you."
     def direct_messages
-      direct_messages = client.direct_messages
-      direct_messages.map! do |direct_message|
-        "#{direct_message.sender.screen_name.rjust(20)}: #{direct_message.text} (#{time_ago_in_words(direct_message.created_at)} ago)"
-      end
       run_pager
-      say direct_messages.join("\n")
+      client.direct_messages.map do |direct_message|
+        say "#{direct_message.sender.screen_name.rjust(20)}: #{direct_message.text} (#{time_ago_in_words(direct_message.created_at)} ago)"
+      end
     end
     map %w(dms) => :direct_messages
 
     desc "sent_messages", "Returns the 20 most recent Direct Messages sent to you."
     def sent_messages
-      sent_messages = client.direct_messages_sent
-      sent_messages.map! do |direct_message|
-        "#{direct_message.recipient.screen_name.rjust(20)}: #{direct_message.text} (#{time_ago_in_words(direct_message.created_at)} ago)"
-      end
       run_pager
-      say sent_messages.join("\n")
+      client.direct_messages_sent.map do |direct_message|
+        say "#{direct_message.recipient.screen_name.rjust(20)}: #{direct_message.text} (#{time_ago_in_words(direct_message.created_at)} ago)"
+      end
     end
     map %w(sms) => :sent_messages
 
@@ -180,11 +174,10 @@ module T
     def mentions
       timeline = client.mentions
       timeline.reverse! if options[:reverse]
-      timeline.map! do |status|
-        "#{status.user.screen_name.rjust(20)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
-      end
       run_pager
-      say timeline.join("\n")
+      timeline.map do |status|
+        say "#{status.user.screen_name.rjust(20)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
+      end
     end
     map %w(replies) => :mentions
 
@@ -279,11 +272,10 @@ module T
     def timeline
       timeline = client.home_timeline
       timeline.reverse! if options[:reverse]
-      timeline.map! do |status|
-        "#{status.user.screen_name.rjust(20)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
-      end
       run_pager
-      say timeline.join("\n")
+      timeline.map do |status|
+        say "#{status.user.screen_name.rjust(20)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
+      end
     end
     map %w(tl) => :timeline
 
@@ -309,12 +301,10 @@ module T
     def whois(username)
       username = username.strip_at
       user = client.user(username)
-      output = []
-      output << "#{user.name}, since #{user.created_at.strftime("%b %Y")}."
-      output << "bio: #{user.description}"
-      output << "location: #{user.location}"
-      output << "web: #{user.url}"
-      say output.join("\n")
+      say "#{user.name}, since #{user.created_at.strftime("%b %Y")}."
+      say "bio: #{user.description}"
+      say "location: #{user.location}"
+      say "web: #{user.url}"
     end
 
     desc "delete SUBCOMMAND ...ARGS", "Delete Tweets, Direct Messages, etc."

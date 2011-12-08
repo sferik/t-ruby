@@ -283,10 +283,12 @@ describe T::CLI do
         with(:query => {:screen_name => "sferik"}).
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       stub_post("/1/statuses/update.json").
-        with(:body => {:in_reply_to_status_id => "26755176471724032", :status => "@sferik Testing", :lat => true, :long => true}).
+        with(:body => {:in_reply_to_status_id => "26755176471724032", :status => "@sferik Testing", :lat => "37.76969909668", :long => "-122.39330291748"}).
         to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       stub_request(:get, "http://checkip.dyndns.org/").
-        to_return(:body => "<html><head><title>Current IP Check</title></head><body>Current IP Address: 50.131.22.169</body></html>")
+        to_return(:body => fixture("checkip.html"), :headers => {:content_type => "text/html"})
+      stub_request(:get, "http://www.geoplugin.net/xml.gp?ip=50.131.22.169").
+        to_return(:body => fixture("xml.gp"), :headers => {:content_type => "application/xml"})
     end
     it "should request the correct resource" do
       @t.reply("sferik", "Testing")
@@ -294,9 +296,11 @@ describe T::CLI do
         with(:query => {:screen_name => "sferik"}).
         should have_been_made
       a_post("/1/statuses/update.json").
-        with(:body => {:in_reply_to_status_id => "26755176471724032", :status => "@sferik Testing", :lat => true, :long => true}).
+        with(:body => {:in_reply_to_status_id => "26755176471724032", :status => "@sferik Testing", :lat => "37.76969909668", :long => "-122.39330291748"}).
         should have_been_made
       a_request(:get, "http://checkip.dyndns.org/").
+        should have_been_made
+      a_request(:get, "http://www.geoplugin.net/xml.gp?ip=50.131.22.169").
         should have_been_made
     end
     it "should have the correct output" do
@@ -404,17 +408,21 @@ describe T::CLI do
     before do
       @t.options = @t.options.merge(:profile => File.expand_path('../fixtures/.trc', __FILE__), :location => true)
       stub_post("/1/statuses/update.json").
-        with(:body => {:status => "Testing", :lat => true, :long => true}).
+        with(:body => {:status => "Testing", :lat => "37.76969909668", :long => "-122.39330291748"}).
         to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       stub_request(:get, "http://checkip.dyndns.org/").
-        to_return(:body => "<html><head><title>Current IP Check</title></head><body>Current IP Address: 50.131.22.169</body></html>")
+        to_return(:body => fixture("checkip.html"), :headers => {:content_type => "text/html"})
+      stub_request(:get, "http://www.geoplugin.net/xml.gp?ip=50.131.22.169").
+        to_return(:body => fixture("xml.gp"), :headers => {:content_type => "application/xml"})
     end
     it "should request the correct resource" do
       @t.status("Testing")
       a_post("/1/statuses/update.json").
-        with(:body => {:status => "Testing", :lat => true, :long => true}).
+        with(:body => {:status => "Testing", :lat => "37.76969909668", :long => "-122.39330291748"}).
         should have_been_made
       a_request(:get, "http://checkip.dyndns.org/").
+        should have_been_made
+      a_request(:get, "http://www.geoplugin.net/xml.gp?ip=50.131.22.169").
         should have_been_made
     end
     it "should have the correct output" do

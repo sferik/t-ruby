@@ -1,5 +1,4 @@
 require 'action_view'
-require 'active_support/core_ext/hash/keys'
 require 'launchy'
 require 'oauth'
 require 't/core_ext/string'
@@ -61,7 +60,7 @@ module T
         ask "Press [Enter] to open the Twitter app authorization page."
         say
       end
-      Launchy.open(url, options.select{|k, v| k == 'dry_run'}.symbolize_keys)
+      Launchy.open(url, :dry_run => options.fetch('dry_run', false))
       pin = ask "Paste in the supplied PIN:"
       access_token = request_token.get_access_token(:oauth_verifier => pin.chomp)
       oauth_response = access_token.get('/1/account/verify_credentials.json')
@@ -173,7 +172,7 @@ module T
     method_option :dry_run, :type => :boolean
     def open(username)
       username = username.strip_at
-      Launchy.open("https://twitter.com/#{username}", options.select{|k, v| k == 'dry_run'}.symbolize_keys)
+      Launchy.open("https://twitter.com/#{username}", :dry_run => options.fetch('dry_run', false))
     end
 
     desc "reply USERNAME MESSAGE", "Post your Tweet as a reply directed at another person."

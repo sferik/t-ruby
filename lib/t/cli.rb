@@ -1,4 +1,5 @@
 require 'action_view'
+require 'active_support/core_ext/hash/keys'
 require 'launchy'
 require 'oauth'
 require 't/core_ext/string'
@@ -31,7 +32,7 @@ module T
 
     desc "accounts", "List accounts"
     def accounts
-      @rcfile.path = options[:profile] if options[:profile]
+      @rcfile.path = options['profile'] if options['profile']
       @rcfile.profiles.each do |profile|
         say profile[0]
         profile[1].keys.each do |key|
@@ -49,7 +50,7 @@ module T
     def authorize
       request_token = consumer.get_request_token
       url = generate_authorize_url(request_token)
-      if options[:prompt]
+      if options['prompt']
         say "In a moment, your web browser will open to the Twitter app authorization page."
         say "Perform the following steps to complete the authorization process:"
         say "  1. Sign in to Twitter"
@@ -58,30 +59,25 @@ module T
         say "  4. Return to the terminal to enter the PIN"
         say
         ask "Press [Enter] to open the Twitter app authorization page."
+        say
       end
-      if options[:dry_run]
-        Launchy.open(url, :dry_run => true)
-      else
-        Launchy.open(url)
-        pin = ask "\nPaste in the supplied PIN:"
-        access_token = request_token.get_access_token(:oauth_verifier => pin.chomp)
-        oauth_response = access_token.get('/1/account/verify_credentials.json')
-        username = oauth_response.body.match(/"screen_name"\s*:\s*"(.*?)"/).captures.first
-        @rcfile.path = options[:profile] if options[:profile]
-        @rcfile[username] = {
-          options[:consumer_key] => {
-            'username' => username,
-            'consumer_key' => options[:consumer_key],
-            'consumer_secret' => options[:consumer_secret],
-            'token' => access_token.token,
-            'secret' => access_token.secret,
-          }
+      Launchy.open(url, options.select{|k, v| k == 'dry_run'}.symbolize_keys)
+      pin = ask "Paste in the supplied PIN:"
+      access_token = request_token.get_access_token(:oauth_verifier => pin.chomp)
+      oauth_response = access_token.get('/1/account/verify_credentials.json')
+      username = oauth_response.body.match(/"screen_name"\s*:\s*"(.*?)"/).captures.first
+      @rcfile.path = options['profile'] if options['profile']
+      @rcfile[username] = {
+        options['consumer_key'] => {
+          'username' => username,
+          'consumer_key' => options['consumer_key'],
+          'consumer_secret' => options['consumer_secret'],
+          'token' => access_token.token,
+          'secret' => access_token.secret,
         }
-        @rcfile.default_profile = {'username' => username, 'consumer_key' => options[:consumer_key]}
-        say "Authorization successful"
-      end
-    rescue OAuth::Unauthorized
-      raise Thor::Error, "Authorization failed. Check that your consumer key and secret are correct."
+      }
+      @rcfile.default_profile = {'username' => username, 'consumer_key' => options['consumer_key']}
+      say "Authorization successful"
     end
 
     desc "block USERNAME", "Block a user."
@@ -129,7 +125,7 @@ module T
         say
         say "Run `#{$0} delete favorite` to unfavorite."
       else
-        raise Thor::Error, "No status found"
+        raise Thor::Error, "Tweet not found"
       end
     rescue Twitter::Error::Forbidden => error
       if error.message =~ /You have already favorited this status\./
@@ -157,7 +153,7 @@ module T
       if user.status
         say "#{user.status.text} (#{time_ago_in_words(user.status.created_at)} ago)"
       else
-        raise Thor::Error, "No status found"
+        raise Thor::Error, "Tweet not found"
       end
     end
 
@@ -165,7 +161,7 @@ module T
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false
     def mentions
       timeline = client.mentions
-      timeline.reverse! if options[:reverse]
+      timeline.reverse! if options['reverse']
       run_pager
       timeline.map do |status|
         say "#{status.user.screen_name.rjust(20)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
@@ -177,11 +173,7 @@ module T
     method_option :dry_run, :type => :boolean
     def open(username)
       username = username.strip_at
-      if options[:dry_run]
-        Launchy.open("https://twitter.com/#{username}", :dry_run => true)
-      else
-        Launchy.open("https://twitter.com/#{username}")
-      end
+      Launchy.open("https://twitter.com/#{username}", options.select{|k, v| k == 'dry_run'}.symbolize_keys)
     end
 
     desc "reply USERNAME MESSAGE", "Post your Tweet as a reply directed at another person."
@@ -189,7 +181,7 @@ module T
     def reply(username, message)
       username = username.strip_at
       hash = {}
-      hash.merge!(:lat => location.lat, :long => location.lng) if options[:location]
+      hash.merge!(:lat => location.lat, :long => location.lng) if options['location']
       user = client.user(username)
       hash.merge!(:in_reply_to_status_id => user.status.id) if user.status
       status = client.update("@#{user.screen_name} #{message}", hash)
@@ -208,7 +200,7 @@ module T
         say
         say "Run `#{$0} delete status` to undo."
       else
-        raise Thor::Error, "No status found"
+        raise Thor::Error, "Tweet not found"
       end
     rescue Twitter::Error::Forbidden => error
       if error.message =~ /sharing is not permissable for this status \(Share validations failed\)/
@@ -233,7 +225,7 @@ module T
     method_option :location, :aliases => "-l", :type => :boolean, :default => true
     def status(message)
       hash = {}
-      hash.merge!(:lat => location.lat, :long => location.lng) if options[:location]
+      hash.merge!(:lat => location.lat, :long => location.lng) if options['location']
       status = client.update(message, hash)
       say "Tweet created by @#{@rcfile.default_profile[0]} (#{time_ago_in_words(status.created_at)} ago)"
       say
@@ -257,7 +249,7 @@ module T
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false
     def timeline
       timeline = client.home_timeline
-      timeline.reverse! if options[:reverse]
+      timeline.reverse! if options['reverse']
       run_pager
       timeline.map do |status|
         say "#{status.user.screen_name.rjust(20)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
@@ -306,7 +298,7 @@ module T
 
       def client
         return @client if @client
-        @rcfile.path = options[:profile] if options[:profile]
+        @rcfile.path = options['profile'] if options['profile']
         @client = Twitter::Client.new(
           :endpoint => base_url,
           :consumer_key => @rcfile.default_consumer_key,
@@ -318,8 +310,8 @@ module T
 
       def consumer
         OAuth::Consumer.new(
-          options[:consumer_key],
-          options[:consumer_secret],
+          options['consumer_key'],
+          options['consumer_secret'],
           :site => base_url
         )
       end
@@ -335,16 +327,17 @@ module T
       end
 
       def host
-        options[:host] || DEFAULT_HOST
+        options['host'] || DEFAULT_HOST
       end
 
       def location
+        return @location if @location
         require 'geokit'
         require 'open-uri'
         ip_address = Kernel::open("http://checkip.dyndns.org/") do |body|
           /(?:\d{1,3}\.){3}\d{1,3}/.match(body.read)[0]
         end
-        Geokit::Geocoders::MultiGeocoder.geocode(ip_address)
+        @location = Geokit::Geocoders::MultiGeocoder.geocode(ip_address)
       end
 
       def pin_auth_parameters
@@ -352,7 +345,7 @@ module T
       end
 
       def protocol
-        options[:no_ssl] ? 'http' : DEFAULT_PROTOCOL
+        options['no_ssl'] ? 'http' : DEFAULT_PROTOCOL
       end
 
       def run_pager

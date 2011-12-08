@@ -22,7 +22,7 @@ module T
 
     desc "default USERNAME [CONSUMER_KEY]", "Set your default account."
     def default(username, consumer_key=nil)
-      @rcfile.path = parent_options[:profile] if parent_options[:profile]
+      @rcfile.path = parent_options['profile'] if parent_options['profile']
       consumer_key = rcfile[username].keys.last if consumer_key.nil?
       @rcfile.default_profile = {'username' => username, 'consumer_key' => consumer_key}
       say "Default account has been updated."
@@ -60,7 +60,7 @@ module T
 
       def client
         return @client if @client
-        @rcfile.path = parent_options[:profile] if parent_options[:profile]
+        @rcfile.path = parent_options['profile'] if parent_options['profile']
         @client = Twitter::Client.new(
           :endpoint => base_url,
           :consumer_key => @rcfile.default_consumer_key,
@@ -71,11 +71,11 @@ module T
       end
 
       def host
-        parent_options[:host] || DEFAULT_HOST
+        parent_options['host'] || DEFAULT_HOST
       end
 
       def protocol
-        parent_options[:no_ssl] ? 'http' : DEFAULT_PROTOCOL
+        parent_options['no_ssl'] ? 'http' : DEFAULT_PROTOCOL
       end
 
     end

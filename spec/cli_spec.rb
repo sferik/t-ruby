@@ -32,17 +32,33 @@ describe T::CLI do
 
   describe "#authorize" do
     before do
-      @t.options = @t.options.merge(:dry_run => true)
+      @t.options = @t.options.merge(:profile => File.expand_path('/tmp/trc', __FILE__), :consumer_key => "abc123", :consumer_secret => "asdfasd223sd2", :prompt => true, :dry_run => true)
       stub_post("/oauth/request_token").
         to_return(:body => fixture("request_token"))
+      stub_post("/oauth/access_token").
+        to_return(:body => fixture("access_token"))
+      stub_get("/1/account/verify_credentials.json").
+        to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
+      $stdout.should_receive(:print).with("Press [Enter] to open the Twitter app authorization page. ")
+      $stdin.should_receive(:gets).and_return("\n")
+      $stdout.should_receive(:print).with("Paste in the supplied PIN: ")
+      $stdin.should_receive(:gets).and_return("1234567890")
       @t.authorize
       a_post("/oauth/request_token").
+        should have_been_made
+      a_post("/oauth/access_token").
+        should have_been_made
+      a_get("/1/account/verify_credentials.json").
         should have_been_made
     end
     it "should not raise error" do
       lambda do
+        $stdout.should_receive(:print).with("Press [Enter] to open the Twitter app authorization page. ")
+        $stdin.should_receive(:gets).and_return("\n")
+        $stdout.should_receive(:print).with("Paste in the supplied PIN: ")
+        $stdin.should_receive(:gets).and_return("1234567890")
         @t.authorize
       end.should_not raise_error
     end
@@ -126,23 +142,39 @@ describe T::CLI do
   describe "#favorite" do
     before do
       @t.options = @t.options.merge(:profile => File.expand_path('../fixtures/.trc', __FILE__))
-      stub_get("/1/users/show.json").
-        with(:query => {:screen_name => "sferik"}).
-        to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_post("/1/favorites/create/26755176471724032.json").
-        to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
-    it "should request the correct resource" do
-      @t.favorite("sferik")
-      a_get("/1/users/show.json").
-        with(:query => {:screen_name => "sferik"}).
-        should have_been_made
-      a_post("/1/favorites/create/26755176471724032.json").
-        should have_been_made
+    context "not found" do
+      before do
+        stub_get("/1/users/show.json").
+          with(:query => {:screen_name => "sferik"}).
+          to_return(:body => "{}", :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should exit" do
+        lambda do
+          @t.favorite("sferik")
+        end.should raise_error(Thor::Error, "Tweet not found")
+      end
     end
-    it "should have the correct output" do
-      @t.favorite("sferik")
-      $stdout.string.should =~ /^@testcli favorited @sferik's latest status: RT @tenderlove: \[ANN\] sqlite3-ruby =&gt; sqlite3$/
+    context "found" do
+      before do
+        stub_get("/1/users/show.json").
+          with(:query => {:screen_name => "sferik"}).
+          to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_post("/1/favorites/create/26755176471724032.json").
+          to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should request the correct resource" do
+        @t.favorite("sferik")
+        a_get("/1/users/show.json").
+          with(:query => {:screen_name => "sferik"}).
+          should have_been_made
+        a_post("/1/favorites/create/26755176471724032.json").
+          should have_been_made
+      end
+      it "should have the correct output" do
+        @t.favorite("sferik")
+        $stdout.string.should =~ /^@testcli favorited @sferik's latest status: RT @tenderlove: \[ANN\] sqlite3-ruby =&gt; sqlite3$/
+      end
     end
   end
 
@@ -166,20 +198,34 @@ describe T::CLI do
   end
 
   describe "#get" do
-    before do
-      stub_get("/1/users/show.json").
-        with(:query => {:screen_name => "sferik"}).
-        to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+    context "not found" do
+      before do
+        stub_get("/1/users/show.json").
+          with(:query => {:screen_name => "sferik"}).
+          to_return(:body => "{}", :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should exit" do
+        lambda do
+          @t.get("sferik")
+        end.should raise_error(Thor::Error, "Tweet not found")
+      end
     end
-    it "should request the correct resource" do
-      @t.get("sferik")
-      a_get("/1/users/show.json").
-        with(:query => {:screen_name => "sferik"}).
-        should have_been_made
-    end
-    it "should have the correct output" do
-      @t.get("sferik")
-      $stdout.string.chomp.should == "RT @tenderlove: [ANN] sqlite3-ruby =&gt; sqlite3 (10 months ago)"
+    context "found" do
+      before do
+        stub_get("/1/users/show.json").
+          with(:query => {:screen_name => "sferik"}).
+          to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should request the correct resource" do
+        @t.get("sferik")
+        a_get("/1/users/show.json").
+          with(:query => {:screen_name => "sferik"}).
+          should have_been_made
+      end
+      it "should have the correct output" do
+        @t.get("sferik")
+        $stdout.string.chomp.should == "RT @tenderlove: [ANN] sqlite3-ruby =&gt; sqlite3 (10 months ago)"
+      end
     end
   end
 
@@ -220,8 +266,10 @@ describe T::CLI do
   end
 
   describe "#open" do
-    it "should not raise error" do
+    before do
       @t.options = @t.options.merge(:dry_run => true)
+    end
+    it "should not raise error" do
       lambda do
         @t.open("sferik")
       end.should_not raise_error
@@ -230,13 +278,15 @@ describe T::CLI do
 
   describe "#reply" do
     before do
-      @t.options = @t.options.merge(:profile => File.expand_path('../fixtures/.trc', __FILE__))
+      @t.options = @t.options.merge(:profile => File.expand_path('../fixtures/.trc', __FILE__), :location => true)
       stub_get("/1/users/show.json").
         with(:query => {:screen_name => "sferik"}).
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       stub_post("/1/statuses/update.json").
-        with(:body => {:in_reply_to_status_id => "26755176471724032", :status => "@sferik Testing"}).
+        with(:body => {:in_reply_to_status_id => "26755176471724032", :status => "@sferik Testing", :lat => true, :long => true}).
         to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_request(:get, "http://checkip.dyndns.org/").
+        to_return(:body => "<html><head><title>Current IP Check</title></head><body>Current IP Address: 50.131.22.169</body></html>")
     end
     it "should request the correct resource" do
       @t.reply("sferik", "Testing")
@@ -244,7 +294,9 @@ describe T::CLI do
         with(:query => {:screen_name => "sferik"}).
         should have_been_made
       a_post("/1/statuses/update.json").
-        with(:body => {:in_reply_to_status_id => "26755176471724032", :status => "@sferik Testing"}).
+        with(:body => {:in_reply_to_status_id => "26755176471724032", :status => "@sferik Testing", :lat => true, :long => true}).
+        should have_been_made
+      a_request(:get, "http://checkip.dyndns.org/").
         should have_been_made
     end
     it "should have the correct output" do
@@ -256,23 +308,39 @@ describe T::CLI do
   describe "#retweet" do
     before do
       @t.options = @t.options.merge(:profile => File.expand_path('../fixtures/.trc', __FILE__))
-      stub_get("/1/users/show.json").
-        with(:query => {:screen_name => "sferik"}).
-        to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_post("/1/statuses/retweet/26755176471724032.json").
-        to_return(:body => fixture("retweet.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
-    it "should request the correct resource" do
-      @t.retweet("sferik")
-      a_get("/1/users/show.json").
-        with(:query => {:screen_name => "sferik"}).
-        should have_been_made
-      a_post("/1/statuses/retweet/26755176471724032.json").
-        should have_been_made
+    context "not found" do
+      before do
+        stub_get("/1/users/show.json").
+          with(:query => {:screen_name => "sferik"}).
+          to_return(:body => "{}", :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should exit" do
+        lambda do
+          @t.retweet("sferik")
+        end.should raise_error(Thor::Error, "Tweet not found")
+      end
     end
-    it "should have the correct output" do
-      @t.retweet("sferik")
-      $stdout.string.should =~ /^@testcli retweeted @sferik's latest status: RT @tenderlove: \[ANN\] sqlite3-ruby =&gt; sqlite3$/
+    context "found" do
+      before do
+        stub_get("/1/users/show.json").
+          with(:query => {:screen_name => "sferik"}).
+          to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_post("/1/statuses/retweet/26755176471724032.json").
+          to_return(:body => fixture("retweet.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should request the correct resource" do
+        @t.retweet("sferik")
+        a_get("/1/users/show.json").
+          with(:query => {:screen_name => "sferik"}).
+          should have_been_made
+        a_post("/1/statuses/retweet/26755176471724032.json").
+          should have_been_made
+      end
+      it "should have the correct output" do
+        @t.retweet("sferik")
+        $stdout.string.should =~ /^@testcli retweeted @sferik's latest status: RT @tenderlove: \[ANN\] sqlite3-ruby =&gt; sqlite3$/
+      end
     end
   end
 
@@ -334,15 +402,19 @@ describe T::CLI do
 
   describe "#status" do
     before do
-      @t.options = @t.options.merge(:profile => File.expand_path('../fixtures/.trc', __FILE__))
+      @t.options = @t.options.merge(:profile => File.expand_path('../fixtures/.trc', __FILE__), :location => true)
       stub_post("/1/statuses/update.json").
-        with(:body => {:status => "Testing"}).
+        with(:body => {:status => "Testing", :lat => true, :long => true}).
         to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_request(:get, "http://checkip.dyndns.org/").
+        to_return(:body => "<html><head><title>Current IP Check</title></head><body>Current IP Address: 50.131.22.169</body></html>")
     end
     it "should request the correct resource" do
       @t.status("Testing")
       a_post("/1/statuses/update.json").
-        with(:body => {:status => "Testing"}).
+        with(:body => {:status => "Testing", :lat => true, :long => true}).
+        should have_been_made
+      a_request(:get, "http://checkip.dyndns.org/").
         should have_been_made
     end
     it "should have the correct output" do

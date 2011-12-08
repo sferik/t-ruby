@@ -49,7 +49,7 @@ describe T::Delete do
       it "should exit" do
         lambda do
           @t.delete("dm")
-        end.should raise_error(Thor::Error, "No direct message found")
+        end.should raise_error(Thor::Error, "Direct Message not found")
       end
     end
     context "found" do
@@ -83,7 +83,7 @@ describe T::Delete do
         end
         it "should request the correct resource" do
           $stdout.should_receive(:print).with("Are you sure you want to permanently delete the direct message to @hurrycane: Sounds good. Meeting Tuesday is fine.? ")
-          $stdin.should_receive(:gets).and_return('y')
+          $stdin.should_receive(:gets).and_return("y")
           @t.delete("dm")
           a_get("/1/direct_messages/sent.json").
             with(:query => {:count => "1"}).
@@ -93,13 +93,13 @@ describe T::Delete do
         end
         it "should have the correct output" do
           $stdout.should_receive(:print).with("Are you sure you want to permanently delete the direct message to @hurrycane: Sounds good. Meeting Tuesday is fine.? ")
-          $stdin.should_receive(:gets).and_return('y')
+          $stdin.should_receive(:gets).and_return("y")
           @t.delete("dm")
           $stdout.string.chomp.should == "@sferik deleted the direct message sent to @pengwynn: Creating a fixture for the Twitter gem"
         end
         it "should exit" do
           $stdout.should_receive(:print).with("Are you sure you want to permanently delete the direct message to @hurrycane: Sounds good. Meeting Tuesday is fine.? ")
-          $stdin.should_receive(:gets).and_return('n')
+          $stdin.should_receive(:gets).and_return("n")
           lambda do
             @t.delete("dm")
           end.should raise_error(SystemExit)
@@ -121,7 +121,7 @@ describe T::Delete do
       it "should exit" do
         lambda do
           @t.delete("favorite")
-        end.should raise_error(Thor::Error, "No status found")
+        end.should raise_error(Thor::Error, "Tweet not found")
       end
     end
     context "found" do
@@ -155,7 +155,7 @@ describe T::Delete do
         end
         it "should request the correct resource" do
           $stdout.should_receive(:print).with("Are you sure you want to delete the favorite of @z: Spilled grilled onions on myself.  I smell delicious!? ")
-          $stdin.should_receive(:gets).and_return('y')
+          $stdin.should_receive(:gets).and_return("y")
           @t.delete("favorite")
           a_get("/1/favorites.json").
             with(:query => {:count => "1"}).
@@ -165,13 +165,13 @@ describe T::Delete do
         end
         it "should have the correct output" do
           $stdout.should_receive(:print).with("Are you sure you want to delete the favorite of @z: Spilled grilled onions on myself.  I smell delicious!? ")
-          $stdin.should_receive(:gets).and_return('y')
+          $stdin.should_receive(:gets).and_return("y")
           @t.delete("favorite")
           $stdout.string.should =~ /^@testcli unfavorited @z's latest status: Spilled grilled onions on myself\.  I smell delicious!$/
         end
         it "should exit" do
           $stdout.should_receive(:print).with("Are you sure you want to delete the favorite of @z: Spilled grilled onions on myself.  I smell delicious!? ")
-          $stdin.should_receive(:gets).and_return('n')
+          $stdin.should_receive(:gets).and_return("n")
           lambda do
             @t.delete("favorite")
           end.should raise_error(SystemExit)
@@ -192,7 +192,7 @@ describe T::Delete do
       it "should exit" do
         lambda do
           @t.delete("status")
-        end.should raise_error(Thor::Error, "No status found")
+        end.should raise_error(Thor::Error, "Tweet not found")
       end
     end
     context "found" do
@@ -224,7 +224,7 @@ describe T::Delete do
         end
         it "should request the correct resource" do
           $stdout.should_receive(:print).with("Are you sure you want to permanently delete the status: RT @tenderlove: [ANN] sqlite3-ruby =&gt; sqlite3? ")
-          $stdin.should_receive(:gets).and_return('y')
+          $stdin.should_receive(:gets).and_return("y")
           @t.delete("status")
           a_get("/1/account/verify_credentials.json").
             should have_been_made
@@ -233,13 +233,13 @@ describe T::Delete do
         end
         it "should have the correct output" do
           $stdout.should_receive(:print).with("Are you sure you want to permanently delete the status: RT @tenderlove: [ANN] sqlite3-ruby =&gt; sqlite3? ")
-          $stdin.should_receive(:gets).and_return('y')
+          $stdin.should_receive(:gets).and_return("y")
           @t.delete("status")
           $stdout.string.chomp.should == "@testcli deleted the status: @noradio working on implementing #NewTwitter API methods in the twitter gem. Twurl is making it easy. Thank you!"
         end
         it "should exit" do
           $stdout.should_receive(:print).with("Are you sure you want to permanently delete the status: RT @tenderlove: [ANN] sqlite3-ruby =&gt; sqlite3? ")
-          $stdin.should_receive(:gets).and_return('n')
+          $stdin.should_receive(:gets).and_return("n")
           lambda do
             @t.delete("status")
           end.should raise_error(SystemExit)

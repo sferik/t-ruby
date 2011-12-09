@@ -7,6 +7,9 @@ begin
 rescue Interrupt
   $stderr.puts "Quitting..."
   exit 1
+rescue Twitter::Error::BadRequest => error
+  $stderr.puts error.message
+  exit 400
 rescue OAuth::Unauthorized
   $stderr.puts "Authorization failed"
   exit 401
@@ -21,4 +24,19 @@ rescue Twitter::Error::Forbidden => error
 rescue Twitter::Error::NotFound => error
   $stderr.puts error.message
   exit 404
+rescue Twitter::Error::NotAcceptable => error
+  $stderr.puts error.message
+  exit 406
+rescue Twitter::Error::EnhanceYourCalm => error
+  $stderr.puts error.message
+  exit 420
+rescue Twitter::Error::InternalServerError => error
+  $stderr.puts error.message
+  exit 500
+rescue Twitter::Error::BadGateway => error
+  $stderr.puts error.message
+  exit 502
+rescue Twitter::Error::ServiceUnavailable => error
+  $stderr.puts error.message
+  exit 503
 end

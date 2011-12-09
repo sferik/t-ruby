@@ -147,12 +147,37 @@ describe T::CLI do
       before do
         stub_get("/1/users/show.json").
           with(:query => {:screen_name => "sferik"}).
-          to_return(:body => "{}", :headers => {:content_type => "application/json; charset=utf-8"})
+          to_return(:body => '{}', :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should exit" do
         lambda do
           @t.favorite("sferik")
         end.should raise_error(Thor::Error, "Tweet not found")
+      end
+    end
+    context "forbidden" do
+      before do
+        stub_get("/1/users/show.json").
+          with(:query => {:screen_name => "sferik"}).
+          to_return(:body => '{"error":"Forbidden"}', :headers => {:content_type => "application/json; charset=utf-8"}, :status => 403)
+      end
+      it "should exit" do
+        lambda do
+          @t.favorite("sferik")
+        end.should raise_error(Twitter::Error::Forbidden, "Forbidden")
+      end
+    end
+    context "duplicate" do
+      before do
+        stub_get("/1/users/show.json").
+          with(:query => {:screen_name => "sferik"}).
+          to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_post("/1/favorites/create/26755176471724032.json").
+          to_return(:body => '{"error":"You have already favorited this status."}', :headers => {:content_type => "application/json; charset=utf-8"}, :status => 403)
+      end
+      it "should have the correct output" do
+        @t.favorite("sferik")
+        $stdout.string.should =~ /^@testcli favorited @sferik's latest status: RT @tenderlove: \[ANN\] sqlite3-ruby =&gt; sqlite3$/
       end
     end
     context "found" do
@@ -202,7 +227,7 @@ describe T::CLI do
       before do
         stub_get("/1/users/show.json").
           with(:query => {:screen_name => "sferik"}).
-          to_return(:body => "{}", :headers => {:content_type => "application/json; charset=utf-8"})
+          to_return(:body => '{}', :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should exit" do
         lambda do
@@ -317,12 +342,37 @@ describe T::CLI do
       before do
         stub_get("/1/users/show.json").
           with(:query => {:screen_name => "sferik"}).
-          to_return(:body => "{}", :headers => {:content_type => "application/json; charset=utf-8"})
+          to_return(:body => '{}', :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should exit" do
         lambda do
           @t.retweet("sferik")
         end.should raise_error(Thor::Error, "Tweet not found")
+      end
+    end
+    context "forbidden" do
+      before do
+        stub_get("/1/users/show.json").
+          with(:query => {:screen_name => "sferik"}).
+          to_return(:body => '{"error":"Forbidden"}', :headers => {:content_type => "application/json; charset=utf-8"}, :status => 403)
+      end
+      it "should exit" do
+        lambda do
+          @t.retweet("sferik")
+        end.should raise_error(Twitter::Error::Forbidden, "Forbidden")
+      end
+    end
+    context "duplicate" do
+      before do
+        stub_get("/1/users/show.json").
+          with(:query => {:screen_name => "sferik"}).
+          to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_post("/1/statuses/retweet/26755176471724032.json").
+          to_return(:body => '{"error":"sharing is not permissable for this status (Share validations failed)"}', :headers => {:content_type => "application/json; charset=utf-8"}, :status => 403)
+      end
+      it "should have the correct output" do
+        @t.retweet("sferik")
+        $stdout.string.should =~ /^@testcli retweeted @sferik's latest status: RT @tenderlove: \[ANN\] sqlite3-ruby =&gt; sqlite3$/
       end
     end
     context "found" do

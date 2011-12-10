@@ -17,7 +17,8 @@ module T
     end
 
     desc "users USERNAME [USERNAME...]", "Allows you to start following users."
-    def users(*usernames)
+    def users(username, *usernames)
+      usernames.unshift(username)
       users = usernames.map do |username|
         username = username.strip_at
         client.follow(username)

@@ -70,7 +70,7 @@ Account information is stored in the YAML-formatted file `~/.trc`.
 
 ### <a name="update"></a>Update your status
 
-    t update "I'm tweeting from the command line, powered by @gem."
+    t update "I'm tweeting from the command line. Isn't that special?"
 
 ### <a name="dm"></a>Send a user a private message
 

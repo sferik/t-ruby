@@ -1,3 +1,4 @@
+require 't/core_ext/string'
 require 't/rcfile'
 require 'thor'
 require 'twitter'

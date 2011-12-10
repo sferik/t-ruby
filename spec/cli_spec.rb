@@ -203,25 +203,6 @@ describe T::CLI do
     end
   end
 
-  describe "#follow" do
-    before do
-      @t.options = @t.options.merge(:profile => File.expand_path('../fixtures/.trc', __FILE__))
-      stub_post("/1/friendships/create.json").
-        with(:body => {:screen_name => "sferik"}).
-        to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-    end
-    it "should request the correct resource" do
-      @t.follow("sferik")
-      a_post("/1/friendships/create.json").
-        with(:body => {:screen_name => "sferik"}).
-        should have_been_made
-    end
-    it "should have the correct output" do
-      @t.follow("sferik")
-      $stdout.string.should =~ /^@testcli is now following @sferik\.$/
-    end
-  end
-
   describe "#get" do
     context "not found" do
       before do
@@ -532,25 +513,6 @@ describe T::CLI do
         sferik: Try as you may http://www.thedoghousediaries.com/?p=1940 (about 1 year ago)
         sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
       eos
-    end
-  end
-
-  describe "#unfollow" do
-    before do
-      @t.options = @t.options.merge(:profile => File.expand_path('../fixtures/.trc', __FILE__))
-      stub_delete("/1/friendships/destroy.json").
-        with(:query => {:screen_name => "sferik"}).
-        to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-    end
-    it "should request the correct resource" do
-      @t.unfollow("sferik")
-      a_delete("/1/friendships/destroy.json").
-        with(:query => {:screen_name => "sferik"}).
-        should have_been_made
-    end
-    it "should have the correct output" do
-      @t.unfollow("sferik")
-      $stdout.string.should =~ /^@testcli is no longer following @sferik\.$/
     end
   end
 

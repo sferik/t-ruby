@@ -3,8 +3,10 @@ require 'launchy'
 require 'oauth'
 require 't/core_ext/string'
 require 't/delete'
+require 't/follow'
 require 't/rcfile'
 require 't/set'
+require 't/unfollow'
 require 'thor'
 require 'time'
 require 'twitter'
@@ -97,15 +99,6 @@ module T
     end
     map %w(dms) => :direct_messages
 
-    desc "sent_messages", "Returns the 20 most recent Direct Messages sent to you."
-    def sent_messages
-      run_pager
-      client.direct_messages_sent.map do |direct_message|
-        say "#{direct_message.recipient.screen_name.rjust(20)}: #{direct_message.text} (#{time_ago_in_words(direct_message.created_at)} ago)"
-      end
-    end
-    map %w(sms) => :sent_messages
-
     desc "dm USERNAME MESSAGE", "Sends that person a Direct Message."
     def dm(username, message)
       username = username.strip_at
@@ -134,16 +127,6 @@ module T
       end
     end
     map %w(fave) => :favorite
-
-    desc "follow USERNAME", "Allows you to start following a specific user."
-    def follow(username)
-      username = username.strip_at
-      user = client.follow(username)
-      say "@#{@rcfile.default_profile[0]} is now following @#{user.screen_name}."
-      say
-      say "Run `#{$0} unfollow #{user.screen_name}` to stop."
-    end
-    map %w(befriend) => :follow
 
     desc "get USERNAME", "Retrieves the latest update posted by the user."
     def get(username)
@@ -210,6 +193,15 @@ module T
     end
     map %w(rt) => :retweet
 
+    desc "sent_messages", "Returns the 20 most recent Direct Messages sent to you."
+    def sent_messages
+      run_pager
+      client.direct_messages_sent.map do |direct_message|
+        say "#{direct_message.recipient.screen_name.rjust(20)}: #{direct_message.text} (#{time_ago_in_words(direct_message.created_at)} ago)"
+      end
+    end
+    map %w(sms) => :sent_messages
+
     desc "stats USERNAME", "Retrieves the given user's number of followers and how many people they're following."
     def stats(username)
       username = username.strip_at
@@ -256,17 +248,7 @@ module T
     end
     map %w(tl) => :timeline
 
-    desc "unfollow USERNAME", "Allows you to stop following a specific user."
-    def unfollow(username)
-      username = username.strip_at
-      user = client.unfollow(username)
-      say "@#{@rcfile.default_profile[0]} is no longer following @#{user.screen_name}."
-      say
-      say "Run `#{$0} follow #{user.screen_name}` to follow again."
-    end
-    map %w(defriend) => :unfollow
-
-    desc "version", "Show version"
+    desc "version", "Show version."
     def version
       say T::Version
     end
@@ -288,6 +270,12 @@ module T
 
     desc "set SUBCOMMAND ...ARGS", "Change various account settings."
     subcommand 'set', Set
+
+    desc "follow SUBCOMMAND ...ARGS", "Follow users."
+    subcommand 'follow', Follow
+
+    desc "unfollow SUBCOMMAND ...ARGS", "Unfollow users."
+    subcommand 'unfollow', Unfollow
 
     no_tasks do
 

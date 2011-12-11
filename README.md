@@ -78,7 +78,7 @@ Account information is stored in the YAML-formatted file `~/.trc`.
 
 ### <a name="location"></a>Update the location field in your profile
 
-    t set location San Francisco
+    t set location "San Francisco"
 
 ### <a name="get"></a>Retrieve the latest Tweet posted by a user
 
@@ -92,17 +92,17 @@ Account information is stored in the YAML-formatted file `~/.trc`.
 
     t stats sferik
 
-### <a name="suggest"></a>Return a listing of users you might enjoy following
+### <a name="suggest"></a>Return a user you might enjoy following
 
     t suggest
 
 ### <a name="follow"></a>Start following a user
 
-    t follow sferik
+    t follow user sferik
 
 ### <a name="leave"></a>Stop following a user
 
-    t unfollow sferik
+    t unfollow user sferik
 
 ### <a name="timeline"></a>Retrieve the timeline of status updates from users you are following
 
@@ -111,6 +111,10 @@ Account information is stored in the YAML-formatted file `~/.trc`.
 ### <a name="mentions"></a>Retrieve the timeline of status updates that mention you
 
     t mentions
+
+### <a name="favorites"></a>Retrieve the timeline of status updates that you favorited
+
+    t favorites
 
 ### <a name="reply"></a>Reply to a Tweet
 

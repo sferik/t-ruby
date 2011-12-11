@@ -205,6 +205,17 @@ module T
     end
     map %w(rt) => :retweet
 
+    desc "search QUERY", "Returns the 20 most recent Tweets that match a specified query."
+    method_option :reverse, :aliases => "-r", :type => :boolean, :default => false
+    def search(query)
+      timeline = client.search(query)
+      timeline.reverse! if options['reverse']
+      run_pager
+      timeline.map do |status|
+        say "#{status.from_user.rjust(20)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
+      end
+    end
+
     desc "sent_messages", "Returns the 20 most recent Direct Messages sent to you."
     def sent_messages
       run_pager

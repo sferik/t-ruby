@@ -30,6 +30,10 @@ module T
         say "Run `#{$0} unfollow users #{screen_names.join(' ')}` to stop."
       end
 
+      desc "all SUBCOMMAND ...ARGS", "Follow all users."
+      require 't/cli/follow/all'
+      subcommand 'all', CLI::Follow::All
+
     private
 
       def base_url

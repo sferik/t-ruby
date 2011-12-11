@@ -19,7 +19,7 @@ describe T::CLI do
 
   describe "#account" do
     before do
-      @t.options = @t.options.merge(:profile => File.expand_path('../fixtures/.trc', __FILE__))
+      @t.options = @t.options.merge(:profile => fixture_path + "/.trc")
     end
     it "should have the correct output" do
       @t.accounts
@@ -66,7 +66,7 @@ describe T::CLI do
 
   describe "#block" do
     before do
-      @t.options = @t.options.merge(:profile => File.expand_path('../fixtures/.trc', __FILE__))
+      @t.options = @t.options.merge(:profile => fixture_path + "/.trc")
       stub_post("/1/blocks/create.json").
         with(:body => {:screen_name => "sferik"}).
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -122,7 +122,7 @@ describe T::CLI do
 
   describe "#dm" do
     before do
-      @t.options = @t.options.merge(:profile => File.expand_path('../fixtures/.trc', __FILE__))
+      @t.options = @t.options.merge(:profile => fixture_path + "/.trc")
       stub_post("/1/direct_messages/new.json").
         with(:body => {:screen_name => "pengwynn", :text => "Creating a fixture for the Twitter gem"}).
         to_return(:body => fixture("direct_message.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -141,7 +141,7 @@ describe T::CLI do
 
   describe "#favorite" do
     before do
-      @t.options = @t.options.merge(:profile => File.expand_path('../fixtures/.trc', __FILE__))
+      @t.options = @t.options.merge(:profile => fixture_path + "/.trc")
     end
     context "not found" do
       before do
@@ -320,7 +320,7 @@ describe T::CLI do
 
   describe "#reply" do
     before do
-      @t.options = @t.options.merge(:profile => File.expand_path('../fixtures/.trc', __FILE__), :location => true)
+      @t.options = @t.options.merge(:profile => fixture_path + "/.trc", :location => true)
       stub_get("/1/users/show.json").
         with(:query => {:screen_name => "sferik"}).
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -353,7 +353,7 @@ describe T::CLI do
 
   describe "#retweet" do
     before do
-      @t.options = @t.options.merge(:profile => File.expand_path('../fixtures/.trc', __FILE__))
+      @t.options = @t.options.merge(:profile => fixture_path + "/.trc")
     end
     context "not found" do
       before do
@@ -507,7 +507,7 @@ describe T::CLI do
 
   describe "#status" do
     before do
-      @t.options = @t.options.merge(:profile => File.expand_path('../fixtures/.trc', __FILE__), :location => true)
+      @t.options = @t.options.merge(:profile => fixture_path + "/.trc", :location => true)
       stub_post("/1/statuses/update.json").
         with(:body => {:status => "Testing", :lat => "37.76969909668", :long => "-122.39330291748"}).
         to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})

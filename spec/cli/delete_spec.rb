@@ -19,7 +19,7 @@ describe T::CLI::Delete do
 
   describe "#block" do
     before do
-      @t.options = @t.options.merge(:profile => File.expand_path('../../fixtures/.trc', __FILE__))
+      @t.options = @t.options.merge(:profile => fixture_path + "/.trc")
       stub_delete("/1/blocks/destroy.json").
         with(:query => {:screen_name => "sferik"}).
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -38,7 +38,7 @@ describe T::CLI::Delete do
 
   describe "#dm" do
     before do
-      @t.options = @t.options.merge(:profile => File.expand_path('../../fixtures/.trc', __FILE__))
+      @t.options = @t.options.merge(:profile => fixture_path + "/.trc")
     end
     context "not found" do
       before do
@@ -110,7 +110,7 @@ describe T::CLI::Delete do
 
   describe "#favorite" do
     before do
-      @t.options = @t.options.merge(:profile => File.expand_path('../../fixtures/.trc', __FILE__))
+      @t.options = @t.options.merge(:profile => fixture_path + "/.trc")
     end
     context "not found" do
       before do
@@ -182,7 +182,7 @@ describe T::CLI::Delete do
 
   describe "#status" do
     before do
-      @t.options = @t.options.merge(:profile => File.expand_path('../../fixtures/.trc', __FILE__))
+      @t.options = @t.options.merge(:profile => fixture_path + "/.trc")
     end
     context "not found" do
       before do

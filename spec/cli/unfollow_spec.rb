@@ -18,7 +18,7 @@ describe T::CLI::Unfollow do
 
   describe "#users" do
     before do
-      @t.options = @t.options.merge(:profile => File.expand_path('../../fixtures/.trc', __FILE__))
+      @t.options = @t.options.merge(:profile => fixture_path + "/.trc")
     end
     context "no users" do
       it "should exit" do

@@ -128,6 +128,18 @@ module T
     end
     map %w(fave) => :favorite
 
+    desc "favorites", "Returns the 20 most recent Tweets you favorited."
+    method_option :reverse, :aliases => "-r", :type => :boolean, :default => false
+    def favorites
+      timeline = client.favorites
+      timeline.reverse! if options['reverse']
+      run_pager
+      timeline.map do |status|
+        say "#{status.user.screen_name.rjust(20)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
+      end
+    end
+    map %w(faves) => :favorites
+
     desc "get USERNAME", "Retrieves the latest update posted by the user."
     def get(username)
       username = username.strip_at

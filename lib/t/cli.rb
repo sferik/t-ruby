@@ -125,9 +125,12 @@ module T
     map %w(fave) => :favorite
 
     desc "favorites", "Returns the 20 most recent Tweets you favorited."
+    method_option :number, :aliases => "-n", :type => :numeric, :default => 20
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false
     def favorites
-      timeline = client.favorites
+      hash = {}
+      hash.merge!(:count => options['number']) if options['number']
+      timeline = client.favorites(hash)
       timeline.reverse! if options['reverse']
       run_pager
       timeline.map do |status|
@@ -148,9 +151,12 @@ module T
     end
 
     desc "mentions", "Returns the 20 most recent Tweets mentioning you."
+    method_option :number, :aliases => "-n", :type => :numeric, :default => 20
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false
     def mentions
-      timeline = client.mentions
+      hash = {}
+      hash.merge!(:count => options['number']) if options['number']
+      timeline = client.mentions(hash)
       timeline.reverse! if options['reverse']
       run_pager
       timeline.map do |status|
@@ -202,9 +208,12 @@ module T
     map %w(rt) => :retweet
 
     desc "search QUERY", "Returns the 20 most recent Tweets that match a specified query."
+    method_option :number, :aliases => "-n", :type => :numeric, :default => 20
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false
     def search(query)
-      timeline = client.search(query)
+      hash = {}
+      hash.merge!(:rpp => options['number']) if options['number']
+      timeline = client.search(query, hash)
       timeline.reverse! if options['reverse']
       run_pager
       timeline.map do |status|
@@ -256,9 +265,12 @@ module T
     end
 
     desc "timeline", "Returns the 20 most recent Tweets posted by you and the users you follow."
+    method_option :number, :aliases => "-n", :type => :numeric, :default => 20
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false
     def timeline
-      timeline = client.home_timeline
+      hash = {}
+      hash.merge!(:count => options['number']) if options['number']
+      timeline = client.home_timeline(hash)
       timeline.reverse! if options['reverse']
       run_pager
       timeline.map do |status|

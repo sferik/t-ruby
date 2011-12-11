@@ -300,91 +300,90 @@ module T
     require 't/cli/unfollow'
     subcommand 'unfollow', CLI::Unfollow
 
-    no_tasks do
+  private
 
-      def base_url
-        "#{protocol}://#{host}"
+    def base_url
+      "#{protocol}://#{host}"
+    end
+
+    def client
+      return @client if @client
+      @rcfile.path = options['profile'] if options['profile']
+      @client = Twitter::Client.new(
+        :endpoint => base_url,
+        :consumer_key => @rcfile.default_consumer_key,
+        :consumer_secret => @rcfile.default_consumer_secret,
+        :oauth_token => @rcfile.default_token,
+        :oauth_token_secret  => @rcfile.default_secret
+      )
+    end
+
+    def consumer
+      OAuth::Consumer.new(
+        options['consumer_key'],
+        options['consumer_secret'],
+        :site => base_url
+      )
+    end
+
+    def generate_authorize_url(request_token)
+      request = consumer.create_signed_request(:get, consumer.authorize_path, request_token, pin_auth_parameters)
+      params = request['Authorization'].sub(/^OAuth\s+/, '').split(/,\s+/).map do |param|
+        key, value = param.split('=')
+        value =~ /"(.*?)"/
+        "#{key}=#{CGI::escape($1)}"
+      end.join('&')
+      "#{base_url}#{request.path}?#{params}"
+    end
+
+    def host
+      options['host'] || DEFAULT_HOST
+    end
+
+    def location
+      return @location if @location
+      require 'geokit'
+      require 'open-uri'
+      ip_address = Kernel::open("http://checkip.dyndns.org/") do |body|
+        /(?:\d{1,3}\.){3}\d{1,3}/.match(body.read)[0]
       end
+      @location = Geokit::Geocoders::MultiGeocoder.geocode(ip_address)
+    end
 
-      def client
-        return @client if @client
-        @rcfile.path = options['profile'] if options['profile']
-        @client = Twitter::Client.new(
-          :endpoint => base_url,
-          :consumer_key => @rcfile.default_consumer_key,
-          :consumer_secret => @rcfile.default_consumer_secret,
-          :oauth_token => @rcfile.default_token,
-          :oauth_token_secret  => @rcfile.default_secret
-        )
-      end
+    def pin_auth_parameters
+      {:oauth_callback => 'oob'}
+    end
 
-      def consumer
-        OAuth::Consumer.new(
-          options['consumer_key'],
-          options['consumer_secret'],
-          :site => base_url
-        )
-      end
+    def protocol
+      options['no_ssl'] ? 'http' : DEFAULT_PROTOCOL
+    end
 
-      def generate_authorize_url(request_token)
-        request = consumer.create_signed_request(:get, consumer.authorize_path, request_token, pin_auth_parameters)
-        params = request['Authorization'].sub(/^OAuth\s+/, '').split(/,\s+/).map do |param|
-          key, value = param.split('=')
-          value =~ /"(.*?)"/
-          "#{key}=#{CGI::escape($1)}"
-        end.join('&')
-        "#{base_url}#{request.path}?#{params}"
-      end
+    def run_pager
+      return if RUBY_PLATFORM =~ /win32/
+      return if ENV["T_ENV"] == "test"
+      return unless STDOUT.tty?
 
-      def host
-        options['host'] || DEFAULT_HOST
-      end
+      read, write = IO.pipe
 
-      def location
-        return @location if @location
-        require 'geokit'
-        require 'open-uri'
-        ip_address = Kernel::open("http://checkip.dyndns.org/") do |body|
-          /(?:\d{1,3}\.){3}\d{1,3}/.match(body.read)[0]
-        end
-        @location = Geokit::Geocoders::MultiGeocoder.geocode(ip_address)
-      end
-
-      def pin_auth_parameters
-        {:oauth_callback => 'oob'}
-      end
-
-      def protocol
-        options['no_ssl'] ? 'http' : DEFAULT_PROTOCOL
-      end
-
-      def run_pager
-        return if RUBY_PLATFORM =~ /win32/
-        return if ENV["T_ENV"] == "test"
-        return unless STDOUT.tty?
-
-        read, write = IO.pipe
-
-        unless Kernel.fork # Child process
-          STDOUT.reopen(write)
-          STDERR.reopen(write) if STDERR.tty?
-          read.close
-          write.close
-          return
-        end
-
-        # Parent process, become pager
-        STDIN.reopen(read)
+      unless Kernel.fork # Child process
+        STDOUT.reopen(write)
+        STDERR.reopen(write) if STDERR.tty?
         read.close
         write.close
-
-        ENV['LESS'] = 'FSRX' # Don't page if the input is short enough
-
-        Kernel.select [STDIN] # Wait until we have input before we start the pager
-        pager = ENV['PAGER'] || 'less'
-        exec pager rescue exec "/bin/sh", "-c", pager
+        return
       end
 
+      # Parent process, become pager
+      STDIN.reopen(read)
+      read.close
+      write.close
+
+      ENV['LESS'] = 'FSRX' # Don't page if the input is short enough
+
+      Kernel.select [STDIN] # Wait until we have input before we start the pager
+      pager = ENV['PAGER'] || 'less'
+      exec pager rescue exec "/bin/sh", "-c", pager
     end
+
   end
 end

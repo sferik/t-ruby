@@ -1,7 +1,7 @@
 # encoding: utf-8
 require 'helper'
 
-describe T::Unfollow do
+describe T::CLI::Unfollow do
 
   before do
     @t = T::CLI.new
@@ -17,6 +17,9 @@ describe T::Unfollow do
   end
 
   describe "#users" do
+    before do
+      @t.options = @t.options.merge(:profile => File.expand_path('../../fixtures/.trc', __FILE__))
+    end
     context "no users" do
       it "should exit" do
         lambda do
@@ -26,7 +29,6 @@ describe T::Unfollow do
     end
     context "one user" do
       before do
-        @t.options = @t.options.merge(:profile => File.expand_path('../fixtures/.trc', __FILE__))
         stub_delete("/1/friendships/destroy.json").
           with(:query => {:screen_name => "sferik"}).
           to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -44,7 +46,6 @@ describe T::Unfollow do
     end
     context "two users" do
       before do
-        @t.options = @t.options.merge(:profile => File.expand_path('../fixtures/.trc', __FILE__))
         stub_delete("/1/friendships/destroy.json").
           with(:query => {:screen_name => "sferik"}).
           to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})

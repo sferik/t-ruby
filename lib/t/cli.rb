@@ -2,11 +2,7 @@ require 'action_view'
 require 'launchy'
 require 'oauth'
 require 't/core_ext/string'
-require 't/delete'
-require 't/follow'
 require 't/rcfile'
-require 't/set'
-require 't/unfollow'
 require 'thor'
 require 'time'
 require 'twitter'
@@ -289,16 +285,20 @@ module T
 
     desc "delete SUBCOMMAND ...ARGS", "Delete Tweets, Direct Messages, etc."
     method_option :force, :aliases => "-f", :type => :boolean
-    subcommand 'delete', Delete
-
-    desc "set SUBCOMMAND ...ARGS", "Change various account settings."
-    subcommand 'set', Set
+    require 't/cli/delete'
+    subcommand 'delete', CLI::Delete
 
     desc "follow SUBCOMMAND ...ARGS", "Follow users."
-    subcommand 'follow', Follow
+    require 't/cli/follow'
+    subcommand 'follow', CLI::Follow
+
+    desc "set SUBCOMMAND ...ARGS", "Change various account settings."
+    require 't/cli/set'
+    subcommand 'set', CLI::Set
 
     desc "unfollow SUBCOMMAND ...ARGS", "Unfollow users."
-    subcommand 'unfollow', Unfollow
+    require 't/cli/unfollow'
+    subcommand 'unfollow', CLI::Unfollow
 
     no_tasks do
 

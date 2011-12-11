@@ -3,7 +3,7 @@ require 'thor'
 require 'twitter'
 
 module T
-  class Set < Thor
+  class CLI::Set < Thor
     DEFAULT_HOST = 'api.twitter.com'
     DEFAULT_PROTOCOL = 'https'
 

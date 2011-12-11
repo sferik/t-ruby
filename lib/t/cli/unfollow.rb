@@ -5,7 +5,7 @@ require 'thor'
 require 'twitter'
 
 module T
-  class Unfollow < Thor
+  class CLI::Unfollow < Thor
     DEFAULT_HOST = 'api.twitter.com'
     DEFAULT_PROTOCOL = 'https'
 

@@ -4,7 +4,7 @@ require 'thor'
 require 'twitter'
 
 module T
-  class Delete < Thor
+  class CLI::Delete < Thor
     DEFAULT_HOST = 'api.twitter.com'
     DEFAULT_PROTOCOL = 'https'
 

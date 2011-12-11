@@ -1,7 +1,7 @@
 # encoding: utf-8
 require 'helper'
 
-describe T::Set do
+describe T::CLI::Set do
 
   before do
     @t = T::CLI.new
@@ -19,7 +19,7 @@ describe T::Set do
 
   describe "#bio" do
     before do
-      @t.options = @t.options.merge(:profile => File.expand_path('../fixtures/.trc', __FILE__))
+      @t.options = @t.options.merge(:profile => File.expand_path('../../fixtures/.trc', __FILE__))
       stub_post("/1/account/update_profile.json").
         with(:body => {:description => "A mind forever voyaging through strange seas of thought, alone."}).
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -36,9 +36,9 @@ describe T::Set do
     end
   end
 
-  describe "#bio" do
+  describe "#default" do
     before do
-      @t.options = @t.options.merge(:profile => File.expand_path('../fixtures/.trc', __FILE__))
+      @t.options = @t.options.merge(:profile => File.expand_path('../../fixtures/.trc', __FILE__))
     end
     it "should have the correct output" do
       @t.set("default", "testcli", "abc123")
@@ -48,7 +48,7 @@ describe T::Set do
 
   describe "#language" do
     before do
-      @t.options = @t.options.merge(:profile => File.expand_path('../fixtures/.trc', __FILE__))
+      @t.options = @t.options.merge(:profile => File.expand_path('../../fixtures/.trc', __FILE__))
       stub_post("/1/account/settings.json").
         with(:body => {:lang => "en"}).
         to_return(:body => fixture("settings.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -67,7 +67,7 @@ describe T::Set do
 
   describe "#location" do
     before do
-      @t.options = @t.options.merge(:profile => File.expand_path('../fixtures/.trc', __FILE__))
+      @t.options = @t.options.merge(:profile => File.expand_path('../../fixtures/.trc', __FILE__))
       stub_post("/1/account/update_profile.json").
         with(:body => {:location => "San Francisco"}).
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -86,7 +86,7 @@ describe T::Set do
 
   describe "#name" do
     before do
-      @t.options = @t.options.merge(:profile => File.expand_path('../fixtures/.trc', __FILE__))
+      @t.options = @t.options.merge(:profile => File.expand_path('../../fixtures/.trc', __FILE__))
       stub_post("/1/account/update_profile.json").
         with(:body => {:name => "Erik Michaels-Ober"}).
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -105,7 +105,7 @@ describe T::Set do
 
   describe "#url" do
     before do
-      @t.options = @t.options.merge(:profile => File.expand_path('../fixtures/.trc', __FILE__))
+      @t.options = @t.options.merge(:profile => File.expand_path('../../fixtures/.trc', __FILE__))
       stub_post("/1/account/update_profile.json").
         with(:body => {:url => "https://github.com/sferik"}).
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})

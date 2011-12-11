@@ -5,7 +5,7 @@ require 'thor'
 require 'twitter'
 
 module T
-  class Follow < Thor
+  class CLI::Follow < Thor
     DEFAULT_HOST = 'api.twitter.com'
     DEFAULT_PROTOCOL = 'https'
 

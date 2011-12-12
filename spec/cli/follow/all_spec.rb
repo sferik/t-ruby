@@ -19,31 +19,72 @@ describe T::CLI::Follow::All do
   describe "#followers" do
     before do
       @t.options = @t.options.merge(:profile => fixture_path + "/.trc")
-      stub_get("/1/followers/ids.json").
-        with(:query => {:cursor => "-1"}).
-        to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_get("/1/friends/ids.json").
-        with(:query => {:cursor => "-1"}).
-        to_return(:body => fixture("followers_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_post("/1/friendships/create.json").
-        with(:body => {:user_id => "7505382"}).
-        to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
-    it "should request the correct resource" do
-      @t.follow("all", "followers")
-      a_get("/1/followers/ids.json").
-        with(:query => {:cursor => "-1"}).
-        should have_been_made
-      a_get("/1/friends/ids.json").
-        with(:query => {:cursor => "-1"}).
-        should have_been_made
-      a_post("/1/friendships/create.json").
-        with(:body => {:user_id => "7505382"}).
-        should have_been_made
+    context "no users" do
+      before do
+        stub_get("/1/followers/ids.json").
+          with(:query => {:cursor => "-1"}).
+          to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1/friends/ids.json").
+          with(:query => {:cursor => "-1"}).
+          to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should request the correct resource" do
+        @t.follow("all", "followers")
+        a_get("/1/followers/ids.json").
+          with(:query => {:cursor => "-1"}).
+          should have_been_made
+        a_get("/1/friends/ids.json").
+          with(:query => {:cursor => "-1"}).
+          should have_been_made
+      end
+      it "should have the correct output" do
+        @t.follow("all", "followers")
+        $stdout.string.chomp.should == "@testcli is already following all of his or her followers."
+      end
     end
-    it "should have the correct output" do
-      @t.follow("all", "followers")
-      $stdout.string.should =~ /^@testcli is now following @sferik\.$/
+    context "one user" do
+      before do
+        stub_get("/1/followers/ids.json").
+          with(:query => {:cursor => "-1"}).
+          to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1/friends/ids.json").
+          with(:query => {:cursor => "-1"}).
+          to_return(:body => fixture("followers_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_post("/1/friendships/create.json").
+          with(:body => {:user_id => "7505382"}).
+          to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should request the correct resource" do
+        $stdout.should_receive(:print).with("Are you sure you want to follow 1 more user? ")
+        $stdin.should_receive(:gets).and_return("yes")
+        @t.follow("all", "followers")
+        a_get("/1/followers/ids.json").
+          with(:query => {:cursor => "-1"}).
+          should have_been_made
+        a_get("/1/friends/ids.json").
+          with(:query => {:cursor => "-1"}).
+          should have_been_made
+        a_post("/1/friendships/create.json").
+          with(:body => {:user_id => "7505382"}).
+          should have_been_made
+      end
+      context "yes" do
+        it "should have the correct output" do
+          $stdout.should_receive(:print).with("Are you sure you want to follow 1 more user? ")
+          $stdin.should_receive(:gets).and_return("yes")
+          @t.follow("all", "followers")
+          $stdout.string.should =~ /^@testcli is now following @sferik\.$/
+        end
+      end
+      context "no" do
+        it "should have the correct output" do
+          $stdout.should_receive(:print).with("Are you sure you want to follow 1 more user? ")
+          $stdin.should_receive(:gets).and_return("no")
+          @t.follow("all", "followers")
+          $stdout.string.chomp.should == ""
+        end
+      end
     end
   end
 

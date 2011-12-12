@@ -83,7 +83,7 @@ describe T::CLI::Delete do
         end
         it "should request the correct resource" do
           $stdout.should_receive(:print).with("Are you sure you want to permanently delete the direct message to @hurrycane: Sounds good. Meeting Tuesday is fine.? ")
-          $stdin.should_receive(:gets).and_return("y")
+          $stdin.should_receive(:gets).and_return("yes")
           @t.delete("dm")
           a_get("/1/direct_messages/sent.json").
             with(:query => {:count => "1"}).
@@ -91,18 +91,21 @@ describe T::CLI::Delete do
           a_delete("/1/direct_messages/destroy/1773478249.json").
             should have_been_made
         end
-        it "should have the correct output" do
-          $stdout.should_receive(:print).with("Are you sure you want to permanently delete the direct message to @hurrycane: Sounds good. Meeting Tuesday is fine.? ")
-          $stdin.should_receive(:gets).and_return("y")
-          @t.delete("dm")
-          $stdout.string.chomp.should == "@sferik deleted the direct message sent to @pengwynn: Creating a fixture for the Twitter gem"
-        end
-        it "should exit" do
-          $stdout.should_receive(:print).with("Are you sure you want to permanently delete the direct message to @hurrycane: Sounds good. Meeting Tuesday is fine.? ")
-          $stdin.should_receive(:gets).and_return("n")
-          lambda do
+        context "yes" do
+          it "should have the correct output" do
+            $stdout.should_receive(:print).with("Are you sure you want to permanently delete the direct message to @hurrycane: Sounds good. Meeting Tuesday is fine.? ")
+            $stdin.should_receive(:gets).and_return("yes")
             @t.delete("dm")
-          end.should raise_error(SystemExit)
+            $stdout.string.chomp.should == "@sferik deleted the direct message sent to @pengwynn: Creating a fixture for the Twitter gem"
+          end
+        end
+        context "no" do
+          it "should have the correct output" do
+            $stdout.should_receive(:print).with("Are you sure you want to permanently delete the direct message to @hurrycane: Sounds good. Meeting Tuesday is fine.? ")
+            $stdin.should_receive(:gets).and_return("no")
+            @t.delete("dm")
+            $stdout.string.chomp.should == ""
+          end
         end
       end
     end
@@ -155,7 +158,7 @@ describe T::CLI::Delete do
         end
         it "should request the correct resource" do
           $stdout.should_receive(:print).with("Are you sure you want to delete the favorite of @z: Spilled grilled onions on myself.  I smell delicious!? ")
-          $stdin.should_receive(:gets).and_return("y")
+          $stdin.should_receive(:gets).and_return("yes")
           @t.delete("favorite")
           a_get("/1/favorites.json").
             with(:query => {:count => "1"}).
@@ -163,18 +166,21 @@ describe T::CLI::Delete do
           a_delete("/1/favorites/destroy/28439861609.json").
             should have_been_made
         end
-        it "should have the correct output" do
-          $stdout.should_receive(:print).with("Are you sure you want to delete the favorite of @z: Spilled grilled onions on myself.  I smell delicious!? ")
-          $stdin.should_receive(:gets).and_return("y")
-          @t.delete("favorite")
-          $stdout.string.should =~ /^@testcli unfavorited @z's latest status: Spilled grilled onions on myself\.  I smell delicious!$/
-        end
-        it "should exit" do
-          $stdout.should_receive(:print).with("Are you sure you want to delete the favorite of @z: Spilled grilled onions on myself.  I smell delicious!? ")
-          $stdin.should_receive(:gets).and_return("n")
-          lambda do
+        context "yes" do
+          it "should have the correct output" do
+            $stdout.should_receive(:print).with("Are you sure you want to delete the favorite of @z: Spilled grilled onions on myself.  I smell delicious!? ")
+            $stdin.should_receive(:gets).and_return("yes")
             @t.delete("favorite")
-          end.should raise_error(SystemExit)
+            $stdout.string.should =~ /^@testcli unfavorited @z's latest status: Spilled grilled onions on myself\.  I smell delicious!$/
+          end
+        end
+        context "no" do
+          it "should have the correct output" do
+            $stdout.should_receive(:print).with("Are you sure you want to delete the favorite of @z: Spilled grilled onions on myself.  I smell delicious!? ")
+            $stdin.should_receive(:gets).and_return("no")
+            @t.delete("favorite")
+            $stdout.string.chomp.should == ""
+          end
         end
       end
     end
@@ -224,25 +230,28 @@ describe T::CLI::Delete do
         end
         it "should request the correct resource" do
           $stdout.should_receive(:print).with("Are you sure you want to permanently delete the status: RT @tenderlove: [ANN] sqlite3-ruby =&gt; sqlite3? ")
-          $stdin.should_receive(:gets).and_return("y")
+          $stdin.should_receive(:gets).and_return("yes")
           @t.delete("status")
           a_get("/1/account/verify_credentials.json").
             should have_been_made
           a_delete("/1/statuses/destroy/26755176471724032.json").
             should have_been_made
         end
-        it "should have the correct output" do
-          $stdout.should_receive(:print).with("Are you sure you want to permanently delete the status: RT @tenderlove: [ANN] sqlite3-ruby =&gt; sqlite3? ")
-          $stdin.should_receive(:gets).and_return("y")
-          @t.delete("status")
-          $stdout.string.chomp.should == "@testcli deleted the status: @noradio working on implementing #NewTwitter API methods in the twitter gem. Twurl is making it easy. Thank you!"
-        end
-        it "should exit" do
-          $stdout.should_receive(:print).with("Are you sure you want to permanently delete the status: RT @tenderlove: [ANN] sqlite3-ruby =&gt; sqlite3? ")
-          $stdin.should_receive(:gets).and_return("n")
-          lambda do
+        context "yes" do
+          it "should have the correct output" do
+            $stdout.should_receive(:print).with("Are you sure you want to permanently delete the status: RT @tenderlove: [ANN] sqlite3-ruby =&gt; sqlite3? ")
+            $stdin.should_receive(:gets).and_return("yes")
             @t.delete("status")
-          end.should raise_error(SystemExit)
+            $stdout.string.chomp.should == "@testcli deleted the status: @noradio working on implementing #NewTwitter API methods in the twitter gem. Twurl is making it easy. Thank you!"
+          end
+        end
+        context "no" do
+          it "should have the correct output" do
+            $stdout.should_receive(:print).with("Are you sure you want to permanently delete the status: RT @tenderlove: [ANN] sqlite3-ruby =&gt; sqlite3? ")
+            $stdin.should_receive(:gets).and_return("no")
+            @t.delete("status")
+            $stdout.string.chomp.should == ""
+          end
         end
       end
     end

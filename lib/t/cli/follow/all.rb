@@ -33,8 +33,12 @@ module T
             friend_ids += cursor.ids
             cursor = cursor.next_cursor
           end
-          users = (follower_ids - friend_ids).map do |friend_id|
-            client.follow(friend_id)
+          follow_ids = (follower_ids - friend_ids)
+          number = follow_ids.length
+          return say "@#{@rcfile.default_profile[0]} is already following all of his or her followers." if number.zero?
+          return unless yes? "Are you sure you want to follow #{number} more #{number == 1 ? 'user' : 'users'}?"
+          users = follow_ids.map do |follow_id|
+            client.follow(follow_id)
           end
           screen_names = users.map(&:screen_name)
           say "@#{@rcfile.default_profile[0]} is now following #{screen_names.map{|screen_name| "@#{screen_name}"}.to_sentence}."

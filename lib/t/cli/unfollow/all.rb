@@ -17,7 +17,7 @@ module T
           @rcfile = RCFile.instance
         end
 
-        desc "nonfollowers", "Unollow all nonfollowers."
+        desc "nonfollowers", "Unfollow all non-followers."
         def nonfollowers
           friend_ids = []
           cursor = -1
@@ -33,8 +33,12 @@ module T
             follower_ids += cursor.ids
             cursor = cursor.next_cursor
           end
-          users = (friend_ids - follower_ids).map do |friend_id|
-            client.unfollow(friend_id)
+          follow_ids = (friend_ids - follower_ids)
+          number = follow_ids.length
+          return say "@#{@rcfile.default_profile[0]} is already not following any non-followers." if number.zero?
+          return unless yes? "Are you sure you want to unfollow #{number} #{number == 1 ? 'user' : 'users'}?"
+          users = follow_ids.map do |follow_id|
+            client.unfollow(follow_id)
           end
           screen_names = users.map(&:screen_name)
           say "@#{@rcfile.default_profile[0]} is no longer following #{screen_names.map{|screen_name| "@#{screen_name}"}.to_sentence}."

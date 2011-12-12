@@ -100,9 +100,17 @@ Account information is stored in the YAML-formatted file `~/.trc`.
 
     t follow user sferik
 
-### <a name="leave"></a>Stop following a user
+### <a name="follow-all"></a>Following all followers
+
+    t follow all followers
+
+### <a name="unfollow"></a>Stop following a user
 
     t unfollow user sferik
+
+### <a name="unfollow-nonfollowers"></a>Unfollow all non-followers
+
+    t unfollow all nonfollowers
 
 ### <a name="timeline"></a>Retrieve the timeline of status updates from users you are following
 

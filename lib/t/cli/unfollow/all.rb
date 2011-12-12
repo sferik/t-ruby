@@ -1,4 +1,3 @@
-require 'active_support/core_ext/array/conversions'
 require 't/rcfile'
 require 'thor'
 require 'twitter'
@@ -38,10 +37,12 @@ module T
           return say "@#{@rcfile.default_profile[0]} is already not following any non-followers." if number.zero?
           return unless yes? "Are you sure you want to unfollow #{number} #{number == 1 ? 'user' : 'users'}?"
           users = follow_ids.map do |follow_id|
-            client.unfollow(follow_id)
+            user = client.unfollow(follow_id)
+            say "@#{@rcfile.default_profile[0]} is no longer following @#{user.screen_name}."
+            user
           end
           screen_names = users.map(&:screen_name)
-          say "@#{@rcfile.default_profile[0]} is no longer following #{screen_names.map{|screen_name| "@#{screen_name}"}.to_sentence}."
+          say "@#{@rcfile.default_profile[0]} is no longer following #{number} #{number == 1 ? 'user' : 'users'}."
           say
           say "Run `#{$0} follow users #{screen_names.join(' ')}` to follow again."
         end

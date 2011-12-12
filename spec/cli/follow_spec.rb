@@ -64,7 +64,9 @@ describe T::CLI::Follow do
       end
       it "should have the correct output" do
         @t.follow("users", "sferik", "gem")
-        $stdout.string.should =~ /^@testcli is now following @sferik and @gem\.$/
+        $stdout.string.should =~ /^@testcli is now following @sferik\.$/
+        $stdout.string.should =~ /^@testcli is now following @gem\.$/
+        $stdout.string.should =~ /^@testcli is now following 2 more users\.$/
       end
     end
   end

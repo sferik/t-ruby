@@ -1,4 +1,3 @@
-require 'active_support/core_ext/array/conversions'
 require 't/core_ext/string'
 require 't/rcfile'
 require 'thor'
@@ -22,10 +21,13 @@ module T
         usernames.unshift(username)
         users = usernames.map do |username|
           username = username.strip_at
-          client.follow(username)
+          user = client.follow(username)
+          say "@#{@rcfile.default_profile[0]} is now following @#{user.screen_name}."
+          user
         end
+        number = users.length
         screen_names = users.map(&:screen_name)
-        say "@#{@rcfile.default_profile[0]} is now following #{screen_names.map{|screen_name| "@#{screen_name}"}.to_sentence}."
+        say "@#{@rcfile.default_profile[0]} is now following #{number} more #{number == 1 ? 'user' : 'users'}."
         say
         say "Run `#{$0} unfollow users #{screen_names.join(' ')}` to stop."
       end

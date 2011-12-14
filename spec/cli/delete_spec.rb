@@ -186,6 +186,65 @@ describe T::CLI::Delete do
     end
   end
 
+  describe "#list" do
+    before do
+      @t.options = @t.options.merge(:profile => fixture_path + "/.trc")
+      stub_get("/1/account/verify_credentials.json").
+        to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_delete("/1/lists/destroy.json").
+        with(:query => {:owner_screen_name => "sferik", :slug => "presidents"}).
+        to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+    end
+    context ":force => true" do
+      before do
+        @t.options = @t.options.merge(:force => true)
+      end
+      it "should request the correct resource" do
+        @t.delete("list", "presidents")
+        a_get("/1/account/verify_credentials.json").
+          should have_been_made
+        a_delete("/1/lists/destroy.json").
+          with(:query => {:owner_screen_name => "sferik", :slug => "presidents"}).
+          should have_been_made
+      end
+      it "should have the correct output" do
+        @t.delete("list", "presidents")
+        $stdout.string.chomp.should == "@testcli deleted the list: presidents"
+      end
+    end
+    context ":force => false" do
+      before do
+        @t.options = @t.options.merge(:force => false)
+      end
+      it "should request the correct resource" do
+        $stdout.should_receive(:print).with("Are you sure you want to permanently delete the list: presidents? ")
+        $stdin.should_receive(:gets).and_return("yes")
+        @t.delete("list", "presidents")
+        a_get("/1/account/verify_credentials.json").
+          should have_been_made
+        a_delete("/1/lists/destroy.json").
+          with(:query => {:owner_screen_name => "sferik", :slug => "presidents"}).
+          should have_been_made
+      end
+      context "yes" do
+        it "should have the correct output" do
+          $stdout.should_receive(:print).with("Are you sure you want to permanently delete the list: presidents? ")
+          $stdin.should_receive(:gets).and_return("yes")
+          @t.delete("list", "presidents")
+          $stdout.string.chomp.should == "@testcli deleted the list: presidents"
+        end
+      end
+      context "no" do
+        it "should have the correct output" do
+          $stdout.should_receive(:print).with("Are you sure you want to permanently delete the list: presidents? ")
+          $stdin.should_receive(:gets).and_return("no")
+          @t.delete("list", "presidents")
+          $stdout.string.chomp.should == ""
+        end
+      end
+    end
+  end
+
   describe "#status" do
     before do
       @t.options = @t.options.merge(:profile => fixture_path + "/.trc")

@@ -57,6 +57,15 @@ module T
       end
       map %w(fave) => :favorite
 
+      desc "list LISTNAME", "Delete a list."
+      def list(listname)
+        unless parent_options['force']
+          return unless yes? "Are you sure you want to permanently delete the list: #{listname}?"
+        end
+        status = client.list_destroy(listname)
+        say "@#{@rcfile.default_profile[0]} deleted the list: #{listname}"
+      end
+
       desc "status", "Delete a Tweet."
       def status
         user = client.user

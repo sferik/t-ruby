@@ -37,7 +37,6 @@ module T
         end
       end
     end
-    map %w(list ls) => :accounts
 
     desc "authorize", "Allows an application to request user authorization"
     method_option :consumer_key, :aliases => "-c", :required => true
@@ -303,6 +302,10 @@ module T
     desc "follow SUBCOMMAND ...ARGS", "Follow users."
     require 't/cli/follow'
     subcommand 'follow', CLI::Follow
+
+    desc "list SUBCOMMAND ...ARGS", "Do various things with lists."
+    require 't/cli/list'
+    subcommand 'list', CLI::List
 
     desc "set SUBCOMMAND ...ARGS", "Change various account settings."
     require 't/cli/set'

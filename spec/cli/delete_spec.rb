@@ -32,7 +32,7 @@ describe T::CLI::Delete do
     end
     it "should have the correct output" do
       @t.delete("block", "sferik")
-      $stdout.string.should =~ /^@testcli unblocked @sferik$/
+      $stdout.string.should =~ /^@testcli unblocked @sferik\.$/
     end
   end
 
@@ -209,7 +209,7 @@ describe T::CLI::Delete do
       end
       it "should have the correct output" do
         @t.delete("list", "presidents")
-        $stdout.string.chomp.should == "@testcli deleted the list: presidents"
+        $stdout.string.chomp.should == "@testcli deleted the list: presidents."
       end
     end
     context ":force => false" do
@@ -231,7 +231,7 @@ describe T::CLI::Delete do
           $stdout.should_receive(:print).with("Are you sure you want to permanently delete the list: presidents? ")
           $stdin.should_receive(:gets).and_return("yes")
           @t.delete("list", "presidents")
-          $stdout.string.chomp.should == "@testcli deleted the list: presidents"
+          $stdout.string.chomp.should == "@testcli deleted the list: presidents."
         end
       end
       context "no" do

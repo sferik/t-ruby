@@ -20,7 +20,7 @@ module T
       def block(username)
         username = username.strip_at
         user = client.unblock(username)
-        say "@#{@rcfile.default_profile[0]} unblocked @#{user.screen_name}"
+        say "@#{@rcfile.default_profile[0]} unblocked @#{user.screen_name}."
         say
         say "Run `#{$0} block #{user.screen_name}` to block."
       end
@@ -63,7 +63,7 @@ module T
           return unless yes? "Are you sure you want to permanently delete the list: #{listname}?"
         end
         status = client.list_destroy(listname)
-        say "@#{@rcfile.default_profile[0]} deleted the list: #{listname}"
+        say "@#{@rcfile.default_profile[0]} deleted the list: #{listname}."
       end
 
       desc "status", "Delete a Tweet."

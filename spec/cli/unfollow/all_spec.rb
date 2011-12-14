@@ -70,6 +70,7 @@ describe T::CLI::Unfollow::All do
           $stdin.should_receive(:gets).and_return("yes")
           @t.unfollow("all", "listed", "presidents")
           $stdout.string.should =~ /^@testcli is no longer following @sferik\.$/
+          $stdout.string.should =~ /^@testcli is no longer following 1 user\.$/
         end
       end
       context "no" do
@@ -143,6 +144,7 @@ describe T::CLI::Unfollow::All do
           $stdin.should_receive(:gets).and_return("yes")
           @t.unfollow("all", "nonfollowers")
           $stdout.string.should =~ /^@testcli is no longer following @sferik\.$/
+          $stdout.string.should =~ /^@testcli is no longer following 1 user\.$/
         end
       end
       context "no" do
@@ -222,6 +224,7 @@ describe T::CLI::Unfollow::All do
           $stdin.should_receive(:gets).and_return("yes")
           @t.unfollow("all", "users")
           $stdout.string.should =~ /^@testcli is no longer following @sferik\.$/
+          $stdout.string.should =~ /^@testcli is no longer following 4 users\.$/
         end
       end
       context "no" do

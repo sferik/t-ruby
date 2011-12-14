@@ -35,7 +35,7 @@ module T
           end
           say "@#{@rcfile.default_profile[0]} is no longer following #{number} #{number == 1 ? 'user' : 'users'}."
           say
-          say "Run `#{$0} follow users #{users.map(&:screen_name).join(' ')}` to follow again."
+          say "Run `#{$0} follow all listed #{listname}` to follow again."
         end
 
         desc "nonfollowers", "Unfollow all non-followers."

@@ -46,6 +46,28 @@ module T
           say "Run `#{$0} unfollow users #{users.map(&:screen_name).join(' ')}` to stop."
         end
 
+        desc "listed LISTNAME", "Follow all members of a list."
+        def listed(listname)
+          list_members = []
+          cursor = -1
+          until cursor == 0
+            cursor = client.list_members(listname, :cursor => cursor, :skip_status => true, :include_entities => false)
+            list_members += cursor.users
+            cursor = cursor.next_cursor
+          end
+          number = list_members.length
+          return say "@#{@rcfile.default_profile[0]} is already following all list members." if number.zero?
+          return unless yes? "Are you sure you want to follow #{number} more #{number == 1 ? 'user' : 'users'}?"
+          users = list_members.map do |list_member|
+            user = client.follow(list_member.id)
+            say "@#{@rcfile.default_profile[0]} is now following @#{user.screen_name}."
+            user
+          end
+          say "@#{@rcfile.default_profile[0]} is now following #{number} more #{number == 1 ? 'user' : 'users'}."
+          say
+          say "Run `#{$0} unfollow all listed #{listname}` to stop."
+        end
+
       private
 
         def base_url

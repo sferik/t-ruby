@@ -16,6 +16,28 @@ module T
           @rcfile = RCFile.instance
         end
 
+        desc "listed LISTNAME", "Unfollow all members of a list."
+        def listed(listname)
+          list_members = []
+          cursor = -1
+          until cursor == 0
+            cursor = client.list_members(listname, :cursor => cursor, :skip_status => true, :include_entities => false)
+            list_members += cursor.users
+            cursor = cursor.next_cursor
+          end
+          number = list_members.length
+          return say "@#{@rcfile.default_profile[0]} is already not following any list members." if number.zero?
+          return unless yes? "Are you sure you want to unfollow #{number} #{number == 1 ? 'user' : 'users'}?"
+          users = list_members.map do |list_member|
+            user = client.unfollow(list_member.id)
+            say "@#{@rcfile.default_profile[0]} is no longer following @#{user.screen_name}."
+            user
+          end
+          say "@#{@rcfile.default_profile[0]} is no longer following #{number} #{number == 1 ? 'user' : 'users'}."
+          say
+          say "Run `#{$0} follow users #{users.map(&:screen_name).join(' ')}` to follow again."
+        end
+
         desc "nonfollowers", "Unfollow all non-followers."
         def nonfollowers
           friend_ids = []

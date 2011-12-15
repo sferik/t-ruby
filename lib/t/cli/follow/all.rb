@@ -35,7 +35,7 @@ module T
           follow_ids = (follower_ids - friend_ids)
           number = follow_ids.length
           return say "@#{@rcfile.default_profile[0]} is already following all of his or her followers." if number.zero?
-          return unless yes? "Are you sure you want to follow #{number} more #{number == 1 ? 'user' : 'users'}?"
+          return unless yes? "Are you sure you want to follow #{number} #{number == 1 ? 'user' : 'users'}?"
           users = follow_ids.map do |follow_id|
             user = client.follow(follow_id)
             say "@#{@rcfile.default_profile[0]} is now following @#{user.screen_name}."
@@ -57,7 +57,7 @@ module T
           end
           number = list_members.length
           return say "@#{@rcfile.default_profile[0]} is already following all list members." if number.zero?
-          return unless yes? "Are you sure you want to follow #{number} more #{number == 1 ? 'user' : 'users'}?"
+          return unless yes? "Are you sure you want to follow #{number} #{number == 1 ? 'user' : 'users'}?"
           users = list_members.map do |list_member|
             user = client.follow(list_member.id)
             say "@#{@rcfile.default_profile[0]} is now following @#{user.screen_name}."

@@ -1,3 +1,4 @@
+require 't/core_ext/string'
 require 't/rcfile'
 require 'thor'
 require 'twitter'
@@ -23,6 +24,7 @@ module T
 
       desc "default USERNAME [CONSUMER_KEY]", "Set your default account."
       def default(username, consumer_key=nil)
+        username = username.strip_at
         @rcfile.path = parent_options['profile'] if parent_options['profile']
         consumer_key = rcfile[username].keys.last if consumer_key.nil?
         @rcfile.default_profile = {'username' => username, 'consumer_key' => consumer_key}

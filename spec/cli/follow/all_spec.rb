@@ -56,7 +56,7 @@ describe T::CLI::Follow::All do
           to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should request the correct resource" do
-        $stdout.should_receive(:print).with("Are you sure you want to follow 1 more user? ")
+        $stdout.should_receive(:print).with("Are you sure you want to follow 1 user? ")
         $stdin.should_receive(:gets).and_return("yes")
         @t.follow("all", "followers")
         a_get("/1/followers/ids.json").
@@ -71,7 +71,7 @@ describe T::CLI::Follow::All do
       end
       context "yes" do
         it "should have the correct output" do
-          $stdout.should_receive(:print).with("Are you sure you want to follow 1 more user? ")
+          $stdout.should_receive(:print).with("Are you sure you want to follow 1 user? ")
           $stdin.should_receive(:gets).and_return("yes")
           @t.follow("all", "followers")
           $stdout.string.should =~ /^@testcli is now following @sferik\.$/
@@ -79,7 +79,7 @@ describe T::CLI::Follow::All do
       end
       context "no" do
         it "should have the correct output" do
-          $stdout.should_receive(:print).with("Are you sure you want to follow 1 more user? ")
+          $stdout.should_receive(:print).with("Are you sure you want to follow 1 user? ")
           $stdin.should_receive(:gets).and_return("no")
           @t.follow("all", "followers")
           $stdout.string.chomp.should == ""
@@ -124,7 +124,7 @@ describe T::CLI::Follow::All do
           to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should request the correct resource" do
-        $stdout.should_receive(:print).with("Are you sure you want to follow 1 more user? ")
+        $stdout.should_receive(:print).with("Are you sure you want to follow 1 user? ")
         $stdin.should_receive(:gets).and_return("yes")
         @t.follow("all", "listed", "presidents")
         a_get("/1/account/verify_credentials.json").
@@ -138,7 +138,7 @@ describe T::CLI::Follow::All do
       end
       context "yes" do
         it "should have the correct output" do
-          $stdout.should_receive(:print).with("Are you sure you want to follow 1 more user? ")
+          $stdout.should_receive(:print).with("Are you sure you want to follow 1 user? ")
           $stdin.should_receive(:gets).and_return("yes")
           @t.follow("all", "listed", "presidents")
           $stdout.string.should =~ /^@testcli is now following @sferik\.$/
@@ -147,7 +147,7 @@ describe T::CLI::Follow::All do
       end
       context "no" do
         it "should have the correct output" do
-          $stdout.should_receive(:print).with("Are you sure you want to follow 1 more user? ")
+          $stdout.should_receive(:print).with("Are you sure you want to follow 1 user? ")
           $stdin.should_receive(:gets).and_return("no")
           @t.follow("all", "listed", "presidents")
           $stdout.string.chomp.should == ""

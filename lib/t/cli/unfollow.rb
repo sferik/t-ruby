@@ -26,10 +26,9 @@ module T
           user
         end
         number = users.length
-        screen_names = users.map(&:screen_name)
         say "@#{@rcfile.default_profile[0]} is no longer following #{number} #{number == 1 ? 'user' : 'users'}."
         say
-        say "Run `#{$0} follow users #{screen_names.join(' ')}` to follow again."
+        say "Run `#{$0} follow users #{usernames.join(' ')}` to follow again."
       end
 
       desc "all SUBCOMMAND ...ARGS", "Follow all users."

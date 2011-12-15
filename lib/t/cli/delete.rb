@@ -16,10 +16,10 @@ module T
         @rcfile = RCFile.instance
       end
 
-      desc "block USERNAME", "Unblock a user."
-      def block(username)
-        username = username.strip_at
-        user = client.unblock(username)
+      desc "block USER_NAME", "Unblock a user."
+      def block(user_name)
+        user_name = user_name.strip_at
+        user = client.unblock(user_name)
         say "@#{@rcfile.default_profile[0]} unblocked @#{user.screen_name}."
         say
         say "Run `#{$0} block #{user.screen_name}` to block."
@@ -57,13 +57,13 @@ module T
       end
       map %w(fave) => :favorite
 
-      desc "list LISTNAME", "Delete a list."
-      def list(listname)
+      desc "list LIST_NAME", "Delete a list."
+      def list(list_name)
         unless parent_options['force']
-          return unless yes? "Are you sure you want to permanently delete the list: #{listname}?"
+          return unless yes? "Are you sure you want to permanently delete the list: #{list_name}?"
         end
-        status = client.list_destroy(listname)
-        say "@#{@rcfile.default_profile[0]} deleted the list: #{listname}."
+        status = client.list_destroy(list_name)
+        say "@#{@rcfile.default_profile[0]} deleted the list: #{list_name}."
       end
 
       desc "status", "Delete a Tweet."

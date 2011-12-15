@@ -16,19 +16,19 @@ module T
         @rcfile = RCFile.instance
       end
 
-      desc "users USERNAME [USERNAME...]", "Allows you to stop following users."
-      def users(username, *usernames)
-        usernames.unshift(username)
-        users = usernames.map do |username|
-          username = username.strip_at
-          user = client.unfollow(username)
+      desc "users USER_NAME [USER_NAME...]", "Allows you to stop following users."
+      def users(user_name, *user_names)
+        user_names.unshift(user_name)
+        users = user_names.map do |user_name|
+          user_name = user_name.strip_at
+          user = client.unfollow(user_name)
           say "@#{@rcfile.default_profile[0]} is no longer following @#{user.screen_name}."
           user
         end
         number = users.length
         say "@#{@rcfile.default_profile[0]} is no longer following #{number} #{number == 1 ? 'user' : 'users'}."
         say
-        say "Run `#{$0} follow users #{usernames.join(' ')}` to follow again."
+        say "Run `#{$0} follow users #{user_names.join(' ')}` to follow again."
       end
 
       desc "all SUBCOMMAND ...ARGS", "Follow all users."

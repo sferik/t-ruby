@@ -22,12 +22,12 @@ module T
         say "@#{@rcfile.default_profile[0]}'s bio has been updated."
       end
 
-      desc "default USERNAME [CONSUMER_KEY]", "Set your default account."
-      def default(username, consumer_key=nil)
-        username = username.strip_at
+      desc "default USER_NAME [CONSUMER_KEY]", "Set your default account."
+      def default(user_name, consumer_key=nil)
+        user_name = user_name.strip_at
         @rcfile.path = parent_options['profile'] if parent_options['profile']
-        consumer_key = rcfile[username].keys.last if consumer_key.nil?
-        @rcfile.default_profile = {'username' => username, 'consumer_key' => consumer_key}
+        consumer_key = rcfile[user_name].keys.last if consumer_key.nil?
+        @rcfile.default_profile = {'username' => user_name, 'consumer_key' => consumer_key}
         say "Default account has been updated."
       end
 

@@ -17,18 +17,18 @@ module T
           @rcfile = RCFile.instance
         end
 
-        desc "users LISTNAME USERNAME [USERNAME...]", "Remove users from a list."
-        def users(listname, username, *usernames)
-          usernames.unshift(username)
-          usernames.each do |username|
-            username = username.strip_at
-            client.list_remove_member(listname, username)
-            say "@#{@rcfile.default_profile[0]} removed @#{username} from the list: #{listname}."
+        desc "users LIST_NAME USER_NAME [USER_NAME...]", "Remove users from a list."
+        def users(list_name, user_name, *user_names)
+          user_names.unshift(user_name)
+          user_names.each do |user_name|
+            user_name = user_name.strip_at
+            client.list_remove_member(list_name, user_name)
+            say "@#{@rcfile.default_profile[0]} removed @#{user_name} from the list: #{list_name}."
           end
-          number = usernames.length
-          say "@#{@rcfile.default_profile[0]} removed #{number} #{number == 1 ? 'user' : 'users'} from the list: #{listname}."
+          number = user_names.length
+          say "@#{@rcfile.default_profile[0]} removed #{number} #{number == 1 ? 'user' : 'users'} from the list: #{list_name}."
           say
-          say "Run `#{$0} list add users #{listname} #{usernames.join(' ')}` to undo."
+          say "Run `#{$0} list add users #{list_name} #{user_names.join(' ')}` to undo."
         end
 
       private

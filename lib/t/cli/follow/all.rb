@@ -21,51 +21,50 @@ module T
           follower_ids = []
           cursor = -1
           until cursor == 0
-            cursor = client.follower_ids(:cursor => cursor)
-            follower_ids += cursor.ids
-            cursor = cursor.next_cursor
+            followers = client.follower_ids(:cursor => cursor)
+            follower_ids += followers.ids
+            cursor = followers.next_cursor
           end
           friend_ids = []
           cursor = -1
           until cursor == 0
-            cursor = client.friend_ids(:cursor => cursor)
-            friend_ids += cursor.ids
-            cursor = cursor.next_cursor
+            friends = client.friend_ids(:cursor => cursor)
+            friend_ids += friends.ids
+            cursor = friends.next_cursor
           end
           follow_ids = (follower_ids - friend_ids)
           number = follow_ids.length
           return say "@#{@rcfile.default_profile[0]} is already following all of his or her followers." if number.zero?
           return unless yes? "Are you sure you want to follow #{number} #{number == 1 ? 'user' : 'users'}?"
-          users = follow_ids.map do |follow_id|
+          screen_names = follow_ids.map do |follow_id|
             user = client.follow(follow_id)
             say "@#{@rcfile.default_profile[0]} is now following @#{user.screen_name}."
-            user
+            user.screen_name
           end
           say "@#{@rcfile.default_profile[0]} is now following #{number} more #{number == 1 ? 'user' : 'users'}."
           say
-          say "Run `#{$0} unfollow users #{users.map(&:screen_name).join(' ')}` to stop."
+          say "Run `#{$0} unfollow users #{screen_names.join(' ')}` to stop."
         end
 
-        desc "listed LISTNAME", "Follow all members of a list."
-        def listed(listname)
-          list_members = []
+        desc "listed LIST_NAME", "Follow all members of a list."
+        def listed(list_name)
+          list_member_collection = []
           cursor = -1
           until cursor == 0
-            cursor = client.list_members(listname, :cursor => cursor, :skip_status => true, :include_entities => false)
-            list_members += cursor.users
-            cursor = cursor.next_cursor
+            list_members = client.list_members(list_name, :cursor => cursor, :skip_status => true, :include_entities => false)
+            list_member_collection += list_members.users
+            cursor = list_members.next_cursor
           end
-          number = list_members.length
+          number = list_member_collection.length
           return say "@#{@rcfile.default_profile[0]} is already following all list members." if number.zero?
           return unless yes? "Are you sure you want to follow #{number} #{number == 1 ? 'user' : 'users'}?"
-          users = list_members.map do |list_member|
+          list_member_collection.each do |list_member|
             user = client.follow(list_member.id)
             say "@#{@rcfile.default_profile[0]} is now following @#{user.screen_name}."
-            user
           end
           say "@#{@rcfile.default_profile[0]} is now following #{number} more #{number == 1 ? 'user' : 'users'}."
           say
-          say "Run `#{$0} unfollow all listed #{listname}` to stop."
+          say "Run `#{$0} unfollow all listed #{list_name}` to stop."
         end
 
       private

@@ -24,6 +24,14 @@ module T
         say "@#{@rcfile.default_profile[0]} created the list: #{list.name}."
       end
 
+      desc "add SUBCOMMAND ...ARGS", "Add users to a list."
+      require 't/cli/list/add'
+      subcommand 'add', CLI::List::Add
+
+      desc "remove SUBCOMMAND ...ARGS", "Remove users from a list."
+      require 't/cli/list/remove'
+      subcommand 'remove', CLI::List::Remove
+
     private
 
       def base_url

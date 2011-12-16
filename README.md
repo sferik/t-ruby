@@ -96,21 +96,29 @@ Account information is stored in the YAML-formatted file `~/.trc`.
 
     t suggest
 
-### <a name="follow"></a>Start following a user
+### <a name="follow-users"></a>Start following @sferik and @gem
 
-    t follow user sferik
+    t follow users sferik gem
 
-### <a name="follow-all"></a>Following all followers
+### <a name="follow-all-followers"></a>Following all followers
 
     t follow all followers
 
-### <a name="unfollow"></a>Stop following a user
+### <a name="follow-all-listed"></a>Following all members of the list named "presidents"
 
-    t unfollow user sferik
+    t follow all listed presidents
 
-### <a name="unfollow-nonfollowers"></a>Unfollow all non-followers
+### <a name="unfollow-users"></a>Stop following @sferik and @gem
+
+    t unfollow users sferik gem
+
+### <a name="unfollow-all-nonfollowers"></a>Unfollow all non-followers
 
     t unfollow all nonfollowers
+
+### <a name="unfollow-all-listed"></a>Unfollow all members of the list named "presidents"
+
+    t unfollow all listed presidents
 
 ### <a name="timeline"></a>Retrieve the timeline of status updates from users you are following
 
@@ -123,6 +131,10 @@ Account information is stored in the YAML-formatted file `~/.trc`.
 ### <a name="favorites"></a>Retrieve the timeline of status updates that you favorited
 
     t favorites
+
+### <a name="list-timeline"></a>Retrieve the timeline of status updates from the list presidents
+
+    t list timeline presidents
 
 ### <a name="reply"></a>Reply to a Tweet
 

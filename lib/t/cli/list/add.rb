@@ -23,10 +23,14 @@ module T
           user_names.map!{|user_name| user_name.strip_at}
           client.list_add_members(list_name, user_names)
           number = user_names.length
-          say "@#{@rcfile.default_profile[0]} added #{number} #{number == 1 ? 'user' : 'users'} to the list: #{list_name}."
+          say "@#{@rcfile.default_profile[0]} added #{number} #{number == 1 ? 'user' : 'users'} to the list \"#{list_name}\"."
           say
           say "Run `#{$0} list remove users #{list_name} #{user_names.join(' ')}` to undo."
         end
+
+        desc "all SUBCOMMAND ...ARGS", "Add all users to a list."
+        require 't/cli/list/add/all'
+        subcommand 'all', CLI::List::Add::All
 
       private
 

@@ -35,7 +35,7 @@ describe T::CLI::List::Remove do
     end
     it "should have the correct output" do
       @t.list("remove", "users", "presidents", "sferik")
-      $stdout.string.should =~ /@testcli removed 1 user from the list: presidents\./
+      $stdout.string.should =~ /@testcli removed 1 user from the list "presidents"\./
     end
   end
 

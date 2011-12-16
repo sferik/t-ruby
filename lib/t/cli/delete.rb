@@ -30,10 +30,10 @@ module T
         direct_message = client.direct_messages_sent(:count => 1).first
         if direct_message
           unless parent_options['force']
-            return unless yes? "Are you sure you want to permanently delete the direct message to @#{direct_message.recipient.screen_name}: #{direct_message.text}?"
+            return unless yes? "Are you sure you want to permanently delete the direct message to @#{direct_message.recipient.screen_name}: \"#{direct_message.text}\"?"
           end
           direct_message = client.direct_message_destroy(direct_message.id)
-          say "@#{direct_message.sender.screen_name} deleted the direct message sent to @#{direct_message.recipient.screen_name}: #{direct_message.text}"
+          say "@#{direct_message.sender.screen_name} deleted the direct message sent to @#{direct_message.recipient.screen_name}: \"#{direct_message.text}\""
         else
           raise Thor::Error, "Direct Message not found"
         end
@@ -45,10 +45,10 @@ module T
         status = client.favorites(:count => 1).first
         if status
           unless parent_options['force']
-            return unless yes? "Are you sure you want to delete the favorite of @#{status.user.screen_name}: #{status.text}?"
+            return unless yes? "Are you sure you want to delete the favorite of @#{status.user.screen_name}'s latest status: \"#{status.text}\"?"
           end
           client.unfavorite(status.id)
-          say "@#{@rcfile.default_profile[0]} unfavorited @#{status.user.screen_name}'s latest status: #{status.text}"
+          say "@#{@rcfile.default_profile[0]} unfavorited @#{status.user.screen_name}'s latest status: \"#{status.text}\""
           say
           say "Run `#{$0} favorite #{status.user.screen_name}` to favorite."
         else
@@ -60,10 +60,10 @@ module T
       desc "list LIST_NAME", "Delete a list."
       def list(list_name)
         unless parent_options['force']
-          return unless yes? "Are you sure you want to permanently delete the list: #{list_name}?"
+          return unless yes? "Are you sure you want to permanently delete the list \"#{list_name}\"?"
         end
         status = client.list_destroy(list_name)
-        say "@#{@rcfile.default_profile[0]} deleted the list: #{list_name}."
+        say "@#{@rcfile.default_profile[0]} deleted the list \"#{list_name}\"."
       end
 
       desc "status", "Delete a Tweet."
@@ -71,10 +71,10 @@ module T
         user = client.user
         if user.status
           unless parent_options['force']
-            return unless yes? "Are you sure you want to permanently delete the status: #{user.status.text}?"
+            return unless yes? "Are you sure you want to permanently delete @#{@rcfile.default_profile[0]}'s latest status: \"#{user.status.text}\"?"
           end
           status = client.status_destroy(user.status.id)
-          say "@#{@rcfile.default_profile[0]} deleted the status: #{status.text}"
+          say "@#{@rcfile.default_profile[0]} deleted the status: \"#{status.text}\""
         else
           raise Thor::Error, "Tweet not found"
         end

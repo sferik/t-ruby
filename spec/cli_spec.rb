@@ -177,7 +177,7 @@ describe T::CLI do
       end
       it "should have the correct output" do
         @t.favorite("sferik")
-        $stdout.string.should =~ /^@testcli favorited @sferik's latest status: RT @tenderlove: \[ANN\] sqlite3-ruby =&gt; sqlite3$/
+        $stdout.string.should =~ /^@testcli favorited @sferik's latest status: "RT @tenderlove: \[ANN\] sqlite3-ruby =&gt; sqlite3"$/
       end
     end
     context "found" do
@@ -198,7 +198,7 @@ describe T::CLI do
       end
       it "should have the correct output" do
         @t.favorite("sferik")
-        $stdout.string.should =~ /^@testcli favorited @sferik's latest status: RT @tenderlove: \[ANN\] sqlite3-ruby =&gt; sqlite3$/
+        $stdout.string.should =~ /^@testcli favorited @sferik's latest status: "RT @tenderlove: \[ANN\] sqlite3-ruby =&gt; sqlite3"$/
       end
     end
   end
@@ -389,7 +389,7 @@ describe T::CLI do
       end
       it "should have the correct output" do
         @t.retweet("sferik")
-        $stdout.string.should =~ /^@testcli retweeted @sferik's latest status: RT @tenderlove: \[ANN\] sqlite3-ruby =&gt; sqlite3$/
+        $stdout.string.should =~ /^@testcli retweeted @sferik's latest status: "RT @tenderlove: \[ANN\] sqlite3-ruby =&gt; sqlite3"$/
       end
     end
     context "found" do
@@ -410,7 +410,7 @@ describe T::CLI do
       end
       it "should have the correct output" do
         @t.retweet("sferik")
-        $stdout.string.should =~ /^@testcli retweeted @sferik's latest status: RT @tenderlove: \[ANN\] sqlite3-ruby =&gt; sqlite3$/
+        $stdout.string.should =~ /^@testcli retweeted @sferik's latest status: "RT @tenderlove: \[ANN\] sqlite3-ruby =&gt; sqlite3"$/
       end
     end
   end

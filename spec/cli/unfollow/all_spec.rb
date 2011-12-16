@@ -188,18 +188,9 @@ describe T::CLI::Unfollow::All do
         stub_delete("/1/friendships/destroy.json").
           with(:query => {:user_id => "7505382"}).
           to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_delete("/1/friendships/destroy.json").
-          with(:query => {:user_id => "213747670"}).
-          to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_delete("/1/friendships/destroy.json").
-          with(:query => {:user_id => "428004849"}).
-          to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_delete("/1/friendships/destroy.json").
-          with(:query => {:user_id => "428334643"}).
-          to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should request the correct resource" do
-        $stdout.should_receive(:print).with("Are you sure you want to unfollow 4 users? ")
+        $stdout.should_receive(:print).with("Are you sure you want to unfollow 1 user? ")
         $stdin.should_receive(:gets).and_return("yes")
         @t.unfollow("all", "users")
         a_get("/1/friends/ids.json").
@@ -208,28 +199,19 @@ describe T::CLI::Unfollow::All do
         a_delete("/1/friendships/destroy.json").
           with(:query => {:user_id => "7505382"}).
           should have_been_made
-        a_delete("/1/friendships/destroy.json").
-          with(:query => {:user_id => "213747670"}).
-          should have_been_made
-        a_delete("/1/friendships/destroy.json").
-          with(:query => {:user_id => "428004849"}).
-          should have_been_made
-        a_delete("/1/friendships/destroy.json").
-          with(:query => {:user_id => "428334643"}).
-          should have_been_made
       end
       context "yes" do
         it "should have the correct output" do
-          $stdout.should_receive(:print).with("Are you sure you want to unfollow 4 users? ")
+          $stdout.should_receive(:print).with("Are you sure you want to unfollow 1 user? ")
           $stdin.should_receive(:gets).and_return("yes")
           @t.unfollow("all", "users")
           $stdout.string.should =~ /^@testcli is no longer following @sferik\.$/
-          $stdout.string.should =~ /^@testcli is no longer following 4 users\.$/
+          $stdout.string.should =~ /^@testcli is no longer following 1 user\.$/
         end
       end
       context "no" do
         it "should have the correct output" do
-          $stdout.should_receive(:print).with("Are you sure you want to unfollow 4 users? ")
+          $stdout.should_receive(:print).with("Are you sure you want to unfollow 1 user? ")
           $stdin.should_receive(:gets).and_return("no")
           @t.unfollow("all", "users")
           $stdout.string.chomp.should == ""

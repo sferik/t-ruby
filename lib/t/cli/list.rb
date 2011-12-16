@@ -23,8 +23,8 @@ module T
       def create(list_name, description="")
         hash = description.blank? ? {} : {:description => description}
         hash.merge!(:mode => 'private') if options['private']
-        list = client.list_create(list_name, hash)
-        say "@#{@rcfile.default_profile[0]} created the list: #{list.name}."
+        client.list_create(list_name, hash)
+        say "@#{@rcfile.default_profile[0]} created the list \"#{list_name}\"."
       end
 
       desc "timeline LIST_NAME", "Show tweet timeline for members of the specified list."

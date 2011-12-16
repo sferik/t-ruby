@@ -31,7 +31,7 @@ describe T::CLI::List do
     end
     it "should have the correct output" do
       @t.list("create", "presidents")
-      $stdout.string.chomp.should == "@testcli created the list: presidents."
+      $stdout.string.chomp.should == "@testcli created the list \"presidents\"."
     end
   end
 

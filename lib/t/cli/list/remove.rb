@@ -23,10 +23,10 @@ module T
           user_names.each do |user_name|
             user_name = user_name.strip_at
             client.list_remove_member(list_name, user_name)
-            say "@#{@rcfile.default_profile[0]} removed @#{user_name} from the list: #{list_name}."
+            say "@#{@rcfile.default_profile[0]} removed @#{user_name} from the list \"#{list_name}\"."
           end
           number = user_names.length
-          say "@#{@rcfile.default_profile[0]} removed #{number} #{number == 1 ? 'user' : 'users'} from the list: #{list_name}."
+          say "@#{@rcfile.default_profile[0]} removed #{number} #{number == 1 ? 'user' : 'users'} from the list \"#{list_name}\"."
           say
           say "Run `#{$0} list add users #{list_name} #{user_names.join(' ')}` to undo."
         end

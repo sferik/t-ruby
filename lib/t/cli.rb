@@ -108,7 +108,7 @@ module T
       user = client.user(user_name)
       if user.status
         client.favorite(user.status.id)
-        say "@#{@rcfile.default_profile[0]} favorited @#{user.screen_name}'s latest status: #{user.status.text}"
+        say "@#{@rcfile.default_profile[0]} favorited @#{user.screen_name}'s latest status: \"#{user.status.text}\""
         say
         say "Run `#{$0} delete favorite` to unfavorite."
       else
@@ -116,7 +116,7 @@ module T
       end
     rescue Twitter::Error::Forbidden => error
       if error.message =~ /You have already favorited this status\./
-        say "@#{@rcfile.default_profile[0]} favorited @#{user.screen_name}'s latest status: #{user.status.text}"
+        say "@#{@rcfile.default_profile[0]} favorited @#{user.screen_name}'s latest status: \"#{user.status.text}\""
       else
         raise
       end
@@ -191,7 +191,7 @@ module T
       user = client.user(user_name)
       if user.status
         client.retweet(user.status.id)
-        say "@#{@rcfile.default_profile[0]} retweeted @#{user.screen_name}'s latest status: #{user.status.text}"
+        say "@#{@rcfile.default_profile[0]} retweeted @#{user.screen_name}'s latest status: \"#{user.status.text}\""
         say
         say "Run `#{$0} delete status` to undo."
       else
@@ -199,7 +199,7 @@ module T
       end
     rescue Twitter::Error::Forbidden => error
       if error.message =~ /sharing is not permissable for this status \(Share validations failed\)/
-        say "@#{@rcfile.default_profile[0]} retweeted @#{user.screen_name}'s latest status: #{user.status.text}"
+        say "@#{@rcfile.default_profile[0]} retweeted @#{user.screen_name}'s latest status: \"#{user.status.text}\""
       else
         raise
       end

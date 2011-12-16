@@ -74,7 +74,7 @@ describe T::CLI::Delete do
         end
         it "should have the correct output" do
           @t.delete("dm")
-          $stdout.string.chomp.should == "@sferik deleted the direct message sent to @pengwynn: Creating a fixture for the Twitter gem"
+          $stdout.string.chomp.should == "@sferik deleted the direct message sent to @pengwynn: \"Creating a fixture for the Twitter gem\""
         end
       end
       context ":force => false" do
@@ -82,7 +82,7 @@ describe T::CLI::Delete do
           @t.options = @t.options.merge(:force => false)
         end
         it "should request the correct resource" do
-          $stdout.should_receive(:print).with("Are you sure you want to permanently delete the direct message to @hurrycane: Sounds good. Meeting Tuesday is fine.? ")
+          $stdout.should_receive(:print).with("Are you sure you want to permanently delete the direct message to @hurrycane: \"Sounds good. Meeting Tuesday is fine.\"? ")
           $stdin.should_receive(:gets).and_return("yes")
           @t.delete("dm")
           a_get("/1/direct_messages/sent.json").
@@ -93,15 +93,15 @@ describe T::CLI::Delete do
         end
         context "yes" do
           it "should have the correct output" do
-            $stdout.should_receive(:print).with("Are you sure you want to permanently delete the direct message to @hurrycane: Sounds good. Meeting Tuesday is fine.? ")
+            $stdout.should_receive(:print).with("Are you sure you want to permanently delete the direct message to @hurrycane: \"Sounds good. Meeting Tuesday is fine.\"? ")
             $stdin.should_receive(:gets).and_return("yes")
             @t.delete("dm")
-            $stdout.string.chomp.should == "@sferik deleted the direct message sent to @pengwynn: Creating a fixture for the Twitter gem"
+            $stdout.string.chomp.should == "@sferik deleted the direct message sent to @pengwynn: \"Creating a fixture for the Twitter gem\""
           end
         end
         context "no" do
           it "should have the correct output" do
-            $stdout.should_receive(:print).with("Are you sure you want to permanently delete the direct message to @hurrycane: Sounds good. Meeting Tuesday is fine.? ")
+            $stdout.should_receive(:print).with("Are you sure you want to permanently delete the direct message to @hurrycane: \"Sounds good. Meeting Tuesday is fine.\"? ")
             $stdin.should_receive(:gets).and_return("no")
             @t.delete("dm")
             $stdout.string.chomp.should == ""
@@ -149,7 +149,7 @@ describe T::CLI::Delete do
         end
         it "should have the correct output" do
           @t.delete("favorite")
-          $stdout.string.should =~ /^@testcli unfavorited @z's latest status: Spilled grilled onions on myself\.  I smell delicious!$/
+          $stdout.string.should =~ /^@testcli unfavorited @z's latest status: \"Spilled grilled onions on myself\.  I smell delicious!\"$/
         end
       end
       context ":force => false" do
@@ -157,7 +157,7 @@ describe T::CLI::Delete do
           @t.options = @t.options.merge(:force => false)
         end
         it "should request the correct resource" do
-          $stdout.should_receive(:print).with("Are you sure you want to delete the favorite of @z: Spilled grilled onions on myself.  I smell delicious!? ")
+          $stdout.should_receive(:print).with("Are you sure you want to delete the favorite of @z's latest status: \"Spilled grilled onions on myself.  I smell delicious!\"? ")
           $stdin.should_receive(:gets).and_return("yes")
           @t.delete("favorite")
           a_get("/1/favorites.json").
@@ -168,15 +168,15 @@ describe T::CLI::Delete do
         end
         context "yes" do
           it "should have the correct output" do
-            $stdout.should_receive(:print).with("Are you sure you want to delete the favorite of @z: Spilled grilled onions on myself.  I smell delicious!? ")
+            $stdout.should_receive(:print).with("Are you sure you want to delete the favorite of @z's latest status: \"Spilled grilled onions on myself.  I smell delicious!\"? ")
             $stdin.should_receive(:gets).and_return("yes")
             @t.delete("favorite")
-            $stdout.string.should =~ /^@testcli unfavorited @z's latest status: Spilled grilled onions on myself\.  I smell delicious!$/
+            $stdout.string.should =~ /^@testcli unfavorited @z's latest status: \"Spilled grilled onions on myself\.  I smell delicious!\"$/
           end
         end
         context "no" do
           it "should have the correct output" do
-            $stdout.should_receive(:print).with("Are you sure you want to delete the favorite of @z: Spilled grilled onions on myself.  I smell delicious!? ")
+            $stdout.should_receive(:print).with("Are you sure you want to delete the favorite of @z's latest status: \"Spilled grilled onions on myself.  I smell delicious!\"? ")
             $stdin.should_receive(:gets).and_return("no")
             @t.delete("favorite")
             $stdout.string.chomp.should == ""
@@ -209,7 +209,7 @@ describe T::CLI::Delete do
       end
       it "should have the correct output" do
         @t.delete("list", "presidents")
-        $stdout.string.chomp.should == "@testcli deleted the list: presidents."
+        $stdout.string.chomp.should == "@testcli deleted the list \"presidents\"."
       end
     end
     context ":force => false" do
@@ -217,7 +217,7 @@ describe T::CLI::Delete do
         @t.options = @t.options.merge(:force => false)
       end
       it "should request the correct resource" do
-        $stdout.should_receive(:print).with("Are you sure you want to permanently delete the list: presidents? ")
+        $stdout.should_receive(:print).with("Are you sure you want to permanently delete the list \"presidents\"? ")
         $stdin.should_receive(:gets).and_return("yes")
         @t.delete("list", "presidents")
         a_get("/1/account/verify_credentials.json").
@@ -228,15 +228,15 @@ describe T::CLI::Delete do
       end
       context "yes" do
         it "should have the correct output" do
-          $stdout.should_receive(:print).with("Are you sure you want to permanently delete the list: presidents? ")
+          $stdout.should_receive(:print).with("Are you sure you want to permanently delete the list \"presidents\"? ")
           $stdin.should_receive(:gets).and_return("yes")
           @t.delete("list", "presidents")
-          $stdout.string.chomp.should == "@testcli deleted the list: presidents."
+          $stdout.string.chomp.should == "@testcli deleted the list \"presidents\"."
         end
       end
       context "no" do
         it "should have the correct output" do
-          $stdout.should_receive(:print).with("Are you sure you want to permanently delete the list: presidents? ")
+          $stdout.should_receive(:print).with("Are you sure you want to permanently delete the list \"presidents\"? ")
           $stdin.should_receive(:gets).and_return("no")
           @t.delete("list", "presidents")
           $stdout.string.chomp.should == ""
@@ -280,7 +280,7 @@ describe T::CLI::Delete do
         end
         it "should have the correct output" do
           @t.delete("status")
-          $stdout.string.chomp.should == "@testcli deleted the status: @noradio working on implementing #NewTwitter API methods in the twitter gem. Twurl is making it easy. Thank you!"
+          $stdout.string.chomp.should == "@testcli deleted the status: \"@noradio working on implementing #NewTwitter API methods in the twitter gem. Twurl is making it easy. Thank you!\""
         end
       end
       context ":force => false" do
@@ -288,7 +288,7 @@ describe T::CLI::Delete do
           @t.options = @t.options.merge(:force => false)
         end
         it "should request the correct resource" do
-          $stdout.should_receive(:print).with("Are you sure you want to permanently delete the status: RT @tenderlove: [ANN] sqlite3-ruby =&gt; sqlite3? ")
+          $stdout.should_receive(:print).with("Are you sure you want to permanently delete @testcli's latest status: \"RT @tenderlove: [ANN] sqlite3-ruby =&gt; sqlite3\"? ")
           $stdin.should_receive(:gets).and_return("yes")
           @t.delete("status")
           a_get("/1/account/verify_credentials.json").
@@ -298,15 +298,15 @@ describe T::CLI::Delete do
         end
         context "yes" do
           it "should have the correct output" do
-            $stdout.should_receive(:print).with("Are you sure you want to permanently delete the status: RT @tenderlove: [ANN] sqlite3-ruby =&gt; sqlite3? ")
+            $stdout.should_receive(:print).with("Are you sure you want to permanently delete @testcli's latest status: \"RT @tenderlove: [ANN] sqlite3-ruby =&gt; sqlite3\"? ")
             $stdin.should_receive(:gets).and_return("yes")
             @t.delete("status")
-            $stdout.string.chomp.should == "@testcli deleted the status: @noradio working on implementing #NewTwitter API methods in the twitter gem. Twurl is making it easy. Thank you!"
+            $stdout.string.chomp.should == "@testcli deleted the status: \"@noradio working on implementing #NewTwitter API methods in the twitter gem. Twurl is making it easy. Thank you!\""
           end
         end
         context "no" do
           it "should have the correct output" do
-            $stdout.should_receive(:print).with("Are you sure you want to permanently delete the status: RT @tenderlove: [ANN] sqlite3-ruby =&gt; sqlite3? ")
+            $stdout.should_receive(:print).with("Are you sure you want to permanently delete @testcli's latest status: \"RT @tenderlove: [ANN] sqlite3-ruby =&gt; sqlite3\"? ")
             $stdin.should_receive(:gets).and_return("no")
             @t.delete("status")
             $stdout.string.chomp.should == ""

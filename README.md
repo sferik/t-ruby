@@ -1,39 +1,18 @@
-# Twitter CLI
+# Twitter CLI [![Build Status](https://secure.travis-ci.org/sferik/t.png?branch=master)][travis] [![Dependency Status](https://gemnasium.com/sferik/t.png?travis)][gemnasium]
 A command-line interface for Twitter, powered by the [twitter gem][gem]. The
 CLI attempts to mimic the [Twitter SMS commands][sms] wherever possible,
 however it offers more commands than are available via SMS.
 
+[travis]: http://travis-ci.org/sferik/t
+[gemnasium]: https://gemnasium.com/sferik/t
 [gem]: https://rubygems.org/gems/twitter
 [sms]: https://support.twitter.com/articles/14020-twitter-sms-command
-
-## <a name="history"></a>History
-![History](http://twitter.rubyforge.org/images/terminal_output.png "History")
-
-The [twitter gem][gem] previously contained a command-line interface, up until
-version 0.5.0, when it was [removed][]. This project is offered as a sucessor
-to that effort, however it is a clean room implementation that contains none of
-John Nunemaker's original code.
-
-[removed]: https://github.com/jnunemaker/twitter/commit/dd2445e3e2c97f38b28a3f32ea902536b3897adf
 
 ## <a name="installation"></a>Installation
     gem install t
 
-## <a name="build"></a>Build Status
-[![Build Status](https://secure.travis-ci.org/sferik/t.png?branch=master)][travis]
 
-[travis]: http://travis-ci.org/sferik/t
-
-## <a name="dependencies"></a>Dependency Status
-[![Dependency Status](https://gemnasium.com/sferik/t.png?travis)][gemnasium]
-
-[gemnasium]: https://gemnasium.com/sferik/t
-
-## <a name="examples"></a>Usage Examples
-Typing `t help` will give you a list of all the available commands. You can
-type `t help TASK` to get help for a specific command.
-
-    t help
+## <a name="configuration"></a>Configuration
 
 Because Twitter requires OAuth for most of its functionality, you'll need to
 register a new application at <http://dev.twitter.com/apps/new>. Once you
@@ -47,8 +26,8 @@ secret, which you can use to authorize your Twitter account.
     t authorize --consumer-key YOUR_CONSUMER_KEY --consumer-secret YOUR_CONSUMER_SECRET
 
 This will open a new browser window where you can authenticate to Twitter and
-then enter the returned PIN back into the terminal.  Assuming all that works
-well, you will be authorized to make requests with the API.
+then enter the returned PIN back into the terminal.  Assuming that works,
+you'll be authorized to use the CLI.
 
 You can see a list of all the accounts you've authorized.
 
@@ -62,25 +41,32 @@ You can see a list of all the accounts you've authorized.
 
 Notice that one account is marked as the default. To change the default use the
 `set` subcommand, passing either just the username, if it's unambiguous, or the
-username and consumer key pair:
+username and consumer key pair, like so:
 
     t set default sferik thG9EfWoADtIr6NjbL9ON
 
 Account information is stored in the YAML-formatted file `~/.trc`.
 
+## <a name="examples"></a>Usage Examples
+
+Typing `t help` will give you a list of all the available commands. You can
+type `t help TASK` to get help for a specific command.
+
+    t help
+
 ### <a name="update"></a>Update your status
 
     t update "I'm tweeting from the command line. Isn't that special?"
 
-### <a name="dm"></a>Send a user a private message
+### <a name="dm"></a>Send a direct message
 
-    t dm sferik "Want to get dinner together tonight?"
+    t dm sferik "Want to get dinner tonight?"
 
 ### <a name="location"></a>Update the location field in your profile
 
     t set location "San Francisco"
 
-### <a name="get"></a>Retrieve the latest Tweet posted by a user
+### <a name="get"></a>Get the latest Tweet posted by a user
 
     t get sferik
 
@@ -88,7 +74,7 @@ Account information is stored in the YAML-formatted file `~/.trc`.
 
     t whois sferik
 
-### <a name="stats"></a>Get stats about a user
+### <a name="stats"></a>Retrieve stats about a user
 
     t stats sferik
 
@@ -96,19 +82,15 @@ Account information is stored in the YAML-formatted file `~/.trc`.
 
     t suggest
 
-### <a name="follow-users"></a>Start following @sferik and @gem
+### <a name="follow-users"></a>Start following users
 
     t follow users sferik gem
 
-### <a name="follow-all-followers"></a>Following all followers
+### <a name="follow-all-followers"></a>Follow all followers (i.e. follow back)
 
     t follow all followers
 
-### <a name="follow-all-listed"></a>Following all members of the list named "presidents"
-
-    t follow all listed presidents
-
-### <a name="unfollow-users"></a>Stop following @sferik and @gem
+### <a name="unfollow-users"></a>Stop following users
 
     t unfollow users sferik gem
 
@@ -116,13 +98,37 @@ Account information is stored in the YAML-formatted file `~/.trc`.
 
     t unfollow all nonfollowers
 
-### <a name="unfollow-all-listed"></a>Unfollow all members of the list named "presidents"
+### <a name="list-create"></a>Create a list
+
+    t list create presidents
+
+### <a name="list-add-followers"></a>Add users to a list
+
+    t list add users presidents BarackObama Jasonfinn
+
+### <a name="list-add-friends"></a>Add all friends to a list
+
+    t list add all friends presidents
+
+### <a name="list-add-followers"></a>Add all followers to a list
+
+    t list add all followers presidents
+
+### <a name="list-add-followers"></a>Add all members of one list to another
+
+    t list add all listed democrats presidents
+
+### <a name="follow-all-listed"></a>Follow all members of a list
+
+    t follow all listed presidents
+
+### <a name="unfollow-all-listed"></a>Unfollow all members of a list
 
     t unfollow all listed presidents
 
-### <a name="timeline"></a>Retrieve the timeline of status updates from users you are following
+### <a name="list-timeline"></a>Retrieve the timeline of status updates from a list
 
-    t timeline
+    t list timeline presidents
 
 ### <a name="mentions"></a>Retrieve the timeline of status updates that mention you
 
@@ -131,10 +137,6 @@ Account information is stored in the YAML-formatted file `~/.trc`.
 ### <a name="favorites"></a>Retrieve the timeline of status updates that you favorited
 
     t favorites
-
-### <a name="list-timeline"></a>Retrieve the timeline of status updates from the list presidents
-
-    t list timeline presidents
 
 ### <a name="reply"></a>Reply to a Tweet
 
@@ -147,6 +149,16 @@ Account information is stored in the YAML-formatted file `~/.trc`.
 ### <a name="favorite"></a>Mark a user's latest Tweet as one of your favorites
 
     t favorite sferik
+
+## <a name="history"></a>History
+![History](http://twitter.rubyforge.org/images/terminal_output.png "History")
+
+The [twitter gem][gem] previously contained a command-line interface, up until
+version 0.5.0, when it was [removed][]. This project is offered as a sucessor
+to that effort, however it is a clean room implementation that contains none of
+John Nunemaker's original code.
+
+[removed]: https://github.com/jnunemaker/twitter/commit/dd2445e3e2c97f38b28a3f32ea902536b3897adf
 
 ## <a name="contributing"></a>Contributing
 In the spirit of [free software][fsf], **everyone** is encouraged to help
@@ -184,14 +196,11 @@ bug report should include a pull request with failing specs.
 1. Fork the project.
 2. Create a topic branch.
 3. Implement your feature or bug fix.
-4. Add documentation for your feature or bug fix.
-5. Run `bundle exec rake doc:yard`. If your changes are not 100%
-   documented, go back to step 4.
-6. Add specs for your feature or bug fix.
-7. Run `bundle exec rake spec`. If your changes are not 100% covered, go
-   back to step 6.
-8. Commit and push your changes.
-9. Submit a pull request. Please do not include changes to the gemspec,
+4. Add specs for your feature or bug fix.
+5. Run `bundle exec rake spec`. If your changes are not 100% covered, go back
+   to step 4.
+6. Commit and push your changes.
+7. Submit a pull request. Please do not include changes to the gemspec,
    version, or history file. (If you want to create your own version for some
    reason, please do so in a separate commit.)
 

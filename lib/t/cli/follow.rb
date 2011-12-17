@@ -16,19 +16,19 @@ module T
         @rcfile = RCFile.instance
       end
 
-      desc "users USER_NAME [USER_NAME...]", "Allows you to start following users."
-      def users(user_name, *user_names)
-        user_names.unshift(user_name)
-        users = user_names.map do |user_name|
-          user_name = user_name.strip_at
-          user = client.follow(user_name, :include_entities => false)
+      desc "users SCREEN_NAME [SCREEN_NAME...]", "Allows you to start following users."
+      def users(screen_name, *screen_names)
+        screen_names.unshift(screen_name)
+        users = screen_names.map do |screen_name|
+          screen_name = screen_name.strip_at
+          user = client.follow(screen_name, :include_entities => false)
           say "@#{@rcfile.default_profile[0]} is now following @#{user.screen_name}."
           user
         end
         number = users.length
         say "@#{@rcfile.default_profile[0]} is now following #{number} more #{number == 1 ? 'user' : 'users'}."
         say
-        say "Run `#{$0} unfollow users #{user_names.join(' ')}` to stop."
+        say "Run `#{$0} unfollow users #{screen_names.join(' ')}` to stop."
       end
 
       desc "all SUBCOMMAND ...ARGS", "Follow all users."

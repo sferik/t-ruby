@@ -61,25 +61,25 @@ module T
       pin = ask "Paste in the supplied PIN:"
       access_token = request_token.get_access_token(:oauth_verifier => pin.chomp)
       oauth_response = access_token.get('/1/account/verify_credentials.json')
-      user_name = oauth_response.body.match(/"screen_name"\s*:\s*"(.*?)"/).captures.first
+      screen_name = oauth_response.body.match(/"screen_name"\s*:\s*"(.*?)"/).captures.first
       @rcfile.path = options['profile'] if options['profile']
-      @rcfile[user_name] = {
+      @rcfile[screen_name] = {
         options['consumer_key'] => {
-          'username' => user_name,
+          'username' => screen_name,
           'consumer_key' => options['consumer_key'],
           'consumer_secret' => options['consumer_secret'],
           'token' => access_token.token,
           'secret' => access_token.secret,
         }
       }
-      @rcfile.default_profile = {'username' => user_name, 'consumer_key' => options['consumer_key']}
+      @rcfile.default_profile = {'username' => screen_name, 'consumer_key' => options['consumer_key']}
       say "Authorization successful"
     end
 
-    desc "block USER_NAME", "Block a user."
-    def block(user_name)
-      user_name = user_name.strip_at
-      user = client.block(user_name, :include_entities => false)
+    desc "block SCREEN_NAME", "Block a user."
+    def block(screen_name)
+      screen_name = screen_name.strip_at
+      user = client.block(screen_name, :include_entities => false)
       say "@#{@rcfile.default_profile[0]} blocked @#{user.screen_name}"
       say
       say "Run `#{$0} delete block #{user.screen_name}` to unblock."
@@ -94,18 +94,18 @@ module T
     end
     map %w(dms) => :direct_messages
 
-    desc "dm USER_NAME MESSAGE", "Sends that person a Direct Message."
-    def dm(user_name, message)
-      user_name = user_name.strip_at
-      direct_message = client.direct_message_create(user_name, message, :include_entities => false)
+    desc "dm SCREEN_NAME MESSAGE", "Sends that person a Direct Message."
+    def dm(screen_name, message)
+      screen_name = screen_name.strip_at
+      direct_message = client.direct_message_create(screen_name, message, :include_entities => false)
       say "Direct Message sent from @#{@rcfile.default_profile[0]} to @#{direct_message.recipient.screen_name} (#{time_ago_in_words(direct_message.created_at)} ago)"
     end
     map %w(m) => :dm
 
-    desc "favorite USER_NAME", "Marks that user's last Tweet as one of your favorites."
-    def favorite(user_name)
-      user_name = user_name.strip_at
-      user = client.user(user_name, :include_entities => false)
+    desc "favorite SCREEN_NAME", "Marks that user's last Tweet as one of your favorites."
+    def favorite(screen_name)
+      screen_name = screen_name.strip_at
+      user = client.user(screen_name, :include_entities => false)
       if user.status
         client.favorite(user.status.id, :include_entities => false)
         say "@#{@rcfile.default_profile[0]} favorited @#{user.screen_name}'s latest status: \"#{user.status.text}\""
@@ -138,10 +138,10 @@ module T
     end
     map %w(faves) => :favorites
 
-    desc "get USER_NAME", "Retrieves the latest update posted by the user."
-    def get(user_name)
-      user_name = user_name.strip_at
-      user = client.user(user_name, :include_entities => false)
+    desc "get SCREEN_NAME", "Retrieves the latest update posted by the user."
+    def get(screen_name)
+      screen_name = screen_name.strip_at
+      user = client.user(screen_name, :include_entities => false)
       if user.status
         say "#{user.status.text} (#{time_ago_in_words(user.status.created_at)} ago)"
       else
@@ -164,20 +164,20 @@ module T
     end
     map %w(replies) => :mentions
 
-    desc "open USER_NAME", "Opens that user's profile in a web browser."
+    desc "open SCREEN_NAME", "Opens that user's profile in a web browser."
     method_option :dry_run, :type => :boolean
-    def open(user_name)
-      user_name = user_name.strip_at
-      Launchy.open("https://twitter.com/#{user_name}", :dry_run => options.fetch('dry_run', false))
+    def open(screen_name)
+      screen_name = screen_name.strip_at
+      Launchy.open("https://twitter.com/#{screen_name}", :dry_run => options.fetch('dry_run', false))
     end
 
-    desc "reply USER_NAME MESSAGE", "Post your Tweet as a reply directed at another person."
+    desc "reply SCREEN_NAME MESSAGE", "Post your Tweet as a reply directed at another person."
     method_option :location, :aliases => "-l", :type => :boolean, :default => true
-    def reply(user_name, message)
-      user_name = user_name.strip_at
+    def reply(screen_name, message)
+      screen_name = screen_name.strip_at
       hash = {:include_entities => false, :trim_user => true}
       hash.merge!(:lat => location.lat, :long => location.lng) if options['location']
-      user = client.user(user_name, :include_entities => false)
+      user = client.user(screen_name, :include_entities => false)
       hash.merge!(:in_reply_to_status_id => user.status.id) if user.status
       status = client.update("@#{user.screen_name} #{message}", hash)
       say "Reply created by @#{@rcfile.default_profile[0]} to @#{user.screen_name} (#{time_ago_in_words(status.created_at)} ago)"
@@ -185,10 +185,10 @@ module T
       say "Run `#{$0} delete status` to delete."
     end
 
-    desc "retweet USER_NAME", "Sends that user's latest Tweet to your followers."
-    def retweet(user_name)
-      user_name = user_name.strip_at
-      user = client.user(user_name, :include_entities => false)
+    desc "retweet SCREEN_NAME", "Sends that user's latest Tweet to your followers."
+    def retweet(screen_name)
+      screen_name = screen_name.strip_at
+      user = client.user(screen_name, :include_entities => false)
       if user.status
         client.retweet(user.status.id, :include_entities => false, :trim_user => true)
         say "@#{@rcfile.default_profile[0]} retweeted @#{user.screen_name}'s latest status: \"#{user.status.text}\""
@@ -229,10 +229,10 @@ module T
     end
     map %w(sms) => :sent_messages
 
-    desc "stats USER_NAME", "Retrieves the given user's number of followers and how many people they're following."
-    def stats(user_name)
-      user_name = user_name.strip_at
-      user = client.user(user_name, :include_entities => false)
+    desc "stats SCREEN_NAME", "Retrieves the given user's number of followers and how many people they're following."
+    def stats(screen_name)
+      screen_name = screen_name.strip_at
+      user = client.user(screen_name, :include_entities => false)
       say "Followers: #{number_with_delimiter(user.followers_count)}"
       say "Following: #{number_with_delimiter(user.friends_count)}"
       say
@@ -284,10 +284,10 @@ module T
     end
     map %w(-v --version) => :version
 
-    desc "whois USER_NAME", "Retrieves profile information for the user."
-    def whois(user_name)
-      user_name = user_name.strip_at
-      user = client.user(user_name, :include_entities => false)
+    desc "whois SCREEN_NAME", "Retrieves profile information for the user."
+    def whois(screen_name)
+      screen_name = screen_name.strip_at
+      user = client.user(screen_name, :include_entities => false)
       say "#{user.name}, since #{user.created_at.strftime("%b %Y")}."
       say "bio: #{user.description}"
       say "location: #{user.location}"

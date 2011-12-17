@@ -16,10 +16,10 @@ module T
         @rcfile = RCFile.instance
       end
 
-      desc "block USER_NAME", "Unblock a user."
-      def block(user_name)
-        user_name = user_name.strip_at
-        user = client.unblock(user_name, :include_entities => false)
+      desc "block SCREEN_NAME", "Unblock a user."
+      def block(screen_name)
+        screen_name = screen_name.strip_at
+        user = client.unblock(screen_name, :include_entities => false)
         say "@#{@rcfile.default_profile[0]} unblocked @#{user.screen_name}."
         say
         say "Run `#{$0} block #{user.screen_name}` to block."

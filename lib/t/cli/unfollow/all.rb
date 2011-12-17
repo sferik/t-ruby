@@ -21,7 +21,7 @@ module T
           list_member_collection = []
           cursor = -1
           until cursor == 0
-            list_members = client.list_members(list_name, :cursor => cursor, :skip_status => true, :include_entities => false)
+            list_members = client.list_members(list_name, :cursor => cursor, :include_entities => false, :skip_status => true)
             list_member_collection += list_members.users
             cursor = list_members.next_cursor
           end
@@ -29,7 +29,7 @@ module T
           return say "@#{@rcfile.default_profile[0]} is already not following any list members." if number.zero?
           return unless yes? "Are you sure you want to unfollow #{number} #{number == 1 ? 'user' : 'users'}?"
           list_member_collection.each do |list_member|
-            user = client.unfollow(list_member.id)
+            user = client.unfollow(list_member.id, :include_entities => false)
             say "@#{@rcfile.default_profile[0]} is no longer following @#{user.screen_name}."
           end
           say "@#{@rcfile.default_profile[0]} is no longer following #{number} #{number == 1 ? 'user' : 'users'}."
@@ -58,7 +58,7 @@ module T
           return say "@#{@rcfile.default_profile[0]} is already not following any non-followers." if number.zero?
           return unless yes? "Are you sure you want to unfollow #{number} #{number == 1 ? 'user' : 'users'}?"
           screen_names = unfollow_ids.map do |unfollow_id|
-            user = client.unfollow(unfollow_id)
+            user = client.unfollow(unfollow_id, :include_entities => false)
             say "@#{@rcfile.default_profile[0]} is no longer following @#{user.screen_name}."
             user.screen_name
           end
@@ -80,7 +80,7 @@ module T
           return say "@#{@rcfile.default_profile[0]} is already not following anyone." if number.zero?
           return unless yes? "Are you sure you want to unfollow #{number} #{number == 1 ? 'user' : 'users'}?"
           screen_names = friend_ids.map do |friend_id|
-            user = client.unfollow(friend_id)
+            user = client.unfollow(friend_id, :include_entities => false)
             say "@#{@rcfile.default_profile[0]} is no longer following @#{user.screen_name}."
             user.screen_name
           end

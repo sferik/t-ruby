@@ -30,13 +30,13 @@ describe T::CLI::Follow do
     context "one user" do
       before do
         stub_post("/1/friendships/create.json").
-          with(:body => {:screen_name => "sferik"}).
+          with(:body => {:screen_name => "sferik", :include_entities => "false"}).
           to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should request the correct resource" do
         @t.follow("users", "sferik")
         a_post("/1/friendships/create.json").
-          with(:body => {:screen_name => "sferik"}).
+          with(:body => {:screen_name => "sferik", :include_entities => "false"}).
           should have_been_made
       end
       it "should have the correct output" do
@@ -47,19 +47,19 @@ describe T::CLI::Follow do
     context "two users" do
       before do
         stub_post("/1/friendships/create.json").
-          with(:body => {:screen_name => "sferik"}).
+          with(:body => {:screen_name => "sferik", :include_entities => "false"}).
           to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         stub_post("/1/friendships/create.json").
-          with(:body => {:screen_name => "gem"}).
+          with(:body => {:screen_name => "gem", :include_entities => "false"}).
           to_return(:body => fixture("gem.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should request the correct resource" do
         @t.follow("users", "sferik", "gem")
         a_post("/1/friendships/create.json").
-          with(:body => {:screen_name => "sferik"}).
+          with(:body => {:screen_name => "sferik", :include_entities => "false"}).
           should have_been_made
         a_post("/1/friendships/create.json").
-          with(:body => {:screen_name => "gem"}).
+          with(:body => {:screen_name => "gem", :include_entities => "false"}).
           should have_been_made
       end
       it "should have the correct output" do

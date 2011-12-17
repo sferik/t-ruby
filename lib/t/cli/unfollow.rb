@@ -21,7 +21,7 @@ module T
         user_names.unshift(user_name)
         users = user_names.map do |user_name|
           user_name = user_name.strip_at
-          user = client.unfollow(user_name)
+          user = client.unfollow(user_name, :include_entities => false)
           say "@#{@rcfile.default_profile[0]} is no longer following @#{user.screen_name}."
           user
         end

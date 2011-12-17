@@ -68,13 +68,13 @@ describe T::CLI do
     before do
       @t.options = @t.options.merge(:profile => fixture_path + "/.trc")
       stub_post("/1/blocks/create.json").
-        with(:body => {:screen_name => "sferik"}).
+        with(:body => {:screen_name => "sferik", :include_entities => "false"}).
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @t.block("sferik")
       a_post("/1/blocks/create.json").
-        with(:body => {:screen_name => "sferik"}).
+        with(:body => {:screen_name => "sferik", :include_entities => "false"}).
         should have_been_made
     end
     it "should have the correct output" do
@@ -86,11 +86,13 @@ describe T::CLI do
   describe "#direct_messages" do
     before do
       stub_get("/1/direct_messages.json").
+        with(:query => {:include_entities => "false"}).
         to_return(:body => fixture("direct_messages.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @t.direct_messages
       a_get("/1/direct_messages.json").
+        with(:query => {:include_entities => "false"}).
         should have_been_made
     end
     it "should have the correct output" do
@@ -124,13 +126,13 @@ describe T::CLI do
     before do
       @t.options = @t.options.merge(:profile => fixture_path + "/.trc")
       stub_post("/1/direct_messages/new.json").
-        with(:body => {:screen_name => "pengwynn", :text => "Creating a fixture for the Twitter gem"}).
+        with(:body => {:screen_name => "pengwynn", :text => "Creating a fixture for the Twitter gem", :include_entities => "false"}).
         to_return(:body => fixture("direct_message.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @t.dm("pengwynn", "Creating a fixture for the Twitter gem")
       a_post("/1/direct_messages/new.json").
-        with(:body => {:screen_name => "pengwynn", :text => "Creating a fixture for the Twitter gem"}).
+        with(:body => {:screen_name => "pengwynn", :text => "Creating a fixture for the Twitter gem", :include_entities => "false"}).
         should have_been_made
     end
     it "should have the correct output" do
@@ -146,7 +148,7 @@ describe T::CLI do
     context "not found" do
       before do
         stub_get("/1/users/show.json").
-          with(:query => {:screen_name => "sferik"}).
+          with(:query => {:screen_name => "sferik", :include_entities => "false"}).
           to_return(:body => '{}', :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should exit" do
@@ -158,7 +160,7 @@ describe T::CLI do
     context "forbidden" do
       before do
         stub_get("/1/users/show.json").
-          with(:query => {:screen_name => "sferik"}).
+          with(:query => {:screen_name => "sferik", :include_entities => "false"}).
           to_return(:body => '{"error":"Forbidden"}', :headers => {:content_type => "application/json; charset=utf-8"}, :status => 403)
       end
       it "should exit" do
@@ -170,7 +172,7 @@ describe T::CLI do
     context "duplicate" do
       before do
         stub_get("/1/users/show.json").
-          with(:query => {:screen_name => "sferik"}).
+          with(:query => {:screen_name => "sferik", :include_entities => "false"}).
           to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         stub_post("/1/favorites/create/26755176471724032.json").
           to_return(:body => '{"error":"You have already favorited this status."}', :headers => {:content_type => "application/json; charset=utf-8"}, :status => 403)
@@ -183,7 +185,7 @@ describe T::CLI do
     context "found" do
       before do
         stub_get("/1/users/show.json").
-          with(:query => {:screen_name => "sferik"}).
+          with(:query => {:screen_name => "sferik", :include_entities => "false"}).
           to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         stub_post("/1/favorites/create/26755176471724032.json").
           to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -191,7 +193,7 @@ describe T::CLI do
       it "should request the correct resource" do
         @t.favorite("sferik")
         a_get("/1/users/show.json").
-          with(:query => {:screen_name => "sferik"}).
+          with(:query => {:screen_name => "sferik", :include_entities => "false"}).
           should have_been_made
         a_post("/1/favorites/create/26755176471724032.json").
           should have_been_made
@@ -206,11 +208,13 @@ describe T::CLI do
   describe "#favorites" do
     before do
       stub_get("/1/favorites.json").
+        with(:query => {:include_entities => "false"}).
         to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @t.favorites
       a_get("/1/favorites.json").
+        with(:query => {:include_entities => "false"}).
         should have_been_made
     end
     it "should have the correct output" do
@@ -243,7 +247,7 @@ describe T::CLI do
     context "not found" do
       before do
         stub_get("/1/users/show.json").
-          with(:query => {:screen_name => "sferik"}).
+          with(:query => {:screen_name => "sferik", :include_entities => "false"}).
           to_return(:body => '{}', :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should exit" do
@@ -255,13 +259,13 @@ describe T::CLI do
     context "found" do
       before do
         stub_get("/1/users/show.json").
-          with(:query => {:screen_name => "sferik"}).
+          with(:query => {:screen_name => "sferik", :include_entities => "false"}).
           to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should request the correct resource" do
         @t.get("sferik")
         a_get("/1/users/show.json").
-          with(:query => {:screen_name => "sferik"}).
+          with(:query => {:screen_name => "sferik", :include_entities => "false"}).
           should have_been_made
       end
       it "should have the correct output" do
@@ -274,11 +278,13 @@ describe T::CLI do
   describe "#mentions" do
     before do
       stub_get("/1/statuses/mentions.json").
+        with(:query => {:include_entities => "false"}).
         to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @t.mentions
       a_get("/1/statuses/mentions.json").
+        with(:query => {:include_entities => "false"}).
         should have_been_made
     end
     it "should have the correct output" do
@@ -322,10 +328,10 @@ describe T::CLI do
     before do
       @t.options = @t.options.merge(:profile => fixture_path + "/.trc", :location => true)
       stub_get("/1/users/show.json").
-        with(:query => {:screen_name => "sferik"}).
+        with(:query => {:screen_name => "sferik", :include_entities => "false"}).
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       stub_post("/1/statuses/update.json").
-        with(:body => {:in_reply_to_status_id => "26755176471724032", :status => "@sferik Testing", :lat => "37.76969909668", :long => "-122.39330291748"}).
+        with(:body => {:in_reply_to_status_id => "26755176471724032", :status => "@sferik Testing", :lat => "37.76969909668", :long => "-122.39330291748", :include_entities => "false", :trim_user => "true"}).
         to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       stub_request(:get, "http://checkip.dyndns.org/").
         to_return(:body => fixture("checkip.html"), :headers => {:content_type => "text/html"})
@@ -335,10 +341,10 @@ describe T::CLI do
     it "should request the correct resource" do
       @t.reply("sferik", "Testing")
       a_get("/1/users/show.json").
-        with(:query => {:screen_name => "sferik"}).
+        with(:query => {:screen_name => "sferik", :include_entities => "false"}).
         should have_been_made
       a_post("/1/statuses/update.json").
-        with(:body => {:in_reply_to_status_id => "26755176471724032", :status => "@sferik Testing", :lat => "37.76969909668", :long => "-122.39330291748"}).
+        with(:body => {:in_reply_to_status_id => "26755176471724032", :status => "@sferik Testing", :lat => "37.76969909668", :long => "-122.39330291748", :include_entities => "false", :trim_user => "true"}).
         should have_been_made
       a_request(:get, "http://checkip.dyndns.org/").
         should have_been_made
@@ -358,7 +364,7 @@ describe T::CLI do
     context "not found" do
       before do
         stub_get("/1/users/show.json").
-          with(:query => {:screen_name => "sferik"}).
+          with(:query => {:screen_name => "sferik", :include_entities => "false"}).
           to_return(:body => '{}', :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should exit" do
@@ -370,7 +376,7 @@ describe T::CLI do
     context "forbidden" do
       before do
         stub_get("/1/users/show.json").
-          with(:query => {:screen_name => "sferik"}).
+          with(:query => {:screen_name => "sferik", :include_entities => "false"}).
           to_return(:body => '{"error":"Forbidden"}', :headers => {:content_type => "application/json; charset=utf-8"}, :status => 403)
       end
       it "should exit" do
@@ -382,7 +388,7 @@ describe T::CLI do
     context "duplicate" do
       before do
         stub_get("/1/users/show.json").
-          with(:query => {:screen_name => "sferik"}).
+          with(:query => {:screen_name => "sferik", :include_entities => "false"}).
           to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         stub_post("/1/statuses/retweet/26755176471724032.json").
           to_return(:body => '{"error":"sharing is not permissable for this status (Share validations failed)"}', :headers => {:content_type => "application/json; charset=utf-8"}, :status => 403)
@@ -395,7 +401,7 @@ describe T::CLI do
     context "found" do
       before do
         stub_get("/1/users/show.json").
-          with(:query => {:screen_name => "sferik"}).
+          with(:query => {:screen_name => "sferik", :include_entities => "false"}).
           to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         stub_post("/1/statuses/retweet/26755176471724032.json").
           to_return(:body => fixture("retweet.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -403,7 +409,7 @@ describe T::CLI do
       it "should request the correct resource" do
         @t.retweet("sferik")
         a_get("/1/users/show.json").
-          with(:query => {:screen_name => "sferik"}).
+          with(:query => {:screen_name => "sferik", :include_entities => "false"}).
           should have_been_made
         a_post("/1/statuses/retweet/26755176471724032.json").
           should have_been_made
@@ -418,13 +424,13 @@ describe T::CLI do
   describe "#search" do
     before do
       stub_request(:get, "https://search.twitter.com/search.json").
-        with(:query => {:q => "twitter"}).
+        with(:query => {:q => "twitter", :include_entities => "false"}).
         to_return(:body => fixture("search.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @t.search("twitter")
       a_request(:get, "https://search.twitter.com/search.json").
-        with(:query => {:q => "twitter"}).
+        with(:query => {:q => "twitter", :include_entities => "false"}).
         should have_been_made
     end
     it "should have the correct output" do
@@ -452,11 +458,13 @@ describe T::CLI do
   describe "#sent_messages" do
     before do
       stub_get("/1/direct_messages/sent.json").
+        with(:query => {:include_entities => "false"}).
         to_return(:body => fixture("direct_messages.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @t.sent_messages
       a_get("/1/direct_messages/sent.json").
+        with(:query => {:include_entities => "false"}).
         should have_been_made
     end
     it "should have the correct output" do
@@ -489,13 +497,13 @@ describe T::CLI do
   describe "#stats" do
     before do
       stub_get("/1/users/show.json").
-        with(:query => {:screen_name => "sferik"}).
+        with(:query => {:screen_name => "sferik", :include_entities => "false"}).
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @t.stats("sferik")
       a_get("/1/users/show.json").
-        with(:query => {:screen_name => "sferik"}).
+        with(:query => {:screen_name => "sferik", :include_entities => "false"}).
         should have_been_made
     end
     it "should have the correct output" do
@@ -509,7 +517,7 @@ describe T::CLI do
     before do
       @t.options = @t.options.merge(:profile => fixture_path + "/.trc", :location => true)
       stub_post("/1/statuses/update.json").
-        with(:body => {:status => "Testing", :lat => "37.76969909668", :long => "-122.39330291748"}).
+        with(:body => {:status => "Testing", :lat => "37.76969909668", :long => "-122.39330291748", :include_entities => "false", :trim_user => "true"}).
         to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       stub_request(:get, "http://checkip.dyndns.org/").
         to_return(:body => fixture("checkip.html"), :headers => {:content_type => "text/html"})
@@ -519,7 +527,7 @@ describe T::CLI do
     it "should request the correct resource" do
       @t.status("Testing")
       a_post("/1/statuses/update.json").
-        with(:body => {:status => "Testing", :lat => "37.76969909668", :long => "-122.39330291748"}).
+        with(:body => {:status => "Testing", :lat => "37.76969909668", :long => "-122.39330291748", :include_entities => "false", :trim_user => "true"}).
         should have_been_made
       a_request(:get, "http://checkip.dyndns.org/").
         should have_been_made
@@ -535,13 +543,13 @@ describe T::CLI do
   describe "#suggest" do
     before do
       stub_get("/1/users/recommendations.json").
-        with(:query => {:limit => "1"}).
+        with(:query => {:limit => "1", :include_entities => "false"}).
         to_return(:body => fixture("recommendations.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @t.suggest
       a_get("/1/users/recommendations.json").
-        with(:query => {:limit => "1"}).
+        with(:query => {:limit => "1", :include_entities => "false"}).
         should have_been_made
     end
     it "should have the correct output" do
@@ -553,11 +561,13 @@ describe T::CLI do
   describe "#timeline" do
     before do
       stub_get("/1/statuses/home_timeline.json").
+        with(:query => {:include_entities => "false"}).
         to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @t.timeline
       a_get("/1/statuses/home_timeline.json").
+        with(:query => {:include_entities => "false"}).
         should have_been_made
     end
     it "should have the correct output" do
@@ -596,13 +606,13 @@ describe T::CLI do
   describe "#whois" do
     before do
       stub_get("/1/users/show.json").
-        with(:query => {:screen_name => "sferik"}).
+        with(:query => {:screen_name => "sferik", :include_entities => "false"}).
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @t.whois("sferik")
       a_get("/1/users/show.json").
-        with(:query => {:screen_name => "sferik"}).
+        with(:query => {:screen_name => "sferik", :include_entities => "false"}).
         should have_been_made
     end
     it "should have the correct output" do

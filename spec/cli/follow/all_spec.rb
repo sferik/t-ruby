@@ -52,7 +52,7 @@ describe T::CLI::Follow::All do
           with(:query => {:cursor => "-1"}).
           to_return(:body => fixture("followers_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         stub_post("/1/friendships/create.json").
-          with(:body => {:user_id => "7505382"}).
+          with(:body => {:user_id => "7505382", :include_entities => "false"}).
           to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should request the correct resource" do
@@ -66,7 +66,7 @@ describe T::CLI::Follow::All do
           with(:query => {:cursor => "-1"}).
           should have_been_made
         a_post("/1/friendships/create.json").
-          with(:body => {:user_id => "7505382"}).
+          with(:body => {:user_id => "7505382", :include_entities => "false"}).
           should have_been_made
       end
       context "yes" do
@@ -120,7 +120,7 @@ describe T::CLI::Follow::All do
           with(:query => {:cursor => "-1", :include_entities => "false", :owner_screen_name => "sferik", :skip_status => "true", :slug => "presidents"}).
           to_return(:body => fixture("users_list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         stub_post("/1/friendships/create.json").
-          with(:body => {:user_id => "7505382"}).
+          with(:body => {:user_id => "7505382", :include_entities => "false"}).
           to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should request the correct resource" do
@@ -133,7 +133,7 @@ describe T::CLI::Follow::All do
           with(:query => {:cursor => "-1", :include_entities => "false", :owner_screen_name => "sferik", :skip_status => "true", :slug => "presidents"}).
           should have_been_made
         a_post("/1/friendships/create.json").
-          with(:body => {:user_id => "7505382"}).
+          with(:body => {:user_id => "7505382", :include_entities => "false"}).
           should have_been_made
       end
       context "yes" do

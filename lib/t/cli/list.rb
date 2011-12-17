@@ -31,7 +31,7 @@ module T
       method_option :number, :aliases => "-n", :type => :numeric, :default => 20
       method_option :reverse, :aliases => "-r", :type => :boolean, :default => false
       def timeline(list_name)
-        hash = {}
+        hash = {:include_entities => false}
         hash.merge!(:per_page => options['number']) if options['number']
         timeline = client.list_timeline(list_name, hash)
         timeline.reverse! if options['reverse']

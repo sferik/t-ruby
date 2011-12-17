@@ -37,7 +37,7 @@ module T
           return say "@#{@rcfile.default_profile[0]} is already following all of his or her followers." if number.zero?
           return unless yes? "Are you sure you want to follow #{number} #{number == 1 ? 'user' : 'users'}?"
           screen_names = follow_ids.map do |follow_id|
-            user = client.follow(follow_id)
+            user = client.follow(follow_id, :include_entities => false)
             say "@#{@rcfile.default_profile[0]} is now following @#{user.screen_name}."
             user.screen_name
           end
@@ -59,7 +59,7 @@ module T
           return say "@#{@rcfile.default_profile[0]} is already following all list members." if number.zero?
           return unless yes? "Are you sure you want to follow #{number} #{number == 1 ? 'user' : 'users'}?"
           list_member_collection.each do |list_member|
-            user = client.follow(list_member.id)
+            user = client.follow(list_member.id, :include_entities => false)
             say "@#{@rcfile.default_profile[0]} is now following @#{user.screen_name}."
           end
           say "@#{@rcfile.default_profile[0]} is now following #{number} more #{number == 1 ? 'user' : 'users'}."

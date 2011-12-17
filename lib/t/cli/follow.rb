@@ -21,7 +21,7 @@ module T
         user_names.unshift(user_name)
         users = user_names.map do |user_name|
           user_name = user_name.strip_at
-          user = client.follow(user_name)
+          user = client.follow(user_name, :include_entities => false)
           say "@#{@rcfile.default_profile[0]} is now following @#{user.screen_name}."
           user
         end

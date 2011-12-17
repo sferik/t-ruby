@@ -79,7 +79,7 @@ module T
     desc "block USER_NAME", "Block a user."
     def block(user_name)
       user_name = user_name.strip_at
-      user = client.block(user_name)
+      user = client.block(user_name, :include_entities => false)
       say "@#{@rcfile.default_profile[0]} blocked @#{user.screen_name}"
       say
       say "Run `#{$0} delete block #{user.screen_name}` to unblock."
@@ -88,7 +88,7 @@ module T
     desc "direct_messages", "Returns the 20 most recent Direct Messages sent to you."
     def direct_messages
       run_pager
-      client.direct_messages.map do |direct_message|
+      client.direct_messages(:include_entities => false).map do |direct_message|
         say "#{direct_message.sender.screen_name.rjust(20)}: #{direct_message.text} (#{time_ago_in_words(direct_message.created_at)} ago)"
       end
     end
@@ -97,7 +97,7 @@ module T
     desc "dm USER_NAME MESSAGE", "Sends that person a Direct Message."
     def dm(user_name, message)
       user_name = user_name.strip_at
-      direct_message = client.direct_message_create(user_name, message)
+      direct_message = client.direct_message_create(user_name, message, :include_entities => false)
       say "Direct Message sent from @#{@rcfile.default_profile[0]} to @#{direct_message.recipient.screen_name} (#{time_ago_in_words(direct_message.created_at)} ago)"
     end
     map %w(m) => :dm
@@ -105,9 +105,9 @@ module T
     desc "favorite USER_NAME", "Marks that user's last Tweet as one of your favorites."
     def favorite(user_name)
       user_name = user_name.strip_at
-      user = client.user(user_name)
+      user = client.user(user_name, :include_entities => false)
       if user.status
-        client.favorite(user.status.id)
+        client.favorite(user.status.id, :include_entities => false)
         say "@#{@rcfile.default_profile[0]} favorited @#{user.screen_name}'s latest status: \"#{user.status.text}\""
         say
         say "Run `#{$0} delete favorite` to unfavorite."
@@ -127,7 +127,7 @@ module T
     method_option :number, :aliases => "-n", :type => :numeric, :default => 20
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false
     def favorites
-      hash = {}
+      hash = {:include_entities => false}
       hash.merge!(:count => options['number']) if options['number']
       timeline = client.favorites(hash)
       timeline.reverse! if options['reverse']
@@ -141,7 +141,7 @@ module T
     desc "get USER_NAME", "Retrieves the latest update posted by the user."
     def get(user_name)
       user_name = user_name.strip_at
-      user = client.user(user_name)
+      user = client.user(user_name, :include_entities => false)
       if user.status
         say "#{user.status.text} (#{time_ago_in_words(user.status.created_at)} ago)"
       else
@@ -153,7 +153,7 @@ module T
     method_option :number, :aliases => "-n", :type => :numeric, :default => 20
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false
     def mentions
-      hash = {}
+      hash = {:include_entities => false}
       hash.merge!(:count => options['number']) if options['number']
       timeline = client.mentions(hash)
       timeline.reverse! if options['reverse']
@@ -175,9 +175,9 @@ module T
     method_option :location, :aliases => "-l", :type => :boolean, :default => true
     def reply(user_name, message)
       user_name = user_name.strip_at
-      hash = {}
+      hash = {:include_entities => false, :trim_user => true}
       hash.merge!(:lat => location.lat, :long => location.lng) if options['location']
-      user = client.user(user_name)
+      user = client.user(user_name, :include_entities => false)
       hash.merge!(:in_reply_to_status_id => user.status.id) if user.status
       status = client.update("@#{user.screen_name} #{message}", hash)
       say "Reply created by @#{@rcfile.default_profile[0]} to @#{user.screen_name} (#{time_ago_in_words(status.created_at)} ago)"
@@ -188,9 +188,9 @@ module T
     desc "retweet USER_NAME", "Sends that user's latest Tweet to your followers."
     def retweet(user_name)
       user_name = user_name.strip_at
-      user = client.user(user_name)
+      user = client.user(user_name, :include_entities => false)
       if user.status
-        client.retweet(user.status.id)
+        client.retweet(user.status.id, :include_entities => false, :trim_user => true)
         say "@#{@rcfile.default_profile[0]} retweeted @#{user.screen_name}'s latest status: \"#{user.status.text}\""
         say
         say "Run `#{$0} delete status` to undo."
@@ -210,7 +210,7 @@ module T
     method_option :number, :aliases => "-n", :type => :numeric, :default => 20
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false
     def search(query)
-      hash = {}
+      hash = {:include_entities => false}
       hash.merge!(:rpp => options['number']) if options['number']
       timeline = client.search(query, hash)
       timeline.reverse! if options['reverse']
@@ -223,7 +223,7 @@ module T
     desc "sent_messages", "Returns the 20 most recent Direct Messages sent to you."
     def sent_messages
       run_pager
-      client.direct_messages_sent.map do |direct_message|
+      client.direct_messages_sent(:include_entities => false).map do |direct_message|
         say "#{direct_message.recipient.screen_name.rjust(20)}: #{direct_message.text} (#{time_ago_in_words(direct_message.created_at)} ago)"
       end
     end
@@ -232,7 +232,7 @@ module T
     desc "stats USER_NAME", "Retrieves the given user's number of followers and how many people they're following."
     def stats(user_name)
       user_name = user_name.strip_at
-      user = client.user(user_name)
+      user = client.user(user_name, :include_entities => false)
       say "Followers: #{number_with_delimiter(user.followers_count)}"
       say "Following: #{number_with_delimiter(user.friends_count)}"
       say
@@ -242,7 +242,7 @@ module T
     desc "status MESSAGE", "Post a Tweet."
     method_option :location, :aliases => "-l", :type => :boolean, :default => true
     def status(message)
-      hash = {}
+      hash = {:include_entities => false, :trim_user => true}
       hash.merge!(:lat => location.lat, :long => location.lng) if options['location']
       status = client.update(message, hash)
       say "Tweet created by @#{@rcfile.default_profile[0]} (#{time_ago_in_words(status.created_at)} ago)"
@@ -253,7 +253,7 @@ module T
 
     desc "suggest", "This command returns a listing of Twitter users' accounts we think you might enjoy following."
     def suggest
-      recommendation = client.recommendations(:limit => 1).first
+      recommendation = client.recommendations(:limit => 1, :include_entities => false).first
       if recommendation
         say "Try following @#{recommendation.screen_name}."
         say
@@ -267,7 +267,7 @@ module T
     method_option :number, :aliases => "-n", :type => :numeric, :default => 20
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false
     def timeline
-      hash = {}
+      hash = {:include_entities => false}
       hash.merge!(:count => options['number']) if options['number']
       timeline = client.home_timeline(hash)
       timeline.reverse! if options['reverse']
@@ -287,7 +287,7 @@ module T
     desc "whois USER_NAME", "Retrieves profile information for the user."
     def whois(user_name)
       user_name = user_name.strip_at
-      user = client.user(user_name)
+      user = client.user(user_name, :include_entities => false)
       say "#{user.name}, since #{user.created_at.strftime("%b %Y")}."
       say "bio: #{user.description}"
       say "location: #{user.location}"

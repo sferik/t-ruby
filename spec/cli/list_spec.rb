@@ -40,7 +40,7 @@ describe T::CLI::List do
       stub_get("/1/account/verify_credentials.json").
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       stub_get("/1/lists/statuses.json").
-        with(:query => {:owner_screen_name => "sferik", :per_page => "20", :slug => "presidents"}).
+        with(:query => {:owner_screen_name => "sferik", :per_page => "20", :slug => "presidents", :include_entities => "false"}).
         to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
@@ -48,7 +48,7 @@ describe T::CLI::List do
       a_get("/1/account/verify_credentials.json").
         should have_been_made
       a_get("/1/lists/statuses.json").
-        with(:query => {:owner_screen_name => "sferik", :per_page => "20", :slug => "presidents"}).
+        with(:query => {:owner_screen_name => "sferik", :per_page => "20", :slug => "presidents", :include_entities => "false"}).
         should have_been_made
     end
     it "should have the correct output" do

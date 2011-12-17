@@ -30,13 +30,13 @@ describe T::CLI::Unfollow do
     context "one user" do
       before do
         stub_delete("/1/friendships/destroy.json").
-          with(:query => {:screen_name => "sferik"}).
+          with(:query => {:screen_name => "sferik", :include_entities => "false"}).
           to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should request the correct resource" do
         @t.unfollow("users", "sferik")
         a_delete("/1/friendships/destroy.json").
-          with(:query => {:screen_name => "sferik"}).
+          with(:query => {:screen_name => "sferik", :include_entities => "false"}).
           should have_been_made
       end
       it "should have the correct output" do
@@ -47,19 +47,19 @@ describe T::CLI::Unfollow do
     context "two users" do
       before do
         stub_delete("/1/friendships/destroy.json").
-          with(:query => {:screen_name => "sferik"}).
+          with(:query => {:screen_name => "sferik", :include_entities => "false"}).
           to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         stub_delete("/1/friendships/destroy.json").
-          with(:query => {:screen_name => "gem"}).
+          with(:query => {:screen_name => "gem", :include_entities => "false"}).
           to_return(:body => fixture("gem.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should request the correct resource" do
         @t.unfollow("users", "sferik", "gem")
         a_delete("/1/friendships/destroy.json").
-          with(:query => {:screen_name => "sferik"}).
+          with(:query => {:screen_name => "sferik", :include_entities => "false"}).
           should have_been_made
         a_delete("/1/friendships/destroy.json").
-          with(:query => {:screen_name => "gem"}).
+          with(:query => {:screen_name => "gem", :include_entities => "false"}).
           should have_been_made
       end
       it "should have the correct output" do

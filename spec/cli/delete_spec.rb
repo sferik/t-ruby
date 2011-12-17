@@ -21,13 +21,13 @@ describe T::CLI::Delete do
     before do
       @t.options = @t.options.merge(:profile => fixture_path + "/.trc")
       stub_delete("/1/blocks/destroy.json").
-        with(:query => {:screen_name => "sferik"}).
+        with(:query => {:screen_name => "sferik", :include_entities => "false"}).
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @t.delete("block", "sferik")
       a_delete("/1/blocks/destroy.json").
-        with(:query => {:screen_name => "sferik"}).
+        with(:query => {:screen_name => "sferik", :include_entities => "false"}).
         should have_been_made
     end
     it "should have the correct output" do
@@ -43,7 +43,7 @@ describe T::CLI::Delete do
     context "not found" do
       before do
         stub_get("/1/direct_messages/sent.json").
-          with(:query => {:count => "1"}).
+          with(:query => {:count => "1", :include_entities => "false"}).
           to_return(:body => "[]", :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should exit" do
@@ -55,9 +55,10 @@ describe T::CLI::Delete do
     context "found" do
       before do
         stub_get("/1/direct_messages/sent.json").
-          with(:query => {:count => "1"}).
+          with(:query => {:count => "1", :include_entities => "false"}).
           to_return(:body => fixture("direct_messages.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         stub_delete("/1/direct_messages/destroy/1773478249.json").
+          with(:query => {:include_entities => "false"}).
           to_return(:body => fixture("direct_message.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       context ":force => true" do
@@ -67,9 +68,10 @@ describe T::CLI::Delete do
         it "should request the correct resource" do
           @t.delete("dm")
           a_get("/1/direct_messages/sent.json").
-            with(:query => {:count => "1"}).
+            with(:query => {:count => "1", :include_entities => "false"}).
             should have_been_made
           a_delete("/1/direct_messages/destroy/1773478249.json").
+            with(:query => {:include_entities => "false"}).
             should have_been_made
         end
         it "should have the correct output" do
@@ -86,9 +88,10 @@ describe T::CLI::Delete do
           $stdin.should_receive(:gets).and_return("yes")
           @t.delete("dm")
           a_get("/1/direct_messages/sent.json").
-            with(:query => {:count => "1"}).
+            with(:query => {:count => "1", :include_entities => "false"}).
             should have_been_made
           a_delete("/1/direct_messages/destroy/1773478249.json").
+            with(:query => {:include_entities => "false"}).
             should have_been_made
         end
         context "yes" do
@@ -118,7 +121,7 @@ describe T::CLI::Delete do
     context "not found" do
       before do
         stub_get("/1/favorites.json").
-          with(:query => {:count => "1"}).
+          with(:query => {:count => "1", :include_entities => "false"}).
           to_return(:body => "[]", :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should exit" do
@@ -130,9 +133,10 @@ describe T::CLI::Delete do
     context "found" do
       before do
         stub_get("/1/favorites.json").
-          with(:query => {:count => "1"}).
+          with(:query => {:count => "1", :include_entities => "false"}).
           to_return(:body => fixture("favorites.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         stub_delete("/1/favorites/destroy/28439861609.json").
+          with(:query => {:include_entities => "false"}).
           to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       context ":force => true" do
@@ -142,9 +146,10 @@ describe T::CLI::Delete do
         it "should request the correct resource" do
           @t.delete("favorite")
           a_get("/1/favorites.json").
-            with(:query => {:count => "1"}).
+            with(:query => {:count => "1", :include_entities => "false"}).
             should have_been_made
           a_delete("/1/favorites/destroy/28439861609.json").
+            with(:query => {:include_entities => "false"}).
             should have_been_made
         end
         it "should have the correct output" do
@@ -161,9 +166,10 @@ describe T::CLI::Delete do
           $stdin.should_receive(:gets).and_return("yes")
           @t.delete("favorite")
           a_get("/1/favorites.json").
-            with(:query => {:count => "1"}).
+            with(:query => {:count => "1", :include_entities => "false"}).
             should have_been_made
           a_delete("/1/favorites/destroy/28439861609.json").
+            with(:query => {:include_entities => "false"}).
             should have_been_made
         end
         context "yes" do
@@ -252,6 +258,7 @@ describe T::CLI::Delete do
     context "not found" do
       before do
         stub_get("/1/account/verify_credentials.json").
+          with(:query => {:include_entities => "false"}).
           to_return(:body => "{}", :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should exit" do
@@ -263,8 +270,10 @@ describe T::CLI::Delete do
     context "found" do
       before do
         stub_get("/1/account/verify_credentials.json").
+          with(:query => {:include_entities => "false"}).
           to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         stub_delete("/1/statuses/destroy/26755176471724032.json").
+          with(:query => {:include_entities => "false", :trim_user => "true"}).
           to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       context ":force => true" do
@@ -274,8 +283,10 @@ describe T::CLI::Delete do
         it "should request the correct resource" do
           @t.delete("status")
           a_get("/1/account/verify_credentials.json").
+            with(:query => {:include_entities => "false"}).
             should have_been_made
           a_delete("/1/statuses/destroy/26755176471724032.json").
+            with(:query => {:include_entities => "false", :trim_user => "true"}).
             should have_been_made
         end
         it "should have the correct output" do
@@ -292,8 +303,10 @@ describe T::CLI::Delete do
           $stdin.should_receive(:gets).and_return("yes")
           @t.delete("status")
           a_get("/1/account/verify_credentials.json").
+            with(:query => {:include_entities => "false"}).
             should have_been_made
           a_delete("/1/statuses/destroy/26755176471724032.json").
+            with(:query => {:include_entities => "false", :trim_user => "true"}).
             should have_been_made
         end
         context "yes" do

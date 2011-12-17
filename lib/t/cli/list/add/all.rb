@@ -1,5 +1,4 @@
 require 'active_support/core_ext/array/grouping'
-require 't/core_ext/string'
 require 't/rcfile'
 require 'thor'
 require 'twitter'
@@ -40,8 +39,8 @@ module T
               friend_ids += friends.ids
               cursor = friends.next_cursor
             end
-            users_ids_to_add = (friend_ids - list_member_ids)
-            number = users_ids_to_add.length
+            list_member_ids_to_add = (friend_ids - list_member_ids)
+            number = list_member_ids_to_add.length
             if number.zero?
               return say "All of @#{@rcfile.default_profile[0]}'s friends are already members of the list \"#{list_name}\"."
             elsif existing_list_members + number > MAX_USERS_PER_LIST
@@ -50,7 +49,7 @@ module T
               return unless yes? "Are you sure you want to add #{number} #{number == 1 ? 'friend' : 'friends'} to the list \"#{list_name}\"?"
             end
             max_members_to_add = MAX_USERS_PER_LIST - existing_list_members
-            users_ids_to_add[0...max_members_to_add].in_groups_of(100, false) do |user_id_group|
+            list_member_ids_to_add[0...max_members_to_add].in_groups_of(100, false) do |user_id_group|
               client.list_add_members(list_name, user_id_group)
             end
             number_added = [number, max_members_to_add].min
@@ -79,8 +78,8 @@ module T
               follower_ids += followers.ids
               cursor = followers.next_cursor
             end
-            users_ids_to_add = (follower_ids - list_member_ids)
-            number = users_ids_to_add.length
+            list_member_ids_to_add = (follower_ids - list_member_ids)
+            number = list_member_ids_to_add.length
             if number.zero?
               return say "All of @#{@rcfile.default_profile[0]}'s followers are already members of the list \"#{list_name}\"."
             elsif existing_list_members + number > MAX_USERS_PER_LIST
@@ -89,7 +88,7 @@ module T
               return unless yes? "Are you sure you want to add #{number} #{number == 1 ? 'follower' : 'followers'} to the list \"#{list_name}\"?"
             end
             max_members_to_add = MAX_USERS_PER_LIST - existing_list_members
-            users_ids_to_add[0...max_members_to_add].in_groups_of(100, false) do |user_id_group|
+            list_member_ids_to_add[0...max_members_to_add].in_groups_of(100, false) do |user_id_group|
               client.list_add_members(list_name, user_id_group)
             end
             number_added = [number, max_members_to_add].min
@@ -118,21 +117,21 @@ module T
               from_list_member_ids += list_members.users.collect{|user| user.id}
               cursor = list_members.next_cursor
             end
-            users_ids_to_add = (from_list_member_ids - to_list_member_ids)
-            number = users_ids_to_add.length
+            list_member_ids_to_add = (from_list_member_ids - to_list_member_ids)
+            number = list_member_ids_to_add.length
             if number.zero?
               return say "All of the members of the list \"#{from_list_name}\" are already members of the list \"#{to_list_name}\"."
             elsif existing_list_members + number > MAX_USERS_PER_LIST
-              return unless yes? "Lists can't have more than #{MAX_USERS_PER_LIST} members. Do you want to add up to #{MAX_USERS_PER_LIST} users to the list \"#{to_list_name}\"?"
+              return unless yes? "Lists can't have more than #{MAX_USERS_PER_LIST} members. Do you want to add up to #{MAX_USERS_PER_LIST} members to the list \"#{to_list_name}\"?"
             else
-              return unless yes? "Are you sure you want to add #{number} #{number == 1 ? 'user' : 'users'} to the list \"#{to_list_name}\"?"
+              return unless yes? "Are you sure you want to add #{number} #{number == 1 ? 'member' : 'members'} to the list \"#{to_list_name}\"?"
             end
             max_members_to_add = MAX_USERS_PER_LIST - existing_list_members
-            users_ids_to_add[0...max_members_to_add].in_groups_of(100, false) do |user_id_group|
+            list_member_ids_to_add[0...max_members_to_add].in_groups_of(100, false) do |user_id_group|
               client.list_add_members(to_list_name, user_id_group)
             end
             number_added = [number, max_members_to_add].min
-            say "@#{@rcfile.default_profile[0]} added #{number_added} #{number_added == 1 ? 'user' : 'users'} to the list \"#{to_list_name}\"."
+            say "@#{@rcfile.default_profile[0]} added #{number_added} #{number_added == 1 ? 'member' : 'members'} to the list \"#{to_list_name}\"."
             say
             say "Run `#{$0} list remove all listed #{from_list_name} #{to_list_name}` to undo."
           end

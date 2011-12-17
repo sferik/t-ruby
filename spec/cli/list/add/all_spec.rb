@@ -334,7 +334,7 @@ describe T::CLI::List::Add::All do
           to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should request the correct resource" do
-        $stdout.should_receive(:print).with("Are you sure you want to add 1 user to the list \"presidents\"? ")
+        $stdout.should_receive(:print).with("Are you sure you want to add 1 member to the list \"presidents\"? ")
         $stdin.should_receive(:gets).and_return("yes")
         @t.list("add", "all", "listed", "democrats", "presidents")
         a_get("/1/account/verify_credentials.json").
@@ -351,15 +351,15 @@ describe T::CLI::List::Add::All do
       end
       context "yes" do
         it "should have the correct output" do
-          $stdout.should_receive(:print).with("Are you sure you want to add 1 user to the list \"presidents\"? ")
+          $stdout.should_receive(:print).with("Are you sure you want to add 1 member to the list \"presidents\"? ")
           $stdin.should_receive(:gets).and_return("yes")
           @t.list("add", "all", "listed", "democrats", "presidents")
-          $stdout.string.should =~ /@testcli added 1 user to the list "presidents"\./
+          $stdout.string.should =~ /@testcli added 1 member to the list "presidents"\./
         end
       end
       context "no" do
         it "should have the correct output" do
-          $stdout.should_receive(:print).with("Are you sure you want to add 1 user to the list \"presidents\"? ")
+          $stdout.should_receive(:print).with("Are you sure you want to add 1 member to the list \"presidents\"? ")
           $stdin.should_receive(:gets).and_return("no")
           @t.list("add", "all", "listed", "democrats", "presidents")
           $stdout.string.chomp.should == ""
@@ -379,7 +379,7 @@ describe T::CLI::List::Add::All do
           to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should request the correct resource" do
-        $stdout.should_receive(:print).with("Lists can't have more than 500 members. Do you want to add up to 500 users to the list \"presidents\"? ")
+        $stdout.should_receive(:print).with("Lists can't have more than 500 members. Do you want to add up to 500 members to the list \"presidents\"? ")
         $stdin.should_receive(:gets).and_return("yes")
         @t.list("add", "all", "listed", "democrats", "presidents")
         a_get("/1/account/verify_credentials.json").
@@ -396,15 +396,15 @@ describe T::CLI::List::Add::All do
       end
       context "yes" do
         it "should have the correct output" do
-          $stdout.should_receive(:print).with("Lists can't have more than 500 members. Do you want to add up to 500 users to the list \"presidents\"? ")
+          $stdout.should_receive(:print).with("Lists can't have more than 500 members. Do you want to add up to 500 members to the list \"presidents\"? ")
           $stdin.should_receive(:gets).and_return("yes")
           @t.list("add", "all", "listed", "democrats", "presidents")
-          $stdout.string.should =~ /@testcli added 500 users to the list "presidents"\./
+          $stdout.string.should =~ /@testcli added 500 members to the list "presidents"\./
         end
       end
       context "no" do
         it "should have the correct output" do
-          $stdout.should_receive(:print).with("Lists can't have more than 500 members. Do you want to add up to 500 users to the list \"presidents\"? ")
+          $stdout.should_receive(:print).with("Lists can't have more than 500 members. Do you want to add up to 500 members to the list \"presidents\"? ")
           $stdin.should_receive(:gets).and_return("no")
           @t.list("add", "all", "listed", "democrats", "presidents")
           $stdout.string.chomp.should == ""

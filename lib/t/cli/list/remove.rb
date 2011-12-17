@@ -31,6 +31,10 @@ module T
           say "Run `#{$0} list add users #{list_name} #{screen_names.join(' ')}` to undo."
         end
 
+        desc "all SUBCOMMAND ...ARGS", "Remove all users to a list."
+        require 't/cli/list/remove/all'
+        subcommand 'all', CLI::List::Remove::All
+
       private
 
         def base_url

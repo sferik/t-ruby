@@ -233,8 +233,11 @@ module T
     def stats(screen_name)
       screen_name = screen_name.strip_at
       user = client.user(screen_name, :include_entities => false)
-      say "Followers: #{number_with_delimiter(user.followers_count)}"
+      say "Tweets: #{number_with_delimiter(user.statuses_count)}"
       say "Following: #{number_with_delimiter(user.friends_count)}"
+      say "Followers: #{number_with_delimiter(user.followers_count)}"
+      say "Favorites: #{number_with_delimiter(user.favorites_count)}"
+      say "Listed: #{number_with_delimiter(user.listed_count)}"
       say
       say "Run `#{$0} whois #{user.screen_name}` to view profile."
     end

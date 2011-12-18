@@ -508,8 +508,11 @@ describe T::CLI do
     end
     it "should have the correct output" do
       @t.stats("sferik")
-      $stdout.string.should =~ /^Followers: 1,048$/
+      $stdout.string.should =~ /^Tweets: 3,479$/
       $stdout.string.should =~ /^Following: 197$/
+      $stdout.string.should =~ /^Followers: 1,048$/
+      $stdout.string.should =~ /^Favorites: 1,040$/
+      $stdout.string.should =~ /^Listed: 41$/
     end
   end
 

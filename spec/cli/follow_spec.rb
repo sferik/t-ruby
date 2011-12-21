@@ -44,29 +44,6 @@ describe T::CLI::Follow do
         $stdout.string.should =~ /^@testcli is now following 1 more user\.$/
       end
     end
-    context "two users" do
-      before do
-        stub_post("/1/friendships/create.json").
-          with(:body => {:screen_name => "sferik", :include_entities => "false"}).
-          to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_post("/1/friendships/create.json").
-          with(:body => {:screen_name => "gem", :include_entities => "false"}).
-          to_return(:body => fixture("gem.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      end
-      it "should request the correct resource" do
-        @t.follow("users", "sferik", "gem")
-        a_post("/1/friendships/create.json").
-          with(:body => {:screen_name => "sferik", :include_entities => "false"}).
-          should have_been_made
-        a_post("/1/friendships/create.json").
-          with(:body => {:screen_name => "gem", :include_entities => "false"}).
-          should have_been_made
-      end
-      it "should have the correct output" do
-        @t.follow("users", "sferik", "gem")
-        $stdout.string.should =~ /^@testcli is now following 2 more users\.$/
-      end
-    end
   end
 
 end

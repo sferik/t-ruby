@@ -1,3 +1,4 @@
+require 't/core_ext/enumerable'
 require 't/rcfile'
 require 'thor'
 require 'twitter'
@@ -28,13 +29,40 @@ module T
           number = list_member_collection.length
           return say "@#{@rcfile.default_profile[0]} is already not following any list members." if number.zero?
           return unless yes? "Are you sure you want to unfollow #{number} #{number == 1 ? 'user' : 'users'}?"
-          list_member_collection.each do |list_member|
-            user = client.unfollow(list_member.id, :include_entities => false)
-            say "@#{@rcfile.default_profile[0]} is no longer following @#{user.screen_name}."
+          list_member_collection.threaded_map do |list_member|
+            client.unfollow(list_member.id, :include_entities => false)
           end
           say "@#{@rcfile.default_profile[0]} is no longer following #{number} #{number == 1 ? 'user' : 'users'}."
           say
           say "Run `#{$0} follow all listed #{list_name}` to follow again."
+        end
+
+        desc "followers", "Unfollow all followers."
+        def followers
+          follower_ids = []
+          cursor = -1
+          until cursor == 0
+            followers = client.follower_ids(:cursor => cursor)
+            follower_ids += followers.ids
+            cursor = followers.next_cursor
+          end
+          friend_ids = []
+          cursor = -1
+          until cursor == 0
+            friends = client.friend_ids(:cursor => cursor)
+            friend_ids += friends.ids
+            cursor = friends.next_cursor
+          end
+          follow_ids = (follower_ids - friend_ids)
+          number = follow_ids.length
+          return say "@#{@rcfile.default_profile[0]} is already not following any followers." if number.zero?
+          return unless yes? "Are you sure you want to unfollow #{number} #{number == 1 ? 'user' : 'users'}?"
+          screen_names = follow_ids.threaded_map do |follow_id|
+            client.unfollow(follow_id, :include_entities => false)
+          end
+          say "@#{@rcfile.default_profile[0]} is no longer following #{number} #{number == 1 ? 'user' : 'users'}."
+          say
+          say "Run `#{$0} follow all followers` to stop."
         end
 
         desc "nonfollowers", "Unfollow all non-followers."
@@ -57,9 +85,8 @@ module T
           number = unfollow_ids.length
           return say "@#{@rcfile.default_profile[0]} is already not following any non-followers." if number.zero?
           return unless yes? "Are you sure you want to unfollow #{number} #{number == 1 ? 'user' : 'users'}?"
-          screen_names = unfollow_ids.map do |unfollow_id|
+          screen_names = unfollow_ids.threaded_map do |unfollow_id|
             user = client.unfollow(unfollow_id, :include_entities => false)
-            say "@#{@rcfile.default_profile[0]} is no longer following @#{user.screen_name}."
             user.screen_name
           end
           say "@#{@rcfile.default_profile[0]} is no longer following #{number} #{number == 1 ? 'user' : 'users'}."
@@ -79,9 +106,8 @@ module T
           number = friend_ids.length
           return say "@#{@rcfile.default_profile[0]} is already not following anyone." if number.zero?
           return unless yes? "Are you sure you want to unfollow #{number} #{number == 1 ? 'user' : 'users'}?"
-          screen_names = friend_ids.map do |friend_id|
+          screen_names = friend_ids.threaded_map do |friend_id|
             user = client.unfollow(friend_id, :include_entities => false)
-            say "@#{@rcfile.default_profile[0]} is no longer following @#{user.screen_name}."
             user.screen_name
           end
           say "@#{@rcfile.default_profile[0]} is no longer following #{number} #{number == 1 ? 'user' : 'users'}."

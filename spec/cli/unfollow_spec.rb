@@ -41,7 +41,7 @@ describe T::CLI::Unfollow do
       end
       it "should have the correct output" do
         @t.unfollow("users", "sferik")
-        $stdout.string.should =~ /^@testcli is no longer following @sferik\.$/
+        $stdout.string.should =~ /^@testcli is no longer following 1 user\.$/
       end
     end
     context "two users" do
@@ -64,8 +64,6 @@ describe T::CLI::Unfollow do
       end
       it "should have the correct output" do
         @t.unfollow("users", "sferik", "gem")
-        $stdout.string.should =~ /^@testcli is no longer following @sferik\.$/
-        $stdout.string.should =~ /^@testcli is no longer following @gem\.$/
         $stdout.string.should =~ /^@testcli is no longer following 2 users\.$/
       end
     end

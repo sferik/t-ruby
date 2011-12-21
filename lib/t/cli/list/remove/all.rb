@@ -1,3 +1,4 @@
+require 't/core_ext/enumerable'
 require 't/rcfile'
 require 'thor'
 require 'twitter'
@@ -40,7 +41,7 @@ module T
             else
               return unless yes? "Are you sure you want to remove #{number} #{number == 1 ? 'friend' : 'friends'} from the list \"#{list_name}\"?"
             end
-            list_member_ids_to_remove.each do |list_member_id|
+            list_member_ids_to_remove.threaded_map do |list_member_id|
               client.list_remove_member(list_name, list_member_id)
             end
             say "@#{@rcfile.default_profile[0]} removed #{number} #{number == 1 ? 'friend' : 'friends'} from the list \"#{list_name}\"."
@@ -71,7 +72,7 @@ module T
             else
               return unless yes? "Are you sure you want to remove #{number} #{number == 1 ? 'follower' : 'followers'} from the list \"#{list_name}\"?"
             end
-            list_member_ids_to_remove.each do |list_member_id|
+            list_member_ids_to_remove.threaded_map do |list_member_id|
               client.list_remove_member(list_name, list_member_id)
             end
             say "@#{@rcfile.default_profile[0]} removed #{number} #{number == 1 ? 'follower' : 'followers'} from the list \"#{list_name}\"."
@@ -102,7 +103,7 @@ module T
             else
               return unless yes? "Are you sure you want to remove #{number} #{number == 1 ? 'member' : 'members'} from the list \"#{to_list_name}\"?"
             end
-            list_member_ids_to_remove.each do |list_member_id|
+            list_member_ids_to_remove.threaded_map do |list_member_id|
               client.list_remove_member(to_list_name, list_member_id)
             end
             say "@#{@rcfile.default_profile[0]} removed #{number} #{number == 1 ? 'member' : 'members'} from the list \"#{to_list_name}\"."
@@ -122,7 +123,7 @@ module T
             number = list_member_ids.length
             return say "The list \"#{list_name}\" doesn't have any members." if number.zero?
             return unless yes? "Are you sure you want to remove #{number} #{number == 1 ? 'member' : 'members'} from the list \"#{list_name}\"?"
-            list_member_ids.each do |list_member_id|
+            list_member_ids.threaded_map do |list_member_id|
               client.list_remove_member(list_name, list_member_id)
             end
             say "@#{@rcfile.default_profile[0]} removed #{number} #{number == 1 ? 'member' : 'members'} from the list \"#{list_name}\"."

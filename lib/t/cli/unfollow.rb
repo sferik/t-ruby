@@ -1,3 +1,4 @@
+require 't/core_ext/enumerable'
 require 't/core_ext/string'
 require 't/rcfile'
 require 'thor'
@@ -19,13 +20,11 @@ module T
       desc "users SCREEN_NAME [SCREEN_NAME...]", "Allows you to stop following users."
       def users(screen_name, *screen_names)
         screen_names.unshift(screen_name)
-        users = screen_names.map do |screen_name|
+        screen_names.threaded_map do |screen_name|
           screen_name = screen_name.strip_at
-          user = client.unfollow(screen_name, :include_entities => false)
-          say "@#{@rcfile.default_profile[0]} is no longer following @#{user.screen_name}."
-          user
+          client.unfollow(screen_name, :include_entities => false)
         end
-        number = users.length
+        number = screen_names.length
         say "@#{@rcfile.default_profile[0]} is no longer following #{number} #{number == 1 ? 'user' : 'users'}."
         say
         say "Run `#{$0} follow users #{screen_names.join(' ')}` to follow again."

@@ -40,7 +40,7 @@ describe T::CLI::Follow::All do
       end
       it "should have the correct output" do
         @t.follow("all", "followers")
-        $stdout.string.chomp.should == "@testcli is already following all of his or her followers."
+        $stdout.string.chomp.should == "@testcli is already following all followers."
       end
     end
     context "one user" do
@@ -74,7 +74,7 @@ describe T::CLI::Follow::All do
           $stdout.should_receive(:print).with("Are you sure you want to follow 1 user? ")
           $stdin.should_receive(:gets).and_return("yes")
           @t.follow("all", "followers")
-          $stdout.string.should =~ /^@testcli is now following @sferik\.$/
+          $stdout.string.should =~ /^@testcli is now following 1 more user\.$/
         end
       end
       context "no" do
@@ -141,7 +141,6 @@ describe T::CLI::Follow::All do
           $stdout.should_receive(:print).with("Are you sure you want to follow 1 user? ")
           $stdin.should_receive(:gets).and_return("yes")
           @t.follow("all", "listed", "presidents")
-          $stdout.string.should =~ /^@testcli is now following @sferik\.$/
           $stdout.string.should =~ /^@testcli is now following 1 more user\.$/
         end
       end

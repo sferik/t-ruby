@@ -1,3 +1,4 @@
+require 't/core_ext/enumerable'
 require 't/rcfile'
 require 'thor'
 require 'twitter'
@@ -34,16 +35,14 @@ module T
           end
           follow_ids = (follower_ids - friend_ids)
           number = follow_ids.length
-          return say "@#{@rcfile.default_profile[0]} is already following all of his or her followers." if number.zero?
+          return say "@#{@rcfile.default_profile[0]} is already following all followers." if number.zero?
           return unless yes? "Are you sure you want to follow #{number} #{number == 1 ? 'user' : 'users'}?"
-          screen_names = follow_ids.map do |follow_id|
-            user = client.follow(follow_id, :include_entities => false)
-            say "@#{@rcfile.default_profile[0]} is now following @#{user.screen_name}."
-            user.screen_name
+          screen_names = follow_ids.threaded_map do |follow_id|
+            client.follow(follow_id, :include_entities => false)
           end
           say "@#{@rcfile.default_profile[0]} is now following #{number} more #{number == 1 ? 'user' : 'users'}."
           say
-          say "Run `#{$0} unfollow users #{screen_names.join(' ')}` to stop."
+          say "Run `#{$0} unfollow all followers` to stop."
         end
 
         desc "listed LIST_NAME", "Follow all members of a list."
@@ -58,9 +57,8 @@ module T
           number = list_member_collection.length
           return say "@#{@rcfile.default_profile[0]} is already following all list members." if number.zero?
           return unless yes? "Are you sure you want to follow #{number} #{number == 1 ? 'user' : 'users'}?"
-          list_member_collection.each do |list_member|
-            user = client.follow(list_member.id, :include_entities => false)
-            say "@#{@rcfile.default_profile[0]} is now following @#{user.screen_name}."
+          list_member_collection.threaded_map do |list_member|
+            client.follow(list_member.id, :include_entities => false)
           end
           say "@#{@rcfile.default_profile[0]} is now following #{number} more #{number == 1 ? 'user' : 'users'}."
           say

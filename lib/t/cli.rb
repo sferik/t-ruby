@@ -88,7 +88,7 @@ module T
     desc "direct_messages", "Returns the 20 most recent Direct Messages sent to you."
     def direct_messages
       run_pager
-      client.direct_messages(:include_entities => false).map do |direct_message|
+      client.direct_messages(:include_entities => false).each do |direct_message|
         say "#{direct_message.sender.screen_name.rjust(20)}: #{direct_message.text} (#{time_ago_in_words(direct_message.created_at)} ago)"
       end
     end
@@ -132,7 +132,7 @@ module T
       timeline = client.favorites(hash)
       timeline.reverse! if options['reverse']
       run_pager
-      timeline.map do |status|
+      timeline.each do |status|
         say "#{status.user.screen_name.rjust(20)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
       end
     end
@@ -158,7 +158,7 @@ module T
       timeline = client.mentions(hash)
       timeline.reverse! if options['reverse']
       run_pager
-      timeline.map do |status|
+      timeline.each do |status|
         say "#{status.user.screen_name.rjust(20)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
       end
     end
@@ -215,7 +215,7 @@ module T
       timeline = client.search(query, hash)
       timeline.reverse! if options['reverse']
       run_pager
-      timeline.map do |status|
+      timeline.each do |status|
         say "#{status.from_user.rjust(20)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
       end
     end
@@ -223,7 +223,7 @@ module T
     desc "sent_messages", "Returns the 20 most recent Direct Messages sent to you."
     def sent_messages
       run_pager
-      client.direct_messages_sent(:include_entities => false).map do |direct_message|
+      client.direct_messages_sent(:include_entities => false).each do |direct_message|
         say "#{direct_message.recipient.screen_name.rjust(20)}: #{direct_message.text} (#{time_ago_in_words(direct_message.created_at)} ago)"
       end
     end
@@ -275,7 +275,7 @@ module T
       timeline = client.home_timeline(hash)
       timeline.reverse! if options['reverse']
       run_pager
-      timeline.map do |status|
+      timeline.each do |status|
         say "#{status.user.screen_name.rjust(20)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
       end
     end

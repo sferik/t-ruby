@@ -36,7 +36,7 @@ module T
         timeline = client.list_timeline(list_name, hash)
         timeline.reverse! if options['reverse']
         run_pager
-        timeline.map do |status|
+        timeline.each do |status|
           say "#{status.user.screen_name.rjust(20)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
         end
       end

@@ -16,7 +16,7 @@ describe T::CLI::Search do
     $stdout = @old_stdout
   end
 
-  describe "#search" do
+  describe "#all" do
     before do
       stub_request(:get, "https://search.twitter.com/search.json").
         with(:query => {:q => "twitter", :include_entities => "false", :rpp => "20"}).
@@ -46,6 +46,116 @@ describe T::CLI::Search do
       avexnews: @ICONIQ_NEWS opened!She gain attention by collaboration song「I'm lovin' you」wif EXILE・ATSUSHI.Get her newest info here! http://bit.ly/dymm8v (about 1 year ago)
    WildIvory92: RT @FiercePrinceJ: People on Twitter Gossip about other People, Hate others? This Is Twitter Nothing More, Nothing Less. (about 1 year ago)
        twittag: [Twitter*feed] Now Playing Friends - リニューアル式 : R49 http://bit.ly/bmlA5g (about 1 year ago)
+      eos
+    end
+  end
+
+  describe "#timeline" do
+    before do
+      1.upto(16).each do |page|
+        stub_get("/1/statuses/user_timeline.json").
+          with(:query => {:count => "200", :page => "#{page}"}).
+          to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+    end
+    it "should request the correct resource" do
+      @t.search("timeline", "twitter")
+      1.upto(16).each do |page|
+        a_get("/1/statuses/user_timeline.json").
+          with(:query => {:count => "200", :page => "#{page}"}).
+          should have_been_made
+      end
+    end
+    it "should have the correct output" do
+      @t.search("timeline", "twitter")
+      $stdout.string.should == <<-eos.gsub(/^/, ' ' * 6)
+   22305399947: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
+   21538122473: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
+   22305399947: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
+   21538122473: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
+   22305399947: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
+   21538122473: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
+   22305399947: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
+   21538122473: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
+   22305399947: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
+   21538122473: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
+   22305399947: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
+   21538122473: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
+   22305399947: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
+   21538122473: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
+   22305399947: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
+   21538122473: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
+   22305399947: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
+   21538122473: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
+   22305399947: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
+   21538122473: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
+   22305399947: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
+   21538122473: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
+   22305399947: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
+   21538122473: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
+   22305399947: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
+   21538122473: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
+   22305399947: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
+   21538122473: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
+   22305399947: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
+   21538122473: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
+   22305399947: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
+   21538122473: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
+      eos
+    end
+  end
+
+  describe "#user" do
+    before do
+      1.upto(16).each do |page|
+        stub_get("/1/statuses/user_timeline.json").
+          with(:query => {:screen_name => "sferik", :count => "200", :page => "#{page}"}).
+          to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+    end
+    it "should request the correct resource" do
+      @t.search("user", "sferik", "twitter")
+      1.upto(16).each do |page|
+        a_get("/1/statuses/user_timeline.json").
+          with(:query => {:screen_name => "sferik", :count => "200", :page => "#{page}"}).
+          should have_been_made
+      end
+    end
+    it "should have the correct output" do
+      @t.search("user", "sferik", "twitter")
+      $stdout.string.should == <<-eos.gsub(/^/, ' ' * 6)
+   22305399947: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
+   21538122473: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
+   22305399947: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
+   21538122473: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
+   22305399947: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
+   21538122473: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
+   22305399947: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
+   21538122473: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
+   22305399947: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
+   21538122473: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
+   22305399947: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
+   21538122473: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
+   22305399947: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
+   21538122473: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
+   22305399947: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
+   21538122473: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
+   22305399947: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
+   21538122473: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
+   22305399947: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
+   21538122473: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
+   22305399947: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
+   21538122473: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
+   22305399947: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
+   21538122473: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
+   22305399947: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
+   21538122473: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
+   22305399947: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
+   21538122473: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
+   22305399947: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
+   21538122473: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
+   22305399947: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
+   21538122473: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
       eos
     end
   end

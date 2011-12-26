@@ -15,6 +15,8 @@ module T
 
     DEFAULT_HOST = 'api.twitter.com'
     DEFAULT_PROTOCOL = 'https'
+    DEFAULT_RPP = 20
+    MAX_SCREEN_NAME_SIZE = 20
 
     class_option :host, :aliases => "-H", :type => :string, :default => DEFAULT_HOST, :desc => "Twitter API server"
     class_option :no_ssl, :aliases => "-U", :type => :boolean, :default => false, :desc => "Disable SSL"
@@ -89,7 +91,7 @@ module T
     def direct_messages
       run_pager
       client.direct_messages(:include_entities => false).each do |direct_message|
-        say "#{direct_message.sender.screen_name.rjust(20)}: #{direct_message.text} (#{time_ago_in_words(direct_message.created_at)} ago)"
+        say "#{direct_message.sender.screen_name.rjust(MAX_SCREEN_NAME_SIZE)}: #{direct_message.text} (#{time_ago_in_words(direct_message.created_at)} ago)"
       end
     end
     map %w(dms) => :direct_messages
@@ -123,8 +125,8 @@ module T
     end
     map %w(fave) => :favorite
 
-    desc "favorites", "Returns the 20 most recent Tweets you favorited."
-    method_option :number, :aliases => "-n", :type => :numeric, :default => 20
+    desc "favorites", "Returns the #{DEFAULT_RPP} most recent Tweets you favorited."
+    method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_RPP
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false
     def favorites
       hash = {:include_entities => false}
@@ -133,7 +135,7 @@ module T
       timeline.reverse! if options['reverse']
       run_pager
       timeline.each do |status|
-        say "#{status.user.screen_name.rjust(20)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
+        say "#{status.user.screen_name.rjust(MAX_SCREEN_NAME_SIZE)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
       end
     end
     map %w(faves) => :favorites
@@ -149,8 +151,8 @@ module T
       end
     end
 
-    desc "mentions", "Returns the 20 most recent Tweets mentioning you."
-    method_option :number, :aliases => "-n", :type => :numeric, :default => 20
+    desc "mentions", "Returns the #{DEFAULT_RPP} most recent Tweets mentioning you."
+    method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_RPP
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false
     def mentions
       hash = {:include_entities => false}
@@ -159,7 +161,7 @@ module T
       timeline.reverse! if options['reverse']
       run_pager
       timeline.each do |status|
-        say "#{status.user.screen_name.rjust(20)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
+        say "#{status.user.screen_name.rjust(MAX_SCREEN_NAME_SIZE)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
       end
     end
     map %w(replies) => :mentions
@@ -210,7 +212,7 @@ module T
     def sent_messages
       run_pager
       client.direct_messages_sent(:include_entities => false).each do |direct_message|
-        say "#{direct_message.recipient.screen_name.rjust(20)}: #{direct_message.text} (#{time_ago_in_words(direct_message.created_at)} ago)"
+        say "#{direct_message.recipient.screen_name.rjust(MAX_SCREEN_NAME_SIZE)}: #{direct_message.text} (#{time_ago_in_words(direct_message.created_at)} ago)"
       end
     end
     map %w(sms) => :sent_messages
@@ -252,8 +254,8 @@ module T
       end
     end
 
-    desc "timeline", "Returns the 20 most recent Tweets posted by you and the users you follow."
-    method_option :number, :aliases => "-n", :type => :numeric, :default => 20
+    desc "timeline", "Returns the #{DEFAULT_RPP} most recent Tweets posted by you and the users you follow."
+    method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_RPP
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false
     def timeline
       hash = {:include_entities => false}
@@ -262,7 +264,7 @@ module T
       timeline.reverse! if options['reverse']
       run_pager
       timeline.each do |status|
-        say "#{status.user.screen_name.rjust(20)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
+        say "#{status.user.screen_name.rjust(MAX_SCREEN_NAME_SIZE)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
       end
     end
     map %w(tl) => :timeline

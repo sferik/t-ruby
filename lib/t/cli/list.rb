@@ -10,6 +10,8 @@ module T
 
       DEFAULT_HOST = 'api.twitter.com'
       DEFAULT_PROTOCOL = 'https'
+      DEFAULT_RPP = 20
+      MAX_SCREEN_NAME_SIZE = 20
 
       check_unknown_options!
 
@@ -28,7 +30,7 @@ module T
       end
 
       desc "timeline LIST_NAME", "Show tweet timeline for members of the specified list."
-      method_option :number, :aliases => "-n", :type => :numeric, :default => 20
+      method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_RPP
       method_option :reverse, :aliases => "-r", :type => :boolean, :default => false
       def timeline(list_name)
         hash = {:include_entities => false}
@@ -37,7 +39,7 @@ module T
         timeline.reverse! if options['reverse']
         run_pager
         timeline.each do |status|
-          say "#{status.user.screen_name.rjust(20)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
+          say "#{status.user.screen_name.rjust(MAX_SCREEN_NAME_SIZE)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
         end
       end
       map %w(tl) => :timeline

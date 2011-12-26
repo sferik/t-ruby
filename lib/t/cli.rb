@@ -17,7 +17,6 @@ module T
     DEFAULT_PROTOCOL = 'https'
     DEFAULT_RPP = 20
     MAX_SCREEN_NAME_SIZE = 20
-    MAX_STATUS_TEXT_SIZE = 20
 
     class_option :host, :aliases => "-H", :type => :string, :default => DEFAULT_HOST, :desc => "Twitter API server"
     class_option :no_ssl, :aliases => "-U", :type => :boolean, :default => false, :desc => "Disable SSL"
@@ -141,21 +140,6 @@ module T
     end
     map %w(faves) => :favorites
 
-    desc "get SCREEN_NAME", "Returns the #{DEFAULT_RPP} most recent Tweets posted by a user."
-    method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_RPP
-    method_option :reverse, :aliases => "-r", :type => :boolean, :default => false
-    def get(screen_name)
-      screen_name = screen_name.strip_at
-      hash = {:include_entities => false}
-      hash.merge!(:count => options['number']) if options['number']
-      timeline = client.user_timeline(screen_name, hash)
-      timeline.reverse! if options['reverse']
-      run_pager
-      timeline.each do |status|
-        say "#{status.id.to_s.rjust(MAX_STATUS_TEXT_SIZE)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
-      end
-    end
-
     desc "mentions", "Returns the #{DEFAULT_RPP} most recent Tweets mentioning you."
     method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_RPP
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false
@@ -259,13 +243,18 @@ module T
       end
     end
 
-    desc "timeline", "Returns the #{DEFAULT_RPP} most recent Tweets posted by you and the users you follow."
+    desc "timeline [SCREEN_NAME]", "Returns the #{DEFAULT_RPP} most recent Tweets posted by a user."
     method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_RPP
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false
-    def timeline
+    def timeline(screen_name=nil)
       hash = {:include_entities => false}
       hash.merge!(:count => options['number']) if options['number']
-      timeline = client.home_timeline(hash)
+      if screen_name
+        screen_name = screen_name.strip_at
+        timeline = client.user_timeline(screen_name, hash)
+      else
+        timeline = client.home_timeline(hash)
+      end
       timeline.reverse! if options['reverse']
       run_pager
       timeline.each do |status|

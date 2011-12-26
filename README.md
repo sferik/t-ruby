@@ -66,10 +66,6 @@ type `t help TASK` to get help for a specific command.
 
     t set location "San Francisco"
 
-### <a name="get"></a>Get the latest Tweet posted by a user
-
-    t get sferik
-
 ### <a name="whois"></a>Retrieve profile information for a user
 
     t whois sferik
@@ -129,6 +125,14 @@ type `t help TASK` to get help for a specific command.
 ### <a name="list-timeline"></a>Retrieve the timeline of status updates from a list
 
     t list timeline presidents
+
+### <a name="timeline"></a>Retrieve the timeline of status updates posted by you and the users you follow
+
+    t timeline
+
+### <a name="timeline-user"></a>Retrieve the timeline of status updates posted by a user
+
+    t timeline sferik
 
 ### <a name="mentions"></a>Retrieve the timeline of status updates that mention you
 

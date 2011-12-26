@@ -14,7 +14,6 @@ module T
       MAX_PAGES = 16
       MAX_RPP = 200
       MAX_SCREEN_NAME_SIZE = 20
-      MAX_STATUS_TEXT_SIZE = 20
 
       check_unknown_options!
 
@@ -41,7 +40,7 @@ module T
       def timeline(query)
         1.upto(MAX_PAGES).each do |page|
           Twitter.user_timeline(:page => page, :count => MAX_RPP).each do |status|
-            say "#{status.id.to_s.rjust(MAX_STATUS_TEXT_SIZE)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)" if /#{query}/i.match(status.text)
+            say "#{status.user.screen_name.rjust(MAX_SCREEN_NAME_SIZE)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)" if /#{query}/i.match(status.text)
           end
         end
       end
@@ -51,7 +50,7 @@ module T
         screen_name = screen_name.strip_at
         1.upto(MAX_PAGES).each do |page|
           Twitter.user_timeline(screen_name, :page => page, :count => MAX_RPP).each do |status|
-            say "#{status.id.to_s.rjust(MAX_STATUS_TEXT_SIZE)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)" if /#{query}/i.match(status.text)
+            say "#{status.user.screen_name.rjust(MAX_SCREEN_NAME_SIZE)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)" if /#{query}/i.match(status.text)
           end
         end
       end

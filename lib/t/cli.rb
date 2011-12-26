@@ -17,6 +17,7 @@ module T
     DEFAULT_PROTOCOL = 'https'
     DEFAULT_RPP = 20
     MAX_SCREEN_NAME_SIZE = 20
+    MAX_STATUS_TEXT_SIZE = 20
 
     class_option :host, :aliases => "-H", :type => :string, :default => DEFAULT_HOST, :desc => "Twitter API server"
     class_option :no_ssl, :aliases => "-U", :type => :boolean, :default => false, :desc => "Disable SSL"
@@ -140,14 +141,18 @@ module T
     end
     map %w(faves) => :favorites
 
-    desc "get SCREEN_NAME", "Retrieves the latest update posted by the user."
+    desc "get SCREEN_NAME", "Returns the #{DEFAULT_RPP} most recent Tweets posted by a user."
+    method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_RPP
+    method_option :reverse, :aliases => "-r", :type => :boolean, :default => false
     def get(screen_name)
       screen_name = screen_name.strip_at
-      user = client.user(screen_name, :include_entities => false)
-      if user.status
-        say "#{user.status.text} (#{time_ago_in_words(user.status.created_at)} ago)"
-      else
-        raise Thor::Error, "Tweet not found"
+      hash = {:include_entities => false}
+      hash.merge!(:count => options['number']) if options['number']
+      timeline = client.user_timeline(screen_name, hash)
+      timeline.reverse! if options['reverse']
+      run_pager
+      timeline.each do |status|
+        say "#{status.id.to_s.rjust(MAX_STATUS_TEXT_SIZE)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
       end
     end
 

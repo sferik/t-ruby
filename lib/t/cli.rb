@@ -206,20 +206,6 @@ module T
     end
     map %w(rt) => :retweet
 
-    desc "search QUERY", "Returns the 20 most recent Tweets that match a specified query."
-    method_option :number, :aliases => "-n", :type => :numeric, :default => 20
-    method_option :reverse, :aliases => "-r", :type => :boolean, :default => false
-    def search(query)
-      hash = {:include_entities => false}
-      hash.merge!(:rpp => options['number']) if options['number']
-      timeline = client.search(query, hash)
-      timeline.reverse! if options['reverse']
-      run_pager
-      timeline.each do |status|
-        say "#{status.from_user.rjust(20)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
-      end
-    end
-
     desc "sent_messages", "Returns the 20 most recent Direct Messages sent to you."
     def sent_messages
       run_pager
@@ -309,6 +295,10 @@ module T
     desc "list SUBCOMMAND ...ARGS", "Do various things with lists."
     require 't/cli/list'
     subcommand 'list', CLI::List
+
+    desc "search SUBCOMMAND ...ARGS", "Search through Tweets."
+    require 't/cli/search'
+    subcommand 'search', CLI::Search
 
     desc "set SUBCOMMAND ...ARGS", "Change various account settings."
     require 't/cli/set'

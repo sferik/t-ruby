@@ -1,4 +1,5 @@
 require 'action_view'
+require 't/core_ext/enumerable'
 require 't/rcfile'
 require 'thor'
 require 'twitter'
@@ -36,22 +37,30 @@ module T
         end
       end
 
-      desc "timeline QUERY", "Returns all the Tweets in your timeline that match a specified query."
+      desc "timeline QUERY", "Returns Tweets in your timeline that match a specified query."
       def timeline(query)
-        1.upto(MAX_PAGES).each do |page|
-          Twitter.user_timeline(:page => page, :count => MAX_RPP).each do |status|
-            say "#{status.user.screen_name.rjust(MAX_SCREEN_NAME_SIZE)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)" if /#{query}/i.match(status.text)
+        timeline = 1.upto(MAX_PAGES).threaded_map do |page|
+          Twitter.user_timeline(:page => page, :count => MAX_RPP).map do |status|
+            status if /#{query}/i.match(status.text)
           end
+        end
+        run_pager
+        timeline.flatten.compact.each do |status|
+          say "#{status.user.screen_name.rjust(MAX_SCREEN_NAME_SIZE)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
         end
       end
 
-      desc "user SCREEN_NAME QUERY", "Returns all the Tweets in a user's timeline that match a specified query."
+      desc "user SCREEN_NAME QUERY", "Returns Tweets in a user's timeline that match a specified query."
       def user(screen_name, query)
         screen_name = screen_name.strip_at
-        1.upto(MAX_PAGES).each do |page|
-          Twitter.user_timeline(screen_name, :page => page, :count => MAX_RPP).each do |status|
-            say "#{status.user.screen_name.rjust(MAX_SCREEN_NAME_SIZE)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)" if /#{query}/i.match(status.text)
+        timeline = 1.upto(MAX_PAGES).threaded_map do |page|
+          Twitter.user_timeline(screen_name, :page => page, :count => MAX_RPP).map do |status|
+            status if /#{query}/i.match(status.text)
           end
+        end
+        run_pager
+        timeline.flatten.compact.each do |status|
+          say "#{status.user.screen_name.rjust(MAX_SCREEN_NAME_SIZE)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
         end
       end
 

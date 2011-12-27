@@ -53,9 +53,7 @@ describe RCFile do
           :secret => 'jkl012',
         }
       }
-      rcfile.load
       rcfile['testcli'].keys.should == ['abc123']
-      rcfile.delete
     end
   end
 
@@ -95,8 +93,6 @@ describe RCFile do
     it 'should set default profile' do
       rcfile = RCFile.instance
       rcfile.path = File.expand_path('/tmp/trc', __FILE__)
-      rcfile.load
-      rcfile.delete
       rcfile.default_profile = {'username' => 'testcli', 'consumer_key' => 'abc123'}
       rcfile.default_profile.should == ['testcli', 'abc123']
     end
@@ -104,9 +100,7 @@ describe RCFile do
       rcfile = RCFile.instance
       rcfile.path = '/tmp/trc'
       rcfile.default_profile = {'username' => 'testcli', 'consumer_key' => 'abc123'}
-      rcfile.load
       rcfile.default_profile.should == ['testcli', 'abc123']
-      rcfile.delete
     end
   end
 

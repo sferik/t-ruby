@@ -40,6 +40,11 @@ module T
           screen_names = follow_ids.threaded_map do |follow_id|
             client.follow(follow_id, :include_entities => false)
           end
+
+          puts "test"
+          $stderr.puts "test err"
+          raise @rcfile.path.inspect
+
           say "@#{@rcfile.default_profile[0]} is now following #{number} more #{number == 1 ? 'user' : 'users'}."
           say
           say "Run `#{$0} unfollow all followers` to stop."

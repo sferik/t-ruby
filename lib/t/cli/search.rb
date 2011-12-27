@@ -49,6 +49,7 @@ module T
           say "#{status.user.screen_name.rjust(MAX_SCREEN_NAME_SIZE)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
         end
       end
+      map %w(tl) => :timeline
 
       desc "user SCREEN_NAME QUERY", "Returns Tweets in a user's timeline that match a specified query."
       def user(screen_name, query)

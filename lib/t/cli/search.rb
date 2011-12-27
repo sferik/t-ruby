@@ -40,7 +40,7 @@ module T
       desc "timeline QUERY", "Returns Tweets in your timeline that match a specified query."
       def timeline(query)
         timeline = 1.upto(MAX_PAGES).threaded_map do |page|
-          Twitter.home_timeline(:page => page, :count => MAX_RPP).map do |status|
+          client.home_timeline(:page => page, :count => MAX_RPP).map do |status|
             status if /#{query}/i.match(status.text)
           end
         end
@@ -54,7 +54,7 @@ module T
       def user(screen_name, query)
         screen_name = screen_name.strip_at
         timeline = 1.upto(MAX_PAGES).threaded_map do |page|
-          Twitter.user_timeline(screen_name, :page => page, :count => MAX_RPP).map do |status|
+          client.user_timeline(screen_name, :page => page, :count => MAX_RPP).map do |status|
             status if /#{query}/i.match(status.text)
           end
         end

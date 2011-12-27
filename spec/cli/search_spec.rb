@@ -53,7 +53,7 @@ describe T::CLI::Search do
   describe "#timeline" do
     before do
       1.upto(16).each do |page|
-        stub_get("/1/statuses/user_timeline.json").
+        stub_get("/1/statuses/home_timeline.json").
           with(:query => {:count => "200", :page => "#{page}"}).
           to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
@@ -61,7 +61,7 @@ describe T::CLI::Search do
     it "should request the correct resource" do
       @t.search("timeline", "twitter")
       1.upto(16).each do |page|
-        a_get("/1/statuses/user_timeline.json").
+        a_get("/1/statuses/home_timeline.json").
           with(:query => {:count => "200", :page => "#{page}"}).
           should have_been_made
       end

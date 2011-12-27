@@ -154,6 +154,18 @@ type `t help TASK` to get help for a specific command.
 
     t favorite sferik
 
+### <a name="search-all"></a>Retrieve the 20 most recent Tweets that match a specified query
+
+    t search all twitter
+
+### <a name="search-timeline"></a>Retrieve Tweets in your timeline that match a specified query
+
+    t search timeline twitter
+
+### <a name="search-user"></a>Retrieve Tweets in a user's timeline that match a specified query
+
+    t search user sferik twitter
+
 ## <a name="history"></a>History
 ![History](http://twitter.rubyforge.org/images/terminal_output.png "History")
 

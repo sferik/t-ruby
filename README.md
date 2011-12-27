@@ -82,17 +82,17 @@ type `t help TASK` to get help for a specific command.
 
     t follow users sferik gem
 
-### <a name="follow-all-followers"></a>Follow all followers (i.e. follow back)
+### <a name="follow-followers"></a>Follow all followers (i.e. follow back)
 
-    t follow all followers
+    t follow followers
 
 ### <a name="unfollow-users"></a>Stop following users
 
     t unfollow users sferik gem
 
-### <a name="unfollow-all-nonfollowers"></a>Unfollow all non-followers
+### <a name="unfollow-nonfollowers"></a>Unfollow all non-followers
 
-    t unfollow all nonfollowers
+    t unfollow nonfollowers
 
 ### <a name="list-create"></a>Create a list
 
@@ -104,23 +104,23 @@ type `t help TASK` to get help for a specific command.
 
 ### <a name="list-add-friends"></a>Add all friends to a list
 
-    t list add all friends presidents
+    t list add friends presidents
 
 ### <a name="list-add-followers"></a>Add all followers to a list
 
-    t list add all followers presidents
+    t list add followers presidents
 
 ### <a name="list-add-followers"></a>Add all members of one list to another
 
-    t list add all listed democrats presidents
+    t list add listed democrats presidents
 
 ### <a name="follow-all-listed"></a>Follow all members of a list
 
-    t follow all listed presidents
+    t follow listed presidents
 
 ### <a name="unfollow-all-listed"></a>Unfollow all members of a list
 
-    t unfollow all listed presidents
+    t unfollow listed presidents
 
 ### <a name="list-timeline"></a>Retrieve the timeline of status updates from a list
 

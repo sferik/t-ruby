@@ -21,7 +21,7 @@ describe RCFile do
   describe '#[]' do
     it 'should return the profiles for a user' do
       rcfile = RCFile.instance
-      rcfile.path = File.expand_path('../fixtures/.trc', __FILE__)
+      rcfile.path = fixture_path + "/.trc"
       rcfile['testcli'].keys.should == ['abc123']
     end
   end
@@ -60,7 +60,7 @@ describe RCFile do
   describe '#configuration' do
     it 'should return configuration' do
       rcfile = RCFile.instance
-      rcfile.path = File.expand_path('../fixtures/.trc', __FILE__)
+      rcfile.path = fixture_path + "/.trc"
       rcfile.configuration.keys.should == ['default_profile']
     end
   end
@@ -68,7 +68,7 @@ describe RCFile do
   describe '#default_consumer_key' do
     it 'should return default consumer key' do
       rcfile = RCFile.instance
-      rcfile.path = File.expand_path('../fixtures/.trc', __FILE__)
+      rcfile.path = fixture_path + "/.trc"
       rcfile.default_consumer_key.should == 'abc123'
     end
   end
@@ -76,7 +76,7 @@ describe RCFile do
   describe '#default_consumer_secret' do
     it 'should return default consumer secret' do
       rcfile = RCFile.instance
-      rcfile.path = File.expand_path('../fixtures/.trc', __FILE__)
+      rcfile.path = fixture_path + "/.trc"
       rcfile.default_consumer_secret.should == 'asdfasd223sd2'
     end
   end
@@ -84,7 +84,7 @@ describe RCFile do
   describe '#default_profile' do
     it 'should return default profile' do
       rcfile = RCFile.instance
-      rcfile.path = File.expand_path('../fixtures/.trc', __FILE__)
+      rcfile.path = fixture_path + "/.trc"
       rcfile.default_profile.should == ['testcli', 'abc123']
     end
   end
@@ -107,7 +107,7 @@ describe RCFile do
   describe '#default_token' do
     it 'should return default token' do
       rcfile = RCFile.instance
-      rcfile.path = File.expand_path('../fixtures/.trc', __FILE__)
+      rcfile.path = fixture_path + "/.trc"
       rcfile.default_token.should == '428004849-cebdct6bwobn'
     end
   end
@@ -115,7 +115,7 @@ describe RCFile do
   describe '#default_secret' do
     it 'should return default secret' do
       rcfile = RCFile.instance
-      rcfile.path = File.expand_path('../fixtures/.trc', __FILE__)
+      rcfile.path = fixture_path + "/.trc"
       rcfile.default_secret.should == 'epzrjvxtumoc'
     end
   end
@@ -136,7 +136,7 @@ describe RCFile do
     context 'when a non-empty file exists' do
       it 'should return false' do
         rcfile = RCFile.instance
-        rcfile.path = File.expand_path('../fixtures/.trc', __FILE__)
+        rcfile.path = fixture_path + "/.trc"
         rcfile.empty?.should be_false
       end
     end
@@ -153,7 +153,7 @@ describe RCFile do
     context 'when file exists at path' do
       it 'should load data from file' do
         rcfile = RCFile.instance
-        rcfile.path = File.expand_path('../fixtures/.trc', __FILE__)
+        rcfile.path = fixture_path + "/.trc"
         rcfile.load['profiles']['testcli']['abc123']['username'].should == 'testcli'
       end
     end
@@ -180,7 +180,7 @@ describe RCFile do
     end
     it 'should reload data' do
       rcfile = RCFile.instance
-      rcfile.path = File.expand_path('../fixtures/.trc', __FILE__)
+      rcfile.path = fixture_path + "/.trc"
       rcfile['testcli']['abc123']['username'].should == 'testcli'
     end
   end
@@ -188,7 +188,7 @@ describe RCFile do
   describe '#profiles' do
     it 'should return profiles' do
       rcfile = RCFile.instance
-      rcfile.path = File.expand_path('../fixtures/.trc', __FILE__)
+      rcfile.path = fixture_path + "/.trc"
       rcfile.profiles.keys.should == ['testcli']
     end
   end

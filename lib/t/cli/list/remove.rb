@@ -18,6 +18,118 @@ module T
           @rcfile = RCFile.instance
         end
 
+        desc "friends LIST_NAME", "Remove all friends from a list."
+        def friends(list_name)
+          list_member_ids = []
+          cursor = -1
+          until cursor == 0
+            list_members = client.list_members(list_name, :cursor => cursor, :skip_status => true, :include_entities => false)
+            list_member_ids += list_members.users.collect{|user| user.id}
+            cursor = list_members.next_cursor
+          end
+          friend_ids = []
+          cursor = -1
+          until cursor == 0
+            friends = client.friend_ids(:cursor => cursor)
+            friend_ids += friends.ids
+            cursor = friends.next_cursor
+          end
+          list_member_ids_to_remove = (friend_ids - list_member_ids)
+          number = list_member_ids_to_remove.length
+          if number.zero?
+            return say "None of @#{@rcfile.default_profile[0]}'s friends are members of the list \"#{list_name}\"."
+          else
+            return unless yes? "Are you sure you want to remove #{number} #{number == 1 ? 'friend' : 'friends'} from the list \"#{list_name}\"?"
+          end
+          list_member_ids_to_remove.threaded_map do |list_member_id|
+            client.list_remove_member(list_name, list_member_id)
+          end
+          say "@#{@rcfile.default_profile[0]} removed #{number} #{number == 1 ? 'friend' : 'friends'} from the list \"#{list_name}\"."
+          say
+          say "Run `#{$0} list add all friends #{list_name}` to undo."
+        end
+
+        desc "followers LIST_NAME", "Remove all followers from a list."
+        def followers(list_name)
+          list_member_ids = []
+          cursor = -1
+          until cursor == 0
+            list_members = client.list_members(list_name, :cursor => cursor, :skip_status => true, :include_entities => false)
+            list_member_ids += list_members.users.collect{|user| user.id}
+            cursor = list_members.next_cursor
+          end
+          follower_ids = []
+          cursor = -1
+          until cursor == 0
+            followers = client.follower_ids(:cursor => cursor)
+            follower_ids += followers.ids
+            cursor = followers.next_cursor
+          end
+          list_member_ids_to_remove = (follower_ids - list_member_ids)
+          number = list_member_ids_to_remove.length
+          if number.zero?
+            return say "None of @#{@rcfile.default_profile[0]}'s followers are members of the list \"#{list_name}\"."
+          else
+            return unless yes? "Are you sure you want to remove #{number} #{number == 1 ? 'follower' : 'followers'} from the list \"#{list_name}\"?"
+          end
+          list_member_ids_to_remove.threaded_map do |list_member_id|
+            client.list_remove_member(list_name, list_member_id)
+          end
+          say "@#{@rcfile.default_profile[0]} removed #{number} #{number == 1 ? 'follower' : 'followers'} from the list \"#{list_name}\"."
+          say
+          say "Run `#{$0} list add all followers #{list_name}` to undo."
+        end
+
+        desc "listed FROM_LIST_NAME TO_LIST_NAME", "Remove all list members from a list."
+        def listed(from_list_name, to_list_name)
+          to_list_member_ids = []
+          cursor = -1
+          until cursor == 0
+            list_members = client.list_members(to_list_name, :cursor => cursor, :skip_status => true, :include_entities => false)
+            to_list_member_ids += list_members.users.collect{|user| user.id}
+            cursor = list_members.next_cursor
+          end
+          from_list_member_ids = []
+          cursor = -1
+          until cursor == 0
+            list_members = client.list_members(from_list_name, :cursor => cursor, :skip_status => true, :include_entities => false)
+            from_list_member_ids += list_members.users.collect{|user| user.id}
+            cursor = list_members.next_cursor
+          end
+          list_member_ids_to_remove = (from_list_member_ids - to_list_member_ids)
+          number = list_member_ids_to_remove.length
+          if number.zero?
+            return say "None of the members of the list \"#{from_list_name}\" are members of the list \"#{to_list_name}\"."
+          else
+            return unless yes? "Are you sure you want to remove #{number} #{number == 1 ? 'member' : 'members'} from the list \"#{to_list_name}\"?"
+          end
+          list_member_ids_to_remove.threaded_map do |list_member_id|
+            client.list_remove_member(to_list_name, list_member_id)
+          end
+          say "@#{@rcfile.default_profile[0]} removed #{number} #{number == 1 ? 'member' : 'members'} from the list \"#{to_list_name}\"."
+          say
+          say "Run `#{$0} list add all listed #{from_list_name} #{to_list_name}` to undo."
+        end
+
+        desc "members LIST_NAME", "Remove all members from a list."
+        def members(list_name)
+          list_member_ids = []
+          cursor = -1
+          until cursor == 0
+            list_members = client.list_members(list_name, :cursor => cursor, :skip_status => true, :include_entities => false)
+            list_member_ids += list_members.users.collect{|user| user.id}
+            cursor = list_members.next_cursor
+          end
+          number = list_member_ids.length
+          return say "The list \"#{list_name}\" doesn't have any members." if number.zero?
+          return unless yes? "Are you sure you want to remove #{number} #{number == 1 ? 'member' : 'members'} from the list \"#{list_name}\"?"
+          list_member_ids.threaded_map do |list_member_id|
+            client.list_remove_member(list_name, list_member_id)
+          end
+          say "@#{@rcfile.default_profile[0]} removed #{number} #{number == 1 ? 'member' : 'members'} from the list \"#{list_name}\"."
+        end
+        map %w(all) => :members
+
         desc "users LIST_NAME SCREEN_NAME [SCREEN_NAME...]", "Remove users from a list."
         def users(list_name, screen_name, *screen_names)
           screen_names.unshift(screen_name)
@@ -30,10 +142,6 @@ module T
           say
           say "Run `#{$0} list add users #{list_name} #{screen_names.join(' ')}` to undo."
         end
-
-        desc "all SUBCOMMAND ...ARGS", "Remove all users to a list."
-        require 't/cli/list/remove/all'
-        subcommand 'all', CLI::List::Remove::All
 
       private
 

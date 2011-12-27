@@ -3,6 +3,10 @@ require 'helper'
 
 describe RCFile do
 
+  before do
+    RCFile.instance.reset
+  end
+
   after do
     RCFile.instance.reset
   end

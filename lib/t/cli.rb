@@ -15,7 +15,7 @@ module T
 
     DEFAULT_HOST = 'api.twitter.com'
     DEFAULT_PROTOCOL = 'https'
-    DEFAULT_RPP = 20
+    DEFAULT_NUM_RESULTS = 20
     MAX_SCREEN_NAME_SIZE = 20
 
     check_unknown_options!
@@ -88,9 +88,12 @@ module T
     end
 
     desc "direct_messages", "Returns the 20 most recent Direct Messages sent to you."
+    method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS
     def direct_messages
+      defaults = {:include_entities => false}
+      defaults.merge!(:count => options['number']) if options['number']
       run_pager
-      client.direct_messages(:include_entities => false).each do |direct_message|
+      client.direct_messages(defaults).each do |direct_message|
         say "#{direct_message.sender.screen_name.rjust(MAX_SCREEN_NAME_SIZE)}: #{direct_message.text} (#{time_ago_in_words(direct_message.created_at)} ago)"
       end
     end
@@ -125,13 +128,13 @@ module T
     end
     map %w(fave) => :favorite
 
-    desc "favorites", "Returns the #{DEFAULT_RPP} most recent Tweets you favorited."
-    method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_RPP
+    desc "favorites", "Returns the #{DEFAULT_NUM_RESULTS} most recent Tweets you favorited."
+    method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false
     def favorites
-      hash = {:include_entities => false}
-      hash.merge!(:count => options['number']) if options['number']
-      timeline = client.favorites(hash)
+      defaults = {:include_entities => false}
+      defaults.merge!(:count => options['number']) if options['number']
+      timeline = client.favorites(defaults)
       timeline.reverse! if options['reverse']
       run_pager
       timeline.each do |status|
@@ -140,13 +143,13 @@ module T
     end
     map %w(faves) => :favorites
 
-    desc "mentions", "Returns the #{DEFAULT_RPP} most recent Tweets mentioning you."
-    method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_RPP
+    desc "mentions", "Returns the #{DEFAULT_NUM_RESULTS} most recent Tweets mentioning you."
+    method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false
     def mentions
-      hash = {:include_entities => false}
-      hash.merge!(:count => options['number']) if options['number']
-      timeline = client.mentions(hash)
+      defaults = {:include_entities => false}
+      defaults.merge!(:count => options['number']) if options['number']
+      timeline = client.mentions(defaults)
       timeline.reverse! if options['reverse']
       run_pager
       timeline.each do |status|
@@ -166,11 +169,11 @@ module T
     method_option :location, :aliases => "-l", :type => :boolean, :default => true
     def reply(screen_name, message)
       screen_name = screen_name.strip_at
-      hash = {:include_entities => false, :trim_user => true}
-      hash.merge!(:lat => location.lat, :long => location.lng) if options['location']
+      defaults = {:include_entities => false, :trim_user => true}
+      defaults.merge!(:lat => location.lat, :long => location.lng) if options['location']
       user = client.user(screen_name, :include_entities => false)
-      hash.merge!(:in_reply_to_status_id => user.status.id) if user.status
-      status = client.update("@#{user.screen_name} #{message}", hash)
+      defaults.merge!(:in_reply_to_status_id => user.status.id) if user.status
+      status = client.update("@#{user.screen_name} #{message}", defaults)
       say "Reply created by @#{@rcfile.default_profile[0]} to @#{user.screen_name} (#{time_ago_in_words(status.created_at)} ago)"
       say
       say "Run `#{$0} delete status` to delete."
@@ -198,9 +201,12 @@ module T
     map %w(rt) => :retweet
 
     desc "sent_messages", "Returns the 20 most recent Direct Messages sent to you."
+    method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS
     def sent_messages
+      defaults = {:include_entities => false}
+      defaults.merge!(:count => options['number']) if options['number']
       run_pager
-      client.direct_messages_sent(:include_entities => false).each do |direct_message|
+      client.direct_messages_sent(defaults).each do |direct_message|
         say "#{direct_message.recipient.screen_name.rjust(MAX_SCREEN_NAME_SIZE)}: #{direct_message.text} (#{time_ago_in_words(direct_message.created_at)} ago)"
       end
     end
@@ -222,9 +228,9 @@ module T
     desc "status MESSAGE", "Post a Tweet."
     method_option :location, :aliases => "-l", :type => :boolean, :default => true
     def status(message)
-      hash = {:include_entities => false, :trim_user => true}
-      hash.merge!(:lat => location.lat, :long => location.lng) if options['location']
-      status = client.update(message, hash)
+      defaults = {:include_entities => false, :trim_user => true}
+      defaults.merge!(:lat => location.lat, :long => location.lng) if options['location']
+      status = client.update(message, defaults)
       say "Tweet created by @#{@rcfile.default_profile[0]} (#{time_ago_in_words(status.created_at)} ago)"
       say
       say "Run `#{$0} delete status` to delete."
@@ -243,17 +249,17 @@ module T
       end
     end
 
-    desc "timeline [SCREEN_NAME]", "Returns the #{DEFAULT_RPP} most recent Tweets posted by a user."
-    method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_RPP
+    desc "timeline [SCREEN_NAME]", "Returns the #{DEFAULT_NUM_RESULTS} most recent Tweets posted by a user."
+    method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false
     def timeline(screen_name=nil)
-      hash = {:include_entities => false}
-      hash.merge!(:count => options['number']) if options['number']
+      defaults = {:include_entities => false}
+      defaults.merge!(:count => options['number']) if options['number']
       if screen_name
         screen_name = screen_name.strip_at
-        timeline = client.user_timeline(screen_name, hash)
+        timeline = client.user_timeline(screen_name, defaults)
       else
-        timeline = client.home_timeline(hash)
+        timeline = client.home_timeline(defaults)
       end
       timeline.reverse! if options['reverse']
       run_pager

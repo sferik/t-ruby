@@ -10,7 +10,7 @@ module T
 
       DEFAULT_HOST = 'api.twitter.com'
       DEFAULT_PROTOCOL = 'https'
-      DEFAULT_RPP = 20
+      DEFAULT_NUM_RESULTS = 20
       MAX_SCREEN_NAME_SIZE = 20
 
       check_unknown_options!
@@ -23,19 +23,19 @@ module T
       desc "create LIST_NAME [DESCRIPTION]", "Create a new list."
       method_option :private, :aliases => "-p", :type => :boolean
       def create(list_name, description="")
-        hash = description.blank? ? {} : {:description => description}
-        hash.merge!(:mode => 'private') if options['private']
-        client.list_create(list_name, hash)
+        defaults = description.blank? ? {} : {:description => description}
+        defaults.merge!(:mode => 'private') if options['private']
+        client.list_create(list_name, defaults)
         say "@#{@rcfile.default_profile[0]} created the list \"#{list_name}\"."
       end
 
       desc "timeline LIST_NAME", "Show tweet timeline for members of the specified list."
-      method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_RPP
+      method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS
       method_option :reverse, :aliases => "-r", :type => :boolean, :default => false
       def timeline(list_name)
-        hash = {:include_entities => false}
-        hash.merge!(:per_page => options['number']) if options['number']
-        timeline = client.list_timeline(list_name, hash)
+        defaults = {:include_entities => false}
+        defaults.merge!(:per_page => options['number']) if options['number']
+        timeline = client.list_timeline(list_name, defaults)
         timeline.reverse! if options['reverse']
         run_pager
         timeline.each do |status|

@@ -11,7 +11,7 @@ module T
 
       DEFAULT_HOST = 'api.twitter.com'
       DEFAULT_PROTOCOL = 'https'
-      DEFAULT_RPP = 20
+      DEFAULT_NUM_RESULTS = 20
       MAX_PAGES = 16
       MAX_RPP = 200
       MAX_SCREEN_NAME_SIZE = 20
@@ -23,13 +23,13 @@ module T
         @rcfile = RCFile.instance
       end
 
-      desc "all QUERY", "Returns the #{DEFAULT_RPP} most recent Tweets that match a specified query."
-      method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_RPP
+      desc "all QUERY", "Returns the #{DEFAULT_NUM_RESULTS} most recent Tweets that match a specified query."
+      method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS
       method_option :reverse, :aliases => "-r", :type => :boolean, :default => false
       def all(query)
-        hash = {:include_entities => false}
-        hash.merge!(:rpp => options['number']) if options['number']
-        timeline = client.search(query, hash)
+        defaults = {:include_entities => false}
+        defaults.merge!(:rpp => options['number']) if options['number']
+        timeline = client.search(query, defaults)
         timeline.reverse! if options['reverse']
         run_pager
         timeline.each do |status|

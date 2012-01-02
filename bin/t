@@ -2,41 +2,44 @@
 
 require 't'
 
+# Output message to $stderr, prefixed with the program name
+def pute(message="")
+  $stderr.puts "#{$0}: #{message}"
+end
+
 begin
   T::CLI.start(ARGV)
 rescue Interrupt
-  $stderr.puts "Quitting..."
+  pute "Quitting..."
   exit 1
 rescue Twitter::Error::BadRequest => error
-  $stderr.puts error.message
+  pute error.message
   exit 400
 rescue OAuth::Unauthorized
-  $stderr.puts "Authorization failed"
+  pute "Authorization failed"
   exit 401
 rescue Twitter::Error::Unauthorized => error
-  $stderr.puts error.message
-  $stderr.puts
-  $stderr.puts "Run `#{$0} authorize --consumer-key=CONSUMER_KEY --consumer-secret=CONSUMER_SECRET` to authorize."
+  pute "#{error.message} Run `#{$0} authorize --consumer-key=CONSUMER_KEY --consumer-secret=CONSUMER_SECRET` to authorize."
   exit 401
 rescue Twitter::Error::Forbidden => error
-  $stderr.puts error.message
+  pute error.message
   exit 403
 rescue Twitter::Error::NotFound => error
-  $stderr.puts error.message
+  pute error.message
   exit 404
 rescue Twitter::Error::NotAcceptable => error
-  $stderr.puts error.message
+  pute error.message
   exit 406
 rescue Twitter::Error::EnhanceYourCalm => error
-  $stderr.puts error.message
+  pute error.message
   exit 420
 rescue Twitter::Error::InternalServerError => error
-  $stderr.puts error.message
+  pute error.message
   exit 500
 rescue Twitter::Error::BadGateway => error
-  $stderr.puts error.message
+  pute error.message
   exit 502
 rescue Twitter::Error::ServiceUnavailable => error
-  $stderr.puts error.message
+  pute error.message
   exit 503
 end

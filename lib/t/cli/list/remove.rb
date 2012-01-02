@@ -1,5 +1,6 @@
 require 't/core_ext/enumerable'
 require 't/core_ext/string'
+require 't/collectable'
 require 't/rcfile'
 require 't/retryable'
 require 'thor'
@@ -9,6 +10,7 @@ module T
   class CLI
     class List
       class Remove < Thor
+        include T::Collectable
         include T::Retryable
 
         DEFAULT_HOST = 'api.twitter.com'
@@ -23,19 +25,11 @@ module T
 
         desc "friends LIST_NAME", "Remove all friends from a list."
         def friends(list_name)
-          list_member_ids = []
-          cursor = -1
-          until cursor == 0
-            list_members = client.list_members(list_name, :cursor => cursor, :skip_status => true, :include_entities => false)
-            list_member_ids += list_members.users.collect{|user| user.id}
-            cursor = list_members.next_cursor
+          list_member_ids = collect_with_cursor do |cursor|
+            client.list_members(list_name, :cursor => cursor, :skip_status => true, :include_entities => false)
           end
-          friend_ids = []
-          cursor = -1
-          until cursor == 0
-            friends = client.friend_ids(:cursor => cursor)
-            friend_ids += friends.ids
-            cursor = friends.next_cursor
+          friend_ids = collect_with_cursor do |cursor|
+            client.friend_ids(:cursor => cursor)
           end
           list_member_ids_to_remove = (friend_ids - list_member_ids)
           number = list_member_ids_to_remove.length
@@ -56,19 +50,11 @@ module T
 
         desc "followers LIST_NAME", "Remove all followers from a list."
         def followers(list_name)
-          list_member_ids = []
-          cursor = -1
-          until cursor == 0
-            list_members = client.list_members(list_name, :cursor => cursor, :skip_status => true, :include_entities => false)
-            list_member_ids += list_members.users.collect{|user| user.id}
-            cursor = list_members.next_cursor
+          list_member_ids = collect_with_cursor do |cursor|
+            client.list_members(list_name, :cursor => cursor, :skip_status => true, :include_entities => false)
           end
-          follower_ids = []
-          cursor = -1
-          until cursor == 0
-            followers = client.follower_ids(:cursor => cursor)
-            follower_ids += followers.ids
-            cursor = followers.next_cursor
+          follower_ids = collect_with_cursor do |cursor|
+            client.follower_ids(:cursor => cursor)
           end
           list_member_ids_to_remove = (follower_ids - list_member_ids)
           number = list_member_ids_to_remove.length
@@ -89,21 +75,13 @@ module T
 
         desc "listed FROM_LIST_NAME TO_LIST_NAME", "Remove all list members from a list."
         def listed(from_list_name, to_list_name)
-          to_list_member_ids = []
-          cursor = -1
-          until cursor == 0
-            list_members = client.list_members(to_list_name, :cursor => cursor, :skip_status => true, :include_entities => false)
-            to_list_member_ids += list_members.users.collect{|user| user.id}
-            cursor = list_members.next_cursor
+          to_list_members = collect_with_cursor do |cursor|
+            client.list_members(to_list_name, :cursor => cursor, :skip_status => true, :include_entities => false)
           end
-          from_list_member_ids = []
-          cursor = -1
-          until cursor == 0
-            list_members = client.list_members(from_list_name, :cursor => cursor, :skip_status => true, :include_entities => false)
-            from_list_member_ids += list_members.users.collect{|user| user.id}
-            cursor = list_members.next_cursor
+          from_list_members = collect_with_cursor do |cursor|
+            client.list_members(from_list_name, :cursor => cursor, :skip_status => true, :include_entities => false)
           end
-          list_member_ids_to_remove = (from_list_member_ids - to_list_member_ids)
+          list_member_ids_to_remove = (from_list_members.collect(&:id) - to_list_members.collect(&:id))
           number = list_member_ids_to_remove.length
           if number.zero?
             return say "None of the members of the list \"#{from_list_name}\" are members of the list \"#{to_list_name}\"."
@@ -122,17 +100,13 @@ module T
 
         desc "members LIST_NAME", "Remove all members from a list."
         def members(list_name)
-          list_member_ids = []
-          cursor = -1
-          until cursor == 0
-            list_members = client.list_members(list_name, :cursor => cursor, :skip_status => true, :include_entities => false)
-            list_member_ids += list_members.users.collect{|user| user.id}
-            cursor = list_members.next_cursor
+          list_members = collect_with_cursor do |cursor|
+            client.list_members(list_name, :cursor => cursor, :skip_status => true, :include_entities => false)
           end
-          number = list_member_ids.length
+          number = list_members.length
           return say "The list \"#{list_name}\" doesn't have any members." if number.zero?
           return unless yes? "Are you sure you want to remove #{number} #{number == 1 ? 'member' : 'members'} from the list \"#{list_name}\"?"
-          list_member_ids.threaded_map do |list_member_id|
+          list_members.collect(&:id).threaded_map do |list_member_id|
             retryable do
               client.list_remove_member(list_name, list_member_id)
             end

@@ -1,5 +1,6 @@
 require 'active_support/core_ext/array/grouping'
 require 't/core_ext/string'
+require 't/collectable'
 require 't/rcfile'
 require 'thor'
 require 'twitter'
@@ -8,6 +9,8 @@ module T
   class CLI
     class List
       class Add < Thor
+        include T::Collectable
+
         DEFAULT_HOST = 'api.twitter.com'
         DEFAULT_PROTOCOL = 'https'
         MAX_USERS_PER_LIST = 500
@@ -21,23 +24,15 @@ module T
 
         desc "friends LIST_NAME", "Add all friends to a list."
         def friends(list_name)
-          list_member_ids = []
-          cursor = -1
-          until cursor == 0
-            list_members = client.list_members(list_name, :cursor => cursor, :skip_status => true, :include_entities => false)
-            list_member_ids += list_members.users.collect{|user| user.id}
-            cursor = list_members.next_cursor
+          list_member_ids = collect_with_cursor do |cursor|
+            client.list_members(list_name, :cursor => cursor, :skip_status => true, :include_entities => false)
           end
           existing_list_members = list_member_ids.length
           if existing_list_members >= MAX_USERS_PER_LIST
             return say "The list \"#{list_name}\" are already contains the maximum of #{MAX_USERS_PER_LIST} members."
           end
-          friend_ids = []
-          cursor = -1
-          until cursor == 0
-            friends = client.friend_ids(:cursor => cursor)
-            friend_ids += friends.ids
-            cursor = friends.next_cursor
+          friend_ids = collect_with_cursor do |cursor|
+            client.friend_ids(:cursor => cursor)
           end
           list_member_ids_to_add = (friend_ids - list_member_ids)
           number = list_member_ids_to_add.length
@@ -60,23 +55,15 @@ module T
 
         desc "followers LIST_NAME", "Add all followers to a list."
         def followers(list_name)
-          list_member_ids = []
-          cursor = -1
-          until cursor == 0
-            list_members = client.list_members(list_name, :cursor => cursor, :skip_status => true, :include_entities => false)
-            list_member_ids += list_members.users.collect{|user| user.id}
-            cursor = list_members.next_cursor
+          list_member_ids = collect_with_cursor do |cursor|
+            client.list_members(list_name, :cursor => cursor, :skip_status => true, :include_entities => false)
           end
           existing_list_members = list_member_ids.length
           if existing_list_members >= MAX_USERS_PER_LIST
             return say "The list \"#{list_name}\" are already contains the maximum of #{MAX_USERS_PER_LIST} members."
           end
-          follower_ids = []
-          cursor = -1
-          until cursor == 0
+          follower_ids = collect_with_cursor do |cursor|
             followers = client.follower_ids(:cursor => cursor)
-            follower_ids += followers.ids
-            cursor = followers.next_cursor
           end
           list_member_ids_to_add = (follower_ids - list_member_ids)
           number = list_member_ids_to_add.length
@@ -99,25 +86,17 @@ module T
 
         desc "listed FROM_LIST_NAME TO_LIST_NAME", "Add all list memebers to a list."
         def listed(from_list_name, to_list_name)
-          to_list_member_ids = []
-          cursor = -1
-          until cursor == 0
-            list_members = client.list_members(to_list_name, :cursor => cursor, :skip_status => true, :include_entities => false)
-            to_list_member_ids += list_members.users.collect{|user| user.id}
-            cursor = list_members.next_cursor
+          to_list_members = collect_with_cursor do |cursor|
+            client.list_members(to_list_name, :cursor => cursor, :skip_status => true, :include_entities => false)
           end
-          existing_list_members = to_list_member_ids.length
+          existing_list_members = to_list_members.length
           if existing_list_members >= MAX_USERS_PER_LIST
             return say "The list \"#{to_list_name}\" are already contains the maximum of #{MAX_USERS_PER_LIST} members."
           end
-          from_list_member_ids = []
-          cursor = -1
-          until cursor == 0
-            list_members = client.list_members(from_list_name, :cursor => cursor, :skip_status => true, :include_entities => false)
-            from_list_member_ids += list_members.users.collect{|user| user.id}
-            cursor = list_members.next_cursor
+          from_list_members = collect_with_cursor do |cursor|
+            client.list_members(from_list_name, :cursor => cursor, :skip_status => true, :include_entities => false)
           end
-          list_member_ids_to_add = (from_list_member_ids - to_list_member_ids)
+          list_member_ids_to_add = (from_list_members.collect(&:id) - to_list_members.collect(&:id))
           number = list_member_ids_to_add.length
           if number.zero?
             return say "All of the members of the list \"#{from_list_name}\" are already members of the list \"#{to_list_name}\"."

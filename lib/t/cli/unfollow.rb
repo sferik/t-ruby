@@ -1,5 +1,6 @@
 require 't/core_ext/enumerable'
 require 't/core_ext/string'
+require 't/collectable'
 require 't/rcfile'
 require 't/retryable'
 require 'thor'
@@ -8,6 +9,7 @@ require 'twitter'
 module T
   class CLI
     class Unfollow < Thor
+      include T::Collectable
       include T::Retryable
 
       DEFAULT_HOST = 'api.twitter.com'
@@ -22,12 +24,8 @@ module T
 
       desc "listed LIST_NAME", "Unfollow all members of a list."
       def listed(list_name)
-        list_member_collection = []
-        cursor = -1
-        until cursor == 0
-          list_members = client.list_members(list_name, :cursor => cursor, :include_entities => false, :skip_status => true)
-          list_member_collection += list_members.users
-          cursor = list_members.next_cursor
+        list_member_collection = collect_with_cursor do |cursor|
+          client.list_members(list_name, :cursor => cursor, :include_entities => false, :skip_status => true)
         end
         number = list_member_collection.length
         return say "@#{@rcfile.default_profile[0]} is already not following any list members." if number.zero?
@@ -44,19 +42,11 @@ module T
 
       desc "followers", "Unfollow all followers."
       def followers
-        follower_ids = []
-        cursor = -1
-        until cursor == 0
-          followers = client.follower_ids(:cursor => cursor)
-          follower_ids += followers.ids
-          cursor = followers.next_cursor
+        follower_ids = collect_with_cursor do |cursor|
+          client.follower_ids(:cursor => cursor)
         end
-        friend_ids = []
-        cursor = -1
-        until cursor == 0
+        friend_ids = collect_with_cursor do |cursor|
           friends = client.friend_ids(:cursor => cursor)
-          friend_ids += friends.ids
-          cursor = friends.next_cursor
         end
         follow_ids = (follower_ids - friend_ids)
         number = follow_ids.length
@@ -74,12 +64,8 @@ module T
 
       desc "friends", "Unfollow all friends."
       def friends
-        friend_ids = []
-        cursor = -1
-        until cursor == 0
-          friends = client.friend_ids(:cursor => cursor)
-          friend_ids += friends.ids
-          cursor = friends.next_cursor
+        friend_ids = collect_with_cursor do |cursor|
+          client.friend_ids(:cursor => cursor)
         end
         number = friend_ids.length
         return say "@#{@rcfile.default_profile[0]} is already not following anyone." if number.zero?
@@ -98,19 +84,11 @@ module T
 
       desc "nonfollowers", "Unfollow all non-followers."
       def nonfollowers
-        friend_ids = []
-        cursor = -1
-        until cursor == 0
-          friends = client.friend_ids(:cursor => cursor)
-          friend_ids += friends.ids
-          cursor = friends.next_cursor
+        friend_ids = collect_with_cursor do |cursor|
+          client.friend_ids(:cursor => cursor)
         end
-        follower_ids = []
-        cursor = -1
-        until cursor == 0
-          followers = client.follower_ids(:cursor => cursor)
-          follower_ids += followers.ids
-          cursor = followers.next_cursor
+        follower_ids = collect_with_cursor do |cursor|
+          client.follower_ids(:cursor => cursor)
         end
         unfollow_ids = (friend_ids - follower_ids)
         number = unfollow_ids.length

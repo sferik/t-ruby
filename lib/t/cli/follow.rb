@@ -1,5 +1,6 @@
 require 't/core_ext/enumerable'
 require 't/core_ext/string'
+require 't/collectable'
 require 't/rcfile'
 require 't/retryable'
 require 'thor'
@@ -8,6 +9,7 @@ require 'twitter'
 module T
   class CLI
     class Follow < Thor
+      include T::Collectable
       include T::Retryable
 
       DEFAULT_HOST = 'api.twitter.com'
@@ -22,19 +24,11 @@ module T
 
       desc "followers", "Follow all followers."
       def followers
-        follower_ids = []
-        cursor = -1
-        until cursor == 0
-          followers = client.follower_ids(:cursor => cursor)
-          follower_ids += followers.ids
-          cursor = followers.next_cursor
+        follower_ids = collect_with_cursor do |cursor|
+          client.follower_ids(:cursor => cursor)
         end
-        friend_ids = []
-        cursor = -1
-        until cursor == 0
-          friends = client.friend_ids(:cursor => cursor)
-          friend_ids += friends.ids
-          cursor = friends.next_cursor
+        friend_ids = collect_with_cursor do |cursor|
+          client.friend_ids(:cursor => cursor)
         end
         follow_ids = (follower_ids - friend_ids)
         number = follow_ids.length
@@ -52,12 +46,8 @@ module T
 
       desc "listed LIST_NAME", "Follow all members of a list."
       def listed(list_name)
-        list_member_collection = []
-        cursor = -1
-        until cursor == 0
-          list_members = client.list_members(list_name, :cursor => cursor, :skip_status => true, :include_entities => false)
-          list_member_collection += list_members.users
-          cursor = list_members.next_cursor
+        list_member_collection = collect_with_cursor do |cursor|
+          client.list_members(list_name, :cursor => cursor, :skip_status => true, :include_entities => false)
         end
         number = list_member_collection.length
         return say "@#{@rcfile.default_profile[0]} is already following all list members." if number.zero?

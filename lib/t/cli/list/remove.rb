@@ -1,6 +1,7 @@
 require 't/core_ext/enumerable'
 require 't/core_ext/string'
 require 't/rcfile'
+require 't/retryable'
 require 'thor'
 require 'twitter'
 
@@ -8,9 +9,10 @@ module T
   class CLI
     class List
       class Remove < Thor
+        include T::Retryable
+
         DEFAULT_HOST = 'api.twitter.com'
         DEFAULT_PROTOCOL = 'https'
-        NUM_RETRIES = 3
 
         check_unknown_options!
 
@@ -43,15 +45,8 @@ module T
             return unless yes? "Are you sure you want to remove #{number} #{number == 1 ? 'friend' : 'friends'} from the list \"#{list_name}\"?"
           end
           list_member_ids_to_remove.threaded_map do |list_member_id|
-            retries = NUM_RETRIES
-            begin
+            retryable do
               client.list_remove_member(list_name, list_member_id)
-            rescue Twitter::Error::ServerError
-              if (retries -= 1) > 0
-                retry
-              else
-                raise
-              end
             end
           end
           say "@#{@rcfile.default_profile[0]} removed #{number} #{number == 1 ? 'friend' : 'friends'} from the list \"#{list_name}\"."
@@ -83,15 +78,8 @@ module T
             return unless yes? "Are you sure you want to remove #{number} #{number == 1 ? 'follower' : 'followers'} from the list \"#{list_name}\"?"
           end
           list_member_ids_to_remove.threaded_map do |list_member_id|
-            retries = NUM_RETRIES
-            begin
+            retryable do
               client.list_remove_member(list_name, list_member_id)
-            rescue Twitter::Error::ServerError
-              if (retries -= 1) > 0
-                retry
-              else
-                raise
-              end
             end
           end
           say "@#{@rcfile.default_profile[0]} removed #{number} #{number == 1 ? 'follower' : 'followers'} from the list \"#{list_name}\"."
@@ -123,15 +111,8 @@ module T
             return unless yes? "Are you sure you want to remove #{number} #{number == 1 ? 'member' : 'members'} from the list \"#{to_list_name}\"?"
           end
           list_member_ids_to_remove.threaded_map do |list_member_id|
-            retries = NUM_RETRIES
-            begin
+            retryable do
               client.list_remove_member(to_list_name, list_member_id)
-            rescue Twitter::Error::ServerError
-              if (retries -= 1) > 0
-                retry
-              else
-                raise
-              end
             end
           end
           say "@#{@rcfile.default_profile[0]} removed #{number} #{number == 1 ? 'member' : 'members'} from the list \"#{to_list_name}\"."
@@ -152,15 +133,8 @@ module T
           return say "The list \"#{list_name}\" doesn't have any members." if number.zero?
           return unless yes? "Are you sure you want to remove #{number} #{number == 1 ? 'member' : 'members'} from the list \"#{list_name}\"?"
           list_member_ids.threaded_map do |list_member_id|
-            retries = NUM_RETRIES
-            begin
+            retryable do
               client.list_remove_member(list_name, list_member_id)
-            rescue Twitter::Error::ServerError
-              if (retries -= 1) > 0
-                retry
-              else
-                raise
-              end
             end
           end
           say "@#{@rcfile.default_profile[0]} removed #{number} #{number == 1 ? 'member' : 'members'} from the list \"#{list_name}\"."
@@ -171,16 +145,8 @@ module T
         def users(list_name, screen_name, *screen_names)
           screen_names.unshift(screen_name)
           screen_names.threaded_map do |screen_name|
-            retries = NUM_RETRIES
-            screen_name = screen_name.strip_at
-            begin
+            retryable do
               client.list_remove_member(list_name, screen_name)
-            rescue Twitter::Error::ServerError
-              if (retries -= 1) > 0
-                retry
-              else
-                raise
-              end
             end
           end
           number = screen_names.length

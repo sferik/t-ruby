@@ -1,15 +1,17 @@
 require 't/core_ext/enumerable'
 require 't/core_ext/string'
 require 't/rcfile'
+require 't/retryable'
 require 'thor'
 require 'twitter'
 
 module T
   class CLI
     class Follow < Thor
+      include T::Retryable
+
       DEFAULT_HOST = 'api.twitter.com'
       DEFAULT_PROTOCOL = 'https'
-      NUM_RETRIES = 3
 
       check_unknown_options!
 
@@ -39,15 +41,8 @@ module T
         return say "@#{@rcfile.default_profile[0]} is already following all followers." if number.zero?
         return unless yes? "Are you sure you want to follow #{number} #{number == 1 ? 'user' : 'users'}?"
         screen_names = follow_ids.threaded_map do |follow_id|
-          retries = NUM_RETRIES
-          begin
+          retryable do
             client.follow(follow_id, :include_entities => false)
-          rescue Twitter::Error::ServerError
-            if (retries -= 1) > 0
-              retry
-            else
-              raise
-            end
           end
         end
         say "@#{@rcfile.default_profile[0]} is now following #{number} more #{number == 1 ? 'user' : 'users'}."
@@ -68,15 +63,8 @@ module T
         return say "@#{@rcfile.default_profile[0]} is already following all list members." if number.zero?
         return unless yes? "Are you sure you want to follow #{number} #{number == 1 ? 'user' : 'users'}?"
         list_member_collection.threaded_map do |list_member|
-          retries = NUM_RETRIES
-          begin
+          retryable do
             client.follow(list_member.id, :include_entities => false)
-          rescue Twitter::Error::ServerError
-            if (retries -= 1) > 0
-              retry
-            else
-              raise
-            end
           end
         end
         say "@#{@rcfile.default_profile[0]} is now following #{number} more #{number == 1 ? 'user' : 'users'}."
@@ -88,16 +76,8 @@ module T
       def users(screen_name, *screen_names)
         screen_names.unshift(screen_name)
         screen_names.threaded_map do |screen_name|
-          retries = NUM_RETRIES
-          screen_name = screen_name.strip_at
-          begin
+          retryable do
             client.follow(screen_name, :include_entities => false)
-          rescue Twitter::Error::ServerError
-            if (retries -= 1) > 0
-              retry
-            else
-              raise
-            end
           end
         end
         number = screen_names.length

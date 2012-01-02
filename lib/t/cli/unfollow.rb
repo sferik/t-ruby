@@ -1,15 +1,17 @@
 require 't/core_ext/enumerable'
 require 't/core_ext/string'
 require 't/rcfile'
+require 't/retryable'
 require 'thor'
 require 'twitter'
 
 module T
   class CLI
     class Unfollow < Thor
+      include T::Retryable
+
       DEFAULT_HOST = 'api.twitter.com'
       DEFAULT_PROTOCOL = 'https'
-      NUM_RETRIES = 3
 
       check_unknown_options!
 
@@ -31,15 +33,8 @@ module T
         return say "@#{@rcfile.default_profile[0]} is already not following any list members." if number.zero?
         return unless yes? "Are you sure you want to unfollow #{number} #{number == 1 ? 'user' : 'users'}?"
         list_member_collection.threaded_map do |list_member|
-          retries = NUM_RETRIES
-          begin
+          retryable do
             client.unfollow(list_member.id, :include_entities => false)
-          rescue Twitter::Error::ServerError
-            if (retries -= 1) > 0
-              retry
-            else
-              raise
-            end
           end
         end
         say "@#{@rcfile.default_profile[0]} is no longer following #{number} #{number == 1 ? 'user' : 'users'}."
@@ -68,15 +63,8 @@ module T
         return say "@#{@rcfile.default_profile[0]} is already not following any followers." if number.zero?
         return unless yes? "Are you sure you want to unfollow #{number} #{number == 1 ? 'user' : 'users'}?"
         screen_names = follow_ids.threaded_map do |follow_id|
-          retries = NUM_RETRIES
-          begin
+          retryable do
             client.unfollow(follow_id, :include_entities => false)
-          rescue Twitter::Error::ServerError
-            if (retries -= 1) > 0
-              retry
-            else
-              raise
-            end
           end
         end
         say "@#{@rcfile.default_profile[0]} is no longer following #{number} #{number == 1 ? 'user' : 'users'}."
@@ -97,16 +85,9 @@ module T
         return say "@#{@rcfile.default_profile[0]} is already not following anyone." if number.zero?
         return unless yes? "Are you sure you want to unfollow #{number} #{number == 1 ? 'user' : 'users'}?"
         screen_names = friend_ids.threaded_map do |friend_id|
-          retries = NUM_RETRIES
-          begin
+          retryable do
             user = client.unfollow(friend_id, :include_entities => false)
             user.screen_name
-          rescue Twitter::Error::ServerError
-            if (retries -= 1) > 0
-              retry
-            else
-              raise
-            end
           end
         end
         say "@#{@rcfile.default_profile[0]} is no longer following #{number} #{number == 1 ? 'user' : 'users'}."
@@ -136,16 +117,9 @@ module T
         return say "@#{@rcfile.default_profile[0]} is already not following any non-followers." if number.zero?
         return unless yes? "Are you sure you want to unfollow #{number} #{number == 1 ? 'user' : 'users'}?"
         screen_names = unfollow_ids.threaded_map do |unfollow_id|
-          retries = NUM_RETRIES
-          begin
+          retryable do
             user = client.unfollow(unfollow_id, :include_entities => false)
             user.screen_name
-          rescue Twitter::Error::ServerError
-            if (retries -= 1) > 0
-              retry
-            else
-              raise
-            end
           end
         end
         say "@#{@rcfile.default_profile[0]} is no longer following #{number} #{number == 1 ? 'user' : 'users'}."
@@ -157,16 +131,8 @@ module T
       def users(screen_name, *screen_names)
         screen_names.unshift(screen_name)
         screen_names.threaded_map do |screen_name|
-          retries = NUM_RETRIES
-          screen_name = screen_name.strip_at
-          begin
+          retryable do
             client.unfollow(screen_name, :include_entities => false)
-          rescue Twitter::Error::ServerError
-            if (retries -= 1) > 0
-              retry
-            else
-              raise
-            end
           end
         end
         number = screen_names.length

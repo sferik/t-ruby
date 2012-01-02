@@ -1,8 +1,8 @@
+require 'retryable'
 require 't/core_ext/enumerable'
 require 't/core_ext/string'
 require 't/collectable'
 require 't/rcfile'
-require 't/retryable'
 require 'thor'
 require 'twitter'
 
@@ -10,7 +10,6 @@ module T
   class CLI
     class Follow < Thor
       include T::Collectable
-      include T::Retryable
 
       DEFAULT_HOST = 'api.twitter.com'
       DEFAULT_PROTOCOL = 'https'
@@ -35,7 +34,7 @@ module T
         return say "@#{@rcfile.default_profile[0]} is already following all followers." if number.zero?
         return unless yes? "Are you sure you want to follow #{number} #{number == 1 ? 'user' : 'users'}?"
         screen_names = follow_ids.threaded_map do |follow_id|
-          retryable do
+          retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
             client.follow(follow_id, :include_entities => false)
           end
         end
@@ -53,7 +52,7 @@ module T
         return say "@#{@rcfile.default_profile[0]} is already following all list members." if number.zero?
         return unless yes? "Are you sure you want to follow #{number} #{number == 1 ? 'user' : 'users'}?"
         list_member_collection.threaded_map do |list_member|
-          retryable do
+          retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
             client.follow(list_member.id, :include_entities => false)
           end
         end
@@ -66,7 +65,7 @@ module T
       def users(screen_name, *screen_names)
         screen_names.unshift(screen_name)
         screen_names.threaded_map do |screen_name|
-          retryable do
+          retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
             client.follow(screen_name, :include_entities => false)
           end
         end

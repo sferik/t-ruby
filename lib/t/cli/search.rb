@@ -1,7 +1,7 @@
 require 'action_view'
+require 'retryable'
 require 't/core_ext/enumerable'
 require 't/rcfile'
-require 't/retryable'
 require 'thor'
 require 'twitter'
 
@@ -9,7 +9,6 @@ module T
   class CLI
     class Search < Thor
       include ActionView::Helpers::DateHelper
-      include T::Retryable
 
       DEFAULT_HOST = 'api.twitter.com'
       DEFAULT_PROTOCOL = 'https'
@@ -42,7 +41,7 @@ module T
       desc "timeline QUERY", "Returns Tweets in your timeline that match a specified query."
       def timeline(query)
         timeline = 1.upto(MAX_PAGES).threaded_map do |page|
-          retryable do
+          retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
             client.home_timeline(:page => page, :count => MAX_NUM_RESULTS).map do |status|
               status if /#{query}/i.match(status.text)
             end
@@ -59,7 +58,7 @@ module T
       def user(screen_name, query)
         screen_name = screen_name.strip_at
         timeline = 1.upto(MAX_PAGES).threaded_map do |page|
-          retryable do
+          retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
             client.user_timeline(screen_name, :page => page, :count => MAX_NUM_RESULTS).map do |status|
               status if /#{query}/i.match(status.text)
             end

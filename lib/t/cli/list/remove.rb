@@ -1,8 +1,8 @@
+require 'retryable'
 require 't/core_ext/enumerable'
 require 't/core_ext/string'
 require 't/collectable'
 require 't/rcfile'
-require 't/retryable'
 require 'thor'
 require 'twitter'
 
@@ -11,7 +11,6 @@ module T
     class List
       class Remove < Thor
         include T::Collectable
-        include T::Retryable
 
         DEFAULT_HOST = 'api.twitter.com'
         DEFAULT_PROTOCOL = 'https'
@@ -39,7 +38,7 @@ module T
             return unless yes? "Are you sure you want to remove #{number} #{number == 1 ? 'friend' : 'friends'} from the list \"#{list_name}\"?"
           end
           list_member_ids_to_remove.threaded_map do |list_member_id|
-            retryable do
+            retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
               client.list_remove_member(list_name, list_member_id)
             end
           end
@@ -64,7 +63,7 @@ module T
             return unless yes? "Are you sure you want to remove #{number} #{number == 1 ? 'follower' : 'followers'} from the list \"#{list_name}\"?"
           end
           list_member_ids_to_remove.threaded_map do |list_member_id|
-            retryable do
+            retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
               client.list_remove_member(list_name, list_member_id)
             end
           end
@@ -89,7 +88,7 @@ module T
             return unless yes? "Are you sure you want to remove #{number} #{number == 1 ? 'member' : 'members'} from the list \"#{to_list_name}\"?"
           end
           list_member_ids_to_remove.threaded_map do |list_member_id|
-            retryable do
+            retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
               client.list_remove_member(to_list_name, list_member_id)
             end
           end
@@ -107,7 +106,7 @@ module T
           return say "The list \"#{list_name}\" doesn't have any members." if number.zero?
           return unless yes? "Are you sure you want to remove #{number} #{number == 1 ? 'member' : 'members'} from the list \"#{list_name}\"?"
           list_members.collect(&:id).threaded_map do |list_member_id|
-            retryable do
+            retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
               client.list_remove_member(list_name, list_member_id)
             end
           end
@@ -119,7 +118,7 @@ module T
         def users(list_name, screen_name, *screen_names)
           screen_names.unshift(screen_name)
           screen_names.threaded_map do |screen_name|
-            retryable do
+            retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
               client.list_remove_member(list_name, screen_name)
             end
           end

@@ -22,7 +22,7 @@ describe T::CLI::List::Add do
       stub_get("/1/account/verify_credentials.json").
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
-    context "no users" do
+    context "no friends" do
       before do
         stub_get("/1/lists/members.json").
           with(:query => {:cursor => "-1", :include_entities => "false", :owner_screen_name => "sferik", :skip_status => "true", :slug => "presidents"}).
@@ -42,7 +42,7 @@ describe T::CLI::List::Add do
         $stdout.string.chomp.should == "All of @testcli's friends are already members of the list \"presidents\"."
       end
     end
-    context "one user" do
+    context "one friend" do
       before do
         stub_get("/1/lists/members.json").
           with(:query => {:cursor => "-1", :include_entities => "false", :owner_screen_name => "sferik", :skip_status => "true", :slug => "presidents"}).
@@ -159,7 +159,7 @@ describe T::CLI::List::Add do
       stub_get("/1/account/verify_credentials.json").
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
-    context "no users" do
+    context "no followers" do
       before do
         stub_get("/1/lists/members.json").
           with(:query => {:cursor => "-1", :include_entities => "false", :owner_screen_name => "sferik", :skip_status => "true", :slug => "presidents"}).
@@ -179,7 +179,7 @@ describe T::CLI::List::Add do
         $stdout.string.chomp.should == "All of @testcli's followers are already members of the list \"presidents\"."
       end
     end
-    context "one user" do
+    context "two followers" do
       before do
         stub_get("/1/lists/members.json").
           with(:query => {:cursor => "-1", :include_entities => "false", :owner_screen_name => "sferik", :skip_status => "true", :slug => "presidents"}).

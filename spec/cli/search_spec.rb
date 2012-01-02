@@ -51,14 +51,12 @@ describe T::CLI::Search do
   end
 
   describe "#timeline" do
-    before do
+    it "should request the correct resource" do
       1.upto(16).each do |page|
         stub_get("/1/statuses/home_timeline.json").
           with(:query => {:count => "200", :page => "#{page}"}).
           to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
-    end
-    it "should request the correct resource" do
       @t.search("timeline", "twitter")
       1.upto(16).each do |page|
         a_get("/1/statuses/home_timeline.json").
@@ -67,6 +65,11 @@ describe T::CLI::Search do
       end
     end
     it "should have the correct output" do
+      1.upto(16).each do |page|
+        stub_get("/1/statuses/home_timeline.json").
+          with(:query => {:count => "200", :page => "#{page}"}).
+          to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
       @t.search("timeline", "twitter")
       $stdout.string.should == <<-eos.gsub(/^/, ' ' * 6)
         sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
@@ -103,17 +106,33 @@ describe T::CLI::Search do
         sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
       eos
     end
+    context "Twitter is down" do
+      it "should retry 3 times and then raise an error" do
+        1.upto(15).each do |page|
+          stub_get("/1/statuses/home_timeline.json").
+            with(:query => {:count => "200", :page => "#{page}"}).
+            to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        end
+        stub_get("/1/statuses/home_timeline.json").
+          with(:query => {:count => "200", :page => "16"}).
+          to_return(:status => 502)
+        lambda do
+          @t.search("timeline", "twitter")
+        end.should raise_error("Twitter is down or being upgraded.")
+        a_get("/1/statuses/home_timeline.json").
+          with(:query => {:count => "200", :page => "16"}).
+          should have_been_made.times(3)
+      end
+    end
   end
 
   describe "#user" do
-    before do
+    it "should request the correct resource" do
       1.upto(16).each do |page|
         stub_get("/1/statuses/user_timeline.json").
           with(:query => {:screen_name => "sferik", :count => "200", :page => "#{page}"}).
           to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
-    end
-    it "should request the correct resource" do
       @t.search("user", "sferik", "twitter")
       1.upto(16).each do |page|
         a_get("/1/statuses/user_timeline.json").
@@ -122,6 +141,11 @@ describe T::CLI::Search do
       end
     end
     it "should have the correct output" do
+      1.upto(16).each do |page|
+        stub_get("/1/statuses/user_timeline.json").
+          with(:query => {:screen_name => "sferik", :count => "200", :page => "#{page}"}).
+          to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
       @t.search("user", "sferik", "twitter")
       $stdout.string.should == <<-eos.gsub(/^/, ' ' * 6)
         sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
@@ -157,6 +181,24 @@ describe T::CLI::Search do
         sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
         sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
       eos
+    end
+    context "Twitter is down" do
+      it "should retry 3 times and then raise an error" do
+        1.upto(15).each do |page|
+          stub_get("/1/statuses/user_timeline.json").
+            with(:query => {:screen_name => "sferik", :count => "200", :page => "#{page}"}).
+            to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        end
+        stub_get("/1/statuses/user_timeline.json").
+          with(:query => {:screen_name => "sferik", :count => "200", :page => "16"}).
+          to_return(:status => 502)
+        lambda do
+          @t.search("user", "sferik", "twitter")
+        end.should raise_error("Twitter is down or being upgraded.")
+        a_get("/1/statuses/user_timeline.json").
+          with(:query => {:screen_name => "sferik", :count => "200", :page => "16"}).
+          should have_been_made.times(3)
+      end
     end
   end
 

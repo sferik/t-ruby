@@ -9,6 +9,7 @@ module T
     class Unfollow < Thor
       DEFAULT_HOST = 'api.twitter.com'
       DEFAULT_PROTOCOL = 'https'
+      NUM_RETRIES = 3
 
       check_unknown_options!
 
@@ -30,7 +31,16 @@ module T
         return say "@#{@rcfile.default_profile[0]} is already not following any list members." if number.zero?
         return unless yes? "Are you sure you want to unfollow #{number} #{number == 1 ? 'user' : 'users'}?"
         list_member_collection.threaded_map do |list_member|
-          client.unfollow(list_member.id, :include_entities => false)
+          retries = NUM_RETRIES
+          begin
+            client.unfollow(list_member.id, :include_entities => false)
+          rescue Twitter::Error::ServerError
+            if (retries -= 1) > 0
+              retry
+            else
+              raise
+            end
+          end
         end
         say "@#{@rcfile.default_profile[0]} is no longer following #{number} #{number == 1 ? 'user' : 'users'}."
         say
@@ -58,7 +68,16 @@ module T
         return say "@#{@rcfile.default_profile[0]} is already not following any followers." if number.zero?
         return unless yes? "Are you sure you want to unfollow #{number} #{number == 1 ? 'user' : 'users'}?"
         screen_names = follow_ids.threaded_map do |follow_id|
-          client.unfollow(follow_id, :include_entities => false)
+          retries = NUM_RETRIES
+          begin
+            client.unfollow(follow_id, :include_entities => false)
+          rescue Twitter::Error::ServerError
+            if (retries -= 1) > 0
+              retry
+            else
+              raise
+            end
+          end
         end
         say "@#{@rcfile.default_profile[0]} is no longer following #{number} #{number == 1 ? 'user' : 'users'}."
         say
@@ -78,8 +97,17 @@ module T
         return say "@#{@rcfile.default_profile[0]} is already not following anyone." if number.zero?
         return unless yes? "Are you sure you want to unfollow #{number} #{number == 1 ? 'user' : 'users'}?"
         screen_names = friend_ids.threaded_map do |friend_id|
-          user = client.unfollow(friend_id, :include_entities => false)
-          user.screen_name
+          retries = NUM_RETRIES
+          begin
+            user = client.unfollow(friend_id, :include_entities => false)
+            user.screen_name
+          rescue Twitter::Error::ServerError
+            if (retries -= 1) > 0
+              retry
+            else
+              raise
+            end
+          end
         end
         say "@#{@rcfile.default_profile[0]} is no longer following #{number} #{number == 1 ? 'user' : 'users'}."
         say
@@ -108,8 +136,17 @@ module T
         return say "@#{@rcfile.default_profile[0]} is already not following any non-followers." if number.zero?
         return unless yes? "Are you sure you want to unfollow #{number} #{number == 1 ? 'user' : 'users'}?"
         screen_names = unfollow_ids.threaded_map do |unfollow_id|
-          user = client.unfollow(unfollow_id, :include_entities => false)
-          user.screen_name
+          retries = NUM_RETRIES
+          begin
+            user = client.unfollow(unfollow_id, :include_entities => false)
+            user.screen_name
+          rescue Twitter::Error::ServerError
+            if (retries -= 1) > 0
+              retry
+            else
+              raise
+            end
+          end
         end
         say "@#{@rcfile.default_profile[0]} is no longer following #{number} #{number == 1 ? 'user' : 'users'}."
         say
@@ -120,8 +157,17 @@ module T
       def users(screen_name, *screen_names)
         screen_names.unshift(screen_name)
         screen_names.threaded_map do |screen_name|
+          retries = NUM_RETRIES
           screen_name = screen_name.strip_at
-          client.unfollow(screen_name, :include_entities => false)
+          begin
+            client.unfollow(screen_name, :include_entities => false)
+          rescue Twitter::Error::ServerError
+            if (retries -= 1) > 0
+              retry
+            else
+              raise
+            end
+          end
         end
         number = screen_names.length
         say "@#{@rcfile.default_profile[0]} is no longer following #{number} #{number == 1 ? 'user' : 'users'}."

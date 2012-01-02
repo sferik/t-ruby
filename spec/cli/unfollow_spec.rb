@@ -47,11 +47,11 @@ describe T::CLI::Unfollow do
         stub_get("/1/lists/members.json").
           with(:query => {:cursor => "-1", :include_entities => "false", :owner_screen_name => "sferik", :skip_status => "true", :slug => "presidents"}).
           to_return(:body => fixture("users_list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should request the correct resource" do
         stub_delete("/1/friendships/destroy.json").
           with(:query => {:user_id => "7505382", :include_entities => "false"}).
           to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      end
-      it "should request the correct resource" do
         $stdout.should_receive(:print).with("Are you sure you want to unfollow 1 user? ")
         $stdin.should_receive(:gets).and_return("yes")
         @t.unfollow("listed", "presidents")
@@ -66,6 +66,9 @@ describe T::CLI::Unfollow do
       end
       context "yes" do
         it "should have the correct output" do
+          stub_delete("/1/friendships/destroy.json").
+            with(:query => {:user_id => "7505382", :include_entities => "false"}).
+            to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
           $stdout.should_receive(:print).with("Are you sure you want to unfollow 1 user? ")
           $stdin.should_receive(:gets).and_return("yes")
           @t.unfollow("listed", "presidents")
@@ -78,6 +81,21 @@ describe T::CLI::Unfollow do
           $stdin.should_receive(:gets).and_return("no")
           @t.unfollow("listed", "presidents")
           $stdout.string.chomp.should == ""
+        end
+      end
+      context "Twitter is down" do
+        it "should retry 3 times and then raise an error" do
+          stub_delete("/1/friendships/destroy.json").
+            with(:query => {:user_id => "7505382", :include_entities => "false"}).
+            to_return(:status => 502)
+          $stdout.should_receive(:print).with("Are you sure you want to unfollow 1 user? ")
+          $stdin.should_receive(:gets).and_return("yes")
+          lambda do
+            @t.unfollow("listed", "presidents")
+          end.should raise_error("Twitter is down or being upgraded.")
+          a_delete("/1/friendships/destroy.json").
+            with(:query => {:user_id => "7505382", :include_entities => "false"}).
+            should have_been_made.times(3)
         end
       end
     end
@@ -118,11 +136,11 @@ describe T::CLI::Unfollow do
         stub_get("/1/friends/ids.json").
           with(:query => {:cursor => "-1"}).
           to_return(:body => fixture("followers_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should request the correct resource" do
         stub_delete("/1/friendships/destroy.json").
           with(:query => {:user_id => "7505382", :include_entities => "false"}).
           to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      end
-      it "should request the correct resource" do
         $stdout.should_receive(:print).with("Are you sure you want to unfollow 1 user? ")
         $stdin.should_receive(:gets).and_return("yes")
         @t.unfollow("followers")
@@ -138,6 +156,9 @@ describe T::CLI::Unfollow do
       end
       context "yes" do
         it "should have the correct output" do
+          stub_delete("/1/friendships/destroy.json").
+            with(:query => {:user_id => "7505382", :include_entities => "false"}).
+            to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
           $stdout.should_receive(:print).with("Are you sure you want to unfollow 1 user? ")
           $stdin.should_receive(:gets).and_return("yes")
           @t.unfollow("followers")
@@ -150,6 +171,21 @@ describe T::CLI::Unfollow do
           $stdin.should_receive(:gets).and_return("no")
           @t.unfollow("followers")
           $stdout.string.chomp.should == ""
+        end
+      end
+      context "Twitter is down" do
+        it "should retry 3 times and then raise an error" do
+          stub_delete("/1/friendships/destroy.json").
+            with(:query => {:user_id => "7505382", :include_entities => "false"}).
+            to_return(:status => 502)
+          $stdout.should_receive(:print).with("Are you sure you want to unfollow 1 user? ")
+          $stdin.should_receive(:gets).and_return("yes")
+          lambda do
+            @t.unfollow("followers")
+          end.should raise_error("Twitter is down or being upgraded.")
+          a_delete("/1/friendships/destroy.json").
+            with(:query => {:user_id => "7505382", :include_entities => "false"}).
+            should have_been_made.times(3)
         end
       end
     end
@@ -182,11 +218,11 @@ describe T::CLI::Unfollow do
         stub_get("/1/friends/ids.json").
           with(:query => {:cursor => "-1"}).
           to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should request the correct resource" do
         stub_delete("/1/friendships/destroy.json").
           with(:query => {:user_id => "7505382", :include_entities => "false"}).
           to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      end
-      it "should request the correct resource" do
         $stdout.should_receive(:print).with("Are you sure you want to unfollow 1 user? ")
         $stdin.should_receive(:gets).and_return("yes")
         @t.unfollow("friends")
@@ -199,6 +235,9 @@ describe T::CLI::Unfollow do
       end
       context "yes" do
         it "should have the correct output" do
+          stub_delete("/1/friendships/destroy.json").
+            with(:query => {:user_id => "7505382", :include_entities => "false"}).
+            to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
           $stdout.should_receive(:print).with("Are you sure you want to unfollow 1 user? ")
           $stdin.should_receive(:gets).and_return("yes")
           @t.unfollow("friends")
@@ -211,6 +250,21 @@ describe T::CLI::Unfollow do
           $stdin.should_receive(:gets).and_return("no")
           @t.unfollow("friends")
           $stdout.string.chomp.should == ""
+        end
+      end
+      context "Twitter is down" do
+        it "should retry 3 times and then raise an error" do
+          stub_delete("/1/friendships/destroy.json").
+            with(:query => {:user_id => "7505382", :include_entities => "false"}).
+            to_return(:status => 502)
+          $stdout.should_receive(:print).with("Are you sure you want to unfollow 1 user? ")
+          $stdin.should_receive(:gets).and_return("yes")
+          lambda do
+            @t.unfollow("friends")
+          end.should raise_error("Twitter is down or being upgraded.")
+          a_delete("/1/friendships/destroy.json").
+            with(:query => {:user_id => "7505382", :include_entities => "false"}).
+            should have_been_made.times(3)
         end
       end
     end
@@ -252,11 +306,11 @@ describe T::CLI::Unfollow do
         stub_get("/1/followers/ids.json").
           with(:query => {:cursor => "-1"}).
           to_return(:body => fixture("followers_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should request the correct resource" do
         stub_delete("/1/friendships/destroy.json").
           with(:query => {:user_id => "7505382", :include_entities => "false"}).
           to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      end
-      it "should request the correct resource" do
         $stdout.should_receive(:print).with("Are you sure you want to unfollow 1 user? ")
         $stdin.should_receive(:gets).and_return("yes")
         @t.unfollow("nonfollowers")
@@ -272,6 +326,9 @@ describe T::CLI::Unfollow do
       end
       context "yes" do
         it "should have the correct output" do
+          stub_delete("/1/friendships/destroy.json").
+            with(:query => {:user_id => "7505382", :include_entities => "false"}).
+            to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
           $stdout.should_receive(:print).with("Are you sure you want to unfollow 1 user? ")
           $stdin.should_receive(:gets).and_return("yes")
           @t.unfollow("nonfollowers")
@@ -284,6 +341,21 @@ describe T::CLI::Unfollow do
           $stdin.should_receive(:gets).and_return("no")
           @t.unfollow("nonfollowers")
           $stdout.string.chomp.should == ""
+        end
+      end
+      context "Twitter is down" do
+        it "should retry 3 times and then raise an error" do
+          stub_delete("/1/friendships/destroy.json").
+            with(:query => {:user_id => "7505382", :include_entities => "false"}).
+            to_return(:status => 502)
+          $stdout.should_receive(:print).with("Are you sure you want to unfollow 1 user? ")
+          $stdin.should_receive(:gets).and_return("yes")
+          lambda do
+            @t.unfollow("nonfollowers")
+          end.should raise_error("Twitter is down or being upgraded.")
+          a_delete("/1/friendships/destroy.json").
+            with(:query => {:user_id => "7505382", :include_entities => "false"}).
+            should have_been_made.times(3)
         end
       end
     end
@@ -301,20 +373,34 @@ describe T::CLI::Unfollow do
       end
     end
     context "one user" do
-      before do
+      it "should request the correct resource" do
         stub_delete("/1/friendships/destroy.json").
           with(:query => {:screen_name => "sferik", :include_entities => "false"}).
           to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      end
-      it "should request the correct resource" do
         @t.unfollow("users", "sferik")
         a_delete("/1/friendships/destroy.json").
           with(:query => {:screen_name => "sferik", :include_entities => "false"}).
           should have_been_made
       end
       it "should have the correct output" do
+        stub_delete("/1/friendships/destroy.json").
+          with(:query => {:screen_name => "sferik", :include_entities => "false"}).
+          to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         @t.unfollow("users", "sferik")
         $stdout.string.should =~ /^@testcli is no longer following 1 user\.$/
+      end
+      context "Twitter is down" do
+        it "should retry 3 times and then raise an error" do
+          stub_delete("/1/friendships/destroy.json").
+            with(:query => {:screen_name => "sferik", :include_entities => "false"}).
+            to_return(:status => 502)
+          lambda do
+            @t.unfollow("users", "sferik")
+          end.should raise_error("Twitter is down or being upgraded.")
+          a_delete("/1/friendships/destroy.json").
+            with(:query => {:screen_name => "sferik", :include_entities => "false"}).
+            should have_been_made.times(3)
+        end
       end
     end
   end

@@ -51,11 +51,11 @@ describe T::CLI::Follow do
         stub_get("/1/friends/ids.json").
           with(:query => {:cursor => "-1"}).
           to_return(:body => fixture("followers_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should request the correct resource" do
         stub_post("/1/friendships/create.json").
           with(:body => {:user_id => "7505382", :include_entities => "false"}).
           to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      end
-      it "should request the correct resource" do
         $stdout.should_receive(:print).with("Are you sure you want to follow 1 user? ")
         $stdin.should_receive(:gets).and_return("yes")
         @t.follow("followers")
@@ -71,6 +71,9 @@ describe T::CLI::Follow do
       end
       context "yes" do
         it "should have the correct output" do
+          stub_post("/1/friendships/create.json").
+            with(:body => {:user_id => "7505382", :include_entities => "false"}).
+            to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
           $stdout.should_receive(:print).with("Are you sure you want to follow 1 user? ")
           $stdin.should_receive(:gets).and_return("yes")
           @t.follow("followers")
@@ -83,6 +86,21 @@ describe T::CLI::Follow do
           $stdin.should_receive(:gets).and_return("no")
           @t.follow("followers")
           $stdout.string.chomp.should == ""
+        end
+      end
+      context "Twitter is down" do
+        it "should retry 3 times and then raise an error" do
+          stub_post("/1/friendships/create.json").
+            with(:body => {:user_id => "7505382", :include_entities => "false"}).
+            to_return(:status => 502)
+          $stdout.should_receive(:print).with("Are you sure you want to follow 1 user? ")
+          $stdin.should_receive(:gets).and_return("yes")
+          lambda do
+            @t.follow("followers")
+          end.should raise_error("Twitter is down or being upgraded.")
+          a_post("/1/friendships/create.json").
+            with(:body => {:user_id => "7505382", :include_entities => "false"}).
+            should have_been_made.times(3)
         end
       end
     end
@@ -119,11 +137,11 @@ describe T::CLI::Follow do
         stub_get("/1/lists/members.json").
           with(:query => {:cursor => "-1", :include_entities => "false", :owner_screen_name => "sferik", :skip_status => "true", :slug => "presidents"}).
           to_return(:body => fixture("users_list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should request the correct resource" do
         stub_post("/1/friendships/create.json").
           with(:body => {:user_id => "7505382", :include_entities => "false"}).
           to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      end
-      it "should request the correct resource" do
         $stdout.should_receive(:print).with("Are you sure you want to follow 1 user? ")
         $stdin.should_receive(:gets).and_return("yes")
         @t.follow("listed", "presidents")
@@ -138,6 +156,9 @@ describe T::CLI::Follow do
       end
       context "yes" do
         it "should have the correct output" do
+          stub_post("/1/friendships/create.json").
+            with(:body => {:user_id => "7505382", :include_entities => "false"}).
+            to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
           $stdout.should_receive(:print).with("Are you sure you want to follow 1 user? ")
           $stdin.should_receive(:gets).and_return("yes")
           @t.follow("listed", "presidents")
@@ -150,6 +171,21 @@ describe T::CLI::Follow do
           $stdin.should_receive(:gets).and_return("no")
           @t.follow("listed", "presidents")
           $stdout.string.chomp.should == ""
+        end
+      end
+      context "Twitter is down" do
+        it "should retry 3 times and then raise an error" do
+          stub_post("/1/friendships/create.json").
+            with(:body => {:user_id => "7505382", :include_entities => "false"}).
+            to_return(:status => 502)
+          $stdout.should_receive(:print).with("Are you sure you want to follow 1 user? ")
+          $stdin.should_receive(:gets).and_return("yes")
+          lambda do
+            @t.follow("listed", "presidents")
+          end.should raise_error("Twitter is down or being upgraded.")
+          a_post("/1/friendships/create.json").
+            with(:body => {:user_id => "7505382", :include_entities => "false"}).
+            should have_been_made.times(3)
         end
       end
     end
@@ -167,20 +203,34 @@ describe T::CLI::Follow do
       end
     end
     context "one user" do
-      before do
+      it "should request the correct resource" do
         stub_post("/1/friendships/create.json").
           with(:body => {:screen_name => "sferik", :include_entities => "false"}).
           to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      end
-      it "should request the correct resource" do
         @t.follow("users", "sferik")
         a_post("/1/friendships/create.json").
           with(:body => {:screen_name => "sferik", :include_entities => "false"}).
           should have_been_made
       end
       it "should have the correct output" do
+        stub_post("/1/friendships/create.json").
+          with(:body => {:screen_name => "sferik", :include_entities => "false"}).
+          to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         @t.follow("users", "sferik")
         $stdout.string.should =~ /^@testcli is now following 1 more user\.$/
+      end
+      context "Twitter is down" do
+        it "should retry 3 times and then raise an error" do
+          stub_post("/1/friendships/create.json").
+            with(:body => {:screen_name => "sferik", :include_entities => "false"}).
+            to_return(:status => 502)
+          lambda do
+            @t.follow("users", "sferik")
+          end.should raise_error("Twitter is down or being upgraded.")
+          a_post("/1/friendships/create.json").
+            with(:body => {:screen_name => "sferik", :include_entities => "false"}).
+            should have_been_made.times(3)
+        end
       end
     end
   end

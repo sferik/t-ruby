@@ -26,7 +26,7 @@ module T
       def default(screen_name, consumer_key=nil)
         screen_name = screen_name.strip_at
         @rcfile.path = parent_options['profile'] if parent_options['profile']
-        consumer_key = rcfile[screen_name].keys.last if consumer_key.nil?
+        consumer_key = @rcfile[screen_name].keys.last if consumer_key.nil?
         @rcfile.default_profile = {'username' => screen_name, 'consumer_key' => consumer_key}
         say "Default account has been updated."
       end

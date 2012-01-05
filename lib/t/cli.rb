@@ -279,6 +279,7 @@ module T
     def whois(screen_name)
       screen_name = screen_name.strip_at
       user = client.user(screen_name, :include_entities => false)
+      say "id: ##{number_with_delimiter(user.id)}"
       say "#{user.name}, since #{user.created_at.strftime("%b %Y")}."
       say "bio: #{user.description}"
       say "location: #{user.location}"

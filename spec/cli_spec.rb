@@ -594,6 +594,7 @@ describe T::CLI do
     it "should have the correct output" do
       @t.whois("sferik")
       $stdout.string.should == <<-eos.gsub(/^ {8}/, '')
+        id: #7,505,382
         Erik Michaels-Ober, since Jul 2007.
         bio: A mind forever voyaging through strange seas of thought, alone.
         location: San Francisco

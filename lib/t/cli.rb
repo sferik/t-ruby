@@ -94,7 +94,7 @@ module T
     def direct_messages
       defaults = {:include_entities => false}
       defaults.merge!(:count => options['number']) if options['number']
-      page unless ENV["T_ENV"] == "test"
+      page unless T.env.test?
       client.direct_messages(defaults).each do |direct_message|
         say "#{direct_message.sender.screen_name.rjust(MAX_SCREEN_NAME_SIZE)}: #{direct_message.text} (#{time_ago_in_words(direct_message.created_at)} ago)"
       end
@@ -138,7 +138,7 @@ module T
       defaults.merge!(:count => options['number']) if options['number']
       timeline = client.favorites(defaults)
       timeline.reverse! if options['reverse']
-      page unless ENV["T_ENV"] == "test"
+      page unless T.env.test?
       timeline.each do |status|
         say "#{status.user.screen_name.rjust(MAX_SCREEN_NAME_SIZE)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
       end
@@ -153,7 +153,7 @@ module T
       defaults.merge!(:count => options['number']) if options['number']
       timeline = client.mentions(defaults)
       timeline.reverse! if options['reverse']
-      page unless ENV["T_ENV"] == "test"
+      page unless T.env.test?
       timeline.each do |status|
         say "#{status.user.screen_name.rjust(MAX_SCREEN_NAME_SIZE)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
       end
@@ -207,7 +207,7 @@ module T
     def sent_messages
       defaults = {:include_entities => false}
       defaults.merge!(:count => options['number']) if options['number']
-      page unless ENV["T_ENV"] == "test"
+      page unless T.env.test?
       client.direct_messages_sent(defaults).each do |direct_message|
         say "#{direct_message.recipient.screen_name.rjust(MAX_SCREEN_NAME_SIZE)}: #{direct_message.text} (#{time_ago_in_words(direct_message.created_at)} ago)"
       end
@@ -264,7 +264,7 @@ module T
         timeline = client.home_timeline(defaults)
       end
       timeline.reverse! if options['reverse']
-      page unless ENV["T_ENV"] == "test"
+      page unless T.env.test?
       timeline.each do |status|
         say "#{status.user.screen_name.rjust(MAX_SCREEN_NAME_SIZE)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
       end

@@ -1,7 +1,7 @@
-ENV["T_ENV"] = "test"
 require 'simplecov'
 SimpleCov.start
 require 't'
+T.env = 'test'
 require 'rspec'
 require 'timecop'
 require 'webmock/rspec'

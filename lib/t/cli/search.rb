@@ -34,7 +34,7 @@ module T
         defaults.merge!(:rpp => options['number']) if options['number']
         timeline = client.search(query, defaults)
         timeline.reverse! if options['reverse']
-        page unless ENV["T_ENV"] == "test"
+        page unless T.env.test?
         timeline.each do |status|
           say "#{status.from_user.rjust(MAX_SCREEN_NAME_SIZE)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
         end
@@ -49,7 +49,7 @@ module T
             end
           end
         end
-        page unless ENV["T_ENV"] == "test"
+        page unless T.env.test?
         timeline.flatten.compact.each do |status|
           say "#{status.user.screen_name.rjust(MAX_SCREEN_NAME_SIZE)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
         end
@@ -66,7 +66,7 @@ module T
             end
           end
         end
-        page unless ENV["T_ENV"] == "test"
+        page unless T.env.test?
         timeline.flatten.compact.each do |status|
           say "#{status.user.screen_name.rjust(MAX_SCREEN_NAME_SIZE)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
         end

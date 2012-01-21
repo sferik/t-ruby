@@ -39,7 +39,7 @@ module T
         defaults.merge!(:per_page => options['number']) if options['number']
         timeline = client.list_timeline(list_name, defaults)
         timeline.reverse! if options['reverse']
-        page unless ENV["T_ENV"] == "test"
+        page unless T.env.test?
         timeline.each do |status|
           say "#{status.user.screen_name.rjust(MAX_SCREEN_NAME_SIZE)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
         end

@@ -1,4 +1,5 @@
 require 'action_view'
+require 'pager'
 require 'retryable'
 require 't/core_ext/enumerable'
 require 't/rcfile'
@@ -9,6 +10,7 @@ module T
   class CLI
     class Search < Thor
       include ActionView::Helpers::DateHelper
+      include Pager
 
       DEFAULT_HOST = 'api.twitter.com'
       DEFAULT_PROTOCOL = 'https'
@@ -32,7 +34,7 @@ module T
         defaults.merge!(:rpp => options['number']) if options['number']
         timeline = client.search(query, defaults)
         timeline.reverse! if options['reverse']
-        run_pager
+        page unless ENV["T_ENV"] == "test"
         timeline.each do |status|
           say "#{status.from_user.rjust(MAX_SCREEN_NAME_SIZE)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
         end
@@ -47,7 +49,7 @@ module T
             end
           end
         end
-        run_pager
+        page unless ENV["T_ENV"] == "test"
         timeline.flatten.compact.each do |status|
           say "#{status.user.screen_name.rjust(MAX_SCREEN_NAME_SIZE)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
         end
@@ -64,7 +66,7 @@ module T
             end
           end
         end
-        run_pager
+        page unless ENV["T_ENV"] == "test"
         timeline.flatten.compact.each do |status|
           say "#{status.user.screen_name.rjust(MAX_SCREEN_NAME_SIZE)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
         end
@@ -94,33 +96,6 @@ module T
 
       def protocol
         parent_options['no_ssl'] ? 'http' : DEFAULT_PROTOCOL
-      end
-
-      def run_pager
-        return if RUBY_PLATFORM =~ /win32/
-        return if ENV["T_ENV"] == "test"
-        return unless STDOUT.tty?
-
-        read, write = IO.pipe
-
-        unless Kernel.fork # Child process
-          STDOUT.reopen(write)
-          STDERR.reopen(write) if STDERR.tty?
-          read.close
-          write.close
-          return
-        end
-
-        # Parent process, become pager
-        STDIN.reopen(read)
-        read.close
-        write.close
-
-        ENV['LESS'] = 'FSRX' # Don't page if the input is short enough
-
-        Kernel.select [STDIN] # Wait until we have input before we start the pager
-        pager = ENV['PAGER'] || 'less'
-        exec pager rescue exec "/bin/sh", "-c", pager
       end
 
     end

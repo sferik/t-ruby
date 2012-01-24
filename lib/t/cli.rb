@@ -168,7 +168,7 @@ module T
     end
 
     desc "reply SCREEN_NAME MESSAGE", "Post your Tweet as a reply directed at another person."
-    method_option :location, :aliases => "-l", :type => :boolean, :default => true
+    method_option :location, :aliases => "-l", :type => :boolean, :default => false
     def reply(screen_name, message)
       screen_name = screen_name.strip_at
       defaults = {:include_entities => false, :trim_user => true}
@@ -228,7 +228,7 @@ module T
     end
 
     desc "status MESSAGE", "Post a Tweet."
-    method_option :location, :aliases => "-l", :type => :boolean, :default => true
+    method_option :location, :aliases => "-l", :type => :boolean, :default => false
     def status(message)
       defaults = {:include_entities => false, :trim_user => true}
       defaults.merge!(:lat => location.lat, :long => location.lng) if options['location']

@@ -50,7 +50,7 @@ module T
           number_added = [number, max_members_to_add].min
           say "@#{@rcfile.default_profile[0]} added #{number_added} #{number_added == 1 ? 'friend' : 'friends'} to the list \"#{list_name}\"."
           say
-          say "Run `#{$0} list remove all friends #{list_name}` to undo."
+          say "Run `#{File.basename($0)} list remove all friends #{list_name}` to undo."
         end
 
         desc "followers LIST_NAME", "Add all followers to a list."
@@ -81,7 +81,7 @@ module T
           number_added = [number, max_members_to_add].min
           say "@#{@rcfile.default_profile[0]} added #{number_added} #{number_added == 1 ? 'follower' : 'followers'} to the list \"#{list_name}\"."
           say
-          say "Run `#{$0} list remove all followers #{list_name}` to undo."
+          say "Run `#{File.basename($0)} list remove all followers #{list_name}` to undo."
         end
 
         desc "listed FROM_LIST_NAME TO_LIST_NAME", "Add all list memebers to a list."
@@ -112,7 +112,7 @@ module T
           number_added = [number, max_members_to_add].min
           say "@#{@rcfile.default_profile[0]} added #{number_added} #{number_added == 1 ? 'member' : 'members'} to the list \"#{to_list_name}\"."
           say
-          say "Run `#{$0} list remove all listed #{from_list_name} #{to_list_name}` to undo."
+          say "Run `#{File.basename($0)} list remove all listed #{from_list_name} #{to_list_name}` to undo."
         end
 
         desc "users LIST_NAME SCREEN_NAME [SCREEN_NAME...]", "Add users to a list."
@@ -123,7 +123,7 @@ module T
           number = screen_names.length
           say "@#{@rcfile.default_profile[0]} added #{number} #{number == 1 ? 'user' : 'users'} to the list \"#{list_name}\"."
           say
-          say "Run `#{$0} list remove users #{list_name} #{screen_names.join(' ')}` to undo."
+          say "Run `#{File.basename($0)} list remove users #{list_name} #{screen_names.join(' ')}` to undo."
         end
 
       private

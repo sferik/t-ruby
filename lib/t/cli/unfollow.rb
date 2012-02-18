@@ -36,7 +36,7 @@ module T
         end
         say "@#{@rcfile.default_profile[0]} is no longer following #{number} #{number == 1 ? 'user' : 'users'}."
         say
-        say "Run `#{$0} follow all listed #{list_name}` to follow again."
+        say "Run `#{File.basename($0)} follow all listed #{list_name}` to follow again."
       end
 
       desc "followers", "Unfollow all followers."
@@ -58,7 +58,7 @@ module T
         end
         say "@#{@rcfile.default_profile[0]} is no longer following #{number} #{number == 1 ? 'user' : 'users'}."
         say
-        say "Run `#{$0} follow all followers` to stop."
+        say "Run `#{File.basename($0)} follow all followers` to stop."
       end
 
       desc "friends", "Unfollow all friends."
@@ -77,7 +77,7 @@ module T
         end
         say "@#{@rcfile.default_profile[0]} is no longer following #{number} #{number == 1 ? 'user' : 'users'}."
         say
-        say "Run `#{$0} follow users #{screen_names.join(' ')}` to follow again."
+        say "Run `#{File.basename($0)} follow users #{screen_names.join(' ')}` to follow again."
       end
       map %w(everyone everybody) => :friends
 
@@ -101,7 +101,7 @@ module T
         end
         say "@#{@rcfile.default_profile[0]} is no longer following #{number} #{number == 1 ? 'user' : 'users'}."
         say
-        say "Run `#{$0} follow users #{screen_names.join(' ')}` to follow again."
+        say "Run `#{File.basename($0)} follow users #{screen_names.join(' ')}` to follow again."
       end
 
       desc "users SCREEN_NAME [SCREEN_NAME...]", "Allows you to stop following users."
@@ -115,7 +115,7 @@ module T
         number = screen_names.length
         say "@#{@rcfile.default_profile[0]} is no longer following #{number} #{number == 1 ? 'user' : 'users'}."
         say
-        say "Run `#{$0} follow users #{screen_names.join(' ')}` to follow again."
+        say "Run `#{File.basename($0)} follow users #{screen_names.join(' ')}` to follow again."
       end
 
     private

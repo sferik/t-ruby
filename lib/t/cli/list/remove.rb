@@ -44,7 +44,7 @@ module T
           end
           say "@#{@rcfile.default_profile[0]} removed #{number} #{number == 1 ? 'friend' : 'friends'} from the list \"#{list_name}\"."
           say
-          say "Run `#{$0} list add all friends #{list_name}` to undo."
+          say "Run `#{File.basename($0)} list add all friends #{list_name}` to undo."
         end
 
         desc "followers LIST_NAME", "Remove all followers from a list."
@@ -69,7 +69,7 @@ module T
           end
           say "@#{@rcfile.default_profile[0]} removed #{number} #{number == 1 ? 'follower' : 'followers'} from the list \"#{list_name}\"."
           say
-          say "Run `#{$0} list add all followers #{list_name}` to undo."
+          say "Run `#{File.basename($0)} list add all followers #{list_name}` to undo."
         end
 
         desc "listed FROM_LIST_NAME TO_LIST_NAME", "Remove all list members from a list."
@@ -94,7 +94,7 @@ module T
           end
           say "@#{@rcfile.default_profile[0]} removed #{number} #{number == 1 ? 'member' : 'members'} from the list \"#{to_list_name}\"."
           say
-          say "Run `#{$0} list add all listed #{from_list_name} #{to_list_name}` to undo."
+          say "Run `#{File.basename($0)} list add all listed #{from_list_name} #{to_list_name}` to undo."
         end
 
         desc "members LIST_NAME", "Remove all members from a list."
@@ -125,7 +125,7 @@ module T
           number = screen_names.length
           say "@#{@rcfile.default_profile[0]} removed #{number} #{number == 1 ? 'user' : 'users'} from the list \"#{list_name}\"."
           say
-          say "Run `#{$0} list add users #{list_name} #{screen_names.join(' ')}` to undo."
+          say "Run `#{File.basename($0)} list add users #{list_name} #{screen_names.join(' ')}` to undo."
         end
 
       private

@@ -22,7 +22,7 @@ module T
         user = client.unblock(screen_name, :include_entities => false)
         say "@#{@rcfile.default_profile[0]} unblocked @#{user.screen_name}."
         say
-        say "Run `#{$0} block #{user.screen_name}` to block."
+        say "Run `#{File.basename($0)} block #{user.screen_name}` to block."
       end
 
       desc "dm", "Delete the last Direct Message sent."
@@ -50,7 +50,7 @@ module T
           client.unfavorite(status.id, :include_entities => false)
           say "@#{@rcfile.default_profile[0]} unfavorited @#{status.user.screen_name}'s latest status: \"#{status.text}\""
           say
-          say "Run `#{$0} favorite #{status.user.screen_name}` to favorite."
+          say "Run `#{File.basename($0)} favorite #{status.user.screen_name}` to favorite."
         else
           raise Thor::Error, "Tweet not found"
         end

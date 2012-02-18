@@ -40,7 +40,7 @@ module T
         end
         say "@#{@rcfile.default_profile[0]} is now following #{number} more #{number == 1 ? 'user' : 'users'}."
         say
-        say "Run `#{$0} unfollow all followers` to stop."
+        say "Run `#{File.basename($0)} unfollow all followers` to stop."
       end
 
       desc "listed LIST_NAME", "Follow all members of a list."
@@ -58,7 +58,7 @@ module T
         end
         say "@#{@rcfile.default_profile[0]} is now following #{number} more #{number == 1 ? 'user' : 'users'}."
         say
-        say "Run `#{$0} unfollow all listed #{list_name}` to stop."
+        say "Run `#{File.basename($0)} unfollow all listed #{list_name}` to stop."
       end
 
       desc "users SCREEN_NAME [SCREEN_NAME...]", "Allows you to start following users."
@@ -72,7 +72,7 @@ module T
         number = screen_names.length
         say "@#{@rcfile.default_profile[0]} is now following #{number} more #{number == 1 ? 'user' : 'users'}."
         say
-        say "Run `#{$0} unfollow users #{screen_names.join(' ')}` to stop."
+        say "Run `#{File.basename($0)} unfollow users #{screen_names.join(' ')}` to stop."
       end
 
     private

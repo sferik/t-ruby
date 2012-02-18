@@ -86,7 +86,7 @@ module T
       user = client.block(screen_name, :include_entities => false)
       say "@#{@rcfile.default_profile[0]} blocked @#{user.screen_name}"
       say
-      say "Run `#{$0} delete block #{user.screen_name}` to unblock."
+      say "Run `#{File.basename($0)} delete block #{user.screen_name}` to unblock."
     end
 
     desc "direct_messages", "Returns the 20 most recent Direct Messages sent to you."
@@ -117,7 +117,7 @@ module T
         client.favorite(user.status.id, :include_entities => false)
         say "@#{@rcfile.default_profile[0]} favorited @#{user.screen_name}'s latest status: \"#{user.status.text}\""
         say
-        say "Run `#{$0} delete favorite` to unfavorite."
+        say "Run `#{File.basename($0)} delete favorite` to unfavorite."
       else
         raise Thor::Error, "Tweet not found"
       end
@@ -178,7 +178,7 @@ module T
       status = client.update("@#{user.screen_name} #{message}", defaults)
       say "Reply created by @#{@rcfile.default_profile[0]} to @#{user.screen_name} (#{time_ago_in_words(status.created_at)} ago)"
       say
-      say "Run `#{$0} delete status` to delete."
+      say "Run `#{File.basename($0)} delete status` to delete."
     end
 
     desc "retweet SCREEN_NAME", "Sends that user's latest Tweet to your followers."
@@ -189,7 +189,7 @@ module T
         client.retweet(user.status.id, :include_entities => false, :trim_user => true)
         say "@#{@rcfile.default_profile[0]} retweeted @#{user.screen_name}'s latest status: \"#{user.status.text}\""
         say
-        say "Run `#{$0} delete status` to undo."
+        say "Run `#{File.basename($0)} delete status` to undo."
       else
         raise Thor::Error, "Tweet not found"
       end
@@ -224,7 +224,7 @@ module T
       say "Favorites: #{number_with_delimiter(user.favorites_count)}"
       say "Listed: #{number_with_delimiter(user.listed_count)}"
       say
-      say "Run `#{$0} whois #{user.screen_name}` to view profile."
+      say "Run `#{File.basename($0)} whois #{user.screen_name}` to view profile."
     end
 
     desc "status MESSAGE", "Post a Tweet."
@@ -235,7 +235,7 @@ module T
       status = client.update(message, defaults)
       say "Tweet created by @#{@rcfile.default_profile[0]} (#{time_ago_in_words(status.created_at)} ago)"
       say
-      say "Run `#{$0} delete status` to delete."
+      say "Run `#{File.basename($0)} delete status` to delete."
     end
     map %w(post tweet update) => :status
 
@@ -245,9 +245,9 @@ module T
       if recommendation
         say "Try following @#{recommendation.screen_name}."
         say
-        say "Run `#{$0} follow #{recommendation.screen_name}` to follow."
-        say "Run `#{$0} whois #{recommendation.screen_name}` for profile."
-        say "Run `#{$0} suggest` for another recommendation."
+        say "Run `#{File.basename($0)} follow #{recommendation.screen_name}` to follow."
+        say "Run `#{File.basename($0)} whois #{recommendation.screen_name}` for profile."
+        say "Run `#{File.basename($0)} suggest` for another recommendation."
       end
     end
 

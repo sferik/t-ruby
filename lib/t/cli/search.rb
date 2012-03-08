@@ -44,8 +44,8 @@ module T
       def timeline(query)
         timeline = 1.upto(MAX_PAGES).threaded_map do |page|
           retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-            client.home_timeline(:page => page, :count => MAX_NUM_RESULTS).map do |status|
-              status if /#{query}/i.match(status.text)
+            client.home_timeline(:page => page, :count => MAX_NUM_RESULTS).select do |status|
+              /#{query}/i.match(status.text)
             end
           end
         end
@@ -61,8 +61,8 @@ module T
         screen_name = screen_name.strip_at
         timeline = 1.upto(MAX_PAGES).threaded_map do |page|
           retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-            client.user_timeline(screen_name, :page => page, :count => MAX_NUM_RESULTS).map do |status|
-              status if /#{query}/i.match(status.text)
+            client.user_timeline(screen_name, :page => page, :count => MAX_NUM_RESULTS).select do |status|
+              /#{query}/i.match(status.text)
             end
           end
         end

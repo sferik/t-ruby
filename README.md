@@ -29,6 +29,9 @@ This will open a new browser window where you can authenticate to Twitter and
 then enter the returned PIN back into the terminal.  Assuming that works,
 you'll be authorized to use the CLI.
 
+If you're on a server where you don't have a browser installed, pass the `--no_browser`
+flag and you'll get a url that you can copy instead. 
+
 You can see a list of all the accounts you've authorized.
 
     t accounts

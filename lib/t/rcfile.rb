@@ -1,7 +1,3 @@
-# rcfile = RCFile.instance (should load current data from)
-# rcfile[profile] = {}
-# rcfile.write
-
 require 'singleton'
 require 'yaml'
 

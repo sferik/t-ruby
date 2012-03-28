@@ -7,14 +7,15 @@ describe T::CLI::Search do
     rcfile = RCFile.instance
     rcfile.path = fixture_path + "/.trc"
     @t = T::CLI.new
-    Timecop.freeze(Time.local(2011, 11, 24, 16, 20, 0))
     @old_stderr = $stderr
     $stderr = StringIO.new
     @old_stdout = $stdout
     $stdout = StringIO.new
+    Timecop.freeze(Time.local(2011, 11, 24, 16, 20, 0))
   end
 
   after do
+    Timecop.return
     $stderr = @old_stderr
     $stdout = @old_stdout
   end

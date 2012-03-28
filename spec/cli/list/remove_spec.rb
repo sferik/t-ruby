@@ -80,6 +80,21 @@ describe T::CLI::List::Remove do
           @t.list("remove", "friends", "presidents")
           $stdout.string.should =~ /@testcli removed 1 friend from the list "presidents"\./
         end
+        context "Twitter is down" do
+          it "should retry 3 times and then raise an error" do
+            stub_post("/1/lists/members/destroy_all.json").
+              with(:body => {:user_id => "7505382", :slug => "presidents", :owner_screen_name => "sferik"}).
+              to_return(:status => 502)
+            $stdout.should_receive(:print).with("Are you sure you want to remove 1 friend from the list \"presidents\"? ")
+            $stdin.should_receive(:gets).and_return("yes")
+            lambda do
+              @t.list("remove", "friends", "presidents")
+            end.should raise_error("Twitter is down or being upgraded.")
+            a_post("/1/lists/members/destroy_all.json").
+              with(:body => {:user_id => "7505382", :slug => "presidents", :owner_screen_name => "sferik"}).
+              should have_been_made.times(3)
+          end
+        end
       end
       context "no" do
         it "should have the correct output" do
@@ -155,6 +170,21 @@ describe T::CLI::List::Remove do
           $stdin.should_receive(:gets).and_return("yes")
           @t.list("remove", "followers", "presidents")
           $stdout.string.should =~ /@testcli removed 2 followers from the list "presidents"\./
+        end
+        context "Twitter is down" do
+          it "should retry 3 times and then raise an error" do
+            stub_post("/1/lists/members/destroy_all.json").
+              with(:body => {:user_id => "213747670,428004849", :slug => "presidents", :owner_screen_name => "sferik"}).
+              to_return(:status => 502)
+            $stdout.should_receive(:print).with("Are you sure you want to remove 2 followers from the list \"presidents\"? ")
+            $stdin.should_receive(:gets).and_return("yes")
+            lambda do
+              @t.list("remove", "followers", "presidents")
+            end.should raise_error("Twitter is down or being upgraded.")
+            a_post("/1/lists/members/destroy_all.json").
+              with(:body => {:user_id => "213747670,428004849", :slug => "presidents", :owner_screen_name => "sferik"}).
+              should have_been_made.times(3)
+          end
         end
       end
       context "no" do
@@ -237,6 +267,21 @@ describe T::CLI::List::Remove do
           @t.list("remove", "listed", "democrats", "presidents")
           $stdout.string.should =~ /@testcli removed 1 member from the list "presidents"\./
         end
+        context "Twitter is down" do
+          it "should retry 3 times and then raise an error" do
+            stub_post("/1/lists/members/destroy_all.json").
+              with(:body => {:user_id => "7505382", :slug => "presidents", :owner_screen_name => "sferik"}).
+              to_return(:status => 502)
+            $stdout.should_receive(:print).with("Are you sure you want to remove 1 member from the list \"presidents\"? ")
+            $stdin.should_receive(:gets).and_return("yes")
+            lambda do
+              @t.list("remove", "listed", "democrats", "presidents")
+            end.should raise_error("Twitter is down or being upgraded.")
+            a_post("/1/lists/members/destroy_all.json").
+              with(:body => {:user_id => "7505382", :slug => "presidents", :owner_screen_name => "sferik"}).
+              should have_been_made.times(3)
+          end
+        end
       end
       context "no" do
         it "should have the correct output" do
@@ -306,6 +351,21 @@ describe T::CLI::List::Remove do
           @t.list("remove", "members", "presidents")
           $stdout.string.should =~ /@testcli removed 1 member from the list "presidents"\./
         end
+        context "Twitter is down" do
+          it "should retry 3 times and then raise an error" do
+            stub_post("/1/lists/members/destroy_all.json").
+              with(:body => {:user_id => "7505382", :slug => "presidents", :owner_screen_name => "sferik"}).
+              to_return(:status => 502)
+            $stdout.should_receive(:print).with("Are you sure you want to remove 1 member from the list \"presidents\"? ")
+            $stdin.should_receive(:gets).and_return("yes")
+            lambda do
+              @t.list("remove", "members", "presidents")
+            end.should raise_error("Twitter is down or being upgraded.")
+            a_post("/1/lists/members/destroy_all.json").
+              with(:body => {:user_id => "7505382", :slug => "presidents", :owner_screen_name => "sferik"}).
+              should have_been_made.times(3)
+          end
+        end
       end
       context "no" do
         it "should have the correct output" do
@@ -341,6 +401,19 @@ describe T::CLI::List::Remove do
         to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       @t.list("remove", "users", "presidents", "sferik")
       $stdout.string.should =~ /@testcli removed 1 user from the list "presidents"\./
+    end
+    context "Twitter is down" do
+      it "should retry 3 times and then raise an error" do
+        stub_post("/1/lists/members/destroy_all.json").
+          with(:body => {:screen_name => "sferik", :slug => "presidents", :owner_screen_name => "sferik"}).
+          to_return(:status => 502)
+        lambda do
+          @t.list("remove", "users", "presidents", "sferik")
+        end.should raise_error("Twitter is down or being upgraded.")
+        a_post("/1/lists/members/destroy_all.json").
+          with(:body => {:screen_name => "sferik", :slug => "presidents", :owner_screen_name => "sferik"}).
+          should have_been_made.times(3)
+      end
     end
   end
 

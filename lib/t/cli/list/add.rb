@@ -1,4 +1,6 @@
 require 'active_support/core_ext/array/grouping'
+require 'retryable'
+require 't/core_ext/enumerable'
 require 't/core_ext/string'
 require 't/collectable'
 require 't/rcfile'
@@ -44,8 +46,10 @@ module T
             return unless yes? "Are you sure you want to add #{number} #{number == 1 ? 'friend' : 'friends'} to the list \"#{list_name}\"?"
           end
           max_members_to_add = MAX_USERS_PER_LIST - existing_list_members
-          list_member_ids_to_add[0...max_members_to_add].in_groups_of(100, false) do |user_id_group|
-            client.list_add_members(list_name, user_id_group)
+          list_member_ids_to_add[0...max_members_to_add].in_groups_of(100, false).threaded_each do |user_id_group|
+            retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
+              client.list_add_members(list_name, user_id_group)
+            end
           end
           number_added = [number, max_members_to_add].min
           say "@#{@rcfile.default_profile[0]} added #{number_added} #{number_added == 1 ? 'friend' : 'friends'} to the list \"#{list_name}\"."
@@ -75,8 +79,10 @@ module T
             return unless yes? "Are you sure you want to add #{number} #{number == 1 ? 'follower' : 'followers'} to the list \"#{list_name}\"?"
           end
           max_members_to_add = MAX_USERS_PER_LIST - existing_list_members
-          list_member_ids_to_add[0...max_members_to_add].in_groups_of(100, false) do |user_id_group|
-            client.list_add_members(list_name, user_id_group)
+          list_member_ids_to_add[0...max_members_to_add].in_groups_of(100, false).threaded_each do |user_id_group|
+            retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
+              client.list_add_members(list_name, user_id_group)
+            end
           end
           number_added = [number, max_members_to_add].min
           say "@#{@rcfile.default_profile[0]} added #{number_added} #{number_added == 1 ? 'follower' : 'followers'} to the list \"#{list_name}\"."
@@ -106,8 +112,10 @@ module T
             return unless yes? "Are you sure you want to add #{number} #{number == 1 ? 'member' : 'members'} to the list \"#{to_list_name}\"?"
           end
           max_members_to_add = MAX_USERS_PER_LIST - existing_list_members
-          list_member_ids_to_add[0...max_members_to_add].in_groups_of(100, false) do |user_id_group|
-            client.list_add_members(to_list_name, user_id_group)
+          list_member_ids_to_add[0...max_members_to_add].in_groups_of(100, false).threaded_each do |user_id_group|
+            retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
+              client.list_add_members(to_list_name, user_id_group)
+            end
           end
           number_added = [number, max_members_to_add].min
           say "@#{@rcfile.default_profile[0]} added #{number_added} #{number_added == 1 ? 'member' : 'members'} to the list \"#{to_list_name}\"."
@@ -119,8 +127,10 @@ module T
         def users(list_name, screen_name, *screen_names)
           screen_names.unshift(screen_name)
           screen_names.map!(&:strip_at)
-          screen_names.in_groups_of(100, false) do |user_id_group|
-            client.list_add_members(list_name, user_id_group)
+          screen_names.in_groups_of(100, false).threaded_each do |user_id_group|
+            retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
+              client.list_add_members(list_name, user_id_group)
+            end
           end
           number = screen_names.length
           say "@#{@rcfile.default_profile[0]} added #{number} #{number == 1 ? 'user' : 'users'} to the list \"#{list_name}\"."

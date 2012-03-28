@@ -77,6 +77,21 @@ describe T::CLI::List::Add do
           @t.list("add", "friends", "presidents")
           $stdout.string.should =~ /@testcli added 1 friend to the list "presidents"\./
         end
+        context "Twitter is down" do
+          it "should retry 3 times and then raise an error" do
+            stub_post("/1/lists/members/create_all.json").
+              with(:body => {:user_id => "7505382", :slug => "presidents", :owner_screen_name => "sferik"}).
+              to_return(:status => 502)
+            $stdout.should_receive(:print).with("Are you sure you want to add 1 friend to the list \"presidents\"? ")
+            $stdin.should_receive(:gets).and_return("yes")
+            lambda do
+              @t.list("add", "friends", "presidents")
+            end.should raise_error("Twitter is down or being upgraded.")
+            a_post("/1/lists/members/create_all.json").
+              with(:body => {:user_id => "7505382", :slug => "presidents", :owner_screen_name => "sferik"}).
+              should have_been_made.times(3)
+          end
+        end
       end
       context "no" do
         it "should have the correct output" do
@@ -213,6 +228,21 @@ describe T::CLI::List::Add do
           $stdin.should_receive(:gets).and_return("yes")
           @t.list("add", "followers", "presidents")
           $stdout.string.should =~ /@testcli added 2 followers to the list "presidents"\./
+        end
+        context "Twitter is down" do
+          it "should retry 3 times and then raise an error" do
+            stub_post("/1/lists/members/create_all.json").
+              with(:body => {:user_id => "213747670,428004849", :slug => "presidents", :owner_screen_name => "sferik"}).
+              to_return(:status => 502)
+            $stdout.should_receive(:print).with("Are you sure you want to add 2 followers to the list \"presidents\"? ")
+            $stdin.should_receive(:gets).and_return("yes")
+            lambda do
+              @t.list("add", "followers", "presidents")
+            end.should raise_error("Twitter is down or being upgraded.")
+            a_post("/1/lists/members/create_all.json").
+              with(:body => {:user_id => "213747670,428004849", :slug => "presidents", :owner_screen_name => "sferik"}).
+              should have_been_made.times(3)
+          end
         end
       end
       context "no" do
@@ -356,6 +386,21 @@ describe T::CLI::List::Add do
           @t.list("add", "listed", "democrats", "presidents")
           $stdout.string.should =~ /@testcli added 1 member to the list "presidents"\./
         end
+        context "Twitter is down" do
+          it "should retry 3 times and then raise an error" do
+            stub_post("/1/lists/members/create_all.json").
+              with(:body => {:user_id => "7505382", :slug => "presidents", :owner_screen_name => "sferik"}).
+              to_return(:status => 502)
+            $stdout.should_receive(:print).with("Are you sure you want to add 1 member to the list \"presidents\"? ")
+            $stdin.should_receive(:gets).and_return("yes")
+            lambda do
+              @t.list("add", "listed", "democrats", "presidents")
+            end.should raise_error("Twitter is down or being upgraded.")
+            a_post("/1/lists/members/create_all.json").
+              with(:body => {:user_id => "7505382", :slug => "presidents", :owner_screen_name => "sferik"}).
+              should have_been_made.times(3)
+          end
+        end
       end
       context "no" do
         it "should have the correct output" do
@@ -452,6 +497,19 @@ describe T::CLI::List::Add do
     it "should have the correct output" do
       @t.list("add", "users", "presidents", "sferik")
       $stdout.string.should =~ /@testcli added 1 user to the list "presidents"\./
+    end
+    context "Twitter is down" do
+      it "should retry 3 times and then raise an error" do
+        stub_post("/1/lists/members/create_all.json").
+          with(:body => {:screen_name => "sferik", :slug => "presidents", :owner_screen_name => "sferik"}).
+          to_return(:status => 502)
+        lambda do
+          @t.list("add", "users", "presidents", "sferik")
+        end.should raise_error("Twitter is down or being upgraded.")
+        a_post("/1/lists/members/create_all.json").
+          with(:body => {:screen_name => "sferik", :slug => "presidents", :owner_screen_name => "sferik"}).
+          should have_been_made.times(3)
+      end
     end
   end
 

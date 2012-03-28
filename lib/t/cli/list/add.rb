@@ -4,17 +4,16 @@ require 't/core_ext/enumerable'
 require 't/core_ext/string'
 require 't/collectable'
 require 't/rcfile'
+require 't/requestable'
 require 'thor'
-require 'twitter'
 
 module T
   class CLI
     class List
       class Add < Thor
         include T::Collectable
+        include T::Requestable
 
-        DEFAULT_HOST = 'api.twitter.com'
-        DEFAULT_PROTOCOL = 'https'
         MAX_USERS_PER_LIST = 500
 
         check_unknown_options!
@@ -136,32 +135,6 @@ module T
           say "@#{@rcfile.default_profile[0]} added #{number} #{number == 1 ? 'user' : 'users'} to the list \"#{list_name}\"."
           say
           say "Run `#{File.basename($0)} list remove users #{list_name} #{screen_names.join(' ')}` to undo."
-        end
-
-      private
-
-        def base_url
-          "#{protocol}://#{host}"
-        end
-
-        def client
-          return @client if @client
-          @rcfile.path = parent_options['profile'] if parent_options['profile']
-          @client = Twitter::Client.new(
-            :endpoint => base_url,
-            :consumer_key => @rcfile.default_consumer_key,
-            :consumer_secret => @rcfile.default_consumer_secret,
-            :oauth_token => @rcfile.default_token,
-            :oauth_token_secret  => @rcfile.default_secret
-          )
-        end
-
-        def host
-          parent_options['host'] || DEFAULT_HOST
-        end
-
-        def protocol
-          parent_options['no_ssl'] ? 'http' : DEFAULT_PROTOCOL
         end
 
       end

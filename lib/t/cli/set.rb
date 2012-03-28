@@ -1,13 +1,12 @@
 require 't/core_ext/string'
 require 't/rcfile'
+require 't/requestable'
 require 'thor'
-require 'twitter'
 
 module T
   class CLI
     class Set < Thor
-      DEFAULT_HOST = 'api.twitter.com'
-      DEFAULT_PROTOCOL = 'https'
+      include T::Requestable
 
       check_unknown_options!
 
@@ -53,32 +52,6 @@ module T
       def url(url)
         client.update_profile(:url => url, :include_entities => false)
         say "@#{@rcfile.default_profile[0]}'s URL has been updated."
-      end
-
-    private
-
-      def base_url
-        "#{protocol}://#{host}"
-      end
-
-      def client
-        return @client if @client
-        @rcfile.path = parent_options['profile'] if parent_options['profile']
-        @client = Twitter::Client.new(
-          :endpoint => base_url,
-          :consumer_key => @rcfile.default_consumer_key,
-          :consumer_secret => @rcfile.default_consumer_secret,
-          :oauth_token => @rcfile.default_token,
-          :oauth_token_secret  => @rcfile.default_secret
-        )
-      end
-
-      def host
-        parent_options['host'] || DEFAULT_HOST
-      end
-
-      def protocol
-        parent_options['no_ssl'] ? 'http' : DEFAULT_PROTOCOL
       end
 
     end

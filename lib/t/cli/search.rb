@@ -3,17 +3,16 @@ require 'pager'
 require 'retryable'
 require 't/core_ext/enumerable'
 require 't/rcfile'
+require 't/requestable'
 require 'thor'
-require 'twitter'
 
 module T
   class CLI
     class Search < Thor
       include ActionView::Helpers::DateHelper
       include Pager
+      include T::Requestable
 
-      DEFAULT_HOST = 'api.twitter.com'
-      DEFAULT_PROTOCOL = 'https'
       DEFAULT_NUM_RESULTS = 20
       MAX_PAGES = 16
       MAX_NUM_RESULTS = 200
@@ -70,32 +69,6 @@ module T
         timeline.flatten.compact.each do |status|
           say "#{status.user.screen_name.rjust(MAX_SCREEN_NAME_SIZE)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
         end
-      end
-
-    private
-
-      def base_url
-        "#{protocol}://#{host}"
-      end
-
-      def client
-        return @client if @client
-        @rcfile.path = parent_options['profile'] if parent_options['profile']
-        @client = Twitter::Client.new(
-          :endpoint => base_url,
-          :consumer_key => @rcfile.default_consumer_key,
-          :consumer_secret => @rcfile.default_consumer_secret,
-          :oauth_token => @rcfile.default_token,
-          :oauth_token_secret  => @rcfile.default_secret
-        )
-      end
-
-      def host
-        parent_options['host'] || DEFAULT_HOST
-      end
-
-      def protocol
-        parent_options['no_ssl'] ? 'http' : DEFAULT_PROTOCOL
       end
 
     end

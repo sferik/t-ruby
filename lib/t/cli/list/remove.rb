@@ -1,5 +1,4 @@
-require 'retryable'
-require 't/core_ext/enumerable'
+require 'active_support/core_ext/array/grouping'
 require 't/core_ext/string'
 require 't/collectable'
 require 't/rcfile'
@@ -37,10 +36,8 @@ module T
           else
             return unless yes? "Are you sure you want to remove #{number} #{number == 1 ? 'friend' : 'friends'} from the list \"#{list_name}\"?"
           end
-          list_member_ids_to_remove.threaded_map do |list_member_id|
-            retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-              client.list_remove_member(list_name, list_member_id)
-            end
+          list_member_ids_to_remove.in_groups_of(100, false) do |user_id_group|
+            client.list_remove_members(list_name, user_id_group)
           end
           say "@#{@rcfile.default_profile[0]} removed #{number} #{number == 1 ? 'friend' : 'friends'} from the list \"#{list_name}\"."
           say
@@ -62,10 +59,8 @@ module T
           else
             return unless yes? "Are you sure you want to remove #{number} #{number == 1 ? 'follower' : 'followers'} from the list \"#{list_name}\"?"
           end
-          list_member_ids_to_remove.threaded_map do |list_member_id|
-            retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-              client.list_remove_member(list_name, list_member_id)
-            end
+          list_member_ids_to_remove.in_groups_of(100, false) do |user_id_group|
+            client.list_remove_members(list_name, user_id_group)
           end
           say "@#{@rcfile.default_profile[0]} removed #{number} #{number == 1 ? 'follower' : 'followers'} from the list \"#{list_name}\"."
           say
@@ -87,10 +82,8 @@ module T
           else
             return unless yes? "Are you sure you want to remove #{number} #{number == 1 ? 'member' : 'members'} from the list \"#{to_list_name}\"?"
           end
-          list_member_ids_to_remove.threaded_map do |list_member_id|
-            retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-              client.list_remove_member(to_list_name, list_member_id)
-            end
+          list_member_ids_to_remove.in_groups_of(100, false) do |user_id_group|
+            client.list_remove_members(to_list_name, user_id_group)
           end
           say "@#{@rcfile.default_profile[0]} removed #{number} #{number == 1 ? 'member' : 'members'} from the list \"#{to_list_name}\"."
           say
@@ -105,10 +98,8 @@ module T
           number = list_members.length
           return say "The list \"#{list_name}\" doesn't have any members." if number.zero?
           return unless yes? "Are you sure you want to remove #{number} #{number == 1 ? 'member' : 'members'} from the list \"#{list_name}\"?"
-          list_members.collect(&:id).threaded_map do |list_member_id|
-            retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-              client.list_remove_member(list_name, list_member_id)
-            end
+          list_members.collect(&:id).in_groups_of(100, false) do |user_id_group|
+            client.list_remove_members(list_name, user_id_group)
           end
           say "@#{@rcfile.default_profile[0]} removed #{number} #{number == 1 ? 'member' : 'members'} from the list \"#{list_name}\"."
         end
@@ -117,10 +108,9 @@ module T
         desc "users LIST_NAME SCREEN_NAME [SCREEN_NAME...]", "Remove users from a list."
         def users(list_name, screen_name, *screen_names)
           screen_names.unshift(screen_name)
-          screen_names.threaded_map do |screen_name|
-            retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-              client.list_remove_member(list_name, screen_name)
-            end
+          screen_names.map!(&:strip_at)
+          screen_names.in_groups_of(100, false) do |user_id_group|
+            client.list_remove_members(list_name, user_id_group)
           end
           number = screen_names.length
           say "@#{@rcfile.default_profile[0]} removed #{number} #{number == 1 ? 'user' : 'users'} from the list \"#{list_name}\"."

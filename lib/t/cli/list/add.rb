@@ -119,7 +119,9 @@ module T
         def users(list_name, screen_name, *screen_names)
           screen_names.unshift(screen_name)
           screen_names.map!(&:strip_at)
-          client.list_add_members(list_name, screen_names)
+          screen_names.in_groups_of(100, false) do |user_id_group|
+            client.list_add_members(list_name, user_id_group)
+          end
           number = screen_names.length
           say "@#{@rcfile.default_profile[0]} added #{number} #{number == 1 ? 'user' : 'users'} to the list \"#{list_name}\"."
           say

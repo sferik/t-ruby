@@ -202,6 +202,22 @@ module T
     end
     map %w(rt) => :retweet
 
+    desc "retweets [SCREEN_NAME]", "Returns the 20 most recent Retweets by a user."
+    method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS
+    method_option :reverse, :aliases => "-r", :type => :boolean, :default => false
+    def retweets(screen_name=nil)
+      screen_name = screen_name.strip_at if screen_name
+      defaults = {:include_entities => false}
+      defaults.merge!(:count => options['number']) if options['number']
+      timeline = client.retweeted_by(screen_name, defaults)
+      timeline.reverse! if options['reverse']
+      page unless T.env.test?
+      timeline.each do |status|
+        say "#{status.user.screen_name.rjust(MAX_SCREEN_NAME_SIZE)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
+      end
+    end
+    map %w(rts) => :retweets
+
     desc "sent_messages", "Returns the 20 most recent Direct Messages sent to you."
     method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS
     def sent_messages
@@ -288,29 +304,29 @@ module T
       say "web: #{user.url}"
     end
 
+    require 't/cli/delete'
     desc "delete SUBCOMMAND ...ARGS", "Delete Tweets, Direct Messages, etc."
     method_option :force, :aliases => "-f", :type => :boolean
-    require 't/cli/delete'
     subcommand 'delete', CLI::Delete
 
-    desc "follow SUBCOMMAND ...ARGS", "Follow users."
     require 't/cli/follow'
+    desc "follow SUBCOMMAND ...ARGS", "Follow users."
     subcommand 'follow', CLI::Follow
 
-    desc "list SUBCOMMAND ...ARGS", "Do various things with lists."
     require 't/cli/list'
+    desc "list SUBCOMMAND ...ARGS", "Do various things with lists."
     subcommand 'list', CLI::List
 
-    desc "search SUBCOMMAND ...ARGS", "Search through Tweets."
     require 't/cli/search'
+    desc "search SUBCOMMAND ...ARGS", "Search through Tweets."
     subcommand 'search', CLI::Search
 
-    desc "set SUBCOMMAND ...ARGS", "Change various account settings."
     require 't/cli/set'
+    desc "set SUBCOMMAND ...ARGS", "Change various account settings."
     subcommand 'set', CLI::Set
 
-    desc "unfollow SUBCOMMAND ...ARGS", "Unfollow users."
     require 't/cli/unfollow'
+    desc "unfollow SUBCOMMAND ...ARGS", "Unfollow users."
     subcommand 'unfollow', CLI::Unfollow
 
   private

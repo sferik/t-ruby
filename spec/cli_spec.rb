@@ -392,6 +392,83 @@ describe T::CLI do
     end
   end
 
+  describe "#retweets" do
+    context "without arguments" do
+      before do
+        stub_get("/1/statuses/retweeted_by_me.json").
+          with(:query => {:include_entities => "false"}).
+          to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should request the correct resource" do
+        @t.retweets
+        a_get("/1/statuses/retweeted_by_me.json").
+          with(:query => {:include_entities => "false"}).
+          should have_been_made
+      end
+      it "should have the correct output" do
+        @t.retweets
+        $stdout.string.should == <<-eos.gsub(/^/, ' ' * 4)
+          sferik: Ruby is the best programming language for hiding the ugly bits. (about 1 year ago)
+          sferik: There are 1.3 billion people in China; when people say there are 1 billion they are rounding off the entire population of the United States. (about 1 year ago)
+          sferik: The new Windows Phone campaign is the best advertising from Microsoft since "Start Me Up" (1995). Great work by CP+B. http://t.co/tIzxopI (about 1 year ago)
+          sferik: Fear not to sow seeds because of the birds. http://twitpic.com/2wg621 (about 1 year ago)
+          sferik: Speaking of things that are maddening: the interview with the Wall Street guys on the most recent This American Life http://bit.ly/af9pSD (about 1 year ago)
+          sferik: Holy cow! RailsAdmin is up to 200 watchers (from 100 yesterday). http://github.com/sferik/rails_admin (about 1 year ago)
+          sferik: Kind of cool that Facebook acts as a mirror for open-source projects that they use or like http://mirror.facebook.net/ (about 1 year ago)
+          sferik: RailsAdmin already has 100 watchers, 12 forks, and 6 contributors in less than 2 months. Let's keep the momentum going! http://bit.ly/cCMMqD (about 1 year ago)
+          sferik: This week's This American Life is amazing. @JoeLipari is an American hero. http://bit.ly/d9RbnB (about 1 year ago)
+          sferik: RT @polyseme: OH: shofars should be called jewvuzelas. (about 1 year ago)
+          sferik: Spent this morning fixing broken windows in RailsAdmin http://github.com/sferik/rails_admin/compare/ab6c598...0e3770f (about 1 year ago)
+          sferik: I'm a big believer that the broken windows theory applies to software development http://en.wikipedia.org/wiki/Broken_windows_theory (about 1 year ago)
+          sferik: I hope you idiots are happy with your piece of shit Android phones. http://www.apple.com/pr/library/2010/09/09statement.html (about 1 year ago)
+          sferik: Ping: kills MySpace dead. (about 1 year ago)
+          sferik: Crazy that iTunes Ping didn't leak a drop. (about 1 year ago)
+          sferik: The plot thickens http://twitpic.com/2k5lt2 (about 1 year ago)
+          sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
+          sferik: Try as you may http://www.thedoghousediaries.com/?p=1940 (about 1 year ago)
+          sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
+        eos
+      end
+    end
+    context "with a screen name passed" do
+      before do
+        stub_get("/1/statuses/retweeted_by_user.json").
+          with(:query => {:screen_name => "sferik", :include_entities => "false"}).
+          to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should request the correct resource" do
+        @t.retweets("sferik")
+        a_get("/1/statuses/retweeted_by_user.json").
+          with(:query => {:screen_name => "sferik", :include_entities => "false"}).
+          should have_been_made
+      end
+      it "should have the correct output" do
+        @t.retweets("sferik")
+        $stdout.string.should == <<-eos.gsub(/^/, ' ' * 4)
+          sferik: Ruby is the best programming language for hiding the ugly bits. (about 1 year ago)
+          sferik: There are 1.3 billion people in China; when people say there are 1 billion they are rounding off the entire population of the United States. (about 1 year ago)
+          sferik: The new Windows Phone campaign is the best advertising from Microsoft since "Start Me Up" (1995). Great work by CP+B. http://t.co/tIzxopI (about 1 year ago)
+          sferik: Fear not to sow seeds because of the birds. http://twitpic.com/2wg621 (about 1 year ago)
+          sferik: Speaking of things that are maddening: the interview with the Wall Street guys on the most recent This American Life http://bit.ly/af9pSD (about 1 year ago)
+          sferik: Holy cow! RailsAdmin is up to 200 watchers (from 100 yesterday). http://github.com/sferik/rails_admin (about 1 year ago)
+          sferik: Kind of cool that Facebook acts as a mirror for open-source projects that they use or like http://mirror.facebook.net/ (about 1 year ago)
+          sferik: RailsAdmin already has 100 watchers, 12 forks, and 6 contributors in less than 2 months. Let's keep the momentum going! http://bit.ly/cCMMqD (about 1 year ago)
+          sferik: This week's This American Life is amazing. @JoeLipari is an American hero. http://bit.ly/d9RbnB (about 1 year ago)
+          sferik: RT @polyseme: OH: shofars should be called jewvuzelas. (about 1 year ago)
+          sferik: Spent this morning fixing broken windows in RailsAdmin http://github.com/sferik/rails_admin/compare/ab6c598...0e3770f (about 1 year ago)
+          sferik: I'm a big believer that the broken windows theory applies to software development http://en.wikipedia.org/wiki/Broken_windows_theory (about 1 year ago)
+          sferik: I hope you idiots are happy with your piece of shit Android phones. http://www.apple.com/pr/library/2010/09/09statement.html (about 1 year ago)
+          sferik: Ping: kills MySpace dead. (about 1 year ago)
+          sferik: Crazy that iTunes Ping didn't leak a drop. (about 1 year ago)
+          sferik: The plot thickens http://twitpic.com/2k5lt2 (about 1 year ago)
+          sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
+          sferik: Try as you may http://www.thedoghousediaries.com/?p=1940 (about 1 year ago)
+          sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
+        eos
+      end
+    end
+  end
+
   describe "#sent_messages" do
     before do
       stub_get("/1/direct_messages/sent.json").

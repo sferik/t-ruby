@@ -4,6 +4,8 @@ require 'helper'
 describe T::CLI::List::Remove do
 
   before do
+    rcfile = RCFile.instance
+    rcfile.path = fixture_path + "/.trc"
     @t = T::CLI.new
     @old_stderr = $stderr
     $stderr = StringIO.new

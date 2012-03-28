@@ -4,7 +4,10 @@ require 'helper'
 describe T::CLI::Unfollow do
 
   before do
+    rcfile = RCFile.instance
+    rcfile.path = fixture_path + "/.trc"
     @t = T::CLI.new
+    Timecop.freeze(Time.local(2011, 11, 24, 16, 20, 0))
     @old_stderr = $stderr
     $stderr = StringIO.new
     @old_stdout = $stdout

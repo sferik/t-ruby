@@ -7,7 +7,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'launchy', '~> 2.0'
   gem.add_dependency 'geokit', '~> 1.6'
   gem.add_dependency 'oauth', '~> 0.4'
-  gem.add_dependency 'oj', '~> 1.1'
+  gem.add_dependency 'oj', '~> 1.2'
   gem.add_dependency 'pager', '~> 1.0'
   gem.add_dependency 'retryable', '~> 1.2'
   gem.add_dependency 'thor', '~> 0.15.0.rc2'

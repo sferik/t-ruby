@@ -1,5 +1,8 @@
-require 'simplecov'
-SimpleCov.start
+unless ENV['CI']
+  require 'simplecov'
+  SimpleCov.start
+end
+
 require 't'
 T.env = 'test'
 require 'rspec'

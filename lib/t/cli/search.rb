@@ -55,7 +55,7 @@ module T
       end
       map %w(faves) => :favorites
 
-      desc "mentions QUERY", "Returns Tweets you've favorited that mach a specified query."
+      desc "mentions QUERY", "Returns Tweets mentioning you that mach a specified query."
       def mentions(query)
         timeline = 1.upto(MAX_PAGES).threaded_map do |page|
           retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do

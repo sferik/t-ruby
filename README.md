@@ -156,15 +156,27 @@ type `t help TASK` to get help for a specific command.
 
 ### <a name="search-all"></a>Retrieve the 20 most recent Tweets that match a specified query
 
-    t search all twitter
+    t search all "query"
+
+### <a name="search-retweets"></a>Returns Tweets you've favorited that mach a specified query
+
+    t search favorites "query"
+
+### <a name="search-mentions"></a>Returns Tweets mentioning you that mach a specified query
+
+    t search mentions "query"
+
+### <a name="search-retweets"></a>Returns Tweets you've retweeted that mach a specified query
+
+    t search retweets "query"
 
 ### <a name="search-timeline"></a>Retrieve Tweets in your timeline that match a specified query
 
-    t search timeline twitter
+    t search timeline "query"
 
 ### <a name="search-user"></a>Retrieve Tweets in a user's timeline that match a specified query
 
-    t search user sferik twitter
+    t search user sferik "query"
 
 ## <a name="history"></a>History
 ![History](http://twitter.rubyforge.org/images/terminal_output.png "History")

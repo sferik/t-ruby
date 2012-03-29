@@ -89,7 +89,7 @@ module T
       say "Run `#{File.basename($0)} delete block #{user.screen_name}` to unblock."
     end
 
-    desc "direct_messages", "Returns the 20 most recent Direct Messages sent to you."
+    desc "direct_messages", "Returns the #{DEFAULT_NUM_RESULTS} most recent Direct Messages sent to you."
     method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS
     def direct_messages
       defaults = {:include_entities => false}
@@ -202,7 +202,7 @@ module T
     end
     map %w(rt) => :retweet
 
-    desc "retweets [SCREEN_NAME]", "Returns the 20 most recent Retweets by a user."
+    desc "retweets [SCREEN_NAME]", "Returns the #{DEFAULT_NUM_RESULTS} most recent Retweets by a user."
     method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false
     def retweets(screen_name=nil)
@@ -218,7 +218,7 @@ module T
     end
     map %w(rts) => :retweets
 
-    desc "sent_messages", "Returns the 20 most recent Direct Messages sent to you."
+    desc "sent_messages", "Returns the #{DEFAULT_NUM_RESULTS} most recent Direct Messages sent to you."
     method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS
     def sent_messages
       defaults = {:include_entities => false}

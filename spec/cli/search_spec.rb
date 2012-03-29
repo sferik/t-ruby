@@ -54,6 +54,82 @@ describe T::CLI::Search do
     end
   end
 
+  describe "#retweets" do
+    it "should request the correct resource" do
+      1.upto(16).each do |page|
+        stub_get("/1/statuses/retweeted_by_me.json").
+          with(:query => {:count => "200", :page => "#{page}"}).
+          to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      @t.search("retweets", "twitter")
+      1.upto(16).each do |page|
+        a_get("/1/statuses/retweeted_by_me.json").
+          with(:query => {:count => "200", :page => "#{page}"}).
+          should have_been_made
+      end
+    end
+    it "should have the correct output" do
+      1.upto(16).each do |page|
+        stub_get("/1/statuses/retweeted_by_me.json").
+          with(:query => {:count => "200", :page => "#{page}"}).
+          to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      @t.search("retweets", "twitter")
+      $stdout.string.should == <<-eos.gsub(/^/, ' ' * 6)
+        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
+        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
+        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
+        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
+        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
+        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
+        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
+        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
+        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
+        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
+        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
+        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
+        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
+        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
+        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
+        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
+        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
+        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
+        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
+        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
+        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
+        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
+        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
+        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
+        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
+        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
+        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
+        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
+        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
+        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
+        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
+        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
+      eos
+    end
+    context "Twitter is down" do
+      it "should retry 3 times and then raise an error" do
+        1.upto(15).each do |page|
+          stub_get("/1/statuses/retweeted_by_me.json").
+            with(:query => {:count => "200", :page => "#{page}"}).
+            to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        end
+        stub_get("/1/statuses/retweeted_by_me.json").
+          with(:query => {:count => "200", :page => "16"}).
+          to_return(:status => 502)
+        lambda do
+          @t.search("retweets", "twitter")
+        end.should raise_error("Twitter is down or being upgraded.")
+        a_get("/1/statuses/retweeted_by_me.json").
+          with(:query => {:count => "200", :page => "16"}).
+          should have_been_made.times(3)
+      end
+    end
+  end
+
   describe "#timeline" do
     it "should request the correct resource" do
       1.upto(16).each do |page|

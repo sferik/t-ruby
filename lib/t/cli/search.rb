@@ -39,6 +39,22 @@ module T
         end
       end
 
+      desc "retweets QUERY", "Returns Tweets you've retweeted that mach a specified query."
+      def retweets(query)
+        timeline = 1.upto(MAX_PAGES).threaded_map do |page|
+          retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
+            client.retweeted_by(:page => page, :count => MAX_NUM_RESULTS).select do |status|
+              /#{query}/i.match(status.text)
+            end
+          end
+        end
+        page unless T.env.test?
+        timeline.flatten.compact.each do |status|
+          say "#{status.user.screen_name.rjust(MAX_SCREEN_NAME_SIZE)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
+        end
+      end
+      map %w(rts) => :retweets
+
       desc "timeline QUERY", "Returns Tweets in your timeline that match a specified query."
       def timeline(query)
         timeline = 1.upto(MAX_PAGES).threaded_map do |page|

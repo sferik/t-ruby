@@ -8,12 +8,12 @@ module T
 
     # @return [Integer]
     def self.minor
-      3
+      4
     end
 
     # @return [Integer]
     def self.patch
-      1
+      0
     end
 
     # @return [String, NilClass]

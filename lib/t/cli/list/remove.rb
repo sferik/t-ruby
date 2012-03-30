@@ -14,6 +14,8 @@ module T
         include T::Collectable
         include T::Requestable
 
+        MAX_USERS_PER_REQUEST = 100
+
         check_unknown_options!
 
         def initialize(*)
@@ -36,7 +38,7 @@ module T
           else
             return unless yes? "Are you sure you want to remove #{number} #{number == 1 ? 'friend' : 'friends'} from the list \"#{list_name}\"?"
           end
-          list_member_ids_to_remove.in_groups_of(100, false).threaded_each do |user_id_group|
+          list_member_ids_to_remove.in_groups_of(MAX_USERS_PER_REQUEST, false).threaded_each do |user_id_group|
             retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
               client.list_remove_members(list_name, user_id_group)
             end
@@ -61,7 +63,7 @@ module T
           else
             return unless yes? "Are you sure you want to remove #{number} #{number == 1 ? 'follower' : 'followers'} from the list \"#{list_name}\"?"
           end
-          list_member_ids_to_remove.in_groups_of(100, false).threaded_each do |user_id_group|
+          list_member_ids_to_remove.in_groups_of(MAX_USERS_PER_REQUEST, false).threaded_each do |user_id_group|
             retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
               client.list_remove_members(list_name, user_id_group)
             end
@@ -86,7 +88,7 @@ module T
           else
             return unless yes? "Are you sure you want to remove #{number} #{number == 1 ? 'member' : 'members'} from the list \"#{to_list_name}\"?"
           end
-          list_member_ids_to_remove.in_groups_of(100, false).threaded_each do |user_id_group|
+          list_member_ids_to_remove.in_groups_of(MAX_USERS_PER_REQUEST, false).threaded_each do |user_id_group|
             retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
               client.list_remove_members(to_list_name, user_id_group)
             end
@@ -104,7 +106,7 @@ module T
           number = list_members.length
           return say "The list \"#{list_name}\" doesn't have any members." if number.zero?
           return unless yes? "Are you sure you want to remove #{number} #{number == 1 ? 'member' : 'members'} from the list \"#{list_name}\"?"
-          list_members.collect(&:id).in_groups_of(100, false).threaded_each do |user_id_group|
+          list_members.collect(&:id).in_groups_of(MAX_USERS_PER_REQUEST, false).threaded_each do |user_id_group|
             retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
               client.list_remove_members(list_name, user_id_group)
             end
@@ -117,7 +119,7 @@ module T
         def users(list_name, screen_name, *screen_names)
           screen_names.unshift(screen_name)
           screen_names.map!(&:strip_at)
-          screen_names.in_groups_of(100, false).threaded_each do |user_id_group|
+          screen_names.in_groups_of(MAX_USERS_PER_REQUEST, false).threaded_each do |user_id_group|
             retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
               client.list_remove_members(list_name, user_id_group)
             end

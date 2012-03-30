@@ -1,7 +1,8 @@
 # Twitter CLI [![Build Status](https://secure.travis-ci.org/sferik/t.png?branch=master)][travis] [![Dependency Status](https://gemnasium.com/sferik/t.png?travis)][gemnasium]
-A command-line interface for Twitter, powered by the [twitter gem][gem]. The
-CLI attempts to mimic the [Twitter SMS commands][sms] wherever possible,
-however it offers more commands than are available via SMS.
+### A command-line power tool for Twitter.
+
+The CLI attempts to mimic the [Twitter SMS commands][sms] wherever possible,
+however it offers many more commands than are available via SMS.
 
 [travis]: http://travis-ci.org/sferik/t
 [gemnasium]: https://gemnasium.com/sferik/t

@@ -20,7 +20,7 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'webmock'
   gem.author = "Erik Michaels-Ober"
   gem.bindir = 'bin'
-  gem.description = %q{A command-line interface for Twitter.}
+  gem.description = %q{A command-line power tool for Twitter.}
   gem.email = 'sferik@gmail.com'
   gem.executables = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   gem.files = `git ls-files`.split("\n")

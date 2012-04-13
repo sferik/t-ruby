@@ -1,6 +1,5 @@
 *.gem
 *.rbc
-.DS_Store
 .bundle
 .rvmrc
 .yardoc

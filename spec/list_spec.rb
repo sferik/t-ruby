@@ -1,7 +1,7 @@
 # encoding: utf-8
 require 'helper'
 
-describe T::CLI::List do
+describe T::List do
 
   before do
     rcfile = RCFile.instance
@@ -18,6 +18,42 @@ describe T::CLI::List do
     Timecop.return
     $stderr = @old_stderr
     $stdout = @old_stdout
+  end
+
+  describe "#add" do
+    before do
+      @t.options = @t.options.merge(:profile => fixture_path + "/.trc")
+      stub_get("/1/account/verify_credentials.json").
+        to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_post("/1/lists/members/create_all.json").
+        with(:body => {:screen_name => "sferik", :slug => "presidents", :owner_screen_name => "sferik"}).
+        to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+    end
+    it "should request the correct resource" do
+      @t.list("add", "presidents", "sferik")
+      a_get("/1/account/verify_credentials.json").
+        should have_been_made
+      a_post("/1/lists/members/create_all.json").
+        with(:body => {:screen_name => "sferik", :slug => "presidents", :owner_screen_name => "sferik"}).
+        should have_been_made
+    end
+    it "should have the correct output" do
+      @t.list("add", "presidents", "sferik")
+      $stdout.string.should =~ /@testcli added 1 user to the list "presidents"\./
+    end
+    context "Twitter is down" do
+      it "should retry 3 times and then raise an error" do
+        stub_post("/1/lists/members/create_all.json").
+          with(:body => {:screen_name => "sferik", :slug => "presidents", :owner_screen_name => "sferik"}).
+          to_return(:status => 502)
+        lambda do
+          @t.list("add", "presidents", "sferik")
+        end.should raise_error("Twitter is down or being upgraded.")
+        a_post("/1/lists/members/create_all.json").
+          with(:body => {:screen_name => "sferik", :slug => "presidents", :owner_screen_name => "sferik"}).
+          should have_been_made.times(3)
+      end
+    end
   end
 
   describe "#create" do
@@ -39,20 +75,55 @@ describe T::CLI::List do
     end
   end
 
-  describe "#timeline" do
+  describe "#remove" do
     before do
+      @t.options = @t.options.merge(:profile => fixture_path + "/.trc")
       stub_get("/1/account/verify_credentials.json").
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+    end
+    it "should request the correct resource" do
+      stub_post("/1/lists/members/destroy_all.json").
+        with(:body => {:screen_name => "sferik", :slug => "presidents", :owner_screen_name => "sferik"}).
+        to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      @t.list("remove", "presidents", "sferik")
+      a_get("/1/account/verify_credentials.json").
+        should have_been_made
+      a_post("/1/lists/members/destroy_all.json").
+        with(:body => {:screen_name => "sferik", :slug => "presidents", :owner_screen_name => "sferik"}).
+        should have_been_made
+    end
+    it "should have the correct output" do
+      stub_post("/1/lists/members/destroy_all.json").
+        with(:body => {:screen_name => "sferik", :slug => "presidents", :owner_screen_name => "sferik"}).
+        to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      @t.list("remove", "presidents", "sferik")
+      $stdout.string.should =~ /@testcli removed 1 user from the list "presidents"\./
+    end
+    context "Twitter is down" do
+      it "should retry 3 times and then raise an error" do
+        stub_post("/1/lists/members/destroy_all.json").
+          with(:body => {:screen_name => "sferik", :slug => "presidents", :owner_screen_name => "sferik"}).
+          to_return(:status => 502)
+        lambda do
+          @t.list("remove", "presidents", "sferik")
+        end.should raise_error("Twitter is down or being upgraded.")
+        a_post("/1/lists/members/destroy_all.json").
+          with(:body => {:screen_name => "sferik", :slug => "presidents", :owner_screen_name => "sferik"}).
+          should have_been_made.times(3)
+      end
+    end
+  end
+
+  describe "#timeline" do
+    before do
       stub_get("/1/lists/statuses.json").
-        with(:query => {:owner_screen_name => "sferik", :per_page => "20", :slug => "presidents", :include_entities => "false"}).
+        with(:query => {:owner_screen_name => "testcli", :per_page => "20", :slug => "presidents", :include_entities => "false"}).
         to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @t.list("timeline", "presidents")
-      a_get("/1/account/verify_credentials.json").
-        should have_been_made
       a_get("/1/lists/statuses.json").
-        with(:query => {:owner_screen_name => "sferik", :per_page => "20", :slug => "presidents", :include_entities => "false"}).
+        with(:query => {:owner_screen_name => "testcli", :per_page => "20", :slug => "presidents", :include_entities => "false"}).
         should have_been_made
     end
     it "should have the correct output" do

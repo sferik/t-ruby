@@ -1,7 +1,7 @@
 # encoding: utf-8
 require 'helper'
 
-describe T::CLI::Search do
+describe T::Search do
 
   before do
     rcfile = RCFile.instance

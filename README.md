@@ -12,7 +12,6 @@ however it offers many more commands than are available via SMS.
 ## <a name="installation"></a>Installation
     gem install t
 
-
 ## <a name="configuration"></a>Configuration
 
 Because Twitter requires OAuth for most of its functionality, you'll need to
@@ -49,134 +48,66 @@ username and consumer key pair, like so:
 Account information is stored in the YAML-formatted file `~/.trc`.
 
 ## <a name="examples"></a>Usage Examples
-
 Typing `t help` will give you a list of all the available commands. You can
 type `t help TASK` to get help for a specific command.
 
     t help
 
 ### <a name="update"></a>Update your status
-
     t update "I'm tweeting from the command line. Isn't that special?"
 
-### <a name="dm"></a>Send a direct message
+### <a name="stats"></a>Retrieve stats about users
+    t users -l sferik gem
 
-    t dm sferik "Want to get dinner tonight?"
+### <a name="follow"></a>Follow users
+    t follow sferik gem
 
-### <a name="location"></a>Update the location field in your profile
+### <a name="friends"></a>List your friends (ordered by number of followers)
+    t friends -lf
 
-    t set location "San Francisco"
+### <a name="leaders"></a>List your leaders (people you follow who don't follow you back)
+    t leaders -lf
 
-### <a name="whois"></a>Retrieve profile information for a user
+### <a name="unfollow"></a>Unfollow everyone you follow who doesn't follow you back
+    t leaders | xargs t unfollow
 
-    t whois sferik
-
-### <a name="stats"></a>Retrieve stats about a user
-
-    t stats sferik
-
-### <a name="suggest"></a>Return a user you might enjoy following
-
-    t suggest
-
-### <a name="follow-users"></a>Start following users
-
-    t follow users sferik gem
-
-### <a name="follow-followers"></a>Follow all followers (i.e. follow back)
-
-    t follow followers
-
-### <a name="unfollow-users"></a>Stop following users
-
-    t unfollow users sferik gem
-
-### <a name="unfollow-nonfollowers"></a>Unfollow all non-followers
-
-    t unfollow nonfollowers
+### Follow back everyone who follows you
+    t followers | xargs t follow
 
 ### <a name="list-create"></a>Create a list
-
     t list create presidents
 
-### <a name="list-add-followers"></a>Add users to a list
+### <a name="list-add"></a>Add users to a list
+    t list add presidents BarackObama Jasonfinn
 
-    t list add users presidents BarackObama Jasonfinn
+### <a name="following"></a>Create a list that contains today's date in the name
+    date "+following-%Y-%m-%d" | xargs t list create
 
-### <a name="list-add-friends"></a>Add all friends to a list
+### Add everyone you're following to a list
+    t followings | xargs t list add following-`date "+%Y-%m-%d"`
 
-    t list add friends presidents
+### <a name="members"></a>Display members of a list
+    t members following-`date "+%Y-%m-%d"`
 
-### <a name="list-add-followers"></a>Add all followers to a list
+### Count the number of Twitter employees
+    t members twitter team | wc -l
 
-    t list add followers presidents
-
-### <a name="list-add-followers"></a>Add all members of one list to another
-
-    t list add listed democrats presidents
-
-### <a name="follow-all-listed"></a>Follow all members of a list
-
-    t follow listed presidents
-
-### <a name="unfollow-all-listed"></a>Unfollow all members of a list
-
-    t unfollow listed presidents
-
-### <a name="list-timeline"></a>Retrieve the timeline of status updates from a list
-
-    t list timeline presidents
-
-### <a name="timeline"></a>Retrieve the timeline of status updates posted by you and the users you follow
-
-    t timeline
-
-### <a name="timeline-user"></a>Retrieve the timeline of status updates posted by a user
-
-    t timeline sferik
-
-### <a name="mentions"></a>Retrieve the timeline of status updates that mention you
-
-    t mentions
-
-### <a name="favorites"></a>Retrieve the timeline of status updates that you favorited
-
-    t favorites
-
-### <a name="reply"></a>Reply to a Tweet
-
-    t reply sferik "Thanks Erik"
-
-### <a name="retweet"></a>Send another user's latest Tweet to your followers
-
-    t retweet sferik
-
-### <a name="favorite"></a>Mark a user's latest Tweet as one of your favorites
-
-    t favorite sferik
-
-### <a name="search-all"></a>Retrieve the 20 most recent Tweets that match a specified query
-
+### <a name="search-all"></a>Search Twitter for the 20 most recent Tweets that match a specified query
     t search all "query"
 
-### <a name="search-retweets"></a>Returns Tweets you've favorited that mach a specified query
-
+### <a name="search-retweets"></a>Search Tweets you've favorited that match a specified query
     t search favorites "query"
 
-### <a name="search-mentions"></a>Returns Tweets mentioning you that mach a specified query
-
+### <a name="search-mentions"></a>Search Tweets mentioning you that match a specified query
     t search mentions "query"
 
-### <a name="search-retweets"></a>Returns Tweets you've retweeted that mach a specified query
-
+### <a name="search-retweets"></a>Search Tweets you've retweeted that match a specified query
     t search retweets "query"
 
-### <a name="search-timeline"></a>Retrieve Tweets in your timeline that match a specified query
-
+### <a name="search-timeline"></a>Search Tweets in your timeline that match a specified query
     t search timeline "query"
 
-### <a name="search-user"></a>Retrieve Tweets in a user's timeline that match a specified query
-
+### <a name="search-user"></a>Search Tweets in a user's timeline that match a specified query
     t search user sferik "query"
 
 ## <a name="history"></a>History

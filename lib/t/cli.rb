@@ -1,9 +1,19 @@
 require 'action_view'
+require 'active_support/core_ext/array/grouping'
+require 'active_support/core_ext/date/calculations'
+require 'active_support/core_ext/integer/time'
+require 'active_support/core_ext/numeric/time'
+require 'highline'
 require 'launchy'
 require 'oauth'
-require 'pager'
+require 't/collectable'
 require 't/core_ext/string'
+require 't/delete'
+require 't/list'
 require 't/rcfile'
+require 't/search'
+require 't/set'
+require 't/version'
 require 'thor'
 require 'time'
 require 'twitter'
@@ -13,12 +23,13 @@ module T
   class CLI < Thor
     include ActionView::Helpers::DateHelper
     include ActionView::Helpers::NumberHelper
-    include Pager
+    include T::Collectable
 
     DEFAULT_HOST = 'api.twitter.com'
     DEFAULT_PROTOCOL = 'https'
     DEFAULT_NUM_RESULTS = 20
     MAX_SCREEN_NAME_SIZE = 20
+    MAX_USERS_PER_REQUEST = 100
 
     check_unknown_options!
 
@@ -77,86 +88,248 @@ module T
         }
       }
       @rcfile.default_profile = {'username' => screen_name, 'consumer_key' => options['consumer_key']}
-      say "Authorization successful"
+      say "Authorization successful."
     end
 
-    desc "block SCREEN_NAME", "Block a user."
-    def block(screen_name)
-      screen_name = screen_name.strip_at
-      user = client.block(screen_name, :include_entities => false)
-      say "@#{@rcfile.default_profile[0]} blocked @#{user.screen_name}"
+    desc "block SCREEN_NAME [SCREEN_NAME...]", "Block users."
+    def block(screen_name, *screen_names)
+      screen_names.unshift(screen_name)
+      screen_names.threaded_each do |screen_name|
+        screen_name.strip_at
+        retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
+          client.block(screen_name, :include_entities => false)
+        end
+      end
+      say "@#{@rcfile.default_profile[0]} blocked @#{screen_names.join(' ')}."
       say
-      say "Run `#{File.basename($0)} delete block #{user.screen_name}` to unblock."
+      say "Run `#{File.basename($0)} delete block #{screen_names.join(' ')}` to unblock."
     end
 
     desc "direct_messages", "Returns the #{DEFAULT_NUM_RESULTS} most recent Direct Messages sent to you."
+    method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "List in long format."
     method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS
+    method_option :reverse, :aliases => "-r", :type => :boolean, :default => false
     def direct_messages
-      defaults = {:include_entities => false}
-      defaults.merge!(:count => options['number']) if options['number']
-      page unless T.env.test?
-      client.direct_messages(defaults).each do |direct_message|
-        say "#{direct_message.sender.screen_name.rjust(MAX_SCREEN_NAME_SIZE)}: #{direct_message.text} (#{time_ago_in_words(direct_message.created_at)} ago)"
+      count = options['number'] || DEFAULT_NUM_RESULTS
+      direct_messages = client.direct_messages(:count => count, :include_entities => false)
+      direct_messages.reverse! if options['reverse']
+      if options['long']
+        array = direct_messages.map do |direct_message|
+          created_at = direct_message.created_at > 6.months.ago ? direct_message.created_at.strftime("%b %e %H:%M") : direct_message.created_at.strftime("%b %e  %Y")
+          [direct_message.id.to_s, created_at, direct_message.sender.screen_name, direct_message.text.gsub(/\n+/, ' ')]
+        end
+        if STDOUT.tty?
+          headings = ["ID", "Created at", "Screen name", "Text"]
+          array.unshift(headings)
+        end
+        print_table(array)
+      else
+        direct_messages.each do |direct_message|
+          say "#{direct_message.sender.screen_name.rjust(MAX_SCREEN_NAME_SIZE)}: #{direct_message.text.gsub(/\n+/, ' ')} (#{time_ago_in_words(direct_message.created_at)} ago)"
+        end
       end
     end
     map %w(dms) => :direct_messages
+
+    desc "direct_messages_sent", "Returns the #{DEFAULT_NUM_RESULTS} most recent Direct Messages sent to you."
+    method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "List in long format."
+    method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS
+    method_option :reverse, :aliases => "-r", :type => :boolean, :default => false
+    def direct_messages_sent
+      count = options['number'] || DEFAULT_NUM_RESULTS
+      direct_messages = client.direct_messages_sent(:count => count, :include_entities => false)
+      direct_messages.reverse! if options['reverse']
+      if options['long']
+        array = direct_messages.map do |direct_message|
+          created_at = direct_message.created_at > 6.months.ago ? direct_message.created_at.strftime("%b %e %H:%M") : direct_message.created_at.strftime("%b %e  %Y")
+          [direct_message.id.to_s, created_at, direct_message.recipient.screen_name, direct_message.text.gsub(/\n+/, ' ')]
+        end
+        if STDOUT.tty?
+          headings = ["ID", "Created at", "Screen name", "Text"]
+          array.unshift(headings)
+        end
+        print_table(array)
+      else
+        direct_messages.each do |direct_message|
+          say "#{direct_message.recipient.screen_name.rjust(MAX_SCREEN_NAME_SIZE)}: #{direct_message.text.gsub(/\n+/, ' ')} (#{time_ago_in_words(direct_message.created_at)} ago)"
+        end
+      end
+    end
+    map %w(sent_messages sms) => :direct_messages_sent
 
     desc "dm SCREEN_NAME MESSAGE", "Sends that person a Direct Message."
     def dm(screen_name, message)
       screen_name = screen_name.strip_at
       direct_message = client.direct_message_create(screen_name, message, :include_entities => false)
-      say "Direct Message sent from @#{@rcfile.default_profile[0]} to @#{direct_message.recipient.screen_name} (#{time_ago_in_words(direct_message.created_at)} ago)"
+      say "Direct Message sent from @#{@rcfile.default_profile[0]} to @#{direct_message.recipient.screen_name} (#{time_ago_in_words(direct_message.created_at)} ago)."
     end
-    map %w(m) => :dm
+    map %w(d m) => :dm
 
-    desc "favorite SCREEN_NAME", "Marks that user's last Tweet as one of your favorites."
-    def favorite(screen_name)
-      screen_name = screen_name.strip_at
-      user = client.user(screen_name, :include_entities => false)
-      if user.status
-        client.favorite(user.status.id, :include_entities => false)
-        say "@#{@rcfile.default_profile[0]} favorited @#{user.screen_name}'s latest status: \"#{user.status.text}\""
-        say
-        say "Run `#{File.basename($0)} delete favorite` to unfavorite."
-      else
-        raise Thor::Error, "Tweet not found"
+    desc "favorite STATUS_ID [STATUS_ID...]", "Marks Tweets as favorites."
+    def favorite(status_id, *status_ids)
+      status_ids.unshift(status_id)
+      favorites = status_ids.threaded_map do |status_id|
+        retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
+          client.favorite(status_id, :include_entities => false)
+        end
       end
-    rescue Twitter::Error::Forbidden => error
-      if error.message =~ /You have already favorited this status\./
-        say "@#{@rcfile.default_profile[0]} favorited @#{user.screen_name}'s latest status: \"#{user.status.text}\""
-      else
-        raise
+      favorites.each do |status|
+        say "@#{@rcfile.default_profile[0]} favorited @#{status.user.screen_name}'s status: \"#{status.text.gsub(/\n+/, ' ')}\""
       end
+      say
+      say "Run `#{File.basename($0)} delete favorite #{status_ids.join(' ')}` to unfavorite."
     end
     map %w(fave) => :favorite
 
     desc "favorites", "Returns the #{DEFAULT_NUM_RESULTS} most recent Tweets you favorited."
+    method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "List in long format."
     method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false
     def favorites
-      defaults = {:include_entities => false}
-      defaults.merge!(:count => options['number']) if options['number']
-      timeline = client.favorites(defaults)
-      timeline.reverse! if options['reverse']
-      page unless T.env.test?
-      timeline.each do |status|
-        say "#{status.user.screen_name.rjust(MAX_SCREEN_NAME_SIZE)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
-      end
+      count = options['number'] || DEFAULT_NUM_RESULTS
+      statuses = client.favorites(:count => count, :include_entities => false)
+      print_status_list(statuses)
     end
     map %w(faves) => :favorites
 
+    desc "follow SCREEN_NAME [SCREEN_NAME...]", "Allows you to start following users."
+    def follow(screen_name, *screen_names)
+      screen_names.unshift(screen_name)
+      screen_names.threaded_each do |screen_name|
+        retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
+          client.follow(screen_name, :include_entities => false)
+        end
+      end
+      number = screen_names.length
+      say "@#{@rcfile.default_profile[0]} is now following #{number} more #{number == 1 ? 'user' : 'users'}."
+      say
+      say "Run `#{File.basename($0)} unfollow users #{screen_names.join(' ')}` to stop."
+    end
+
+    desc "followings", "Returns a list of the people you follow on Twitter."
+    method_option :created, :aliases => "-c", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter acount was created."
+    method_option :friends, :aliases => "-d", :type => :boolean, :default => false, :desc => "Sort by total number of friends."
+    method_option :followers, :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by total number of followers."
+    method_option :listed, :aliases => "-i", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
+    method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "List in long format."
+    method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
+    method_option :tweets, :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by total number of Tweets."
+    method_option :unsorted, :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
+    method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by total number of favorites."
+    def followings
+      following_ids = collect_with_cursor do |cursor|
+        client.friend_ids(:cursor => cursor)
+      end
+      users = following_ids.in_groups_of(MAX_USERS_PER_REQUEST, false).threaded_map do |following_id_group|
+        retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
+          client.users(following_id_group, :include_entities => false)
+        end
+      end.flatten
+      print_user_list(users)
+    end
+
+    desc "followers", "Returns a list of the people who follow you on Twitter."
+    method_option :created, :aliases => "-c", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter acount was created."
+    method_option :friends, :aliases => "-d", :type => :boolean, :default => false, :desc => "Sort by total number of friends."
+    method_option :followers, :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by total number of followers."
+    method_option :listed, :aliases => "-i", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
+    method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "List in long format."
+    method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
+    method_option :tweets, :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by total number of Tweets."
+    method_option :unsorted, :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
+    method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by total number of favorites."
+    def followers
+      follower_ids = collect_with_cursor do |cursor|
+        client.follower_ids(:cursor => cursor)
+      end
+      users = follower_ids.in_groups_of(MAX_USERS_PER_REQUEST, false).threaded_map do |follower_id_group|
+        retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
+          client.users(follower_id_group, :include_entities => false)
+        end
+      end.flatten
+      print_user_list(users)
+    end
+
+    desc "friends", "Returns the list of people who you follow and follow you back."
+    method_option :created, :aliases => "-c", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter acount was created."
+    method_option :friends, :aliases => "-d", :type => :boolean, :default => false, :desc => "Sort by total number of friends."
+    method_option :followers, :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by total number of followers."
+    method_option :listed, :aliases => "-i", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
+    method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "List in long format."
+    method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
+    method_option :tweets, :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by total number of Tweets."
+    method_option :unsorted, :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
+    method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by total number of favorites."
+    def friends
+      following_ids = collect_with_cursor do |cursor|
+        client.friend_ids(:cursor => cursor)
+      end
+      follower_ids = collect_with_cursor do |cursor|
+        client.follower_ids(:cursor => cursor)
+      end
+      friend_ids = (following_ids & follower_ids)
+      users = friend_ids.in_groups_of(MAX_USERS_PER_REQUEST, false).threaded_map do |friend_id_group|
+        retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
+          client.users(friend_id_group, :include_entities => false)
+        end
+      end.flatten
+      print_user_list(users)
+    end
+
+    desc "leaders", "Returns the list of people who you follow but don't follow you back."
+    method_option :created, :aliases => "-c", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter acount was created."
+    method_option :friends, :aliases => "-d", :type => :boolean, :default => false, :desc => "Sort by total number of friends."
+    method_option :followers, :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by total number of followers."
+    method_option :listed, :aliases => "-i", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
+    method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "List in long format."
+    method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
+    method_option :tweets, :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by total number of Tweets."
+    method_option :unsorted, :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
+    method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by total number of favorites."
+    def leaders
+      following_ids = collect_with_cursor do |cursor|
+        client.friend_ids(:cursor => cursor)
+      end
+      follower_ids = collect_with_cursor do |cursor|
+        client.follower_ids(:cursor => cursor)
+      end
+      leader_ids = (following_ids - follower_ids)
+      users = leader_ids.in_groups_of(MAX_USERS_PER_REQUEST, false).threaded_map do |leader_id_group|
+        retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
+          client.users(leader_id_group, :include_entities => false)
+        end
+      end.flatten
+      print_user_list(users)
+    end
+
+    desc "members [SCREEN_NAME] LIST_NAME", "Returns the members of a Twitter list."
+    method_option :created, :aliases => "-c", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter acount was created."
+    method_option :friends, :aliases => "-d", :type => :boolean, :default => false, :desc => "Sort by total number of friends."
+    method_option :followers, :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by total number of followers."
+    method_option :listed, :aliases => "-i", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
+    method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "List in long format."
+    method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS
+    method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
+    method_option :tweets, :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by total number of Tweets."
+    method_option :unsorted, :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
+    method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by total number of favorites."
+    def members(*args)
+      list = args.pop
+      owner = args.pop || @rcfile.default_profile[0]
+      users = collect_with_cursor do |cursor|
+        client.list_members(owner, list, :cursor => cursor, :include_entities => false, :skip_status => true)
+      end
+      print_user_list(users)
+    end
+
     desc "mentions", "Returns the #{DEFAULT_NUM_RESULTS} most recent Tweets mentioning you."
+    method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "List in long format."
     method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false
     def mentions
-      defaults = {:include_entities => false}
-      defaults.merge!(:count => options['number']) if options['number']
-      timeline = client.mentions(defaults)
-      timeline.reverse! if options['reverse']
-      page unless T.env.test?
-      timeline.each do |status|
-        say "#{status.user.screen_name.rjust(MAX_SCREEN_NAME_SIZE)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
-      end
+      count = options['number'] || DEFAULT_NUM_RESULTS
+      statuses = client.mentions(:count => count, :include_entities => false)
+      print_status_list(statuses)
     end
     map %w(replies) => :mentions
 
@@ -167,125 +340,135 @@ module T
       Launchy.open("https://twitter.com/#{screen_name}", :dry_run => options.fetch('dry_run', false))
     end
 
-    desc "reply SCREEN_NAME MESSAGE", "Post your Tweet as a reply directed at another person."
+    desc "reply STATUS_ID MESSAGE", "Post your Tweet as a reply directed at another person."
     method_option :location, :aliases => "-l", :type => :boolean, :default => false
-    def reply(screen_name, message)
-      screen_name = screen_name.strip_at
-      defaults = {:include_entities => false, :trim_user => true}
-      defaults.merge!(:lat => location.lat, :long => location.lng) if options['location']
-      user = client.user(screen_name, :include_entities => false)
-      defaults.merge!(:in_reply_to_status_id => user.status.id) if user.status
-      status = client.update("@#{user.screen_name} #{message}", defaults)
-      say "Reply created by @#{@rcfile.default_profile[0]} to @#{user.screen_name} (#{time_ago_in_words(status.created_at)} ago)"
+    def reply(status_id, message)
+      status = client.status(status_id, :include_entities => false, :include_my_retweet => false, :trim_user => true)
+      opts = {:in_reply_to_status_id => status.id, :include_entities => false, :trim_user => true}
+      opts.merge!(:lat => location.lat, :long => location.lng) if options['location']
+      reply = client.update("@#{status.user.screen_name} #{message}", opts)
+      say "Reply created by @#{@rcfile.default_profile[0]} to @#{status.user.screen_name} (#{time_ago_in_words(reply.created_at)} ago)."
       say
-      say "Run `#{File.basename($0)} delete status` to delete."
+      say "Run `#{File.basename($0)} delete status #{reply.id}` to delete."
     end
 
-    desc "retweet SCREEN_NAME", "Sends that user's latest Tweet to your followers."
-    def retweet(screen_name)
-      screen_name = screen_name.strip_at
-      user = client.user(screen_name, :include_entities => false)
-      if user.status
-        client.retweet(user.status.id, :include_entities => false, :trim_user => true)
-        say "@#{@rcfile.default_profile[0]} retweeted @#{user.screen_name}'s latest status: \"#{user.status.text}\""
-        say
-        say "Run `#{File.basename($0)} delete status` to undo."
-      else
-        raise Thor::Error, "Tweet not found"
+    desc "report_spam SCREEN_NAME [SCREEN_NAME...]", "Report users for spam."
+    def report_spam(screen_name, *screen_names)
+      screen_names.unshift(screen_name)
+      screen_names.threaded_each do |screen_name|
+        screen_name.strip_at
+        retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
+          client.report_spam(screen_name, :include_entities => false)
+        end
       end
-    rescue Twitter::Error::Forbidden => error
-      if error.message =~ /sharing is not permissable for this status \(Share validations failed\)/
-        say "@#{@rcfile.default_profile[0]} retweeted @#{user.screen_name}'s latest status: \"#{user.status.text}\""
-      else
-        raise
+      say "@#{@rcfile.default_profile[0]} reported @#{screen_names.join(' ')}."
+    end
+    map %w(report spam) => :report_spam
+
+    desc "retweet STATUS_ID [STATUS_ID...]", "Sends Tweets to your followers."
+    def retweet(status_id, *status_ids)
+      status_ids.unshift(status_id)
+      retweets = status_ids.threaded_map do |status_id|
+        retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
+          client.retweet(status_id, :include_entities => false, :trim_user => true)
+        end
       end
+      retweets.each do |status|
+        say "@#{@rcfile.default_profile[0]} retweeted @#{status.user.screen_name}'s status: \"#{status.text.gsub(/\n+/, ' ')}\""
+      end
+      say
+      say "Run `#{File.basename($0)} delete status #{status_ids.join(' ')}` to undo."
     end
     map %w(rt) => :retweet
 
     desc "retweets [SCREEN_NAME]", "Returns the #{DEFAULT_NUM_RESULTS} most recent Retweets by a user."
+    method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "List in long format."
     method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false
     def retweets(screen_name=nil)
       screen_name = screen_name.strip_at if screen_name
-      defaults = {:include_entities => false}
-      defaults.merge!(:count => options['number']) if options['number']
-      timeline = client.retweeted_by(screen_name, defaults)
-      timeline.reverse! if options['reverse']
-      page unless T.env.test?
-      timeline.each do |status|
-        say "#{status.user.screen_name.rjust(MAX_SCREEN_NAME_SIZE)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
-      end
+      count = options['number'] || DEFAULT_NUM_RESULTS
+      statuses = client.retweeted_by(screen_name, :count => count, :include_entities => false)
+      print_status_list(statuses)
     end
     map %w(rts) => :retweets
-
-    desc "sent_messages", "Returns the #{DEFAULT_NUM_RESULTS} most recent Direct Messages sent to you."
-    method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS
-    def sent_messages
-      defaults = {:include_entities => false}
-      defaults.merge!(:count => options['number']) if options['number']
-      page unless T.env.test?
-      client.direct_messages_sent(defaults).each do |direct_message|
-        say "#{direct_message.recipient.screen_name.rjust(MAX_SCREEN_NAME_SIZE)}: #{direct_message.text} (#{time_ago_in_words(direct_message.created_at)} ago)"
-      end
-    end
-    map %w(sms) => :sent_messages
-
-    desc "stats SCREEN_NAME", "Retrieves the given user's number of followers and how many people they're following."
-    def stats(screen_name)
-      screen_name = screen_name.strip_at
-      user = client.user(screen_name, :include_entities => false)
-      say "Tweets: #{number_with_delimiter(user.statuses_count)}"
-      say "Following: #{number_with_delimiter(user.friends_count)}"
-      say "Followers: #{number_with_delimiter(user.followers_count)}"
-      say "Favorites: #{number_with_delimiter(user.favorites_count)}"
-      say "Listed: #{number_with_delimiter(user.listed_count)}"
-      say
-      say "Run `#{File.basename($0)} whois #{user.screen_name}` to view profile."
-    end
 
     desc "status MESSAGE", "Post a Tweet."
     method_option :location, :aliases => "-l", :type => :boolean, :default => false
     def status(message)
-      defaults = {:include_entities => false, :trim_user => true}
-      defaults.merge!(:lat => location.lat, :long => location.lng) if options['location']
-      status = client.update(message, defaults)
-      say "Tweet created by @#{@rcfile.default_profile[0]} (#{time_ago_in_words(status.created_at)} ago)"
+      opts = {:include_entities => false, :trim_user => true}
+      opts.merge!(:lat => location.lat, :long => location.lng) if options['location']
+      status = client.update(message, opts)
+      say "Tweet created by @#{@rcfile.default_profile[0]} (#{time_ago_in_words(status.created_at)} ago)."
       say
-      say "Run `#{File.basename($0)} delete status` to delete."
+      say "Run `#{File.basename($0)} delete status #{status.id}` to delete."
     end
     map %w(post tweet update) => :status
 
     desc "suggest", "This command returns a listing of Twitter users' accounts we think you might enjoy following."
+    method_option :created, :aliases => "-c", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter acount was created."
+    method_option :friends, :aliases => "-d", :type => :boolean, :default => false, :desc => "Sort by total number of friends."
+    method_option :listed, :aliases => "-i", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
+    method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "List in long format."
+    method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS
+    method_option :followers, :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by total number of followers."
+    method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
+    method_option :tweets, :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by total number of Tweets."
+    method_option :unsorted, :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
+    method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by total number of favorites."
     def suggest
-      recommendation = client.recommendations(:limit => 1, :include_entities => false).first
-      if recommendation
-        say "Try following @#{recommendation.screen_name}."
-        say
-        say "Run `#{File.basename($0)} follow #{recommendation.screen_name}` to follow."
-        say "Run `#{File.basename($0)} whois #{recommendation.screen_name}` for profile."
-        say "Run `#{File.basename($0)} suggest` for another recommendation."
-      end
+      limit = options['number'] || DEFAULT_NUM_RESULTS
+      users = client.recommendations(:limit => limit, :include_entities => false)
+      print_user_list(users)
     end
 
     desc "timeline [SCREEN_NAME]", "Returns the #{DEFAULT_NUM_RESULTS} most recent Tweets posted by a user."
+    method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "List in long format."
     method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false
     def timeline(screen_name=nil)
-      defaults = {:include_entities => false}
-      defaults.merge!(:count => options['number']) if options['number']
+      count = options['number'] || DEFAULT_NUM_RESULTS
       if screen_name
         screen_name = screen_name.strip_at
-        timeline = client.user_timeline(screen_name, defaults)
+        statuses = client.user_timeline(screen_name, :count => count, :include_entities => false)
       else
-        timeline = client.home_timeline(defaults)
+        statuses = client.home_timeline(:count => count, :include_entities => false)
       end
-      timeline.reverse! if options['reverse']
-      page unless T.env.test?
-      timeline.each do |status|
-        say "#{status.user.screen_name.rjust(MAX_SCREEN_NAME_SIZE)}: #{status.text} (#{time_ago_in_words(status.created_at)} ago)"
-      end
+      print_status_list(statuses)
     end
     map %w(tl) => :timeline
+
+    desc "unfollow SCREEN_NAME [SCREEN_NAME...]", "Allows you to stop following users."
+    def unfollow(screen_name, *screen_names)
+      screen_names.unshift(screen_name)
+      screen_names.threaded_each do |screen_name|
+        retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
+          client.unfollow(screen_name, :include_entities => false)
+        end
+      end
+      number = screen_names.length
+      say "@#{@rcfile.default_profile[0]} is no longer following #{number} #{number == 1 ? 'user' : 'users'}."
+      say
+      say "Run `#{File.basename($0)} follow users #{screen_names.join(' ')}` to follow again."
+    end
+
+    desc "users SCREEN_NAME [SCREEN_NAME...]", "Returns a list of users you specify."
+    method_option :created, :aliases => "-c", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter acount was created."
+    method_option :friends, :aliases => "-d", :type => :boolean, :default => false, :desc => "Sort by total number of friends."
+    method_option :followers, :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by total number of followers."
+    method_option :listed, :aliases => "-i", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
+    method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "List in long format."
+    method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS
+    method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
+    method_option :tweets, :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by total number of Tweets."
+    method_option :unsorted, :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
+    method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by total number of favorites."
+    def users(screen_name, *screen_names)
+      screen_names.unshift(screen_name)
+      users = client.users(screen_names, :include_entities => false)
+      print_user_list(users)
+    end
+    map %w(stats) => :users
 
     desc "version", "Show version."
     def version
@@ -304,30 +487,19 @@ module T
       say "web: #{user.url}"
     end
 
-    require 't/cli/delete'
     desc "delete SUBCOMMAND ...ARGS", "Delete Tweets, Direct Messages, etc."
-    method_option :force, :aliases => "-f", :type => :boolean
-    subcommand 'delete', CLI::Delete
+    method_option :force, :aliases => "-f", :type => :boolean, :default => false
+    subcommand 'delete', T::Delete
 
-    require 't/cli/follow'
-    desc "follow SUBCOMMAND ...ARGS", "Follow users."
-    subcommand 'follow', CLI::Follow
-
-    require 't/cli/list'
     desc "list SUBCOMMAND ...ARGS", "Do various things with lists."
-    subcommand 'list', CLI::List
+    subcommand 'list', T::List
 
-    require 't/cli/search'
     desc "search SUBCOMMAND ...ARGS", "Search through Tweets."
-    subcommand 'search', CLI::Search
+    method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "List in long format."
+    subcommand 'search', T::Search
 
-    require 't/cli/set'
     desc "set SUBCOMMAND ...ARGS", "Change various account settings."
-    subcommand 'set', CLI::Set
-
-    require 't/cli/unfollow'
-    desc "unfollow SUBCOMMAND ...ARGS", "Unfollow users."
-    subcommand 'unfollow', CLI::Unfollow
+    subcommand 'set', T::Set
 
   private
 
@@ -381,6 +553,72 @@ module T
 
     def pin_auth_parameters
       {:oauth_callback => 'oob'}
+    end
+
+    def print_in_columns(array)
+      cols = HighLine::SystemExtensions.terminal_size[0]
+      width = (array.map{|el| el.to_s.size}.max || 0) + 2
+      array.each_with_index do |value, index|
+        puts if (((index) % (cols / width))).zero? && !index.zero?
+        printf("%-#{width}s", value)
+      end
+      puts
+    end
+
+    def print_status_list(statuses)
+      statuses.reverse! if options['reverse']
+      if options['long']
+        array = statuses.map do |status|
+          created_at = status.created_at > 6.months.ago ? status.created_at.strftime("%b %e %H:%M") : status.created_at.strftime("%b %e  %Y")
+          [status.id.to_s, created_at, status.user.screen_name, status.text.gsub(/\n+/, ' ')]
+        end
+        if STDOUT.tty?
+          headings = ["ID", "Created at", "Screen name", "Text"]
+          array.unshift(headings)
+        end
+        print_table(array)
+      else
+        statuses.each do |status|
+          say "#{status.user.screen_name.rjust(MAX_SCREEN_NAME_SIZE)}: #{status.text.gsub(/\n+/, ' ')} (#{time_ago_in_words(status.created_at)} ago)"
+        end
+      end
+    end
+
+    def print_user_list(users)
+      users = users.sort_by{|user| user.screen_name.downcase} unless options['unsorted']
+      if options['created']
+        users = users.sort_by{|user| user.created_at}
+      elsif options['favorites']
+        users = users.sort_by{|user| user.favourites_count}
+      elsif options['followers']
+        users = users.sort_by{|user| user.followers_count}
+      elsif options['friends']
+        users = users.sort_by{|user| user.friends_count}
+      elsif options['listed']
+        users = users.sort_by{|user| user.listed_count}
+      elsif options['tweets']
+        users = users.sort_by{|user| user.statuses_count}
+      end
+      users.reverse! if options['reverse']
+      if options['long']
+        array = users.map do |user|
+          created_at = user.created_at > 6.months.ago ? user.created_at.strftime("%b %e %H:%M") : user.created_at.strftime("%b %e  %Y")
+          [user.id, created_at, user.statuses_count, user.friends_count, user.followers_count, user.favourites_count, user.screen_name, user.name]
+        end
+        if STDOUT.tty?
+          headings = ["ID", "Created at", "Tweets", "Following", "Followers", "Favorites", "Listed", "Screen name", "Name"]
+          array.unshift(headings)
+        end
+        print_table(array)
+      else
+        if STDOUT.tty?
+          print_in_columns(users.map(&:screen_name))
+        else
+          users.map(&:screen_name).each do |user|
+            say user
+          end
+        end
+      end
     end
 
     def protocol

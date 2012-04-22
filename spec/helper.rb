@@ -4,7 +4,6 @@ unless ENV['CI']
 end
 
 require 't'
-T.env = 'test'
 require 'rspec'
 require 'timecop'
 require 'webmock/rspec'

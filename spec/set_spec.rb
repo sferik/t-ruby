@@ -1,7 +1,7 @@
 # encoding: utf-8
 require 'helper'
 
-describe T::CLI::Set do
+describe T::Set do
 
   before do
     rcfile = RCFile.instance

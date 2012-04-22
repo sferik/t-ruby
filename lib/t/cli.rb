@@ -603,7 +603,7 @@ module T
       if options['long']
         array = users.map do |user|
           created_at = user.created_at > 6.months.ago ? user.created_at.strftime("%b %e %H:%M") : user.created_at.strftime("%b %e  %Y")
-          [user.id, created_at, user.statuses_count, user.friends_count, user.followers_count, user.favourites_count, user.screen_name, user.name]
+          [user.id, created_at, user.statuses_count, user.friends_count, user.followers_count, user.favourites_count, user.listed_count, user.screen_name, user.name]
         end
         if STDOUT.tty?
           headings = ["ID", "Created at", "Tweets", "Following", "Followers", "Favorites", "Listed", "Screen name", "Name"]

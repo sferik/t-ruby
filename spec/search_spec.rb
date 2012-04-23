@@ -34,22 +34,22 @@ describe T::Search do
     end
     it "should have the correct output" do
       @t.search("all", "twitter")
-      $stdout.string.should == <<-eos.gsub(/^/, ' ' * 6)
-  killermelons: @KaiserKuo from not too far away your new twitter icon looks like Vader. (about 1 year ago)
-  FelipeNoMore: RT @nicoMaiden: RT @golden254: Quien habra sido el habil en decirle al negro piñera que era cantante?/el mismo que le dijo a @copano que la lleva en twitter (about 1 year ago)
-         Je_eF: é cada louco que tem nesse twitter que o vicio nao me deixa largar isso jamé (about 1 year ago)
- TriceyTrice2U: @Jae_Savage same name as twitter (about 1 year ago)
-     eternity4: @enishi39 Its awesome huh? Its ALL Spn anime epicness!! I had a tough time getting twitter to put it up.xD (about 1 year ago)
-       twittag: [Twitter*feed] 船井総研発！一番店の法則～実費型治療院（整骨院・接骨院）・サロン経営コンサルティングブログ～ http://bit.ly/cxoSGL (about 1 year ago)
-       twittag: [Twitter*feed] ニフティクラウド、明日より「サーバーコピー」、「カスタマイズイメージ」、「オートスケール」、「基本監視・パフォーマンスチャート」を公開 | P2P today ダブルスラッシュ http://wslash.com/?p=2959 (about 1 year ago)
-       twittag: [Twitter*feed] ニフティクラウド、明日より「サーバーコピー」、「カスタマイズイメージ」、「オートスケール」、「基本監視・パフォーマンスチャート」を公開 | P2P today ダブルスラッシュ http://bit.ly/aziQQo (about 1 year ago)
-   ArcangelHak: Bueno pues me desconectó de twitter al tatto le falta todavía un rato y ya casi tengo sueño (about 1 year ago)
- recycledhumor: Just in case you are wondering, Weird Al (@alyankovic) has 1,862,789 followers on Twitter. Correction: 1,862,790 followers on Twitter. (about 1 year ago)
-      junitaaa: Lama&quot; chat di twitter nih..hahaha RT @buntutbabi: Lo yg mulai juga,siiietRT @Junitaaa: Kelakuan @buntutbabi (cont) http://tl.gd/6m1dcv (about 1 year ago)
-       twittag: [Twitter*feed] 『かちびと.net』 の人気エントリー - はてなブックマーク http://bit.ly/9Yx6xS (about 1 year ago)
-      avexnews: @ICONIQ_NEWS opened!She gain attention by collaboration song「I'm lovin' you」wif EXILE・ATSUSHI.Get her newest info here! http://bit.ly/dymm8v (about 1 year ago)
-   WildIvory92: RT @FiercePrinceJ: People on Twitter Gossip about other People, Hate others? This Is Twitter Nothing More, Nothing Less. (about 1 year ago)
-       twittag: [Twitter*feed] Now Playing Friends - リニューアル式 : R49 http://bit.ly/bmlA5g (about 1 year ago)
+      $stdout.string.should == <<-eos.gsub(/^/, ' ' * 4)
+      JessRoveel: Pondre lo mas importante de Hamlet en Twitter para recordarlo mejor :D (7 months ago)
+     lauravgeest: Twitter doet het al 7 uur niet meer (7 months ago)
+  Jenny_Bearx333: I keep thinking that twitter is @instagram , and therefore double tap all the pics I like... #NotWorking (7 months ago)
+     misspoxtonX: RT @jordantaylorhi: twitter friends &gt; twats at school (7 months ago)
+ PatrickBrickman: RT @zeus30hightower: Too all Bama fans and followers my cousin mark Barron doesn't have a twitter so please disregard any tweets from that user (7 months ago)
+        KolonelX: Ik refresh twitter op me telefoon terwijl ik tweetdeck voor me open heb staan (7 months ago)
+        VLGPRLG5: @mikeyway and you too RT @NimcyGD: @gerardway Get your ass back to twitter, okay? :3 (7 months ago)
+       xRhiBabyx: Trying to persuade the boyf to get on twitter and failing. Help? @holly_haime @Ckwarburton @samwarburton_ @chrishaime @rowloboy (7 months ago)
+        juliotrv: RT @lookinglassbr: Lançamentos outono-inverno 2012...CONFIRA em http://t.co/YAk8OXp7 http://t.co/fmmrVrbG (7 months ago)
+ shanleyaustin27: RT @caaammmmi: @shanleyaustin27 .....and this hahahahaa http://t.co/wzCMx6ZU (7 months ago)
+     Dame_Valuta: RT @Paiser10: Great @chelseafc training at Nou Camp! #cfc http://t.co/k00TnRyR (7 months ago)
+    miss_indyiah: smh, @IndianaHustle done turned into a twitter addict..fuck goin on lol ? (7 months ago)
+  CAROLINEWOLLER: RT @Mark_Ingram28: To all Bama fans and followers, please unfollow and pay no attention to any user posing to be Mark Barron. My bro doesn't have a twitter! (7 months ago)
+ shelbytrenchdww: RT @The90sLife: Admit it, we all have a cabinet that looks like this. http://t.co/gQEkQw5G (7 months ago)
+         kabos84: RT @JF_q8: بالله  عليكم ،، مو عيب !!! .. http://t.co/e29GV7Ow (7 months ago)
       eos
     end
     context "long" do
@@ -59,22 +59,22 @@ describe T::Search do
       it "should list in long format" do
         @t.search("all", "twitter")
         $stdout.string.should == <<-eos
-ID           Created at    Screen name    Text
-28857935752  Oct 26  2010  killermelons   @KaiserKuo from not too far away your new twitter icon looks like Vader.
-28857935253  Oct 26  2010  FelipeNoMore   RT @nicoMaiden: RT @golden254: Quien habra sido el habil en decirle al negro piñera que era cantante?/el mismo que le dijo a @copano que la lleva en twitter
-28857934155  Oct 26  2010  Je_eF          é cada louco que tem nesse twitter que o vicio nao me deixa largar isso jamé
-28857933830  Oct 26  2010  TriceyTrice2U  @Jae_Savage same name as twitter
-28857932968  Oct 26  2010  eternity4      @enishi39 Its awesome huh? Its ALL Spn anime epicness!! I had a tough time getting twitter to put it up.xD
-28857930925  Oct 26  2010  twittag        [Twitter*feed] 船井総研発！一番店の法則～実費型治療院（整骨院・接骨院）・サロン経営コンサルティングブログ～ http://bit.ly/cxoSGL
-28857930608  Oct 26  2010  twittag        [Twitter*feed] ニフティクラウド、明日より「サーバーコピー」、「カスタマイズイメージ」、「オートスケール」、「基本監視・パフォーマンスチャート」を公開 | P2P today ダブルスラッシュ http://wslash.com/?p=2959
-28857930295  Oct 26  2010  twittag        [Twitter*feed] ニフティクラウド、明日より「サーバーコピー」、「カスタマイズイメージ」、「オートスケール」、「基本監視・パフォーマンスチャート」を公開 | P2P today ダブルスラッシュ http://bit.ly/aziQQo
-28857930186  Oct 26  2010  ArcangelHak    Bueno pues me desconectó de twitter al tatto le falta todavía un rato y ya casi tengo sueño
-28857930102  Oct 26  2010  recycledhumor  Just in case you are wondering, Weird Al (@alyankovic) has 1,862,789 followers on Twitter. Correction: 1,862,790 followers on Twitter.
-28857930059  Oct 26  2010  junitaaa       Lama&quot; chat di twitter nih..hahaha RT @buntutbabi: Lo yg mulai juga,siiietRT @Junitaaa: Kelakuan @buntutbabi (cont) http://tl.gd/6m1dcv
-28857929957  Oct 26  2010  twittag        [Twitter*feed] 『かちびと.net』 の人気エントリー - はてなブックマーク http://bit.ly/9Yx6xS
-28857929746  Oct 26  2010  avexnews       @ICONIQ_NEWS opened!She gain attention by collaboration song「I'm lovin' you」wif EXILE・ATSUSHI.Get her newest info here! http://bit.ly/dymm8v
-28857929614  Oct 26  2010  WildIvory92    RT @FiercePrinceJ: People on Twitter Gossip about other People, Hate others? This Is Twitter Nothing More, Nothing Less.
-28857929607  Oct 26  2010  twittag        [Twitter*feed] Now Playing Friends - リニューアル式 : R49 http://bit.ly/bmlA5g
+ID                  Created at    Screen name      Text
+194521262415032320  Apr 23  2011  JessRoveel       Pondre lo mas importante de Hamlet en Twitter para recordarlo mejor :D
+194521262326951936  Apr 23  2011  lauravgeest      Twitter doet het al 7 uur niet meer
+194521262234669056  Apr 23  2011  Jenny_Bearx333   I keep thinking that twitter is @instagram , and therefore double tap all the pics I like... #NotWorking
+194521262138204160  Apr 23  2011  misspoxtonX      RT @jordantaylorhi: twitter friends &gt; twats at school
+194521262134001665  Apr 23  2011  PatrickBrickman  RT @zeus30hightower: Too all Bama fans and followers my cousin mark Barron doesn't have a twitter so please disregard any tweets from that user
+194521262129811456  Apr 23  2011  KolonelX         Ik refresh twitter op me telefoon terwijl ik tweetdeck voor me open heb staan
+194521261852995586  Apr 23  2011  VLGPRLG5         @mikeyway and you too RT @NimcyGD: @gerardway Get your ass back to twitter, okay? :3
+194521261756530689  Apr 23  2011  xRhiBabyx        Trying to persuade the boyf to get on twitter and failing. Help? @holly_haime @Ckwarburton @samwarburton_ @chrishaime @rowloboy
+194521261630697473  Apr 23  2011  juliotrv         RT @lookinglassbr: Lançamentos outono-inverno 2012...CONFIRA em http://t.co/YAk8OXp7 http://t.co/fmmrVrbG
+194521261571964928  Apr 23  2011  shanleyaustin27  RT @caaammmmi: @shanleyaustin27 .....and this hahahahaa http://t.co/wzCMx6ZU
+194521261563580416  Apr 23  2011  Dame_Valuta      RT @Paiser10: Great @chelseafc training at Nou Camp! #cfc http://t.co/k00TnRyR
+194521261488095232  Apr 23  2011  miss_indyiah     smh, @IndianaHustle done turned into a twitter addict..fuck goin on lol ?
+194521261370650625  Apr 23  2011  CAROLINEWOLLER   RT @Mark_Ingram28: To all Bama fans and followers, please unfollow and pay no attention to any user posing to be Mark Barron. My bro doesn't have a twitter!
+194521261370642432  Apr 23  2011  shelbytrenchdww  RT @The90sLife: Admit it, we all have a cabinet that looks like this. http://t.co/gQEkQw5G
+194521261307727872  Apr 23  2011  kabos84          RT @JF_q8: بالله  عليكم ،، مو عيب !!! .. http://t.co/e29GV7Ow
         eos
       end
     end

@@ -99,38 +99,22 @@ ID                  Created at    Screen name      Text
     it "should have the correct output" do
       @search.favorites("twitter")
       $stdout.string.should == <<-eos.gsub(/^/, ' ' * 6)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
       eos
     end
     context "long" do
@@ -140,39 +124,23 @@ ID                  Created at    Screen name      Text
       it "should list in long format" do
         @search.favorites("twitter")
         $stdout.string.should == <<-eos
-ID           Created at    Screen name  Text
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+ID                  Created at    Screen name  Text
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
         eos
       end
     end
@@ -210,38 +178,22 @@ ID           Created at    Screen name  Text
     it "should have the correct output" do
       @search.mentions("twitter")
       $stdout.string.should == <<-eos.gsub(/^/, ' ' * 6)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
       eos
     end
     context "long" do
@@ -251,39 +203,23 @@ ID           Created at    Screen name  Text
       it "should list in long format" do
         @search.mentions("twitter")
         $stdout.string.should == <<-eos
-ID           Created at    Screen name  Text
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+ID                  Created at    Screen name  Text
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
         eos
       end
     end
@@ -321,38 +257,22 @@ ID           Created at    Screen name  Text
     it "should have the correct output" do
       @search.retweets("twitter")
       $stdout.string.should == <<-eos.gsub(/^/, ' ' * 6)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
       eos
     end
     context "long" do
@@ -362,39 +282,23 @@ ID           Created at    Screen name  Text
       it "should list in long format" do
         @search.retweets("twitter")
         $stdout.string.should == <<-eos
-ID           Created at    Screen name  Text
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+ID                  Created at    Screen name  Text
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
         eos
       end
     end
@@ -432,38 +336,22 @@ ID           Created at    Screen name  Text
     it "should have the correct output" do
       @search.timeline("twitter")
       $stdout.string.should == <<-eos.gsub(/^/, ' ' * 6)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
       eos
     end
     context "long" do
@@ -473,39 +361,23 @@ ID           Created at    Screen name  Text
       it "should list in long format" do
         @search.timeline("twitter")
         $stdout.string.should == <<-eos
-ID           Created at    Screen name  Text
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+ID                  Created at    Screen name  Text
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
         eos
       end
     end
@@ -543,38 +415,22 @@ ID           Created at    Screen name  Text
     it "should have the correct output" do
       @search.user("sferik", "twitter")
       $stdout.string.should == <<-eos.gsub(/^/, ' ' * 6)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
-        sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
-        sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
       eos
     end
     context "long" do
@@ -584,39 +440,23 @@ ID           Created at    Screen name  Text
       it "should list in long format" do
         @search.user("sferik", "twitter")
         $stdout.string.should == <<-eos
-ID           Created at    Screen name  Text
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
-22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
-21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+ID                  Created at    Screen name  Text
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546727670390784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
         eos
       end
     end

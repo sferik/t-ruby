@@ -52,6 +52,32 @@ describe T::Search do
        twittag: [Twitter*feed] Now Playing Friends - リニューアル式 : R49 http://bit.ly/bmlA5g (about 1 year ago)
       eos
     end
+    context "long" do
+      before do
+        @t.options = @t.options.merge(:long => true)
+      end
+      it "should list in long format" do
+        @t.search("all", "twitter")
+        $stdout.string.should == <<-eos
+ID           Created at    Screen name    Text
+28857935752  Oct 26  2010  killermelons   @KaiserKuo from not too far away your new twitter icon looks like Vader.
+28857935253  Oct 26  2010  FelipeNoMore   RT @nicoMaiden: RT @golden254: Quien habra sido el habil en decirle al negro piñera que era cantante?/el mismo que le dijo a @copano que la lleva en twitter
+28857934155  Oct 26  2010  Je_eF          é cada louco que tem nesse twitter que o vicio nao me deixa largar isso jamé
+28857933830  Oct 26  2010  TriceyTrice2U  @Jae_Savage same name as twitter
+28857932968  Oct 26  2010  eternity4      @enishi39 Its awesome huh? Its ALL Spn anime epicness!! I had a tough time getting twitter to put it up.xD
+28857930925  Oct 26  2010  twittag        [Twitter*feed] 船井総研発！一番店の法則～実費型治療院（整骨院・接骨院）・サロン経営コンサルティングブログ～ http://bit.ly/cxoSGL
+28857930608  Oct 26  2010  twittag        [Twitter*feed] ニフティクラウド、明日より「サーバーコピー」、「カスタマイズイメージ」、「オートスケール」、「基本監視・パフォーマンスチャート」を公開 | P2P today ダブルスラッシュ http://wslash.com/?p=2959
+28857930295  Oct 26  2010  twittag        [Twitter*feed] ニフティクラウド、明日より「サーバーコピー」、「カスタマイズイメージ」、「オートスケール」、「基本監視・パフォーマンスチャート」を公開 | P2P today ダブルスラッシュ http://bit.ly/aziQQo
+28857930186  Oct 26  2010  ArcangelHak    Bueno pues me desconectó de twitter al tatto le falta todavía un rato y ya casi tengo sueño
+28857930102  Oct 26  2010  recycledhumor  Just in case you are wondering, Weird Al (@alyankovic) has 1,862,789 followers on Twitter. Correction: 1,862,790 followers on Twitter.
+28857930059  Oct 26  2010  junitaaa       Lama&quot; chat di twitter nih..hahaha RT @buntutbabi: Lo yg mulai juga,siiietRT @Junitaaa: Kelakuan @buntutbabi (cont) http://tl.gd/6m1dcv
+28857929957  Oct 26  2010  twittag        [Twitter*feed] 『かちびと.net』 の人気エントリー - はてなブックマーク http://bit.ly/9Yx6xS
+28857929746  Oct 26  2010  avexnews       @ICONIQ_NEWS opened!She gain attention by collaboration song「I'm lovin' you」wif EXILE・ATSUSHI.Get her newest info here! http://bit.ly/dymm8v
+28857929614  Oct 26  2010  WildIvory92    RT @FiercePrinceJ: People on Twitter Gossip about other People, Hate others? This Is Twitter Nothing More, Nothing Less.
+28857929607  Oct 26  2010  twittag        [Twitter*feed] Now Playing Friends - リニューアル式 : R49 http://bit.ly/bmlA5g
+        eos
+      end
+    end
   end
 
   describe "#favorites" do
@@ -106,6 +132,49 @@ describe T::Search do
         sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
         sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
       eos
+    end
+    context "long" do
+      before do
+        @t.options = @t.options.merge(:long => true)
+      end
+      it "should list in long format" do
+        @t.search("favorites", "twitter")
+        $stdout.string.should == <<-eos
+ID           Created at    Screen name  Text
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+        eos
+      end
     end
     context "Twitter is down" do
       it "should retry 3 times and then raise an error" do
@@ -175,6 +244,49 @@ describe T::Search do
         sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
       eos
     end
+    context "long" do
+      before do
+        @t.options = @t.options.merge(:long => true)
+      end
+      it "should list in long format" do
+        @t.search("mentions", "twitter")
+        $stdout.string.should == <<-eos
+ID           Created at    Screen name  Text
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+        eos
+      end
+    end
     context "Twitter is down" do
       it "should retry 3 times and then raise an error" do
         stub_get("/1/statuses/mentions.json").
@@ -242,6 +354,49 @@ describe T::Search do
         sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
         sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
       eos
+    end
+    context "long" do
+      before do
+        @t.options = @t.options.merge(:long => true)
+      end
+      it "should list in long format" do
+        @t.search("retweets", "twitter")
+        $stdout.string.should == <<-eos
+ID           Created at    Screen name  Text
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+        eos
+      end
     end
     context "Twitter is down" do
       it "should retry 3 times and then raise an error" do
@@ -311,6 +466,49 @@ describe T::Search do
         sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
       eos
     end
+    context "long" do
+      before do
+        @t.options = @t.options.merge(:long => true)
+      end
+      it "should list in long format" do
+        @t.search("timeline", "twitter")
+        $stdout.string.should == <<-eos
+ID           Created at    Screen name  Text
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+        eos
+      end
+    end
     context "Twitter is down" do
       it "should retry 3 times and then raise an error" do
         stub_get("/1/statuses/home_timeline.json").
@@ -378,6 +576,49 @@ describe T::Search do
         sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
         sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
       eos
+    end
+    context "long" do
+      before do
+        @t.options = @t.options.merge(:long => true)
+      end
+      it "should list in long format" do
+        @t.search("user", "sferik", "twitter")
+        $stdout.string.should == <<-eos
+ID           Created at    Screen name  Text
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
+21538122473  Aug 18  2010  sferik       I know @SarahPalinUSA has a right to use Twitter, but should she?
+        eos
+      end
     end
     context "Twitter is down" do
       it "should retry 3 times and then raise an error" do

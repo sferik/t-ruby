@@ -11,7 +11,7 @@ describe T::List do
     $stderr = StringIO.new
     @old_stdout = $stdout
     $stdout = StringIO.new
-    Timecop.freeze(Time.local(2011, 11, 24, 16, 20, 0))
+    Timecop.freeze(Time.utc(2011, 11, 24, 16, 20, 0))
   end
 
   after do

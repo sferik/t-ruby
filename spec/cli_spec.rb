@@ -102,26 +102,37 @@ describe T::CLI do
       @cli.direct_messages
       $stdout.string.should == <<-eos.gsub(/^/, ' ' * 6)
         sferik: Sounds good. Meeting Tuesday is fine. (about 1 year ago)
-        sferik: if you want to add me to your GroupMe group, my phone number is 415-312-2382 (about 1 year ago)
-        sferik: That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does that work for you?  (about 1 year ago)
-        sferik: I asked Yehuda about the stipend. I believe it has already been sent. Glad you're feeling better.  (about 1 year ago)
+        sferik: That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does that work for you? (about 1 year ago)
+        sferik: I asked Yehuda about the stipend. I believe it has already been sent. Glad you're feeling better. (about 1 year ago)
         sferik: Just checking in. How's everything going? (about 1 year ago)
-        sferik: Any luck completing graphs this weekend? There have been lots of commits to RailsAdmin since summer ended but none from you. How's it going? (about 1 year ago)
         sferik: Not sure about the payment. Feel free to ask Leah or Yehuda directly. Think you'll be able to finish up your work on graphs this weekend? (about 1 year ago)
-        sferik: Looks good to me. I'm going to pull in the change now. My only concern is that we don't have any tests for auth. (about 1 year ago)
         sferik: How are the graph enhancements coming? (about 1 year ago)
-        sferik: Changes pushed. You should pull and re-bundle when you have a minute. (about 1 year ago)
-        sferik: Glad to hear the new graphs are coming along. Can't wait to see them! (about 1 year ago)
-        sferik: I figured out what was wrong with the tests: I accidentally unbundled webrat. The problem had nothing to do with rspec-rails. (about 1 year ago)
-        sferik: After the upgrade 54/80 specs are failing. I'm working on fixing them now. (about 1 year ago)
-        sferik: a new version of rspec-rails just shipped with some nice features and fixes http://github.com/rspec/rspec-rails/blob/master/History.md (about 1 year ago)
         sferik: How are the graphs coming? I'm really looking forward to seeing what you do with Raphaël. (about 1 year ago)
         sferik: Awesome! Any luck duplicating the Gemfile.lock error with Ruby 1.9.2 final? (about 1 year ago)
         sferik: I just committed a bunch of cleanup and fixes to RailsAdmin that touched many of files. Make sure you pull to avoid conflicts. (about 1 year ago)
-        sferik: Can you try upgrading to 1.9.2 final, re-installing Bundler 1.0.0.rc.6 (don't remove 1.0.0) and see if you can reproduce the problem? (about 1 year ago)
         sferik: I'm trying to debug the issue you were having with the Bundler Gemfile.lock shortref. What version of Ruby and RubyGems are you running? (about 1 year ago)
-        sferik: Let's try to debug that problem during our session in 1.5 hours. In the mean time, try working on the graphs or internationalization. (about 1 year ago)
       eos
+    end
+    context "long" do
+      before do
+        @cli.options = @cli.options.merge(:long => true)
+      end
+      it "should list in long format" do
+        @cli.direct_messages
+        $stdout.string.should == <<-eos
+ID          Created at    Screen name  Text
+1773478249  Oct 17  2010  sferik       Sounds good. Meeting Tuesday is fine.
+1762960771  Oct 14  2010  sferik       That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does that work for you?
+1711812216  Oct  1  2010  sferik       I asked Yehuda about the stipend. I believe it has already been sent. Glad you're feeling better.
+1711417617  Oct  1  2010  sferik       Just checking in. How's everything going?
+1653301471  Sep 16  2010  sferik       Not sure about the payment. Feel free to ask Leah or Yehuda directly. Think you'll be able to finish up your work on graphs this weekend?
+1645324992  Sep 14  2010  sferik       How are the graph enhancements coming?
+1632933616  Sep 11  2010  sferik       How are the graphs coming? I'm really looking forward to seeing what you do with Raphaël.
+1629239903  Sep 10  2010  sferik       Awesome! Any luck duplicating the Gemfile.lock error with Ruby 1.9.2 final?
+1629166212  Sep 10  2010  sferik       I just committed a bunch of cleanup and fixes to RailsAdmin that touched many of files. Make sure you pull to avoid conflicts.
+1624782206  Sep  9  2010  sferik       I'm trying to debug the issue you were having with the Bundler Gemfile.lock shortref. What version of Ruby and RubyGems are you running?
+        eos
+      end
     end
   end
 
@@ -141,27 +152,38 @@ describe T::CLI do
       @cli.direct_messages_sent
       $stdout.string.should == <<-eos.gsub(/^/, ' ' * 6)
      hurrycane: Sounds good. Meeting Tuesday is fine. (about 1 year ago)
-  technoweenie: if you want to add me to your GroupMe group, my phone number is 415-312-2382 (about 1 year ago)
-     hurrycane: That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does that work for you?  (about 1 year ago)
-     hurrycane: I asked Yehuda about the stipend. I believe it has already been sent. Glad you're feeling better.  (about 1 year ago)
+     hurrycane: That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does that work for you? (about 1 year ago)
+     hurrycane: I asked Yehuda about the stipend. I believe it has already been sent. Glad you're feeling better. (about 1 year ago)
      hurrycane: Just checking in. How's everything going? (about 1 year ago)
-     hurrycane: Any luck completing graphs this weekend? There have been lots of commits to RailsAdmin since summer ended but none from you. How's it going? (about 1 year ago)
      hurrycane: Not sure about the payment. Feel free to ask Leah or Yehuda directly. Think you'll be able to finish up your work on graphs this weekend? (about 1 year ago)
-     hurrycane: Looks good to me. I'm going to pull in the change now. My only concern is that we don't have any tests for auth. (about 1 year ago)
      hurrycane: How are the graph enhancements coming? (about 1 year ago)
-     hurrycane: Changes pushed. You should pull and re-bundle when you have a minute. (about 1 year ago)
-     hurrycane: Glad to hear the new graphs are coming along. Can't wait to see them! (about 1 year ago)
-     hurrycane: I figured out what was wrong with the tests: I accidentally unbundled webrat. The problem had nothing to do with rspec-rails. (about 1 year ago)
-     hurrycane: After the upgrade 54/80 specs are failing. I'm working on fixing them now. (about 1 year ago)
-     hurrycane: a new version of rspec-rails just shipped with some nice features and fixes http://github.com/rspec/rspec-rails/blob/master/History.md (about 1 year ago)
      hurrycane: How are the graphs coming? I'm really looking forward to seeing what you do with Raphaël. (about 1 year ago)
      hurrycane: Awesome! Any luck duplicating the Gemfile.lock error with Ruby 1.9.2 final? (about 1 year ago)
      hurrycane: I just committed a bunch of cleanup and fixes to RailsAdmin that touched many of files. Make sure you pull to avoid conflicts. (about 1 year ago)
-     hurrycane: Can you try upgrading to 1.9.2 final, re-installing Bundler 1.0.0.rc.6 (don't remove 1.0.0) and see if you can reproduce the problem? (about 1 year ago)
      hurrycane: I'm trying to debug the issue you were having with the Bundler Gemfile.lock shortref. What version of Ruby and RubyGems are you running? (about 1 year ago)
-     hurrycane: Let's try to debug that problem during our session in 1.5 hours. In the mean time, try working on the graphs or internationalization. (about 1 year ago)
-    eos
-  end
+      eos
+    end
+    context "long" do
+      before do
+        @cli.options = @cli.options.merge(:long => true)
+      end
+      it "should list in long format" do
+        @cli.direct_messages_sent
+        $stdout.string.should == <<-eos
+ID          Created at    Screen name  Text
+1773478249  Oct 17  2010  hurrycane    Sounds good. Meeting Tuesday is fine.
+1762960771  Oct 14  2010  hurrycane    That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does that work for you?
+1711812216  Oct  1  2010  hurrycane    I asked Yehuda about the stipend. I believe it has already been sent. Glad you're feeling better.
+1711417617  Oct  1  2010  hurrycane    Just checking in. How's everything going?
+1653301471  Sep 16  2010  hurrycane    Not sure about the payment. Feel free to ask Leah or Yehuda directly. Think you'll be able to finish up your work on graphs this weekend?
+1645324992  Sep 14  2010  hurrycane    How are the graph enhancements coming?
+1632933616  Sep 11  2010  hurrycane    How are the graphs coming? I'm really looking forward to seeing what you do with Raphaël.
+1629239903  Sep 10  2010  hurrycane    Awesome! Any luck duplicating the Gemfile.lock error with Ruby 1.9.2 final?
+1629166212  Sep 10  2010  hurrycane    I just committed a bunch of cleanup and fixes to RailsAdmin that touched many of files. Make sure you pull to avoid conflicts.
+1624782206  Sep  9  2010  hurrycane    I'm trying to debug the issue you were having with the Bundler Gemfile.lock shortref. What version of Ruby and RubyGems are you running?
+        eos
+      end
+    end
   end
 
   describe "#dm" do
@@ -365,7 +387,10 @@ describe T::CLI do
         to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       stub_get("/1/followers/ids.json").
         with(:query => {:cursor => "-1"}).
-        to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        to_return(:body => fixture("followers_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1/users/lookup.json").
+        with(:query => {:user_id => "7505382", :include_entities => "false"}).
+        to_return(:body => fixture("users.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @cli.leaders
@@ -375,10 +400,13 @@ describe T::CLI do
       a_get("/1/followers/ids.json").
         with(:query => {:cursor => "-1"}).
         should have_been_made
+      a_get("/1/users/lookup.json").
+        with(:query => {:user_id => "7505382", :include_entities => "false"}).
+        should have_been_made
     end
     it "should have the correct output" do
       @cli.leaders
-      $stdout.string.chomp.rstrip.should == ""
+      $stdout.string.chomp.rstrip.should == "pengwynn  sferik"
     end
   end
 

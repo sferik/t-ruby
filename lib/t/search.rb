@@ -27,7 +27,7 @@ module T
     def all(query)
       rpp = options['number'] || DEFAULT_NUM_RESULTS
       statuses = client.search(query, :include_entities => false, :rpp => rpp)
-      if parent_options['long']
+      if options['long']
         array = statuses.map do |status|
           created_at = status.created_at > 6.months.ago ? status.created_at.strftime("%b %e %H:%M") : status.created_at.strftime("%b %e  %Y")
           [status.id.to_s, created_at, status.from_user, status.text.gsub(/\n+/, ' ')]
@@ -112,7 +112,7 @@ module T
   private
 
     def print_status_list(statuses)
-      if parent_options['long']
+      if options['long']
         array = statuses.map do |status|
           created_at = status.created_at > 6.months.ago ? status.created_at.strftime("%b %e %H:%M") : status.created_at.strftime("%b %e  %Y")
           [status.id.to_s, created_at, status.user.screen_name, status.text.gsub(/\n+/, ' ')]

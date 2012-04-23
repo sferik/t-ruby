@@ -6,7 +6,7 @@ describe T::Search do
   before do
     rcfile = RCFile.instance
     rcfile.path = fixture_path + "/.trc"
-    @t = T::CLI.new
+    @search = T::Search.new
     @old_stderr = $stderr
     $stderr = StringIO.new
     @old_stdout = $stdout
@@ -27,13 +27,13 @@ describe T::Search do
         to_return(:body => fixture("search.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
-      @t.search("all", "twitter")
+      @search.all("twitter")
       a_request(:get, "https://search.twitter.com/search.json").
         with(:query => {:q => "twitter", :include_entities => "false", :rpp => "20"}).
         should have_been_made
     end
     it "should have the correct output" do
-      @t.search("all", "twitter")
+      @search.all("twitter")
       $stdout.string.should == <<-eos.gsub(/^/, ' ' * 4)
       JessRoveel: Pondre lo mas importante de Hamlet en Twitter para recordarlo mejor :D (7 months ago)
      lauravgeest: Twitter doet het al 7 uur niet meer (7 months ago)
@@ -54,10 +54,10 @@ describe T::Search do
     end
     context "long" do
       before do
-        @t.options = @t.options.merge(:long => true)
+        @search.options = @search.options.merge(:long => true)
       end
       it "should list in long format" do
-        @t.search("all", "twitter")
+        @search.all("twitter")
         $stdout.string.should == <<-eos
 ID                  Created at    Screen name      Text
 194521262415032320  Apr 23  2011  JessRoveel       Pondre lo mas importante de Hamlet en Twitter para recordarlo mejor :D
@@ -89,7 +89,7 @@ ID                  Created at    Screen name      Text
       end
     end
     it "should request the correct resource" do
-      @t.search("favorites", "twitter")
+      @search.favorites("twitter")
       1.upto(16).each do |page|
         a_get("/1/favorites.json").
           with(:query => {:count => "200", :page => "#{page}"}).
@@ -97,7 +97,7 @@ ID                  Created at    Screen name      Text
       end
     end
     it "should have the correct output" do
-      @t.search("favorites", "twitter")
+      @search.favorites("twitter")
       $stdout.string.should == <<-eos.gsub(/^/, ' ' * 6)
         sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
         sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
@@ -135,10 +135,10 @@ ID                  Created at    Screen name      Text
     end
     context "long" do
       before do
-        @t.options = @t.options.merge(:long => true)
+        @search.options = @search.options.merge(:long => true)
       end
       it "should list in long format" do
-        @t.search("favorites", "twitter")
+        @search.favorites("twitter")
         $stdout.string.should == <<-eos
 ID           Created at    Screen name  Text
 22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
@@ -182,7 +182,7 @@ ID           Created at    Screen name  Text
           with(:query => {:count => "200", :page => "16"}).
           to_return(:status => 502)
         lambda do
-          @t.search("favorites", "twitter")
+          @search.favorites("twitter")
         end.should raise_error("Twitter is down or being upgraded.")
         a_get("/1/favorites.json").
           with(:query => {:count => "200", :page => "16"}).
@@ -200,7 +200,7 @@ ID           Created at    Screen name  Text
       end
     end
     it "should request the correct resource" do
-      @t.search("mentions", "twitter")
+      @search.mentions("twitter")
       1.upto(16).each do |page|
         a_get("/1/statuses/mentions.json").
           with(:query => {:count => "200", :page => "#{page}"}).
@@ -208,7 +208,7 @@ ID           Created at    Screen name  Text
       end
     end
     it "should have the correct output" do
-      @t.search("mentions", "twitter")
+      @search.mentions("twitter")
       $stdout.string.should == <<-eos.gsub(/^/, ' ' * 6)
         sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
         sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
@@ -246,10 +246,10 @@ ID           Created at    Screen name  Text
     end
     context "long" do
       before do
-        @t.options = @t.options.merge(:long => true)
+        @search.options = @search.options.merge(:long => true)
       end
       it "should list in long format" do
-        @t.search("mentions", "twitter")
+        @search.mentions("twitter")
         $stdout.string.should == <<-eos
 ID           Created at    Screen name  Text
 22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
@@ -293,7 +293,7 @@ ID           Created at    Screen name  Text
           with(:query => {:count => "200", :page => "16"}).
           to_return(:status => 502)
         lambda do
-          @t.search("mentions", "twitter")
+          @search.mentions("twitter")
         end.should raise_error("Twitter is down or being upgraded.")
         a_get("/1/statuses/mentions.json").
           with(:query => {:count => "200", :page => "16"}).
@@ -311,7 +311,7 @@ ID           Created at    Screen name  Text
       end
     end
     it "should request the correct resource" do
-      @t.search("retweets", "twitter")
+      @search.retweets("twitter")
       1.upto(16).each do |page|
         a_get("/1/statuses/retweeted_by_me.json").
           with(:query => {:count => "200", :page => "#{page}"}).
@@ -319,7 +319,7 @@ ID           Created at    Screen name  Text
       end
     end
     it "should have the correct output" do
-      @t.search("retweets", "twitter")
+      @search.retweets("twitter")
       $stdout.string.should == <<-eos.gsub(/^/, ' ' * 6)
         sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
         sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
@@ -357,10 +357,10 @@ ID           Created at    Screen name  Text
     end
     context "long" do
       before do
-        @t.options = @t.options.merge(:long => true)
+        @search.options = @search.options.merge(:long => true)
       end
       it "should list in long format" do
-        @t.search("retweets", "twitter")
+        @search.retweets("twitter")
         $stdout.string.should == <<-eos
 ID           Created at    Screen name  Text
 22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
@@ -404,7 +404,7 @@ ID           Created at    Screen name  Text
           with(:query => {:count => "200", :page => "16"}).
           to_return(:status => 502)
         lambda do
-          @t.search("retweets", "twitter")
+          @search.retweets("twitter")
         end.should raise_error("Twitter is down or being upgraded.")
         a_get("/1/statuses/retweeted_by_me.json").
           with(:query => {:count => "200", :page => "16"}).
@@ -422,7 +422,7 @@ ID           Created at    Screen name  Text
       end
     end
     it "should request the correct resource" do
-      @t.search("timeline", "twitter")
+      @search.timeline("twitter")
       1.upto(16).each do |page|
         a_get("/1/statuses/home_timeline.json").
           with(:query => {:count => "200", :page => "#{page}"}).
@@ -430,7 +430,7 @@ ID           Created at    Screen name  Text
       end
     end
     it "should have the correct output" do
-      @t.search("timeline", "twitter")
+      @search.timeline("twitter")
       $stdout.string.should == <<-eos.gsub(/^/, ' ' * 6)
         sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
         sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
@@ -468,10 +468,10 @@ ID           Created at    Screen name  Text
     end
     context "long" do
       before do
-        @t.options = @t.options.merge(:long => true)
+        @search.options = @search.options.merge(:long => true)
       end
       it "should list in long format" do
-        @t.search("timeline", "twitter")
+        @search.timeline("twitter")
         $stdout.string.should == <<-eos
 ID           Created at    Screen name  Text
 22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
@@ -515,7 +515,7 @@ ID           Created at    Screen name  Text
           with(:query => {:count => "200", :page => "16"}).
           to_return(:status => 502)
         lambda do
-          @t.search("timeline", "twitter")
+          @search.timeline("twitter")
         end.should raise_error("Twitter is down or being upgraded.")
         a_get("/1/statuses/home_timeline.json").
           with(:query => {:count => "200", :page => "16"}).
@@ -533,7 +533,7 @@ ID           Created at    Screen name  Text
       end
     end
     it "should request the correct resource" do
-      @t.search("user", "sferik", "twitter")
+      @search.user("sferik", "twitter")
       1.upto(16).each do |page|
         a_get("/1/statuses/user_timeline.json").
           with(:query => {:screen_name => "sferik", :count => "200", :page => "#{page}"}).
@@ -541,7 +541,7 @@ ID           Created at    Screen name  Text
       end
     end
     it "should have the correct output" do
-      @t.search("user", "sferik", "twitter")
+      @search.user("sferik", "twitter")
       $stdout.string.should == <<-eos.gsub(/^/, ' ' * 6)
         sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
         sferik: I know @SarahPalinUSA has a right to use Twitter, but should she? (over 1 year ago)
@@ -579,10 +579,10 @@ ID           Created at    Screen name  Text
     end
     context "long" do
       before do
-        @t.options = @t.options.merge(:long => true)
+        @search.options = @search.options.merge(:long => true)
       end
       it "should list in long format" do
-        @t.search("user", "sferik", "twitter")
+        @search.user("sferik", "twitter")
         $stdout.string.should == <<-eos
 ID           Created at    Screen name  Text
 22305399947  Aug 27  2010  sferik       140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch
@@ -626,7 +626,7 @@ ID           Created at    Screen name  Text
           with(:query => {:screen_name => "sferik", :count => "200", :page => "16"}).
           to_return(:status => 502)
         lambda do
-          @t.search("user", "sferik", "twitter")
+          @search.user("sferik", "twitter")
         end.should raise_error("Twitter is down or being upgraded.")
         a_get("/1/statuses/user_timeline.json").
           with(:query => {:screen_name => "sferik", :count => "200", :page => "16"}).

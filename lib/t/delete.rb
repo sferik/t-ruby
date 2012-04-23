@@ -32,7 +32,7 @@ module T
     def dm
       direct_message = client.direct_messages_sent(:count => 1, :include_entities => false).first
       if direct_message
-        unless parent_options['force']
+        unless options['force']
           return unless yes? "Are you sure you want to permanently delete the direct message to @#{direct_message.recipient.screen_name}: \"#{direct_message.text}\"? [y/N]"
         end
         direct_message = client.direct_message_destroy(direct_message.id, :include_entities => false)
@@ -47,7 +47,7 @@ module T
     def favorite(status_id, *status_ids)
       status_ids.unshift(status_id)
       status_ids.each do |status_id|
-        unless parent_options['force']
+        unless options['force']
           status = client.status(status_id, :include_entities => false, :include_my_retweet => false, :trim_user => true)
           return unless yes? "Are you sure you want to delete the favorite of @#{status.user.screen_name}'s status: \"#{status.text}\"? [y/N]"
         end
@@ -59,7 +59,7 @@ module T
 
     desc "list LIST_NAME", "Delete a list."
     def list(list_name)
-      unless parent_options['force']
+      unless options['force']
         return unless yes? "Are you sure you want to permanently delete the list \"#{list_name}\"? [y/N]"
       end
       status = client.list_destroy(list_name)
@@ -70,7 +70,7 @@ module T
     def status(status_id, *status_ids)
       status_ids.unshift(status_id)
       status_ids.each do |status_id|
-        unless parent_options['force']
+        unless options['force']
           status = client.status(status_id, :include_entities => false, :include_my_retweet => false, :trim_user => true)
           return unless yes? "Are you sure you want to permanently delete @#{status.user.screen_name}'s status: \"#{status.text}\"? [y/N]"
         end

@@ -6,7 +6,7 @@ describe T::List do
   before do
     rcfile = RCFile.instance
     rcfile.path = fixture_path + "/.trc"
-    @t = T::CLI.new
+    @list = T::List.new
     @old_stderr = $stderr
     $stderr = StringIO.new
     @old_stdout = $stdout
@@ -22,7 +22,7 @@ describe T::List do
 
   describe "#add" do
     before do
-      @t.options = @t.options.merge(:profile => fixture_path + "/.trc")
+      @list.options = @list.options.merge(:profile => fixture_path + "/.trc")
       stub_get("/1/account/verify_credentials.json").
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       stub_post("/1/lists/members/create_all.json").
@@ -30,7 +30,7 @@ describe T::List do
         to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
-      @t.list("add", "presidents", "sferik")
+      @list.add("presidents", "sferik")
       a_get("/1/account/verify_credentials.json").
         should have_been_made
       a_post("/1/lists/members/create_all.json").
@@ -38,7 +38,7 @@ describe T::List do
         should have_been_made
     end
     it "should have the correct output" do
-      @t.list("add", "presidents", "sferik")
+      @list.add("presidents", "sferik")
       $stdout.string.should =~ /@testcli added 1 user to the list "presidents"\./
     end
     context "Twitter is down" do
@@ -47,7 +47,7 @@ describe T::List do
           with(:body => {:screen_name => "sferik", :slug => "presidents", :owner_screen_name => "sferik"}).
           to_return(:status => 502)
         lambda do
-          @t.list("add", "presidents", "sferik")
+          @list.add("presidents", "sferik")
         end.should raise_error("Twitter is down or being upgraded.")
         a_post("/1/lists/members/create_all.json").
           with(:body => {:screen_name => "sferik", :slug => "presidents", :owner_screen_name => "sferik"}).
@@ -58,26 +58,26 @@ describe T::List do
 
   describe "#create" do
     before do
-      @t.options = @t.options.merge(:profile => fixture_path + "/.trc")
+      @list.options = @list.options.merge(:profile => fixture_path + "/.trc")
       stub_post("/1/lists/create.json").
         with(:body => {:name => "presidents"}).
         to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
-      @t.list("create", "presidents")
+      @list.create("presidents")
       a_post("/1/lists/create.json").
         with(:body => {:name => "presidents"}).
         should have_been_made
     end
     it "should have the correct output" do
-      @t.list("create", "presidents")
+      @list.create("presidents")
       $stdout.string.chomp.should == "@testcli created the list \"presidents\"."
     end
   end
 
   describe "#remove" do
     before do
-      @t.options = @t.options.merge(:profile => fixture_path + "/.trc")
+      @list.options = @list.options.merge(:profile => fixture_path + "/.trc")
       stub_get("/1/account/verify_credentials.json").
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
@@ -85,7 +85,7 @@ describe T::List do
       stub_post("/1/lists/members/destroy_all.json").
         with(:body => {:screen_name => "sferik", :slug => "presidents", :owner_screen_name => "sferik"}).
         to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      @t.list("remove", "presidents", "sferik")
+      @list.remove("presidents", "sferik")
       a_get("/1/account/verify_credentials.json").
         should have_been_made
       a_post("/1/lists/members/destroy_all.json").
@@ -96,7 +96,7 @@ describe T::List do
       stub_post("/1/lists/members/destroy_all.json").
         with(:body => {:screen_name => "sferik", :slug => "presidents", :owner_screen_name => "sferik"}).
         to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      @t.list("remove", "presidents", "sferik")
+      @list.remove("presidents", "sferik")
       $stdout.string.should =~ /@testcli removed 1 user from the list "presidents"\./
     end
     context "Twitter is down" do
@@ -105,7 +105,7 @@ describe T::List do
           with(:body => {:screen_name => "sferik", :slug => "presidents", :owner_screen_name => "sferik"}).
           to_return(:status => 502)
         lambda do
-          @t.list("remove", "presidents", "sferik")
+          @list.remove("presidents", "sferik")
         end.should raise_error("Twitter is down or being upgraded.")
         a_post("/1/lists/members/destroy_all.json").
           with(:body => {:screen_name => "sferik", :slug => "presidents", :owner_screen_name => "sferik"}).
@@ -121,13 +121,13 @@ describe T::List do
         to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
-      @t.list("timeline", "presidents")
+      @list.timeline("presidents")
       a_get("/1/lists/statuses.json").
         with(:query => {:owner_screen_name => "testcli", :per_page => "20", :slug => "presidents", :include_entities => "false"}).
         should have_been_made
     end
     it "should have the correct output" do
-      @t.list("timeline", "presidents")
+      @list.timeline("presidents")
       $stdout.string.should == <<-eos.gsub(/^/, ' ' * 6)
         sferik: Ruby is the best programming language for hiding the ugly bits. (about 1 year ago)
         sferik: There are 1.3 billion people in China; when people say there are 1 billion they are rounding off the entire population of the United States. (about 1 year ago)

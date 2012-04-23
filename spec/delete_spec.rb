@@ -6,7 +6,7 @@ describe T::Delete do
   before do
     rcfile = RCFile.instance
     rcfile.path = fixture_path + "/.trc"
-    @t = T::CLI.new
+    @delete = T::Delete.new
     @old_stderr = $stderr
     $stderr = StringIO.new
     @old_stdout = $stdout
@@ -20,26 +20,26 @@ describe T::Delete do
 
   describe "#block" do
     before do
-      @t.options = @t.options.merge(:profile => fixture_path + "/.trc")
+      @delete.options = @delete.options.merge(:profile => fixture_path + "/.trc")
       stub_delete("/1/blocks/destroy.json").
         with(:query => {:screen_name => "sferik", :include_entities => "false"}).
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
-      @t.delete("block", "sferik")
+      @delete.block("sferik")
       a_delete("/1/blocks/destroy.json").
         with(:query => {:screen_name => "sferik", :include_entities => "false"}).
         should have_been_made
     end
     it "should have the correct output" do
-      @t.delete("block", "sferik")
+      @delete.block("sferik")
       $stdout.string.should =~ /^@testcli unblocked @sferik\.$/
     end
   end
 
   describe "#dm" do
     before do
-      @t.options = @t.options.merge(:profile => fixture_path + "/.trc")
+      @delete.options = @delete.options.merge(:profile => fixture_path + "/.trc")
     end
     context "not found" do
       before do
@@ -49,7 +49,7 @@ describe T::Delete do
       end
       it "should exit" do
         lambda do
-          @t.delete("dm")
+          @delete.dm
         end.should raise_error(Thor::Error, "Direct Message not found")
       end
     end
@@ -64,10 +64,10 @@ describe T::Delete do
       end
       context ":force => true" do
         before do
-          @t.options = @t.options.merge(:force => true)
+          @delete.options = @delete.options.merge(:force => true)
         end
         it "should request the correct resource" do
-          @t.delete("dm")
+          @delete.dm
           a_get("/1/direct_messages/sent.json").
             with(:query => {:count => "1", :include_entities => "false"}).
             should have_been_made
@@ -76,18 +76,18 @@ describe T::Delete do
             should have_been_made
         end
         it "should have the correct output" do
-          @t.delete("dm")
+          @delete.dm
           $stdout.string.chomp.should == "@sferik deleted the direct message sent to @pengwynn: \"Creating a fixture for the Twitter gem\""
         end
       end
       context ":force => false" do
         before do
-          @t.options = @t.options.merge(:force => false)
+          @delete.options = @delete.options.merge(:force => false)
         end
         it "should request the correct resource" do
           $stdout.should_receive(:print).with("Are you sure you want to permanently delete the direct message to @hurrycane: \"Sounds good. Meeting Tuesday is fine.\"? [y/N] ")
           $stdin.should_receive(:gets).and_return("yes")
-          @t.delete("dm")
+          @delete.dm
           a_get("/1/direct_messages/sent.json").
             with(:query => {:count => "1", :include_entities => "false"}).
             should have_been_made
@@ -99,7 +99,7 @@ describe T::Delete do
           it "should have the correct output" do
             $stdout.should_receive(:print).with("Are you sure you want to permanently delete the direct message to @hurrycane: \"Sounds good. Meeting Tuesday is fine.\"? [y/N] ")
             $stdin.should_receive(:gets).and_return("yes")
-            @t.delete("dm")
+            @delete.dm
             $stdout.string.chomp.should == "@sferik deleted the direct message sent to @pengwynn: \"Creating a fixture for the Twitter gem\""
           end
         end
@@ -107,7 +107,7 @@ describe T::Delete do
           it "should have the correct output" do
             $stdout.should_receive(:print).with("Are you sure you want to permanently delete the direct message to @hurrycane: \"Sounds good. Meeting Tuesday is fine.\"? [y/N] ")
             $stdin.should_receive(:gets).and_return("no")
-            @t.delete("dm")
+            @delete.dm
             $stdout.string.chomp.should == ""
           end
         end
@@ -117,29 +117,29 @@ describe T::Delete do
 
   describe "#favorite" do
     before do
-      @t.options = @t.options.merge(:profile => fixture_path + "/.trc")
+      @delete.options = @delete.options.merge(:profile => fixture_path + "/.trc")
       stub_delete("/1/favorites/destroy/28439861609.json").
         with(:query => {:include_entities => "false"}).
         to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     context ":force => true" do
       before do
-        @t.options = @t.options.merge(:force => true)
+        @delete.options = @delete.options.merge(:force => true)
       end
       it "should request the correct resource" do
-        @t.delete("favorite", "28439861609")
+        @delete.favorite("28439861609")
         a_delete("/1/favorites/destroy/28439861609.json").
           with(:query => {:include_entities => "false"}).
           should have_been_made
       end
       it "should have the correct output" do
-        @t.delete("favorite", "28439861609")
+        @delete.favorite("28439861609")
         $stdout.string.should =~ /^@testcli unfavorited @sferik's status: \"@noradio working on implementing #NewTwitter API methods in the twitter gem\. Twurl is making it easy\. Thank you!\"$/
       end
     end
     context ":force => false" do
       before do
-        @t.options = @t.options.merge(:force => false)
+        @delete.options = @delete.options.merge(:force => false)
         stub_get("/1/statuses/show/28439861609.json").
           with(:query => {:include_entities => "false", :include_my_retweet => "false", :trim_user => "true"}).
           to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -147,7 +147,7 @@ describe T::Delete do
       it "should request the correct resource" do
         $stdout.should_receive(:print).with("Are you sure you want to delete the favorite of @sferik's status: \"@noradio working on implementing #NewTwitter API methods in the twitter gem\. Twurl is making it easy\. Thank you!\"? [y/N] ")
         $stdin.should_receive(:gets).and_return("yes")
-        @t.delete("favorite", "28439861609")
+        @delete.favorite("28439861609")
         a_get("/1/statuses/show/28439861609.json").
           with(:query => {:include_entities => "false", :include_my_retweet => "false", :trim_user => "true"}).
           should have_been_made
@@ -159,7 +159,7 @@ describe T::Delete do
         it "should have the correct output" do
           $stdout.should_receive(:print).with("Are you sure you want to delete the favorite of @sferik's status: \"@noradio working on implementing #NewTwitter API methods in the twitter gem. Twurl is making it easy. Thank you!\"? [y/N] ")
           $stdin.should_receive(:gets).and_return("yes")
-          @t.delete("favorite", "28439861609")
+          @delete.favorite("28439861609")
           $stdout.string.should =~ /^@testcli unfavorited @sferik's status: \"@noradio working on implementing #NewTwitter API methods in the twitter gem\. Twurl is making it easy\. Thank you!\"$/
         end
       end
@@ -167,7 +167,7 @@ describe T::Delete do
         it "should have the correct output" do
           $stdout.should_receive(:print).with("Are you sure you want to delete the favorite of @sferik's status: \"@noradio working on implementing #NewTwitter API methods in the twitter gem. Twurl is making it easy. Thank you!\"? [y/N] ")
           $stdin.should_receive(:gets).and_return("no")
-          @t.delete("favorite", "28439861609")
+          @delete.favorite("28439861609")
           $stdout.string.chomp.should == ""
         end
       end
@@ -176,7 +176,7 @@ describe T::Delete do
 
   describe "#list" do
     before do
-      @t.options = @t.options.merge(:profile => fixture_path + "/.trc")
+      @delete.options = @delete.options.merge(:profile => fixture_path + "/.trc")
       stub_get("/1/account/verify_credentials.json").
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       stub_delete("/1/lists/destroy.json").
@@ -185,10 +185,10 @@ describe T::Delete do
     end
     context ":force => true" do
       before do
-        @t.options = @t.options.merge(:force => true)
+        @delete.options = @delete.options.merge(:force => true)
       end
       it "should request the correct resource" do
-        @t.delete("list", "presidents")
+        @delete.list("presidents")
         a_get("/1/account/verify_credentials.json").
           should have_been_made
         a_delete("/1/lists/destroy.json").
@@ -196,18 +196,18 @@ describe T::Delete do
           should have_been_made
       end
       it "should have the correct output" do
-        @t.delete("list", "presidents")
+        @delete.list("presidents")
         $stdout.string.chomp.should == "@testcli deleted the list \"presidents\"."
       end
     end
     context ":force => false" do
       before do
-        @t.options = @t.options.merge(:force => false)
+        @delete.options = @delete.options.merge(:force => false)
       end
       it "should request the correct resource" do
         $stdout.should_receive(:print).with("Are you sure you want to permanently delete the list \"presidents\"? [y/N] ")
         $stdin.should_receive(:gets).and_return("yes")
-        @t.delete("list", "presidents")
+        @delete.list("presidents")
         a_get("/1/account/verify_credentials.json").
           should have_been_made
         a_delete("/1/lists/destroy.json").
@@ -218,7 +218,7 @@ describe T::Delete do
         it "should have the correct output" do
           $stdout.should_receive(:print).with("Are you sure you want to permanently delete the list \"presidents\"? [y/N] ")
           $stdin.should_receive(:gets).and_return("yes")
-          @t.delete("list", "presidents")
+          @delete.list("presidents")
           $stdout.string.chomp.should == "@testcli deleted the list \"presidents\"."
         end
       end
@@ -226,7 +226,7 @@ describe T::Delete do
         it "should have the correct output" do
           $stdout.should_receive(:print).with("Are you sure you want to permanently delete the list \"presidents\"? [y/N] ")
           $stdin.should_receive(:gets).and_return("no")
-          @t.delete("list", "presidents")
+          @delete.list("presidents")
           $stdout.string.chomp.should == ""
         end
       end
@@ -235,29 +235,29 @@ describe T::Delete do
 
   describe "#status" do
     before do
-      @t.options = @t.options.merge(:profile => fixture_path + "/.trc")
+      @delete.options = @delete.options.merge(:profile => fixture_path + "/.trc")
       stub_delete("/1/statuses/destroy/26755176471724032.json").
         with(:query => {:include_entities => "false", :trim_user => "true"}).
         to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     context ":force => true" do
       before do
-        @t.options = @t.options.merge(:force => true)
+        @delete.options = @delete.options.merge(:force => true)
       end
       it "should request the correct resource" do
-        @t.delete("status", "26755176471724032")
+        @delete.status("26755176471724032")
         a_delete("/1/statuses/destroy/26755176471724032.json").
           with(:query => {:include_entities => "false", :trim_user => "true"}).
           should have_been_made
       end
       it "should have the correct output" do
-        @t.delete("status", "26755176471724032")
+        @delete.status("26755176471724032")
         $stdout.string.chomp.should == "@testcli deleted the status: \"@noradio working on implementing #NewTwitter API methods in the twitter gem. Twurl is making it easy. Thank you!\""
       end
     end
     context ":force => false" do
       before do
-        @t.options = @t.options.merge(:force => false)
+        @delete.options = @delete.options.merge(:force => false)
         stub_get("/1/statuses/show/26755176471724032.json").
           with(:query => {:include_entities => "false", :include_my_retweet => "false", :trim_user => "true"}).
           to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -265,7 +265,7 @@ describe T::Delete do
       it "should request the correct resource" do
         $stdout.should_receive(:print).with("Are you sure you want to permanently delete @sferik's status: \"@noradio working on implementing #NewTwitter API methods in the twitter gem. Twurl is making it easy. Thank you!\"? [y/N] ")
         $stdin.should_receive(:gets).and_return("yes")
-        @t.delete("status", "26755176471724032")
+        @delete.status("26755176471724032")
         a_get("/1/statuses/show/26755176471724032.json").
           with(:query => {:include_entities => "false", :include_my_retweet => "false", :trim_user => "true"}).
           should have_been_made
@@ -277,7 +277,7 @@ describe T::Delete do
         it "should have the correct output" do
           $stdout.should_receive(:print).with("Are you sure you want to permanently delete @sferik's status: \"@noradio working on implementing #NewTwitter API methods in the twitter gem. Twurl is making it easy. Thank you!\"? [y/N] ")
           $stdin.should_receive(:gets).and_return("yes")
-          @t.delete("status", "26755176471724032")
+          @delete.status("26755176471724032")
           $stdout.string.chomp.should == "@testcli deleted the status: \"@noradio working on implementing #NewTwitter API methods in the twitter gem. Twurl is making it easy. Thank you!\""
         end
       end
@@ -285,7 +285,7 @@ describe T::Delete do
         it "should have the correct output" do
           $stdout.should_receive(:print).with("Are you sure you want to permanently delete @sferik's status: \"@noradio working on implementing #NewTwitter API methods in the twitter gem. Twurl is making it easy. Thank you!\"? [y/N] ")
           $stdin.should_receive(:gets).and_return("no")
-          @t.delete("status", "26755176471724032")
+          @delete.status("26755176471724032")
           $stdout.string.chomp.should == ""
         end
       end

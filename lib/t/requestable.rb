@@ -15,7 +15,7 @@ module T
 
       def client
         return @client if @client
-        @rcfile.path = parent_options['profile'] if parent_options['profile']
+        @rcfile.path = options['profile'] if options['profile']
         @client = Twitter::Client.new(
           :endpoint => base_url,
           :consumer_key => @rcfile.default_consumer_key,
@@ -26,11 +26,11 @@ module T
       end
 
       def host
-        parent_options['host'] || DEFAULT_HOST
+        options['host'] || DEFAULT_HOST
       end
 
       def protocol
-        parent_options['no_ssl'] ? 'http' : DEFAULT_PROTOCOL
+        options['no_ssl'] ? 'http' : DEFAULT_PROTOCOL
       end
     end
   end

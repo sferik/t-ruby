@@ -55,12 +55,14 @@ describe T::Search do
   end
 
   describe "#favorites" do
-    it "should request the correct resource" do
+    before do
       1.upto(16).each do |page|
         stub_get("/1/favorites.json").
           with(:query => {:count => "200", :page => "#{page}"}).
           to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
+    end
+    it "should request the correct resource" do
       @t.search("favorites", "twitter")
       1.upto(16).each do |page|
         a_get("/1/favorites.json").
@@ -69,11 +71,6 @@ describe T::Search do
       end
     end
     it "should have the correct output" do
-      1.upto(16).each do |page|
-        stub_get("/1/favorites.json").
-          with(:query => {:count => "200", :page => "#{page}"}).
-          to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      end
       @t.search("favorites", "twitter")
       $stdout.string.should == <<-eos.gsub(/^/, ' ' * 6)
         sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
@@ -112,11 +109,6 @@ describe T::Search do
     end
     context "Twitter is down" do
       it "should retry 3 times and then raise an error" do
-        1.upto(15).each do |page|
-          stub_get("/1/favorites.json").
-            with(:query => {:count => "200", :page => "#{page}"}).
-            to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        end
         stub_get("/1/favorites.json").
           with(:query => {:count => "200", :page => "16"}).
           to_return(:status => 502)
@@ -131,12 +123,14 @@ describe T::Search do
   end
 
   describe "#mentions" do
-    it "should request the correct resource" do
+    before do
       1.upto(16).each do |page|
         stub_get("/1/statuses/mentions.json").
           with(:query => {:count => "200", :page => "#{page}"}).
           to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
+    end
+    it "should request the correct resource" do
       @t.search("mentions", "twitter")
       1.upto(16).each do |page|
         a_get("/1/statuses/mentions.json").
@@ -145,11 +139,6 @@ describe T::Search do
       end
     end
     it "should have the correct output" do
-      1.upto(16).each do |page|
-        stub_get("/1/statuses/mentions.json").
-          with(:query => {:count => "200", :page => "#{page}"}).
-          to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      end
       @t.search("mentions", "twitter")
       $stdout.string.should == <<-eos.gsub(/^/, ' ' * 6)
         sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
@@ -188,11 +177,6 @@ describe T::Search do
     end
     context "Twitter is down" do
       it "should retry 3 times and then raise an error" do
-        1.upto(15).each do |page|
-          stub_get("/1/statuses/mentions.json").
-            with(:query => {:count => "200", :page => "#{page}"}).
-            to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        end
         stub_get("/1/statuses/mentions.json").
           with(:query => {:count => "200", :page => "16"}).
           to_return(:status => 502)
@@ -207,12 +191,14 @@ describe T::Search do
   end
 
   describe "#retweets" do
-    it "should request the correct resource" do
+    before do
       1.upto(16).each do |page|
         stub_get("/1/statuses/retweeted_by_me.json").
           with(:query => {:count => "200", :page => "#{page}"}).
           to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
+    end
+    it "should request the correct resource" do
       @t.search("retweets", "twitter")
       1.upto(16).each do |page|
         a_get("/1/statuses/retweeted_by_me.json").
@@ -221,11 +207,6 @@ describe T::Search do
       end
     end
     it "should have the correct output" do
-      1.upto(16).each do |page|
-        stub_get("/1/statuses/retweeted_by_me.json").
-          with(:query => {:count => "200", :page => "#{page}"}).
-          to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      end
       @t.search("retweets", "twitter")
       $stdout.string.should == <<-eos.gsub(/^/, ' ' * 6)
         sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
@@ -264,11 +245,6 @@ describe T::Search do
     end
     context "Twitter is down" do
       it "should retry 3 times and then raise an error" do
-        1.upto(15).each do |page|
-          stub_get("/1/statuses/retweeted_by_me.json").
-            with(:query => {:count => "200", :page => "#{page}"}).
-            to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        end
         stub_get("/1/statuses/retweeted_by_me.json").
           with(:query => {:count => "200", :page => "16"}).
           to_return(:status => 502)
@@ -283,12 +259,14 @@ describe T::Search do
   end
 
   describe "#timeline" do
-    it "should request the correct resource" do
+    before do
       1.upto(16).each do |page|
         stub_get("/1/statuses/home_timeline.json").
           with(:query => {:count => "200", :page => "#{page}"}).
           to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
+    end
+    it "should request the correct resource" do
       @t.search("timeline", "twitter")
       1.upto(16).each do |page|
         a_get("/1/statuses/home_timeline.json").
@@ -297,11 +275,6 @@ describe T::Search do
       end
     end
     it "should have the correct output" do
-      1.upto(16).each do |page|
-        stub_get("/1/statuses/home_timeline.json").
-          with(:query => {:count => "200", :page => "#{page}"}).
-          to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      end
       @t.search("timeline", "twitter")
       $stdout.string.should == <<-eos.gsub(/^/, ' ' * 6)
         sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
@@ -340,11 +313,6 @@ describe T::Search do
     end
     context "Twitter is down" do
       it "should retry 3 times and then raise an error" do
-        1.upto(15).each do |page|
-          stub_get("/1/statuses/home_timeline.json").
-            with(:query => {:count => "200", :page => "#{page}"}).
-            to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        end
         stub_get("/1/statuses/home_timeline.json").
           with(:query => {:count => "200", :page => "16"}).
           to_return(:status => 502)
@@ -359,12 +327,14 @@ describe T::Search do
   end
 
   describe "#user" do
-    it "should request the correct resource" do
+    before do
       1.upto(16).each do |page|
         stub_get("/1/statuses/user_timeline.json").
           with(:query => {:screen_name => "sferik", :count => "200", :page => "#{page}"}).
           to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
+    end
+    it "should request the correct resource" do
       @t.search("user", "sferik", "twitter")
       1.upto(16).each do |page|
         a_get("/1/statuses/user_timeline.json").
@@ -373,11 +343,6 @@ describe T::Search do
       end
     end
     it "should have the correct output" do
-      1.upto(16).each do |page|
-        stub_get("/1/statuses/user_timeline.json").
-          with(:query => {:screen_name => "sferik", :count => "200", :page => "#{page}"}).
-          to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      end
       @t.search("user", "sferik", "twitter")
       $stdout.string.should == <<-eos.gsub(/^/, ' ' * 6)
         sferik: 140 Proof Provides A Piece Of The Twitter Advertising Puzzle http://t.co/R2cUSDe via @techcrunch (about 1 year ago)
@@ -416,11 +381,6 @@ describe T::Search do
     end
     context "Twitter is down" do
       it "should retry 3 times and then raise an error" do
-        1.upto(15).each do |page|
-          stub_get("/1/statuses/user_timeline.json").
-            with(:query => {:screen_name => "sferik", :count => "200", :page => "#{page}"}).
-            to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        end
         stub_get("/1/statuses/user_timeline.json").
           with(:query => {:screen_name => "sferik", :count => "200", :page => "16"}).
           to_return(:status => 502)

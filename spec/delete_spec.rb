@@ -115,7 +115,7 @@ describe T::Delete do
       end
       it "should have the correct output" do
         @delete.favorite("28439861609")
-        $stdout.string.should =~ /^@testcli unfavorited @sferik's status: \"@noradio working on implementing #NewTwitter API methods in the twitter gem\. Twurl is making it easy\. Thank you!\"$/
+        $stdout.string.should =~ /^@testcli unfavorited @sferik's status: "The problem with your code is that it's doing exactly what you told it to do\."$/
       end
     end
     context ":force => false" do
@@ -126,7 +126,7 @@ describe T::Delete do
           to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should request the correct resource" do
-        $stdout.should_receive(:print).with("Are you sure you want to delete the favorite of @sferik's status: \"@noradio working on implementing #NewTwitter API methods in the twitter gem\. Twurl is making it easy\. Thank you!\"? [y/N] ")
+        $stdout.should_receive(:print).with("Are you sure you want to delete the favorite of @sferik's status: \"The problem with your code is that it's doing exactly what you told it to do.\"? [y/N] ")
         $stdin.should_receive(:gets).and_return("yes")
         @delete.favorite("28439861609")
         a_get("/1/statuses/show/28439861609.json").
@@ -138,15 +138,15 @@ describe T::Delete do
       end
       context "yes" do
         it "should have the correct output" do
-          $stdout.should_receive(:print).with("Are you sure you want to delete the favorite of @sferik's status: \"@noradio working on implementing #NewTwitter API methods in the twitter gem. Twurl is making it easy. Thank you!\"? [y/N] ")
+          $stdout.should_receive(:print).with("Are you sure you want to delete the favorite of @sferik's status: \"The problem with your code is that it's doing exactly what you told it to do.\"? [y/N] ")
           $stdin.should_receive(:gets).and_return("yes")
           @delete.favorite("28439861609")
-          $stdout.string.should =~ /^@testcli unfavorited @sferik's status: \"@noradio working on implementing #NewTwitter API methods in the twitter gem\. Twurl is making it easy\. Thank you!\"$/
+          $stdout.string.should =~ /^@testcli unfavorited @sferik's status: "The problem with your code is that it's doing exactly what you told it to do\."$/
         end
       end
       context "no" do
         it "should have the correct output" do
-          $stdout.should_receive(:print).with("Are you sure you want to delete the favorite of @sferik's status: \"@noradio working on implementing #NewTwitter API methods in the twitter gem. Twurl is making it easy. Thank you!\"? [y/N] ")
+          $stdout.should_receive(:print).with("Are you sure you want to delete the favorite of @sferik's status: \"The problem with your code is that it's doing exactly what you told it to do.\"? [y/N] ")
           $stdin.should_receive(:gets).and_return("no")
           @delete.favorite("28439861609")
           $stdout.string.chomp.should be_empty
@@ -233,7 +233,7 @@ describe T::Delete do
       end
       it "should have the correct output" do
         @delete.status("26755176471724032")
-        $stdout.string.chomp.should == "@testcli deleted the status: \"@noradio working on implementing #NewTwitter API methods in the twitter gem. Twurl is making it easy. Thank you!\""
+        $stdout.string.chomp.should == "@testcli deleted the status: \"The problem with your code is that it's doing exactly what you told it to do.\""
       end
     end
     context ":force => false" do
@@ -244,7 +244,7 @@ describe T::Delete do
           to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should request the correct resource" do
-        $stdout.should_receive(:print).with("Are you sure you want to permanently delete @sferik's status: \"@noradio working on implementing #NewTwitter API methods in the twitter gem. Twurl is making it easy. Thank you!\"? [y/N] ")
+        $stdout.should_receive(:print).with("Are you sure you want to permanently delete @sferik's status: \"The problem with your code is that it's doing exactly what you told it to do.\"? [y/N] ")
         $stdin.should_receive(:gets).and_return("yes")
         @delete.status("26755176471724032")
         a_get("/1/statuses/show/26755176471724032.json").
@@ -256,15 +256,15 @@ describe T::Delete do
       end
       context "yes" do
         it "should have the correct output" do
-          $stdout.should_receive(:print).with("Are you sure you want to permanently delete @sferik's status: \"@noradio working on implementing #NewTwitter API methods in the twitter gem. Twurl is making it easy. Thank you!\"? [y/N] ")
+          $stdout.should_receive(:print).with("Are you sure you want to permanently delete @sferik's status: \"The problem with your code is that it's doing exactly what you told it to do.\"? [y/N] ")
           $stdin.should_receive(:gets).and_return("yes")
           @delete.status("26755176471724032")
-          $stdout.string.chomp.should == "@testcli deleted the status: \"@noradio working on implementing #NewTwitter API methods in the twitter gem. Twurl is making it easy. Thank you!\""
+          $stdout.string.chomp.should == "@testcli deleted the status: \"The problem with your code is that it's doing exactly what you told it to do.\""
         end
       end
       context "no" do
         it "should have the correct output" do
-          $stdout.should_receive(:print).with("Are you sure you want to permanently delete @sferik's status: \"@noradio working on implementing #NewTwitter API methods in the twitter gem. Twurl is making it easy. Thank you!\"? [y/N] ")
+          $stdout.should_receive(:print).with("Are you sure you want to permanently delete @sferik's status: \"The problem with your code is that it's doing exactly what you told it to do.\"? [y/N] ")
           $stdin.should_receive(:gets).and_return("no")
           @delete.status("26755176471724032")
           $stdout.string.chomp.should be_empty

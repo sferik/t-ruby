@@ -25,7 +25,7 @@ module T
         if options['long']
           array = statuses.map do |status|
             created_at = status.created_at > 6.months.ago ? status.created_at.strftime("%b %e %H:%M") : status.created_at.strftime("%b %e  %Y")
-            [number_with_delimiter(status.id), created_at, status.user.screen_name, status.text.gsub(/\n+/, ' ')]
+            [number_with_delimiter(status.id), created_at, "@#{status.user.screen_name}", status.text.gsub(/\n+/, ' ')]
           end
           if STDOUT.tty?
             headings = ["ID", "Posted at", "Screen name", "Text"]
@@ -58,7 +58,7 @@ module T
         if options['long']
           array = users.map do |user|
             created_at = user.created_at > 6.months.ago ? user.created_at.strftime("%b %e %H:%M") : user.created_at.strftime("%b %e  %Y")
-            [number_with_delimiter(user.id), created_at, number_with_delimiter(user.statuses_count), number_with_delimiter(user.favourites_count), number_with_delimiter(user.listed_count), number_with_delimiter(user.friends_count), number_with_delimiter(user.followers_count), user.screen_name, user.name]
+            [number_with_delimiter(user.id), created_at, number_with_delimiter(user.statuses_count), number_with_delimiter(user.favourites_count), number_with_delimiter(user.listed_count), number_with_delimiter(user.friends_count), number_with_delimiter(user.followers_count), "@#{user.screen_name}", user.name]
           end
           if STDOUT.tty?
             headings = ["ID", "Since", "Tweets", "Favorites", "Listed", "Following", "Followers", "Screen name", "Name"]

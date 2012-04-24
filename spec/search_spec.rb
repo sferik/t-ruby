@@ -59,22 +59,22 @@ describe T::Search do
       it "should list in long format" do
         @search.all("twitter")
         $stdout.string.should == <<-eos
-ID                  Posted at     Screen name      Text
-194521262415032320  Apr 23  2011  JessRoveel       Pondre lo mas importante de Hamlet en Twitter para recordarlo mejor :D
-194521262326951936  Apr 23  2011  lauravgeest      Twitter doet het al 7 uur niet meer
-194521262234669056  Apr 23  2011  Jenny_Bearx333   I keep thinking that twitter is @instagram , and therefore double tap all the pics I like... #NotWorking
-194521262138204160  Apr 23  2011  misspoxtonX      RT @jordantaylorhi: twitter friends &gt; twats at school
-194521262134001665  Apr 23  2011  PatrickBrickman  RT @zeus30hightower: Too all Bama fans and followers my cousin mark Barron doesn't have a twitter so please disregard any tweets from that user
-194521262129811456  Apr 23  2011  KolonelX         Ik refresh twitter op me telefoon terwijl ik tweetdeck voor me open heb staan
-194521261852995586  Apr 23  2011  VLGPRLG5         @mikeyway and you too RT @NimcyGD: @gerardway Get your ass back to twitter, okay? :3
-194521261756530689  Apr 23  2011  xRhiBabyx        Trying to persuade the boyf to get on twitter and failing. Help? @holly_haime @Ckwarburton @samwarburton_ @chrishaime @rowloboy
-194521261630697473  Apr 23  2011  juliotrv         RT @lookinglassbr: Lançamentos outono-inverno 2012...CONFIRA em http://t.co/YAk8OXp7 http://t.co/fmmrVrbG
-194521261571964928  Apr 23  2011  shanleyaustin27  RT @caaammmmi: @shanleyaustin27 .....and this hahahahaa http://t.co/wzCMx6ZU
-194521261563580416  Apr 23  2011  Dame_Valuta      RT @Paiser10: Great @chelseafc training at Nou Camp! #cfc http://t.co/k00TnRyR
-194521261488095232  Apr 23  2011  miss_indyiah     smh, @IndianaHustle done turned into a twitter addict..fuck goin on lol ?
-194521261370650625  Apr 23  2011  CAROLINEWOLLER   RT @Mark_Ingram28: To all Bama fans and followers, please unfollow and pay no attention to any user posing to be Mark Barron. My bro doesn't have a twitter!
-194521261370642432  Apr 23  2011  shelbytrenchdww  RT @The90sLife: Admit it, we all have a cabinet that looks like this. http://t.co/gQEkQw5G
-194521261307727872  Apr 23  2011  kabos84          RT @JF_q8: بالله  عليكم ،، مو عيب !!! .. http://t.co/e29GV7Ow
+ID                       Posted at     Screen name       Text
+194,521,262,415,032,320  Apr 23  2011  @JessRoveel       Pondre lo mas importante de Hamlet en Twitter para recordarlo mejor :D
+194,521,262,326,951,936  Apr 23  2011  @lauravgeest      Twitter doet het al 7 uur niet meer
+194,521,262,234,669,056  Apr 23  2011  @Jenny_Bearx333   I keep thinking that twitter is @instagram , and therefore double tap all the pics I like... #NotWorking
+194,521,262,138,204,160  Apr 23  2011  @misspoxtonX      RT @jordantaylorhi: twitter friends &gt; twats at school
+194,521,262,134,001,665  Apr 23  2011  @PatrickBrickman  RT @zeus30hightower: Too all Bama fans and followers my cousin mark Barron doesn't have a twitter so please disregard any tweets from that user
+194,521,262,129,811,456  Apr 23  2011  @KolonelX         Ik refresh twitter op me telefoon terwijl ik tweetdeck voor me open heb staan
+194,521,261,852,995,586  Apr 23  2011  @VLGPRLG5         @mikeyway and you too RT @NimcyGD: @gerardway Get your ass back to twitter, okay? :3
+194,521,261,756,530,689  Apr 23  2011  @xRhiBabyx        Trying to persuade the boyf to get on twitter and failing. Help? @holly_haime @Ckwarburton @samwarburton_ @chrishaime @rowloboy
+194,521,261,630,697,473  Apr 23  2011  @juliotrv         RT @lookinglassbr: Lançamentos outono-inverno 2012...CONFIRA em http://t.co/YAk8OXp7 http://t.co/fmmrVrbG
+194,521,261,571,964,928  Apr 23  2011  @shanleyaustin27  RT @caaammmmi: @shanleyaustin27 .....and this hahahahaa http://t.co/wzCMx6ZU
+194,521,261,563,580,416  Apr 23  2011  @Dame_Valuta      RT @Paiser10: Great @chelseafc training at Nou Camp! #cfc http://t.co/k00TnRyR
+194,521,261,488,095,232  Apr 23  2011  @miss_indyiah     smh, @IndianaHustle done turned into a twitter addict..fuck goin on lol ?
+194,521,261,370,650,625  Apr 23  2011  @CAROLINEWOLLER   RT @Mark_Ingram28: To all Bama fans and followers, please unfollow and pay no attention to any user posing to be Mark Barron. My bro doesn't have a twitter!
+194,521,261,370,642,432  Apr 23  2011  @shelbytrenchdww  RT @The90sLife: Admit it, we all have a cabinet that looks like this. http://t.co/gQEkQw5G
+194,521,261,307,727,872  Apr 23  2011  @kabos84          RT @JF_q8: بالله  عليكم ،، مو عيب !!! .. http://t.co/e29GV7Ow
         eos
       end
     end
@@ -139,22 +139,22 @@ ID                  Posted at     Screen name      Text
         @search.favorites("twitter")
         $stdout.string.should == <<-eos
 ID                       Posted at     Screen name  Text
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
         eos
       end
     end
@@ -218,22 +218,22 @@ ID                       Posted at     Screen name  Text
         @search.mentions("twitter")
         $stdout.string.should == <<-eos
 ID                       Posted at     Screen name  Text
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
         eos
       end
     end
@@ -297,22 +297,22 @@ ID                       Posted at     Screen name  Text
         @search.retweets("twitter")
         $stdout.string.should == <<-eos
 ID                       Posted at     Screen name  Text
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
         eos
       end
     end
@@ -376,22 +376,22 @@ ID                       Posted at     Screen name  Text
         @search.timeline("twitter")
         $stdout.string.should == <<-eos
 ID                       Posted at     Screen name  Text
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
         eos
       end
     end
@@ -455,22 +455,22 @@ ID                       Posted at     Screen name  Text
         @search.user("sferik", "twitter")
         $stdout.string.should == <<-eos
 ID                       Posted at     Screen name  Text
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,727,670,390,784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
         eos
       end
     end

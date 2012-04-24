@@ -120,7 +120,7 @@ module T
       if options['long']
         array = direct_messages.map do |direct_message|
           created_at = direct_message.created_at > 6.months.ago ? direct_message.created_at.strftime("%b %e %H:%M") : direct_message.created_at.strftime("%b %e  %Y")
-          [number_with_delimiter(direct_message.id), created_at, direct_message.sender.screen_name, direct_message.text.gsub(/\n+/, ' ')]
+          [number_with_delimiter(direct_message.id), created_at, "@#{direct_message.sender.screen_name}", direct_message.text.gsub(/\n+/, ' ')]
         end
         if STDOUT.tty?
           headings = ["ID", "Posted at", "Screen name", "Text"]
@@ -146,7 +146,7 @@ module T
       if options['long']
         array = direct_messages.map do |direct_message|
           created_at = direct_message.created_at > 6.months.ago ? direct_message.created_at.strftime("%b %e %H:%M") : direct_message.created_at.strftime("%b %e  %Y")
-          [number_with_delimiter(direct_message.id), created_at, direct_message.recipient.screen_name, direct_message.text.gsub(/\n+/, ' ')]
+          [number_with_delimiter(direct_message.id), created_at, "@#{direct_message.recipient.screen_name}", direct_message.text.gsub(/\n+/, ' ')]
         end
         if STDOUT.tty?
           headings = ["ID", "Posted at", "Screen name", "Text"]

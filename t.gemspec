@@ -23,7 +23,7 @@ Gem::Specification.new do |gem|
   gem.description = %q{A command-line power tool for Twitter.}
   gem.email = 'sferik@gmail.com'
   gem.executables = %w(t)
-  gem.files = %w(LICENSE.md README.md Rakefile)
+  gem.files = %w(LICENSE.md README.md Rakefile t.gemspec)
   gem.files += Dir.glob("lib/**/*.rb")
   gem.files += Dir.glob("bin/**/*")
   gem.files += Dir.glob("spec/**/*")

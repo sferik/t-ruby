@@ -28,17 +28,16 @@ module T
       say "Run `#{File.basename($0)} block #{screen_names.join(' ')}` to block."
     end
 
-    desc "dm", "Delete the last Direct Message sent."
-    def dm
-      direct_message = client.direct_messages_sent(:count => 1, :include_entities => false).first
-      if direct_message
+    desc "dm [DIRECT_MESSAGE_ID] [DIRECT_MESSAGE_ID...]", "Delete the last Direct Message sent."
+    def dm(direct_message_id, *direct_message_ids)
+      direct_message_ids.unshift(direct_message_id)
+      direct_message_ids.each do |direct_message_id|
         unless options['force']
+          direct_message = client.direct_message(direct_message_id, :include_entities => false)
           return unless yes? "Are you sure you want to permanently delete the direct message to @#{direct_message.recipient.screen_name}: \"#{direct_message.text}\"? [y/N]"
         end
-        direct_message = client.direct_message_destroy(direct_message.id, :include_entities => false)
-        say "@#{direct_message.sender.screen_name} deleted the direct message sent to @#{direct_message.recipient.screen_name}: \"#{direct_message.text}\""
-      else
-        raise Thor::Error, "Direct Message not found"
+        direct_message = client.direct_message_destroy(direct_message_id, :include_entities => false)
+        say "@#{@rcfile.default_profile[0]} deleted the direct message sent to @#{direct_message.recipient.screen_name}: \"#{direct_message.text}\""
       end
     end
     map %w(m) => :dm

@@ -40,76 +40,57 @@ describe T::Delete do
   describe "#dm" do
     before do
       @delete.options = @delete.options.merge(:profile => fixture_path + "/.trc")
+      stub_delete("/1/direct_messages/destroy/1773478249.json").
+        with(:query => {:include_entities => "false"}).
+        to_return(:body => fixture("direct_message.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
-    context "not found" do
+    context ":force => true" do
       before do
-        stub_get("/1/direct_messages/sent.json").
-          with(:query => {:count => "1", :include_entities => "false"}).
-          to_return(:body => "[]", :headers => {:content_type => "application/json; charset=utf-8"})
+        @delete.options = @delete.options.merge(:force => true)
       end
-      it "should exit" do
-        lambda do
-          @delete.dm
-        end.should raise_error(Thor::Error, "Direct Message not found")
+      it "should request the correct resource" do
+        @delete.dm("1773478249")
+        a_delete("/1/direct_messages/destroy/1773478249.json").
+          with(:query => {:include_entities => "false"}).
+          should have_been_made
+      end
+      it "should have the correct output" do
+        @delete.dm("1773478249")
+        $stdout.string.chomp.should == "@testcli deleted the direct message sent to @pengwynn: \"Creating a fixture for the Twitter gem\""
       end
     end
-    context "found" do
+    context ":force => false" do
       before do
-        stub_get("/1/direct_messages/sent.json").
-          with(:query => {:count => "1", :include_entities => "false"}).
-          to_return(:body => fixture("direct_messages.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_delete("/1/direct_messages/destroy/1773478249.json").
+        @delete.options = @delete.options.merge(:force => false)
+        stub_get("/1/direct_messages/show/1773478249.json").
           with(:query => {:include_entities => "false"}).
           to_return(:body => fixture("direct_message.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
-      context ":force => true" do
-        before do
-          @delete.options = @delete.options.merge(:force => true)
-        end
-        it "should request the correct resource" do
-          @delete.dm
-          a_get("/1/direct_messages/sent.json").
-            with(:query => {:count => "1", :include_entities => "false"}).
-            should have_been_made
-          a_delete("/1/direct_messages/destroy/1773478249.json").
-            with(:query => {:include_entities => "false"}).
-            should have_been_made
-        end
+      it "should request the correct resource" do
+        $stdout.should_receive(:print).with("Are you sure you want to permanently delete the direct message to @pengwynn: \"Creating a fixture for the Twitter gem\"? [y/N] ")
+        $stdin.should_receive(:gets).and_return("yes")
+        @delete.dm("1773478249")
+        a_get("/1/direct_messages/show/1773478249.json").
+          with(:query => {:include_entities => "false"}).
+          should have_been_made
+        a_delete("/1/direct_messages/destroy/1773478249.json").
+          with(:query => {:include_entities => "false"}).
+          should have_been_made
+      end
+      context "yes" do
         it "should have the correct output" do
-          @delete.dm
-          $stdout.string.chomp.should == "@sferik deleted the direct message sent to @pengwynn: \"Creating a fixture for the Twitter gem\""
+          $stdout.should_receive(:print).with("Are you sure you want to permanently delete the direct message to @pengwynn: \"Creating a fixture for the Twitter gem\"? [y/N] ")
+          $stdin.should_receive(:gets).and_return("yes")
+          @delete.dm("1773478249")
+          $stdout.string.chomp.should == "@testcli deleted the direct message sent to @pengwynn: \"Creating a fixture for the Twitter gem\""
         end
       end
-      context ":force => false" do
-        before do
-          @delete.options = @delete.options.merge(:force => false)
-        end
-        it "should request the correct resource" do
-          $stdout.should_receive(:print).with("Are you sure you want to permanently delete the direct message to @hurrycane: \"Sounds good. Meeting Tuesday is fine.\"? [y/N] ")
-          $stdin.should_receive(:gets).and_return("yes")
-          @delete.dm
-          a_get("/1/direct_messages/sent.json").
-            with(:query => {:count => "1", :include_entities => "false"}).
-            should have_been_made
-          a_delete("/1/direct_messages/destroy/1773478249.json").
-            with(:query => {:include_entities => "false"}).
-            should have_been_made
-        end
-        context "yes" do
-          it "should have the correct output" do
-            $stdout.should_receive(:print).with("Are you sure you want to permanently delete the direct message to @hurrycane: \"Sounds good. Meeting Tuesday is fine.\"? [y/N] ")
-            $stdin.should_receive(:gets).and_return("yes")
-            @delete.dm
-            $stdout.string.chomp.should == "@sferik deleted the direct message sent to @pengwynn: \"Creating a fixture for the Twitter gem\""
-          end
-        end
-        context "no" do
-          it "should have the correct output" do
-            $stdout.should_receive(:print).with("Are you sure you want to permanently delete the direct message to @hurrycane: \"Sounds good. Meeting Tuesday is fine.\"? [y/N] ")
-            $stdin.should_receive(:gets).and_return("no")
-            @delete.dm
-            $stdout.string.chomp.should be_empty
-          end
+      context "no" do
+        it "should have the correct output" do
+          $stdout.should_receive(:print).with("Are you sure you want to permanently delete the direct message to @pengwynn: \"Creating a fixture for the Twitter gem\"? [y/N] ")
+          $stdin.should_receive(:gets).and_return("no")
+          @delete.dm("1773478249")
+          $stdout.string.chomp.should be_empty
         end
       end
     end

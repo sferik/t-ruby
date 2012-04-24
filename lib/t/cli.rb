@@ -3,8 +3,10 @@ require 'active_support/core_ext/array/grouping'
 require 'active_support/core_ext/date/calculations'
 require 'active_support/core_ext/integer/time'
 require 'active_support/core_ext/numeric/time'
+require 'geokit'
 require 'launchy'
 require 'oauth'
+require 'open-uri'
 require 't/collectable'
 require 't/core_ext/string'
 require 't/delete'
@@ -121,7 +123,7 @@ module T
           [number_with_delimiter(direct_message.id), created_at, direct_message.sender.screen_name, direct_message.text.gsub(/\n+/, ' ')]
         end
         if STDOUT.tty?
-          headings = ["ID", "Created at", "Screen name", "Text"]
+          headings = ["ID", "Posted at", "Screen name", "Text"]
           array.unshift(headings) unless direct_messages.empty?
         end
         print_table(array)
@@ -147,7 +149,7 @@ module T
           [number_with_delimiter(direct_message.id), created_at, direct_message.recipient.screen_name, direct_message.text.gsub(/\n+/, ' ')]
         end
         if STDOUT.tty?
-          headings = ["ID", "Created at", "Screen name", "Text"]
+          headings = ["ID", "Posted at", "Screen name", "Text"]
           array.unshift(headings) unless direct_messages.empty?
         end
         print_table(array)
@@ -384,12 +386,22 @@ module T
       status = client.status(status_id, :include_entities => false, :include_my_retweet => false)
       created_at = status.created_at > 6.months.ago ? status.created_at.strftime("%b %e %H:%M") : status.created_at.strftime("%b %e  %Y")
       array = []
-      array << ["ID", number_with_delimiter(status.id)]
-      array << ["Created at", created_at]
       array << ["Text", status.text.gsub(/\n+/, ' ')]
-      array << ["User", "#{status.user.name} (@#{status.user.screen_name})"]
+      array << ["Screen name", "@#{status.user.screen_name}"]
+      array << ["Posted at", created_at]
+      unless status.geo.nil?
+        location = Geokit::Geocoders::MultiGeocoder.reverse_geocode(status.geo.coordinates)
+        if location.city && location.state && location.country
+          array << ["Location", [location.city, location.state, location.country].join(", ")]
+        elsif location.state && location.country
+          array << ["Location", [location.state, location.country].join(", ")]
+        elsif location.country
+          array << ["Location", [location.country].join(", ")]
+        end
+      end
+      array << ["Retweets", number_with_delimiter(status.retweet_count)] unless status.retweet_count.zero?
       array << ["Source", strip_tags(status.source)]
-      array << ["Coordinates", status.geo.coordinates.join(', ')] unless status.geo.nil?
+      array << ["URL", "https://twitter.com/#{status.user.screen_name}/status/#{status.id}"]
       print_table(array)
     end
 
@@ -479,14 +491,23 @@ module T
     def whois(screen_name)
       screen_name = screen_name.strip_ats
       user = client.user(screen_name, :include_entities => false)
-      created_at = user.created_at > 6.months.ago ? user.created_at.strftime("%b %e %H:%M") : user.created_at.strftime("%b %e  %Y")
       array = []
+      name_label = user.verified ? "Name (Verified)" : "Name"
       array << ["ID", number_with_delimiter(user.id)]
+      array << [name_label, user.name] unless user.name.nil?
+      array << ["Bio", user.description.gsub(/\n+/, ' ')] unless user.description.nil?
+      array << ["Location", user.location] unless user.location.nil?
+      array << ["URL", user.url] unless user.url.nil?
+      following = user.following ? "Following" : "Not following"
+      array << ["Status", following] unless user.following.nil?
+      array << ["Last update", "#{user.status.text.gsub(/\n+/, ' ')} (#{time_ago_in_words(user.status.created_at)} ago)"] unless user.status.nil?
+      created_at = user.created_at > 6.months.ago ? user.created_at.strftime("%b %e %H:%M") : user.created_at.strftime("%b %e  %Y")
       array << ["Since", created_at]
-      array << ["Name", user.name]
-      array << ["Bio", user.description.gsub(/\n+/, ' ')]
-      array << ["Location", user.location]
-      array << ["Web", user.url]
+      array << ["Tweets", number_with_delimiter(user.statuses_count)]
+      array << ["Favorites", number_with_delimiter(user.favourites_count)]
+      array << ["Listed", number_with_delimiter(user.listed_count)]
+      array << ["Following", number_with_delimiter(user.friends_count)]
+      array << ["Followers", number_with_delimiter(user.followers_count)]
       print_table(array)
     end
 
@@ -526,8 +547,6 @@ module T
 
     def location
       return @location if @location
-      require 'geokit'
-      require 'open-uri'
       ip_address = Kernel::open("http://checkip.dyndns.org/") do |body|
         /(?:\d{1,3}\.){3}\d{1,3}/.match(body.read)[0]
       end

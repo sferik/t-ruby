@@ -143,9 +143,9 @@ describe T::List do
       it "should list in long format" do
         @list.members("presidents")
         $stdout.string.should == <<-eos
-ID          Since         Tweets  Following  Followers  Favorites  Listed  Screen name  Name
-14,100,886  Mar  8  2008  3,913   1,871      2,767      32         185     pengwynn     Wynn Netherland
-7,505,382   Jul 16  2007  2,962   88         898        727        29      sferik       Erik Michaels-Ober
+ID          Since         Tweets  Favorites  Listed  Following  Followers  Screen name  Name
+14,100,886  Mar  8  2008  3,913   32         185     1,871      2,767      pengwynn     Wynn Netherland
+7,505,382   Jul 16  2007  2,962   727        29      88         898        sferik       Erik Michaels-Ober
         eos
       end
     end
@@ -266,7 +266,7 @@ ID          Since         Tweets  Following  Followers  Favorites  Listed  Scree
       it "should list in long format" do
         @list.timeline("presidents")
         $stdout.string.should == <<-eos
-ID                       Created at    Screen name   Text
+ID                       Posted at     Screen name   Text
 194,548,121,416,630,272  Apr 23  2011  natevillegas  RT @gelobautista #riordan RT @WilI_Smith: Yesterday is history. Tomorrow is a mystery. Today is a gift. That's why it's called the present.
 194,547,993,607,806,976  Apr 23  2011  TD            @kelseysilver how long will you be in town?
 194,547,987,593,183,233  Apr 23  2011  rusashka      @maciej hahaha :) @gpena together we're going to cover all core 28 languages!

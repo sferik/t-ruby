@@ -35,7 +35,7 @@ module T
           [status.id.to_s, created_at, status.from_user, status.text.gsub(/\n+/, ' ')]
         end
         if STDOUT.tty?
-          headings = ["ID", "Created at", "Screen name", "Text"]
+          headings = ["ID", "Posted at", "Screen name", "Text"]
           array.unshift(headings) unless statuses.empty?
         end
         print_table(array)

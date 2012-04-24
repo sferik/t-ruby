@@ -59,7 +59,7 @@ describe T::Search do
       it "should list in long format" do
         @search.all("twitter")
         $stdout.string.should == <<-eos
-ID                  Created at    Screen name      Text
+ID                  Posted at     Screen name      Text
 194521262415032320  Apr 23  2011  JessRoveel       Pondre lo mas importante de Hamlet en Twitter para recordarlo mejor :D
 194521262326951936  Apr 23  2011  lauravgeest      Twitter doet het al 7 uur niet meer
 194521262234669056  Apr 23  2011  Jenny_Bearx333   I keep thinking that twitter is @instagram , and therefore double tap all the pics I like... #NotWorking
@@ -138,7 +138,7 @@ ID                  Created at    Screen name      Text
       it "should list in long format" do
         @search.favorites("twitter")
         $stdout.string.should == <<-eos
-ID                       Created at    Screen name  Text
+ID                       Posted at     Screen name  Text
 194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
 194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
 194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
@@ -217,7 +217,7 @@ ID                       Created at    Screen name  Text
       it "should list in long format" do
         @search.mentions("twitter")
         $stdout.string.should == <<-eos
-ID                       Created at    Screen name  Text
+ID                       Posted at     Screen name  Text
 194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
 194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
 194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
@@ -296,7 +296,7 @@ ID                       Created at    Screen name  Text
       it "should list in long format" do
         @search.retweets("twitter")
         $stdout.string.should == <<-eos
-ID                       Created at    Screen name  Text
+ID                       Posted at     Screen name  Text
 194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
 194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
 194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
@@ -375,7 +375,7 @@ ID                       Created at    Screen name  Text
       it "should list in long format" do
         @search.timeline("twitter")
         $stdout.string.should == <<-eos
-ID                       Created at    Screen name  Text
+ID                       Posted at     Screen name  Text
 194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
 194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
 194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
@@ -454,7 +454,7 @@ ID                       Created at    Screen name  Text
       it "should list in long format" do
         @search.user("sferik", "twitter")
         $stdout.string.should == <<-eos
-ID                       Created at    Screen name  Text
+ID                       Posted at     Screen name  Text
 194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
 194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
 194,546,727,670,390,784  Apr 23  2011  bartt        @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.

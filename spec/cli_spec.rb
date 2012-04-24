@@ -120,7 +120,7 @@ testcli
       it "should list in long format" do
         @cli.direct_messages
         $stdout.string.should == <<-eos
-ID             Created at    Screen name  Text
+ID             Posted at     Screen name  Text
 1,773,478,249  Oct 17  2010  sferik       Sounds good. Meeting Tuesday is fine.
 1,762,960,771  Oct 14  2010  sferik       That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does that work for you?
 1,711,812,216  Oct  1  2010  sferik       I asked Yehuda about the stipend. I believe it has already been sent. Glad you're feeling better.
@@ -204,7 +204,7 @@ ID             Created at    Screen name  Text
       it "should list in long format" do
         @cli.direct_messages_sent
         $stdout.string.should == <<-eos
-ID             Created at    Screen name  Text
+ID             Posted at     Screen name  Text
 1,773,478,249  Oct 17  2010  hurrycane    Sounds good. Meeting Tuesday is fine.
 1,762,960,771  Oct 14  2010  hurrycane    That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does that work for you?
 1,711,812,216  Oct  1  2010  hurrycane    I asked Yehuda about the stipend. I believe it has already been sent. Glad you're feeling better.
@@ -331,7 +331,7 @@ ID             Created at    Screen name  Text
       it "should list in long format" do
         @cli.favorites
         $stdout.string.should == <<-eos
-ID                       Created at    Screen name   Text
+ID                       Posted at     Screen name   Text
 194,548,121,416,630,272  Apr 23  2011  natevillegas  RT @gelobautista #riordan RT @WilI_Smith: Yesterday is history. Tomorrow is a mystery. Today is a gift. That's why it's called the present.
 194,547,993,607,806,976  Apr 23  2011  TD            @kelseysilver how long will you be in town?
 194,547,987,593,183,233  Apr 23  2011  rusashka      @maciej hahaha :) @gpena together we're going to cover all core 28 languages!
@@ -513,9 +513,9 @@ ID                       Created at    Screen name   Text
       it "should list in long format" do
         @cli.followings
         $stdout.string.should == <<-eos
-ID          Since         Tweets  Following  Followers  Favorites  Listed  Screen name  Name
-14,100,886  Mar  8  2008  3,913   1,871      2,767      32         185     pengwynn     Wynn Netherland
-7,505,382   Jul 16  2007  2,962   88         898        727        29      sferik       Erik Michaels-Ober
+ID          Since         Tweets  Favorites  Listed  Following  Followers  Screen name  Name
+14,100,886  Mar  8  2008  3,913   32         185     1,871      2,767      pengwynn     Wynn Netherland
+7,505,382   Jul 16  2007  2,962   727        29      88         898        sferik       Erik Michaels-Ober
         eos
       end
     end
@@ -613,9 +613,9 @@ ID          Since         Tweets  Following  Followers  Favorites  Listed  Scree
       it "should list in long format" do
         @cli.followers
         $stdout.string.should == <<-eos
-ID          Since         Tweets  Following  Followers  Favorites  Listed  Screen name  Name
-14,100,886  Mar  8  2008  3,913   1,871      2,767      32         185     pengwynn     Wynn Netherland
-7,505,382   Jul 16  2007  2,962   88         898        727        29      sferik       Erik Michaels-Ober
+ID          Since         Tweets  Favorites  Listed  Following  Followers  Screen name  Name
+14,100,886  Mar  8  2008  3,913   32         185     1,871      2,767      pengwynn     Wynn Netherland
+7,505,382   Jul 16  2007  2,962   727        29      88         898        sferik       Erik Michaels-Ober
         eos
       end
     end
@@ -719,9 +719,9 @@ ID          Since         Tweets  Following  Followers  Favorites  Listed  Scree
       it "should list in long format" do
         @cli.friends
         $stdout.string.should == <<-eos
-ID          Since         Tweets  Following  Followers  Favorites  Listed  Screen name  Name
-14,100,886  Mar  8  2008  3,913   1,871      2,767      32         185     pengwynn     Wynn Netherland
-7,505,382   Jul 16  2007  2,962   88         898        727        29      sferik       Erik Michaels-Ober
+ID          Since         Tweets  Favorites  Listed  Following  Followers  Screen name  Name
+14,100,886  Mar  8  2008  3,913   32         185     1,871      2,767      pengwynn     Wynn Netherland
+7,505,382   Jul 16  2007  2,962   727        29      88         898        sferik       Erik Michaels-Ober
         eos
       end
     end
@@ -825,9 +825,9 @@ ID          Since         Tweets  Following  Followers  Favorites  Listed  Scree
       it "should list in long format" do
         @cli.leaders
         $stdout.string.should == <<-eos
-ID          Since         Tweets  Following  Followers  Favorites  Listed  Screen name  Name
-14,100,886  Mar  8  2008  3,913   1,871      2,767      32         185     pengwynn     Wynn Netherland
-7,505,382   Jul 16  2007  2,962   88         898        727        29      sferik       Erik Michaels-Ober
+ID          Since         Tweets  Favorites  Listed  Following  Followers  Screen name  Name
+14,100,886  Mar  8  2008  3,913   32         185     1,871      2,767      pengwynn     Wynn Netherland
+7,505,382   Jul 16  2007  2,962   727        29      88         898        sferik       Erik Michaels-Ober
         eos
       end
     end
@@ -892,7 +892,7 @@ ID          Since         Tweets  Following  Followers  Favorites  Listed  Scree
       it "should list in long format" do
         @cli.mentions
         $stdout.string.should == <<-eos
-ID                       Created at    Screen name   Text
+ID                       Posted at     Screen name   Text
 194,548,121,416,630,272  Apr 23  2011  natevillegas  RT @gelobautista #riordan RT @WilI_Smith: Yesterday is history. Tomorrow is a mystery. Today is a gift. That's why it's called the present.
 194,547,993,607,806,976  Apr 23  2011  TD            @kelseysilver how long will you be in town?
 194,547,987,593,183,233  Apr 23  2011  rusashka      @maciej hahaha :) @gpena together we're going to cover all core 28 languages!
@@ -1079,7 +1079,7 @@ ID                       Created at    Screen name   Text
       it "should list in long format" do
         @cli.retweets
         $stdout.string.should == <<-eos
-ID                       Created at    Screen name   Text
+ID                       Posted at     Screen name   Text
 194,548,121,416,630,272  Apr 23  2011  natevillegas  RT @gelobautista #riordan RT @WilI_Smith: Yesterday is history. Tomorrow is a mystery. Today is a gift. That's why it's called the present.
 194,547,993,607,806,976  Apr 23  2011  TD            @kelseysilver how long will you be in town?
 194,547,987,593,183,233  Apr 23  2011  rusashka      @maciej hahaha :) @gpena together we're going to cover all core 28 languages!
@@ -1193,11 +1193,11 @@ ID                       Created at    Screen name   Text
     it "should have the correct output" do
       @cli.status("25938088801")
       $stdout.string.should == <<-eos
-ID          25,938,088,801
-Created at  Sep 29  2010
-Text        @noradio working on implementing #NewTwitter API methods in the twitter gem. Twurl is making it easy. Thank you!
-User        Erik Michaels-Ober (@sferik)
-Source      web
+Text         @noradio working on implementing #NewTwitter API methods in the twitter gem. Twurl is making it easy. Thank you!
+Screen name  @sferik
+Posted at    Sep 29  2010
+Source       web
+URL          https://twitter.com/sferik/status/25938088801
       eos
     end
   end
@@ -1270,12 +1270,12 @@ Source      web
       it "should list in long format" do
         @cli.suggest
         $stdout.string.should == <<-eos
-ID          Since         Tweets  Following  Followers  Favorites  Listed  Screen name  Name
-40,514,587  May 16  2009  183     198        158        2          2       antpires     AntonioPires
-14,736,332  May 11  2008  3,850   545        802        117        99      jtrupiano    John Trupiano
-2,006,261   Mar 23  2007  4,497   967        2,028      9          171     maccman      Alex MacCaw
-14,451,152  Apr 20  2008  6,251   403        299        10         20      mlroach      Matt Laroche
-16,052,754  Aug 30  2008  24      5          42         0          1       stuntmann82  stuntmann82
+ID          Since         Tweets  Favorites  Listed  Following  Followers  Screen name  Name
+40,514,587  May 16  2009  183     2          2       198        158        antpires     AntonioPires
+14,736,332  May 11  2008  3,850   117        99      545        802        jtrupiano    John Trupiano
+2,006,261   Mar 23  2007  4,497   9          171     967        2,028      maccman      Alex MacCaw
+14,451,152  Apr 20  2008  6,251   10         20      403        299        mlroach      Matt Laroche
+16,052,754  Aug 30  2008  24      0          1       5          42         stuntmann82  stuntmann82
         eos
       end
     end
@@ -1356,7 +1356,7 @@ ID          Since         Tweets  Following  Followers  Favorites  Listed  Scree
       it "should list in long format" do
         @cli.timeline
         $stdout.string.should == <<-eos
-ID                       Created at    Screen name   Text
+ID                       Posted at     Screen name   Text
 194,548,121,416,630,272  Apr 23  2011  natevillegas  RT @gelobautista #riordan RT @WilI_Smith: Yesterday is history. Tomorrow is a mystery. Today is a gift. That's why it's called the present.
 194,547,993,607,806,976  Apr 23  2011  TD            @kelseysilver how long will you be in town?
 194,547,987,593,183,233  Apr 23  2011  rusashka      @maciej hahaha :) @gpena together we're going to cover all core 28 languages!
@@ -1594,9 +1594,9 @@ ID                       Created at    Screen name   Text
       it "should list in long format" do
         @cli.users("sferik", "pengwynn")
         $stdout.string.should == <<-eos
-ID          Since         Tweets  Following  Followers  Favorites  Listed  Screen name  Name
-14,100,886  Mar  8  2008  3,913   1,871      2,767      32         185     pengwynn     Wynn Netherland
-7,505,382   Jul 16  2007  2,962   88         898        727        29      sferik       Erik Michaels-Ober
+ID          Since         Tweets  Favorites  Listed  Following  Followers  Screen name  Name
+14,100,886  Mar  8  2008  3,913   32         185     1,871      2,767      pengwynn     Wynn Netherland
+7,505,382   Jul 16  2007  2,962   727        29      88         898        sferik       Erik Michaels-Ober
         eos
       end
     end
@@ -1642,12 +1642,19 @@ ID          Since         Tweets  Following  Followers  Favorites  Listed  Scree
     it "should have the correct output" do
       @cli.whois("sferik")
       $stdout.string.should == <<-eos
-ID        7,505,382
-Since     Jul 16  2007
-Name      Erik Michaels-Ober
-Bio       A mind forever voyaging through strange seas of thought, alone.
-Location  San Francisco
-Web       https://github.com/sferik
+ID           7,505,382
+Name         Erik Michaels-Ober
+Bio          A mind forever voyaging through strange seas of thought, alone.
+Location     San Francisco
+URL          https://github.com/sferik
+Status       Not following
+Last update  RT @tenderlove: [ANN] sqlite3-ruby =&gt; sqlite3 (10 months ago)
+Since        Jul 16  2007
+Tweets       3,479
+Favorites    1,040
+Listed       41
+Following    197
+Followers    1,048
       eos
     end
   end

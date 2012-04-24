@@ -18,7 +18,7 @@ module T
     def block(screen_name, *screen_names)
       screen_names.unshift(screen_name)
       screen_names.threaded_each do |screen_name|
-        screen_name.strip_at
+        screen_name.strip_ats
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.unblock(screen_name, :include_entities => false)
         end
@@ -31,6 +31,7 @@ module T
     desc "dm [DIRECT_MESSAGE_ID] [DIRECT_MESSAGE_ID...]", "Delete the last Direct Message sent."
     def dm(direct_message_id, *direct_message_ids)
       direct_message_ids.unshift(direct_message_id)
+      direct_message_ids.map!(&:strip_commas).map!(&:to_i)
       direct_message_ids.each do |direct_message_id|
         unless options['force']
           direct_message = client.direct_message(direct_message_id, :include_entities => false)

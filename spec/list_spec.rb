@@ -143,9 +143,9 @@ describe T::List do
       it "should list in long format" do
         @list.members("presidents")
         $stdout.string.should == <<-eos
-ID        Created at    Tweets  Following  Followers  Favorites  Listed  Screen name  Name
-14100886  Mar  8  2008  3913    1871       2767       32         185     pengwynn     Wynn Netherland
-7505382   Jul 16  2007  2962    88         898        727        29      sferik       Erik Michaels-Ober
+ID          Since         Tweets  Following  Followers  Favorites  Listed  Screen name  Name
+14,100,886  Mar  8  2008  3,913   1,871      2,767      32         185     pengwynn     Wynn Netherland
+7,505,382   Jul 16  2007  2,962   88         898        727        29      sferik       Erik Michaels-Ober
         eos
       end
     end
@@ -266,24 +266,24 @@ ID        Created at    Tweets  Following  Followers  Favorites  Listed  Screen 
       it "should list in long format" do
         @list.timeline("presidents")
         $stdout.string.should == <<-eos
-ID                  Created at    Screen name   Text
-194548121416630272  Apr 23  2011  natevillegas  RT @gelobautista #riordan RT @WilI_Smith: Yesterday is history. Tomorrow is a mystery. Today is a gift. That's why it's called the present.
-194547993607806976  Apr 23  2011  TD            @kelseysilver how long will you be in town?
-194547987593183233  Apr 23  2011  rusashka      @maciej hahaha :) @gpena together we're going to cover all core 28 languages!
-194547824690597888  Apr 23  2011  fat           @stevej @xc i'm going to picket when i get back.
-194547658562605057  Apr 23  2011  wil           @0x9900 @paulnivin http://t.co/bwVdtAPe
-194547528430137344  Apr 23  2011  wangtian      @tianhonghe @xiangxin72 oh, you can even order specific items?
-194547402550689793  Apr 23  2011  shinypb       @kpk Pfft, I think you're forgetting mechanical television, which depended on a clever German. http://t.co/JvLNQCDm @skilldrick @hoverbird
-194547260233760768  Apr 23  2011  0x9900        @wil @paulnivin if you want to take you seriously don't say daemontools!
-194547084349804544  Apr 23  2011  kpk           @shinypb @skilldrick @hoverbird invented it
-194546876782092291  Apr 23  2011  skilldrick    @shinypb Well played :) @hoverbird
-194546811480969217  Apr 23  2011  sam           Can someone project the date that I'll get a 27" retina display?
-194546738810458112  Apr 23  2011  shinypb       @skilldrick @hoverbird Wow, I didn't even know they *had* TV in Britain.
-194546727670390784  Apr 23  2011  bartt         @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
-194546649203347456  Apr 23  2011  skilldrick    @hoverbird @shinypb You guys must be soooo old, I don't remember the words to the duck tales intro at all.
-194546583608639488  Apr 23  2011  sean          @mep Thanks for coming by. Was great to have you.
-194546388707717120  Apr 23  2011  hoverbird     @shinypb @trammell it's all suck a "duck blur" sometimes.
-194546264212385793  Apr 23  2011  kelseysilver  San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 92 others) http://t.co/eoLANJZw
+ID                       Created at    Screen name   Text
+194,548,121,416,630,272  Apr 23  2011  natevillegas  RT @gelobautista #riordan RT @WilI_Smith: Yesterday is history. Tomorrow is a mystery. Today is a gift. That's why it's called the present.
+194,547,993,607,806,976  Apr 23  2011  TD            @kelseysilver how long will you be in town?
+194,547,987,593,183,233  Apr 23  2011  rusashka      @maciej hahaha :) @gpena together we're going to cover all core 28 languages!
+194,547,824,690,597,888  Apr 23  2011  fat           @stevej @xc i'm going to picket when i get back.
+194,547,658,562,605,057  Apr 23  2011  wil           @0x9900 @paulnivin http://t.co/bwVdtAPe
+194,547,528,430,137,344  Apr 23  2011  wangtian      @tianhonghe @xiangxin72 oh, you can even order specific items?
+194,547,402,550,689,793  Apr 23  2011  shinypb       @kpk Pfft, I think you're forgetting mechanical television, which depended on a clever German. http://t.co/JvLNQCDm @skilldrick @hoverbird
+194,547,260,233,760,768  Apr 23  2011  0x9900        @wil @paulnivin if you want to take you seriously don't say daemontools!
+194,547,084,349,804,544  Apr 23  2011  kpk           @shinypb @skilldrick @hoverbird invented it
+194,546,876,782,092,291  Apr 23  2011  skilldrick    @shinypb Well played :) @hoverbird
+194,546,811,480,969,217  Apr 23  2011  sam           Can someone project the date that I'll get a 27" retina display?
+194,546,738,810,458,112  Apr 23  2011  shinypb       @skilldrick @hoverbird Wow, I didn't even know they *had* TV in Britain.
+194,546,727,670,390,784  Apr 23  2011  bartt         @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194,546,649,203,347,456  Apr 23  2011  skilldrick    @hoverbird @shinypb You guys must be soooo old, I don't remember the words to the duck tales intro at all.
+194,546,583,608,639,488  Apr 23  2011  sean          @mep Thanks for coming by. Was great to have you.
+194,546,388,707,717,120  Apr 23  2011  hoverbird     @shinypb @trammell it's all suck a "duck blur" sometimes.
+194,546,264,212,385,793  Apr 23  2011  kelseysilver  San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 92 others) http://t.co/eoLANJZw
         eos
       end
     end

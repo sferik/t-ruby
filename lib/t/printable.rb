@@ -1,8 +1,10 @@
+require 'action_view'
 require 'highline'
 
 module T
   module Printable
     MAX_SCREEN_NAME_SIZE = 20
+    include ActionView::Helpers::NumberHelper
 
     def self.included(base)
 
@@ -23,7 +25,7 @@ module T
         if options['long']
           array = statuses.map do |status|
             created_at = status.created_at > 6.months.ago ? status.created_at.strftime("%b %e %H:%M") : status.created_at.strftime("%b %e  %Y")
-            [status.id.to_s, created_at, status.user.screen_name, status.text.gsub(/\n+/, ' ')]
+            [number_with_delimiter(status.id), created_at, status.user.screen_name, status.text.gsub(/\n+/, ' ')]
           end
           if STDOUT.tty?
             headings = ["ID", "Created at", "Screen name", "Text"]
@@ -56,10 +58,10 @@ module T
         if options['long']
           array = users.map do |user|
             created_at = user.created_at > 6.months.ago ? user.created_at.strftime("%b %e %H:%M") : user.created_at.strftime("%b %e  %Y")
-            [user.id.to_s, created_at, user.statuses_count.to_s, user.friends_count.to_s, user.followers_count.to_s, user.favourites_count.to_s, user.listed_count.to_s, user.screen_name, user.name]
+            [number_with_delimiter(user.id), created_at, number_with_delimiter(user.statuses_count), number_with_delimiter(user.friends_count), number_with_delimiter(user.followers_count), number_with_delimiter(user.favourites_count), number_with_delimiter(user.listed_count), user.screen_name, user.name]
           end
           if STDOUT.tty?
-            headings = ["ID", "Created at", "Tweets", "Following", "Followers", "Favorites", "Listed", "Screen name", "Name"]
+            headings = ["ID", "Since", "Tweets", "Following", "Followers", "Favorites", "Listed", "Screen name", "Name"]
             array.unshift(headings) unless users.empty?
           end
           print_table(array)

@@ -1,6 +1,7 @@
 require 'action_view'
 require 'retryable'
 require 't/core_ext/enumerable'
+require 't/printable'
 require 't/rcfile'
 require 't/requestable'
 require 'thor'
@@ -8,6 +9,7 @@ require 'thor'
 module T
   class Search < Thor
     include ActionView::Helpers::DateHelper
+    include T::Printable
     include T::Requestable
 
     DEFAULT_NUM_RESULTS = 20
@@ -98,7 +100,7 @@ module T
 
     desc "user SCREEN_NAME QUERY", "Returns Tweets in a user's timeline that match a specified query."
     def user(screen_name, query)
-      screen_name = screen_name.strip_at
+      screen_name = screen_name.strip_ats
       statuses = 1.upto(MAX_PAGES).threaded_map do |page|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.user_timeline(screen_name, :page => page, :count => MAX_NUM_RESULTS).select do |status|
@@ -107,26 +109,6 @@ module T
         end
       end.flatten.compact
       print_status_list(statuses)
-    end
-
-  private
-
-    def print_status_list(statuses)
-      if options['long']
-        array = statuses.map do |status|
-          created_at = status.created_at > 6.months.ago ? status.created_at.strftime("%b %e %H:%M") : status.created_at.strftime("%b %e  %Y")
-          [status.id.to_s, created_at, status.user.screen_name, status.text.gsub(/\n+/, ' ')]
-        end
-        if STDOUT.tty?
-          headings = ["ID", "Created at", "Screen name", "Text"]
-          array.unshift(headings) unless statuses.empty?
-        end
-        print_table(array)
-      else
-        statuses.each do |status|
-          say "#{status.user.screen_name.rjust(MAX_SCREEN_NAME_SIZE)}: #{status.text.gsub(/\n+/, ' ')} (#{time_ago_in_words(status.created_at)} ago)"
-        end
-      end
     end
 
   end

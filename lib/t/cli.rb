@@ -24,6 +24,7 @@ module T
   class CLI < Thor
     include ActionView::Helpers::DateHelper
     include ActionView::Helpers::NumberHelper
+    include ActionView::Helpers::TextHelper
     include T::Collectable
     include T::Printable
     include T::Requestable
@@ -96,7 +97,7 @@ module T
     def block(screen_name, *screen_names)
       screen_names.unshift(screen_name)
       screen_names.threaded_each do |screen_name|
-        screen_name.strip_at
+        screen_name.strip_ats
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.block(screen_name, :include_entities => false)
         end
@@ -117,7 +118,7 @@ module T
       if options['long']
         array = direct_messages.map do |direct_message|
           created_at = direct_message.created_at > 6.months.ago ? direct_message.created_at.strftime("%b %e %H:%M") : direct_message.created_at.strftime("%b %e  %Y")
-          [direct_message.id.to_s, created_at, direct_message.sender.screen_name, direct_message.text.gsub(/\n+/, ' ')]
+          [number_with_delimiter(direct_message.id), created_at, direct_message.sender.screen_name, direct_message.text.gsub(/\n+/, ' ')]
         end
         if STDOUT.tty?
           headings = ["ID", "Created at", "Screen name", "Text"]
@@ -143,7 +144,7 @@ module T
       if options['long']
         array = direct_messages.map do |direct_message|
           created_at = direct_message.created_at > 6.months.ago ? direct_message.created_at.strftime("%b %e %H:%M") : direct_message.created_at.strftime("%b %e  %Y")
-          [direct_message.id.to_s, created_at, direct_message.recipient.screen_name, direct_message.text.gsub(/\n+/, ' ')]
+          [number_with_delimiter(direct_message.id), created_at, direct_message.recipient.screen_name, direct_message.text.gsub(/\n+/, ' ')]
         end
         if STDOUT.tty?
           headings = ["ID", "Created at", "Screen name", "Text"]
@@ -160,7 +161,7 @@ module T
 
     desc "dm SCREEN_NAME MESSAGE", "Sends that person a Direct Message."
     def dm(screen_name, message)
-      screen_name = screen_name.strip_at
+      screen_name = screen_name.strip_ats
       direct_message = client.direct_message_create(screen_name, message, :include_entities => false)
       say "Direct Message sent from @#{@rcfile.default_profile[0]} to @#{direct_message.recipient.screen_name} (#{time_ago_in_words(direct_message.created_at)} ago)."
     end
@@ -169,6 +170,7 @@ module T
     desc "favorite STATUS_ID [STATUS_ID...]", "Marks Tweets as favorites."
     def favorite(status_id, *status_ids)
       status_ids.unshift(status_id)
+      status_ids.map!(&:strip_commas).map!(&:to_i)
       favorites = status_ids.threaded_map do |status_id|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.favorite(status_id, :include_entities => false)
@@ -317,13 +319,14 @@ module T
     desc "open SCREEN_NAME", "Opens that user's profile in a web browser."
     method_option :dry_run, :type => :boolean
     def open(screen_name)
-      screen_name = screen_name.strip_at
+      screen_name = screen_name.strip_ats
       Launchy.open("https://twitter.com/#{screen_name}", :dry_run => options.fetch('dry_run', false))
     end
 
     desc "reply STATUS_ID MESSAGE", "Post your Tweet as a reply directed at another person."
     method_option :location, :aliases => "-l", :type => :boolean, :default => false
     def reply(status_id, message)
+      status_id = status_id.strip_commas
       status = client.status(status_id, :include_entities => false, :include_my_retweet => false, :trim_user => true)
       opts = {:in_reply_to_status_id => status.id, :include_entities => false, :trim_user => true}
       opts.merge!(:lat => location.lat, :long => location.lng) if options['location']
@@ -337,7 +340,7 @@ module T
     def report_spam(screen_name, *screen_names)
       screen_names.unshift(screen_name)
       screen_names.threaded_each do |screen_name|
-        screen_name.strip_at
+        screen_name.strip_ats
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.report_spam(screen_name, :include_entities => false)
         end
@@ -349,6 +352,7 @@ module T
     desc "retweet STATUS_ID [STATUS_ID...]", "Sends Tweets to your followers."
     def retweet(status_id, *status_ids)
       status_ids.unshift(status_id)
+      status_ids.map!(&:strip_commas).map!(&:to_i)
       retweets = status_ids.threaded_map do |status_id|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.retweet(status_id, :include_entities => false, :trim_user => true)
@@ -367,7 +371,7 @@ module T
     method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => "Limit the number of results."
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     def retweets(screen_name=nil)
-      screen_name = screen_name.strip_at if screen_name
+      screen_name = screen_name.strip_ats if screen_name
       count = options['number'] || DEFAULT_NUM_RESULTS
       statuses = client.retweeted_by(screen_name, :count => count, :include_entities => false)
       print_status_list(statuses)
@@ -398,7 +402,7 @@ module T
     def timeline(screen_name=nil)
       count = options['number'] || DEFAULT_NUM_RESULTS
       if screen_name
-        screen_name = screen_name.strip_at
+        screen_name = screen_name.strip_ats
         statuses = client.user_timeline(screen_name, :count => count, :include_entities => false)
       else
         statuses = client.home_timeline(:count => count, :include_entities => false)
@@ -458,7 +462,7 @@ module T
 
     desc "whois SCREEN_NAME", "Retrieves profile information for the user."
     def whois(screen_name)
-      screen_name = screen_name.strip_at
+      screen_name = screen_name.strip_ats
       user = client.user(screen_name, :include_entities => false)
       say "id: ##{number_with_delimiter(user.id)}"
       say "#{user.name}, since #{user.created_at.strftime("%b %Y")}."

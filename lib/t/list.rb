@@ -31,7 +31,7 @@ module T
     desc "add LIST_NAME SCREEN_NAME [SCREEN_NAME...]", "Add members to a list."
     def add(list_name, screen_name, *screen_names)
       screen_names.unshift(screen_name)
-      screen_names.map!(&:strip_at)
+      screen_names.map!(&:strip_ats)
       screen_names.in_groups_of(MAX_USERS_PER_REQUEST, false).threaded_each do |user_id_group|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.list_add_members(list_name, user_id_group)
@@ -74,7 +74,7 @@ module T
     desc "remove LIST_NAME SCREEN_NAME [SCREEN_NAME...]", "Remove members from a list."
     def remove(list_name, screen_name, *screen_names)
       screen_names.unshift(screen_name)
-      screen_names.map!(&:strip_at)
+      screen_names.map!(&:strip_ats)
       screen_names.in_groups_of(MAX_USERS_PER_REQUEST, false).threaded_each do |user_id_group|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.list_remove_members(list_name, user_id_group)

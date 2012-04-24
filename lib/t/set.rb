@@ -22,7 +22,7 @@ module T
 
     desc "default SCREEN_NAME [CONSUMER_KEY]", "Set your default account."
     def default(screen_name, consumer_key=nil)
-      screen_name = screen_name.strip_at
+      screen_name = screen_name.strip_ats
       @rcfile.path = options['profile'] if options['profile']
       consumer_key = @rcfile[screen_name].keys.last if consumer_key.nil?
       @rcfile.default_profile = {'username' => screen_name, 'consumer_key' => consumer_key}

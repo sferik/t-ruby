@@ -1618,11 +1618,12 @@ ID          Since         Tweets  Following  Followers  Favorites  Listed  Scree
     it "should have the correct output" do
       @cli.whois("sferik")
       $stdout.string.should == <<-eos
-id: #7,505,382
-Erik Michaels-Ober, since Jul 2007.
-bio: A mind forever voyaging through strange seas of thought, alone.
-location: San Francisco
-web: https://github.com/sferik
+ID        7,505,382
+Since     Jul 16  2007
+Name      Erik Michaels-Ober
+Bio       A mind forever voyaging through strange seas of thought, alone.
+Location  San Francisco
+Web       https://github.com/sferik
       eos
     end
   end

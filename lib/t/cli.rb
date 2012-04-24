@@ -464,11 +464,15 @@ module T
     def whois(screen_name)
       screen_name = screen_name.strip_ats
       user = client.user(screen_name, :include_entities => false)
-      say "id: ##{number_with_delimiter(user.id)}"
-      say "#{user.name}, since #{user.created_at.strftime("%b %Y")}."
-      say "bio: #{user.description}"
-      say "location: #{user.location}"
-      say "web: #{user.url}"
+      created_at = user.created_at > 6.months.ago ? user.created_at.strftime("%b %e %H:%M") : user.created_at.strftime("%b %e  %Y")
+      array = []
+      array << ["ID", number_with_delimiter(user.id)]
+      array << ["Since", created_at]
+      array << ["Name", user.name]
+      array << ["Bio", user.description.gsub(/\n+/, ' ')]
+      array << ["Location", user.location]
+      array << ["Web", user.url]
+      print_table(array)
     end
 
     desc "delete SUBCOMMAND ...ARGS", "Delete Tweets, Direct Messages, etc."

@@ -95,7 +95,7 @@ describe T::List do
       before do
         @list.options = @list.options.merge(:created => true)
       end
-      it "should list in long format" do
+      it "should sort by the time when Twitter acount was created" do
         @list.members("presidents")
         $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
       end
@@ -104,7 +104,7 @@ describe T::List do
       before do
         @list.options = @list.options.merge(:favorites => true)
       end
-      it "should list in long format" do
+      it "should sort by number of favorites" do
         @list.members("presidents")
         $stdout.string.chomp.rstrip.should == "pengwynn  sferik"
       end
@@ -113,7 +113,7 @@ describe T::List do
       before do
         @list.options = @list.options.merge(:followers => true)
       end
-      it "should list in long format" do
+      it "should sort by number of followers" do
         @list.members("presidents")
         $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
       end
@@ -122,7 +122,7 @@ describe T::List do
       before do
         @list.options = @list.options.merge(:friends => true)
       end
-      it "should list in long format" do
+      it "should sort by number of friends" do
         @list.members("presidents")
         $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
       end
@@ -131,7 +131,7 @@ describe T::List do
       before do
         @list.options = @list.options.merge(:listed => true)
       end
-      it "should list in long format" do
+      it "should sort by number of list memberships" do
         @list.members("presidents")
         $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
       end
@@ -162,7 +162,7 @@ ID        Created at    Tweets  Following  Followers  Favorites  Listed  Screen 
       before do
         @list.options = @list.options.merge(:tweets => true)
       end
-      it "should list in long format" do
+      it "should sort by number of Tweets" do
         @list.members("presidents")
         $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
       end

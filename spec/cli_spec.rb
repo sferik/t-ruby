@@ -465,7 +465,7 @@ ID                  Created at    Screen name   Text
       before do
         @cli.options = @cli.options.merge(:created => true)
       end
-      it "should list in long format" do
+      it "should sort by the time when Twitter acount was created" do
         @cli.followings
         $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
       end
@@ -474,7 +474,7 @@ ID                  Created at    Screen name   Text
       before do
         @cli.options = @cli.options.merge(:favorites => true)
       end
-      it "should list in long format" do
+      it "should sort by number of favorites" do
         @cli.followings
         $stdout.string.chomp.rstrip.should == "pengwynn  sferik"
       end
@@ -483,7 +483,7 @@ ID                  Created at    Screen name   Text
       before do
         @cli.options = @cli.options.merge(:followers => true)
       end
-      it "should list in long format" do
+      it "should sort by number of followers" do
         @cli.followings
         $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
       end
@@ -492,7 +492,7 @@ ID                  Created at    Screen name   Text
       before do
         @cli.options = @cli.options.merge(:friends => true)
       end
-      it "should list in long format" do
+      it "should sort by number of friends" do
         @cli.followings
         $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
       end
@@ -501,7 +501,7 @@ ID                  Created at    Screen name   Text
       before do
         @cli.options = @cli.options.merge(:listed => true)
       end
-      it "should list in long format" do
+      it "should sort by number of list memberships" do
         @cli.followings
         $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
       end
@@ -532,7 +532,7 @@ ID        Created at    Tweets  Following  Followers  Favorites  Listed  Screen 
       before do
         @cli.options = @cli.options.merge(:tweets => true)
       end
-      it "should list in long format" do
+      it "should sort by number of Tweets" do
         @cli.followings
         $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
       end
@@ -565,7 +565,7 @@ ID        Created at    Tweets  Following  Followers  Favorites  Listed  Screen 
       before do
         @cli.options = @cli.options.merge(:created => true)
       end
-      it "should list in long format" do
+      it "should sort by the time when Twitter acount was created" do
         @cli.followers
         $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
       end
@@ -574,7 +574,7 @@ ID        Created at    Tweets  Following  Followers  Favorites  Listed  Screen 
       before do
         @cli.options = @cli.options.merge(:favorites => true)
       end
-      it "should list in long format" do
+      it "should sort by number of favorites" do
         @cli.followers
         $stdout.string.chomp.rstrip.should == "pengwynn  sferik"
       end
@@ -583,7 +583,7 @@ ID        Created at    Tweets  Following  Followers  Favorites  Listed  Screen 
       before do
         @cli.options = @cli.options.merge(:followers => true)
       end
-      it "should list in long format" do
+      it "should sort by number of followers" do
         @cli.followers
         $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
       end
@@ -592,7 +592,7 @@ ID        Created at    Tweets  Following  Followers  Favorites  Listed  Screen 
       before do
         @cli.options = @cli.options.merge(:friends => true)
       end
-      it "should list in long format" do
+      it "should sort by number of friends" do
         @cli.followers
         $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
       end
@@ -601,7 +601,7 @@ ID        Created at    Tweets  Following  Followers  Favorites  Listed  Screen 
       before do
         @cli.options = @cli.options.merge(:listed => true)
       end
-      it "should list in long format" do
+      it "should sort by number of list memberships" do
         @cli.followers
         $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
       end
@@ -632,7 +632,7 @@ ID        Created at    Tweets  Following  Followers  Favorites  Listed  Screen 
       before do
         @cli.options = @cli.options.merge(:tweets => true)
       end
-      it "should list in long format" do
+      it "should sort by number of Tweets" do
         @cli.followers
         $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
       end
@@ -671,7 +671,7 @@ ID        Created at    Tweets  Following  Followers  Favorites  Listed  Screen 
       before do
         @cli.options = @cli.options.merge(:created => true)
       end
-      it "should list in long format" do
+      it "should sort by the time when Twitter acount was created" do
         @cli.friends
         $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
       end
@@ -680,7 +680,7 @@ ID        Created at    Tweets  Following  Followers  Favorites  Listed  Screen 
       before do
         @cli.options = @cli.options.merge(:favorites => true)
       end
-      it "should list in long format" do
+      it "should sort by number of favorites" do
         @cli.friends
         $stdout.string.chomp.rstrip.should == "pengwynn  sferik"
       end
@@ -689,7 +689,7 @@ ID        Created at    Tweets  Following  Followers  Favorites  Listed  Screen 
       before do
         @cli.options = @cli.options.merge(:followers => true)
       end
-      it "should list in long format" do
+      it "should sort by number of followers" do
         @cli.friends
         $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
       end
@@ -698,7 +698,7 @@ ID        Created at    Tweets  Following  Followers  Favorites  Listed  Screen 
       before do
         @cli.options = @cli.options.merge(:friends => true)
       end
-      it "should list in long format" do
+      it "should sort by number of friends" do
         @cli.friends
         $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
       end
@@ -707,7 +707,7 @@ ID        Created at    Tweets  Following  Followers  Favorites  Listed  Screen 
       before do
         @cli.options = @cli.options.merge(:listed => true)
       end
-      it "should list in long format" do
+      it "should sort by number of list memberships" do
         @cli.friends
         $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
       end
@@ -738,7 +738,7 @@ ID        Created at    Tweets  Following  Followers  Favorites  Listed  Screen 
       before do
         @cli.options = @cli.options.merge(:tweets => true)
       end
-      it "should list in long format" do
+      it "should sort by number of Tweets" do
         @cli.friends
         $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
       end
@@ -777,7 +777,7 @@ ID        Created at    Tweets  Following  Followers  Favorites  Listed  Screen 
       before do
         @cli.options = @cli.options.merge(:created => true)
       end
-      it "should list in long format" do
+      it "should sort by the time when Twitter acount was created" do
         @cli.leaders
         $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
       end
@@ -786,7 +786,7 @@ ID        Created at    Tweets  Following  Followers  Favorites  Listed  Screen 
       before do
         @cli.options = @cli.options.merge(:favorites => true)
       end
-      it "should list in long format" do
+      it "should sort by number of favorites" do
         @cli.leaders
         $stdout.string.chomp.rstrip.should == "pengwynn  sferik"
       end
@@ -795,7 +795,7 @@ ID        Created at    Tweets  Following  Followers  Favorites  Listed  Screen 
       before do
         @cli.options = @cli.options.merge(:followers => true)
       end
-      it "should list in long format" do
+      it "should sort by number of followers" do
         @cli.leaders
         $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
       end
@@ -804,7 +804,7 @@ ID        Created at    Tweets  Following  Followers  Favorites  Listed  Screen 
       before do
         @cli.options = @cli.options.merge(:friends => true)
       end
-      it "should list in long format" do
+      it "should sort by number of friends" do
         @cli.leaders
         $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
       end
@@ -813,7 +813,7 @@ ID        Created at    Tweets  Following  Followers  Favorites  Listed  Screen 
       before do
         @cli.options = @cli.options.merge(:listed => true)
       end
-      it "should list in long format" do
+      it "should sort by number of list memberships" do
         @cli.leaders
         $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
       end
@@ -844,7 +844,7 @@ ID        Created at    Tweets  Following  Followers  Favorites  Listed  Screen 
       before do
         @cli.options = @cli.options.merge(:tweets => true)
       end
-      it "should list in long format" do
+      it "should sort by number of Tweets" do
         @cli.leaders
         $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
       end
@@ -1198,7 +1198,7 @@ ID                  Created at    Screen name   Text
       before do
         @cli.options = @cli.options.merge(:created => true)
       end
-      it "should list in long format" do
+      it "should sort by the time when Twitter acount was created" do
         @cli.suggest
         $stdout.string.chomp.rstrip.should == "maccman      mlroach      jtrupiano    stuntmann82  antpires"
       end
@@ -1207,7 +1207,7 @@ ID                  Created at    Screen name   Text
       before do
         @cli.options = @cli.options.merge(:favorites => true)
       end
-      it "should list in long format" do
+      it "should sort by number of favorites" do
         @cli.suggest
         $stdout.string.chomp.rstrip.should == "stuntmann82  antpires     maccman      mlroach      jtrupiano"
       end
@@ -1216,7 +1216,7 @@ ID                  Created at    Screen name   Text
       before do
         @cli.options = @cli.options.merge(:followers => true)
       end
-      it "should list in long format" do
+      it "should sort by number of followers" do
         @cli.suggest
         $stdout.string.chomp.rstrip.should == "stuntmann82  antpires     mlroach      jtrupiano    maccman"
       end
@@ -1225,7 +1225,7 @@ ID                  Created at    Screen name   Text
       before do
         @cli.options = @cli.options.merge(:friends => true)
       end
-      it "should list in long format" do
+      it "should sort by number of friends" do
         @cli.suggest
         $stdout.string.chomp.rstrip.should == "stuntmann82  antpires     mlroach      jtrupiano    maccman"
       end
@@ -1234,7 +1234,7 @@ ID                  Created at    Screen name   Text
       before do
         @cli.options = @cli.options.merge(:listed => true)
       end
-      it "should list in long format" do
+      it "should sort by number of list memberships" do
         @cli.suggest
         $stdout.string.chomp.rstrip.should == "stuntmann82  antpires     mlroach      jtrupiano    maccman"
       end
@@ -1282,7 +1282,7 @@ ID        Created at    Tweets  Following  Followers  Favorites  Listed  Screen 
       before do
         @cli.options = @cli.options.merge(:tweets => true)
       end
-      it "should list in long format" do
+      it "should sort by number of Tweets" do
         @cli.suggest
         $stdout.string.chomp.rstrip.should == "stuntmann82  antpires     jtrupiano    maccman      mlroach"
       end
@@ -1522,7 +1522,7 @@ ID                  Created at    Screen name   Text
       before do
         @cli.options = @cli.options.merge(:created => true)
       end
-      it "should list in long format" do
+      it "should sort by the time when Twitter acount was created" do
         @cli.users("sferik", "pengwynn")
         $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
       end
@@ -1531,7 +1531,7 @@ ID                  Created at    Screen name   Text
       before do
         @cli.options = @cli.options.merge(:favorites => true)
       end
-      it "should list in long format" do
+      it "should sort by number of favorites" do
         @cli.users("sferik", "pengwynn")
         $stdout.string.chomp.rstrip.should == "pengwynn  sferik"
       end
@@ -1540,7 +1540,7 @@ ID                  Created at    Screen name   Text
       before do
         @cli.options = @cli.options.merge(:followers => true)
       end
-      it "should list in long format" do
+      it "should sort by number of followers" do
         @cli.users("sferik", "pengwynn")
         $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
       end
@@ -1549,7 +1549,7 @@ ID                  Created at    Screen name   Text
       before do
         @cli.options = @cli.options.merge(:friends => true)
       end
-      it "should list in long format" do
+      it "should sort by number of friends" do
         @cli.users("sferik", "pengwynn")
         $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
       end
@@ -1558,7 +1558,7 @@ ID                  Created at    Screen name   Text
       before do
         @cli.options = @cli.options.merge(:listed => true)
       end
-      it "should list in long format" do
+      it "should sort by number of list memberships" do
         @cli.users("sferik", "pengwynn")
         $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
       end
@@ -1589,7 +1589,7 @@ ID        Created at    Tweets  Following  Followers  Favorites  Listed  Screen 
       before do
         @cli.options = @cli.options.merge(:tweets => true)
       end
-      it "should list in long format" do
+      it "should sort by number of Tweets" do
         @cli.users("sferik", "pengwynn")
         $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
       end

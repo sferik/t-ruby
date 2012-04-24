@@ -32,6 +32,8 @@ module T
       def protocol
         options['no_ssl'] ? 'http' : DEFAULT_PROTOCOL
       end
+
     end
+
   end
 end

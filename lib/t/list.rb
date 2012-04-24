@@ -1,8 +1,10 @@
 require 'action_view'
 require 'active_support/core_ext/array/grouping'
 require 'retryable'
+require 't/collectable'
 require 't/core_ext/enumerable'
 require 't/core_ext/string'
+require 't/printable'
 require 't/rcfile'
 require 't/requestable'
 require 'thor'
@@ -10,6 +12,8 @@ require 'thor'
 module T
   class List < Thor
     include ActionView::Helpers::DateHelper
+    include T::Collectable
+    include T::Printable
     include T::Requestable
 
     DEFAULT_NUM_RESULTS = 20
@@ -24,7 +28,7 @@ module T
       @rcfile = RCFile.instance
     end
 
-    desc "add LIST_NAME SCREEN_NAME [SCREEN_NAME...]", "Add users to a list."
+    desc "add LIST_NAME SCREEN_NAME [SCREEN_NAME...]", "Add members to a list."
     def add(list_name, screen_name, *screen_names)
       screen_names.unshift(screen_name)
       screen_names.map!(&:strip_at)
@@ -34,9 +38,9 @@ module T
         end
       end
       number = screen_names.length
-      say "@#{@rcfile.default_profile[0]} added #{number} #{number == 1 ? 'user' : 'users'} to the list \"#{list_name}\"."
+      say "@#{@rcfile.default_profile[0]} added #{number} #{number == 1 ? 'member' : 'members'} to the list \"#{list_name}\"."
       say
-      say "Run `#{File.basename($0)} list remove users #{list_name} #{screen_names.join(' ')}` to undo."
+      say "Run `#{File.basename($0)} list remove #{list_name} #{screen_names.join(' ')}` to undo."
     end
 
     desc "create LIST_NAME [DESCRIPTION]", "Create a new list."
@@ -48,8 +52,26 @@ module T
       say "@#{@rcfile.default_profile[0]} created the list \"#{list_name}\"."
     end
 
-    # Remove
-    desc "remove LIST_NAME SCREEN_NAME [SCREEN_NAME...]", "Remove users from a list."
+    desc "members [SCREEN_NAME] LIST_NAME", "Returns the members of a Twitter list."
+    method_option :created, :aliases => "-c", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter acount was created."
+    method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by total number of favorites."
+    method_option :followers, :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by total number of followers."
+    method_option :friends, :aliases => "-d", :type => :boolean, :default => false, :desc => "Sort by total number of friends."
+    method_option :listed, :aliases => "-i", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
+    method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "List in long format."
+    method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
+    method_option :tweets, :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by total number of Tweets."
+    method_option :unsorted, :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
+    def members(*args)
+      list = args.pop
+      owner = args.pop || @rcfile.default_profile[0]
+      users = collect_with_cursor do |cursor|
+        client.list_members(owner, list, :cursor => cursor, :include_entities => false, :skip_status => true)
+      end
+      print_user_list(users)
+    end
+
+    desc "remove LIST_NAME SCREEN_NAME [SCREEN_NAME...]", "Remove members from a list."
     def remove(list_name, screen_name, *screen_names)
       screen_names.unshift(screen_name)
       screen_names.map!(&:strip_at)
@@ -59,9 +81,9 @@ module T
         end
       end
       number = screen_names.length
-      say "@#{@rcfile.default_profile[0]} removed #{number} #{number == 1 ? 'user' : 'users'} from the list \"#{list_name}\"."
+      say "@#{@rcfile.default_profile[0]} removed #{number} #{number == 1 ? 'member' : 'members'} from the list \"#{list_name}\"."
       say
-      say "Run `#{File.basename($0)} list add users #{list_name} #{screen_names.join(' ')}` to undo."
+      say "Run `#{File.basename($0)} list add #{list_name} #{screen_names.join(' ')}` to undo."
     end
 
     desc "timeline [SCREEN_NAME] LIST_NAME", "Show tweet timeline for members of the specified list."
@@ -71,7 +93,7 @@ module T
     method_option :friends, :aliases => "-d", :type => :boolean, :default => false, :desc => "Sort by total number of friends."
     method_option :listed, :aliases => "-i", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
     method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "List in long format."
-    method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS
+    method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => "Limit the number of results."
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     method_option :tweets, :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by total number of Tweets."
     method_option :unsorted, :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
@@ -80,22 +102,7 @@ module T
       owner = args.pop || @rcfile.default_profile[0]
       per_page = options['number'] || DEFAULT_NUM_RESULTS
       statuses = client.list_timeline(owner, list, :include_entities => false, :per_page => per_page)
-      statuses.reverse! if options['reverse']
-      if options['long']
-        array = statuses.map do |status|
-          created_at = status.created_at > 6.months.ago ? status.created_at.strftime("%b %e %H:%M") : status.created_at.strftime("%b %e  %Y")
-          [status.id.to_s, created_at, status.user.screen_name, status.text.gsub(/\n+/, ' ')]
-        end
-        if STDOUT.tty?
-          headings = ["ID", "Created at", "Screen name", "Text"]
-          array.unshift(headings) unless statuses.empty?
-        end
-        print_table(array)
-      else
-        statuses.each do |status|
-          say "#{status.user.screen_name.rjust(MAX_SCREEN_NAME_SIZE)}: #{status.text.gsub(/\n+/, ' ')} (#{time_ago_in_words(status.created_at)} ago)"
-        end
-      end
+      print_status_list(statuses)
     end
     map %w(tl) => :timeline
 

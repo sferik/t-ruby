@@ -3,14 +3,15 @@ require 'active_support/core_ext/array/grouping'
 require 'active_support/core_ext/date/calculations'
 require 'active_support/core_ext/integer/time'
 require 'active_support/core_ext/numeric/time'
-require 'highline'
 require 'launchy'
 require 'oauth'
 require 't/collectable'
 require 't/core_ext/string'
 require 't/delete'
 require 't/list'
+require 't/printable'
 require 't/rcfile'
+require 't/requestable'
 require 't/search'
 require 't/set'
 require 't/version'
@@ -24,9 +25,9 @@ module T
     include ActionView::Helpers::DateHelper
     include ActionView::Helpers::NumberHelper
     include T::Collectable
+    include T::Printable
+    include T::Requestable
 
-    DEFAULT_HOST = 'api.twitter.com'
-    DEFAULT_PROTOCOL = 'https'
     DEFAULT_NUM_RESULTS = 20
     MAX_SCREEN_NAME_SIZE = 20
     MAX_USERS_PER_REQUEST = 100
@@ -107,8 +108,8 @@ module T
 
     desc "direct_messages", "Returns the #{DEFAULT_NUM_RESULTS} most recent Direct Messages sent to you."
     method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "List in long format."
-    method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS
-    method_option :reverse, :aliases => "-r", :type => :boolean, :default => false
+    method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => "Limit the number of results."
+    method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     def direct_messages
       count = options['number'] || DEFAULT_NUM_RESULTS
       direct_messages = client.direct_messages(:count => count, :include_entities => false)
@@ -133,8 +134,8 @@ module T
 
     desc "direct_messages_sent", "Returns the #{DEFAULT_NUM_RESULTS} most recent Direct Messages sent to you."
     method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "List in long format."
-    method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS
-    method_option :reverse, :aliases => "-r", :type => :boolean, :default => false
+    method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => "Limit the number of results."
+    method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     def direct_messages_sent
       count = options['number'] || DEFAULT_NUM_RESULTS
       direct_messages = client.direct_messages_sent(:count => count, :include_entities => false)
@@ -183,8 +184,8 @@ module T
 
     desc "favorites", "Returns the #{DEFAULT_NUM_RESULTS} most recent Tweets you favorited."
     method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "List in long format."
-    method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS
-    method_option :reverse, :aliases => "-r", :type => :boolean, :default => false
+    method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => "Limit the number of results."
+    method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     def favorites
       count = options['number'] || DEFAULT_NUM_RESULTS
       statuses = client.favorites(:count => count, :include_entities => false)
@@ -302,29 +303,10 @@ module T
       print_user_list(users)
     end
 
-    desc "members [SCREEN_NAME] LIST_NAME", "Returns the members of a Twitter list."
-    method_option :created, :aliases => "-c", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter acount was created."
-    method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by total number of favorites."
-    method_option :followers, :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by total number of followers."
-    method_option :friends, :aliases => "-d", :type => :boolean, :default => false, :desc => "Sort by total number of friends."
-    method_option :listed, :aliases => "-i", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
-    method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "List in long format."
-    method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
-    method_option :tweets, :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by total number of Tweets."
-    method_option :unsorted, :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
-    def members(*args)
-      list = args.pop
-      owner = args.pop || @rcfile.default_profile[0]
-      users = collect_with_cursor do |cursor|
-        client.list_members(owner, list, :cursor => cursor, :include_entities => false, :skip_status => true)
-      end
-      print_user_list(users)
-    end
-
     desc "mentions", "Returns the #{DEFAULT_NUM_RESULTS} most recent Tweets mentioning you."
     method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "List in long format."
-    method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS
-    method_option :reverse, :aliases => "-r", :type => :boolean, :default => false
+    method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => "Limit the number of results."
+    method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     def mentions
       count = options['number'] || DEFAULT_NUM_RESULTS
       statuses = client.mentions(:count => count, :include_entities => false)
@@ -382,8 +364,8 @@ module T
 
     desc "retweets [SCREEN_NAME]", "Returns the #{DEFAULT_NUM_RESULTS} most recent Retweets by a user."
     method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "List in long format."
-    method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS
-    method_option :reverse, :aliases => "-r", :type => :boolean, :default => false
+    method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => "Limit the number of results."
+    method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     def retweets(screen_name=nil)
       screen_name = screen_name.strip_at if screen_name
       count = options['number'] || DEFAULT_NUM_RESULTS
@@ -399,7 +381,7 @@ module T
     method_option :friends, :aliases => "-d", :type => :boolean, :default => false, :desc => "Sort by total number of friends."
     method_option :listed, :aliases => "-i", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
     method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "List in long format."
-    method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS
+    method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => "Limit the number of results."
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     method_option :tweets, :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by total number of Tweets."
     method_option :unsorted, :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
@@ -411,8 +393,8 @@ module T
 
     desc "timeline [SCREEN_NAME]", "Returns the #{DEFAULT_NUM_RESULTS} most recent Tweets posted by a user."
     method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "List in long format."
-    method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS
-    method_option :reverse, :aliases => "-r", :type => :boolean, :default => false
+    method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => "Limit the number of results."
+    method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     def timeline(screen_name=nil)
       count = options['number'] || DEFAULT_NUM_RESULTS
       if screen_name
@@ -501,22 +483,6 @@ module T
 
   private
 
-    def base_url
-      "#{protocol}://#{host}"
-    end
-
-    def client
-      return @client if @client
-      @rcfile.path = options['profile'] if options['profile']
-      @client = Twitter::Client.new(
-        :endpoint => base_url,
-        :consumer_key => @rcfile.default_consumer_key,
-        :consumer_secret => @rcfile.default_consumer_secret,
-        :oauth_token => @rcfile.default_token,
-        :oauth_token_secret  => @rcfile.default_secret
-      )
-    end
-
     def consumer
       OAuth::Consumer.new(
         options['consumer_key'],
@@ -535,10 +501,6 @@ module T
       "#{base_url}#{request.path}?#{params}"
     end
 
-    def host
-      options['host'] || DEFAULT_HOST
-    end
-
     def location
       return @location if @location
       require 'geokit'
@@ -551,76 +513,6 @@ module T
 
     def pin_auth_parameters
       {:oauth_callback => 'oob'}
-    end
-
-    def print_in_columns(array)
-      cols = HighLine::SystemExtensions.terminal_size[0]
-      width = (array.map{|el| el.to_s.size}.max || 0) + 2
-      array.each_with_index do |value, index|
-        puts if (((index) % (cols / width))).zero? && !index.zero?
-        printf("%-#{width}s", value)
-      end
-      puts
-    end
-
-    def print_status_list(statuses)
-      statuses.reverse! if options['reverse']
-      if options['long']
-        array = statuses.map do |status|
-          created_at = status.created_at > 6.months.ago ? status.created_at.strftime("%b %e %H:%M") : status.created_at.strftime("%b %e  %Y")
-          [status.id.to_s, created_at, status.user.screen_name, status.text.gsub(/\n+/, ' ')]
-        end
-        if STDOUT.tty?
-          headings = ["ID", "Created at", "Screen name", "Text"]
-          array.unshift(headings) unless statuses.empty?
-        end
-        print_table(array)
-      else
-        statuses.each do |status|
-          say "#{status.user.screen_name.rjust(MAX_SCREEN_NAME_SIZE)}: #{status.text.gsub(/\n+/, ' ')} (#{time_ago_in_words(status.created_at)} ago)"
-        end
-      end
-    end
-
-    def print_user_list(users)
-      users = users.sort_by{|user| user.screen_name.downcase} unless options['unsorted']
-      if options['created']
-        users = users.sort_by{|user| user.created_at}
-      elsif options['favorites']
-        users = users.sort_by{|user| user.favourites_count}
-      elsif options['followers']
-        users = users.sort_by{|user| user.followers_count}
-      elsif options['friends']
-        users = users.sort_by{|user| user.friends_count}
-      elsif options['listed']
-        users = users.sort_by{|user| user.listed_count}
-      elsif options['tweets']
-        users = users.sort_by{|user| user.statuses_count}
-      end
-      users.reverse! if options['reverse']
-      if options['long']
-        array = users.map do |user|
-          created_at = user.created_at > 6.months.ago ? user.created_at.strftime("%b %e %H:%M") : user.created_at.strftime("%b %e  %Y")
-          [user.id.to_s, created_at, user.statuses_count.to_s, user.friends_count.to_s, user.followers_count.to_s, user.favourites_count.to_s, user.listed_count.to_s, user.screen_name, user.name]
-        end
-        if STDOUT.tty?
-          headings = ["ID", "Created at", "Tweets", "Following", "Followers", "Favorites", "Listed", "Screen name", "Name"]
-          array.unshift(headings) unless users.empty?
-        end
-        print_table(array)
-      else
-        if STDOUT.tty?
-          print_in_columns(users.map(&:screen_name))
-        else
-          users.each do |user|
-            say user.screen_name
-          end
-        end
-      end
-    end
-
-    def protocol
-      options['no_ssl'] ? 'http' : DEFAULT_PROTOCOL
     end
 
   end

@@ -26,9 +26,9 @@ describe T::CLI do
     end
     it "should have the correct output" do
       @cli.accounts
-      $stdout.string.should == <<-eos.gsub(/^ {8}/, '')
-        testcli
-          abc123 (default)
+      $stdout.string.should == <<-eos
+testcli
+  abc123 (default)
       eos
     end
   end
@@ -100,17 +100,17 @@ describe T::CLI do
     end
     it "should have the correct output" do
       @cli.direct_messages
-      $stdout.string.should == <<-eos.gsub(/^/, ' ' * 6)
-        sferik: Sounds good. Meeting Tuesday is fine. (about 1 year ago)
-        sferik: That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does that work for you? (about 1 year ago)
-        sferik: I asked Yehuda about the stipend. I believe it has already been sent. Glad you're feeling better. (about 1 year ago)
-        sferik: Just checking in. How's everything going? (about 1 year ago)
-        sferik: Not sure about the payment. Feel free to ask Leah or Yehuda directly. Think you'll be able to finish up your work on graphs this weekend? (about 1 year ago)
-        sferik: How are the graph enhancements coming? (about 1 year ago)
-        sferik: How are the graphs coming? I'm really looking forward to seeing what you do with Raphaël. (about 1 year ago)
-        sferik: Awesome! Any luck duplicating the Gemfile.lock error with Ruby 1.9.2 final? (about 1 year ago)
-        sferik: I just committed a bunch of cleanup and fixes to RailsAdmin that touched many of files. Make sure you pull to avoid conflicts. (about 1 year ago)
-        sferik: I'm trying to debug the issue you were having with the Bundler Gemfile.lock shortref. What version of Ruby and RubyGems are you running? (about 1 year ago)
+      $stdout.string.should == <<-eos
+              sferik: Sounds good. Meeting Tuesday is fine. (about 1 year ago)
+              sferik: That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does that work for you? (about 1 year ago)
+              sferik: I asked Yehuda about the stipend. I believe it has already been sent. Glad you're feeling better. (about 1 year ago)
+              sferik: Just checking in. How's everything going? (about 1 year ago)
+              sferik: Not sure about the payment. Feel free to ask Leah or Yehuda directly. Think you'll be able to finish up your work on graphs this weekend? (about 1 year ago)
+              sferik: How are the graph enhancements coming? (about 1 year ago)
+              sferik: How are the graphs coming? I'm really looking forward to seeing what you do with Raphaël. (about 1 year ago)
+              sferik: Awesome! Any luck duplicating the Gemfile.lock error with Ruby 1.9.2 final? (about 1 year ago)
+              sferik: I just committed a bunch of cleanup and fixes to RailsAdmin that touched many of files. Make sure you pull to avoid conflicts. (about 1 year ago)
+              sferik: I'm trying to debug the issue you were having with the Bundler Gemfile.lock shortref. What version of Ruby and RubyGems are you running? (about 1 year ago)
       eos
     end
     context "--long" do
@@ -134,6 +134,40 @@ ID          Created at    Screen name  Text
         eos
       end
     end
+    context "--number" do
+      before do
+        @cli.options = @cli.options.merge(:number => 1)
+        stub_get("/1/direct_messages.json").
+          with(:query => {:count => "1", :include_entities => "false"}).
+          to_return(:body => fixture("direct_messages.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should limit the number of results" do
+        @cli.direct_messages
+        a_get("/1/direct_messages.json").
+          with(:query => {:count => "1", :include_entities => "false"}).
+          should have_been_made
+      end
+    end
+    context "--reverse" do
+      before do
+        @cli.options = @cli.options.merge(:reverse => true)
+      end
+      it "should reverse the order of the sort" do
+        @cli.direct_messages
+        $stdout.string.should == <<-eos
+              sferik: I'm trying to debug the issue you were having with the Bundler Gemfile.lock shortref. What version of Ruby and RubyGems are you running? (about 1 year ago)
+              sferik: I just committed a bunch of cleanup and fixes to RailsAdmin that touched many of files. Make sure you pull to avoid conflicts. (about 1 year ago)
+              sferik: Awesome! Any luck duplicating the Gemfile.lock error with Ruby 1.9.2 final? (about 1 year ago)
+              sferik: How are the graphs coming? I'm really looking forward to seeing what you do with Raphaël. (about 1 year ago)
+              sferik: How are the graph enhancements coming? (about 1 year ago)
+              sferik: Not sure about the payment. Feel free to ask Leah or Yehuda directly. Think you'll be able to finish up your work on graphs this weekend? (about 1 year ago)
+              sferik: Just checking in. How's everything going? (about 1 year ago)
+              sferik: I asked Yehuda about the stipend. I believe it has already been sent. Glad you're feeling better. (about 1 year ago)
+              sferik: That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does that work for you? (about 1 year ago)
+              sferik: Sounds good. Meeting Tuesday is fine. (about 1 year ago)
+        eos
+      end
+    end
   end
 
   describe "#direct_messages_sent" do
@@ -150,17 +184,17 @@ ID          Created at    Screen name  Text
     end
     it "should have the correct output" do
       @cli.direct_messages_sent
-      $stdout.string.should == <<-eos.gsub(/^/, ' ' * 6)
-     hurrycane: Sounds good. Meeting Tuesday is fine. (about 1 year ago)
-     hurrycane: That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does that work for you? (about 1 year ago)
-     hurrycane: I asked Yehuda about the stipend. I believe it has already been sent. Glad you're feeling better. (about 1 year ago)
-     hurrycane: Just checking in. How's everything going? (about 1 year ago)
-     hurrycane: Not sure about the payment. Feel free to ask Leah or Yehuda directly. Think you'll be able to finish up your work on graphs this weekend? (about 1 year ago)
-     hurrycane: How are the graph enhancements coming? (about 1 year ago)
-     hurrycane: How are the graphs coming? I'm really looking forward to seeing what you do with Raphaël. (about 1 year ago)
-     hurrycane: Awesome! Any luck duplicating the Gemfile.lock error with Ruby 1.9.2 final? (about 1 year ago)
-     hurrycane: I just committed a bunch of cleanup and fixes to RailsAdmin that touched many of files. Make sure you pull to avoid conflicts. (about 1 year ago)
-     hurrycane: I'm trying to debug the issue you were having with the Bundler Gemfile.lock shortref. What version of Ruby and RubyGems are you running? (about 1 year ago)
+      $stdout.string.should == <<-eos
+           hurrycane: Sounds good. Meeting Tuesday is fine. (about 1 year ago)
+           hurrycane: That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does that work for you? (about 1 year ago)
+           hurrycane: I asked Yehuda about the stipend. I believe it has already been sent. Glad you're feeling better. (about 1 year ago)
+           hurrycane: Just checking in. How's everything going? (about 1 year ago)
+           hurrycane: Not sure about the payment. Feel free to ask Leah or Yehuda directly. Think you'll be able to finish up your work on graphs this weekend? (about 1 year ago)
+           hurrycane: How are the graph enhancements coming? (about 1 year ago)
+           hurrycane: How are the graphs coming? I'm really looking forward to seeing what you do with Raphaël. (about 1 year ago)
+           hurrycane: Awesome! Any luck duplicating the Gemfile.lock error with Ruby 1.9.2 final? (about 1 year ago)
+           hurrycane: I just committed a bunch of cleanup and fixes to RailsAdmin that touched many of files. Make sure you pull to avoid conflicts. (about 1 year ago)
+           hurrycane: I'm trying to debug the issue you were having with the Bundler Gemfile.lock shortref. What version of Ruby and RubyGems are you running? (about 1 year ago)
       eos
     end
     context "--long" do
@@ -181,6 +215,40 @@ ID          Created at    Screen name  Text
 1629239903  Sep 10  2010  hurrycane    Awesome! Any luck duplicating the Gemfile.lock error with Ruby 1.9.2 final?
 1629166212  Sep 10  2010  hurrycane    I just committed a bunch of cleanup and fixes to RailsAdmin that touched many of files. Make sure you pull to avoid conflicts.
 1624782206  Sep  9  2010  hurrycane    I'm trying to debug the issue you were having with the Bundler Gemfile.lock shortref. What version of Ruby and RubyGems are you running?
+        eos
+      end
+    end
+    context "--number" do
+      before do
+        @cli.options = @cli.options.merge(:number => 1)
+        stub_get("/1/direct_messages/sent.json").
+          with(:query => {:count => "1", :include_entities => "false"}).
+          to_return(:body => fixture("direct_messages.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should limit the number of results" do
+        @cli.direct_messages_sent
+        a_get("/1/direct_messages/sent.json").
+          with(:query => {:count => "1", :include_entities => "false"}).
+          should have_been_made
+      end
+    end
+    context "--reverse" do
+      before do
+        @cli.options = @cli.options.merge(:reverse => true)
+      end
+      it "should reverse the order of the sort" do
+        @cli.direct_messages_sent
+        $stdout.string.should == <<-eos
+           hurrycane: I'm trying to debug the issue you were having with the Bundler Gemfile.lock shortref. What version of Ruby and RubyGems are you running? (about 1 year ago)
+           hurrycane: I just committed a bunch of cleanup and fixes to RailsAdmin that touched many of files. Make sure you pull to avoid conflicts. (about 1 year ago)
+           hurrycane: Awesome! Any luck duplicating the Gemfile.lock error with Ruby 1.9.2 final? (about 1 year ago)
+           hurrycane: How are the graphs coming? I'm really looking forward to seeing what you do with Raphaël. (about 1 year ago)
+           hurrycane: How are the graph enhancements coming? (about 1 year ago)
+           hurrycane: Not sure about the payment. Feel free to ask Leah or Yehuda directly. Think you'll be able to finish up your work on graphs this weekend? (about 1 year ago)
+           hurrycane: Just checking in. How's everything going? (about 1 year ago)
+           hurrycane: I asked Yehuda about the stipend. I believe it has already been sent. Glad you're feeling better. (about 1 year ago)
+           hurrycane: That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does that work for you? (about 1 year ago)
+           hurrycane: Sounds good. Meeting Tuesday is fine. (about 1 year ago)
         eos
       end
     end
@@ -236,24 +304,24 @@ ID          Created at    Screen name  Text
     end
     it "should have the correct output" do
       @cli.favorites
-      $stdout.string.should == <<-eos.gsub(/^/, ' ' * 6)
-  natevillegas: RT @gelobautista #riordan RT @WilI_Smith: Yesterday is history. Tomorrow is a mystery. Today is a gift. That's why it's called the present. (7 months ago)
-            TD: @kelseysilver how long will you be in town? (7 months ago)
-      rusashka: @maciej hahaha :) @gpena together we're going to cover all core 28 languages! (7 months ago)
-           fat: @stevej @xc i'm going to picket when i get back. (7 months ago)
-           wil: @0x9900 @paulnivin http://t.co/bwVdtAPe (7 months ago)
-      wangtian: @tianhonghe @xiangxin72 oh, you can even order specific items? (7 months ago)
-       shinypb: @kpk Pfft, I think you're forgetting mechanical television, which depended on a clever German. http://t.co/JvLNQCDm @skilldrick @hoverbird (7 months ago)
-        0x9900: @wil @paulnivin if you want to take you seriously don't say daemontools! (7 months ago)
-           kpk: @shinypb @skilldrick @hoverbird invented it (7 months ago)
-    skilldrick: @shinypb Well played :) @hoverbird (7 months ago)
-           sam: Can someone project the date that I'll get a 27" retina display? (7 months ago)
-       shinypb: @skilldrick @hoverbird Wow, I didn't even know they *had* TV in Britain. (7 months ago)
-         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
-    skilldrick: @hoverbird @shinypb You guys must be soooo old, I don't remember the words to the duck tales intro at all. (7 months ago)
-          sean: @mep Thanks for coming by. Was great to have you. (7 months ago)
-     hoverbird: @shinypb @trammell it's all suck a "duck blur" sometimes. (7 months ago)
-  kelseysilver: San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 92 others) http://t.co/eoLANJZw (7 months ago)
+      $stdout.string.should == <<-eos
+        natevillegas: RT @gelobautista #riordan RT @WilI_Smith: Yesterday is history. Tomorrow is a mystery. Today is a gift. That's why it's called the present. (7 months ago)
+                  TD: @kelseysilver how long will you be in town? (7 months ago)
+            rusashka: @maciej hahaha :) @gpena together we're going to cover all core 28 languages! (7 months ago)
+                 fat: @stevej @xc i'm going to picket when i get back. (7 months ago)
+                 wil: @0x9900 @paulnivin http://t.co/bwVdtAPe (7 months ago)
+            wangtian: @tianhonghe @xiangxin72 oh, you can even order specific items? (7 months ago)
+             shinypb: @kpk Pfft, I think you're forgetting mechanical television, which depended on a clever German. http://t.co/JvLNQCDm @skilldrick @hoverbird (7 months ago)
+              0x9900: @wil @paulnivin if you want to take you seriously don't say daemontools! (7 months ago)
+                 kpk: @shinypb @skilldrick @hoverbird invented it (7 months ago)
+          skilldrick: @shinypb Well played :) @hoverbird (7 months ago)
+                 sam: Can someone project the date that I'll get a 27" retina display? (7 months ago)
+             shinypb: @skilldrick @hoverbird Wow, I didn't even know they *had* TV in Britain. (7 months ago)
+               bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+          skilldrick: @hoverbird @shinypb You guys must be soooo old, I don't remember the words to the duck tales intro at all. (7 months ago)
+                sean: @mep Thanks for coming by. Was great to have you. (7 months ago)
+           hoverbird: @shinypb @trammell it's all suck a "duck blur" sometimes. (7 months ago)
+        kelseysilver: San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 92 others) http://t.co/eoLANJZw (7 months ago)
       eos
     end
     context "--long" do
@@ -281,6 +349,47 @@ ID                  Created at    Screen name   Text
 194546583608639488  Apr 23  2011  sean          @mep Thanks for coming by. Was great to have you.
 194546388707717120  Apr 23  2011  hoverbird     @shinypb @trammell it's all suck a "duck blur" sometimes.
 194546264212385793  Apr 23  2011  kelseysilver  San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 92 others) http://t.co/eoLANJZw
+        eos
+      end
+    end
+    context "--number" do
+      before do
+        @cli.options = @cli.options.merge(:number => 1)
+        stub_get("/1/favorites.json").
+          with(:query => {:count => "1", :include_entities => "false"}).
+          to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should limit the number of results" do
+        @cli.favorites
+        a_get("/1/favorites.json").
+          with(:query => {:count => "1", :include_entities => "false"}).
+          should have_been_made
+      end
+    end
+    context "--reverse" do
+      before do
+        @cli.options = @cli.options.merge(:reverse => true)
+      end
+      it "should reverse the order of the sort" do
+        @cli.favorites
+        $stdout.string.should == <<-eos
+        kelseysilver: San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 92 others) http://t.co/eoLANJZw (7 months ago)
+           hoverbird: @shinypb @trammell it's all suck a "duck blur" sometimes. (7 months ago)
+                sean: @mep Thanks for coming by. Was great to have you. (7 months ago)
+          skilldrick: @hoverbird @shinypb You guys must be soooo old, I don't remember the words to the duck tales intro at all. (7 months ago)
+               bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+             shinypb: @skilldrick @hoverbird Wow, I didn't even know they *had* TV in Britain. (7 months ago)
+                 sam: Can someone project the date that I'll get a 27" retina display? (7 months ago)
+          skilldrick: @shinypb Well played :) @hoverbird (7 months ago)
+                 kpk: @shinypb @skilldrick @hoverbird invented it (7 months ago)
+              0x9900: @wil @paulnivin if you want to take you seriously don't say daemontools! (7 months ago)
+             shinypb: @kpk Pfft, I think you're forgetting mechanical television, which depended on a clever German. http://t.co/JvLNQCDm @skilldrick @hoverbird (7 months ago)
+            wangtian: @tianhonghe @xiangxin72 oh, you can even order specific items? (7 months ago)
+                 wil: @0x9900 @paulnivin http://t.co/bwVdtAPe (7 months ago)
+                 fat: @stevej @xc i'm going to picket when i get back. (7 months ago)
+            rusashka: @maciej hahaha :) @gpena together we're going to cover all core 28 languages! (7 months ago)
+                  TD: @kelseysilver how long will you be in town? (7 months ago)
+        natevillegas: RT @gelobautista #riordan RT @WilI_Smith: Yesterday is history. Tomorrow is a mystery. Today is a gift. That's why it's called the present. (7 months ago)
         eos
       end
     end
@@ -410,6 +519,15 @@ ID        Created at    Tweets  Following  Followers  Favorites  Listed  Screen 
         eos
       end
     end
+    context "--reverse" do
+      before do
+        @cli.options = @cli.options.merge(:reverse => true)
+      end
+      it "should reverse the order of the sort" do
+        @cli.followings
+        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+      end
+    end
     context "--tweets" do
       before do
         @cli.options = @cli.options.merge(:tweets => true)
@@ -499,6 +617,15 @@ ID        Created at    Tweets  Following  Followers  Favorites  Listed  Screen 
 14100886  Mar  8  2008  3913    1871       2767       32         185     pengwynn     Wynn Netherland
 7505382   Jul 16  2007  2962    88         898        727        29      sferik       Erik Michaels-Ober
         eos
+      end
+    end
+    context "--reverse" do
+      before do
+        @cli.options = @cli.options.merge(:reverse => true)
+      end
+      it "should reverse the order of the sort" do
+        @cli.followers
+        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
       end
     end
     context "--tweets" do
@@ -598,6 +725,15 @@ ID        Created at    Tweets  Following  Followers  Favorites  Listed  Screen 
         eos
       end
     end
+    context "--reverse" do
+      before do
+        @cli.options = @cli.options.merge(:reverse => true)
+      end
+      it "should reverse the order of the sort" do
+        @cli.friends
+        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+      end
+    end
     context "--tweets" do
       before do
         @cli.options = @cli.options.merge(:tweets => true)
@@ -695,6 +831,15 @@ ID        Created at    Tweets  Following  Followers  Favorites  Listed  Screen 
         eos
       end
     end
+    context "--reverse" do
+      before do
+        @cli.options = @cli.options.merge(:reverse => true)
+      end
+      it "should reverse the order of the sort" do
+        @cli.leaders
+        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+      end
+    end
     context "--tweets" do
       before do
         @cli.options = @cli.options.merge(:tweets => true)
@@ -702,87 +847,6 @@ ID        Created at    Tweets  Following  Followers  Favorites  Listed  Screen 
       it "should list in long format" do
         @cli.leaders
         $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
-      end
-    end
-  end
-
-  describe "#members" do
-    before do
-      stub_get("/1/lists/members.json").
-        with(:query => {:cursor => "-1", :include_entities => "false", :owner_screen_name => "sferik", :skip_status => "true", :slug => "presidents"}).
-        to_return(:body => fixture("empty_cursor.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-    end
-    it "should request the correct resource" do
-      @cli.members("sferik", "presidents")
-      a_get("/1/lists/members.json").
-        with(:query => {:cursor => "-1", :include_entities => "false", :owner_screen_name => "sferik", :skip_status => "true", :slug => "presidents"}).
-        should have_been_made
-    end
-    it "should have the correct output" do
-      @cli.members("sferik", "presidents")
-      $stdout.string.chomp.should be_empty
-    end
-    context "--created" do
-      before do
-        @cli.options = @cli.options.merge(:created => true)
-      end
-      it "should list in long format" do
-        @cli.members("sferik", "presidents")
-        $stdout.string.chomp.should be_empty
-      end
-    end
-    context "--favorites" do
-      before do
-        @cli.options = @cli.options.merge(:favorites => true)
-      end
-      it "should list in long format" do
-        @cli.members("sferik", "presidents")
-        $stdout.string.chomp.rstrip.should be_empty
-      end
-    end
-    context "--followers" do
-      before do
-        @cli.options = @cli.options.merge(:followers => true)
-      end
-      it "should list in long format" do
-        @cli.members("sferik", "presidents")
-        $stdout.string.chomp.rstrip.should be_empty
-      end
-    end
-    context "--friends" do
-      before do
-        @cli.options = @cli.options.merge(:friends => true)
-      end
-      it "should list in long format" do
-        @cli.members("sferik", "presidents")
-        $stdout.string.chomp.should be_empty
-      end
-    end
-    context "--listed" do
-      before do
-        @cli.options = @cli.options.merge(:listed => true)
-      end
-      it "should list in long format" do
-        @cli.members("sferik", "presidents")
-        $stdout.string.chomp.rstrip.should be_empty
-      end
-    end
-    context "--long" do
-      before do
-        @cli.options = @cli.options.merge(:long => true)
-      end
-      it "should list in long format" do
-        @cli.members("sferik", "presidents")
-        $stdout.string.should be_empty
-      end
-    end
-    context "--tweets" do
-      before do
-        @cli.options = @cli.options.merge(:tweets => true)
-      end
-      it "should list in long format" do
-        @cli.members("sferik", "presidents")
-        $stdout.string.chomp.rstrip.should be_empty
       end
     end
   end
@@ -801,24 +865,24 @@ ID        Created at    Tweets  Following  Followers  Favorites  Listed  Screen 
     end
     it "should have the correct output" do
       @cli.mentions
-      $stdout.string.should == <<-eos.gsub(/^/, ' ' * 6)
-  natevillegas: RT @gelobautista #riordan RT @WilI_Smith: Yesterday is history. Tomorrow is a mystery. Today is a gift. That's why it's called the present. (7 months ago)
-            TD: @kelseysilver how long will you be in town? (7 months ago)
-      rusashka: @maciej hahaha :) @gpena together we're going to cover all core 28 languages! (7 months ago)
-           fat: @stevej @xc i'm going to picket when i get back. (7 months ago)
-           wil: @0x9900 @paulnivin http://t.co/bwVdtAPe (7 months ago)
-      wangtian: @tianhonghe @xiangxin72 oh, you can even order specific items? (7 months ago)
-       shinypb: @kpk Pfft, I think you're forgetting mechanical television, which depended on a clever German. http://t.co/JvLNQCDm @skilldrick @hoverbird (7 months ago)
-        0x9900: @wil @paulnivin if you want to take you seriously don't say daemontools! (7 months ago)
-           kpk: @shinypb @skilldrick @hoverbird invented it (7 months ago)
-    skilldrick: @shinypb Well played :) @hoverbird (7 months ago)
-           sam: Can someone project the date that I'll get a 27" retina display? (7 months ago)
-       shinypb: @skilldrick @hoverbird Wow, I didn't even know they *had* TV in Britain. (7 months ago)
-         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
-    skilldrick: @hoverbird @shinypb You guys must be soooo old, I don't remember the words to the duck tales intro at all. (7 months ago)
-          sean: @mep Thanks for coming by. Was great to have you. (7 months ago)
-     hoverbird: @shinypb @trammell it's all suck a "duck blur" sometimes. (7 months ago)
-  kelseysilver: San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 92 others) http://t.co/eoLANJZw (7 months ago)
+      $stdout.string.should == <<-eos
+        natevillegas: RT @gelobautista #riordan RT @WilI_Smith: Yesterday is history. Tomorrow is a mystery. Today is a gift. That's why it's called the present. (7 months ago)
+                  TD: @kelseysilver how long will you be in town? (7 months ago)
+            rusashka: @maciej hahaha :) @gpena together we're going to cover all core 28 languages! (7 months ago)
+                 fat: @stevej @xc i'm going to picket when i get back. (7 months ago)
+                 wil: @0x9900 @paulnivin http://t.co/bwVdtAPe (7 months ago)
+            wangtian: @tianhonghe @xiangxin72 oh, you can even order specific items? (7 months ago)
+             shinypb: @kpk Pfft, I think you're forgetting mechanical television, which depended on a clever German. http://t.co/JvLNQCDm @skilldrick @hoverbird (7 months ago)
+              0x9900: @wil @paulnivin if you want to take you seriously don't say daemontools! (7 months ago)
+                 kpk: @shinypb @skilldrick @hoverbird invented it (7 months ago)
+          skilldrick: @shinypb Well played :) @hoverbird (7 months ago)
+                 sam: Can someone project the date that I'll get a 27" retina display? (7 months ago)
+             shinypb: @skilldrick @hoverbird Wow, I didn't even know they *had* TV in Britain. (7 months ago)
+               bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+          skilldrick: @hoverbird @shinypb You guys must be soooo old, I don't remember the words to the duck tales intro at all. (7 months ago)
+                sean: @mep Thanks for coming by. Was great to have you. (7 months ago)
+           hoverbird: @shinypb @trammell it's all suck a "duck blur" sometimes. (7 months ago)
+        kelseysilver: San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 92 others) http://t.co/eoLANJZw (7 months ago)
       eos
     end
     context "--long" do
@@ -846,6 +910,47 @@ ID                  Created at    Screen name   Text
 194546583608639488  Apr 23  2011  sean          @mep Thanks for coming by. Was great to have you.
 194546388707717120  Apr 23  2011  hoverbird     @shinypb @trammell it's all suck a "duck blur" sometimes.
 194546264212385793  Apr 23  2011  kelseysilver  San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 92 others) http://t.co/eoLANJZw
+        eos
+      end
+    end
+    context "--number" do
+      before do
+        @cli.options = @cli.options.merge(:number => 1)
+        stub_get("/1/statuses/mentions.json").
+          with(:query => {:count => "1", :include_entities => "false"}).
+          to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should limit the number of results" do
+        @cli.mentions
+        a_get("/1/statuses/mentions.json").
+          with(:query => {:count => "1", :include_entities => "false"}).
+          should have_been_made
+      end
+    end
+    context "--reverse" do
+      before do
+        @cli.options = @cli.options.merge(:reverse => true)
+      end
+      it "should reverse the order of the sort" do
+        @cli.mentions
+        $stdout.string.should == <<-eos
+        kelseysilver: San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 92 others) http://t.co/eoLANJZw (7 months ago)
+           hoverbird: @shinypb @trammell it's all suck a "duck blur" sometimes. (7 months ago)
+                sean: @mep Thanks for coming by. Was great to have you. (7 months ago)
+          skilldrick: @hoverbird @shinypb You guys must be soooo old, I don't remember the words to the duck tales intro at all. (7 months ago)
+               bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+             shinypb: @skilldrick @hoverbird Wow, I didn't even know they *had* TV in Britain. (7 months ago)
+                 sam: Can someone project the date that I'll get a 27" retina display? (7 months ago)
+          skilldrick: @shinypb Well played :) @hoverbird (7 months ago)
+                 kpk: @shinypb @skilldrick @hoverbird invented it (7 months ago)
+              0x9900: @wil @paulnivin if you want to take you seriously don't say daemontools! (7 months ago)
+             shinypb: @kpk Pfft, I think you're forgetting mechanical television, which depended on a clever German. http://t.co/JvLNQCDm @skilldrick @hoverbird (7 months ago)
+            wangtian: @tianhonghe @xiangxin72 oh, you can even order specific items? (7 months ago)
+                 wil: @0x9900 @paulnivin http://t.co/bwVdtAPe (7 months ago)
+                 fat: @stevej @xc i'm going to picket when i get back. (7 months ago)
+            rusashka: @maciej hahaha :) @gpena together we're going to cover all core 28 languages! (7 months ago)
+                  TD: @kelseysilver how long will you be in town? (7 months ago)
+        natevillegas: RT @gelobautista #riordan RT @WilI_Smith: Yesterday is history. Tomorrow is a mystery. Today is a gift. That's why it's called the present. (7 months ago)
         eos
       end
     end
@@ -946,24 +1051,24 @@ ID                  Created at    Screen name   Text
       end
       it "should have the correct output" do
         @cli.retweets
-        $stdout.string.should == <<-eos.gsub(/^/, ' ' * 6)
-  natevillegas: RT @gelobautista #riordan RT @WilI_Smith: Yesterday is history. Tomorrow is a mystery. Today is a gift. That's why it's called the present. (7 months ago)
-            TD: @kelseysilver how long will you be in town? (7 months ago)
-      rusashka: @maciej hahaha :) @gpena together we're going to cover all core 28 languages! (7 months ago)
-           fat: @stevej @xc i'm going to picket when i get back. (7 months ago)
-           wil: @0x9900 @paulnivin http://t.co/bwVdtAPe (7 months ago)
-      wangtian: @tianhonghe @xiangxin72 oh, you can even order specific items? (7 months ago)
-       shinypb: @kpk Pfft, I think you're forgetting mechanical television, which depended on a clever German. http://t.co/JvLNQCDm @skilldrick @hoverbird (7 months ago)
-        0x9900: @wil @paulnivin if you want to take you seriously don't say daemontools! (7 months ago)
-           kpk: @shinypb @skilldrick @hoverbird invented it (7 months ago)
-    skilldrick: @shinypb Well played :) @hoverbird (7 months ago)
-           sam: Can someone project the date that I'll get a 27" retina display? (7 months ago)
-       shinypb: @skilldrick @hoverbird Wow, I didn't even know they *had* TV in Britain. (7 months ago)
-         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
-    skilldrick: @hoverbird @shinypb You guys must be soooo old, I don't remember the words to the duck tales intro at all. (7 months ago)
-          sean: @mep Thanks for coming by. Was great to have you. (7 months ago)
-     hoverbird: @shinypb @trammell it's all suck a "duck blur" sometimes. (7 months ago)
-  kelseysilver: San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 92 others) http://t.co/eoLANJZw (7 months ago)
+        $stdout.string.should == <<-eos
+        natevillegas: RT @gelobautista #riordan RT @WilI_Smith: Yesterday is history. Tomorrow is a mystery. Today is a gift. That's why it's called the present. (7 months ago)
+                  TD: @kelseysilver how long will you be in town? (7 months ago)
+            rusashka: @maciej hahaha :) @gpena together we're going to cover all core 28 languages! (7 months ago)
+                 fat: @stevej @xc i'm going to picket when i get back. (7 months ago)
+                 wil: @0x9900 @paulnivin http://t.co/bwVdtAPe (7 months ago)
+            wangtian: @tianhonghe @xiangxin72 oh, you can even order specific items? (7 months ago)
+             shinypb: @kpk Pfft, I think you're forgetting mechanical television, which depended on a clever German. http://t.co/JvLNQCDm @skilldrick @hoverbird (7 months ago)
+              0x9900: @wil @paulnivin if you want to take you seriously don't say daemontools! (7 months ago)
+                 kpk: @shinypb @skilldrick @hoverbird invented it (7 months ago)
+          skilldrick: @shinypb Well played :) @hoverbird (7 months ago)
+                 sam: Can someone project the date that I'll get a 27" retina display? (7 months ago)
+             shinypb: @skilldrick @hoverbird Wow, I didn't even know they *had* TV in Britain. (7 months ago)
+               bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+          skilldrick: @hoverbird @shinypb You guys must be soooo old, I don't remember the words to the duck tales intro at all. (7 months ago)
+                sean: @mep Thanks for coming by. Was great to have you. (7 months ago)
+           hoverbird: @shinypb @trammell it's all suck a "duck blur" sometimes. (7 months ago)
+        kelseysilver: San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 92 others) http://t.co/eoLANJZw (7 months ago)
         eos
       end
     end
@@ -995,6 +1100,47 @@ ID                  Created at    Screen name   Text
         eos
       end
     end
+    context "--number" do
+      before do
+        @cli.options = @cli.options.merge(:number => 1)
+        stub_get("/1/statuses/retweeted_by_me.json").
+          with(:query => {:count => "1", :include_entities => "false"}).
+          to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should limit the number of results" do
+        @cli.retweets
+        a_get("/1/statuses/retweeted_by_me.json").
+          with(:query => {:count => "1", :include_entities => "false"}).
+          should have_been_made
+      end
+    end
+    context "--reverse" do
+      before do
+        @cli.options = @cli.options.merge(:reverse => true)
+      end
+      it "should reverse the order of the sort" do
+        @cli.retweets
+        $stdout.string.should == <<-eos
+        kelseysilver: San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 92 others) http://t.co/eoLANJZw (7 months ago)
+           hoverbird: @shinypb @trammell it's all suck a "duck blur" sometimes. (7 months ago)
+                sean: @mep Thanks for coming by. Was great to have you. (7 months ago)
+          skilldrick: @hoverbird @shinypb You guys must be soooo old, I don't remember the words to the duck tales intro at all. (7 months ago)
+               bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+             shinypb: @skilldrick @hoverbird Wow, I didn't even know they *had* TV in Britain. (7 months ago)
+                 sam: Can someone project the date that I'll get a 27" retina display? (7 months ago)
+          skilldrick: @shinypb Well played :) @hoverbird (7 months ago)
+                 kpk: @shinypb @skilldrick @hoverbird invented it (7 months ago)
+              0x9900: @wil @paulnivin if you want to take you seriously don't say daemontools! (7 months ago)
+             shinypb: @kpk Pfft, I think you're forgetting mechanical television, which depended on a clever German. http://t.co/JvLNQCDm @skilldrick @hoverbird (7 months ago)
+            wangtian: @tianhonghe @xiangxin72 oh, you can even order specific items? (7 months ago)
+                 wil: @0x9900 @paulnivin http://t.co/bwVdtAPe (7 months ago)
+                 fat: @stevej @xc i'm going to picket when i get back. (7 months ago)
+            rusashka: @maciej hahaha :) @gpena together we're going to cover all core 28 languages! (7 months ago)
+                  TD: @kelseysilver how long will you be in town? (7 months ago)
+        natevillegas: RT @gelobautista #riordan RT @WilI_Smith: Yesterday is history. Tomorrow is a mystery. Today is a gift. That's why it's called the present. (7 months ago)
+        eos
+      end
+    end
     context "with a screen name passed" do
       before do
         stub_get("/1/statuses/retweeted_by_user.json").
@@ -1009,24 +1155,24 @@ ID                  Created at    Screen name   Text
       end
       it "should have the correct output" do
         @cli.retweets("sferik")
-        $stdout.string.should == <<-eos.gsub(/^/, ' ' * 6)
-  natevillegas: RT @gelobautista #riordan RT @WilI_Smith: Yesterday is history. Tomorrow is a mystery. Today is a gift. That's why it's called the present. (7 months ago)
-            TD: @kelseysilver how long will you be in town? (7 months ago)
-      rusashka: @maciej hahaha :) @gpena together we're going to cover all core 28 languages! (7 months ago)
-           fat: @stevej @xc i'm going to picket when i get back. (7 months ago)
-           wil: @0x9900 @paulnivin http://t.co/bwVdtAPe (7 months ago)
-      wangtian: @tianhonghe @xiangxin72 oh, you can even order specific items? (7 months ago)
-       shinypb: @kpk Pfft, I think you're forgetting mechanical television, which depended on a clever German. http://t.co/JvLNQCDm @skilldrick @hoverbird (7 months ago)
-        0x9900: @wil @paulnivin if you want to take you seriously don't say daemontools! (7 months ago)
-           kpk: @shinypb @skilldrick @hoverbird invented it (7 months ago)
-    skilldrick: @shinypb Well played :) @hoverbird (7 months ago)
-           sam: Can someone project the date that I'll get a 27" retina display? (7 months ago)
-       shinypb: @skilldrick @hoverbird Wow, I didn't even know they *had* TV in Britain. (7 months ago)
-         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
-    skilldrick: @hoverbird @shinypb You guys must be soooo old, I don't remember the words to the duck tales intro at all. (7 months ago)
-          sean: @mep Thanks for coming by. Was great to have you. (7 months ago)
-     hoverbird: @shinypb @trammell it's all suck a "duck blur" sometimes. (7 months ago)
-  kelseysilver: San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 92 others) http://t.co/eoLANJZw (7 months ago)
+        $stdout.string.should == <<-eos
+        natevillegas: RT @gelobautista #riordan RT @WilI_Smith: Yesterday is history. Tomorrow is a mystery. Today is a gift. That's why it's called the present. (7 months ago)
+                  TD: @kelseysilver how long will you be in town? (7 months ago)
+            rusashka: @maciej hahaha :) @gpena together we're going to cover all core 28 languages! (7 months ago)
+                 fat: @stevej @xc i'm going to picket when i get back. (7 months ago)
+                 wil: @0x9900 @paulnivin http://t.co/bwVdtAPe (7 months ago)
+            wangtian: @tianhonghe @xiangxin72 oh, you can even order specific items? (7 months ago)
+             shinypb: @kpk Pfft, I think you're forgetting mechanical television, which depended on a clever German. http://t.co/JvLNQCDm @skilldrick @hoverbird (7 months ago)
+              0x9900: @wil @paulnivin if you want to take you seriously don't say daemontools! (7 months ago)
+                 kpk: @shinypb @skilldrick @hoverbird invented it (7 months ago)
+          skilldrick: @shinypb Well played :) @hoverbird (7 months ago)
+                 sam: Can someone project the date that I'll get a 27" retina display? (7 months ago)
+             shinypb: @skilldrick @hoverbird Wow, I didn't even know they *had* TV in Britain. (7 months ago)
+               bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+          skilldrick: @hoverbird @shinypb You guys must be soooo old, I don't remember the words to the duck tales intro at all. (7 months ago)
+                sean: @mep Thanks for coming by. Was great to have you. (7 months ago)
+           hoverbird: @shinypb @trammell it's all suck a "duck blur" sometimes. (7 months ago)
+        kelseysilver: San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 92 others) http://t.co/eoLANJZw (7 months ago)
         eos
       end
     end
@@ -1109,6 +1255,29 @@ ID        Created at    Tweets  Following  Followers  Favorites  Listed  Screen 
         eos
       end
     end
+    context "--number" do
+      before do
+        @cli.options = @cli.options.merge(:number => 1)
+        stub_get("/1/users/recommendations.json").
+          with(:query => {:limit => "1", :include_entities => "false"}).
+          to_return(:body => fixture("recommendations.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should limit the number of results" do
+        @cli.suggest
+        a_get("/1/users/recommendations.json").
+          with(:query => {:limit => "1", :include_entities => "false"}).
+          should have_been_made
+      end
+    end
+    context "--reverse" do
+      before do
+        @cli.options = @cli.options.merge(:reverse => true)
+      end
+      it "should reverse the order of the sort" do
+        @cli.suggest
+        $stdout.string.chomp.rstrip.should == "stuntmann82  mlroach      maccman      jtrupiano    antpires"
+      end
+    end
     context "--tweets" do
       before do
         @cli.options = @cli.options.merge(:tweets => true)
@@ -1135,24 +1304,24 @@ ID        Created at    Tweets  Following  Followers  Favorites  Listed  Screen 
       end
       it "should have the correct output" do
         @cli.timeline
-        $stdout.string.should == <<-eos.gsub(/^/, ' ' * 6)
-  natevillegas: RT @gelobautista #riordan RT @WilI_Smith: Yesterday is history. Tomorrow is a mystery. Today is a gift. That's why it's called the present. (7 months ago)
-            TD: @kelseysilver how long will you be in town? (7 months ago)
-      rusashka: @maciej hahaha :) @gpena together we're going to cover all core 28 languages! (7 months ago)
-           fat: @stevej @xc i'm going to picket when i get back. (7 months ago)
-           wil: @0x9900 @paulnivin http://t.co/bwVdtAPe (7 months ago)
-      wangtian: @tianhonghe @xiangxin72 oh, you can even order specific items? (7 months ago)
-       shinypb: @kpk Pfft, I think you're forgetting mechanical television, which depended on a clever German. http://t.co/JvLNQCDm @skilldrick @hoverbird (7 months ago)
-        0x9900: @wil @paulnivin if you want to take you seriously don't say daemontools! (7 months ago)
-           kpk: @shinypb @skilldrick @hoverbird invented it (7 months ago)
-    skilldrick: @shinypb Well played :) @hoverbird (7 months ago)
-           sam: Can someone project the date that I'll get a 27" retina display? (7 months ago)
-       shinypb: @skilldrick @hoverbird Wow, I didn't even know they *had* TV in Britain. (7 months ago)
-         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
-    skilldrick: @hoverbird @shinypb You guys must be soooo old, I don't remember the words to the duck tales intro at all. (7 months ago)
-          sean: @mep Thanks for coming by. Was great to have you. (7 months ago)
-     hoverbird: @shinypb @trammell it's all suck a "duck blur" sometimes. (7 months ago)
-  kelseysilver: San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 92 others) http://t.co/eoLANJZw (7 months ago)
+        $stdout.string.should == <<-eos
+        natevillegas: RT @gelobautista #riordan RT @WilI_Smith: Yesterday is history. Tomorrow is a mystery. Today is a gift. That's why it's called the present. (7 months ago)
+                  TD: @kelseysilver how long will you be in town? (7 months ago)
+            rusashka: @maciej hahaha :) @gpena together we're going to cover all core 28 languages! (7 months ago)
+                 fat: @stevej @xc i'm going to picket when i get back. (7 months ago)
+                 wil: @0x9900 @paulnivin http://t.co/bwVdtAPe (7 months ago)
+            wangtian: @tianhonghe @xiangxin72 oh, you can even order specific items? (7 months ago)
+             shinypb: @kpk Pfft, I think you're forgetting mechanical television, which depended on a clever German. http://t.co/JvLNQCDm @skilldrick @hoverbird (7 months ago)
+              0x9900: @wil @paulnivin if you want to take you seriously don't say daemontools! (7 months ago)
+                 kpk: @shinypb @skilldrick @hoverbird invented it (7 months ago)
+          skilldrick: @shinypb Well played :) @hoverbird (7 months ago)
+                 sam: Can someone project the date that I'll get a 27" retina display? (7 months ago)
+             shinypb: @skilldrick @hoverbird Wow, I didn't even know they *had* TV in Britain. (7 months ago)
+               bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+          skilldrick: @hoverbird @shinypb You guys must be soooo old, I don't remember the words to the duck tales intro at all. (7 months ago)
+                sean: @mep Thanks for coming by. Was great to have you. (7 months ago)
+           hoverbird: @shinypb @trammell it's all suck a "duck blur" sometimes. (7 months ago)
+        kelseysilver: San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 92 others) http://t.co/eoLANJZw (7 months ago)
         eos
       end
     end
@@ -1184,6 +1353,47 @@ ID                  Created at    Screen name   Text
         eos
       end
     end
+    context "--number" do
+      before do
+        @cli.options = @cli.options.merge(:number => 1)
+        stub_get("/1/statuses/home_timeline.json").
+          with(:query => {:count => "1", :include_entities => "false"}).
+          to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should limit the number of results" do
+        @cli.timeline
+        a_get("/1/statuses/home_timeline.json").
+          with(:query => {:count => "1", :include_entities => "false"}).
+          should have_been_made
+      end
+    end
+    context "--reverse" do
+      before do
+        @cli.options = @cli.options.merge(:reverse => true)
+      end
+      it "should reverse the order of the sort" do
+        @cli.timeline
+        $stdout.string.should == <<-eos
+        kelseysilver: San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 92 others) http://t.co/eoLANJZw (7 months ago)
+           hoverbird: @shinypb @trammell it's all suck a "duck blur" sometimes. (7 months ago)
+                sean: @mep Thanks for coming by. Was great to have you. (7 months ago)
+          skilldrick: @hoverbird @shinypb You guys must be soooo old, I don't remember the words to the duck tales intro at all. (7 months ago)
+               bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+             shinypb: @skilldrick @hoverbird Wow, I didn't even know they *had* TV in Britain. (7 months ago)
+                 sam: Can someone project the date that I'll get a 27" retina display? (7 months ago)
+          skilldrick: @shinypb Well played :) @hoverbird (7 months ago)
+                 kpk: @shinypb @skilldrick @hoverbird invented it (7 months ago)
+              0x9900: @wil @paulnivin if you want to take you seriously don't say daemontools! (7 months ago)
+             shinypb: @kpk Pfft, I think you're forgetting mechanical television, which depended on a clever German. http://t.co/JvLNQCDm @skilldrick @hoverbird (7 months ago)
+            wangtian: @tianhonghe @xiangxin72 oh, you can even order specific items? (7 months ago)
+                 wil: @0x9900 @paulnivin http://t.co/bwVdtAPe (7 months ago)
+                 fat: @stevej @xc i'm going to picket when i get back. (7 months ago)
+            rusashka: @maciej hahaha :) @gpena together we're going to cover all core 28 languages! (7 months ago)
+                  TD: @kelseysilver how long will you be in town? (7 months ago)
+        natevillegas: RT @gelobautista #riordan RT @WilI_Smith: Yesterday is history. Tomorrow is a mystery. Today is a gift. That's why it's called the present. (7 months ago)
+        eos
+      end
+    end
     context "with user" do
       before do
         stub_get("/1/statuses/user_timeline.json").
@@ -1198,24 +1408,24 @@ ID                  Created at    Screen name   Text
       end
       it "should have the correct output" do
         @cli.timeline("sferik")
-        $stdout.string.should == <<-eos.gsub(/^/, ' ' * 6)
-  natevillegas: RT @gelobautista #riordan RT @WilI_Smith: Yesterday is history. Tomorrow is a mystery. Today is a gift. That's why it's called the present. (7 months ago)
-            TD: @kelseysilver how long will you be in town? (7 months ago)
-      rusashka: @maciej hahaha :) @gpena together we're going to cover all core 28 languages! (7 months ago)
-           fat: @stevej @xc i'm going to picket when i get back. (7 months ago)
-           wil: @0x9900 @paulnivin http://t.co/bwVdtAPe (7 months ago)
-      wangtian: @tianhonghe @xiangxin72 oh, you can even order specific items? (7 months ago)
-       shinypb: @kpk Pfft, I think you're forgetting mechanical television, which depended on a clever German. http://t.co/JvLNQCDm @skilldrick @hoverbird (7 months ago)
-        0x9900: @wil @paulnivin if you want to take you seriously don't say daemontools! (7 months ago)
-           kpk: @shinypb @skilldrick @hoverbird invented it (7 months ago)
-    skilldrick: @shinypb Well played :) @hoverbird (7 months ago)
-           sam: Can someone project the date that I'll get a 27" retina display? (7 months ago)
-       shinypb: @skilldrick @hoverbird Wow, I didn't even know they *had* TV in Britain. (7 months ago)
-         bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
-    skilldrick: @hoverbird @shinypb You guys must be soooo old, I don't remember the words to the duck tales intro at all. (7 months ago)
-          sean: @mep Thanks for coming by. Was great to have you. (7 months ago)
-     hoverbird: @shinypb @trammell it's all suck a "duck blur" sometimes. (7 months ago)
-  kelseysilver: San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 92 others) http://t.co/eoLANJZw (7 months ago)
+        $stdout.string.should == <<-eos
+        natevillegas: RT @gelobautista #riordan RT @WilI_Smith: Yesterday is history. Tomorrow is a mystery. Today is a gift. That's why it's called the present. (7 months ago)
+                  TD: @kelseysilver how long will you be in town? (7 months ago)
+            rusashka: @maciej hahaha :) @gpena together we're going to cover all core 28 languages! (7 months ago)
+                 fat: @stevej @xc i'm going to picket when i get back. (7 months ago)
+                 wil: @0x9900 @paulnivin http://t.co/bwVdtAPe (7 months ago)
+            wangtian: @tianhonghe @xiangxin72 oh, you can even order specific items? (7 months ago)
+             shinypb: @kpk Pfft, I think you're forgetting mechanical television, which depended on a clever German. http://t.co/JvLNQCDm @skilldrick @hoverbird (7 months ago)
+              0x9900: @wil @paulnivin if you want to take you seriously don't say daemontools! (7 months ago)
+                 kpk: @shinypb @skilldrick @hoverbird invented it (7 months ago)
+          skilldrick: @shinypb Well played :) @hoverbird (7 months ago)
+                 sam: Can someone project the date that I'll get a 27" retina display? (7 months ago)
+             shinypb: @skilldrick @hoverbird Wow, I didn't even know they *had* TV in Britain. (7 months ago)
+               bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+          skilldrick: @hoverbird @shinypb You guys must be soooo old, I don't remember the words to the duck tales intro at all. (7 months ago)
+                sean: @mep Thanks for coming by. Was great to have you. (7 months ago)
+           hoverbird: @shinypb @trammell it's all suck a "duck blur" sometimes. (7 months ago)
+        kelseysilver: San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 92 others) http://t.co/eoLANJZw (7 months ago)
         eos
       end
     end
@@ -1366,6 +1576,15 @@ ID        Created at    Tweets  Following  Followers  Favorites  Listed  Screen 
         eos
       end
     end
+    context "--reverse" do
+      before do
+        @cli.options = @cli.options.merge(:reverse => true)
+      end
+      it "should reverse the order of the sort" do
+        @cli.users("sferik", "pengwynn")
+        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+      end
+    end
     context "--tweets" do
       before do
         @cli.options = @cli.options.merge(:tweets => true)
@@ -1398,12 +1617,12 @@ ID        Created at    Tweets  Following  Followers  Favorites  Listed  Screen 
     end
     it "should have the correct output" do
       @cli.whois("sferik")
-      $stdout.string.should == <<-eos.gsub(/^ {8}/, '')
-        id: #7,505,382
-        Erik Michaels-Ober, since Jul 2007.
-        bio: A mind forever voyaging through strange seas of thought, alone.
-        location: San Francisco
-        web: https://github.com/sferik
+      $stdout.string.should == <<-eos
+id: #7,505,382
+Erik Michaels-Ober, since Jul 2007.
+bio: A mind forever voyaging through strange seas of thought, alone.
+location: San Francisco
+web: https://github.com/sferik
       eos
     end
   end

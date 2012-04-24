@@ -396,7 +396,7 @@ module T
         elsif location.state && location.country
           array << ["Location", [location.state, location.country].join(", ")]
         elsif location.country
-          array << ["Location", [location.country].join(", ")]
+          array << ["Location", location.country]
         end
       end
       array << ["Retweets", number_with_delimiter(status.retweet_count)] unless status.retweet_count.zero?

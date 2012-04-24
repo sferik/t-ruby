@@ -256,6 +256,34 @@ ID          Created at    Screen name  Text
   kelseysilver: San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 92 others) http://t.co/eoLANJZw (7 months ago)
       eos
     end
+    context "long" do
+      before do
+        @cli.options = @cli.options.merge(:long => true)
+      end
+      it "should list in long format" do
+        @cli.favorites
+        $stdout.string.should == <<-eos
+ID                  Created at    Screen name   Text
+194548121416630272  Apr 23  2011  natevillegas  RT @gelobautista #riordan RT @WilI_Smith: Yesterday is history. Tomorrow is a mystery. Today is a gift. That's why it's called the present.
+194547993607806976  Apr 23  2011  TD            @kelseysilver how long will you be in town?
+194547987593183233  Apr 23  2011  rusashka      @maciej hahaha :) @gpena together we're going to cover all core 28 languages!
+194547824690597888  Apr 23  2011  fat           @stevej @xc i'm going to picket when i get back.
+194547658562605057  Apr 23  2011  wil           @0x9900 @paulnivin http://t.co/bwVdtAPe
+194547528430137344  Apr 23  2011  wangtian      @tianhonghe @xiangxin72 oh, you can even order specific items?
+194547402550689793  Apr 23  2011  shinypb       @kpk Pfft, I think you're forgetting mechanical television, which depended on a clever German. http://t.co/JvLNQCDm @skilldrick @hoverbird
+194547260233760768  Apr 23  2011  0x9900        @wil @paulnivin if you want to take you seriously don't say daemontools!
+194547084349804544  Apr 23  2011  kpk           @shinypb @skilldrick @hoverbird invented it
+194546876782092291  Apr 23  2011  skilldrick    @shinypb Well played :) @hoverbird
+194546811480969217  Apr 23  2011  sam           Can someone project the date that I'll get a 27" retina display?
+194546738810458112  Apr 23  2011  shinypb       @skilldrick @hoverbird Wow, I didn't even know they *had* TV in Britain.
+194546727670390784  Apr 23  2011  bartt         @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546649203347456  Apr 23  2011  skilldrick    @hoverbird @shinypb You guys must be soooo old, I don't remember the words to the duck tales intro at all.
+194546583608639488  Apr 23  2011  sean          @mep Thanks for coming by. Was great to have you.
+194546388707717120  Apr 23  2011  hoverbird     @shinypb @trammell it's all suck a "duck blur" sometimes.
+194546264212385793  Apr 23  2011  kelseysilver  San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 92 others) http://t.co/eoLANJZw
+        eos
+      end
+    end
   end
 
   describe "#follow" do
@@ -462,6 +490,34 @@ ID          Created at    Screen name  Text
   kelseysilver: San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 92 others) http://t.co/eoLANJZw (7 months ago)
       eos
     end
+    context "long" do
+      before do
+        @cli.options = @cli.options.merge(:long => true)
+      end
+      it "should list in long format" do
+        @cli.mentions
+        $stdout.string.should == <<-eos
+ID                  Created at    Screen name   Text
+194548121416630272  Apr 23  2011  natevillegas  RT @gelobautista #riordan RT @WilI_Smith: Yesterday is history. Tomorrow is a mystery. Today is a gift. That's why it's called the present.
+194547993607806976  Apr 23  2011  TD            @kelseysilver how long will you be in town?
+194547987593183233  Apr 23  2011  rusashka      @maciej hahaha :) @gpena together we're going to cover all core 28 languages!
+194547824690597888  Apr 23  2011  fat           @stevej @xc i'm going to picket when i get back.
+194547658562605057  Apr 23  2011  wil           @0x9900 @paulnivin http://t.co/bwVdtAPe
+194547528430137344  Apr 23  2011  wangtian      @tianhonghe @xiangxin72 oh, you can even order specific items?
+194547402550689793  Apr 23  2011  shinypb       @kpk Pfft, I think you're forgetting mechanical television, which depended on a clever German. http://t.co/JvLNQCDm @skilldrick @hoverbird
+194547260233760768  Apr 23  2011  0x9900        @wil @paulnivin if you want to take you seriously don't say daemontools!
+194547084349804544  Apr 23  2011  kpk           @shinypb @skilldrick @hoverbird invented it
+194546876782092291  Apr 23  2011  skilldrick    @shinypb Well played :) @hoverbird
+194546811480969217  Apr 23  2011  sam           Can someone project the date that I'll get a 27" retina display?
+194546738810458112  Apr 23  2011  shinypb       @skilldrick @hoverbird Wow, I didn't even know they *had* TV in Britain.
+194546727670390784  Apr 23  2011  bartt         @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546649203347456  Apr 23  2011  skilldrick    @hoverbird @shinypb You guys must be soooo old, I don't remember the words to the duck tales intro at all.
+194546583608639488  Apr 23  2011  sean          @mep Thanks for coming by. Was great to have you.
+194546388707717120  Apr 23  2011  hoverbird     @shinypb @trammell it's all suck a "duck blur" sometimes.
+194546264212385793  Apr 23  2011  kelseysilver  San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 92 others) http://t.co/eoLANJZw
+        eos
+      end
+    end
   end
 
   describe "#open" do
@@ -545,12 +601,12 @@ ID          Created at    Screen name  Text
   end
 
   describe "#retweets" do
+    before do
+      stub_get("/1/statuses/retweeted_by_me.json").
+        with(:query => {:count => "20", :include_entities => "false"}).
+        to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+    end
     context "without arguments" do
-      before do
-        stub_get("/1/statuses/retweeted_by_me.json").
-          with(:query => {:count => "20", :include_entities => "false"}).
-          to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      end
       it "should request the correct resource" do
         @cli.retweets
         a_get("/1/statuses/retweeted_by_me.json").
@@ -577,6 +633,34 @@ ID          Created at    Screen name  Text
           sean: @mep Thanks for coming by. Was great to have you. (7 months ago)
      hoverbird: @shinypb @trammell it's all suck a "duck blur" sometimes. (7 months ago)
   kelseysilver: San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 92 others) http://t.co/eoLANJZw (7 months ago)
+        eos
+      end
+    end
+    context "long" do
+      before do
+        @cli.options = @cli.options.merge(:long => true)
+      end
+      it "should list in long format" do
+        @cli.retweets
+        $stdout.string.should == <<-eos
+ID                  Created at    Screen name   Text
+194548121416630272  Apr 23  2011  natevillegas  RT @gelobautista #riordan RT @WilI_Smith: Yesterday is history. Tomorrow is a mystery. Today is a gift. That's why it's called the present.
+194547993607806976  Apr 23  2011  TD            @kelseysilver how long will you be in town?
+194547987593183233  Apr 23  2011  rusashka      @maciej hahaha :) @gpena together we're going to cover all core 28 languages!
+194547824690597888  Apr 23  2011  fat           @stevej @xc i'm going to picket when i get back.
+194547658562605057  Apr 23  2011  wil           @0x9900 @paulnivin http://t.co/bwVdtAPe
+194547528430137344  Apr 23  2011  wangtian      @tianhonghe @xiangxin72 oh, you can even order specific items?
+194547402550689793  Apr 23  2011  shinypb       @kpk Pfft, I think you're forgetting mechanical television, which depended on a clever German. http://t.co/JvLNQCDm @skilldrick @hoverbird
+194547260233760768  Apr 23  2011  0x9900        @wil @paulnivin if you want to take you seriously don't say daemontools!
+194547084349804544  Apr 23  2011  kpk           @shinypb @skilldrick @hoverbird invented it
+194546876782092291  Apr 23  2011  skilldrick    @shinypb Well played :) @hoverbird
+194546811480969217  Apr 23  2011  sam           Can someone project the date that I'll get a 27" retina display?
+194546738810458112  Apr 23  2011  shinypb       @skilldrick @hoverbird Wow, I didn't even know they *had* TV in Britain.
+194546727670390784  Apr 23  2011  bartt         @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546649203347456  Apr 23  2011  skilldrick    @hoverbird @shinypb You guys must be soooo old, I don't remember the words to the duck tales intro at all.
+194546583608639488  Apr 23  2011  sean          @mep Thanks for coming by. Was great to have you.
+194546388707717120  Apr 23  2011  hoverbird     @shinypb @trammell it's all suck a "duck blur" sometimes.
+194546264212385793  Apr 23  2011  kelseysilver  San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 92 others) http://t.co/eoLANJZw
         eos
       end
     end
@@ -663,12 +747,12 @@ ID          Created at    Screen name  Text
   end
 
   describe "#timeline" do
+    before do
+      stub_get("/1/statuses/home_timeline.json").
+        with(:query => {:count => "20", :include_entities => "false"}).
+        to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+    end
     context "without user" do
-      before do
-        stub_get("/1/statuses/home_timeline.json").
-          with(:query => {:count => "20", :include_entities => "false"}).
-          to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      end
       it "should request the correct resource" do
         @cli.timeline
         a_get("/1/statuses/home_timeline.json").
@@ -695,6 +779,34 @@ ID          Created at    Screen name  Text
           sean: @mep Thanks for coming by. Was great to have you. (7 months ago)
      hoverbird: @shinypb @trammell it's all suck a "duck blur" sometimes. (7 months ago)
   kelseysilver: San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 92 others) http://t.co/eoLANJZw (7 months ago)
+        eos
+      end
+    end
+    context "long" do
+      before do
+        @cli.options = @cli.options.merge(:long => true)
+      end
+      it "should list in long format" do
+        @cli.timeline
+        $stdout.string.should == <<-eos
+ID                  Created at    Screen name   Text
+194548121416630272  Apr 23  2011  natevillegas  RT @gelobautista #riordan RT @WilI_Smith: Yesterday is history. Tomorrow is a mystery. Today is a gift. That's why it's called the present.
+194547993607806976  Apr 23  2011  TD            @kelseysilver how long will you be in town?
+194547987593183233  Apr 23  2011  rusashka      @maciej hahaha :) @gpena together we're going to cover all core 28 languages!
+194547824690597888  Apr 23  2011  fat           @stevej @xc i'm going to picket when i get back.
+194547658562605057  Apr 23  2011  wil           @0x9900 @paulnivin http://t.co/bwVdtAPe
+194547528430137344  Apr 23  2011  wangtian      @tianhonghe @xiangxin72 oh, you can even order specific items?
+194547402550689793  Apr 23  2011  shinypb       @kpk Pfft, I think you're forgetting mechanical television, which depended on a clever German. http://t.co/JvLNQCDm @skilldrick @hoverbird
+194547260233760768  Apr 23  2011  0x9900        @wil @paulnivin if you want to take you seriously don't say daemontools!
+194547084349804544  Apr 23  2011  kpk           @shinypb @skilldrick @hoverbird invented it
+194546876782092291  Apr 23  2011  skilldrick    @shinypb Well played :) @hoverbird
+194546811480969217  Apr 23  2011  sam           Can someone project the date that I'll get a 27" retina display?
+194546738810458112  Apr 23  2011  shinypb       @skilldrick @hoverbird Wow, I didn't even know they *had* TV in Britain.
+194546727670390784  Apr 23  2011  bartt         @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546649203347456  Apr 23  2011  skilldrick    @hoverbird @shinypb You guys must be soooo old, I don't remember the words to the duck tales intro at all.
+194546583608639488  Apr 23  2011  sean          @mep Thanks for coming by. Was great to have you.
+194546388707717120  Apr 23  2011  hoverbird     @shinypb @trammell it's all suck a "duck blur" sometimes.
+194546264212385793  Apr 23  2011  kelseysilver  San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 92 others) http://t.co/eoLANJZw
         eos
       end
     end

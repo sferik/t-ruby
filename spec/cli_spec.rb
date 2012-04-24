@@ -1178,6 +1178,30 @@ ID                       Created at    Screen name   Text
     end
   end
 
+  describe "#status" do
+    before do
+      stub_get("/1/statuses/show/25938088801.json").
+        with(:query => {:include_entities => "false", :include_my_retweet => "false"}).
+        to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+    end
+    it "should request the correct resource" do
+      @cli.status("25938088801")
+      a_get("/1/statuses/show/25938088801.json").
+        with(:query => {:include_entities => "false", :include_my_retweet => "false"}).
+        should have_been_made
+    end
+    it "should have the correct output" do
+      @cli.status("25938088801")
+      $stdout.string.should == <<-eos
+ID          25,938,088,801
+Created at  Sep 29  2010
+Text        @noradio working on implementing #NewTwitter API methods in the twitter gem. Twurl is making it easy. Thank you!
+User        Erik Michaels-Ober (@sferik)
+Source      web
+      eos
+    end
+  end
+
   describe "#suggest" do
     before do
       stub_get("/1/users/recommendations.json").

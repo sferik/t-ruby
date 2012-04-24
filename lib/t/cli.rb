@@ -378,6 +378,21 @@ module T
     end
     map %w(rts) => :retweets
 
+    desc "status STATUS_ID", "Retrieves detailed information about a Tweet."
+    def status(status_id)
+      status_id = status_id.strip_commas
+      status = client.status(status_id, :include_entities => false, :include_my_retweet => false)
+      created_at = status.created_at > 6.months.ago ? status.created_at.strftime("%b %e %H:%M") : status.created_at.strftime("%b %e  %Y")
+      array = []
+      array << ["ID", number_with_delimiter(status.id)]
+      array << ["Created at", created_at]
+      array << ["Text", status.text.gsub(/\n+/, ' ')]
+      array << ["User", "#{status.user.name} (@#{status.user.screen_name})"]
+      array << ["Source", strip_tags(status.source)]
+      array << ["Coordinates", status.geo.coordinates.join(', ')] unless status.geo.nil?
+      print_table(array)
+    end
+
     desc "suggest", "This command returns a listing of Twitter users' accounts we think you might enjoy following."
     method_option :created, :aliases => "-c", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter acount was created."
     method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by number of favorites."

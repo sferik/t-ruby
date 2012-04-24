@@ -78,17 +78,17 @@ describe T::List do
   describe "#members" do
     before do
       stub_get("/1/lists/members.json").
-        with(:query => {:cursor => "-1", :include_entities => "false", :owner_screen_name => "sferik", :skip_status => "true", :slug => "presidents"}).
+        with(:query => {:cursor => "-1", :include_entities => "false", :owner_screen_name => "testcli", :skip_status => "true", :slug => "presidents"}).
         to_return(:body => fixture("users_list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
-      @list.members("sferik", "presidents")
+      @list.members("presidents")
       a_get("/1/lists/members.json").
-        with(:query => {:cursor => "-1", :include_entities => "false", :owner_screen_name => "sferik", :skip_status => "true", :slug => "presidents"}).
+        with(:query => {:cursor => "-1", :include_entities => "false", :owner_screen_name => "testcli", :skip_status => "true", :slug => "presidents"}).
         should have_been_made
     end
     it "should have the correct output" do
-      @list.members("sferik", "presidents")
+      @list.members("presidents")
       $stdout.string.chomp.rstrip.should == "pengwynn  sferik"
     end
     context "--created" do
@@ -96,7 +96,7 @@ describe T::List do
         @list.options = @list.options.merge(:created => true)
       end
       it "should list in long format" do
-        @list.members("sferik", "presidents")
+        @list.members("presidents")
         $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
       end
     end
@@ -105,7 +105,7 @@ describe T::List do
         @list.options = @list.options.merge(:favorites => true)
       end
       it "should list in long format" do
-        @list.members("sferik", "presidents")
+        @list.members("presidents")
         $stdout.string.chomp.rstrip.should == "pengwynn  sferik"
       end
     end
@@ -114,7 +114,7 @@ describe T::List do
         @list.options = @list.options.merge(:followers => true)
       end
       it "should list in long format" do
-        @list.members("sferik", "presidents")
+        @list.members("presidents")
         $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
       end
     end
@@ -123,7 +123,7 @@ describe T::List do
         @list.options = @list.options.merge(:friends => true)
       end
       it "should list in long format" do
-        @list.members("sferik", "presidents")
+        @list.members("presidents")
         $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
       end
     end
@@ -132,7 +132,7 @@ describe T::List do
         @list.options = @list.options.merge(:listed => true)
       end
       it "should list in long format" do
-        @list.members("sferik", "presidents")
+        @list.members("presidents")
         $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
       end
     end
@@ -141,7 +141,7 @@ describe T::List do
         @list.options = @list.options.merge(:long => true)
       end
       it "should list in long format" do
-        @list.members("sferik", "presidents")
+        @list.members("presidents")
         $stdout.string.should == <<-eos
 ID        Created at    Tweets  Following  Followers  Favorites  Listed  Screen name  Name
 14100886  Mar  8  2008  3913    1871       2767       32         185     pengwynn     Wynn Netherland
@@ -154,7 +154,7 @@ ID        Created at    Tweets  Following  Followers  Favorites  Listed  Screen 
         @list.options = @list.options.merge(:reverse => true)
       end
       it "should reverse the order of the sort" do
-        @list.members("sferik", "presidents")
+        @list.members("presidents")
         $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
       end
     end
@@ -163,8 +163,25 @@ ID        Created at    Tweets  Following  Followers  Favorites  Listed  Screen 
         @list.options = @list.options.merge(:tweets => true)
       end
       it "should list in long format" do
-        @list.members("sferik", "presidents")
+        @list.members("presidents")
         $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+      end
+    end
+    context "with a screen name passed" do
+      before do
+        stub_get("/1/lists/members.json").
+          with(:query => {:cursor => "-1", :include_entities => "false", :owner_screen_name => "sferik", :skip_status => "true", :slug => "presidents"}).
+          to_return(:body => fixture("users_list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should request the correct resource" do
+        @list.members("sferik", "presidents")
+        a_get("/1/lists/members.json").
+          with(:query => {:cursor => "-1", :include_entities => "false", :owner_screen_name => "sferik", :skip_status => "true", :slug => "presidents"}).
+          should have_been_made
+      end
+      it "should have the correct output" do
+        @list.members("presidents")
+        $stdout.string.chomp.rstrip.should == "pengwynn  sferik"
       end
     end
   end
@@ -308,6 +325,41 @@ ID                  Created at    Screen name   Text
             rusashka: @maciej hahaha :) @gpena together we're going to cover all core 28 languages! (7 months ago)
                   TD: @kelseysilver how long will you be in town? (7 months ago)
         natevillegas: RT @gelobautista #riordan RT @WilI_Smith: Yesterday is history. Tomorrow is a mystery. Today is a gift. That's why it's called the present. (7 months ago)
+        eos
+      end
+    end
+    context "with a screen name passed" do
+      before do
+        stub_get("/1/lists/statuses.json").
+          with(:query => {:owner_screen_name => "sferik", :per_page => "20", :slug => "presidents", :include_entities => "false"}).
+          to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should request the correct resource" do
+        @list.timeline("sferik", "presidents")
+        a_get("/1/lists/statuses.json").
+          with(:query => {:owner_screen_name => "sferik", :per_page => "20", :slug => "presidents", :include_entities => "false"}).
+          should have_been_made
+      end
+      it "should have the correct output" do
+        @list.timeline("sferik", "presidents")
+        $stdout.string.should == <<-eos
+        natevillegas: RT @gelobautista #riordan RT @WilI_Smith: Yesterday is history. Tomorrow is a mystery. Today is a gift. That's why it's called the present. (7 months ago)
+                  TD: @kelseysilver how long will you be in town? (7 months ago)
+            rusashka: @maciej hahaha :) @gpena together we're going to cover all core 28 languages! (7 months ago)
+                 fat: @stevej @xc i'm going to picket when i get back. (7 months ago)
+                 wil: @0x9900 @paulnivin http://t.co/bwVdtAPe (7 months ago)
+            wangtian: @tianhonghe @xiangxin72 oh, you can even order specific items? (7 months ago)
+             shinypb: @kpk Pfft, I think you're forgetting mechanical television, which depended on a clever German. http://t.co/JvLNQCDm @skilldrick @hoverbird (7 months ago)
+              0x9900: @wil @paulnivin if you want to take you seriously don't say daemontools! (7 months ago)
+                 kpk: @shinypb @skilldrick @hoverbird invented it (7 months ago)
+          skilldrick: @shinypb Well played :) @hoverbird (7 months ago)
+                 sam: Can someone project the date that I'll get a 27" retina display? (7 months ago)
+             shinypb: @skilldrick @hoverbird Wow, I didn't even know they *had* TV in Britain. (7 months ago)
+               bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
+          skilldrick: @hoverbird @shinypb You guys must be soooo old, I don't remember the words to the duck tales intro at all. (7 months ago)
+                sean: @mep Thanks for coming by. Was great to have you. (7 months ago)
+           hoverbird: @shinypb @trammell it's all suck a "duck blur" sometimes. (7 months ago)
+        kelseysilver: San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 92 others) http://t.co/eoLANJZw (7 months ago)
         eos
       end
     end

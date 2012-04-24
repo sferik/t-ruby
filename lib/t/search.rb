@@ -34,7 +34,7 @@ module T
         end
         if STDOUT.tty?
           headings = ["ID", "Created at", "Screen name", "Text"]
-          array.unshift(headings)
+          array.unshift(headings) unless statuses.empty?
         end
         print_table(array)
       else
@@ -119,7 +119,7 @@ module T
         end
         if STDOUT.tty?
           headings = ["ID", "Created at", "Screen name", "Text"]
-          array.unshift(headings)
+          array.unshift(headings) unless statuses.empty?
         end
         print_table(array)
       else

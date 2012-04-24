@@ -52,7 +52,7 @@ describe T::Search do
          kabos84: RT @JF_q8: بالله  عليكم ،، مو عيب !!! .. http://t.co/e29GV7Ow (7 months ago)
       eos
     end
-    context "long" do
+    context "--long" do
       before do
         @search.options = @search.options.merge(:long => true)
       end
@@ -117,7 +117,7 @@ ID                  Created at    Screen name      Text
          bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
       eos
     end
-    context "long" do
+    context "--long" do
       before do
         @search.options = @search.options.merge(:long => true)
       end
@@ -196,7 +196,7 @@ ID                  Created at    Screen name  Text
          bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
       eos
     end
-    context "long" do
+    context "--long" do
       before do
         @search.options = @search.options.merge(:long => true)
       end
@@ -275,7 +275,7 @@ ID                  Created at    Screen name  Text
          bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
       eos
     end
-    context "long" do
+    context "--long" do
       before do
         @search.options = @search.options.merge(:long => true)
       end
@@ -354,7 +354,7 @@ ID                  Created at    Screen name  Text
          bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
       eos
     end
-    context "long" do
+    context "--long" do
       before do
         @search.options = @search.options.merge(:long => true)
       end
@@ -433,7 +433,7 @@ ID                  Created at    Screen name  Text
          bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
       eos
     end
-    context "long" do
+    context "--long" do
       before do
         @search.options = @search.options.merge(:long => true)
       end

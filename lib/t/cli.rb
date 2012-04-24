@@ -120,7 +120,7 @@ module T
         end
         if STDOUT.tty?
           headings = ["ID", "Created at", "Screen name", "Text"]
-          array.unshift(headings)
+          array.unshift(headings) unless direct_messages.empty?
         end
         print_table(array)
       else
@@ -146,7 +146,7 @@ module T
         end
         if STDOUT.tty?
           headings = ["ID", "Created at", "Screen name", "Text"]
-          array.unshift(headings)
+          array.unshift(headings) unless direct_messages.empty?
         end
         print_table(array)
       else
@@ -208,14 +208,14 @@ module T
 
     desc "followings", "Returns a list of the people you follow on Twitter."
     method_option :created, :aliases => "-c", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter acount was created."
-    method_option :friends, :aliases => "-d", :type => :boolean, :default => false, :desc => "Sort by total number of friends."
+    method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by total number of favorites."
     method_option :followers, :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by total number of followers."
+    method_option :friends, :aliases => "-d", :type => :boolean, :default => false, :desc => "Sort by total number of friends."
     method_option :listed, :aliases => "-i", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
     method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "List in long format."
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     method_option :tweets, :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by total number of Tweets."
     method_option :unsorted, :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
-    method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by total number of favorites."
     def followings
       following_ids = collect_with_cursor do |cursor|
         client.friend_ids(:cursor => cursor)
@@ -230,14 +230,14 @@ module T
 
     desc "followers", "Returns a list of the people who follow you on Twitter."
     method_option :created, :aliases => "-c", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter acount was created."
-    method_option :friends, :aliases => "-d", :type => :boolean, :default => false, :desc => "Sort by total number of friends."
+    method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by total number of favorites."
     method_option :followers, :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by total number of followers."
+    method_option :friends, :aliases => "-d", :type => :boolean, :default => false, :desc => "Sort by total number of friends."
     method_option :listed, :aliases => "-i", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
     method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "List in long format."
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     method_option :tweets, :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by total number of Tweets."
     method_option :unsorted, :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
-    method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by total number of favorites."
     def followers
       follower_ids = collect_with_cursor do |cursor|
         client.follower_ids(:cursor => cursor)
@@ -252,14 +252,14 @@ module T
 
     desc "friends", "Returns the list of people who you follow and follow you back."
     method_option :created, :aliases => "-c", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter acount was created."
-    method_option :friends, :aliases => "-d", :type => :boolean, :default => false, :desc => "Sort by total number of friends."
+    method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by total number of favorites."
     method_option :followers, :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by total number of followers."
+    method_option :friends, :aliases => "-d", :type => :boolean, :default => false, :desc => "Sort by total number of friends."
     method_option :listed, :aliases => "-i", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
     method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "List in long format."
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     method_option :tweets, :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by total number of Tweets."
     method_option :unsorted, :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
-    method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by total number of favorites."
     def friends
       following_ids = collect_with_cursor do |cursor|
         client.friend_ids(:cursor => cursor)
@@ -278,14 +278,14 @@ module T
 
     desc "leaders", "Returns the list of people who you follow but don't follow you back."
     method_option :created, :aliases => "-c", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter acount was created."
-    method_option :friends, :aliases => "-d", :type => :boolean, :default => false, :desc => "Sort by total number of friends."
+    method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by total number of favorites."
     method_option :followers, :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by total number of followers."
+    method_option :friends, :aliases => "-d", :type => :boolean, :default => false, :desc => "Sort by total number of friends."
     method_option :listed, :aliases => "-i", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
     method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "List in long format."
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     method_option :tweets, :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by total number of Tweets."
     method_option :unsorted, :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
-    method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by total number of favorites."
     def leaders
       following_ids = collect_with_cursor do |cursor|
         client.friend_ids(:cursor => cursor)
@@ -304,15 +304,14 @@ module T
 
     desc "members [SCREEN_NAME] LIST_NAME", "Returns the members of a Twitter list."
     method_option :created, :aliases => "-c", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter acount was created."
-    method_option :friends, :aliases => "-d", :type => :boolean, :default => false, :desc => "Sort by total number of friends."
+    method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by total number of favorites."
     method_option :followers, :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by total number of followers."
+    method_option :friends, :aliases => "-d", :type => :boolean, :default => false, :desc => "Sort by total number of friends."
     method_option :listed, :aliases => "-i", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
     method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "List in long format."
-    method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     method_option :tweets, :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by total number of Tweets."
     method_option :unsorted, :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
-    method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by total number of favorites."
     def members(*args)
       list = args.pop
       owner = args.pop || @rcfile.default_profile[0]
@@ -393,29 +392,17 @@ module T
     end
     map %w(rts) => :retweets
 
-    desc "status MESSAGE", "Post a Tweet."
-    method_option :location, :aliases => "-l", :type => :boolean, :default => false
-    def status(message)
-      opts = {:include_entities => false, :trim_user => true}
-      opts.merge!(:lat => location.lat, :long => location.lng) if options['location']
-      status = client.update(message, opts)
-      say "Tweet created by @#{@rcfile.default_profile[0]} (#{time_ago_in_words(status.created_at)} ago)."
-      say
-      say "Run `#{File.basename($0)} delete status #{status.id}` to delete."
-    end
-    map %w(post tweet update) => :status
-
     desc "suggest", "This command returns a listing of Twitter users' accounts we think you might enjoy following."
     method_option :created, :aliases => "-c", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter acount was created."
+    method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by total number of favorites."
+    method_option :followers, :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by total number of followers."
     method_option :friends, :aliases => "-d", :type => :boolean, :default => false, :desc => "Sort by total number of friends."
     method_option :listed, :aliases => "-i", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
     method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "List in long format."
     method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS
-    method_option :followers, :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by total number of followers."
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     method_option :tweets, :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by total number of Tweets."
     method_option :unsorted, :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
-    method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by total number of favorites."
     def suggest
       limit = options['number'] || DEFAULT_NUM_RESULTS
       users = client.recommendations(:limit => limit, :include_entities => false)
@@ -452,17 +439,28 @@ module T
       say "Run `#{File.basename($0)} follow users #{screen_names.join(' ')}` to follow again."
     end
 
+    desc "update MESSAGE", "Post a Tweet."
+    method_option :location, :aliases => "-l", :type => :boolean, :default => false
+    def update(message)
+      opts = {:include_entities => false, :trim_user => true}
+      opts.merge!(:lat => location.lat, :long => location.lng) if options['location']
+      status = client.update(message, opts)
+      say "Tweet created by @#{@rcfile.default_profile[0]} (#{time_ago_in_words(status.created_at)} ago)."
+      say
+      say "Run `#{File.basename($0)} delete status #{status.id}` to delete."
+    end
+    map %w(post tweet) => :update
+
     desc "users SCREEN_NAME [SCREEN_NAME...]", "Returns a list of users you specify."
     method_option :created, :aliases => "-c", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter acount was created."
-    method_option :friends, :aliases => "-d", :type => :boolean, :default => false, :desc => "Sort by total number of friends."
+    method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by total number of favorites."
     method_option :followers, :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by total number of followers."
+    method_option :friends, :aliases => "-d", :type => :boolean, :default => false, :desc => "Sort by total number of friends."
     method_option :listed, :aliases => "-i", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
     method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "List in long format."
-    method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     method_option :tweets, :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by total number of Tweets."
     method_option :unsorted, :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
-    method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by total number of favorites."
     def users(screen_name, *screen_names)
       screen_names.unshift(screen_name)
       users = client.users(screen_names, :include_entities => false)
@@ -574,7 +572,7 @@ module T
         end
         if STDOUT.tty?
           headings = ["ID", "Created at", "Screen name", "Text"]
-          array.unshift(headings)
+          array.unshift(headings) unless statuses.empty?
         end
         print_table(array)
       else
@@ -603,19 +601,19 @@ module T
       if options['long']
         array = users.map do |user|
           created_at = user.created_at > 6.months.ago ? user.created_at.strftime("%b %e %H:%M") : user.created_at.strftime("%b %e  %Y")
-          [user.id, created_at, user.statuses_count, user.friends_count, user.followers_count, user.favourites_count, user.listed_count, user.screen_name, user.name]
+          [user.id.to_s, created_at, user.statuses_count.to_s, user.friends_count.to_s, user.followers_count.to_s, user.favourites_count.to_s, user.listed_count.to_s, user.screen_name, user.name]
         end
         if STDOUT.tty?
           headings = ["ID", "Created at", "Tweets", "Following", "Followers", "Favorites", "Listed", "Screen name", "Name"]
-          array.unshift(headings)
+          array.unshift(headings) unless users.empty?
         end
         print_table(array)
       else
         if STDOUT.tty?
           print_in_columns(users.map(&:screen_name))
         else
-          users.map(&:screen_name).each do |user|
-            say user
+          users.each do |user|
+            say user.screen_name
           end
         end
       end

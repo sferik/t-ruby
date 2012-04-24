@@ -113,7 +113,7 @@ describe T::CLI do
         sferik: I'm trying to debug the issue you were having with the Bundler Gemfile.lock shortref. What version of Ruby and RubyGems are you running? (about 1 year ago)
       eos
     end
-    context "long" do
+    context "--long" do
       before do
         @cli.options = @cli.options.merge(:long => true)
       end
@@ -163,7 +163,7 @@ ID          Created at    Screen name  Text
      hurrycane: I'm trying to debug the issue you were having with the Bundler Gemfile.lock shortref. What version of Ruby and RubyGems are you running? (about 1 year ago)
       eos
     end
-    context "long" do
+    context "--long" do
       before do
         @cli.options = @cli.options.merge(:long => true)
       end
@@ -256,7 +256,7 @@ ID          Created at    Screen name  Text
   kelseysilver: San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 92 others) http://t.co/eoLANJZw (7 months ago)
       eos
     end
-    context "long" do
+    context "--long" do
       before do
         @cli.options = @cli.options.merge(:long => true)
       end
@@ -352,6 +352,73 @@ ID                  Created at    Screen name   Text
       @cli.followings
       $stdout.string.chomp.rstrip.should == "pengwynn  sferik"
     end
+    context "--created" do
+      before do
+        @cli.options = @cli.options.merge(:created => true)
+      end
+      it "should list in long format" do
+        @cli.followings
+        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+      end
+    end
+    context "--favorites" do
+      before do
+        @cli.options = @cli.options.merge(:favorites => true)
+      end
+      it "should list in long format" do
+        @cli.followings
+        $stdout.string.chomp.rstrip.should == "pengwynn  sferik"
+      end
+    end
+    context "--followers" do
+      before do
+        @cli.options = @cli.options.merge(:followers => true)
+      end
+      it "should list in long format" do
+        @cli.followings
+        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+      end
+    end
+    context "--friends" do
+      before do
+        @cli.options = @cli.options.merge(:friends => true)
+      end
+      it "should list in long format" do
+        @cli.followings
+        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+      end
+    end
+    context "--listed" do
+      before do
+        @cli.options = @cli.options.merge(:listed => true)
+      end
+      it "should list in long format" do
+        @cli.followings
+        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+      end
+    end
+    context "--long" do
+      before do
+        @cli.options = @cli.options.merge(:long => true)
+      end
+      it "should list in long format" do
+        @cli.followings
+        $stdout.string.should == <<-eos
+ID        Created at    Tweets  Following  Followers  Favorites  Listed  Screen name  Name
+14100886  Mar  8  2008  3913    1871       2767       32         185     pengwynn     Wynn Netherland
+7505382   Jul 16  2007  2962    88         898        727        29      sferik       Erik Michaels-Ober
+        eos
+      end
+    end
+    context "--tweets" do
+      before do
+        @cli.options = @cli.options.merge(:tweets => true)
+      end
+      it "should list in long format" do
+        @cli.followings
+        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+      end
+    end
   end
 
   describe "#followers" do
@@ -375,6 +442,73 @@ ID                  Created at    Screen name   Text
     it "should have the correct output" do
       @cli.followers
       $stdout.string.chomp.rstrip.should == "pengwynn  sferik"
+    end
+    context "--created" do
+      before do
+        @cli.options = @cli.options.merge(:created => true)
+      end
+      it "should list in long format" do
+        @cli.followers
+        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+      end
+    end
+    context "--favorites" do
+      before do
+        @cli.options = @cli.options.merge(:favorites => true)
+      end
+      it "should list in long format" do
+        @cli.followers
+        $stdout.string.chomp.rstrip.should == "pengwynn  sferik"
+      end
+    end
+    context "--followers" do
+      before do
+        @cli.options = @cli.options.merge(:followers => true)
+      end
+      it "should list in long format" do
+        @cli.followers
+        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+      end
+    end
+    context "--friends" do
+      before do
+        @cli.options = @cli.options.merge(:friends => true)
+      end
+      it "should list in long format" do
+        @cli.followers
+        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+      end
+    end
+    context "--listed" do
+      before do
+        @cli.options = @cli.options.merge(:listed => true)
+      end
+      it "should list in long format" do
+        @cli.followers
+        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+      end
+    end
+    context "--long" do
+      before do
+        @cli.options = @cli.options.merge(:long => true)
+      end
+      it "should list in long format" do
+        @cli.followers
+        $stdout.string.should == <<-eos
+ID        Created at    Tweets  Following  Followers  Favorites  Listed  Screen name  Name
+14100886  Mar  8  2008  3913    1871       2767       32         185     pengwynn     Wynn Netherland
+7505382   Jul 16  2007  2962    88         898        727        29      sferik       Erik Michaels-Ober
+        eos
+      end
+    end
+    context "--tweets" do
+      before do
+        @cli.options = @cli.options.merge(:tweets => true)
+      end
+      it "should list in long format" do
+        @cli.followers
+        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+      end
     end
   end
 
@@ -406,6 +540,73 @@ ID                  Created at    Screen name   Text
       @cli.friends
       $stdout.string.chomp.rstrip.should == "pengwynn  sferik"
     end
+    context "--created" do
+      before do
+        @cli.options = @cli.options.merge(:created => true)
+      end
+      it "should list in long format" do
+        @cli.friends
+        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+      end
+    end
+    context "--favorites" do
+      before do
+        @cli.options = @cli.options.merge(:favorites => true)
+      end
+      it "should list in long format" do
+        @cli.friends
+        $stdout.string.chomp.rstrip.should == "pengwynn  sferik"
+      end
+    end
+    context "--followers" do
+      before do
+        @cli.options = @cli.options.merge(:followers => true)
+      end
+      it "should list in long format" do
+        @cli.friends
+        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+      end
+    end
+    context "--friends" do
+      before do
+        @cli.options = @cli.options.merge(:friends => true)
+      end
+      it "should list in long format" do
+        @cli.friends
+        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+      end
+    end
+    context "--listed" do
+      before do
+        @cli.options = @cli.options.merge(:listed => true)
+      end
+      it "should list in long format" do
+        @cli.friends
+        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+      end
+    end
+    context "--long" do
+      before do
+        @cli.options = @cli.options.merge(:long => true)
+      end
+      it "should list in long format" do
+        @cli.friends
+        $stdout.string.should == <<-eos
+ID        Created at    Tweets  Following  Followers  Favorites  Listed  Screen name  Name
+14100886  Mar  8  2008  3913    1871       2767       32         185     pengwynn     Wynn Netherland
+7505382   Jul 16  2007  2962    88         898        727        29      sferik       Erik Michaels-Ober
+        eos
+      end
+    end
+    context "--tweets" do
+      before do
+        @cli.options = @cli.options.merge(:tweets => true)
+      end
+      it "should list in long format" do
+        @cli.friends
+        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+      end
+    end
   end
 
   describe "#leaders" do
@@ -436,6 +637,73 @@ ID                  Created at    Screen name   Text
       @cli.leaders
       $stdout.string.chomp.rstrip.should == "pengwynn  sferik"
     end
+    context "--created" do
+      before do
+        @cli.options = @cli.options.merge(:created => true)
+      end
+      it "should list in long format" do
+        @cli.leaders
+        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+      end
+    end
+    context "--favorites" do
+      before do
+        @cli.options = @cli.options.merge(:favorites => true)
+      end
+      it "should list in long format" do
+        @cli.leaders
+        $stdout.string.chomp.rstrip.should == "pengwynn  sferik"
+      end
+    end
+    context "--followers" do
+      before do
+        @cli.options = @cli.options.merge(:followers => true)
+      end
+      it "should list in long format" do
+        @cli.leaders
+        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+      end
+    end
+    context "--friends" do
+      before do
+        @cli.options = @cli.options.merge(:friends => true)
+      end
+      it "should list in long format" do
+        @cli.leaders
+        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+      end
+    end
+    context "--listed" do
+      before do
+        @cli.options = @cli.options.merge(:listed => true)
+      end
+      it "should list in long format" do
+        @cli.leaders
+        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+      end
+    end
+    context "--long" do
+      before do
+        @cli.options = @cli.options.merge(:long => true)
+      end
+      it "should list in long format" do
+        @cli.leaders
+        $stdout.string.should == <<-eos
+ID        Created at    Tweets  Following  Followers  Favorites  Listed  Screen name  Name
+14100886  Mar  8  2008  3913    1871       2767       32         185     pengwynn     Wynn Netherland
+7505382   Jul 16  2007  2962    88         898        727        29      sferik       Erik Michaels-Ober
+        eos
+      end
+    end
+    context "--tweets" do
+      before do
+        @cli.options = @cli.options.merge(:tweets => true)
+      end
+      it "should list in long format" do
+        @cli.leaders
+        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+      end
+    end
   end
 
   describe "#members" do
@@ -452,7 +720,70 @@ ID                  Created at    Screen name   Text
     end
     it "should have the correct output" do
       @cli.members("sferik", "presidents")
-      $stdout.string.chomp.should == ""
+      $stdout.string.chomp.should be_empty
+    end
+    context "--created" do
+      before do
+        @cli.options = @cli.options.merge(:created => true)
+      end
+      it "should list in long format" do
+        @cli.members("sferik", "presidents")
+        $stdout.string.chomp.should be_empty
+      end
+    end
+    context "--favorites" do
+      before do
+        @cli.options = @cli.options.merge(:favorites => true)
+      end
+      it "should list in long format" do
+        @cli.members("sferik", "presidents")
+        $stdout.string.chomp.rstrip.should be_empty
+      end
+    end
+    context "--followers" do
+      before do
+        @cli.options = @cli.options.merge(:followers => true)
+      end
+      it "should list in long format" do
+        @cli.members("sferik", "presidents")
+        $stdout.string.chomp.rstrip.should be_empty
+      end
+    end
+    context "--friends" do
+      before do
+        @cli.options = @cli.options.merge(:friends => true)
+      end
+      it "should list in long format" do
+        @cli.members("sferik", "presidents")
+        $stdout.string.chomp.should be_empty
+      end
+    end
+    context "--listed" do
+      before do
+        @cli.options = @cli.options.merge(:listed => true)
+      end
+      it "should list in long format" do
+        @cli.members("sferik", "presidents")
+        $stdout.string.chomp.rstrip.should be_empty
+      end
+    end
+    context "--long" do
+      before do
+        @cli.options = @cli.options.merge(:long => true)
+      end
+      it "should list in long format" do
+        @cli.members("sferik", "presidents")
+        $stdout.string.should be_empty
+      end
+    end
+    context "--tweets" do
+      before do
+        @cli.options = @cli.options.merge(:tweets => true)
+      end
+      it "should list in long format" do
+        @cli.members("sferik", "presidents")
+        $stdout.string.chomp.rstrip.should be_empty
+      end
     end
   end
 
@@ -490,7 +821,7 @@ ID                  Created at    Screen name   Text
   kelseysilver: San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 92 others) http://t.co/eoLANJZw (7 months ago)
       eos
     end
-    context "long" do
+    context "--long" do
       before do
         @cli.options = @cli.options.merge(:long => true)
       end
@@ -636,7 +967,7 @@ ID                  Created at    Screen name   Text
         eos
       end
     end
-    context "long" do
+    context "--long" do
       before do
         @cli.options = @cli.options.merge(:long => true)
       end
@@ -701,33 +1032,6 @@ ID                  Created at    Screen name   Text
     end
   end
 
-  describe "#status" do
-    before do
-      @cli.options = @cli.options.merge(:profile => fixture_path + "/.trc", :location => true)
-      stub_post("/1/statuses/update.json").
-        with(:body => {:status => "Testing", :lat => "37.76969909668", :long => "-122.39330291748", :include_entities => "false", :trim_user => "true"}).
-        to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_request(:get, "http://checkip.dyndns.org/").
-        to_return(:body => fixture("checkip.html"), :headers => {:content_type => "text/html"})
-      stub_request(:get, "http://www.geoplugin.net/xml.gp?ip=50.131.22.169").
-        to_return(:body => fixture("xml.gp"), :headers => {:content_type => "application/xml"})
-    end
-    it "should request the correct resource" do
-      @cli.status("Testing")
-      a_post("/1/statuses/update.json").
-        with(:body => {:status => "Testing", :lat => "37.76969909668", :long => "-122.39330291748", :include_entities => "false", :trim_user => "true"}).
-        should have_been_made
-      a_request(:get, "http://checkip.dyndns.org/").
-        should have_been_made
-      a_request(:get, "http://www.geoplugin.net/xml.gp?ip=50.131.22.169").
-        should have_been_made
-    end
-    it "should have the correct output" do
-      @cli.status("Testing")
-      $stdout.string.should =~ /^Tweet created by @testcli \(about 1 year ago\)\.$/
-    end
-  end
-
   describe "#suggest" do
     before do
       stub_get("/1/users/recommendations.json").
@@ -743,6 +1047,76 @@ ID                  Created at    Screen name   Text
     it "should have the correct output" do
       @cli.suggest
       $stdout.string.chomp.rstrip.should == "antpires     jtrupiano    maccman      mlroach      stuntmann82"
+    end
+    context "--created" do
+      before do
+        @cli.options = @cli.options.merge(:created => true)
+      end
+      it "should list in long format" do
+        @cli.suggest
+        $stdout.string.chomp.rstrip.should == "maccman      mlroach      jtrupiano    stuntmann82  antpires"
+      end
+    end
+    context "--favorites" do
+      before do
+        @cli.options = @cli.options.merge(:favorites => true)
+      end
+      it "should list in long format" do
+        @cli.suggest
+        $stdout.string.chomp.rstrip.should == "stuntmann82  antpires     maccman      mlroach      jtrupiano"
+      end
+    end
+    context "--followers" do
+      before do
+        @cli.options = @cli.options.merge(:followers => true)
+      end
+      it "should list in long format" do
+        @cli.suggest
+        $stdout.string.chomp.rstrip.should == "stuntmann82  antpires     mlroach      jtrupiano    maccman"
+      end
+    end
+    context "--friends" do
+      before do
+        @cli.options = @cli.options.merge(:friends => true)
+      end
+      it "should list in long format" do
+        @cli.suggest
+        $stdout.string.chomp.rstrip.should == "stuntmann82  antpires     mlroach      jtrupiano    maccman"
+      end
+    end
+    context "--listed" do
+      before do
+        @cli.options = @cli.options.merge(:listed => true)
+      end
+      it "should list in long format" do
+        @cli.suggest
+        $stdout.string.chomp.rstrip.should == "stuntmann82  antpires     mlroach      jtrupiano    maccman"
+      end
+    end
+    context "--long" do
+      before do
+        @cli.options = @cli.options.merge(:long => true)
+      end
+      it "should list in long format" do
+        @cli.suggest
+        $stdout.string.should == <<-eos
+ID        Created at    Tweets  Following  Followers  Favorites  Listed  Screen name  Name
+40514587  May 16  2009  183     198        158        2          2       antpires     AntonioPires
+14736332  May 11  2008  3850    545        802        117        99      jtrupiano    John Trupiano
+2006261   Mar 23  2007  4497    967        2028       9          171     maccman      Alex MacCaw
+14451152  Apr 20  2008  6251    403        299        10         20      mlroach      Matt Laroche
+16052754  Aug 30  2008  24      5          42         0          1       stuntmann82  stuntmann82
+        eos
+      end
+    end
+    context "--tweets" do
+      before do
+        @cli.options = @cli.options.merge(:tweets => true)
+      end
+      it "should list in long format" do
+        @cli.suggest
+        $stdout.string.chomp.rstrip.should == "stuntmann82  antpires     jtrupiano    maccman      mlroach"
+      end
     end
   end
 
@@ -782,7 +1156,7 @@ ID                  Created at    Screen name   Text
         eos
       end
     end
-    context "long" do
+    context "--long" do
       before do
         @cli.options = @cli.options.merge(:long => true)
       end
@@ -891,21 +1265,115 @@ ID                  Created at    Screen name   Text
     end
   end
 
-  describe "#users" do
+  describe "#update" do
     before do
-      stub_get("/1/users/lookup.json").
-        with(:query => {:screen_name => "sferik", :include_entities => "false"}).
-        to_return(:body => fixture("users.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      @cli.options = @cli.options.merge(:profile => fixture_path + "/.trc", :location => true)
+      stub_post("/1/statuses/update.json").
+        with(:body => {:status => "Testing", :lat => "37.76969909668", :long => "-122.39330291748", :include_entities => "false", :trim_user => "true"}).
+        to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_request(:get, "http://checkip.dyndns.org/").
+        to_return(:body => fixture("checkip.html"), :headers => {:content_type => "text/html"})
+      stub_request(:get, "http://www.geoplugin.net/xml.gp?ip=50.131.22.169").
+        to_return(:body => fixture("xml.gp"), :headers => {:content_type => "application/xml"})
     end
     it "should request the correct resource" do
-      @cli.users("sferik")
-      a_get("/1/users/lookup.json").
-        with(:query => {:screen_name => "sferik", :include_entities => "false"}).
+      @cli.update("Testing")
+      a_post("/1/statuses/update.json").
+        with(:body => {:status => "Testing", :lat => "37.76969909668", :long => "-122.39330291748", :include_entities => "false", :trim_user => "true"}).
+        should have_been_made
+      a_request(:get, "http://checkip.dyndns.org/").
+        should have_been_made
+      a_request(:get, "http://www.geoplugin.net/xml.gp?ip=50.131.22.169").
         should have_been_made
     end
     it "should have the correct output" do
-      @cli.users("sferik")
+      @cli.update("Testing")
+      $stdout.string.should =~ /^Tweet created by @testcli \(about 1 year ago\)\.$/
+    end
+  end
+
+  describe "#users" do
+    before do
+      stub_get("/1/users/lookup.json").
+        with(:query => {:screen_name => "sferik,pengwynn", :include_entities => "false"}).
+        to_return(:body => fixture("users.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+    end
+    it "should request the correct resource" do
+      @cli.users("sferik", "pengwynn")
+      a_get("/1/users/lookup.json").
+        with(:query => {:screen_name => "sferik,pengwynn", :include_entities => "false"}).
+        should have_been_made
+    end
+    it "should have the correct output" do
+      @cli.users("sferik", "pengwynn")
       $stdout.string.chomp.rstrip.should == "pengwynn  sferik"
+    end
+    context "--created" do
+      before do
+        @cli.options = @cli.options.merge(:created => true)
+      end
+      it "should list in long format" do
+        @cli.users("sferik", "pengwynn")
+        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+      end
+    end
+    context "--favorites" do
+      before do
+        @cli.options = @cli.options.merge(:favorites => true)
+      end
+      it "should list in long format" do
+        @cli.users("sferik", "pengwynn")
+        $stdout.string.chomp.rstrip.should == "pengwynn  sferik"
+      end
+    end
+    context "--followers" do
+      before do
+        @cli.options = @cli.options.merge(:followers => true)
+      end
+      it "should list in long format" do
+        @cli.users("sferik", "pengwynn")
+        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+      end
+    end
+    context "--friends" do
+      before do
+        @cli.options = @cli.options.merge(:friends => true)
+      end
+      it "should list in long format" do
+        @cli.users("sferik", "pengwynn")
+        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+      end
+    end
+    context "--listed" do
+      before do
+        @cli.options = @cli.options.merge(:listed => true)
+      end
+      it "should list in long format" do
+        @cli.users("sferik", "pengwynn")
+        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+      end
+    end
+    context "--long" do
+      before do
+        @cli.options = @cli.options.merge(:long => true)
+      end
+      it "should list in long format" do
+        @cli.users("sferik", "pengwynn")
+        $stdout.string.should == <<-eos
+ID        Created at    Tweets  Following  Followers  Favorites  Listed  Screen name  Name
+14100886  Mar  8  2008  3913    1871       2767       32         185     pengwynn     Wynn Netherland
+7505382   Jul 16  2007  2962    88         898        727        29      sferik       Erik Michaels-Ober
+        eos
+      end
+    end
+    context "--tweets" do
+      before do
+        @cli.options = @cli.options.merge(:tweets => true)
+      end
+      it "should list in long format" do
+        @cli.users("sferik", "pengwynn")
+        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+      end
     end
   end
 

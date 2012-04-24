@@ -108,7 +108,7 @@ describe T::Delete do
             $stdout.should_receive(:print).with("Are you sure you want to permanently delete the direct message to @hurrycane: \"Sounds good. Meeting Tuesday is fine.\"? [y/N] ")
             $stdin.should_receive(:gets).and_return("no")
             @delete.dm
-            $stdout.string.chomp.should == ""
+            $stdout.string.chomp.should be_empty
           end
         end
       end
@@ -168,7 +168,7 @@ describe T::Delete do
           $stdout.should_receive(:print).with("Are you sure you want to delete the favorite of @sferik's status: \"@noradio working on implementing #NewTwitter API methods in the twitter gem. Twurl is making it easy. Thank you!\"? [y/N] ")
           $stdin.should_receive(:gets).and_return("no")
           @delete.favorite("28439861609")
-          $stdout.string.chomp.should == ""
+          $stdout.string.chomp.should be_empty
         end
       end
     end
@@ -227,7 +227,7 @@ describe T::Delete do
           $stdout.should_receive(:print).with("Are you sure you want to permanently delete the list \"presidents\"? [y/N] ")
           $stdin.should_receive(:gets).and_return("no")
           @delete.list("presidents")
-          $stdout.string.chomp.should == ""
+          $stdout.string.chomp.should be_empty
         end
       end
     end
@@ -286,7 +286,7 @@ describe T::Delete do
           $stdout.should_receive(:print).with("Are you sure you want to permanently delete @sferik's status: \"@noradio working on implementing #NewTwitter API methods in the twitter gem. Twurl is making it easy. Thank you!\"? [y/N] ")
           $stdin.should_receive(:gets).and_return("no")
           @delete.status("26755176471724032")
-          $stdout.string.chomp.should == ""
+          $stdout.string.chomp.should be_empty
         end
       end
     end

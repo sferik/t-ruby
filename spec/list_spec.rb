@@ -148,7 +148,7 @@ describe T::List do
   kelseysilver: San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 92 others) http://t.co/eoLANJZw (7 months ago)
       eos
     end
-    context "long" do
+    context "--long" do
       before do
         @list.options = @list.options.merge(:long => true)
       end

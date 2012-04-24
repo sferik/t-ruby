@@ -23,7 +23,7 @@ or send direct messages via the CLI.
 Once you have registered your application, you'll be given a consumer key and
 secret, which you can use to authorize your Twitter account.
 
-    t authorize --consumer-key YOUR_CONSUMER_KEY --consumer-secret YOUR_CONSUMER_SECRET
+    t authorize -c YOUR_CONSUMER_KEY -s YOUR_CONSUMER_SECRET
 
 This will open a new browser window where you can authenticate to Twitter and
 then enter the returned PIN back into the terminal.  Assuming that works,
@@ -43,7 +43,7 @@ Notice that one account is marked as the default. To change the default use the
 `set` subcommand, passing either just the username, if it's unambiguous, or the
 username and consumer key pair, like so:
 
-    t set default sferik thG9EfWoADtIr6NjbL9ON
+    t set default sferik UDfNTpOz5ZDG4a6w7dIWj
 
 Account information is stored in the YAML-formatted file `~/.trc`.
 
@@ -81,13 +81,13 @@ type `t help TASK` to get help for a specific command.
     t list add presidents BarackObama Jasonfinn
 
 ### <a name="following"></a>Create a list that contains today's date in the name
-    date "+following-%Y-%m-%d" | xargs t list create
+    t list create `date "+following-%Y-%m-%d"`
 
 ### Add everyone you're following to a list
-    t followings | xargs t list add following-`date "+%Y-%m-%d"`
+    t followings | xargs t list add `date "+following-%Y-%m-%d"`
 
 ### <a name="members"></a>Display members of a list
-    t members following-`date "+%Y-%m-%d"`
+    t members `date "+following-%Y-%m-%d"`
 
 ### Count the number of Twitter employees
     t members twitter team | wc -l

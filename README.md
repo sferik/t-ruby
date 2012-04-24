@@ -110,6 +110,30 @@ type `t help TASK` to get help for a specific command.
 ### <a name="search-user"></a>Search Tweets in a user's timeline that match a specified query
     t search user sferik "query"
 
+## <a name="terminology"></a>Relationship Terminology
+
+There is some ambiguity in the terminology used to describe relationships on
+Twitter. For example, some people use the term "friends" to mean the set of
+everyone you follow, while we use it to mean just the subset of people who
+follow you back (i.e., friendship is bidirectional). Here is the full table of
+terminology used throughout `t`:
+
+`
+                           ___________________________________________________
+                          |                         |                         |
+                          |     YOU FOLLOW THEM     |  YOU DON'T FOLLOW THEM  |
+ _________________________|_________________________|_________________________|
+|                         |                         |                         |
+|     THEY FOLLOW YOU     |         friends         |        followers        |
+|_________________________|_________________________|_________________________|
+|                         |                         |                         |
+|  THEY DON'T FOLLOW YOU  |         leaders         |          users          |
+|_________________________|_________________________|_________________________|
+                          |                         |
+                          |       followings        |
+                          |_________________________|
+`
+
 ## <a name="history"></a>History
 ![History](http://twitter.rubyforge.org/images/terminal_output.png "History")
 

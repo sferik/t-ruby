@@ -75,11 +75,14 @@ interpreted by your shell.
 ### <a name="unfollow"></a>Unfollow everyone you follow who doesn't follow you back
     t leaders | xargs t unfollow
 
-### Follow back everyone who follows you
+### <a name="follow"></a>Follow back everyone who follows you
     t disciples | xargs t follow
 
-### Follow roulette: randomly follow someone who follows you
+### <a name="follow-roulette"></a>Follow roulette: randomly follow someone who follows you
     t disciples | gshuf | head -1 | xargs t follow
+
+### <a name="favorite"></a>Favorite the last 10 tweets that mention you
+    t mentions -l -n 10 | awk '{print $1}' | xargs t favorite
 
 ### <a name="list-create"></a>Create a list
     t list create presidents
@@ -87,16 +90,16 @@ interpreted by your shell.
 ### <a name="list-add"></a>Add users to a list
     t list add presidents @BarackObama @Jasonfinn
 
-### <a name="following"></a>Create a list that contains today's date in the name
+### Create a list that contains today's date in the name
     t list create following-`date "+%Y-%m-%d"`
 
-### Add everyone you're following to a list
+### <a name="followings"></a>Add everyone you're following to a list
     t followings | xargs t list add following-`date "+%Y-%m-%d"`
 
 ### <a name="list-members"></a>Display members of a list
     t list members following-`date "+%Y-%m-%d"`
 
-### Count the number of Twitter employees
+### <a name="list-members-count"></a>Count the number of Twitter employees
     t list members twitter team | wc -l
 
 ### <a name="search-all"></a>Search Twitter for the 20 most recent Tweets that match a specified query

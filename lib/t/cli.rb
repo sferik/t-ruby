@@ -221,7 +221,7 @@ module T
       say
       say "Run `#{File.basename($0)} delete favorite #{status_ids.join(' ')}` to unfavorite."
     end
-    map %w(fave) => :favorite
+    map %w(fave favourite) => :favorite
 
     desc "favorites [SCREEN_NAME]", "Returns the #{DEFAULT_NUM_RESULTS} most recent Tweets you favorited."
     method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as a Twitter user ID instead of a screen name."
@@ -237,7 +237,7 @@ module T
       statuses = client.favorites(screen_name, :count => count, :include_entities => false)
       print_status_list(statuses)
     end
-    map %w(faves) => :favorites
+    map %w(faves favourites) => :favorites
 
     desc "follow SCREEN_NAME [SCREEN_NAME...]", "Allows you to start following users."
     method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."

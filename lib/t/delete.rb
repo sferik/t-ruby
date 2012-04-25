@@ -49,7 +49,7 @@ module T
       status_ids.each do |status_id|
         unless options['force']
           status = client.status(status_id, :include_entities => false, :include_my_retweet => false, :trim_user => true)
-          return unless yes? "Are you sure you want to delete the favorite of @#{status.user.screen_name}'s status: \"#{status.text}\"? [y/N]"
+          return unless yes? "Are you sure you want to remove @#{status.user.screen_name}'s status: \"#{status.text}\" from your favorites? [y/N]"
         end
         status = client.unfavorite(status_id, :include_entities => false)
         say "@#{@rcfile.default_profile[0]} unfavorited @#{status.user.screen_name}'s status: \"#{status.text}\""

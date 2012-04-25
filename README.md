@@ -56,8 +56,8 @@ type `t help TASK` to get help for a specific command.
 ### <a name="update"></a>Update your status
     t update "I'm tweeting from the command line. Isn't that special?"
 
-Note: If your tweet includes characters such as `@` or `!`, make sure to wrap
-it in single quotes instead of double quotes, so those characters are not
+**Note**: If your tweet includes special characters (e.g. `!`), make sure to
+wrap it in single quotes instead of double quotes, so those characters are not
 interpreted by your shell.
 
 ### <a name="stats"></a>Retrieve stats about users
@@ -113,6 +113,13 @@ interpreted by your shell.
 
 ### <a name="search-user"></a>Search Tweets in a user's timeline that match a specified query
     t search user @sferik "query"
+
+## <a name="features"></a>Features
+* Multithreaded: Whenever possible, Twitter API requests are made in parallel,
+  resulting in faster performance for bulk operations.
+* Designed for Unix: All output is designed to be piped to other Unix
+  utilities, like grep, cut, awk, bc, wc, and xargs for advanced processing.
+* 99% C0 Code Coverage: Extremely well tested, with a 3:1 test-to-code ratio.
 
 ## <a name="terminology"></a>Relationship Terminology
 

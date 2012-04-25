@@ -162,6 +162,32 @@ module T
     end
     map %w(sent_messages sms) => :direct_messages_sent
 
+    desc "disciples", "Returns the list of people who follow you but you don't follow back."
+    method_option :created, :aliases => "-c", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter acount was created."
+    method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by number of favorites."
+    method_option :followers, :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by number of followers."
+    method_option :friends, :aliases => "-d", :type => :boolean, :default => false, :desc => "Sort by number of friends."
+    method_option :listed, :aliases => "-i", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
+    method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "List in long format."
+    method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
+    method_option :tweets, :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by number of Tweets."
+    method_option :unsorted, :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
+    def disciples
+      follower_ids = collect_with_cursor do |cursor|
+        client.follower_ids(:cursor => cursor)
+      end
+      following_ids = collect_with_cursor do |cursor|
+        client.friend_ids(:cursor => cursor)
+      end
+      disciple_ids = (follower_ids - following_ids)
+      users = disciple_ids.in_groups_of(MAX_USERS_PER_REQUEST, false).threaded_map do |disciple_id_group|
+        retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
+          client.users(disciple_id_group, :include_entities => false)
+        end
+      end.flatten
+      print_user_list(users)
+    end
+
     desc "dm SCREEN_NAME MESSAGE", "Sends that person a Direct Message."
     def dm(screen_name, message)
       screen_name = screen_name.strip_ats

@@ -254,6 +254,112 @@ ID             Posted at     Screen name  Text
     end
   end
 
+  describe "#disciples" do
+    before do
+      stub_get("/1/followers/ids.json").
+        with(:query => {:cursor => "-1"}).
+        to_return(:body => fixture("followers_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1/friends/ids.json").
+        with(:query => {:cursor => "-1"}).
+        to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1/users/lookup.json").
+        with(:query => {:user_id => "213747670,428004849", :include_entities => "false"}).
+        to_return(:body => fixture("users.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+    end
+    it "should request the correct resource" do
+      @cli.disciples
+      a_get("/1/followers/ids.json").
+        with(:query => {:cursor => "-1"}).
+        should have_been_made
+      a_get("/1/friends/ids.json").
+        with(:query => {:cursor => "-1"}).
+        should have_been_made
+      a_get("/1/users/lookup.json").
+        with(:query => {:user_id => "213747670,428004849", :include_entities => "false"}).
+        should have_been_made
+    end
+    it "should have the correct output" do
+      @cli.disciples
+      $stdout.string.chomp.rstrip.should == "@pengwynn  @sferik"
+    end
+    context "--created" do
+      before do
+        @cli.options = @cli.options.merge(:created => true)
+      end
+      it "should sort by the time when Twitter acount was created" do
+        @cli.disciples
+        $stdout.string.chomp.rstrip.should == "@sferik    @pengwynn"
+      end
+    end
+    context "--favorites" do
+      before do
+        @cli.options = @cli.options.merge(:favorites => true)
+      end
+      it "should sort by number of favorites" do
+        @cli.disciples
+        $stdout.string.chomp.rstrip.should == "@pengwynn  @sferik"
+      end
+    end
+    context "--followers" do
+      before do
+        @cli.options = @cli.options.merge(:followers => true)
+      end
+      it "should sort by number of followers" do
+        @cli.disciples
+        $stdout.string.chomp.rstrip.should == "@sferik    @pengwynn"
+      end
+    end
+    context "--friends" do
+      before do
+        @cli.options = @cli.options.merge(:friends => true)
+      end
+      it "should sort by number of friends" do
+        @cli.disciples
+        $stdout.string.chomp.rstrip.should == "@sferik    @pengwynn"
+      end
+    end
+    context "--listed" do
+      before do
+        @cli.options = @cli.options.merge(:listed => true)
+      end
+      it "should sort by number of list memberships" do
+        @cli.disciples
+        $stdout.string.chomp.rstrip.should == "@sferik    @pengwynn"
+      end
+    end
+    context "--long" do
+      before do
+        @cli.options = @cli.options.merge(:long => true)
+      end
+      it "should list in long format" do
+        @cli.disciples
+        $stdout.string.should == <<-eos
+ID          Since         Tweets  Favorites  Listed  Following  Followers  Screen name  Name
+14,100,886  Mar  8  2008  3,913   32         185     1,871      2,767      @pengwynn    Wynn Netherland
+7,505,382   Jul 16  2007  2,962   727        29      88         898        @sferik      Erik Michaels-Ober
+        eos
+      end
+    end
+    context "--reverse" do
+      before do
+        @cli.options = @cli.options.merge(:reverse => true)
+      end
+      it "should reverse the order of the sort" do
+        @cli.disciples
+        $stdout.string.chomp.rstrip.should == "@sferik    @pengwynn"
+      end
+    end
+    context "--tweets" do
+      before do
+        @cli.options = @cli.options.merge(:tweets => true)
+      end
+      it "should sort by number of Tweets" do
+        @cli.disciples
+        $stdout.string.chomp.rstrip.should == "@sferik    @pengwynn"
+      end
+    end
+  end
+
   describe "#dm" do
     before do
       @cli.options = @cli.options.merge(:profile => fixture_path + "/.trc")

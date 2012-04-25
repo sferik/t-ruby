@@ -82,7 +82,7 @@ testcli
     end
     it "should have the correct output" do
       @cli.block("sferik")
-      $stdout.string.should =~ /^@testcli blocked @sferik/
+      $stdout.string.should =~ /^@testcli blocked 1 user/
     end
   end
 
@@ -392,7 +392,7 @@ ID          Since         Tweets  Favorites  Listed  Following  Followers  Scree
     end
     it "should have the correct output" do
       @cli.favorite("26755176471724032")
-      $stdout.string.should =~ /^@testcli favorited @sferik's status: "The problem with your code is that it's doing exactly what you told it to do\.\"$/
+      $stdout.string.should =~ /^@testcli favorited 1 tweet.$/
     end
   end
 
@@ -1121,7 +1121,7 @@ ID                       Posted at     Screen name    Text
     end
     it "should have the correct output" do
       @cli.report_spam("sferik")
-      $stdout.string.should =~ /^@testcli reported @sferik/
+      $stdout.string.should =~ /^@testcli reported 1 user/
     end
   end
 
@@ -1138,7 +1138,7 @@ ID                       Posted at     Screen name    Text
     end
     it "should have the correct output" do
       @cli.retweet("26755176471724032")
-      $stdout.string.should =~ /^@testcli retweeted @gruber's status: "As for the Series, I'm for the Giants\. Fuck Texas, fuck Nolan Ryan, fuck George Bush\."$/
+      $stdout.string.should =~ /^@testcli retweeted 1 tweet.$/
     end
   end
 

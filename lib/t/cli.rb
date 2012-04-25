@@ -105,9 +105,10 @@ module T
           client.block(screen_name, :include_entities => false)
         end
       end
-      say "@#{@rcfile.default_profile[0]} blocked @#{screen_names.join(' ')}."
+      number = screen_names.length
+      say "@#{@rcfile.default_profile[0]} blocked #{number} #{number == 1 ? 'user' : 'users'}."
       say
-      say "Run `#{File.basename($0)} delete block #{screen_names.join(' ')}` to unblock."
+      say "Run `#{File.basename($0)} delete block #{screen_names.map{|screen_name| "@#{screen_name}"}.join(' ')}` to unblock."
     end
 
     desc "direct_messages", "Returns the #{DEFAULT_NUM_RESULTS} most recent Direct Messages sent to you."
@@ -205,9 +206,8 @@ module T
           client.favorite(status_id, :include_entities => false)
         end
       end
-      favorites.each do |status|
-        say "@#{@rcfile.default_profile[0]} favorited @#{status.user.screen_name}'s status: \"#{status.text.gsub(/\n+/, ' ')}\""
-      end
+      number = favorites.length
+      say "@#{@rcfile.default_profile[0]} favorited #{number} #{number == 1 ? 'tweet' : 'tweets'}."
       say
       say "Run `#{File.basename($0)} delete favorite #{status_ids.join(' ')}` to unfavorite."
     end
@@ -236,7 +236,7 @@ module T
       number = screen_names.length
       say "@#{@rcfile.default_profile[0]} is now following #{number} more #{number == 1 ? 'user' : 'users'}."
       say
-      say "Run `#{File.basename($0)} unfollow users #{screen_names.join(' ')}` to stop."
+      say "Run `#{File.basename($0)} unfollow #{screen_names.map{|screen_name| "@#{screen_name}"}.join(' ')}` to stop."
     end
 
     desc "followings", "Returns a list of the people you follow on Twitter."
@@ -376,7 +376,8 @@ module T
           client.report_spam(screen_name, :include_entities => false)
         end
       end
-      say "@#{@rcfile.default_profile[0]} reported @#{screen_names.join(' ')}."
+      number = screen_names.length
+      say "@#{@rcfile.default_profile[0]} reported #{number} #{number == 1 ? 'user' : 'users'}."
     end
     map %w(report spam) => :report_spam
 
@@ -389,9 +390,8 @@ module T
           client.retweet(status_id, :include_entities => false, :trim_user => true)
         end
       end
-      retweets.each do |status|
-        say "@#{@rcfile.default_profile[0]} retweeted @#{status.user.screen_name}'s status: \"#{status.text.gsub(/\n+/, ' ')}\""
-      end
+      number = retweets.length
+      say "@#{@rcfile.default_profile[0]} retweeted #{number} #{number == 1 ? 'tweet' : 'tweets'}."
       say
       say "Run `#{File.basename($0)} delete status #{status_ids.join(' ')}` to undo."
     end
@@ -479,7 +479,7 @@ module T
       number = screen_names.length
       say "@#{@rcfile.default_profile[0]} is no longer following #{number} #{number == 1 ? 'user' : 'users'}."
       say
-      say "Run `#{File.basename($0)} follow users #{screen_names.join(' ')}` to follow again."
+      say "Run `#{File.basename($0)} follow #{screen_names.map{|screen_name| "@#{screen_name}"}.join(' ')}` to follow again."
     end
 
     desc "update MESSAGE", "Post a Tweet."

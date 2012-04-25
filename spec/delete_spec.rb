@@ -33,7 +33,7 @@ describe T::Delete do
     end
     it "should have the correct output" do
       @delete.block("sferik")
-      $stdout.string.should =~ /^@testcli unblocked @sferik\.$/
+      $stdout.string.should =~ /^@testcli unblocked 1 user\.$/
     end
   end
 

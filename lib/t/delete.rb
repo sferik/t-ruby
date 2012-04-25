@@ -24,9 +24,10 @@ module T
           client.unblock(screen_name, :include_entities => false)
         end
       end
-      say "@#{@rcfile.default_profile[0]} unblocked @#{screen_names.join(' ')}."
+      number = screen_names.length
+      say "@#{@rcfile.default_profile[0]} unblocked #{number} #{number == 1 ? 'user' : 'users'}."
       say
-      say "Run `#{File.basename($0)} block #{screen_names.join(' ')}` to block."
+      say "Run `#{File.basename($0)} block #{screen_names.map{|screen_name| "@#{screen_name}"}.join(' ')}` to block."
     end
 
     desc "dm [DIRECT_MESSAGE_ID] [DIRECT_MESSAGE_ID...]", "Delete the last Direct Message sent."

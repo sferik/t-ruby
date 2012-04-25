@@ -99,8 +99,10 @@ module T
     map %w(tl) => :timeline
 
     desc "user SCREEN_NAME QUERY", "Returns Tweets in a user's timeline that match a specified query."
+    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     def user(screen_name, query)
       screen_name = screen_name.strip_ats
+      screen_name = screen_name.to_i if options['id']
       statuses = 1.upto(MAX_PAGES).threaded_map do |page|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.user_timeline(screen_name, :page => page, :count => MAX_NUM_RESULTS).select do |status|

@@ -96,11 +96,12 @@ module T
     end
 
     desc "block SCREEN_NAME [SCREEN_NAME...]", "Block users."
+    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     def block(screen_name, *screen_names)
       screen_names.unshift(screen_name)
       screen_names.map!(&:strip_ats)
+      screen_names.map!(&:to_i) if options['id']
       screen_names.threaded_each do |screen_name|
-        screen_name.strip_ats
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.block(screen_name, :include_entities => false)
         end
@@ -190,8 +191,10 @@ module T
     end
 
     desc "dm SCREEN_NAME MESSAGE", "Sends that person a Direct Message."
+    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     def dm(screen_name, message)
       screen_name = screen_name.strip_ats
+      screen_name = screen_name.to_i if options['id']
       direct_message = client.direct_message_create(screen_name, message, :include_entities => false)
       say "Direct Message sent from @#{@rcfile.default_profile[0]} to @#{direct_message.recipient.screen_name} (#{time_ago_in_words(direct_message.created_at)} ago)."
     end
@@ -225,9 +228,11 @@ module T
     map %w(faves) => :favorites
 
     desc "follow SCREEN_NAME [SCREEN_NAME...]", "Allows you to start following users."
+    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     def follow(screen_name, *screen_names)
       screen_names.unshift(screen_name)
       screen_names.map!(&:strip_ats)
+      screen_names.map!(&:to_i) if options['id']
       screen_names.threaded_each do |screen_name|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.follow(screen_name, :include_entities => false)
@@ -348,8 +353,13 @@ module T
 
     desc "open SCREEN_NAME", "Opens that user's profile in a web browser."
     method_option :dry_run, :type => :boolean
+    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     def open(screen_name)
       screen_name = screen_name.strip_ats
+      if options['id']
+        user = client.user(screen_name.to_i, :include_entities => false)
+        screen_name = user.screen_name
+      end
       Launchy.open("https://twitter.com/#{screen_name}", :dry_run => options.fetch('dry_run', false))
     end
 
@@ -367,11 +377,12 @@ module T
     end
 
     desc "report_spam SCREEN_NAME [SCREEN_NAME...]", "Report users for spam."
+    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     def report_spam(screen_name, *screen_names)
       screen_names.unshift(screen_name)
       screen_names.map!(&:strip_ats)
+      screen_names.map!(&:to_i) if options['id']
       screen_names.threaded_each do |screen_name|
-        screen_name.strip_ats
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.report_spam(screen_name, :include_entities => false)
         end
@@ -398,11 +409,15 @@ module T
     map %w(rt) => :retweet
 
     desc "retweets [SCREEN_NAME]", "Returns the #{DEFAULT_NUM_RESULTS} most recent Retweets by a user."
+    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "List in long format."
     method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => "Limit the number of results."
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     def retweets(screen_name=nil)
-      screen_name = screen_name.strip_ats if screen_name
+      if screen_name
+        screen_name = screen_name.strip_ats
+        screen_name = screen_name.to_i if options['id']
+      end
       count = options['number'] || DEFAULT_NUM_RESULTS
       statuses = client.retweeted_by(screen_name, :count => count, :include_entities => false)
       print_status_list(statuses)
@@ -453,6 +468,7 @@ module T
     end
 
     desc "timeline [SCREEN_NAME]", "Returns the #{DEFAULT_NUM_RESULTS} most recent Tweets posted by a user."
+    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "List in long format."
     method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => "Limit the number of results."
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
@@ -460,6 +476,7 @@ module T
       count = options['number'] || DEFAULT_NUM_RESULTS
       if screen_name
         screen_name = screen_name.strip_ats
+        screen_name = screen_name.to_i if options['id']
         statuses = client.user_timeline(screen_name, :count => count, :include_entities => false)
       else
         statuses = client.home_timeline(:count => count, :include_entities => false)
@@ -469,9 +486,11 @@ module T
     map %w(tl) => :timeline
 
     desc "unfollow SCREEN_NAME [SCREEN_NAME...]", "Allows you to stop following users."
+    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     def unfollow(screen_name, *screen_names)
       screen_names.unshift(screen_name)
       screen_names.map!(&:strip_ats)
+      screen_names.map!(&:to_i) if options['id']
       screen_names.threaded_each do |screen_name|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.unfollow(screen_name, :include_entities => false)
@@ -500,6 +519,7 @@ module T
     method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by number of favorites."
     method_option :followers, :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by number of followers."
     method_option :friends, :aliases => "-d", :type => :boolean, :default => false, :desc => "Sort by number of friends."
+    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     method_option :listed, :aliases => "-s", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
     method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "List in long format."
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
@@ -508,6 +528,7 @@ module T
     def users(screen_name, *screen_names)
       screen_names.unshift(screen_name)
       screen_names.map!(&:strip_ats)
+      screen_names.map!(&:to_i) if options['id']
       users = client.users(screen_names, :include_entities => false)
       print_user_list(users)
     end
@@ -520,8 +541,10 @@ module T
     map %w(-v --version) => :version
 
     desc "whois SCREEN_NAME", "Retrieves profile information for the user."
+    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     def whois(screen_name)
       screen_name = screen_name.strip_ats
+      screen_name = screen_name.to_i if options['id']
       user = client.user(screen_name, :include_entities => false)
       array = []
       name_label = user.verified ? "Name (Verified)" : "Name"

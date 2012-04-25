@@ -15,11 +15,12 @@ module T
     end
 
     desc "block SCREEN_NAME [SCREEN_NAME...]", "Unblock users."
+    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     def block(screen_name, *screen_names)
       screen_names.unshift(screen_name)
       screen_names.map!(&:strip_ats)
+      screen_names.map!(&:to_i) if options['id']
       screen_names.threaded_each do |screen_name|
-        screen_name.strip_ats
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.unblock(screen_name, :include_entities => false)
         end

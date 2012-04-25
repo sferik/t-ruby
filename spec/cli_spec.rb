@@ -1066,10 +1066,27 @@ ID                  Posted at     Screen name    Text
     before do
       @cli.options = @cli.options.merge(:dry_run => true)
     end
-    it "should not raise error" do
-      lambda do
-        @cli.open("sferik")
-      end.should_not raise_error
+    it "should have the correct output" do
+      @cli.open("sferik")
+      $stdout.string.should =~ /https:\/\/twitter.com\/sferik$/
+    end
+    context "--id" do
+      before do
+        @cli.options = @cli.options.merge(:id => true)
+        stub_get("/1/users/show.json").
+          with(:query => {:user_id => "420", :include_entities => "false"}).
+          to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should request the correct resource" do
+        @cli.open("420")
+        a_get("/1/users/show.json").
+          with(:query => {:user_id => "420", :include_entities => "false"}).
+          should have_been_made
+      end
+      it "should have the correct output" do
+        @cli.open("420")
+        $stdout.string.should =~ /https:\/\/twitter.com\/sferik$/
+      end
     end
   end
 

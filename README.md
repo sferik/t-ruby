@@ -85,13 +85,13 @@ interpreted by your shell.
     t list add presidents BarackObama Jasonfinn
 
 ### <a name="following"></a>Create a list that contains today's date in the name
-    t list create `date "+following-%Y-%m-%d"`
+    t list create following-`date "+%Y-%m-%d"`
 
 ### Add everyone you're following to a list
-    t followings | xargs t list add `date "+following-%Y-%m-%d"`
+    t followings | xargs t list add following-`date "+%Y-%m-%d"`
 
 ### <a name="list-members"></a>Display members of a list
-    t list members `date "+following-%Y-%m-%d"`
+    t list members following-`date "+%Y-%m-%d"`
 
 ### Count the number of Twitter employees
     t list members twitter team | wc -l

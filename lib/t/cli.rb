@@ -122,7 +122,7 @@ module T
       if options['long']
         array = direct_messages.map do |direct_message|
           created_at = direct_message.created_at > 6.months.ago ? direct_message.created_at.strftime("%b %e %H:%M") : direct_message.created_at.strftime("%b %e  %Y")
-          [number_with_delimiter(direct_message.id), created_at, "@#{direct_message.sender.screen_name}", direct_message.text.gsub(/\n+/, ' ')]
+          [direct_message.id.to_s, created_at, "@#{direct_message.sender.screen_name}", direct_message.text.gsub(/\n+/, ' ')]
         end
         if STDOUT.tty?
           headings = ["ID", "Posted at", "Screen name", "Text"]
@@ -148,7 +148,7 @@ module T
       if options['long']
         array = direct_messages.map do |direct_message|
           created_at = direct_message.created_at > 6.months.ago ? direct_message.created_at.strftime("%b %e %H:%M") : direct_message.created_at.strftime("%b %e  %Y")
-          [number_with_delimiter(direct_message.id), created_at, "@#{direct_message.recipient.screen_name}", direct_message.text.gsub(/\n+/, ' ')]
+          [direct_message.id.to_s, created_at, "@#{direct_message.recipient.screen_name}", direct_message.text.gsub(/\n+/, ' ')]
         end
         if STDOUT.tty?
           headings = ["ID", "Posted at", "Screen name", "Text"]
@@ -415,6 +415,7 @@ module T
       status = client.status(status_id, :include_entities => false, :include_my_retweet => false)
       created_at = status.created_at > 6.months.ago ? status.created_at.strftime("%b %e %H:%M") : status.created_at.strftime("%b %e  %Y")
       array = []
+      array << ["ID", status.id.to_s]
       array << ["Text", status.text.gsub(/\n+/, ' ')]
       array << ["Screen name", "@#{status.user.screen_name}"]
       array << ["Posted at", created_at]
@@ -524,7 +525,7 @@ module T
       user = client.user(screen_name, :include_entities => false)
       array = []
       name_label = user.verified ? "Name (Verified)" : "Name"
-      array << ["ID", number_with_delimiter(user.id)]
+      array << ["ID", user.id.to_s]
       array << [name_label, user.name] unless user.name.nil?
       array << ["Bio", user.description.gsub(/\n+/, ' ')] unless user.description.nil?
       array << ["Location", user.location] unless user.location.nil?

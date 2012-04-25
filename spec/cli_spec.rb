@@ -1088,6 +1088,24 @@ ID                  Posted at     Screen name    Text
         $stdout.string.should =~ /https:\/\/twitter.com\/sferik$/
       end
     end
+    context "--status" do
+      before do
+        @cli.options = @cli.options.merge(:status => true)
+        stub_get("/1/statuses/show/55709764298092545.json").
+          with(:query => {:include_entities => "false", :include_my_retweet => "false"}).
+          to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should request the correct resource" do
+        @cli.open("55709764298092545")
+        a_get("/1/statuses/show/55709764298092545.json").
+          with(:query => {:include_entities => "false", :include_my_retweet => "false"}).
+          should have_been_made
+      end
+      it "should have the correct output" do
+        @cli.open("55709764298092545")
+        $stdout.string.should =~ /https:\/\/twitter.com\/sferik\/status\/55709764298092545$/
+      end
+    end
   end
 
   describe "#reply" do

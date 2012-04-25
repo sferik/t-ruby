@@ -99,7 +99,7 @@ module T
     map %w(tl) => :timeline
 
     desc "user SCREEN_NAME QUERY", "Returns Tweets in a user's timeline that match a specified query."
-    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
+    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as a Twitter user ID instead of a screen name."
     def user(screen_name, query)
       screen_name = screen_name.strip_ats
       screen_name = screen_name.to_i if options['id']

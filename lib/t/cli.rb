@@ -62,6 +62,7 @@ module T
     method_option :consumer_secret, :aliases => "-s", :required => true
     method_option :prompt, :aliases => "-p", :type => :boolean, :default => true
     method_option :dry_run, :type => :boolean
+    method_option :display_url, :type => :boolean
     def authorize
       request_token = consumer.get_request_token
       url = generate_authorize_url(request_token)
@@ -73,10 +74,20 @@ module T
         say "  3. Copy or memorize the supplied PIN"
         say "  4. Return to the terminal to enter the PIN"
         say
-        ask "Press [Enter] to open the Twitter app authorization page."
+        unless options['display_url']
+          ask "Press [Enter] to open the Twitter app authorization page."
+        else
+          ask "Press [Enter] to display the URL you need to visit in your browser."
+        end
         say
       end
-      Launchy.open(url, :dry_run => options.fetch('dry_run', false))
+      unless options['display_url']
+        Launchy.open(url, :dry_run => options.fetch('dry_run', false))
+      else
+        say "Please navigate to the following URL to retrieve your PIN:"
+        say url
+        say
+      end
       pin = ask "Paste in the supplied PIN:"
       access_token = request_token.get_access_token(:oauth_verifier => pin.chomp)
       oauth_response = access_token.get('/1/account/verify_credentials.json')

@@ -1,5 +1,9 @@
 class String
 
+  def prepend_at
+    "@#{self}"
+  end
+
   def strip_ats
     self.tr('@', '')
   end

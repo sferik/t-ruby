@@ -1298,6 +1298,28 @@ ID                  Posted at     Screen name    Text
       @cli.reply("55709764298092545", "Testing")
       $stdout.string.should =~ /^Reply created by @testcli to @sferik \(8 months ago\)\.$/
     end
+    context "--all" do
+      before do
+        @cli.options = @cli.options.merge(:all => true)
+      end
+      it "should request the correct resource" do
+        @cli.reply("55709764298092545", "Testing")
+        a_get("/1/statuses/show/55709764298092545.json").
+          with(:query => {:include_entities => "false", :include_my_retweet => "false"}).
+          should have_been_made
+        a_post("/1/statuses/update.json").
+          with(:body => {:in_reply_to_status_id => "55709764298092545", :status => "@sferik Testing", :lat => "37.76969909668", :long => "-122.39330291748", :include_entities => "false", :trim_user => "true"}).
+          should have_been_made
+        a_request(:get, "http://checkip.dyndns.org/").
+          should have_been_made
+        a_request(:get, "http://www.geoplugin.net/xml.gp?ip=50.131.22.169").
+          should have_been_made
+      end
+      it "should have the correct output" do
+        @cli.reply("55709764298092545", "Testing")
+        $stdout.string.should =~ /^Reply created by @testcli to @sferik \(8 months ago\)\.$/
+      end
+    end
   end
 
   describe "#report_spam" do

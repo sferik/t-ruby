@@ -20,6 +20,7 @@ require 't/version'
 require 'thor'
 require 'time'
 require 'twitter'
+require 'twitter-text'
 require 'yaml'
 
 module T
@@ -30,6 +31,7 @@ module T
     include T::Collectable
     include T::Printable
     include T::Requestable
+    include Twitter::Extractor
 
     DEFAULT_NUM_RESULTS = 20
     MAX_SCREEN_NAME_SIZE = 20
@@ -399,14 +401,19 @@ module T
     end
 
     desc "reply STATUS_ID MESSAGE", "Post your Tweet as a reply directed at another person."
+    method_option :all, :aliases => "-a", :type => "boolean", :default => false, :desc => "Reply to all users mentioned in the Tweet."
     method_option :location, :aliases => "-l", :type => :boolean, :default => false
     def reply(status_id, message)
       status_id = status_id.strip_commas
       status = client.status(status_id.to_i, :include_entities => false, :include_my_retweet => false)
+      screen_names = Array(status.user.screen_name)
+      screen_names += extract_mentioned_screen_names(status.text) if options['all']
+      screen_names.uniq!
+      screen_names.map!(&:prepend_at)
       opts = {:in_reply_to_status_id => status.id, :include_entities => false, :trim_user => true}
       opts.merge!(:lat => location.lat, :long => location.lng) if options['location']
-      reply = client.update("@#{status.user.screen_name} #{message}", opts)
-      say "Reply created by @#{@rcfile.default_profile[0]} to @#{status.user.screen_name} (#{time_ago_in_words(reply.created_at)} ago)."
+      reply = client.update("#{screen_names.join(' ')} #{message}", opts)
+      say "Reply created by @#{@rcfile.default_profile[0]} to #{screen_names.join(' ')} (#{time_ago_in_words(reply.created_at)} ago)."
       say
       say "Run `#{File.basename($0)} delete status #{reply.id}` to delete."
     end

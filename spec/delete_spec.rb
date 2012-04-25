@@ -126,7 +126,7 @@ describe T::Delete do
           to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should request the correct resource" do
-        $stdout.should_receive(:print).with("Are you sure you want to delete the favorite of @sferik's status: \"The problem with your code is that it's doing exactly what you told it to do.\"? [y/N] ")
+        $stdout.should_receive(:print).with("Are you sure you want to remove @sferik's status: \"The problem with your code is that it's doing exactly what you told it to do.\" from your favorites? [y/N] ")
         $stdin.should_receive(:gets).and_return("yes")
         @delete.favorite("28439861609")
         a_get("/1/statuses/show/28439861609.json").
@@ -138,7 +138,7 @@ describe T::Delete do
       end
       context "yes" do
         it "should have the correct output" do
-          $stdout.should_receive(:print).with("Are you sure you want to delete the favorite of @sferik's status: \"The problem with your code is that it's doing exactly what you told it to do.\"? [y/N] ")
+          $stdout.should_receive(:print).with("Are you sure you want to remove @sferik's status: \"The problem with your code is that it's doing exactly what you told it to do.\" from your favorites? [y/N] ")
           $stdin.should_receive(:gets).and_return("yes")
           @delete.favorite("28439861609")
           $stdout.string.should =~ /^@testcli unfavorited @sferik's status: "The problem with your code is that it's doing exactly what you told it to do\."$/
@@ -146,7 +146,7 @@ describe T::Delete do
       end
       context "no" do
         it "should have the correct output" do
-          $stdout.should_receive(:print).with("Are you sure you want to delete the favorite of @sferik's status: \"The problem with your code is that it's doing exactly what you told it to do.\"? [y/N] ")
+          $stdout.should_receive(:print).with("Are you sure you want to remove @sferik's status: \"The problem with your code is that it's doing exactly what you told it to do.\" from your favorites? [y/N] ")
           $stdin.should_receive(:gets).and_return("no")
           @delete.favorite("28439861609")
           $stdout.string.chomp.should be_empty

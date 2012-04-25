@@ -203,10 +203,10 @@ module T
     desc "favorite STATUS_ID [STATUS_ID...]", "Marks Tweets as favorites."
     def favorite(status_id, *status_ids)
       status_ids.unshift(status_id)
-      status_ids.map!(&:strip_commas).map!(&:to_i)
+      status_ids.map!(&:strip_commas)
       favorites = status_ids.threaded_map do |status_id|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-          client.favorite(status_id, :include_entities => false)
+          client.favorite(status_id.to_i, :include_entities => false)
         end
       end
       number = favorites.length
@@ -367,7 +367,7 @@ module T
     method_option :location, :aliases => "-l", :type => :boolean, :default => false
     def reply(status_id, message)
       status_id = status_id.strip_commas
-      status = client.status(status_id, :include_entities => false, :include_my_retweet => false)
+      status = client.status(status_id.to_i, :include_entities => false, :include_my_retweet => false)
       opts = {:in_reply_to_status_id => status.id, :include_entities => false, :trim_user => true}
       opts.merge!(:lat => location.lat, :long => location.lng) if options['location']
       reply = client.update("@#{status.user.screen_name} #{message}", opts)
@@ -395,10 +395,10 @@ module T
     desc "retweet STATUS_ID [STATUS_ID...]", "Sends Tweets to your followers."
     def retweet(status_id, *status_ids)
       status_ids.unshift(status_id)
-      status_ids.map!(&:strip_commas).map!(&:to_i)
+      status_ids.map!(&:strip_commas)
       retweets = status_ids.threaded_map do |status_id|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-          client.retweet(status_id, :include_entities => false, :trim_user => true)
+          client.retweet(status_id.to_i, :include_entities => false, :trim_user => true)
         end
       end
       number = retweets.length
@@ -427,7 +427,7 @@ module T
     desc "status STATUS_ID", "Retrieves detailed information about a Tweet."
     def status(status_id)
       status_id = status_id.strip_commas
-      status = client.status(status_id, :include_entities => false, :include_my_retweet => false)
+      status = client.status(status_id.to_i, :include_entities => false, :include_my_retweet => false)
       created_at = status.created_at > 6.months.ago ? status.created_at.strftime("%b %e %H:%M") : status.created_at.strftime("%b %e  %Y")
       array = []
       array << ["ID", status.id.to_s]

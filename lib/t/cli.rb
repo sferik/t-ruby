@@ -329,7 +329,7 @@ module T
     method_option :location, :aliases => "-l", :type => :boolean, :default => false
     def reply(status_id, message)
       status_id = status_id.strip_commas
-      status = client.status(status_id, :include_entities => false, :include_my_retweet => false, :trim_user => true)
+      status = client.status(status_id, :include_entities => false, :include_my_retweet => false)
       opts = {:in_reply_to_status_id => status.id, :include_entities => false, :trim_user => true}
       opts.merge!(:lat => location.lat, :long => location.lng) if options['location']
       reply = client.update("@#{status.user.screen_name} #{message}", opts)

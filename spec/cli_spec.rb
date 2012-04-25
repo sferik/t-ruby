@@ -971,7 +971,7 @@ ID                       Posted at     Screen name    Text
     before do
       @cli.options = @cli.options.merge(:profile => fixture_path + "/.trc", :location => true)
       stub_get("/1/statuses/show/55709764298092545.json").
-        with(:query => {:include_entities => "false", :include_my_retweet => "false", :trim_user => "true"}).
+        with(:query => {:include_entities => "false", :include_my_retweet => "false"}).
         to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       stub_post("/1/statuses/update.json").
         with(:body => {:in_reply_to_status_id => "55709764298092545", :status => "@sferik Testing", :lat => "37.76969909668", :long => "-122.39330291748", :include_entities => "false", :trim_user => "true"}).
@@ -984,7 +984,7 @@ ID                       Posted at     Screen name    Text
     it "should request the correct resource" do
       @cli.reply("55709764298092545", "Testing")
       a_get("/1/statuses/show/55709764298092545.json").
-        with(:query => {:include_entities => "false", :include_my_retweet => "false", :trim_user => "true"}).
+        with(:query => {:include_entities => "false", :include_my_retweet => "false"}).
         should have_been_made
       a_post("/1/statuses/update.json").
         with(:body => {:in_reply_to_status_id => "55709764298092545", :status => "@sferik Testing", :lat => "37.76969909668", :long => "-122.39330291748", :include_entities => "false", :trim_user => "true"}).

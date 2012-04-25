@@ -1,0 +1,345 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>T by sferik</title>
+    
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>T</h1>
+        <p>A command-line power tool for Twitter.</p>
+        <p class="view"><a href="https://github.com/sferik/t">View the Project on GitHub <small>sferik/t</small></a></p>
+        <ul>
+          <li><a href="https://github.com/sferik/t/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/sferik/t/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/sferik/t">Fork On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>Twitter CLI <a href="http://travis-ci.org/sferik/t"><img src="https://secure.travis-ci.org/sferik/t.png?branch=master" alt="Build Status"></a> <a href="https://gemnasium.com/sferik/t"><img src="https://gemnasium.com/sferik/t.png?travis" alt="Dependency Status"></a>
+</h1>
+
+<h3>A command-line power tool for Twitter.</h3>
+
+<p>The CLI attempts to mimic the <a href="https://support.twitter.com/articles/14020-twitter-sms-command">Twitter SMS commands</a> wherever possible,
+however it offers many more commands than are available via SMS.</p>
+
+<h2>
+<a name="installation"></a>Installation</h2>
+
+<pre><code>gem install t
+</code></pre>
+
+<h2>
+<a name="configuration"></a>Configuration</h2>
+
+<p>Because Twitter requires OAuth for most of its functionality, you'll need to
+register a new application at <a href="http://dev.twitter.com/apps/new">http://dev.twitter.com/apps/new</a>. Once you
+create your application make sure to set the "Application Type" to "Read, Write
+and Access direct messages", otherwise you won't be able to post status updates
+or send direct messages via the CLI.</p>
+
+<p>Once you have registered your application, you'll be given a consumer key and
+secret, which you can use to authorize your Twitter account.</p>
+
+<pre><code>t authorize -c YOUR_CONSUMER_KEY -s YOUR_CONSUMER_SECRET
+</code></pre>
+
+<p>This will open a new browser window where you can authenticate to Twitter and
+then enter the returned PIN back into the terminal.  Assuming that works,
+you'll be authorized to use the CLI.</p>
+
+<p>You can see a list of all the accounts you've authorized.</p>
+
+<pre><code>t accounts
+
+sferik
+  UDfNTpOz5ZDG4a6w7dIWj
+  uuP7Xbl2mEfGMiDu1uIyFN
+gem
+  thG9EfWoADtIr6NjbL9ON (default)
+</code></pre>
+
+<p>Notice that one account is marked as the default. To change the default use the
+<code>set</code> subcommand, passing either just the username, if it's unambiguous, or the
+username and consumer key pair, like so:</p>
+
+<pre><code>t set default sferik UDfNTpOz5ZDG4a6w7dIWj
+</code></pre>
+
+<p>Account information is stored in the YAML-formatted file <code>~/.trc</code>.</p>
+
+<h2>
+<a name="examples"></a>Usage Examples</h2>
+
+<p>Typing <code>t help</code> will give you a list of all the available commands. You can
+type <code>t help TASK</code> to get help for a specific command.</p>
+
+<pre><code>t help
+</code></pre>
+
+<h3>
+<a name="update"></a>Update your status</h3>
+
+<pre><code>t update "I'm tweeting from the command line. Isn't that special?"
+</code></pre>
+
+<p><strong>Note</strong>: If your tweet includes special characters (e.g. <code>!</code>), make sure to
+wrap it in single quotes instead of double quotes, so those characters are not
+interpreted by your shell.</p>
+
+<h3>
+<a name="stats"></a>Retrieve stats about users</h3>
+
+<pre><code>t users -l @sferik @gem
+</code></pre>
+
+<h3>
+<a name="follow"></a>Follow users</h3>
+
+<pre><code>t follow @sferik @gem
+</code></pre>
+
+<h3>
+<a name="friends"></a>List your friends (ordered by number of followers)</h3>
+
+<pre><code>t friends -lf
+</code></pre>
+
+<h3>
+<a name="leaders"></a>List your leaders (people you follow who don't follow you back)</h3>
+
+<pre><code>t leaders -lf
+</code></pre>
+
+<h3>
+<a name="unfollow"></a>Unfollow everyone you follow who doesn't follow you back</h3>
+
+<pre><code>t leaders | xargs t unfollow
+</code></pre>
+
+<h3>
+<a name="follow"></a>Follow back everyone who follows you</h3>
+
+<pre><code>t disciples | xargs t follow
+</code></pre>
+
+<h3>
+<a name="follow-roulette"></a>Follow roulette: randomly follow someone who follows you</h3>
+
+<pre><code>t disciples | gshuf | head -1 | xargs t follow
+</code></pre>
+
+<h3>
+<a name="favorite"></a>Favorite the last 10 tweets that mention you</h3>
+
+<pre><code>t mentions -l -n 10 | awk '{print $1}' | xargs t favorite
+</code></pre>
+
+<h3>
+<a name="list-create"></a>Create a list</h3>
+
+<pre><code>t list create presidents
+</code></pre>
+
+<h3>
+<a name="list-add"></a>Add users to a list</h3>
+
+<pre><code>t list add presidents @BarackObama @Jasonfinn
+</code></pre>
+
+<h3>Create a list that contains today's date in the name</h3>
+
+<pre><code>t list create following-`date "+%Y-%m-%d"`
+</code></pre>
+
+<h3>
+<a name="followings"></a>Add everyone you're following to a list</h3>
+
+<pre><code>t followings | xargs t list add following-`date "+%Y-%m-%d"`
+</code></pre>
+
+<h3>
+<a name="list-members"></a>Display members of a list</h3>
+
+<pre><code>t list members following-`date "+%Y-%m-%d"`
+</code></pre>
+
+<h3>
+<a name="list-members-count"></a>Count the number of Twitter employees</h3>
+
+<pre><code>t list members twitter team | wc -l
+</code></pre>
+
+<h3>
+<a name="search-all"></a>Search Twitter for the 20 most recent Tweets that match a specified query</h3>
+
+<pre><code>t search all "query"
+</code></pre>
+
+<h3>
+<a name="search-retweets"></a>Search Tweets you've favorited that match a specified query</h3>
+
+<pre><code>t search favorites "query"
+</code></pre>
+
+<h3>
+<a name="search-mentions"></a>Search Tweets mentioning you that match a specified query</h3>
+
+<pre><code>t search mentions "query"
+</code></pre>
+
+<h3>
+<a name="search-retweets"></a>Search Tweets you've retweeted that match a specified query</h3>
+
+<pre><code>t search retweets "query"
+</code></pre>
+
+<h3>
+<a name="search-timeline"></a>Search Tweets in your timeline that match a specified query</h3>
+
+<pre><code>t search timeline "query"
+</code></pre>
+
+<h3>
+<a name="search-user"></a>Search Tweets in a user's timeline that match a specified query</h3>
+
+<pre><code>t search user @sferik "query"
+</code></pre>
+
+<h2>
+<a name="features"></a>Features</h2>
+
+<ul>
+<li>Multithreaded: Whenever possible, Twitter API requests are made in parallel,
+resulting in faster performance for bulk operations.</li>
+<li>Designed for Unix: All output is designed to be piped to other Unix
+utilities, like grep, cut, awk, bc, wc, and xargs for advanced processing.</li>
+<li>99% C0 Code Coverage: Extremely well tested, with a 3:1 test-to-code ratio.</li>
+</ul><h2>
+<a name="terminology"></a>Relationship Terminology</h2>
+
+<p>There is some ambiguity in the terminology used to describe relationships on
+Twitter. For example, some people use the term "friends" to mean the set of
+everyone you follow, while we use it to mean just the subset of people who
+follow you back (i.e., friendship is bidirectional). Here is the full table of
+terminology used throughout <code>t</code>:</p>
+
+<pre><code>                           ___________________________________________________
+                          |                         |                         |
+                          |     YOU FOLLOW THEM     |  YOU DON'T FOLLOW THEM  |
+ _________________________|_________________________|_________________________|_________________________
+|                         |                         |                         |                         |
+|     THEY FOLLOW YOU     |         friends         |        disciples        |        followers        |
+|_________________________|_________________________|_________________________|_________________________|
+|                         |                         |
+|  THEY DON'T FOLLOW YOU  |         leaders         |
+|_________________________|_________________________|
+                          |                         |
+                          |       followings        |
+                          |_________________________|
+</code></pre>
+
+<h2>
+<a name="history"></a>History</h2>
+
+<p><img src="http://twitter.rubyforge.org/images/terminal_output.png" alt="History" title="History"></p>
+
+<p>The <a href="https://rubygems.org/gems/twitter">twitter gem</a> previously contained a command-line interface, up until
+version 0.5.0, when it was <a href="https://github.com/jnunemaker/twitter/commit/dd2445e3e2c97f38b28a3f32ea902536b3897adf">removed</a>. This project is offered as a sucessor
+to that effort, however it is a clean room implementation that contains none of
+John Nunemaker's original code.</p>
+
+<h2>
+<a name="contributing"></a>Contributing</h2>
+
+<p>In the spirit of <a href="http://www.fsf.org/licensing/essays/free-sw.html">free software</a>, <strong>everyone</strong> is encouraged to help
+improve this project.</p>
+
+<p>Here are some ways <em>you</em> can contribute:</p>
+
+<ul>
+<li>by using alpha, beta, and prerelease versions</li>
+<li>by reporting bugs</li>
+<li>by suggesting new features</li>
+<li>by writing or editing documentation</li>
+<li>by writing specifications</li>
+<li>by writing code (<strong>no patch is too small</strong>: fix typos, add comments, clean up
+inconsistent whitespace)</li>
+<li>by refactoring code</li>
+<li>by closing <a href="https://github.com/sferik/t/issues">issues</a>
+</li>
+<li>by reviewing patches</li>
+</ul><h2>
+<a name="issues"></a>Submitting an Issue</h2>
+
+<p>We use the <a href="https://github.com/sferik/t/issues">GitHub issue tracker</a> to track bugs and features. Before
+submitting a bug report or feature request, check to make sure it hasn't
+already been submitted. You can indicate support for an existing issue by
+voting it up. When submitting a bug report, please include a <a href="https://gist.github.com/">Gist</a> that
+includes a stack trace and any details that may be necessary to reproduce the
+bug, including your gem version, Ruby version, and operating system. Ideally, a
+bug report should include a pull request with failing specs.</p>
+
+<h2>
+<a name="pulls"></a>Submitting a Pull Request</h2>
+
+<ol>
+<li>Fork the project.</li>
+<li>Create a topic branch.</li>
+<li>Implement your feature or bug fix.</li>
+<li>Add specs for your feature or bug fix.</li>
+<li>Run <code>bundle exec rake spec</code>. If your changes are not 100% covered, go back
+to step 4.</li>
+<li>Commit and push your changes.</li>
+<li>Submit a pull request. Please do not include changes to the gemspec,
+version, or history file. (If you want to create your own version for some
+reason, please do so in a separate commit.)</li>
+</ol><h2>
+<a name="versions"></a>Supported Ruby Versions</h2>
+
+<p>This library aims to support and is <a href="http://travis-ci.org/sferik/t">tested against</a> the following Ruby
+implementations:</p>
+
+<ul>
+<li>Ruby 1.8.7</li>
+<li>Ruby 1.9.2</li>
+<li>Ruby 1.9.3</li>
+<li><a href="http://rubini.us/">Rubinius</a></li>
+</ul><p>If something doesn't work on one of these interpreters, it should be considered
+a bug.</p>
+
+<p>This library may inadvertently work (or seem to work) on other Ruby
+implementations, however support will only be provided for the versions listed
+above.</p>
+
+<p>If you would like this library to support another Ruby version, you may
+volunteer to be a maintainer. Being a maintainer entails making sure all tests
+run and pass on that implementation. When something breaks on your
+implementation, you will be personally responsible for providing patches in a
+timely fashion. If critical issues for a particular implementation exist at the
+time of a major release, support for that Ruby version may be dropped.</p>
+
+<h2>
+<a name="copyright"></a>Copyright</h2>
+
+<p>Copyright (c) 2011 Erik Michaels-Ober. See <a href="https://github.com/sferik/t/blob/master/LICENSE.md">LICENSE</a> for details.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/sferik">sferik</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>

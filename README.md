@@ -86,11 +86,11 @@ type `t help TASK` to get help for a specific command.
 ### Add everyone you're following to a list
     t followings | xargs t list add `date "+following-%Y-%m-%d"`
 
-### <a name="members"></a>Display members of a list
-    t members `date "+following-%Y-%m-%d"`
+### <a name="list-members"></a>Display members of a list
+    t list members `date "+following-%Y-%m-%d"`
 
 ### Count the number of Twitter employees
-    t members twitter team | wc -l
+    t list members twitter team | wc -l
 
 ### <a name="search-all"></a>Search Twitter for the 20 most recent Tweets that match a specified query
     t search all "query"

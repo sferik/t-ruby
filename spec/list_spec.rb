@@ -89,7 +89,7 @@ describe T::List do
     end
     it "should have the correct output" do
       @list.members("presidents")
-      $stdout.string.chomp.rstrip.should == "pengwynn  sferik"
+      $stdout.string.chomp.rstrip.should == "@pengwynn  @sferik"
     end
     context "--created" do
       before do
@@ -97,7 +97,7 @@ describe T::List do
       end
       it "should sort by the time when Twitter acount was created" do
         @list.members("presidents")
-        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.rstrip.should == "@sferik    @pengwynn"
       end
     end
     context "--favorites" do
@@ -106,7 +106,7 @@ describe T::List do
       end
       it "should sort by number of favorites" do
         @list.members("presidents")
-        $stdout.string.chomp.rstrip.should == "pengwynn  sferik"
+        $stdout.string.chomp.rstrip.should == "@pengwynn  @sferik"
       end
     end
     context "--followers" do
@@ -115,7 +115,7 @@ describe T::List do
       end
       it "should sort by number of followers" do
         @list.members("presidents")
-        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.rstrip.should == "@sferik    @pengwynn"
       end
     end
     context "--friends" do
@@ -124,7 +124,7 @@ describe T::List do
       end
       it "should sort by number of friends" do
         @list.members("presidents")
-        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.rstrip.should == "@sferik    @pengwynn"
       end
     end
     context "--listed" do
@@ -133,7 +133,7 @@ describe T::List do
       end
       it "should sort by number of list memberships" do
         @list.members("presidents")
-        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.rstrip.should == "@sferik    @pengwynn"
       end
     end
     context "--long" do
@@ -155,7 +155,7 @@ ID          Since         Tweets  Favorites  Listed  Following  Followers  Scree
       end
       it "should reverse the order of the sort" do
         @list.members("presidents")
-        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.rstrip.should == "@sferik    @pengwynn"
       end
     end
     context "--tweets" do
@@ -164,7 +164,7 @@ ID          Since         Tweets  Favorites  Listed  Following  Followers  Scree
       end
       it "should sort by number of Tweets" do
         @list.members("presidents")
-        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.rstrip.should == "@sferik    @pengwynn"
       end
     end
     context "with a screen name passed" do
@@ -181,7 +181,7 @@ ID          Since         Tweets  Favorites  Listed  Following  Followers  Scree
       end
       it "should have the correct output" do
         @list.members("presidents")
-        $stdout.string.chomp.rstrip.should == "pengwynn  sferik"
+        $stdout.string.chomp.rstrip.should == "@pengwynn  @sferik"
       end
     end
   end

@@ -98,6 +98,7 @@ module T
     desc "block SCREEN_NAME [SCREEN_NAME...]", "Block users."
     def block(screen_name, *screen_names)
       screen_names.unshift(screen_name)
+      screen_names.map!(&:strip_ats)
       screen_names.threaded_each do |screen_name|
         screen_name.strip_ats
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
@@ -200,6 +201,7 @@ module T
     desc "follow SCREEN_NAME [SCREEN_NAME...]", "Allows you to start following users."
     def follow(screen_name, *screen_names)
       screen_names.unshift(screen_name)
+      screen_names.map!(&:strip_ats)
       screen_names.threaded_each do |screen_name|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.follow(screen_name, :include_entities => false)
@@ -341,6 +343,7 @@ module T
     desc "report_spam SCREEN_NAME [SCREEN_NAME...]", "Report users for spam."
     def report_spam(screen_name, *screen_names)
       screen_names.unshift(screen_name)
+      screen_names.map!(&:strip_ats)
       screen_names.threaded_each do |screen_name|
         screen_name.strip_ats
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
@@ -441,6 +444,7 @@ module T
     desc "unfollow SCREEN_NAME [SCREEN_NAME...]", "Allows you to stop following users."
     def unfollow(screen_name, *screen_names)
       screen_names.unshift(screen_name)
+      screen_names.map!(&:strip_ats)
       screen_names.threaded_each do |screen_name|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.unfollow(screen_name, :include_entities => false)
@@ -476,6 +480,7 @@ module T
     method_option :unsorted, :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
     def users(screen_name, *screen_names)
       screen_names.unshift(screen_name)
+      screen_names.map!(&:strip_ats)
       users = client.users(screen_names, :include_entities => false)
       print_user_list(users)
     end

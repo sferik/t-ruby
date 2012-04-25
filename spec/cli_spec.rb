@@ -459,7 +459,7 @@ ID                       Posted at     Screen name    Text
     end
     it "should have the correct output" do
       @cli.followings
-      $stdout.string.chomp.rstrip.should == "pengwynn  sferik"
+      $stdout.string.chomp.rstrip.should == "@pengwynn  @sferik"
     end
     context "--created" do
       before do
@@ -467,7 +467,7 @@ ID                       Posted at     Screen name    Text
       end
       it "should sort by the time when Twitter acount was created" do
         @cli.followings
-        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.rstrip.should == "@sferik    @pengwynn"
       end
     end
     context "--favorites" do
@@ -476,7 +476,7 @@ ID                       Posted at     Screen name    Text
       end
       it "should sort by number of favorites" do
         @cli.followings
-        $stdout.string.chomp.rstrip.should == "pengwynn  sferik"
+        $stdout.string.chomp.rstrip.should == "@pengwynn  @sferik"
       end
     end
     context "--followers" do
@@ -485,7 +485,7 @@ ID                       Posted at     Screen name    Text
       end
       it "should sort by number of followers" do
         @cli.followings
-        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.rstrip.should == "@sferik    @pengwynn"
       end
     end
     context "--friends" do
@@ -494,7 +494,7 @@ ID                       Posted at     Screen name    Text
       end
       it "should sort by number of friends" do
         @cli.followings
-        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.rstrip.should == "@sferik    @pengwynn"
       end
     end
     context "--listed" do
@@ -503,7 +503,7 @@ ID                       Posted at     Screen name    Text
       end
       it "should sort by number of list memberships" do
         @cli.followings
-        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.rstrip.should == "@sferik    @pengwynn"
       end
     end
     context "--long" do
@@ -525,7 +525,7 @@ ID          Since         Tweets  Favorites  Listed  Following  Followers  Scree
       end
       it "should reverse the order of the sort" do
         @cli.followings
-        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.rstrip.should == "@sferik    @pengwynn"
       end
     end
     context "--tweets" do
@@ -534,7 +534,7 @@ ID          Since         Tweets  Favorites  Listed  Following  Followers  Scree
       end
       it "should sort by number of Tweets" do
         @cli.followings
-        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.rstrip.should == "@sferik    @pengwynn"
       end
     end
   end
@@ -559,7 +559,7 @@ ID          Since         Tweets  Favorites  Listed  Following  Followers  Scree
     end
     it "should have the correct output" do
       @cli.followers
-      $stdout.string.chomp.rstrip.should == "pengwynn  sferik"
+      $stdout.string.chomp.rstrip.should == "@pengwynn  @sferik"
     end
     context "--created" do
       before do
@@ -567,7 +567,7 @@ ID          Since         Tweets  Favorites  Listed  Following  Followers  Scree
       end
       it "should sort by the time when Twitter acount was created" do
         @cli.followers
-        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.rstrip.should == "@sferik    @pengwynn"
       end
     end
     context "--favorites" do
@@ -576,7 +576,7 @@ ID          Since         Tweets  Favorites  Listed  Following  Followers  Scree
       end
       it "should sort by number of favorites" do
         @cli.followers
-        $stdout.string.chomp.rstrip.should == "pengwynn  sferik"
+        $stdout.string.chomp.rstrip.should == "@pengwynn  @sferik"
       end
     end
     context "--followers" do
@@ -585,7 +585,7 @@ ID          Since         Tweets  Favorites  Listed  Following  Followers  Scree
       end
       it "should sort by number of followers" do
         @cli.followers
-        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.rstrip.should == "@sferik    @pengwynn"
       end
     end
     context "--friends" do
@@ -594,7 +594,7 @@ ID          Since         Tweets  Favorites  Listed  Following  Followers  Scree
       end
       it "should sort by number of friends" do
         @cli.followers
-        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.rstrip.should == "@sferik    @pengwynn"
       end
     end
     context "--listed" do
@@ -603,7 +603,7 @@ ID          Since         Tweets  Favorites  Listed  Following  Followers  Scree
       end
       it "should sort by number of list memberships" do
         @cli.followers
-        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.rstrip.should == "@sferik    @pengwynn"
       end
     end
     context "--long" do
@@ -625,7 +625,7 @@ ID          Since         Tweets  Favorites  Listed  Following  Followers  Scree
       end
       it "should reverse the order of the sort" do
         @cli.followers
-        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.rstrip.should == "@sferik    @pengwynn"
       end
     end
     context "--tweets" do
@@ -634,7 +634,7 @@ ID          Since         Tweets  Favorites  Listed  Following  Followers  Scree
       end
       it "should sort by number of Tweets" do
         @cli.followers
-        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.rstrip.should == "@sferik    @pengwynn"
       end
     end
   end
@@ -665,7 +665,7 @@ ID          Since         Tweets  Favorites  Listed  Following  Followers  Scree
     end
     it "should have the correct output" do
       @cli.friends
-      $stdout.string.chomp.rstrip.should == "pengwynn  sferik"
+      $stdout.string.chomp.rstrip.should == "@pengwynn  @sferik"
     end
     context "--created" do
       before do
@@ -673,7 +673,7 @@ ID          Since         Tweets  Favorites  Listed  Following  Followers  Scree
       end
       it "should sort by the time when Twitter acount was created" do
         @cli.friends
-        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.rstrip.should == "@sferik    @pengwynn"
       end
     end
     context "--favorites" do
@@ -682,7 +682,7 @@ ID          Since         Tweets  Favorites  Listed  Following  Followers  Scree
       end
       it "should sort by number of favorites" do
         @cli.friends
-        $stdout.string.chomp.rstrip.should == "pengwynn  sferik"
+        $stdout.string.chomp.rstrip.should == "@pengwynn  @sferik"
       end
     end
     context "--followers" do
@@ -691,7 +691,7 @@ ID          Since         Tweets  Favorites  Listed  Following  Followers  Scree
       end
       it "should sort by number of followers" do
         @cli.friends
-        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.rstrip.should == "@sferik    @pengwynn"
       end
     end
     context "--friends" do
@@ -700,7 +700,7 @@ ID          Since         Tweets  Favorites  Listed  Following  Followers  Scree
       end
       it "should sort by number of friends" do
         @cli.friends
-        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.rstrip.should == "@sferik    @pengwynn"
       end
     end
     context "--listed" do
@@ -709,7 +709,7 @@ ID          Since         Tweets  Favorites  Listed  Following  Followers  Scree
       end
       it "should sort by number of list memberships" do
         @cli.friends
-        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.rstrip.should == "@sferik    @pengwynn"
       end
     end
     context "--long" do
@@ -731,7 +731,7 @@ ID          Since         Tweets  Favorites  Listed  Following  Followers  Scree
       end
       it "should reverse the order of the sort" do
         @cli.friends
-        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.rstrip.should == "@sferik    @pengwynn"
       end
     end
     context "--tweets" do
@@ -740,7 +740,7 @@ ID          Since         Tweets  Favorites  Listed  Following  Followers  Scree
       end
       it "should sort by number of Tweets" do
         @cli.friends
-        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.rstrip.should == "@sferik    @pengwynn"
       end
     end
   end
@@ -771,7 +771,7 @@ ID          Since         Tweets  Favorites  Listed  Following  Followers  Scree
     end
     it "should have the correct output" do
       @cli.leaders
-      $stdout.string.chomp.rstrip.should == "pengwynn  sferik"
+      $stdout.string.chomp.rstrip.should == "@pengwynn  @sferik"
     end
     context "--created" do
       before do
@@ -779,7 +779,7 @@ ID          Since         Tweets  Favorites  Listed  Following  Followers  Scree
       end
       it "should sort by the time when Twitter acount was created" do
         @cli.leaders
-        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.rstrip.should == "@sferik    @pengwynn"
       end
     end
     context "--favorites" do
@@ -788,7 +788,7 @@ ID          Since         Tweets  Favorites  Listed  Following  Followers  Scree
       end
       it "should sort by number of favorites" do
         @cli.leaders
-        $stdout.string.chomp.rstrip.should == "pengwynn  sferik"
+        $stdout.string.chomp.rstrip.should == "@pengwynn  @sferik"
       end
     end
     context "--followers" do
@@ -797,7 +797,7 @@ ID          Since         Tweets  Favorites  Listed  Following  Followers  Scree
       end
       it "should sort by number of followers" do
         @cli.leaders
-        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.rstrip.should == "@sferik    @pengwynn"
       end
     end
     context "--friends" do
@@ -806,7 +806,7 @@ ID          Since         Tweets  Favorites  Listed  Following  Followers  Scree
       end
       it "should sort by number of friends" do
         @cli.leaders
-        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.rstrip.should == "@sferik    @pengwynn"
       end
     end
     context "--listed" do
@@ -815,7 +815,7 @@ ID          Since         Tweets  Favorites  Listed  Following  Followers  Scree
       end
       it "should sort by number of list memberships" do
         @cli.leaders
-        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.rstrip.should == "@sferik    @pengwynn"
       end
     end
     context "--long" do
@@ -837,7 +837,7 @@ ID          Since         Tweets  Favorites  Listed  Following  Followers  Scree
       end
       it "should reverse the order of the sort" do
         @cli.leaders
-        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.rstrip.should == "@sferik    @pengwynn"
       end
     end
     context "--tweets" do
@@ -846,7 +846,7 @@ ID          Since         Tweets  Favorites  Listed  Following  Followers  Scree
       end
       it "should sort by number of Tweets" do
         @cli.leaders
-        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.rstrip.should == "@sferik    @pengwynn"
       end
     end
   end
@@ -1217,7 +1217,7 @@ URL          https://twitter.com/sferik/status/55709764298092545
     end
     it "should have the correct output" do
       @cli.suggest
-      $stdout.string.chomp.rstrip.should == "antpires     jtrupiano    maccman      mlroach      stuntmann82"
+      $stdout.string.chomp.rstrip.should == "@antpires     @jtrupiano    @maccman      @mlroach      @stuntmann82"
     end
     context "--created" do
       before do
@@ -1225,7 +1225,7 @@ URL          https://twitter.com/sferik/status/55709764298092545
       end
       it "should sort by the time when Twitter acount was created" do
         @cli.suggest
-        $stdout.string.chomp.rstrip.should == "maccman      mlroach      jtrupiano    stuntmann82  antpires"
+        $stdout.string.chomp.rstrip.should == "@maccman      @mlroach      @jtrupiano    @stuntmann82  @antpires"
       end
     end
     context "--favorites" do
@@ -1234,7 +1234,7 @@ URL          https://twitter.com/sferik/status/55709764298092545
       end
       it "should sort by number of favorites" do
         @cli.suggest
-        $stdout.string.chomp.rstrip.should == "stuntmann82  antpires     maccman      mlroach      jtrupiano"
+        $stdout.string.chomp.rstrip.should == "@stuntmann82  @antpires     @maccman      @mlroach      @jtrupiano"
       end
     end
     context "--followers" do
@@ -1243,7 +1243,7 @@ URL          https://twitter.com/sferik/status/55709764298092545
       end
       it "should sort by number of followers" do
         @cli.suggest
-        $stdout.string.chomp.rstrip.should == "stuntmann82  antpires     mlroach      jtrupiano    maccman"
+        $stdout.string.chomp.rstrip.should == "@stuntmann82  @antpires     @mlroach      @jtrupiano    @maccman"
       end
     end
     context "--friends" do
@@ -1252,7 +1252,7 @@ URL          https://twitter.com/sferik/status/55709764298092545
       end
       it "should sort by number of friends" do
         @cli.suggest
-        $stdout.string.chomp.rstrip.should == "stuntmann82  antpires     mlroach      jtrupiano    maccman"
+        $stdout.string.chomp.rstrip.should == "@stuntmann82  @antpires     @mlroach      @jtrupiano    @maccman"
       end
     end
     context "--listed" do
@@ -1261,7 +1261,7 @@ URL          https://twitter.com/sferik/status/55709764298092545
       end
       it "should sort by number of list memberships" do
         @cli.suggest
-        $stdout.string.chomp.rstrip.should == "stuntmann82  antpires     mlroach      jtrupiano    maccman"
+        $stdout.string.chomp.rstrip.should == "@stuntmann82  @antpires     @mlroach      @jtrupiano    @maccman"
       end
     end
     context "--long" do
@@ -1300,7 +1300,7 @@ ID          Since         Tweets  Favorites  Listed  Following  Followers  Scree
       end
       it "should reverse the order of the sort" do
         @cli.suggest
-        $stdout.string.chomp.rstrip.should == "stuntmann82  mlroach      maccman      jtrupiano    antpires"
+        $stdout.string.chomp.rstrip.should == "@stuntmann82  @mlroach      @maccman      @jtrupiano    @antpires"
       end
     end
     context "--tweets" do
@@ -1309,7 +1309,7 @@ ID          Since         Tweets  Favorites  Listed  Following  Followers  Scree
       end
       it "should sort by number of Tweets" do
         @cli.suggest
-        $stdout.string.chomp.rstrip.should == "stuntmann82  antpires     jtrupiano    maccman      mlroach"
+        $stdout.string.chomp.rstrip.should == "@stuntmann82  @antpires     @jtrupiano    @maccman      @mlroach"
       end
     end
   end
@@ -1541,7 +1541,7 @@ ID                       Posted at     Screen name    Text
     end
     it "should have the correct output" do
       @cli.users("sferik", "pengwynn")
-      $stdout.string.chomp.rstrip.should == "pengwynn  sferik"
+      $stdout.string.chomp.rstrip.should == "@pengwynn  @sferik"
     end
     context "--created" do
       before do
@@ -1549,7 +1549,7 @@ ID                       Posted at     Screen name    Text
       end
       it "should sort by the time when Twitter acount was created" do
         @cli.users("sferik", "pengwynn")
-        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.rstrip.should == "@sferik    @pengwynn"
       end
     end
     context "--favorites" do
@@ -1558,7 +1558,7 @@ ID                       Posted at     Screen name    Text
       end
       it "should sort by number of favorites" do
         @cli.users("sferik", "pengwynn")
-        $stdout.string.chomp.rstrip.should == "pengwynn  sferik"
+        $stdout.string.chomp.rstrip.should == "@pengwynn  @sferik"
       end
     end
     context "--followers" do
@@ -1567,7 +1567,7 @@ ID                       Posted at     Screen name    Text
       end
       it "should sort by number of followers" do
         @cli.users("sferik", "pengwynn")
-        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.rstrip.should == "@sferik    @pengwynn"
       end
     end
     context "--friends" do
@@ -1576,7 +1576,7 @@ ID                       Posted at     Screen name    Text
       end
       it "should sort by number of friends" do
         @cli.users("sferik", "pengwynn")
-        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.rstrip.should == "@sferik    @pengwynn"
       end
     end
     context "--listed" do
@@ -1585,7 +1585,7 @@ ID                       Posted at     Screen name    Text
       end
       it "should sort by number of list memberships" do
         @cli.users("sferik", "pengwynn")
-        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.rstrip.should == "@sferik    @pengwynn"
       end
     end
     context "--long" do
@@ -1607,7 +1607,7 @@ ID          Since         Tweets  Favorites  Listed  Following  Followers  Scree
       end
       it "should reverse the order of the sort" do
         @cli.users("sferik", "pengwynn")
-        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.rstrip.should == "@sferik    @pengwynn"
       end
     end
     context "--tweets" do
@@ -1616,7 +1616,7 @@ ID          Since         Tweets  Favorites  Listed  Following  Followers  Scree
       end
       it "should sort by number of Tweets" do
         @cli.users("sferik", "pengwynn")
-        $stdout.string.chomp.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.rstrip.should == "@sferik    @pengwynn"
       end
     end
   end

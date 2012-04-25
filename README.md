@@ -61,10 +61,10 @@ it in single quotes instead of double quotes, so those characters are not
 interpreted by your shell.
 
 ### <a name="stats"></a>Retrieve stats about users
-    t users -l sferik gem
+    t users -l @sferik @gem
 
 ### <a name="follow"></a>Follow users
-    t follow sferik gem
+    t follow @sferik @gem
 
 ### <a name="friends"></a>List your friends (ordered by number of followers)
     t friends -lf
@@ -82,7 +82,7 @@ interpreted by your shell.
     t list create presidents
 
 ### <a name="list-add"></a>Add users to a list
-    t list add presidents BarackObama Jasonfinn
+    t list add presidents @BarackObama @Jasonfinn
 
 ### <a name="following"></a>Create a list that contains today's date in the name
     t list create following-`date "+%Y-%m-%d"`
@@ -112,7 +112,7 @@ interpreted by your shell.
     t search timeline "query"
 
 ### <a name="search-user"></a>Search Tweets in a user's timeline that match a specified query
-    t search user sferik "query"
+    t search user @sferik "query"
 
 ## <a name="terminology"></a>Relationship Terminology
 

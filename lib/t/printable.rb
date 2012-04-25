@@ -67,10 +67,10 @@ module T
           print_table(array)
         else
           if STDOUT.tty?
-            print_in_columns(users.map(&:screen_name))
+            print_in_columns(users.map{|user| "@#{user.screen_name}"})
           else
             users.each do |user|
-              say user.screen_name
+              say "@#{user.screen_name}"
             end
           end
         end

@@ -65,6 +65,7 @@ module T
     def members(*args)
       list = args.pop
       owner = args.pop || @rcfile.default_profile[0]
+      owner = owner.strip_ats
       users = collect_with_cursor do |cursor|
         client.list_members(owner, list, :cursor => cursor, :include_entities => false, :skip_status => true)
       end
@@ -100,6 +101,7 @@ module T
     def timeline(*args)
       list = args.pop
       owner = args.pop || @rcfile.default_profile[0]
+      owner = owner.strip_ats
       per_page = options['number'] || DEFAULT_NUM_RESULTS
       statuses = client.list_timeline(owner, list, :include_entities => false, :per_page => per_page)
       print_status_list(statuses)

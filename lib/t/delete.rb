@@ -17,6 +17,7 @@ module T
     desc "block SCREEN_NAME [SCREEN_NAME...]", "Unblock users."
     def block(screen_name, *screen_names)
       screen_names.unshift(screen_name)
+      screen_names.map!(&:strip_ats)
       screen_names.threaded_each do |screen_name|
         screen_name.strip_ats
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do

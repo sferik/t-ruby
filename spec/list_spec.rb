@@ -95,7 +95,7 @@ describe T::List do
       before do
         @list.options = @list.options.merge(:created => true)
       end
-      it "should sort by the time when Twitter acount was created" do
+      it "should sort by the time wshen Twitter account was created" do
         @list.members("presidents")
         $stdout.string.chomp.rstrip.should == "@sferik    @pengwynn"
       end

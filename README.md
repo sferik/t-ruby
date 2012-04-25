@@ -76,7 +76,10 @@ interpreted by your shell.
     t leaders | xargs t unfollow
 
 ### Follow back everyone who follows you
-    t followers | xargs t follow
+    t disciples | xargs t follow
+
+### Follow roulette: randomly follow someone who follows you
+    t disciples | gshuf | head -1 | xargs t follow
 
 ### <a name="list-create"></a>Create a list
     t list create presidents

@@ -1067,8 +1067,9 @@ ID                  Posted at     Screen name    Text
       @cli.options = @cli.options.merge(:dry_run => true)
     end
     it "should have the correct output" do
-      @cli.open("sferik")
-      $stdout.string.should =~ /https:\/\/twitter.com\/sferik$/
+      lambda do
+        @cli.open("sferik")
+      end.should_not raise_error
     end
     context "--id" do
       before do
@@ -1084,8 +1085,9 @@ ID                  Posted at     Screen name    Text
           should have_been_made
       end
       it "should have the correct output" do
-        @cli.open("420")
-        $stdout.string.should =~ /https:\/\/twitter.com\/sferik$/
+        lambda do
+          @cli.open("420")
+        end.should_not raise_error
       end
     end
     context "--status" do
@@ -1102,8 +1104,9 @@ ID                  Posted at     Screen name    Text
           should have_been_made
       end
       it "should have the correct output" do
-        @cli.open("55709764298092545")
-        $stdout.string.should =~ /https:\/\/twitter.com\/sferik\/status\/55709764298092545$/
+        lambda do
+          @cli.open("55709764298092545")
+        end.should_not raise_error
       end
     end
   end

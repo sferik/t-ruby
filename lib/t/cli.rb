@@ -164,22 +164,27 @@ module T
     end
     map %w(sent_messages sms) => :direct_messages_sent
 
-    desc "disciples", "Returns the list of people who follow you but you don't follow back."
+    desc "disciples [SCREEN_NAME]", "Returns the list of people who follow you but you don't follow back."
     method_option :created, :aliases => "-c", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter acount was created."
     method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by number of favorites."
     method_option :followers, :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by number of followers."
     method_option :friends, :aliases => "-d", :type => :boolean, :default => false, :desc => "Sort by number of friends."
+    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as a Twitter user ID instead of a screen name."
     method_option :listed, :aliases => "-s", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
     method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "List in long format."
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     method_option :tweets, :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by number of Tweets."
     method_option :unsorted, :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
-    def disciples
+    def disciples(screen_name=nil)
+      if screen_name
+        screen_name = screen_name.strip_ats
+        screen_name = screen_name.to_i if options['id']
+      end
       follower_ids = collect_with_cursor do |cursor|
-        client.follower_ids(:cursor => cursor)
+        client.follower_ids(screen_name, :cursor => cursor)
       end
       following_ids = collect_with_cursor do |cursor|
-        client.friend_ids(:cursor => cursor)
+        client.friend_ids(screen_name, :cursor => cursor)
       end
       disciple_ids = (follower_ids - following_ids)
       users = disciple_ids.in_groups_of(MAX_USERS_PER_REQUEST, false).threaded_map do |disciple_id_group|
@@ -216,13 +221,18 @@ module T
     end
     map %w(fave) => :favorite
 
-    desc "favorites", "Returns the #{DEFAULT_NUM_RESULTS} most recent Tweets you favorited."
+    desc "favorites [SCREEN_NAME]", "Returns the #{DEFAULT_NUM_RESULTS} most recent Tweets you favorited."
+    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as a Twitter user ID instead of a screen name."
     method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "List in long format."
     method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => "Limit the number of results."
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
-    def favorites
+    def favorites(screen_name=nil)
+      if screen_name
+        screen_name = screen_name.strip_ats
+        screen_name = screen_name.to_i if options['id']
+      end
       count = options['number'] || DEFAULT_NUM_RESULTS
-      statuses = client.favorites(:count => count, :include_entities => false)
+      statuses = client.favorites(screen_name, :count => count, :include_entities => false)
       print_status_list(statuses)
     end
     map %w(faves) => :favorites
@@ -244,19 +254,24 @@ module T
       say "Run `#{File.basename($0)} unfollow #{screen_names.map{|screen_name| "@#{screen_name}"}.join(' ')}` to stop."
     end
 
-    desc "followings", "Returns a list of the people you follow on Twitter."
+    desc "followings [SCREEN_NAME]", "Returns a list of the people you follow on Twitter."
     method_option :created, :aliases => "-c", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter acount was created."
     method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by number of favorites."
     method_option :followers, :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by number of followers."
     method_option :friends, :aliases => "-d", :type => :boolean, :default => false, :desc => "Sort by number of friends."
+    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as a Twitter user ID instead of a screen name."
     method_option :listed, :aliases => "-s", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
     method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "List in long format."
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     method_option :tweets, :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by number of Tweets."
     method_option :unsorted, :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
-    def followings
+    def followings(screen_name=nil)
+      if screen_name
+        screen_name = screen_name.strip_ats
+        screen_name = screen_name.to_i if options['id']
+      end
       following_ids = collect_with_cursor do |cursor|
-        client.friend_ids(:cursor => cursor)
+        client.friend_ids(screen_name, :cursor => cursor)
       end
       users = following_ids.in_groups_of(MAX_USERS_PER_REQUEST, false).threaded_map do |following_id_group|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
@@ -266,19 +281,24 @@ module T
       print_user_list(users)
     end
 
-    desc "followers", "Returns a list of the people who follow you on Twitter."
+    desc "followers [SCREEN_NAME]", "Returns a list of the people who follow you on Twitter."
     method_option :created, :aliases => "-c", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter acount was created."
     method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by number of favorites."
     method_option :followers, :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by number of followers."
     method_option :friends, :aliases => "-d", :type => :boolean, :default => false, :desc => "Sort by number of friends."
+    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as a Twitter user ID instead of a screen name."
     method_option :listed, :aliases => "-s", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
     method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "List in long format."
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     method_option :tweets, :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by number of Tweets."
     method_option :unsorted, :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
-    def followers
+    def followers(screen_name=nil)
+      if screen_name
+        screen_name = screen_name.strip_ats
+        screen_name = screen_name.to_i if options['id']
+      end
       follower_ids = collect_with_cursor do |cursor|
-        client.follower_ids(:cursor => cursor)
+        client.follower_ids(screen_name, :cursor => cursor)
       end
       users = follower_ids.in_groups_of(MAX_USERS_PER_REQUEST, false).threaded_map do |follower_id_group|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
@@ -288,22 +308,27 @@ module T
       print_user_list(users)
     end
 
-    desc "friends", "Returns the list of people who you follow and follow you back."
+    desc "friends [SCREEN_NAME]", "Returns the list of people who you follow and follow you back."
     method_option :created, :aliases => "-c", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter acount was created."
     method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by number of favorites."
     method_option :followers, :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by number of followers."
     method_option :friends, :aliases => "-d", :type => :boolean, :default => false, :desc => "Sort by number of friends."
+    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as a Twitter user ID instead of a screen name."
     method_option :listed, :aliases => "-s", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
     method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "List in long format."
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     method_option :tweets, :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by number of Tweets."
     method_option :unsorted, :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
-    def friends
+    def friends(screen_name=nil)
+      if screen_name
+        screen_name = screen_name.strip_ats
+        screen_name = screen_name.to_i if options['id']
+      end
       following_ids = collect_with_cursor do |cursor|
-        client.friend_ids(:cursor => cursor)
+        client.friend_ids(screen_name, :cursor => cursor)
       end
       follower_ids = collect_with_cursor do |cursor|
-        client.follower_ids(:cursor => cursor)
+        client.follower_ids(screen_name, :cursor => cursor)
       end
       friend_ids = (following_ids & follower_ids)
       users = friend_ids.in_groups_of(MAX_USERS_PER_REQUEST, false).threaded_map do |friend_id_group|
@@ -314,22 +339,27 @@ module T
       print_user_list(users)
     end
 
-    desc "leaders", "Returns the list of people who you follow but don't follow you back."
+    desc "leaders [SCREEN_NAME]", "Returns the list of people who you follow but don't follow you back."
     method_option :created, :aliases => "-c", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter acount was created."
     method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by number of favorites."
     method_option :followers, :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by number of followers."
     method_option :friends, :aliases => "-d", :type => :boolean, :default => false, :desc => "Sort by number of friends."
+    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as a Twitter user ID instead of a screen name."
     method_option :listed, :aliases => "-s", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
     method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "List in long format."
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     method_option :tweets, :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by number of Tweets."
     method_option :unsorted, :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
-    def leaders
+    def leaders(screen_name=nil)
+      if screen_name
+        screen_name = screen_name.strip_ats
+        screen_name = screen_name.to_i if options['id']
+      end
       following_ids = collect_with_cursor do |cursor|
-        client.friend_ids(:cursor => cursor)
+        client.friend_ids(screen_name, :cursor => cursor)
       end
       follower_ids = collect_with_cursor do |cursor|
-        client.follower_ids(:cursor => cursor)
+        client.follower_ids(screen_name, :cursor => cursor)
       end
       leader_ids = (following_ids - follower_ids)
       users = leader_ids.in_groups_of(MAX_USERS_PER_REQUEST, false).threaded_map do |leader_id_group|
@@ -444,7 +474,7 @@ module T
       array << ["Text", status.text.gsub(/\n+/, ' ')]
       array << ["Screen name", "@#{status.user.screen_name}"]
       array << ["Posted at", created_at]
-      unless status.geo.nil?
+      if status.geo
         location = Geokit::Geocoders::MultiGeocoder.reverse_geocode(status.geo.coordinates)
         if location.city && location.state && location.country
           array << ["Location", [location.city, location.state, location.country].join(", ")]
@@ -460,20 +490,25 @@ module T
       print_table(array)
     end
 
-    desc "suggest", "This command returns a listing of Twitter users' accounts we think you might enjoy following."
+    desc "suggest [SCREEN_NAME]", "This command returns a listing of Twitter users' accounts we think you might enjoy following."
     method_option :created, :aliases => "-c", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter acount was created."
     method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by number of favorites."
     method_option :followers, :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by number of followers."
     method_option :friends, :aliases => "-d", :type => :boolean, :default => false, :desc => "Sort by number of friends."
+    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as a Twitter user ID instead of a screen name."
     method_option :listed, :aliases => "-s", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
     method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "List in long format."
     method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => "Limit the number of results."
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     method_option :tweets, :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by number of Tweets."
     method_option :unsorted, :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
-    def suggest
+    def suggest(screen_name=nil)
+      if screen_name
+        screen_name = screen_name.strip_ats
+        screen_name = screen_name.to_i if options['id']
+      end
       limit = options['number'] || DEFAULT_NUM_RESULTS
-      users = client.recommendations(:limit => limit, :include_entities => false)
+      users = client.recommendations(screen_name, :limit => limit, :include_entities => false)
       print_user_list(users)
     end
 

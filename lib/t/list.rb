@@ -59,6 +59,7 @@ module T
     method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by total number of favorites."
     method_option :followers, :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by total number of followers."
     method_option :friends, :aliases => "-d", :type => :boolean, :default => false, :desc => "Sort by total number of friends."
+    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as a Twitter user ID instead of a screen name."
     method_option :listed, :aliases => "-s", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
     method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "List in long format."
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
@@ -68,6 +69,7 @@ module T
       list = args.pop
       owner = args.pop || @rcfile.default_profile[0]
       owner = owner.strip_ats
+      owner = owner.to_i if options['id']
       users = collect_with_cursor do |cursor|
         client.list_members(owner, list, :cursor => cursor, :include_entities => false, :skip_status => true)
       end
@@ -96,6 +98,7 @@ module T
     method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by total number of favorites."
     method_option :followers, :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by total number of followers."
     method_option :friends, :aliases => "-d", :type => :boolean, :default => false, :desc => "Sort by total number of friends."
+    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as a Twitter user ID instead of a screen name."
     method_option :listed, :aliases => "-s", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
     method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "List in long format."
     method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => "Limit the number of results."
@@ -106,6 +109,7 @@ module T
       list = args.pop
       owner = args.pop || @rcfile.default_profile[0]
       owner = owner.strip_ats
+      owner = owner.to_i if options['id']
       per_page = options['number'] || DEFAULT_NUM_RESULTS
       statuses = client.list_timeline(owner, list, :include_entities => false, :per_page => per_page)
       print_status_list(statuses)

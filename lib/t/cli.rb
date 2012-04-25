@@ -20,8 +20,14 @@ require 't/version'
 require 'thor'
 require 'time'
 require 'twitter'
-require 'twitter-text'
 require 'yaml'
+
+# twitter-text requires $KCODE to be set to UTF8
+major, minor, patch = RUBY_VERSION.split('.')
+if major.to_i == 1 && minor.to_i < 9
+  $KCODE='u'
+end
+require 'twitter-text'
 
 module T
   class CLI < Thor

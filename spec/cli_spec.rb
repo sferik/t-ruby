@@ -1815,7 +1815,7 @@ ID                  Posted at     Screen name    Text
     end
     it "should have the correct output" do
       @cli.trends
-      $stdout.string.rstrip.should == "#sevenwordsaftersex  Walkman              Allen Iverson        Jay Bum"
+      $stdout.string.rstrip.should == "#sevenwordsaftersex  Walkman              Allen Iverson"
     end
     context "--exclude_hashtags" do
       before do
@@ -1832,7 +1832,7 @@ ID                  Posted at     Screen name    Text
       end
       it "should have the correct output" do
         @cli.trends
-        $stdout.string.rstrip.should == "#sevenwordsaftersex  Walkman              Allen Iverson        Jay Bum"
+        $stdout.string.rstrip.should == "#sevenwordsaftersex  Walkman              Allen Iverson"
       end
     end
     context "with a WOEID passed" do
@@ -1847,7 +1847,7 @@ ID                  Posted at     Screen name    Text
       end
       it "should have the correct output" do
         @cli.trends("2487956")
-        $stdout.string.rstrip.should == "#sevenwordsaftersex  Walkman              Allen Iverson        Jay Bum"
+        $stdout.string.rstrip.should == "#sevenwordsaftersex  Walkman              Allen Iverson"
       end
     end
   end

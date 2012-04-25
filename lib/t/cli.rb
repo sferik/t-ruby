@@ -537,6 +537,49 @@ module T
     end
     map %w(tl) => :timeline
 
+    desc "trends [WOEID]", "Returns the top 10 trending topics."
+    method_option :exclude_hashtags, :aliases => "-x", :type => "boolean", :default => false, :desc => "Remove all hashtags from the trends list."
+    def trends(woe_id=1)
+      opts = {}
+      opts.merge!(:exclude => "hashtags") if options['exclude_hashtags']
+      trends = client.local_trends(woe_id, opts)
+      if STDOUT.tty?
+        print_in_columns(trends.map(&:name))
+      else
+        trends.each do |trend|
+          say trend.name
+        end
+      end
+    end
+
+    desc "trends_locations", "Returns the locations for which Twitter has trending topic information."
+    method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "List in long format."
+    method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
+    method_option :unsorted, :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
+    def trend_locations
+      places = client.trend_locations
+      places = places.sort_by{|places| places.name.downcase} unless options['unsorted']
+      places.reverse! if options['reverse']
+      if options['long']
+        array = places.map do |place|
+          [place.woeid.to_s, place.parent_id.to_s, place.place_type, place.name, place.country]
+        end
+        if STDOUT.tty?
+          headings = ["WOEID", "Parent ID", "Type", "Name", "Country"]
+          array.unshift(headings) unless places.empty?
+        end
+        print_table(array)
+      else
+        if STDOUT.tty?
+          print_in_columns(places.map(&:name))
+        else
+          places.each do |place|
+            say place.name
+          end
+        end
+      end
+    end
+
     desc "unfollow SCREEN_NAME [SCREEN_NAME...]", "Allows you to stop following users."
     method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     def unfollow(screen_name, *screen_names)

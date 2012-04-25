@@ -79,7 +79,7 @@ interpreted by your shell.
     t disciples | xargs t follow
 
 ### <a name="follow-roulette"></a>Follow roulette: randomly follow someone who follows you
-    t disciples | gshuf | head -1 | xargs t follow
+    t disciples | shuf | head -1 | xargs t follow
 
 ### <a name="favorite"></a>Favorite the last 10 tweets that mention you
     t mentions -l -n 10 | awk '{print $1}' | xargs t favorite

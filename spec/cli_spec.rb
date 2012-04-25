@@ -1319,6 +1319,14 @@ ID                  Posted at     Screen name    Text
     end
   end
 
+  describe "#ruler" do
+    it "should have the correct output" do
+      @cli.ruler
+      $stdout.string.chomp.size.should == 140
+      $stdout.string.chomp.should == "----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|"
+    end
+  end
+
   describe "#status" do
     before do
       stub_get("/1/statuses/show/55709764298092545.json").

@@ -429,6 +429,11 @@ module T
     end
     map %w(rts) => :retweets
 
+    desc "ruler", "Prints a 140-character ruler"
+    def ruler
+      say "----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|"
+    end
+
     desc "status STATUS_ID", "Retrieves detailed information about a Tweet."
     def status(status_id)
       status_id = status_id.strip_commas

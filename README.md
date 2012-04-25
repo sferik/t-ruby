@@ -56,6 +56,10 @@ type `t help TASK` to get help for a specific command.
 ### <a name="update"></a>Update your status
     t update "I'm tweeting from the command line. Isn't that special?"
 
+Note: If your tweet includes characters such as `@` or `!`, make sure to wrap
+it in single quotes instead of double quotes, so those characters are not
+interpreted by your shell.
+
 ### <a name="stats"></a>Retrieve stats about users
     t users -l sferik gem
 

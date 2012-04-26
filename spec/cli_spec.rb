@@ -372,6 +372,15 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
         $stdout.string.rstrip.should == "@sferik    @pengwynn"
       end
     end
+    context "--unsorted" do
+      before do
+        @cli.options = @cli.options.merge(:unsorted => true)
+      end
+      it "should not be sorted" do
+        @cli.disciples
+        $stdout.string.rstrip.should == "@sferik    @pengwynn"
+      end
+    end
     context "with a user passed" do
       before do
         stub_get("/1/followers/ids.json").
@@ -783,6 +792,15 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
         $stdout.string.rstrip.should == "@sferik    @pengwynn"
       end
     end
+    context "--unsorted" do
+      before do
+        @cli.options = @cli.options.merge(:unsorted => true)
+      end
+      it "should not be sorted" do
+        @cli.followings
+        $stdout.string.rstrip.should == "@sferik    @pengwynn"
+      end
+    end
     context "with a user passed" do
       before do
         stub_get("/1/friends/ids.json").
@@ -916,6 +934,15 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
         @cli.options = @cli.options.merge(:tweets => true)
       end
       it "should sort by number of Tweets" do
+        @cli.followers
+        $stdout.string.rstrip.should == "@sferik    @pengwynn"
+      end
+    end
+    context "--unsorted" do
+      before do
+        @cli.options = @cli.options.merge(:unsorted => true)
+      end
+      it "should not be sorted" do
         @cli.followers
         $stdout.string.rstrip.should == "@sferik    @pengwynn"
       end
@@ -1062,6 +1089,15 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
         @cli.options = @cli.options.merge(:tweets => true)
       end
       it "should sort by number of Tweets" do
+        @cli.friends
+        $stdout.string.rstrip.should == "@sferik    @pengwynn"
+      end
+    end
+    context "--unsorted" do
+      before do
+        @cli.options = @cli.options.merge(:unsorted => true)
+      end
+      it "should not be sorted" do
         @cli.friends
         $stdout.string.rstrip.should == "@sferik    @pengwynn"
       end
@@ -1217,6 +1253,15 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
         @cli.options = @cli.options.merge(:tweets => true)
       end
       it "should sort by number of Tweets" do
+        @cli.leaders
+        $stdout.string.rstrip.should == "@sferik    @pengwynn"
+      end
+    end
+    context "--unsorted" do
+      before do
+        @cli.options = @cli.options.merge(:unsorted => true)
+      end
+      it "should not be sorted" do
         @cli.leaders
         $stdout.string.rstrip.should == "@sferik    @pengwynn"
       end
@@ -1829,6 +1874,15 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
         $stdout.string.rstrip.should == "@stuntmann82  @antpires     @jtrupiano    @maccman      @mlroach"
       end
     end
+    context "--unsorted" do
+      before do
+        @cli.options = @cli.options.merge(:unsorted => true)
+      end
+      it "should not be sorted" do
+        @cli.suggest
+        $stdout.string.rstrip.should == "@jtrupiano    @mlroach      @antpires     @maccman      @stuntmann82"
+      end
+    end
     context "with a user passed" do
       it "should request the correct resource" do
         @cli.suggest("sferik")
@@ -2101,6 +2155,15 @@ WOEID     Parent ID  Type       Name           Country
         $stdout.string.rstrip.should == "Worldwide      United States  San Francisco  New York       Boston"
       end
     end
+    context "--unsorted" do
+      before do
+        @cli.options = @cli.options.merge(:unsorted => true)
+      end
+      it "should not be sorted" do
+        @cli.trend_locations
+        $stdout.string.rstrip.should == "Boston         Worldwide      New York       United States  San Francisco"
+      end
+    end
   end
 
   describe "#unfollow" do
@@ -2290,6 +2353,15 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
         @cli.options = @cli.options.merge(:tweets => true)
       end
       it "should sort by number of Tweets" do
+        @cli.users("sferik", "pengwynn")
+        $stdout.string.rstrip.should == "@sferik    @pengwynn"
+      end
+    end
+    context "--unsorted" do
+      before do
+        @cli.options = @cli.options.merge(:unsorted => true)
+      end
+      it "should not be sorted" do
         @cli.users("sferik", "pengwynn")
         $stdout.string.rstrip.should == "@sferik    @pengwynn"
       end

@@ -66,12 +66,15 @@ module T
 
     desc "list LIST", "Delete a list."
     method_option :force, :aliases => "-f", :type => :boolean, :default => false
+    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify list via ID instead of slug."
     def list(list)
+      list = list.to_i if options['id']
+      list = client.list(list)
       unless options['force']
-        return unless yes? "Are you sure you want to permanently delete the list \"#{list}\"? [y/N]"
+        return unless yes? "Are you sure you want to permanently delete the list \"#{list.name}\"? [y/N]"
       end
-      status = client.list_destroy(list)
-      say "@#{@rcfile.default_profile[0]} deleted the list \"#{list}\"."
+      list = client.list_destroy(list.id)
+      say "@#{@rcfile.default_profile[0]} deleted the list \"#{list.name}\"."
     end
 
     desc "status STATUS_ID [STATUS_ID...]", "Delete Tweets."

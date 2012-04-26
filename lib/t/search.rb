@@ -25,11 +25,18 @@ module T
     end
 
     desc "all QUERY", "Returns the #{DEFAULT_NUM_RESULTS} most recent Tweets that match a specified query."
+    method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
+    method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS
     def all(query)
       rpp = options['number'] || DEFAULT_NUM_RESULTS
       statuses = client.search(query, :include_entities => false, :rpp => rpp)
-      if options['long']
+      if options['csv']
+        say ["ID", "Posted at", "Screen name", "Text"].to_csv unless statuses.empty?
+        statuses.each do |status|
+          say [status.id, status.created_at.utc.strftime("%Y-%m-%d %H:%M:%S %z"), status.from_user, status.text].to_csv
+        end
+      elsif options['long']
         array = statuses.map do |status|
           created_at = status.created_at > 6.months.ago ? status.created_at.strftime("%b %e %H:%M") : status.created_at.strftime("%b %e  %Y")
           [status.id.to_s, created_at, "@#{status.from_user}", status.text.gsub(/\n+/, ' ')]
@@ -47,6 +54,8 @@ module T
     end
 
     desc "favorites QUERY", "Returns Tweets you've favorited that mach a specified query."
+    method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
+    method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     def favorites(query)
       statuses = 1.upto(MAX_PAGES).threaded_map do |page|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
@@ -60,6 +69,8 @@ module T
     map %w(faves) => :favorites
 
     desc "mentions QUERY", "Returns Tweets mentioning you that mach a specified query."
+    method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
+    method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     def mentions(query)
       statuses = 1.upto(MAX_PAGES).threaded_map do |page|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
@@ -73,6 +84,8 @@ module T
     map %w(replies) => :mentions
 
     desc "retweets QUERY", "Returns Tweets you've retweeted that mach a specified query."
+    method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
+    method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     def retweets(query)
       statuses = 1.upto(MAX_PAGES).threaded_map do |page|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
@@ -86,6 +99,8 @@ module T
     map %w(rts) => :retweets
 
     desc "timeline QUERY", "Returns Tweets in your timeline that match a specified query."
+    method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
+    method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     def timeline(query)
       statuses = 1.upto(MAX_PAGES).threaded_map do |page|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
@@ -99,7 +114,9 @@ module T
     map %w(tl) => :timeline
 
     desc "user SCREEN_NAME QUERY", "Returns Tweets in a user's timeline that match a specified query."
+    method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as a Twitter user ID instead of a screen name."
+    method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     def user(screen_name, query)
       screen_name = screen_name.strip_ats
       screen_name = screen_name.to_i if options['id']

@@ -55,6 +55,7 @@ module T
     end
 
     desc "members [SCREEN_NAME/]LIST_NAME", "Returns the members of a Twitter list."
+    method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by total number of favorites."
     method_option :followers, :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by total number of followers."
     method_option :friends, :aliases => "-d", :type => :boolean, :default => false, :desc => "Sort by total number of friends."
@@ -95,6 +96,7 @@ module T
     end
 
     desc "timeline [SCREEN_NAME/]LIST_NAME", "Show tweet timeline for members of the specified list."
+    method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as a Twitter user ID instead of a screen name."
     method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => "Limit the number of results."

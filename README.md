@@ -126,6 +126,8 @@ interpreted by your shell.
 * Designed for Unix: All output is designed to be piped to other Unix
   utilities, like grep, cut, awk, bc, wc, and xargs for advanced processing.
 * 99% C0 Code Coverage: Extremely well tested, with a 3:1 test-to-code ratio.
+* Generate spreadsheets: Output any command in CSV format simply by adding the
+  `--csv` flag.
 
 ## <a name="terminology"></a>Relationship Terminology
 

@@ -121,6 +121,7 @@ module T
     end
 
     desc "direct_messages", "Returns the #{DEFAULT_NUM_RESULTS} most recent Direct Messages sent to you."
+    method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => "Limit the number of results."
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
@@ -128,7 +129,12 @@ module T
       count = options['number'] || DEFAULT_NUM_RESULTS
       direct_messages = client.direct_messages(:count => count, :include_entities => false)
       direct_messages.reverse! if options['reverse']
-      if options['long']
+      if options['csv']
+        say ["ID", "Posted at", "Screen name", "Text"].to_csv unless direct_messages.empty?
+        direct_messages.each do |direct_message|
+          say [direct_message.id, direct_message.created_at.utc.strftime("%Y-%m-%d %H:%M:%S %z"), direct_message.sender.screen_name, direct_message.text].to_csv
+        end
+      elsif options['long']
         array = direct_messages.map do |direct_message|
           created_at = direct_message.created_at > 6.months.ago ? direct_message.created_at.strftime("%b %e %H:%M") : direct_message.created_at.strftime("%b %e  %Y")
           [direct_message.id.to_s, created_at, "@#{direct_message.sender.screen_name}", direct_message.text.gsub(/\n+/, ' ')]
@@ -147,6 +153,7 @@ module T
     map %w(dms) => :direct_messages
 
     desc "direct_messages_sent", "Returns the #{DEFAULT_NUM_RESULTS} most recent Direct Messages sent to you."
+    method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => "Limit the number of results."
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
@@ -154,7 +161,12 @@ module T
       count = options['number'] || DEFAULT_NUM_RESULTS
       direct_messages = client.direct_messages_sent(:count => count, :include_entities => false)
       direct_messages.reverse! if options['reverse']
-      if options['long']
+      if options['csv']
+        say ["ID", "Posted at", "Screen name", "Text"].to_csv unless direct_messages.empty?
+        direct_messages.each do |direct_message|
+          say [direct_message.id, direct_message.created_at.utc.strftime("%Y-%m-%d %H:%M:%S %z"), direct_message.recipient.screen_name, direct_message.text].to_csv
+        end
+      elsif options['long']
         array = direct_messages.map do |direct_message|
           created_at = direct_message.created_at > 6.months.ago ? direct_message.created_at.strftime("%b %e %H:%M") : direct_message.created_at.strftime("%b %e  %Y")
           [direct_message.id.to_s, created_at, "@#{direct_message.recipient.screen_name}", direct_message.text.gsub(/\n+/, ' ')]
@@ -173,6 +185,7 @@ module T
     map %w(sent_messages sms) => :direct_messages_sent
 
     desc "disciples [SCREEN_NAME]", "Returns the list of people who follow you but you don't follow back."
+    method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by number of favorites."
     method_option :followers, :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by number of followers."
     method_option :friends, :aliases => "-d", :type => :boolean, :default => false, :desc => "Sort by number of friends."
@@ -230,6 +243,7 @@ module T
     map %w(fave favourite) => :favorite
 
     desc "favorites [SCREEN_NAME]", "Returns the #{DEFAULT_NUM_RESULTS} most recent Tweets you favorited."
+    method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as a Twitter user ID instead of a screen name."
     method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => "Limit the number of results."
@@ -263,6 +277,7 @@ module T
     end
 
     desc "followings [SCREEN_NAME]", "Returns a list of the people you follow on Twitter."
+    method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by number of favorites."
     method_option :followers, :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by number of followers."
     method_option :friends, :aliases => "-d", :type => :boolean, :default => false, :desc => "Sort by number of friends."
@@ -290,6 +305,7 @@ module T
     end
 
     desc "followers [SCREEN_NAME]", "Returns a list of the people who follow you on Twitter."
+    method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by number of favorites."
     method_option :followers, :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by number of followers."
     method_option :friends, :aliases => "-d", :type => :boolean, :default => false, :desc => "Sort by number of friends."
@@ -317,6 +333,7 @@ module T
     end
 
     desc "friends [SCREEN_NAME]", "Returns the list of people who you follow and follow you back."
+    method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by number of favorites."
     method_option :followers, :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by number of followers."
     method_option :friends, :aliases => "-d", :type => :boolean, :default => false, :desc => "Sort by number of friends."
@@ -348,6 +365,7 @@ module T
     end
 
     desc "leaders [SCREEN_NAME]", "Returns the list of people who you follow but don't follow you back."
+    method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by number of favorites."
     method_option :followers, :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by number of followers."
     method_option :friends, :aliases => "-d", :type => :boolean, :default => false, :desc => "Sort by number of friends."
@@ -379,6 +397,7 @@ module T
     end
 
     desc "mentions", "Returns the #{DEFAULT_NUM_RESULTS} most recent Tweets mentioning you."
+    method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => "Limit the number of results."
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
@@ -457,6 +476,7 @@ module T
     map %w(rt) => :retweet
 
     desc "retweets [SCREEN_NAME]", "Returns the #{DEFAULT_NUM_RESULTS} most recent Retweets by a user."
+    method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as a Twitter user ID instead of a screen name."
     method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => "Limit the number of results."
@@ -504,6 +524,7 @@ module T
     end
 
     desc "suggest [SCREEN_NAME]", "This command returns a listing of Twitter users' accounts we think you might enjoy following."
+    method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by number of favorites."
     method_option :followers, :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by number of followers."
     method_option :friends, :aliases => "-d", :type => :boolean, :default => false, :desc => "Sort by number of friends."
@@ -526,6 +547,7 @@ module T
     end
 
     desc "timeline [SCREEN_NAME]", "Returns the #{DEFAULT_NUM_RESULTS} most recent Tweets posted by a user."
+    method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as a Twitter user ID instead of a screen name."
     method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => "Limit the number of results."
@@ -559,6 +581,7 @@ module T
     end
 
     desc "trends_locations", "Returns the locations for which Twitter has trending topic information."
+    method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     method_option :unsorted, :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
@@ -566,7 +589,12 @@ module T
       places = client.trend_locations
       places = places.sort_by{|places| places.name.downcase} unless options['unsorted']
       places.reverse! if options['reverse']
-      if options['long']
+      if options['csv']
+        say ["WOEID", "Parent ID", "Type", "Name", "Country"].to_csv unless places.empty?
+        places.each do |place|
+          say [place.woeid, place.parent_id, place.place_type, place.name, place.country].to_csv
+        end
+      elsif options['long']
         array = places.map do |place|
           [place.woeid.to_s, place.parent_id.to_s, place.place_type, place.name, place.country]
         end
@@ -616,6 +644,7 @@ module T
     map %w(post tweet) => :update
 
     desc "users SCREEN_NAME [SCREEN_NAME...]", "Returns a list of users you specify."
+    method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by number of favorites."
     method_option :followers, :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by number of followers."
     method_option :friends, :aliases => "-d", :type => :boolean, :default => false, :desc => "Sort by number of friends."
@@ -668,14 +697,12 @@ module T
     end
 
     desc "delete SUBCOMMAND ...ARGS", "Delete Tweets, Direct Messages, etc."
-    method_option :force, :aliases => "-f", :type => :boolean, :default => false
     subcommand 'delete', T::Delete
 
     desc "list SUBCOMMAND ...ARGS", "Do various things with lists."
     subcommand 'list', T::List
 
     desc "search SUBCOMMAND ...ARGS", "Search through Tweets."
-    method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     subcommand 'search', T::Search
 
     desc "set SUBCOMMAND ...ARGS", "Change various account settings."

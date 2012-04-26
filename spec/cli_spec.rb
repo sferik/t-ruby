@@ -127,11 +127,32 @@ testcli
               sferik: I'm trying to debug the issue you were having with the Bundler Gemfile.lock shortref. What version of Ruby and RubyGems are you running? (about 1 year ago)
       eos
     end
+    context "--csv" do
+      before do
+        @cli.options = @cli.options.merge(:csv => true)
+      end
+      it "should output in CSV format" do
+        @cli.direct_messages
+        $stdout.string.should == <<-eos
+ID,Posted at,Screen name,Text
+1773478249,2010-10-17 20:48:55 +0000,sferik,Sounds good. Meeting Tuesday is fine.
+1762960771,2010-10-14 21:43:30 +0000,sferik,That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does that work for you?
+1711812216,2010-10-01 15:07:12 +0000,sferik,I asked Yehuda about the stipend. I believe it has already been sent. Glad you're feeling better.
+1711417617,2010-10-01 13:09:27 +0000,sferik,Just checking in. How's everything going?
+1653301471,2010-09-16 16:13:27 +0000,sferik,Not sure about the payment. Feel free to ask Leah or Yehuda directly. Think you'll be able to finish up your work on graphs this weekend?
+1645324992,2010-09-14 18:44:10 +0000,sferik,How are the graph enhancements coming?
+1632933616,2010-09-11 17:45:46 +0000,sferik,How are the graphs coming? I'm really looking forward to seeing what you do with Raphaël.
+1629239903,2010-09-10 18:21:36 +0000,sferik,Awesome! Any luck duplicating the Gemfile.lock error with Ruby 1.9.2 final?
+1629166212,2010-09-10 17:56:53 +0000,sferik,I just committed a bunch of cleanup and fixes to RailsAdmin that touched many of files. Make sure you pull to avoid conflicts.
+1624782206,2010-09-09 18:11:48 +0000,sferik,I'm trying to debug the issue you were having with the Bundler Gemfile.lock shortref. What version of Ruby and RubyGems are you running?
+        eos
+      end
+    end
     context "--long" do
       before do
         @cli.options = @cli.options.merge(:long => true)
       end
-      it "should list in long format" do
+      it "should output in long format" do
         @cli.direct_messages
         $stdout.string.should == <<-eos
 ID          Posted at     Screen name  Text
@@ -211,11 +232,32 @@ ID          Posted at     Screen name  Text
            hurrycane: I'm trying to debug the issue you were having with the Bundler Gemfile.lock shortref. What version of Ruby and RubyGems are you running? (about 1 year ago)
       eos
     end
+    context "--csv" do
+      before do
+        @cli.options = @cli.options.merge(:csv => true)
+      end
+      it "should output in CSV format" do
+        @cli.direct_messages_sent
+        $stdout.string.should == <<-eos
+ID,Posted at,Screen name,Text
+1773478249,2010-10-17 20:48:55 +0000,hurrycane,Sounds good. Meeting Tuesday is fine.
+1762960771,2010-10-14 21:43:30 +0000,hurrycane,That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does that work for you?
+1711812216,2010-10-01 15:07:12 +0000,hurrycane,I asked Yehuda about the stipend. I believe it has already been sent. Glad you're feeling better.
+1711417617,2010-10-01 13:09:27 +0000,hurrycane,Just checking in. How's everything going?
+1653301471,2010-09-16 16:13:27 +0000,hurrycane,Not sure about the payment. Feel free to ask Leah or Yehuda directly. Think you'll be able to finish up your work on graphs this weekend?
+1645324992,2010-09-14 18:44:10 +0000,hurrycane,How are the graph enhancements coming?
+1632933616,2010-09-11 17:45:46 +0000,hurrycane,How are the graphs coming? I'm really looking forward to seeing what you do with Raphaël.
+1629239903,2010-09-10 18:21:36 +0000,hurrycane,Awesome! Any luck duplicating the Gemfile.lock error with Ruby 1.9.2 final?
+1629166212,2010-09-10 17:56:53 +0000,hurrycane,I just committed a bunch of cleanup and fixes to RailsAdmin that touched many of files. Make sure you pull to avoid conflicts.
+1624782206,2010-09-09 18:11:48 +0000,hurrycane,I'm trying to debug the issue you were having with the Bundler Gemfile.lock shortref. What version of Ruby and RubyGems are you running?
+        eos
+      end
+    end
     context "--long" do
       before do
         @cli.options = @cli.options.merge(:long => true)
       end
-      it "should list in long format" do
+      it "should output in long format" do
         @cli.direct_messages_sent
         $stdout.string.should == <<-eos
 ID          Posted at     Screen name  Text
@@ -296,6 +338,19 @@ ID          Posted at     Screen name  Text
       @cli.disciples
       $stdout.string.rstrip.should == "@pengwynn  @sferik"
     end
+    context "--csv" do
+      before do
+        @cli.options = @cli.options.merge(:csv => true)
+      end
+      it "should output in CSV format" do
+        @cli.disciples
+        $stdout.string.should == <<-eos
+ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
+14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
+7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
+        eos
+      end
+    end
     context "--favorites" do
       before do
         @cli.options = @cli.options.merge(:favorites => true)
@@ -336,7 +391,7 @@ ID          Posted at     Screen name  Text
       before do
         @cli.options = @cli.options.merge(:long => true)
       end
-      it "should list in long format" do
+      it "should output in long format" do
         @cli.disciples
         $stdout.string.should == <<-eos
 ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen name  Name
@@ -516,11 +571,39 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
         kelseysilver: San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 92 others) http://t.co/eoLANJZw (7 months ago)
       eos
     end
+    context "--csv" do
+      before do
+        @cli.options = @cli.options.merge(:csv => true)
+      end
+      it "should output in CSV format" do
+        @cli.favorites
+        $stdout.string.should == <<-eos
+ID,Posted at,Screen name,Text
+194548121416630272,2011-04-23 22:07:41 +0000,natevillegas,RT @gelobautista #riordan RT @WilI_Smith: Yesterday is history. Tomorrow is a mystery. Today is a gift. That's why it's called the present.
+194547993607806976,2011-04-23 22:07:10 +0000,TD,@kelseysilver how long will you be in town?
+194547987593183233,2011-04-23 22:07:09 +0000,rusashka,@maciej hahaha :) @gpena together we're going to cover all core 28 languages!
+194547824690597888,2011-04-23 22:06:30 +0000,fat,@stevej @xc i'm going to picket when i get back.
+194547658562605057,2011-04-23 22:05:51 +0000,wil,@0x9900 @paulnivin http://t.co/bwVdtAPe
+194547528430137344,2011-04-23 22:05:19 +0000,wangtian,"@tianhonghe @xiangxin72 oh, you can even order specific items?"
+194547402550689793,2011-04-23 22:04:49 +0000,shinypb,"@kpk Pfft, I think you're forgetting mechanical television, which depended on a clever German. http://t.co/JvLNQCDm @skilldrick @hoverbird"
+194547260233760768,2011-04-23 22:04:16 +0000,0x9900,@wil @paulnivin if you want to take you seriously don't say daemontools!
+194547084349804544,2011-04-23 22:03:34 +0000,kpk,@shinypb @skilldrick @hoverbird invented it
+194546876782092291,2011-04-23 22:02:44 +0000,skilldrick,@shinypb Well played :) @hoverbird
+194546811480969217,2011-04-23 22:02:29 +0000,sam,"Can someone project the date that I'll get a 27"" retina display?"
+194546738810458112,2011-04-23 22:02:11 +0000,shinypb,"@skilldrick @hoverbird Wow, I didn't even know they *had* TV in Britain."
+194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
+194546649203347456,2011-04-23 22:01:50 +0000,skilldrick,"@hoverbird @shinypb You guys must be soooo old, I don't remember the words to the duck tales intro at all."
+194546583608639488,2011-04-23 22:01:34 +0000,sean,@mep Thanks for coming by. Was great to have you.
+194546388707717120,2011-04-23 22:00:48 +0000,hoverbird,"@shinypb @trammell it's all suck a ""duck blur"" sometimes."
+194546264212385793,2011-04-23 22:00:18 +0000,kelseysilver,San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 92 others) http://t.co/eoLANJZw
+        eos
+      end
+    end
     context "--long" do
       before do
         @cli.options = @cli.options.merge(:long => true)
       end
-      it "should list in long format" do
+      it "should output in long format" do
         @cli.favorites
         $stdout.string.should == <<-eos
 ID                  Posted at     Screen name    Text
@@ -716,6 +799,19 @@ ID                  Posted at     Screen name    Text
       @cli.followings
       $stdout.string.rstrip.should == "@pengwynn  @sferik"
     end
+    context "--csv" do
+      before do
+        @cli.options = @cli.options.merge(:csv => true)
+      end
+      it "should output in CSV format" do
+        @cli.followings
+        $stdout.string.should == <<-eos
+ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
+14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
+7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
+        eos
+      end
+    end
     context "--favorites" do
       before do
         @cli.options = @cli.options.merge(:favorites => true)
@@ -756,7 +852,7 @@ ID                  Posted at     Screen name    Text
       before do
         @cli.options = @cli.options.merge(:long => true)
       end
-      it "should list in long format" do
+      it "should output in long format" do
         @cli.followings
         $stdout.string.should == <<-eos
 ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen name  Name
@@ -862,6 +958,19 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
       @cli.followers
       $stdout.string.rstrip.should == "@pengwynn  @sferik"
     end
+    context "--csv" do
+      before do
+        @cli.options = @cli.options.merge(:csv => true)
+      end
+      it "should output in CSV format" do
+        @cli.followers
+        $stdout.string.should == <<-eos
+ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
+14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
+7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
+        eos
+      end
+    end
     context "--favorites" do
       before do
         @cli.options = @cli.options.merge(:favorites => true)
@@ -902,7 +1011,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
       before do
         @cli.options = @cli.options.merge(:long => true)
       end
-      it "should list in long format" do
+      it "should output in long format" do
         @cli.followers
         $stdout.string.should == <<-eos
 ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen name  Name
@@ -1017,6 +1126,19 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
       @cli.friends
       $stdout.string.rstrip.should == "@pengwynn  @sferik"
     end
+    context "--csv" do
+      before do
+        @cli.options = @cli.options.merge(:csv => true)
+      end
+      it "should output in CSV format" do
+        @cli.friends
+        $stdout.string.should == <<-eos
+ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
+14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
+7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
+        eos
+      end
+    end
     context "--favorites" do
       before do
         @cli.options = @cli.options.merge(:favorites => true)
@@ -1057,7 +1179,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
       before do
         @cli.options = @cli.options.merge(:long => true)
       end
-      it "should list in long format" do
+      it "should output in long format" do
         @cli.friends
         $stdout.string.should == <<-eos
 ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen name  Name
@@ -1181,6 +1303,19 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
       @cli.leaders
       $stdout.string.rstrip.should == "@pengwynn  @sferik"
     end
+    context "--csv" do
+      before do
+        @cli.options = @cli.options.merge(:csv => true)
+      end
+      it "should output in CSV format" do
+        @cli.leaders
+        $stdout.string.should == <<-eos
+ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
+14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
+7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
+        eos
+      end
+    end
     context "--favorites" do
       before do
         @cli.options = @cli.options.merge(:favorites => true)
@@ -1221,7 +1356,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
       before do
         @cli.options = @cli.options.merge(:long => true)
       end
-      it "should list in long format" do
+      it "should output in long format" do
         @cli.leaders
         $stdout.string.should == <<-eos
 ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen name  Name
@@ -1351,11 +1486,39 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
         kelseysilver: San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 92 others) http://t.co/eoLANJZw (7 months ago)
       eos
     end
+    context "--csv" do
+      before do
+        @cli.options = @cli.options.merge(:csv => true)
+      end
+      it "should output in CSV format" do
+        @cli.mentions
+        $stdout.string.should == <<-eos
+ID,Posted at,Screen name,Text
+194548121416630272,2011-04-23 22:07:41 +0000,natevillegas,RT @gelobautista #riordan RT @WilI_Smith: Yesterday is history. Tomorrow is a mystery. Today is a gift. That's why it's called the present.
+194547993607806976,2011-04-23 22:07:10 +0000,TD,@kelseysilver how long will you be in town?
+194547987593183233,2011-04-23 22:07:09 +0000,rusashka,@maciej hahaha :) @gpena together we're going to cover all core 28 languages!
+194547824690597888,2011-04-23 22:06:30 +0000,fat,@stevej @xc i'm going to picket when i get back.
+194547658562605057,2011-04-23 22:05:51 +0000,wil,@0x9900 @paulnivin http://t.co/bwVdtAPe
+194547528430137344,2011-04-23 22:05:19 +0000,wangtian,"@tianhonghe @xiangxin72 oh, you can even order specific items?"
+194547402550689793,2011-04-23 22:04:49 +0000,shinypb,"@kpk Pfft, I think you're forgetting mechanical television, which depended on a clever German. http://t.co/JvLNQCDm @skilldrick @hoverbird"
+194547260233760768,2011-04-23 22:04:16 +0000,0x9900,@wil @paulnivin if you want to take you seriously don't say daemontools!
+194547084349804544,2011-04-23 22:03:34 +0000,kpk,@shinypb @skilldrick @hoverbird invented it
+194546876782092291,2011-04-23 22:02:44 +0000,skilldrick,@shinypb Well played :) @hoverbird
+194546811480969217,2011-04-23 22:02:29 +0000,sam,"Can someone project the date that I'll get a 27"" retina display?"
+194546738810458112,2011-04-23 22:02:11 +0000,shinypb,"@skilldrick @hoverbird Wow, I didn't even know they *had* TV in Britain."
+194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
+194546649203347456,2011-04-23 22:01:50 +0000,skilldrick,"@hoverbird @shinypb You guys must be soooo old, I don't remember the words to the duck tales intro at all."
+194546583608639488,2011-04-23 22:01:34 +0000,sean,@mep Thanks for coming by. Was great to have you.
+194546388707717120,2011-04-23 22:00:48 +0000,hoverbird,"@shinypb @trammell it's all suck a ""duck blur"" sometimes."
+194546264212385793,2011-04-23 22:00:18 +0000,kelseysilver,San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 92 others) http://t.co/eoLANJZw
+        eos
+      end
+    end
     context "--long" do
       before do
         @cli.options = @cli.options.merge(:long => true)
       end
-      it "should list in long format" do
+      it "should output in long format" do
         @cli.mentions
         $stdout.string.should == <<-eos
 ID                  Posted at     Screen name    Text
@@ -1607,11 +1770,39 @@ ID                  Posted at     Screen name    Text
         eos
       end
     end
+    context "--csv" do
+      before do
+        @cli.options = @cli.options.merge(:csv => true)
+      end
+      it "should output in CSV format" do
+        @cli.retweets
+        $stdout.string.should == <<-eos
+ID,Posted at,Screen name,Text
+194548121416630272,2011-04-23 22:07:41 +0000,natevillegas,RT @gelobautista #riordan RT @WilI_Smith: Yesterday is history. Tomorrow is a mystery. Today is a gift. That's why it's called the present.
+194547993607806976,2011-04-23 22:07:10 +0000,TD,@kelseysilver how long will you be in town?
+194547987593183233,2011-04-23 22:07:09 +0000,rusashka,@maciej hahaha :) @gpena together we're going to cover all core 28 languages!
+194547824690597888,2011-04-23 22:06:30 +0000,fat,@stevej @xc i'm going to picket when i get back.
+194547658562605057,2011-04-23 22:05:51 +0000,wil,@0x9900 @paulnivin http://t.co/bwVdtAPe
+194547528430137344,2011-04-23 22:05:19 +0000,wangtian,"@tianhonghe @xiangxin72 oh, you can even order specific items?"
+194547402550689793,2011-04-23 22:04:49 +0000,shinypb,"@kpk Pfft, I think you're forgetting mechanical television, which depended on a clever German. http://t.co/JvLNQCDm @skilldrick @hoverbird"
+194547260233760768,2011-04-23 22:04:16 +0000,0x9900,@wil @paulnivin if you want to take you seriously don't say daemontools!
+194547084349804544,2011-04-23 22:03:34 +0000,kpk,@shinypb @skilldrick @hoverbird invented it
+194546876782092291,2011-04-23 22:02:44 +0000,skilldrick,@shinypb Well played :) @hoverbird
+194546811480969217,2011-04-23 22:02:29 +0000,sam,"Can someone project the date that I'll get a 27"" retina display?"
+194546738810458112,2011-04-23 22:02:11 +0000,shinypb,"@skilldrick @hoverbird Wow, I didn't even know they *had* TV in Britain."
+194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
+194546649203347456,2011-04-23 22:01:50 +0000,skilldrick,"@hoverbird @shinypb You guys must be soooo old, I don't remember the words to the duck tales intro at all."
+194546583608639488,2011-04-23 22:01:34 +0000,sean,@mep Thanks for coming by. Was great to have you.
+194546388707717120,2011-04-23 22:00:48 +0000,hoverbird,"@shinypb @trammell it's all suck a ""duck blur"" sometimes."
+194546264212385793,2011-04-23 22:00:18 +0000,kelseysilver,San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 92 others) http://t.co/eoLANJZw
+        eos
+      end
+    end
     context "--long" do
       before do
         @cli.options = @cli.options.merge(:long => true)
       end
-      it "should list in long format" do
+      it "should output in long format" do
         @cli.retweets
         $stdout.string.should == <<-eos
 ID                  Posted at     Screen name    Text
@@ -1781,6 +1972,22 @@ URL          https://twitter.com/sferik/status/55709764298092545
       @cli.suggest
       $stdout.string.rstrip.should == "@antpires     @jtrupiano    @maccman      @mlroach      @stuntmann82"
     end
+    context "--csv" do
+      before do
+        @cli.options = @cli.options.merge(:csv => true)
+      end
+      it "should output in CSV format" do
+        @cli.suggest
+        $stdout.string.should == <<-eos
+ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
+40514587,2009-05-16 18:24:33 +0000,183,2,2,198,158,antpires,AntonioPires
+14736332,2008-05-11 19:46:06 +0000,3850,117,99,545,802,jtrupiano,John Trupiano
+2006261,2007-03-23 12:36:14 +0000,4497,9,171,967,2028,maccman,Alex MacCaw
+14451152,2008-04-20 12:05:38 +0000,6251,10,20,403,299,mlroach,Matt Laroche
+16052754,2008-08-30 08:22:57 +0000,24,0,1,5,42,stuntmann82,stuntmann82
+        eos
+      end
+    end
     context "--favorites" do
       before do
         @cli.options = @cli.options.merge(:favorites => true)
@@ -1821,7 +2028,7 @@ URL          https://twitter.com/sferik/status/55709764298092545
       before do
         @cli.options = @cli.options.merge(:long => true)
       end
-      it "should list in long format" do
+      it "should output in long format" do
         @cli.suggest
         $stdout.string.should == <<-eos
 ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen name   Name
@@ -1947,11 +2154,39 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
         eos
       end
     end
+    context "--csv" do
+      before do
+        @cli.options = @cli.options.merge(:csv => true)
+      end
+      it "should output in CSV format" do
+        @cli.timeline
+        $stdout.string.should == <<-eos
+ID,Posted at,Screen name,Text
+194548121416630272,2011-04-23 22:07:41 +0000,natevillegas,RT @gelobautista #riordan RT @WilI_Smith: Yesterday is history. Tomorrow is a mystery. Today is a gift. That's why it's called the present.
+194547993607806976,2011-04-23 22:07:10 +0000,TD,@kelseysilver how long will you be in town?
+194547987593183233,2011-04-23 22:07:09 +0000,rusashka,@maciej hahaha :) @gpena together we're going to cover all core 28 languages!
+194547824690597888,2011-04-23 22:06:30 +0000,fat,@stevej @xc i'm going to picket when i get back.
+194547658562605057,2011-04-23 22:05:51 +0000,wil,@0x9900 @paulnivin http://t.co/bwVdtAPe
+194547528430137344,2011-04-23 22:05:19 +0000,wangtian,"@tianhonghe @xiangxin72 oh, you can even order specific items?"
+194547402550689793,2011-04-23 22:04:49 +0000,shinypb,"@kpk Pfft, I think you're forgetting mechanical television, which depended on a clever German. http://t.co/JvLNQCDm @skilldrick @hoverbird"
+194547260233760768,2011-04-23 22:04:16 +0000,0x9900,@wil @paulnivin if you want to take you seriously don't say daemontools!
+194547084349804544,2011-04-23 22:03:34 +0000,kpk,@shinypb @skilldrick @hoverbird invented it
+194546876782092291,2011-04-23 22:02:44 +0000,skilldrick,@shinypb Well played :) @hoverbird
+194546811480969217,2011-04-23 22:02:29 +0000,sam,"Can someone project the date that I'll get a 27"" retina display?"
+194546738810458112,2011-04-23 22:02:11 +0000,shinypb,"@skilldrick @hoverbird Wow, I didn't even know they *had* TV in Britain."
+194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
+194546649203347456,2011-04-23 22:01:50 +0000,skilldrick,"@hoverbird @shinypb You guys must be soooo old, I don't remember the words to the duck tales intro at all."
+194546583608639488,2011-04-23 22:01:34 +0000,sean,@mep Thanks for coming by. Was great to have you.
+194546388707717120,2011-04-23 22:00:48 +0000,hoverbird,"@shinypb @trammell it's all suck a ""duck blur"" sometimes."
+194546264212385793,2011-04-23 22:00:18 +0000,kelseysilver,San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 92 others) http://t.co/eoLANJZw
+        eos
+      end
+    end
     context "--long" do
       before do
         @cli.options = @cli.options.merge(:long => true)
       end
-      it "should list in long format" do
+      it "should output in long format" do
         @cli.timeline
         $stdout.string.should == <<-eos
 ID                  Posted at     Screen name    Text
@@ -2130,11 +2365,27 @@ ID                  Posted at     Screen name    Text
       @cli.trend_locations
       $stdout.string.rstrip.should == "Boston         New York       San Francisco  United States  Worldwide"
     end
+    context "--csv" do
+      before do
+        @cli.options = @cli.options.merge(:csv => true)
+      end
+      it "should output in CSV format" do
+        @cli.trend_locations
+        $stdout.string.rstrip.should == <<-eos.rstrip
+WOEID,Parent ID,Type,Name,Country
+2367105,,Town,Boston,United States
+2459115,,Town,New York,United States
+2487956,,Town,San Francisco,United States
+23424977,,Country,United States,United States
+1,,Supername,Worldwide,""
+        eos
+      end
+    end
     context "--long" do
       before do
         @cli.options = @cli.options.merge(:long => true)
       end
-      it "should list in long format" do
+      it "should output in long format" do
         @cli.trend_locations
         $stdout.string.rstrip.should == <<-eos.rstrip
 WOEID     Parent ID  Type       Name           Country
@@ -2267,6 +2518,19 @@ WOEID     Parent ID  Type       Name           Country
       @cli.users("sferik", "pengwynn")
       $stdout.string.rstrip.should == "@pengwynn  @sferik"
     end
+    context "--csv" do
+      before do
+        @cli.options = @cli.options.merge(:csv => true)
+      end
+      it "should output in CSV format" do
+        @cli.users("sferik", "pengwynn")
+        $stdout.string.should == <<-eos
+ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
+14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
+7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
+        eos
+      end
+    end
     context "--favorites" do
       before do
         @cli.options = @cli.options.merge(:favorites => true)
@@ -2321,7 +2585,7 @@ WOEID     Parent ID  Type       Name           Country
       before do
         @cli.options = @cli.options.merge(:long => true)
       end
-      it "should list in long format" do
+      it "should output in long format" do
         @cli.users("sferik", "pengwynn")
         $stdout.string.should == <<-eos
 ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen name  Name

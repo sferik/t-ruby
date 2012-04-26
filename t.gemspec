@@ -5,6 +5,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'actionpack', ['>= 2.3.11', '< 4']
   gem.add_dependency 'activesupport', ['>= 2.3.11', '< 4']
   gem.add_dependency 'launchy', '~> 2.0'
+  gem.add_dependency 'fastercsv', '~> 1.5'
   gem.add_dependency 'geokit', '~> 1.6'
   gem.add_dependency 'highline', '~> 1.6'
   gem.add_dependency 'json', '~> 1.6'

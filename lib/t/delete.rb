@@ -16,6 +16,7 @@ module T
 
     desc "block SCREEN_NAME [SCREEN_NAME...]", "Unblock users."
     method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
+    method_option :force, :aliases => "-f", :type => :boolean, :default => false
     def block(screen_name, *screen_names)
       screen_names.unshift(screen_name)
       screen_names.map!(&:strip_ats)
@@ -32,6 +33,7 @@ module T
     end
 
     desc "dm [DIRECT_MESSAGE_ID] [DIRECT_MESSAGE_ID...]", "Delete the last Direct Message sent."
+    method_option :force, :aliases => "-f", :type => :boolean, :default => false
     def dm(direct_message_id, *direct_message_ids)
       direct_message_ids.unshift(direct_message_id)
       direct_message_ids.map!(&:strip_commas)
@@ -47,6 +49,7 @@ module T
     map %w(d m) => :dm
 
     desc "favorite STATUS_ID [STATUS_ID...]", "Delete favorites."
+    method_option :force, :aliases => "-f", :type => :boolean, :default => false
     def favorite(status_id, *status_ids)
       status_ids.unshift(status_id)
       status_ids.map!(&:strip_commas)
@@ -62,6 +65,7 @@ module T
     map %w(fave favourite) => :favorite
 
     desc "list LIST_NAME", "Delete a list."
+    method_option :force, :aliases => "-f", :type => :boolean, :default => false
     def list(list_name)
       unless options['force']
         return unless yes? "Are you sure you want to permanently delete the list \"#{list_name}\"? [y/N]"
@@ -71,6 +75,7 @@ module T
     end
 
     desc "status STATUS_ID [STATUS_ID...]", "Delete Tweets."
+    method_option :force, :aliases => "-f", :type => :boolean, :default => false
     def status(status_id, *status_ids)
       status_ids.unshift(status_id)
       status_ids.map!(&:strip_commas)

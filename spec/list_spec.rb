@@ -107,6 +107,19 @@ describe T::List do
       @list.members("presidents")
       $stdout.string.rstrip.should == "@pengwynn  @sferik"
     end
+    context "--csv" do
+      before do
+        @list.options = @list.options.merge(:csv => true)
+      end
+      it "should output in CSV format" do
+        @list.members("presidents")
+        $stdout.string.should == <<-eos
+ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
+14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
+7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
+        eos
+      end
+    end
     context "--favorites" do
       before do
         @list.options = @list.options.merge(:favorites => true)
@@ -147,7 +160,7 @@ describe T::List do
       before do
         @list.options = @list.options.merge(:long => true)
       end
-      it "should list in long format" do
+      it "should output in long format" do
         @list.members("presidents")
         $stdout.string.should == <<-eos
 ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen name  Name
@@ -314,11 +327,39 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
         kelseysilver: San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 92 others) http://t.co/eoLANJZw (7 months ago)
       eos
     end
+    context "--csv" do
+      before do
+        @list.options = @list.options.merge(:csv => true)
+      end
+      it "should output in long format" do
+        @list.timeline("presidents")
+        $stdout.string.should == <<-eos
+ID,Posted at,Screen name,Text
+194548121416630272,2011-04-23 22:07:41 +0000,natevillegas,RT @gelobautista #riordan RT @WilI_Smith: Yesterday is history. Tomorrow is a mystery. Today is a gift. That's why it's called the present.
+194547993607806976,2011-04-23 22:07:10 +0000,TD,@kelseysilver how long will you be in town?
+194547987593183233,2011-04-23 22:07:09 +0000,rusashka,@maciej hahaha :) @gpena together we're going to cover all core 28 languages!
+194547824690597888,2011-04-23 22:06:30 +0000,fat,@stevej @xc i'm going to picket when i get back.
+194547658562605057,2011-04-23 22:05:51 +0000,wil,@0x9900 @paulnivin http://t.co/bwVdtAPe
+194547528430137344,2011-04-23 22:05:19 +0000,wangtian,"@tianhonghe @xiangxin72 oh, you can even order specific items?"
+194547402550689793,2011-04-23 22:04:49 +0000,shinypb,"@kpk Pfft, I think you're forgetting mechanical television, which depended on a clever German. http://t.co/JvLNQCDm @skilldrick @hoverbird"
+194547260233760768,2011-04-23 22:04:16 +0000,0x9900,@wil @paulnivin if you want to take you seriously don't say daemontools!
+194547084349804544,2011-04-23 22:03:34 +0000,kpk,@shinypb @skilldrick @hoverbird invented it
+194546876782092291,2011-04-23 22:02:44 +0000,skilldrick,@shinypb Well played :) @hoverbird
+194546811480969217,2011-04-23 22:02:29 +0000,sam,"Can someone project the date that I'll get a 27"" retina display?"
+194546738810458112,2011-04-23 22:02:11 +0000,shinypb,"@skilldrick @hoverbird Wow, I didn't even know they *had* TV in Britain."
+194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
+194546649203347456,2011-04-23 22:01:50 +0000,skilldrick,"@hoverbird @shinypb You guys must be soooo old, I don't remember the words to the duck tales intro at all."
+194546583608639488,2011-04-23 22:01:34 +0000,sean,@mep Thanks for coming by. Was great to have you.
+194546388707717120,2011-04-23 22:00:48 +0000,hoverbird,"@shinypb @trammell it's all suck a ""duck blur"" sometimes."
+194546264212385793,2011-04-23 22:00:18 +0000,kelseysilver,San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 92 others) http://t.co/eoLANJZw
+        eos
+      end
+    end
     context "--long" do
       before do
         @list.options = @list.options.merge(:long => true)
       end
-      it "should list in long format" do
+      it "should output in long format" do
         @list.timeline("presidents")
         $stdout.string.should == <<-eos
 ID                  Posted at     Screen name    Text

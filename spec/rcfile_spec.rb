@@ -25,7 +25,7 @@ describe RCFile do
   describe '#[]=' do
     it 'should add a profile for a user' do
       rcfile = RCFile.instance
-      rcfile.path = '/tmp/trc'
+      rcfile.path = project_path + "/tmp/trc"
       rcfile['testcli'] = {
         'abc123' => {
           :username => 'testcli',
@@ -39,7 +39,7 @@ describe RCFile do
     end
     it 'should write the data to disk' do
       rcfile = RCFile.instance
-      rcfile.path = '/tmp/trc'
+      rcfile.path = project_path + "/tmp/trc"
       rcfile['testcli'] = {
         'abc123' => {
           :username => 'testcli',
@@ -88,13 +88,13 @@ describe RCFile do
   describe '#default_profile=' do
     it 'should set default profile' do
       rcfile = RCFile.instance
-      rcfile.path = File.expand_path('/tmp/trc', __FILE__)
+      rcfile.path = project_path + "/tmp/trc"
       rcfile.default_profile = {'username' => 'testcli', 'consumer_key' => 'abc123'}
       rcfile.default_profile.should == ['testcli', 'abc123']
     end
     it 'should write the data to disk' do
       rcfile = RCFile.instance
-      rcfile.path = '/tmp/trc'
+      rcfile.path = project_path + "/tmp/trc"
       rcfile.default_profile = {'username' => 'testcli', 'consumer_key' => 'abc123'}
       rcfile.default_profile.should == ['testcli', 'abc123']
     end
@@ -118,7 +118,7 @@ describe RCFile do
 
   describe '#delete' do
     it 'should delete the rcfile' do
-      path = '/tmp/trc'
+      path = project_path + "/tmp/trc"
       FileUtils.touch(path)
       File.exist?(path).should be_true
       rcfile = RCFile.instance
@@ -171,8 +171,8 @@ describe RCFile do
   describe '#path=' do
     it 'should override path' do
       rcfile = RCFile.instance
-      rcfile.path = '/tmp/trc'
-      rcfile.path.should == '/tmp/trc'
+      rcfile.path = project_path + "/tmp/trc"
+      rcfile.path.should == project_path + "/tmp/trc"
     end
     it 'should reload data' do
       rcfile = RCFile.instance

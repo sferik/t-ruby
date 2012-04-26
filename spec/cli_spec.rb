@@ -35,7 +35,7 @@ testcli
 
   describe "#authorize" do
     before do
-      @cli.options = @cli.options.merge(:profile => File.expand_path('/tmp/trc', __FILE__), :consumer_key => "abc123", :consumer_secret => "asdfasd223sd2", :prompt => true, :dry_run => true)
+      @cli.options = @cli.options.merge(:profile => project_path + "/tmp/trc", :consumer_key => "abc123", :consumer_secret => "asdfasd223sd2", :prompt => true, :dry_run => true)
       stub_post("/oauth/request_token").
         to_return(:body => fixture("request_token"))
       stub_post("/oauth/access_token").
@@ -520,6 +520,116 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
     end
   end
 
+  describe "#does_contain" do
+    before do
+      @cli.options = @cli.options.merge(:profile => fixture_path + "/.trc")
+      stub_get("/1/lists/members/show.json").
+        with(:query => {:owner_screen_name => "testcli", :screen_name => "testcli", :slug => "presidents"}).
+        to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+    end
+    it "should request the correct resource" do
+      @cli.does_contain("presidents")
+      a_get("/1/lists/members/show.json").
+        with(:query => {:owner_screen_name => "testcli", :screen_name => "testcli", :slug => "presidents"}).
+        should have_been_made
+    end
+    it "should have the correct output" do
+      @cli.does_contain("presidents")
+      $stdout.string.chomp.should == "Yes, @testcli/presidents contains @testcli."
+    end
+    context "--id" do
+      before do
+        @cli.options = @cli.options.merge(:id => true)
+        stub_get("/1/lists/members/show.json").
+          with(:query => {:owner_screen_name => "testcli", :user_id => "7505382", :slug => "presidents"}).
+          to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should request the correct resource" do
+        @cli.does_contain("presidents", "7505382")
+        a_get("/1/lists/members/show.json").
+          with(:query => {:owner_screen_name => "testcli", :user_id => "7505382", :slug => "presidents"}).
+          should have_been_made
+      end
+    end
+    context "with an owner passed" do
+      it "should have the correct output" do
+        @cli.does_contain("testcli/presidents", "testcli")
+        $stdout.string.chomp.should == "Yes, @testcli/presidents contains @testcli."
+      end
+    end
+    context "with a user passed" do
+      it "should have the correct output" do
+        @cli.does_contain("presidents", "testcli")
+        $stdout.string.chomp.should == "Yes, @testcli/presidents contains @testcli."
+      end
+    end
+    context "false" do
+      it "should exit" do
+        stub_get("/1/lists/members/show.json").
+          with(:query => {:owner_screen_name => "testcli", :screen_name => "testcli", :slug => "presidents"}).
+          to_return(:body => fixture("not_found.json"), :status => 404, :headers => {:content_type => "application/json; charset=utf-8"})
+        lambda do
+          @cli.does_contain("presidents")
+        end.should raise_error(SystemExit)
+        a_get("/1/lists/members/show.json").
+          with(:query => {:owner_screen_name => "testcli", :screen_name => "testcli", :slug => "presidents"}).
+          should have_been_made
+      end
+    end
+  end
+
+  describe "#does_follow" do
+    before do
+      @cli.options = @cli.options.merge(:profile => fixture_path + "/.trc")
+      stub_get("/1/friendships/exists.json").
+        with(:query => {:user_a => "ev", :user_b => "testcli"}).
+        to_return(:body => fixture("true.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+    end
+    it "should request the correct resource" do
+      @cli.does_follow("ev")
+      a_get("/1/friendships/exists.json").
+        with(:query => {:user_a => "ev", :user_b => "testcli"}).
+        should have_been_made
+    end
+    it "should have the correct output" do
+      @cli.does_follow("ev")
+      $stdout.string.chomp.should == "Yes, @ev follows @testcli."
+    end
+    context "--id" do
+      before do
+        @cli.options = @cli.options.merge(:id => true)
+        stub_get("/1/friendships/exists.json").
+          with(:query => {:user_a => "20", :user_b => "testcli"}).
+          to_return(:body => fixture("true.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should request the correct resource" do
+        @cli.does_follow("20")
+        a_get("/1/friendships/exists.json").
+          with(:query => {:user_a => "20", :user_b => "testcli"}).
+          should have_been_made
+      end
+    end
+    context "with a user passed" do
+      it "should have the correct output" do
+        @cli.does_follow("ev", "testcli")
+        $stdout.string.chomp.should == "Yes, @ev follows @testcli."
+      end
+    end
+    context "false" do
+      it "should exit" do
+        stub_get("/1/friendships/exists.json").
+          with(:query => {:user_a => "ev", :user_b => "testcli"}).
+          to_return(:body => fixture("false.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        lambda do
+          @cli.does_follow("ev")
+        end.should raise_error(SystemExit)
+        a_get("/1/friendships/exists.json").
+          with(:query => {:user_a => "ev", :user_b => "testcli"}).
+          should have_been_made
+      end
+    end
+  end
+
   describe "#favorite" do
     before do
       @cli.options = @cli.options.merge(:profile => fixture_path + "/.trc")
@@ -722,13 +832,6 @@ ID                  Posted at     Screen name    Text
   describe "#follow" do
     before do
       @cli.options = @cli.options.merge(:profile => fixture_path + "/.trc")
-    end
-    context "no users" do
-      it "should exit" do
-        lambda do
-          @cli.follow
-        end.should raise_error
-      end
     end
     context "one user" do
       it "should request the correct resource" do
@@ -2420,13 +2523,6 @@ WOEID     Parent ID  Type       Name           Country
   describe "#unfollow" do
     before do
       @cli.options = @cli.options.merge(:profile => fixture_path + "/.trc")
-    end
-    context "no users" do
-      it "should exit" do
-        lambda do
-          @cli.unfollow
-        end.should raise_error
-      end
     end
     context "one user" do
       it "should request the correct resource" do

@@ -22,11 +22,9 @@ require 'time'
 require 'twitter'
 require 'yaml'
 
-# twitter-text requires $KCODE to be set to UTF8
+# twitter-text requires $KCODE to be set to UTF8 on Ruby versions < 1.8
 major, minor, patch = RUBY_VERSION.split('.')
-if major.to_i == 1 && minor.to_i < 9
-  $KCODE='u'
-end
+$KCODE='u' if major.to_i == 1 && minor.to_i < 9
 require 'twitter-text'
 
 module T
@@ -103,21 +101,21 @@ module T
       say "Authorization successful."
     end
 
-    desc "block SCREEN_NAME [SCREEN_NAME...]", "Block users."
+    desc "block USER [USER...]", "Block users."
     method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
-    def block(screen_name, *screen_names)
-      screen_names.unshift(screen_name)
-      screen_names.map!(&:strip_ats)
-      screen_names.map!(&:to_i) if options['id']
-      screen_names.threaded_each do |screen_name|
+    def block(user, *users)
+      users.unshift(user)
+      users.map!(&:strip_ats)
+      users.map!(&:to_i) if options['id']
+      users.threaded_each do |user|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-          client.block(screen_name, :include_entities => false)
+          client.block(user, :include_entities => false)
         end
       end
-      number = screen_names.length
+      number = users.length
       say "@#{@rcfile.default_profile[0]} blocked #{number} #{number == 1 ? 'user' : 'users'}."
       say
-      say "Run `#{File.basename($0)} delete block #{screen_names.map{|screen_name| "@#{screen_name}"}.join(' ')}` to unblock."
+      say "Run `#{File.basename($0)} delete block #{users.map{|user| "@#{user}"}.join(' ')}` to unblock."
     end
 
     desc "direct_messages", "Returns the #{DEFAULT_NUM_RESULTS} most recent Direct Messages sent to you."
@@ -150,7 +148,7 @@ module T
         end
       end
     end
-    map %w(dms) => :direct_messages
+    map %w(directmessages dms) => :direct_messages
 
     desc "direct_messages_sent", "Returns the #{DEFAULT_NUM_RESULTS} most recent Direct Messages sent to you."
     method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
@@ -182,30 +180,30 @@ module T
         end
       end
     end
-    map %w(sent_messages sms) => :direct_messages_sent
+    map %w(directmessagessent sent_messages sentmessages sms) => :direct_messages_sent
 
-    desc "disciples [SCREEN_NAME]", "Returns the list of people who follow you but you don't follow back."
+    desc "disciples [USER]", "Returns the list of people who follow you but you don't follow back."
     method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by number of favorites."
     method_option :followers, :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by number of followers."
-    method_option :friends, :aliases => "-d", :type => :boolean, :default => false, :desc => "Sort by number of friends."
-    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as a Twitter user ID instead of a screen name."
+    method_option :friends, :aliases => "-e", :type => :boolean, :default => false, :desc => "Sort by number of friends."
+    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
     method_option :listed, :aliases => "-s", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
     method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     method_option :posted, :aliases => "-p", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter acount was posted."
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     method_option :tweets, :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by number of Tweets."
     method_option :unsorted, :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
-    def disciples(screen_name=nil)
-      if screen_name
-        screen_name = screen_name.strip_ats
-        screen_name = screen_name.to_i if options['id']
+    def disciples(user=nil)
+      if user
+        user = user.strip_ats
+        user = user.to_i if options['id']
       end
       follower_ids = collect_with_cursor do |cursor|
-        client.follower_ids(screen_name, :cursor => cursor)
+        client.follower_ids(user, :cursor => cursor)
       end
       following_ids = collect_with_cursor do |cursor|
-        client.friend_ids(screen_name, :cursor => cursor)
+        client.friend_ids(user, :cursor => cursor)
       end
       disciple_ids = (follower_ids - following_ids)
       users = disciple_ids.in_groups_of(MAX_USERS_PER_REQUEST, false).threaded_map do |disciple_id_group|
@@ -216,15 +214,61 @@ module T
       print_user_list(users)
     end
 
-    desc "dm SCREEN_NAME MESSAGE", "Sends that person a Direct Message."
-    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as a Twitter user ID instead of a screen name."
-    def dm(screen_name, message)
-      screen_name = screen_name.strip_ats
-      screen_name = screen_name.to_i if options['id']
-      direct_message = client.direct_message_create(screen_name, message, :include_entities => false)
+    desc "dm USER MESSAGE", "Sends that person a Direct Message."
+    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
+    def dm(user, message)
+      user = user.strip_ats
+      user = user.to_i if options['id']
+      direct_message = client.direct_message_create(user, message, :include_entities => false)
       say "Direct Message sent from @#{@rcfile.default_profile[0]} to @#{direct_message.recipient.screen_name} (#{time_ago_in_words(direct_message.created_at)} ago)."
     end
     map %w(d m) => :dm
+
+    desc "does_contain [USER/]LIST USER", "Find out whether a list contains a user."
+    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
+    def does_contain(list, user=nil)
+      owner, list = list.split('/')
+      if list.nil?
+        list = owner
+        owner = @rcfile.default_profile[0]
+      else
+        owner = owner.strip_ats
+        owner = owner.to_i if options['id']
+      end
+      if user.nil?
+        user = @rcfile.default_profile[0]
+      else
+        user = user.strip_ats
+        user = user.to_i if options['id']
+      end
+      if client.list_member?(owner, list, user)
+        say "Yes, @#{owner}/#{list} contains @#{user}."
+      else
+        say "No, @#{owner}/#{list} does not contain @#{user}."
+        exit 1
+      end
+    end
+    map %w(dc doescontain) => :does_contain
+
+    desc "does_follow USER [USER]", "Find out whether one user follows another."
+    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
+    def does_follow(user1, user2=nil)
+      user1 = user1.strip_ats
+      user1 = user1.to_i if options['id']
+      if user2.nil?
+        user2 = @rcfile.default_profile[0]
+      else
+        user2 = user2.strip_ats
+        user2 = user2.to_i if options['id']
+      end
+      if client.friendship?(user1, user2)
+        say "Yes, @#{user1} follows @#{user2}."
+      else
+        say "No, @#{user1} does not follow @#{user2}."
+        exit 1
+      end
+    end
+    map %w(df doesfollow) => :does_follow
 
     desc "favorite STATUS_ID [STATUS_ID...]", "Marks Tweets as favorites."
     def favorite(status_id, *status_ids)
@@ -242,59 +286,59 @@ module T
     end
     map %w(fave favourite) => :favorite
 
-    desc "favorites [SCREEN_NAME]", "Returns the #{DEFAULT_NUM_RESULTS} most recent Tweets you favorited."
+    desc "favorites [USER]", "Returns the #{DEFAULT_NUM_RESULTS} most recent Tweets you favorited."
     method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
-    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as a Twitter user ID instead of a screen name."
+    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
     method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => "Limit the number of results."
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
-    def favorites(screen_name=nil)
-      if screen_name
-        screen_name = screen_name.strip_ats
-        screen_name = screen_name.to_i if options['id']
+    def favorites(user=nil)
+      if user
+        user = user.strip_ats
+        user = user.to_i if options['id']
       end
       count = options['number'] || DEFAULT_NUM_RESULTS
-      statuses = client.favorites(screen_name, :count => count, :include_entities => false)
+      statuses = client.favorites(user, :count => count, :include_entities => false)
       print_status_list(statuses)
     end
     map %w(faves favourites) => :favorites
 
-    desc "follow SCREEN_NAME [SCREEN_NAME...]", "Allows you to start following users."
+    desc "follow USER [USER...]", "Allows you to start following users."
     method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
-    def follow(screen_name, *screen_names)
-      screen_names.unshift(screen_name)
-      screen_names.map!(&:strip_ats)
-      screen_names.map!(&:to_i) if options['id']
-      screen_names.threaded_each do |screen_name|
+    def follow(user, *users)
+      users.unshift(user)
+      users.map!(&:strip_ats)
+      users.map!(&:to_i) if options['id']
+      users.threaded_each do |user|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-          client.follow(screen_name, :include_entities => false)
+          client.follow(user, :include_entities => false)
         end
       end
-      number = screen_names.length
+      number = users.length
       say "@#{@rcfile.default_profile[0]} is now following #{number} more #{number == 1 ? 'user' : 'users'}."
       say
-      say "Run `#{File.basename($0)} unfollow #{screen_names.map{|screen_name| "@#{screen_name}"}.join(' ')}` to stop."
+      say "Run `#{File.basename($0)} unfollow #{users.map{|user| "@#{user}"}.join(' ')}` to stop."
     end
 
-    desc "followings [SCREEN_NAME]", "Returns a list of the people you follow on Twitter."
+    desc "followings [USER]", "Returns a list of the people you follow on Twitter."
     method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by number of favorites."
     method_option :followers, :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by number of followers."
-    method_option :friends, :aliases => "-d", :type => :boolean, :default => false, :desc => "Sort by number of friends."
-    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as a Twitter user ID instead of a screen name."
+    method_option :friends, :aliases => "-e", :type => :boolean, :default => false, :desc => "Sort by number of friends."
+    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
     method_option :listed, :aliases => "-s", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
     method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     method_option :posted, :aliases => "-p", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter acount was posted."
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     method_option :tweets, :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by number of Tweets."
     method_option :unsorted, :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
-    def followings(screen_name=nil)
-      if screen_name
-        screen_name = screen_name.strip_ats
-        screen_name = screen_name.to_i if options['id']
+    def followings(user=nil)
+      if user
+        user = user.strip_ats
+        user = user.to_i if options['id']
       end
       following_ids = collect_with_cursor do |cursor|
-        client.friend_ids(screen_name, :cursor => cursor)
+        client.friend_ids(user, :cursor => cursor)
       end
       users = following_ids.in_groups_of(MAX_USERS_PER_REQUEST, false).threaded_map do |following_id_group|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
@@ -304,25 +348,25 @@ module T
       print_user_list(users)
     end
 
-    desc "followers [SCREEN_NAME]", "Returns a list of the people who follow you on Twitter."
+    desc "followers [USER]", "Returns a list of the people who follow you on Twitter."
     method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by number of favorites."
     method_option :followers, :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by number of followers."
-    method_option :friends, :aliases => "-d", :type => :boolean, :default => false, :desc => "Sort by number of friends."
-    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as a Twitter user ID instead of a screen name."
+    method_option :friends, :aliases => "-e", :type => :boolean, :default => false, :desc => "Sort by number of friends."
+    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
     method_option :listed, :aliases => "-s", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
     method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     method_option :posted, :aliases => "-p", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter acount was posted."
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     method_option :tweets, :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by number of Tweets."
     method_option :unsorted, :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
-    def followers(screen_name=nil)
-      if screen_name
-        screen_name = screen_name.strip_ats
-        screen_name = screen_name.to_i if options['id']
+    def followers(user=nil)
+      if user
+        user = user.strip_ats
+        user = user.to_i if options['id']
       end
       follower_ids = collect_with_cursor do |cursor|
-        client.follower_ids(screen_name, :cursor => cursor)
+        client.follower_ids(user, :cursor => cursor)
       end
       users = follower_ids.in_groups_of(MAX_USERS_PER_REQUEST, false).threaded_map do |follower_id_group|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
@@ -332,28 +376,28 @@ module T
       print_user_list(users)
     end
 
-    desc "friends [SCREEN_NAME]", "Returns the list of people who you follow and follow you back."
+    desc "friends [USER]", "Returns the list of people who you follow and follow you back."
     method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by number of favorites."
     method_option :followers, :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by number of followers."
-    method_option :friends, :aliases => "-d", :type => :boolean, :default => false, :desc => "Sort by number of friends."
-    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as a Twitter user ID instead of a screen name."
+    method_option :friends, :aliases => "-e", :type => :boolean, :default => false, :desc => "Sort by number of friends."
+    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
     method_option :listed, :aliases => "-s", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
     method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     method_option :posted, :aliases => "-p", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter acount was posted."
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     method_option :tweets, :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by number of Tweets."
     method_option :unsorted, :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
-    def friends(screen_name=nil)
-      if screen_name
-        screen_name = screen_name.strip_ats
-        screen_name = screen_name.to_i if options['id']
+    def friends(user=nil)
+      if user
+        user = user.strip_ats
+        user = user.to_i if options['id']
       end
       following_ids = collect_with_cursor do |cursor|
-        client.friend_ids(screen_name, :cursor => cursor)
+        client.friend_ids(user, :cursor => cursor)
       end
       follower_ids = collect_with_cursor do |cursor|
-        client.follower_ids(screen_name, :cursor => cursor)
+        client.follower_ids(user, :cursor => cursor)
       end
       friend_ids = (following_ids & follower_ids)
       users = friend_ids.in_groups_of(MAX_USERS_PER_REQUEST, false).threaded_map do |friend_id_group|
@@ -364,28 +408,28 @@ module T
       print_user_list(users)
     end
 
-    desc "leaders [SCREEN_NAME]", "Returns the list of people who you follow but don't follow you back."
+    desc "leaders [USER]", "Returns the list of people who you follow but don't follow you back."
     method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by number of favorites."
     method_option :followers, :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by number of followers."
-    method_option :friends, :aliases => "-d", :type => :boolean, :default => false, :desc => "Sort by number of friends."
-    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as a Twitter user ID instead of a screen name."
+    method_option :friends, :aliases => "-e", :type => :boolean, :default => false, :desc => "Sort by number of friends."
+    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
     method_option :listed, :aliases => "-s", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
     method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     method_option :posted, :aliases => "-p", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter acount was posted."
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     method_option :tweets, :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by number of Tweets."
     method_option :unsorted, :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
-    def leaders(screen_name=nil)
-      if screen_name
-        screen_name = screen_name.strip_ats
-        screen_name = screen_name.to_i if options['id']
+    def leaders(user=nil)
+      if user
+        user = user.strip_ats
+        user = user.to_i if options['id']
       end
       following_ids = collect_with_cursor do |cursor|
-        client.friend_ids(screen_name, :cursor => cursor)
+        client.friend_ids(user, :cursor => cursor)
       end
       follower_ids = collect_with_cursor do |cursor|
-        client.follower_ids(screen_name, :cursor => cursor)
+        client.follower_ids(user, :cursor => cursor)
       end
       leader_ids = (following_ids - follower_ids)
       users = leader_ids.in_groups_of(MAX_USERS_PER_REQUEST, false).threaded_map do |leader_id_group|
@@ -408,20 +452,20 @@ module T
     end
     map %w(replies) => :mentions
 
-    desc "open SCREEN_NAME", "Opens that user's profile in a web browser."
+    desc "open USER", "Opens that user's profile in a web browser."
     method_option :dry_run, :type => :boolean
-    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as a Twitter user ID instead of a screen name."
+    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
     method_option :status, :aliases => "-s", :type => :boolean, :default => false, :desc => "Specify input as a Twitter status ID instead of a screen name."
-    def open(screen_name)
-      screen_name = screen_name.strip_ats
+    def open(user)
+      user = user.strip_ats
       if options['id']
-        user = client.user(screen_name.to_i, :include_entities => false)
+        user = client.user(user.to_i, :include_entities => false)
         Launchy.open("https://twitter.com/#{user.screen_name}", :dry_run => options.fetch('dry_run', false))
       elsif options['status']
-        status = client.status(screen_name.to_i, :include_entities => false, :include_my_retweet => false)
+        status = client.status(user.to_i, :include_entities => false, :include_my_retweet => false)
         Launchy.open("https://twitter.com/#{status.user.screen_name}/status/#{status.id}", :dry_run => options.fetch('dry_run', false))
       else
-        Launchy.open("https://twitter.com/#{screen_name}", :dry_run => options.fetch('dry_run', false))
+        Launchy.open("https://twitter.com/#{user}", :dry_run => options.fetch('dry_run', false))
       end
     end
 
@@ -431,33 +475,33 @@ module T
     def reply(status_id, message)
       status_id = status_id.strip_commas
       status = client.status(status_id.to_i, :include_entities => false, :include_my_retweet => false)
-      screen_names = Array(status.user.screen_name)
-      screen_names += extract_mentioned_screen_names(status.text) if options['all']
-      screen_names.uniq!
-      screen_names.map!(&:prepend_at)
+      users = Array(status.user.screen_name)
+      users += extract_mentioned_screen_names(status.text) if options['all']
+      users.uniq!
+      users.map!(&:prepend_at)
       opts = {:in_reply_to_status_id => status.id, :include_entities => false, :trim_user => true}
       opts.merge!(:lat => location.lat, :long => location.lng) if options['location']
-      reply = client.update("#{screen_names.join(' ')} #{message}", opts)
-      say "Reply created by @#{@rcfile.default_profile[0]} to #{screen_names.join(' ')} (#{time_ago_in_words(reply.created_at)} ago)."
+      reply = client.update("#{users.join(' ')} #{message}", opts)
+      say "Reply created by @#{@rcfile.default_profile[0]} to #{users.join(' ')} (#{time_ago_in_words(reply.created_at)} ago)."
       say
       say "Run `#{File.basename($0)} delete status #{reply.id}` to delete."
     end
 
-    desc "report_spam SCREEN_NAME [SCREEN_NAME...]", "Report users for spam."
+    desc "report_spam USER [USER...]", "Report users for spam."
     method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
-    def report_spam(screen_name, *screen_names)
-      screen_names.unshift(screen_name)
-      screen_names.map!(&:strip_ats)
-      screen_names.map!(&:to_i) if options['id']
-      screen_names.threaded_each do |screen_name|
+    def report_spam(user, *users)
+      users.unshift(user)
+      users.map!(&:strip_ats)
+      users.map!(&:to_i) if options['id']
+      users.threaded_each do |user|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-          client.report_spam(screen_name, :include_entities => false)
+          client.report_spam(user, :include_entities => false)
         end
       end
-      number = screen_names.length
+      number = users.length
       say "@#{@rcfile.default_profile[0]} reported #{number} #{number == 1 ? 'user' : 'users'}."
     end
-    map %w(report spam) => :report_spam
+    map %w(report reportspam spam) => :report_spam
 
     desc "retweet STATUS_ID [STATUS_ID...]", "Sends Tweets to your followers."
     def retweet(status_id, *status_ids)
@@ -475,19 +519,19 @@ module T
     end
     map %w(rt) => :retweet
 
-    desc "retweets [SCREEN_NAME]", "Returns the #{DEFAULT_NUM_RESULTS} most recent Retweets by a user."
+    desc "retweets [USER]", "Returns the #{DEFAULT_NUM_RESULTS} most recent Retweets by a user."
     method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
-    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as a Twitter user ID instead of a screen name."
+    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
     method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => "Limit the number of results."
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
-    def retweets(screen_name=nil)
-      if screen_name
-        screen_name = screen_name.strip_ats
-        screen_name = screen_name.to_i if options['id']
+    def retweets(user=nil)
+      if user
+        user = user.strip_ats
+        user = user.to_i if options['id']
       end
       count = options['number'] || DEFAULT_NUM_RESULTS
-      statuses = client.retweeted_by(screen_name, :count => count, :include_entities => false)
+      statuses = client.retweeted_by(user, :count => count, :include_entities => false)
       print_status_list(statuses)
     end
     map %w(rts) => :retweets
@@ -523,12 +567,12 @@ module T
       print_table(array)
     end
 
-    desc "suggest [SCREEN_NAME]", "This command returns a listing of Twitter users' accounts we think you might enjoy following."
+    desc "suggest [USER]", "This command returns a listing of Twitter users' accounts we think you might enjoy following."
     method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by number of favorites."
     method_option :followers, :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by number of followers."
-    method_option :friends, :aliases => "-d", :type => :boolean, :default => false, :desc => "Sort by number of friends."
-    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as a Twitter user ID instead of a screen name."
+    method_option :friends, :aliases => "-e", :type => :boolean, :default => false, :desc => "Sort by number of friends."
+    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
     method_option :listed, :aliases => "-s", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
     method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => "Limit the number of results."
@@ -536,28 +580,28 @@ module T
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     method_option :tweets, :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by number of Tweets."
     method_option :unsorted, :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
-    def suggest(screen_name=nil)
-      if screen_name
-        screen_name = screen_name.strip_ats
-        screen_name = screen_name.to_i if options['id']
+    def suggest(user=nil)
+      if user
+        user = user.strip_ats
+        user = user.to_i if options['id']
       end
       limit = options['number'] || DEFAULT_NUM_RESULTS
-      users = client.recommendations(screen_name, :limit => limit, :include_entities => false)
+      users = client.recommendations(user, :limit => limit, :include_entities => false)
       print_user_list(users)
     end
 
-    desc "timeline [SCREEN_NAME]", "Returns the #{DEFAULT_NUM_RESULTS} most recent Tweets posted by a user."
+    desc "timeline [USER]", "Returns the #{DEFAULT_NUM_RESULTS} most recent Tweets posted by a user."
     method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
-    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as a Twitter user ID instead of a screen name."
+    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
     method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => "Limit the number of results."
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
-    def timeline(screen_name=nil)
+    def timeline(user=nil)
       count = options['number'] || DEFAULT_NUM_RESULTS
-      if screen_name
-        screen_name = screen_name.strip_ats
-        screen_name = screen_name.to_i if options['id']
-        statuses = client.user_timeline(screen_name, :count => count, :include_entities => false)
+      if user
+        user = user.strip_ats
+        user = user.to_i if options['id']
+        statuses = client.user_timeline(user, :count => count, :include_entities => false)
       else
         statuses = client.home_timeline(:count => count, :include_entities => false)
       end
@@ -613,22 +657,23 @@ module T
         end
       end
     end
+    map %w(locations trendlocations) => :trend_locations
 
-    desc "unfollow SCREEN_NAME [SCREEN_NAME...]", "Allows you to stop following users."
+    desc "unfollow USER [USER...]", "Allows you to stop following users."
     method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
-    def unfollow(screen_name, *screen_names)
-      screen_names.unshift(screen_name)
-      screen_names.map!(&:strip_ats)
-      screen_names.map!(&:to_i) if options['id']
-      screen_names.threaded_each do |screen_name|
+    def unfollow(user, *users)
+      users.unshift(user)
+      users.map!(&:strip_ats)
+      users.map!(&:to_i) if options['id']
+      users.threaded_each do |user|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-          client.unfollow(screen_name, :include_entities => false)
+          client.unfollow(user, :include_entities => false)
         end
       end
-      number = screen_names.length
+      number = users.length
       say "@#{@rcfile.default_profile[0]} is no longer following #{number} #{number == 1 ? 'user' : 'users'}."
       say
-      say "Run `#{File.basename($0)} follow #{screen_names.map{|screen_name| "@#{screen_name}"}.join(' ')}` to follow again."
+      say "Run `#{File.basename($0)} follow #{users.map{|user| "@#{user}"}.join(' ')}` to follow again."
     end
 
     desc "update MESSAGE", "Post a Tweet."
@@ -643,11 +688,11 @@ module T
     end
     map %w(post tweet) => :update
 
-    desc "users SCREEN_NAME [SCREEN_NAME...]", "Returns a list of users you specify."
+    desc "users USER [USER...]", "Returns a list of users you specify."
     method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by number of favorites."
     method_option :followers, :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by number of followers."
-    method_option :friends, :aliases => "-d", :type => :boolean, :default => false, :desc => "Sort by number of friends."
+    method_option :friends, :aliases => "-e", :type => :boolean, :default => false, :desc => "Sort by number of friends."
     method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     method_option :listed, :aliases => "-s", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
     method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
@@ -655,11 +700,11 @@ module T
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     method_option :tweets, :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by number of Tweets."
     method_option :unsorted, :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
-    def users(screen_name, *screen_names)
-      screen_names.unshift(screen_name)
-      screen_names.map!(&:strip_ats)
-      screen_names.map!(&:to_i) if options['id']
-      users = client.users(screen_names, :include_entities => false)
+    def users(user, *users)
+      users.unshift(user)
+      users.map!(&:strip_ats)
+      users.map!(&:to_i) if options['id']
+      users = client.users(users, :include_entities => false)
       print_user_list(users)
     end
     map %w(stats) => :users
@@ -670,12 +715,12 @@ module T
     end
     map %w(-v --version) => :version
 
-    desc "whois SCREEN_NAME", "Retrieves profile information for the user."
-    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as a Twitter user ID instead of a screen name."
-    def whois(screen_name)
-      screen_name = screen_name.strip_ats
-      screen_name = screen_name.to_i if options['id']
-      user = client.user(screen_name, :include_entities => false)
+    desc "whois USER", "Retrieves profile information for the user."
+    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
+    def whois(user)
+      user = user.strip_ats
+      user = user.to_i if options['id']
+      user = client.user(user, :include_entities => false)
       array = []
       name_label = user.verified ? "Name (Verified)" : "Name"
       array << ["ID", user.id.to_s]

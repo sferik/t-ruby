@@ -42,6 +42,10 @@ def stub_put(path, endpoint=Twitter.endpoint)
   stub_request(:put, endpoint + path)
 end
 
+def project_path
+  File.expand_path("../..", __FILE__)
+end
+
 def fixture_path
   File.expand_path("../fixtures", __FILE__)
 end

@@ -14,22 +14,22 @@ module T
       @rcfile = RCFile.instance
     end
 
-    desc "block SCREEN_NAME [SCREEN_NAME...]", "Unblock users."
+    desc "block USER [USER...]", "Unblock users."
     method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     method_option :force, :aliases => "-f", :type => :boolean, :default => false
-    def block(screen_name, *screen_names)
-      screen_names.unshift(screen_name)
-      screen_names.map!(&:strip_ats)
-      screen_names.map!(&:to_i) if options['id']
-      screen_names.threaded_each do |screen_name|
+    def block(user, *users)
+      users.unshift(user)
+      users.map!(&:strip_ats)
+      users.map!(&:to_i) if options['id']
+      users.threaded_each do |user|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-          client.unblock(screen_name, :include_entities => false)
+          client.unblock(user, :include_entities => false)
         end
       end
-      number = screen_names.length
+      number = users.length
       say "@#{@rcfile.default_profile[0]} unblocked #{number} #{number == 1 ? 'user' : 'users'}."
       say
-      say "Run `#{File.basename($0)} block #{screen_names.map{|screen_name| "@#{screen_name}"}.join(' ')}` to block."
+      say "Run `#{File.basename($0)} block #{users.map{|user| "@#{user}"}.join(' ')}` to block."
     end
 
     desc "dm [DIRECT_MESSAGE_ID] [DIRECT_MESSAGE_ID...]", "Delete the last Direct Message sent."
@@ -64,14 +64,14 @@ module T
     end
     map %w(fave favourite) => :favorite
 
-    desc "list LIST_NAME", "Delete a list."
+    desc "list LIST", "Delete a list."
     method_option :force, :aliases => "-f", :type => :boolean, :default => false
-    def list(list_name)
+    def list(list)
       unless options['force']
-        return unless yes? "Are you sure you want to permanently delete the list \"#{list_name}\"? [y/N]"
+        return unless yes? "Are you sure you want to permanently delete the list \"#{list}\"? [y/N]"
       end
-      status = client.list_destroy(list_name)
-      say "@#{@rcfile.default_profile[0]} deleted the list \"#{list_name}\"."
+      status = client.list_destroy(list)
+      say "@#{@rcfile.default_profile[0]} deleted the list \"#{list}\"."
     end
 
     desc "status STATUS_ID [STATUS_ID...]", "Delete Tweets."

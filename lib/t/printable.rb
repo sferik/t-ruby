@@ -1,9 +1,7 @@
 require 'action_view'
 require 'csv'
-# Ruby version < 1.9
-if CSV.const_defined? :Reader
-  require 'fastercsv'
-end
+# 'fastercsv' required on Ruby versions < 1.9
+require 'fastercsv' unless Array.new.respond_to?(:to_csv)
 require 'highline'
 
 module T

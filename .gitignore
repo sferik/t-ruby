@@ -8,3 +8,4 @@ coverage/*
 doc/*
 log/*
 pkg/*
+tmp/*

@@ -66,6 +66,14 @@ interpreted by your shell.
 ### <a name="follow"></a>Follow users
     t follow @sferik @gem
 
+### <a name="does-follow"></a>Does one user follow another user?
+    t does_follow @ev @sferik
+
+**Note**: When this command returns false, `t` exits with a non-zero exit code,
+which which allows you to execute conditional commands, for example:
+
+    t does_follow @ev @sferik && t dm @ev "What's up, bro?"
+
 ### <a name="friends"></a>List your friends (ordered by number of followers)
     t friends -lf
 

@@ -447,6 +447,24 @@ ID                  Posted at     Screen name  Text
                bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
       eos
     end
+    context "--id" do
+      before do
+        @search.options = @search.options.merge(:id => true)
+        1.upto(16).each do |page|
+          stub_get("/1/statuses/user_timeline.json").
+            with(:query => {:user_id => "7505382", :count => "200", :page => "#{page}"}).
+            to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        end
+      end
+      it "should request the correct resource" do
+        @search.user("7505382", "twitter")
+        1.upto(16).each do |page|
+          a_get("/1/statuses/user_timeline.json").
+            with(:query => {:user_id => "7505382", :count => "200", :page => "#{page}"}).
+            should have_been_made
+        end
+      end
+    end
     context "--long" do
       before do
         @search.options = @search.options.merge(:long => true)

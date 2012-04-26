@@ -35,6 +35,20 @@ describe T::Delete do
       @delete.block("sferik")
       $stdout.string.should =~ /^@testcli unblocked 1 user\.$/
     end
+    context "--id" do
+      before do
+        @delete.options = @delete.options.merge(:id => true)
+        stub_delete("/1/blocks/destroy.json").
+          with(:query => {:user_id => "7505382", :include_entities => "false"}).
+          to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should request the correct resource" do
+        @delete.block("7505382")
+        a_delete("/1/blocks/destroy.json").
+          with(:query => {:user_id => "7505382", :include_entities => "false"}).
+          should have_been_made
+      end
+    end
   end
 
   describe "#dm" do

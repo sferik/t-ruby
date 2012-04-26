@@ -84,6 +84,20 @@ testcli
       @cli.block("sferik")
       $stdout.string.should =~ /^@testcli blocked 1 user/
     end
+    context "--id" do
+      before do
+        @cli.options = @cli.options.merge(:id => true)
+        stub_post("/1/blocks/create.json").
+          with(:body => {:user_id => "7505382", :include_entities => "false"}).
+          to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should request the correct resource" do
+        @cli.block("7505382")
+        a_post("/1/blocks/create.json").
+          with(:body => {:user_id => "7505382", :include_entities => "false"}).
+          should have_been_made
+      end
+    end
   end
 
   describe "#direct_messages" do
@@ -358,7 +372,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
         $stdout.string.rstrip.should == "@sferik    @pengwynn"
       end
     end
-    context "with a screen name passed" do
+    context "with a user passed" do
       before do
         stub_get("/1/followers/ids.json").
           with(:query => {:cursor => "-1", :screen_name => "sferik"}).
@@ -383,6 +397,29 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
         @cli.disciples("sferik")
         $stdout.string.rstrip.should == "@pengwynn  @sferik"
       end
+      context "--id" do
+        before do
+          @cli.options = @cli.options.merge(:id => true)
+          stub_get("/1/followers/ids.json").
+            with(:query => {:cursor => "-1", :user_id => "7505382"}).
+            to_return(:body => fixture("followers_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1/friends/ids.json").
+            with(:query => {:cursor => "-1", :user_id => "7505382"}).
+            to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        end
+        it "should request the correct resource" do
+          @cli.disciples("7505382")
+          a_get("/1/followers/ids.json").
+            with(:query => {:cursor => "-1", :user_id => "7505382"}).
+            should have_been_made
+          a_get("/1/friends/ids.json").
+            with(:query => {:cursor => "-1", :user_id => "7505382"}).
+            should have_been_made
+          a_get("/1/users/lookup.json").
+            with(:query => {:user_id => "213747670,428004849", :include_entities => "false"}).
+            should have_been_made
+        end
+      end
     end
   end
 
@@ -402,6 +439,20 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
     it "should have the correct output" do
       @cli.dm("pengwynn", "Creating a fixture for the Twitter gem")
       $stdout.string.chomp.should == "Direct Message sent from @testcli to @pengwynn (about 1 year ago)."
+    end
+    context "--id" do
+      before do
+        @cli.options = @cli.options.merge(:id => true)
+        stub_post("/1/direct_messages/new.json").
+          with(:body => {:user_id => "14100886", :text => "Creating a fixture for the Twitter gem", :include_entities => "false"}).
+          to_return(:body => fixture("direct_message.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should request the correct resource" do
+        @cli.dm("14100886", "Creating a fixture for the Twitter gem")
+        a_post("/1/direct_messages/new.json").
+          with(:body => {:user_id => "14100886", :text => "Creating a fixture for the Twitter gem", :include_entities => "false"}).
+          should have_been_made
+      end
     end
   end
 
@@ -525,7 +576,7 @@ ID                  Posted at     Screen name    Text
         eos
       end
     end
-    context "with a screen name passed" do
+    context "with a user passed" do
       before do
         stub_get("/1/favorites/sferik.json").
           with(:query => {:count => "20", :include_entities => "false"}).
@@ -559,6 +610,20 @@ ID                  Posted at     Screen name    Text
         kelseysilver: San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 92 others) http://t.co/eoLANJZw (7 months ago)
         eos
       end
+      context "--id" do
+        before do
+          @cli.options = @cli.options.merge(:id => true)
+          stub_get("/1/favorites/7505382.json").
+            with(:query => {:count => "20", :include_entities => "false"}).
+            to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        end
+        it "should request the correct resource" do
+          @cli.favorites("7505382")
+          a_get("/1/favorites/7505382.json").
+            with(:query => {:count => "20", :include_entities => "false"}).
+            should have_been_made
+        end
+      end
     end
   end
 
@@ -589,6 +654,20 @@ ID                  Posted at     Screen name    Text
           to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         @cli.follow("sferik")
         $stdout.string.should =~ /^@testcli is now following 1 more user\.$/
+      end
+      context "--id" do
+        before do
+          @cli.options = @cli.options.merge(:id => true)
+          stub_post("/1/friendships/create.json").
+            with(:body => {:user_id => "7505382", :include_entities => "false"}).
+            to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        end
+        it "should request the correct resource" do
+          @cli.follow("7505382")
+          a_post("/1/friendships/create.json").
+            with(:body => {:user_id => "7505382", :include_entities => "false"}).
+            should have_been_made
+        end
       end
       context "Twitter is down" do
         it "should retry 3 times and then raise an error" do
@@ -704,7 +783,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
         $stdout.string.rstrip.should == "@sferik    @pengwynn"
       end
     end
-    context "with a screen name passed" do
+    context "with a user passed" do
       before do
         stub_get("/1/friends/ids.json").
           with(:query => {:cursor => "-1", :screen_name => "sferik"}).
@@ -722,6 +801,23 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
       it "should have the correct output" do
         @cli.followings("sferik")
         $stdout.string.rstrip.should == "@pengwynn  @sferik"
+      end
+    end
+    context "--id" do
+      before do
+        @cli.options = @cli.options.merge(:id => true)
+        stub_get("/1/friends/ids.json").
+          with(:query => {:cursor => "-1", :user_id => "7505382"}).
+          to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should request the correct resource" do
+        @cli.followings("7505382")
+        a_get("/1/friends/ids.json").
+          with(:query => {:cursor => "-1", :user_id => "7505382"}).
+          should have_been_made
+        a_get("/1/users/lookup.json").
+          with(:query => {:user_id => "7505382", :include_entities => "false"}).
+          should have_been_made
       end
     end
   end
@@ -824,7 +920,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
         $stdout.string.rstrip.should == "@sferik    @pengwynn"
       end
     end
-    context "with a screen name passed" do
+    context "with a user passed" do
       before do
         stub_get("/1/followers/ids.json").
           with(:query => {:cursor => "-1", :screen_name => "sferik"}).
@@ -845,6 +941,23 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
       it "should have the correct output" do
         @cli.followers("sferik")
         $stdout.string.rstrip.should == "@pengwynn  @sferik"
+      end
+      context "--id" do
+        before do
+          @cli.options = @cli.options.merge(:id => true)
+          stub_get("/1/followers/ids.json").
+            with(:query => {:cursor => "-1", :user_id => "7505382"}).
+            to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        end
+        it "should request the correct resource" do
+          @cli.followers("7505382")
+          a_get("/1/followers/ids.json").
+            with(:query => {:cursor => "-1", :user_id => "7505382"}).
+            should have_been_made
+          a_get("/1/users/lookup.json").
+            with(:query => {:user_id => "7505382", :include_entities => "false"}).
+            should have_been_made
+        end
       end
     end
   end
@@ -953,7 +1066,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
         $stdout.string.rstrip.should == "@sferik    @pengwynn"
       end
     end
-    context "with a screen name passed" do
+    context "with a user passed" do
       before do
         stub_get("/1/friends/ids.json").
           with(:query => {:cursor => "-1", :screen_name => "sferik"}).
@@ -977,6 +1090,29 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
       it "should have the correct output" do
         @cli.friends("sferik")
         $stdout.string.rstrip.should == "@pengwynn  @sferik"
+      end
+      context "--id" do
+        before do
+          @cli.options = @cli.options.merge(:id => true)
+          stub_get("/1/friends/ids.json").
+            with(:query => {:cursor => "-1", :user_id => "7505382"}).
+            to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1/followers/ids.json").
+            with(:query => {:cursor => "-1", :user_id => "7505382"}).
+            to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        end
+        it "should request the correct resource" do
+          @cli.friends("7505382")
+          a_get("/1/friends/ids.json").
+            with(:query => {:cursor => "-1", :user_id => "7505382"}).
+            should have_been_made
+          a_get("/1/followers/ids.json").
+            with(:query => {:cursor => "-1", :user_id => "7505382"}).
+            should have_been_made
+          a_get("/1/users/lookup.json").
+            with(:query => {:user_id => "7505382", :include_entities => "false"}).
+            should have_been_made
+        end
       end
     end
   end
@@ -1085,7 +1221,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
         $stdout.string.rstrip.should == "@sferik    @pengwynn"
       end
     end
-    context "with a screen name passed" do
+    context "with a user passed" do
       before do
         stub_get("/1/friends/ids.json").
           with(:query => {:cursor => "-1", :screen_name => "sferik"}).
@@ -1109,6 +1245,29 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
       it "should have the correct output" do
         @cli.leaders("sferik")
         $stdout.string.rstrip.should == "@pengwynn  @sferik"
+      end
+      context "--id" do
+        before do
+          @cli.options = @cli.options.merge(:id => true)
+          stub_get("/1/friends/ids.json").
+            with(:query => {:cursor => "-1", :user_id => "7505382"}).
+            to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1/followers/ids.json").
+            with(:query => {:cursor => "-1", :user_id => "7505382"}).
+            to_return(:body => fixture("followers_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        end
+        it "should request the correct resource" do
+          @cli.leaders("7505382")
+          a_get("/1/friends/ids.json").
+            with(:query => {:cursor => "-1", :user_id => "7505382"}).
+            should have_been_made
+          a_get("/1/followers/ids.json").
+            with(:query => {:cursor => "-1", :user_id => "7505382"}).
+            should have_been_made
+          a_get("/1/users/lookup.json").
+            with(:query => {:user_id => "7505382", :include_entities => "false"}).
+            should have_been_made
+        end
       end
     end
   end
@@ -1240,11 +1399,6 @@ ID                  Posted at     Screen name    Text
           with(:query => {:user_id => "420", :include_entities => "false"}).
           should have_been_made
       end
-      it "should have the correct output" do
-        lambda do
-          @cli.open("420")
-        end.should_not raise_error
-      end
     end
     context "--status" do
       before do
@@ -1338,6 +1492,20 @@ ID                  Posted at     Screen name    Text
     it "should have the correct output" do
       @cli.report_spam("sferik")
       $stdout.string.should =~ /^@testcli reported 1 user/
+    end
+    context "--id" do
+      before do
+        @cli.options = @cli.options.merge(:id => true)
+        stub_post("/1/report_spam.json").
+          with(:body => {:user_id => "7505382", :include_entities => "false"}).
+          to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should request the correct resource" do
+        @cli.report_spam("7505382")
+        a_post("/1/report_spam.json").
+          with(:body => {:user_id => "7505382", :include_entities => "false"}).
+          should have_been_made
+      end
     end
   end
 
@@ -1463,7 +1631,7 @@ ID                  Posted at     Screen name    Text
         eos
       end
     end
-    context "with a screen name passed" do
+    context "with a user passed" do
       before do
         stub_get("/1/statuses/retweeted_by_user.json").
           with(:query => {:count => "20", :include_entities => "false", :screen_name => "sferik"}).
@@ -1496,6 +1664,20 @@ ID                  Posted at     Screen name    Text
            hoverbird: @shinypb @trammell it's all suck a "duck blur" sometimes. (7 months ago)
         kelseysilver: San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 92 others) http://t.co/eoLANJZw (7 months ago)
         eos
+      end
+      context "--id" do
+        before do
+          @cli.options = @cli.options.merge(:id => true)
+          stub_get("/1/statuses/retweeted_by_user.json").
+            with(:query => {:count => "20", :include_entities => "false", :user_id => "7505382"}).
+            to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        end
+        it "should request the correct resource" do
+          @cli.retweets("7505382")
+          a_get("/1/statuses/retweeted_by_user.json").
+            with(:query => {:count => "20", :include_entities => "false", :user_id => "7505382"}).
+            should have_been_made
+        end
       end
     end
   end
@@ -1647,7 +1829,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
         $stdout.string.rstrip.should == "@stuntmann82  @antpires     @jtrupiano    @maccman      @mlroach"
       end
     end
-    context "with a screen name passed" do
+    context "with a user passed" do
       it "should request the correct resource" do
         @cli.suggest("sferik")
         a_get("/1/users/recommendations.json").
@@ -1657,6 +1839,20 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
       it "should have the correct output" do
         @cli.suggest("sferik")
         $stdout.string.rstrip.should == "@antpires     @jtrupiano    @maccman      @mlroach      @stuntmann82"
+      end
+      context "--id" do
+        before do
+          @cli.options = @cli.options.merge(:id => true)
+          stub_get("/1/users/recommendations.json").
+            with(:query => {:limit => "20", :include_entities => "false", :user_id => "7505382"}).
+            to_return(:body => fixture("recommendations.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        end
+        it "should request the correct resource" do
+          @cli.suggest("7505382")
+          a_get("/1/users/recommendations.json").
+            with(:query => {:limit => "20", :include_entities => "false", :user_id => "7505382"}).
+            should have_been_made
+        end
       end
     end
   end
@@ -1766,7 +1962,7 @@ ID                  Posted at     Screen name    Text
         eos
       end
     end
-    context "with user" do
+    context "with a user passed" do
       before do
         stub_get("/1/statuses/user_timeline.json").
           with(:query => {:count => "20", :include_entities => "false", :screen_name => "sferik"}).
@@ -1799,6 +1995,20 @@ ID                  Posted at     Screen name    Text
            hoverbird: @shinypb @trammell it's all suck a "duck blur" sometimes. (7 months ago)
         kelseysilver: San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 92 others) http://t.co/eoLANJZw (7 months ago)
         eos
+      end
+      context "--id" do
+        before do
+          @cli.options = @cli.options.merge(:id => true)
+          stub_get("/1/statuses/user_timeline.json").
+            with(:query => {:count => "20", :include_entities => "false", :user_id => "7505382"}).
+            to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        end
+        it "should request the correct resource" do
+          @cli.timeline("7505382")
+          a_get("/1/statuses/user_timeline.json").
+            with(:query => {:count => "20", :include_entities => "false", :user_id => "7505382"}).
+            should have_been_made
+        end
       end
     end
   end
@@ -1921,6 +2131,20 @@ WOEID     Parent ID  Type       Name           Country
         @cli.unfollow("sferik")
         $stdout.string.should =~ /^@testcli is no longer following 1 user\.$/
       end
+      context "--id" do
+        before do
+          @cli.options = @cli.options.merge(:id => true)
+          stub_delete("/1/friendships/destroy.json").
+            with(:query => {:user_id => "7505382", :include_entities => "false"}).
+            to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        end
+        it "should request the correct resource" do
+          @cli.unfollow("7505382")
+          a_delete("/1/friendships/destroy.json").
+            with(:query => {:user_id => "7505382", :include_entities => "false"}).
+            should have_been_made
+        end
+      end
       context "Twitter is down" do
         it "should retry 3 times and then raise an error" do
           stub_delete("/1/friendships/destroy.json").
@@ -2016,6 +2240,20 @@ WOEID     Parent ID  Type       Name           Country
         $stdout.string.rstrip.should == "@sferik    @pengwynn"
       end
     end
+    context "--id" do
+      before do
+        @cli.options = @cli.options.merge(:id => true)
+        stub_get("/1/users/lookup.json").
+          with(:query => {:user_id => "7505382,14100886", :include_entities => "false"}).
+          to_return(:body => fixture("users.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should request the correct resource" do
+        @cli.users("7505382", "14100886")
+        a_get("/1/users/lookup.json").
+          with(:query => {:user_id => "7505382,14100886", :include_entities => "false"}).
+          should have_been_made
+      end
+    end
     context "--listed" do
       before do
         @cli.options = @cli.options.merge(:listed => true)
@@ -2094,6 +2332,20 @@ Listed       41
 Following    197
 Followers    1,048
       eos
+    end
+    context "--id" do
+      before do
+        @cli.options = @cli.options.merge(:id => true)
+        stub_get("/1/users/show.json").
+          with(:query => {:user_id => "7505382", :include_entities => "false"}).
+          to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should request the correct resource" do
+        @cli.whois("7505382")
+        a_get("/1/users/show.json").
+          with(:query => {:user_id => "7505382", :include_entities => "false"}).
+          should have_been_made
+      end
     end
   end
 

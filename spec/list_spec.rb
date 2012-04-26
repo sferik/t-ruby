@@ -26,31 +26,47 @@ describe T::List do
       stub_get("/1/account/verify_credentials.json").
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       stub_post("/1/lists/members/create_all.json").
-        with(:body => {:screen_name => "sferik", :slug => "presidents", :owner_screen_name => "sferik"}).
+        with(:body => {:screen_name => "BarackObama", :slug => "presidents", :owner_screen_name => "sferik"}).
         to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
-      @list.add("presidents", "sferik")
+      @list.add("presidents", "BarackObama")
       a_get("/1/account/verify_credentials.json").
         should have_been_made
       a_post("/1/lists/members/create_all.json").
-        with(:body => {:screen_name => "sferik", :slug => "presidents", :owner_screen_name => "sferik"}).
+        with(:body => {:screen_name => "BarackObama", :slug => "presidents", :owner_screen_name => "sferik"}).
         should have_been_made
     end
     it "should have the correct output" do
-      @list.add("presidents", "sferik")
+      @list.add("presidents", "BarackObama")
       $stdout.string.should =~ /@testcli added 1 member to the list "presidents"\./
+    end
+    context "--id" do
+      before do
+        @list.options = @list.options.merge(:id => true)
+        stub_post("/1/lists/members/create_all.json").
+          with(:body => {:user_id => "7505382", :slug => "presidents", :owner_screen_name => "sferik"}).
+          to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should request the correct resource" do
+        @list.add("presidents", "7505382")
+        a_get("/1/account/verify_credentials.json").
+          should have_been_made
+        a_post("/1/lists/members/create_all.json").
+          with(:body => {:user_id => "7505382", :slug => "presidents", :owner_screen_name => "sferik"}).
+          should have_been_made
+      end
     end
     context "Twitter is down" do
       it "should retry 3 times and then raise an error" do
         stub_post("/1/lists/members/create_all.json").
-          with(:body => {:screen_name => "sferik", :slug => "presidents", :owner_screen_name => "sferik"}).
+          with(:body => {:screen_name => "BarackObama", :slug => "presidents", :owner_screen_name => "sferik"}).
           to_return(:status => 502)
         lambda do
-          @list.add("presidents", "sferik")
+          @list.add("presidents", "BarackObama")
         end.should raise_error("Twitter is down or being upgraded.")
         a_post("/1/lists/members/create_all.json").
-          with(:body => {:screen_name => "sferik", :slug => "presidents", :owner_screen_name => "sferik"}).
+          with(:body => {:screen_name => "BarackObama", :slug => "presidents", :owner_screen_name => "sferik"}).
           should have_been_made.times(3)
       end
     end
@@ -167,7 +183,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
         $stdout.string.chomp.rstrip.should == "@sferik    @pengwynn"
       end
     end
-    context "with a screen name passed" do
+    context "with a user passed" do
       before do
         stub_get("/1/lists/members.json").
           with(:query => {:cursor => "-1", :include_entities => "false", :owner_screen_name => "sferik", :skip_status => "true", :slug => "presidents"}).
@@ -180,8 +196,22 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
           should have_been_made
       end
       it "should have the correct output" do
-        @list.members("presidents")
+        @list.members("sferik", "presidents")
         $stdout.string.chomp.rstrip.should == "@pengwynn  @sferik"
+      end
+      context "--id" do
+        before do
+          @list.options = @list.options.merge(:id => true)
+          stub_get("/1/lists/members.json").
+            with(:query => {:cursor => "-1", :include_entities => "false", :owner_id => "7505382", :skip_status => "true", :slug => "presidents"}).
+            to_return(:body => fixture("users_list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        end
+        it "should request the correct resource" do
+          @list.members("7505382", "presidents")
+          a_get("/1/lists/members.json").
+            with(:query => {:cursor => "-1", :include_entities => "false", :owner_id => "7505382", :skip_status => "true", :slug => "presidents"}).
+            should have_been_made
+        end
       end
     end
   end
@@ -194,32 +224,48 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
     end
     it "should request the correct resource" do
       stub_post("/1/lists/members/destroy_all.json").
-        with(:body => {:screen_name => "sferik", :slug => "presidents", :owner_screen_name => "sferik"}).
+        with(:body => {:screen_name => "BarackObama", :slug => "presidents", :owner_screen_name => "sferik"}).
         to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      @list.remove("presidents", "sferik")
+      @list.remove("presidents", "BarackObama")
       a_get("/1/account/verify_credentials.json").
         should have_been_made
       a_post("/1/lists/members/destroy_all.json").
-        with(:body => {:screen_name => "sferik", :slug => "presidents", :owner_screen_name => "sferik"}).
+        with(:body => {:screen_name => "BarackObama", :slug => "presidents", :owner_screen_name => "sferik"}).
         should have_been_made
     end
     it "should have the correct output" do
       stub_post("/1/lists/members/destroy_all.json").
-        with(:body => {:screen_name => "sferik", :slug => "presidents", :owner_screen_name => "sferik"}).
+        with(:body => {:screen_name => "BarackObama", :slug => "presidents", :owner_screen_name => "sferik"}).
         to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      @list.remove("presidents", "sferik")
+      @list.remove("presidents", "BarackObama")
       $stdout.string.should =~ /@testcli removed 1 member from the list "presidents"\./
+    end
+    context "--id" do
+      before do
+        @list.options = @list.options.merge(:id => true)
+        stub_post("/1/lists/members/destroy_all.json").
+          with(:body => {:user_id => "7505382", :slug => "presidents", :owner_screen_name => "sferik"}).
+          to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should request the correct resource" do
+        @list.remove("presidents", "7505382")
+        a_get("/1/account/verify_credentials.json").
+          should have_been_made
+        a_post("/1/lists/members/destroy_all.json").
+          with(:body => {:user_id => "7505382", :slug => "presidents", :owner_screen_name => "sferik"}).
+          should have_been_made
+      end
     end
     context "Twitter is down" do
       it "should retry 3 times and then raise an error" do
         stub_post("/1/lists/members/destroy_all.json").
-          with(:body => {:screen_name => "sferik", :slug => "presidents", :owner_screen_name => "sferik"}).
+          with(:body => {:screen_name => "BarackObama", :slug => "presidents", :owner_screen_name => "sferik"}).
           to_return(:status => 502)
         lambda do
-          @list.remove("presidents", "sferik")
+          @list.remove("presidents", "BarackObama")
         end.should raise_error("Twitter is down or being upgraded.")
         a_post("/1/lists/members/destroy_all.json").
-          with(:body => {:screen_name => "sferik", :slug => "presidents", :owner_screen_name => "sferik"}).
+          with(:body => {:screen_name => "BarackObama", :slug => "presidents", :owner_screen_name => "sferik"}).
           should have_been_made.times(3)
       end
     end
@@ -328,7 +374,7 @@ ID                  Posted at     Screen name    Text
         eos
       end
     end
-    context "with a screen name passed" do
+    context "with a user passed" do
       before do
         stub_get("/1/lists/statuses.json").
           with(:query => {:owner_screen_name => "sferik", :per_page => "20", :slug => "presidents", :include_entities => "false"}).
@@ -361,6 +407,20 @@ ID                  Posted at     Screen name    Text
            hoverbird: @shinypb @trammell it's all suck a "duck blur" sometimes. (7 months ago)
         kelseysilver: San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 92 others) http://t.co/eoLANJZw (7 months ago)
         eos
+      end
+      context "--id" do
+        before do
+          @list.options = @list.options.merge(:id => true)
+          stub_get("/1/lists/statuses.json").
+            with(:query => {:owner_id => "7505382", :per_page => "20", :slug => "presidents", :include_entities => "false"}).
+            to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        end
+        it "should request the correct resource" do
+          @list.timeline("7505382", "presidents")
+          a_get("/1/lists/statuses.json").
+            with(:query => {:owner_id => "7505382", :per_page => "20", :slug => "presidents", :include_entities => "false"}).
+            should have_been_made
+        end
       end
     end
   end

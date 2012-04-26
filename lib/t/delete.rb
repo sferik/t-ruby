@@ -44,7 +44,7 @@ module T
         say "@#{@rcfile.default_profile[0]} deleted the direct message sent to @#{direct_message.recipient.screen_name}: \"#{direct_message.text}\""
       end
     end
-    map %w(m) => :dm
+    map %w(d m) => :dm
 
     desc "favorite STATUS_ID [STATUS_ID...]", "Delete favorites."
     def favorite(status_id, *status_ids)
@@ -59,7 +59,7 @@ module T
         say "@#{@rcfile.default_profile[0]} unfavorited @#{status.user.screen_name}'s status: \"#{status.text}\""
       end
     end
-    map %w(post tweet update) => :status
+    map %w(fave favourite) => :favorite
 
     desc "list LIST_NAME", "Delete a list."
     def list(list_name)

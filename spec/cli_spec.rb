@@ -457,10 +457,6 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
           with(:query => {:user_id => "213747670,428004849", :include_entities => "false"}).
           should have_been_made
       end
-      it "should have the correct output" do
-        @cli.disciples("sferik")
-        $stdout.string.rstrip.should == "@pengwynn  @sferik"
-      end
       context "--id" do
         before do
           @cli.options = @cli.options.merge(:id => true)
@@ -806,28 +802,6 @@ ID                  Posted at     Screen name    Text
           with(:query => {:count => "20", :include_entities => "false"}).
           should have_been_made
       end
-      it "should have the correct output" do
-        @cli.favorites("sferik")
-        $stdout.string.should == <<-eos
-        natevillegas: RT @gelobautista #riordan RT @WilI_Smith: Yesterday is history. Tomorrow is a mystery. Today is a gift. That's why it's called the present. (7 months ago)
-                  TD: @kelseysilver how long will you be in town? (7 months ago)
-            rusashka: @maciej hahaha :) @gpena together we're going to cover all core 28 languages! (7 months ago)
-                 fat: @stevej @xc i'm going to picket when i get back. (7 months ago)
-                 wil: @0x9900 @paulnivin http://t.co/bwVdtAPe (7 months ago)
-            wangtian: @tianhonghe @xiangxin72 oh, you can even order specific items? (7 months ago)
-             shinypb: @kpk Pfft, I think you're forgetting mechanical television, which depended on a clever German. http://t.co/JvLNQCDm @skilldrick @hoverbird (7 months ago)
-              0x9900: @wil @paulnivin if you want to take you seriously don't say daemontools! (7 months ago)
-                 kpk: @shinypb @skilldrick @hoverbird invented it (7 months ago)
-          skilldrick: @shinypb Well played :) @hoverbird (7 months ago)
-                 sam: Can someone project the date that I'll get a 27" retina display? (7 months ago)
-             shinypb: @skilldrick @hoverbird Wow, I didn't even know they *had* TV in Britain. (7 months ago)
-               bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
-          skilldrick: @hoverbird @shinypb You guys must be soooo old, I don't remember the words to the duck tales intro at all. (7 months ago)
-                sean: @mep Thanks for coming by. Was great to have you. (7 months ago)
-           hoverbird: @shinypb @trammell it's all suck a "duck blur" sometimes. (7 months ago)
-        kelseysilver: San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 92 others) http://t.co/eoLANJZw (7 months ago)
-        eos
-      end
       context "--id" do
         before do
           @cli.options = @cli.options.merge(:id => true)
@@ -1031,10 +1005,6 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
           with(:query => {:user_id => "7505382", :include_entities => "false"}).
           should have_been_made
       end
-      it "should have the correct output" do
-        @cli.followings("sferik")
-        $stdout.string.rstrip.should == "@pengwynn  @sferik"
-      end
     end
     context "--id" do
       before do
@@ -1192,10 +1162,6 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
         a_get("/1/users/lookup.json").
           with(:query => {:user_id => "7505382", :include_entities => "false"}).
           should have_been_made
-      end
-      it "should have the correct output" do
-        @cli.followers("sferik")
-        $stdout.string.rstrip.should == "@pengwynn  @sferik"
       end
       context "--id" do
         before do
@@ -1363,10 +1329,6 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
         a_get("/1/users/lookup.json").
           with(:query => {:user_id => "7505382", :include_entities => "false"}).
           should have_been_made
-      end
-      it "should have the correct output" do
-        @cli.friends("sferik")
-        $stdout.string.rstrip.should == "@pengwynn  @sferik"
       end
       context "--id" do
         before do
@@ -1540,10 +1502,6 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
         a_get("/1/users/lookup.json").
           with(:query => {:user_id => "7505382", :include_entities => "false"}).
           should have_been_made
-      end
-      it "should have the correct output" do
-        @cli.leaders("sferik")
-        $stdout.string.rstrip.should == "@pengwynn  @sferik"
       end
       context "--id" do
         before do
@@ -1998,28 +1956,6 @@ ID                  Posted at     Screen name    Text
           with(:query => {:count => "20", :include_entities => "false", :screen_name => "sferik"}).
           should have_been_made
       end
-      it "should have the correct output" do
-        @cli.retweets("sferik")
-        $stdout.string.should == <<-eos
-        natevillegas: RT @gelobautista #riordan RT @WilI_Smith: Yesterday is history. Tomorrow is a mystery. Today is a gift. That's why it's called the present. (7 months ago)
-                  TD: @kelseysilver how long will you be in town? (7 months ago)
-            rusashka: @maciej hahaha :) @gpena together we're going to cover all core 28 languages! (7 months ago)
-                 fat: @stevej @xc i'm going to picket when i get back. (7 months ago)
-                 wil: @0x9900 @paulnivin http://t.co/bwVdtAPe (7 months ago)
-            wangtian: @tianhonghe @xiangxin72 oh, you can even order specific items? (7 months ago)
-             shinypb: @kpk Pfft, I think you're forgetting mechanical television, which depended on a clever German. http://t.co/JvLNQCDm @skilldrick @hoverbird (7 months ago)
-              0x9900: @wil @paulnivin if you want to take you seriously don't say daemontools! (7 months ago)
-                 kpk: @shinypb @skilldrick @hoverbird invented it (7 months ago)
-          skilldrick: @shinypb Well played :) @hoverbird (7 months ago)
-                 sam: Can someone project the date that I'll get a 27" retina display? (7 months ago)
-             shinypb: @skilldrick @hoverbird Wow, I didn't even know they *had* TV in Britain. (7 months ago)
-               bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
-          skilldrick: @hoverbird @shinypb You guys must be soooo old, I don't remember the words to the duck tales intro at all. (7 months ago)
-                sean: @mep Thanks for coming by. Was great to have you. (7 months ago)
-           hoverbird: @shinypb @trammell it's all suck a "duck blur" sometimes. (7 months ago)
-        kelseysilver: San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 92 others) http://t.co/eoLANJZw (7 months ago)
-        eos
-      end
       context "--id" do
         before do
           @cli.options = @cli.options.merge(:id => true)
@@ -2381,28 +2317,6 @@ ID                  Posted at     Screen name    Text
         a_get("/1/statuses/user_timeline.json").
           with(:query => {:count => "20", :include_entities => "false", :screen_name => "sferik"}).
           should have_been_made
-      end
-      it "should have the correct output" do
-        @cli.timeline("sferik")
-        $stdout.string.should == <<-eos
-        natevillegas: RT @gelobautista #riordan RT @WilI_Smith: Yesterday is history. Tomorrow is a mystery. Today is a gift. That's why it's called the present. (7 months ago)
-                  TD: @kelseysilver how long will you be in town? (7 months ago)
-            rusashka: @maciej hahaha :) @gpena together we're going to cover all core 28 languages! (7 months ago)
-                 fat: @stevej @xc i'm going to picket when i get back. (7 months ago)
-                 wil: @0x9900 @paulnivin http://t.co/bwVdtAPe (7 months ago)
-            wangtian: @tianhonghe @xiangxin72 oh, you can even order specific items? (7 months ago)
-             shinypb: @kpk Pfft, I think you're forgetting mechanical television, which depended on a clever German. http://t.co/JvLNQCDm @skilldrick @hoverbird (7 months ago)
-              0x9900: @wil @paulnivin if you want to take you seriously don't say daemontools! (7 months ago)
-                 kpk: @shinypb @skilldrick @hoverbird invented it (7 months ago)
-          skilldrick: @shinypb Well played :) @hoverbird (7 months ago)
-                 sam: Can someone project the date that I'll get a 27" retina display? (7 months ago)
-             shinypb: @skilldrick @hoverbird Wow, I didn't even know they *had* TV in Britain. (7 months ago)
-               bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
-          skilldrick: @hoverbird @shinypb You guys must be soooo old, I don't remember the words to the duck tales intro at all. (7 months ago)
-                sean: @mep Thanks for coming by. Was great to have you. (7 months ago)
-           hoverbird: @shinypb @trammell it's all suck a "duck blur" sometimes. (7 months ago)
-        kelseysilver: San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 92 others) http://t.co/eoLANJZw (7 months ago)
-        eos
       end
       context "--id" do
         before do

@@ -3,6 +3,9 @@ require 'active_support/core_ext/array/grouping'
 require 'active_support/core_ext/date/calculations'
 require 'active_support/core_ext/integer/time'
 require 'active_support/core_ext/numeric/time'
+require 'csv'
+# 'fastercsv' required on Ruby versions < 1.9
+require 'fastercsv' unless Array.new.respond_to?(:to_csv)
 require 'geokit'
 require 'launchy'
 require 'oauth'
@@ -589,12 +592,12 @@ module T
     def status(status_id)
       status_id = status_id.strip_commas
       status = client.status(status_id.to_i, :include_entities => false, :include_my_retweet => false)
-      created_at = status.created_at > 6.months.ago ? status.created_at.strftime("%b %e %H:%M") : status.created_at.strftime("%b %e  %Y")
       array = []
       array << ["ID", status.id.to_s]
       array << ["Text", status.text.gsub(/\n+/, ' ')]
       array << ["Screen name", "@#{status.user.screen_name}"]
-      array << ["Posted at", created_at]
+      posted_at = status.created_at > 6.months.ago ? status.created_at.strftime("%b %e %H:%M") : status.created_at.strftime("%b %e  %Y")
+      array << ["Posted at", posted_at]
       if status.geo
         location = Geokit::Geocoders::MultiGeocoder.reverse_geocode(status.geo.coordinates)
         if location.city && location.state && location.country
@@ -605,7 +608,7 @@ module T
           array << ["Location", location.country]
         end
       end
-      array << ["Retweets", number_with_delimiter(status.retweet_count)] unless status.retweet_count.zero?
+      array << ["Retweets", number_with_delimiter(status.retweet_count)]
       array << ["Source", strip_tags(status.source)]
       array << ["URL", "https://twitter.com/#{status.user.screen_name}/status/#{status.id}"]
       print_table(array)
@@ -664,7 +667,7 @@ module T
     def trends(woe_id=1)
       opts = {}
       opts.merge!(:exclude => "hashtags") if options['exclude_hashtags']
-      trends = client.local_trends(woe_id, opts)
+      trends = client.trends(woe_id, opts)
       if STDOUT.tty?
         print_in_columns(trends.map(&:name))
       else
@@ -787,8 +790,8 @@ module T
       array << ["Bio", user.description.gsub(/\n+/, ' ')] unless user.description.nil?
       array << ["Location", user.location] unless user.location.nil?
       array << ["URL", user.url] unless user.url.nil?
-      following = user.following ? "Following" : "Not following"
-      array << ["Status", following] unless user.following.nil?
+      status = user.following ? "Following" : "Not following"
+      array << ["Status", status]
       array << ["Last update", "#{user.status.text.gsub(/\n+/, ' ')} (#{time_ago_in_words(user.status.created_at)} ago)"] unless user.status.nil?
       created_at = user.created_at > 6.months.ago ? user.created_at.strftime("%b %e %H:%M") : user.created_at.strftime("%b %e  %Y")
       array << ["Since", created_at]

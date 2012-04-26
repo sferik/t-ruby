@@ -1,4 +1,7 @@
 require 'action_view'
+require 'csv'
+# 'fastercsv' required on Ruby versions < 1.9
+require 'fastercsv' unless Array.new.respond_to?(:to_csv)
 require 'retryable'
 require 't/core_ext/enumerable'
 require 't/printable'

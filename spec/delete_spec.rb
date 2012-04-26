@@ -165,10 +165,10 @@ describe T::Delete do
       stub_get("/1/account/verify_credentials.json").
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       stub_get("/1/lists/show.json").
-        with(:query => {:owner_screen_name => 'sferik', :slug => 'presidents'}).
+        with(:query => {:owner_screen_name => "sferik", :slug => 'presidents'}).
         to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       stub_delete("/1/lists/destroy.json").
-        with(:query => {:owner_screen_name => 'sferik', :list_id => "8863586"}).
+        with(:query => {:owner_screen_name => "sferik", :list_id => "8863586"}).
         to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
@@ -178,7 +178,7 @@ describe T::Delete do
       a_get("/1/account/verify_credentials.json").
         should have_been_made
       a_delete("/1/lists/destroy.json").
-        with(:query => {:owner_screen_name => 'sferik', :list_id => "8863586"}).
+        with(:query => {:owner_screen_name => "sferik", :list_id => "8863586"}).
         should have_been_made
     end
     context "yes" do
@@ -206,7 +206,7 @@ describe T::Delete do
         a_get("/1/account/verify_credentials.json").
           should have_been_made
         a_delete("/1/lists/destroy.json").
-          with(:query => {:owner_screen_name => 'sferik', :list_id => "8863586"}).
+          with(:query => {:owner_screen_name => "sferik", :list_id => "8863586"}).
           should have_been_made
       end
       it "should have the correct output" do
@@ -218,7 +218,7 @@ describe T::Delete do
       before do
         @delete.options = @delete.options.merge(:id => true)
         stub_get("/1/lists/show.json").
-          with(:query => {:owner_screen_name => 'sferik', :list_id => "8863586"}).
+          with(:query => {:owner_screen_name => "sferik", :list_id => "8863586"}).
           to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should request the correct resource" do
@@ -226,12 +226,12 @@ describe T::Delete do
         $stdin.should_receive(:gets).and_return("yes")
         @delete.list("8863586")
         a_get("/1/lists/show.json").
-          with(:query => {:owner_screen_name => 'sferik', :list_id => "8863586"}).
+          with(:query => {:owner_screen_name => "sferik", :list_id => "8863586"}).
           should have_been_made
         a_get("/1/account/verify_credentials.json").
           should have_been_made
         a_delete("/1/lists/destroy.json").
-          with(:query => {:owner_screen_name => 'sferik', :list_id => "8863586"}).
+          with(:query => {:owner_screen_name => "sferik", :list_id => "8863586"}).
           should have_been_made
       end
     end

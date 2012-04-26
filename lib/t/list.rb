@@ -1,5 +1,8 @@
 require 'action_view'
 require 'active_support/core_ext/array/grouping'
+require 'csv'
+# 'fastercsv' required on Ruby versions < 1.9
+require 'fastercsv' unless Array.new.respond_to?(:to_csv)
 require 'retryable'
 require 't/collectable'
 require 't/core_ext/enumerable'
@@ -60,6 +63,37 @@ module T
       client.list_create(list, opts)
       say "@#{@rcfile.default_profile[0]} created the list \"#{list}\"."
     end
+
+    desc "information [USER/]LIST", "Retrieves detailed information about a Twitter list."
+    def information(list)
+      owner, list = list.split('/')
+      if list.nil?
+        list = owner
+        owner = @rcfile.default_profile[0]
+      else
+        owner = if options['id']
+          owner.to_i
+        else
+          owner.strip_ats
+        end
+      end
+      list = client.list(owner, list)
+      array = []
+      array << ["ID", list.id.to_s]
+      array << ["Description", list.description]
+      array << ["Slug", list.slug]
+      array << ["Screen name", "@#{list.user.screen_name}"]
+      created_at = list.created_at > 6.months.ago ? list.created_at.strftime("%b %e %H:%M") : list.created_at.strftime("%b %e  %Y")
+      array << ["Created at", created_at]
+      array << ["Members", number_with_delimiter(list.member_count)]
+      array << ["Subscribers", number_with_delimiter(list.subscriber_count)]
+      status = list.following ? "Following" : "Not following"
+      array << ["Status", status]
+      array << ["Mode", list.mode]
+      array << ["URL", "https://twitter.com#{list.uri}"]
+      print_table(array)
+    end
+    map %w(detail) => :information
 
     desc "members [USER/]LIST", "Returns the members of a Twitter list."
     method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."

@@ -118,8 +118,11 @@ module T
     method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
     method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     def user(user, query)
-      user = user.strip_ats
-      user = user.to_i if options['id']
+      user = if options['id']
+        user.to_i
+      else
+        user.strip_ats
+      end
       statuses = 1.upto(MAX_PAGES).threaded_map do |page|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.user_timeline(user, :page => page, :count => MAX_NUM_RESULTS).select do |status|

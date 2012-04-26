@@ -32,8 +32,11 @@ module T
     method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     def add(list, user, *users)
       users.unshift(user)
-      users.map!(&:strip_ats)
-      users.map!(&:to_i) if options['id']
+      if options['id']
+        users.map!(&:to_i)
+      else
+        users.map!(&:strip_ats)
+      end
       users.in_groups_of(MAX_USERS_PER_REQUEST, false).threaded_each do |user_id_group|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.list_add_members(list, user_id_group)
@@ -42,7 +45,11 @@ module T
       number = users.length
       say "@#{@rcfile.default_profile[0]} added #{number} #{number == 1 ? 'member' : 'members'} to the list \"#{list}\"."
       say
-      say "Run `#{File.basename($0)} list remove #{list} #{users.join(' ')}` to undo."
+      if options['id']
+        say "Run `#{File.basename($0)} list remove --id #{list} #{users.join(' ')}` to undo."
+      else
+        say "Run `#{File.basename($0)} list remove #{list} #{users.map{|user| "@#{user}"}.join(' ')}` to undo."
+      end
     end
 
     desc "create LIST [DESCRIPTION]", "Create a new list."
@@ -72,8 +79,11 @@ module T
         list = owner
         owner = @rcfile.default_profile[0]
       else
-        owner = owner.strip_ats
-        owner = owner.to_i if options['id']
+        owner = if options['id']
+          owner.to_i
+        else
+          owner.strip_ats
+        end
       end
       users = collect_with_cursor do |cursor|
         client.list_members(owner, list, :cursor => cursor, :include_entities => false, :skip_status => true)
@@ -85,8 +95,11 @@ module T
     method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     def remove(list, user, *users)
       users.unshift(user)
-      users.map!(&:strip_ats)
-      users.map!(&:to_i) if options['id']
+      if options['id']
+        users.map!(&:to_i)
+      else
+        users.map!(&:strip_ats)
+      end
       users.in_groups_of(MAX_USERS_PER_REQUEST, false).threaded_each do |user_id_group|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.list_remove_members(list, user_id_group)
@@ -95,7 +108,11 @@ module T
       number = users.length
       say "@#{@rcfile.default_profile[0]} removed #{number} #{number == 1 ? 'member' : 'members'} from the list \"#{list}\"."
       say
-      say "Run `#{File.basename($0)} list add #{list} #{users.join(' ')}` to undo."
+      if options['id']
+        say "Run `#{File.basename($0)} list add --id #{list} #{users.join(' ')}` to undo."
+      else
+        say "Run `#{File.basename($0)} list add #{list} #{users.map{|user| "@#{user}"}.join(' ')}` to undo."
+      end
     end
 
     desc "timeline [USER/]LIST", "Show tweet timeline for members of the specified list."
@@ -110,8 +127,11 @@ module T
         list = owner
         owner = @rcfile.default_profile[0]
       else
-        owner = owner.strip_ats
-        owner = owner.to_i if options['id']
+        owner = if options['id']
+          owner.to_i
+        else
+          owner.strip_ats
+        end
       end
       per_page = options['number'] || DEFAULT_NUM_RESULTS
       statuses = client.list_timeline(owner, list, :include_entities => false, :per_page => per_page)

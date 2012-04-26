@@ -540,14 +540,20 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
     context "--id" do
       before do
         @cli.options = @cli.options.merge(:id => true)
+        stub_get("/1/users/show.json").
+          with(:query => {:user_id => "7505382", :include_entities => "false"}).
+          to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         stub_get("/1/lists/members/show.json").
-          with(:query => {:owner_screen_name => "testcli", :user_id => "7505382", :slug => "presidents"}).
+          with(:query => {:owner_screen_name => "testcli", :screen_name => "sferik", :slug => "presidents"}).
           to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should request the correct resource" do
         @cli.does_contain("presidents", "7505382")
+        a_get("/1/users/show.json").
+          with(:query => {:user_id => "7505382", :include_entities => "false"}).
+          should have_been_made
         a_get("/1/lists/members/show.json").
-          with(:query => {:owner_screen_name => "testcli", :user_id => "7505382", :slug => "presidents"}).
+          with(:query => {:owner_screen_name => "testcli", :screen_name => "sferik", :slug => "presidents"}).
           should have_been_made
       end
     end
@@ -564,10 +570,12 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
       end
     end
     context "false" do
-      it "should exit" do
+      before do
         stub_get("/1/lists/members/show.json").
           with(:query => {:owner_screen_name => "testcli", :screen_name => "testcli", :slug => "presidents"}).
           to_return(:body => fixture("not_found.json"), :status => 404, :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should exit" do
         lambda do
           @cli.does_contain("presidents")
         end.should raise_error(SystemExit)
@@ -598,14 +606,20 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
     context "--id" do
       before do
         @cli.options = @cli.options.merge(:id => true)
+        stub_get("/1/users/show.json").
+          with(:query => {:user_id => "20", :include_entities => "false"}).
+          to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         stub_get("/1/friendships/exists.json").
-          with(:query => {:user_a => "20", :user_b => "testcli"}).
+          with(:query => {:user_a => "sferik", :user_b => "testcli"}).
           to_return(:body => fixture("true.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should request the correct resource" do
         @cli.does_follow("20")
+        a_get("/1/users/show.json").
+          with(:query => {:user_id => "20", :include_entities => "false"}).
+          should have_been_made
         a_get("/1/friendships/exists.json").
-          with(:query => {:user_a => "20", :user_b => "testcli"}).
+          with(:query => {:user_a => "sferik", :user_b => "testcli"}).
           should have_been_made
       end
     end
@@ -616,10 +630,12 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
       end
     end
     context "false" do
-      it "should exit" do
+      before do
         stub_get("/1/friendships/exists.json").
           with(:query => {:user_a => "ev", :user_b => "testcli"}).
           to_return(:body => fixture("false.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should exit" do
         lambda do
           @cli.does_follow("ev")
         end.should raise_error(SystemExit)

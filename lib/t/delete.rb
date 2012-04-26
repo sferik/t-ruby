@@ -1,3 +1,4 @@
+require 't/core_ext/enumerable'
 require 't/core_ext/string'
 require 't/rcfile'
 require 't/requestable'
@@ -19,9 +20,12 @@ module T
     method_option :force, :aliases => "-f", :type => :boolean, :default => false
     def block(user, *users)
       users.unshift(user)
-      users.map!(&:strip_ats)
-      users.map!(&:to_i) if options['id']
-      users.threaded_each do |user|
+      if options['id']
+        users.map!(&:to_i)
+      else
+        users.map!(&:strip_ats)
+      end
+      users = users.threaded_map do |user|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.unblock(user, :include_entities => false)
         end
@@ -29,7 +33,7 @@ module T
       number = users.length
       say "@#{@rcfile.default_profile[0]} unblocked #{number} #{number == 1 ? 'user' : 'users'}."
       say
-      say "Run `#{File.basename($0)} block #{users.map{|user| "@#{user}"}.join(' ')}` to block."
+      say "Run `#{File.basename($0)} block #{users.map{|user| "@#{user.screen_name}"}.join(' ')}` to block."
     end
 
     desc "dm [DIRECT_MESSAGE_ID] [DIRECT_MESSAGE_ID...]", "Delete the last Direct Message sent."

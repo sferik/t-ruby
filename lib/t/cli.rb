@@ -105,9 +105,12 @@ module T
     method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     def block(user, *users)
       users.unshift(user)
-      users.map!(&:strip_ats)
-      users.map!(&:to_i) if options['id']
-      users.threaded_each do |user|
+      if options['id']
+        users.map!(&:to_i)
+      else
+        users.map!(&:strip_ats)
+      end
+      users = users.threaded_map do |user|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.block(user, :include_entities => false)
         end
@@ -115,7 +118,7 @@ module T
       number = users.length
       say "@#{@rcfile.default_profile[0]} blocked #{number} #{number == 1 ? 'user' : 'users'}."
       say
-      say "Run `#{File.basename($0)} delete block #{users.map{|user| "@#{user}"}.join(' ')}` to unblock."
+      say "Run `#{File.basename($0)} delete block #{users.map{|user| "@#{user.screen_name}"}.join(' ')}` to unblock."
     end
 
     desc "direct_messages", "Returns the #{DEFAULT_NUM_RESULTS} most recent Direct Messages sent to you."
@@ -196,8 +199,11 @@ module T
     method_option :unsorted, :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
     def disciples(user=nil)
       if user
-        user = user.strip_ats
-        user = user.to_i if options['id']
+        user = if options['id']
+          user.to_i
+        else
+          user.strip_ats
+        end
       end
       follower_ids = collect_with_cursor do |cursor|
         client.follower_ids(user, :cursor => cursor)
@@ -217,8 +223,11 @@ module T
     desc "dm USER MESSAGE", "Sends that person a Direct Message."
     method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
     def dm(user, message)
-      user = user.strip_ats
-      user = user.to_i if options['id']
+      user = if options['id']
+        user.to_i
+      else
+        user.strip_ats
+      end
       direct_message = client.direct_message_create(user, message, :include_entities => false)
       say "Direct Message sent from @#{@rcfile.default_profile[0]} to @#{direct_message.recipient.screen_name} (#{time_ago_in_words(direct_message.created_at)} ago)."
     end
@@ -232,14 +241,20 @@ module T
         list = owner
         owner = @rcfile.default_profile[0]
       else
-        owner = owner.strip_ats
-        owner = owner.to_i if options['id']
+        owner = if options['id']
+          client.user(owner.to_i, :include_entities => false).screen_name
+        else
+          owner.strip_ats
+        end
       end
       if user.nil?
         user = @rcfile.default_profile[0]
       else
-        user = user.strip_ats
-        user = user.to_i if options['id']
+        user = if options['id']
+          user = client.user(user.to_i, :include_entities => false).screen_name
+        else
+          user.strip_ats
+        end
       end
       if client.list_member?(owner, list, user)
         say "Yes, @#{owner}/#{list} contains @#{user}."
@@ -253,13 +268,19 @@ module T
     desc "does_follow USER [USER]", "Find out whether one user follows another."
     method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
     def does_follow(user1, user2=nil)
-      user1 = user1.strip_ats
-      user1 = user1.to_i if options['id']
+      user1 = if options['id']
+        client.user(user1.to_i, :include_entities => false).screen_name
+      else
+        user1.strip_ats
+      end
       if user2.nil?
         user2 = @rcfile.default_profile[0]
       else
-        user2 = user2.strip_ats
-        user2 = user2.to_i if options['id']
+        user2 = if options['id']
+          client.user(user2.to_i, :include_entities => false).screen_name
+        else
+          user2.strip_ats
+        end
       end
       if client.friendship?(user1, user2)
         say "Yes, @#{user1} follows @#{user2}."
@@ -294,8 +315,11 @@ module T
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     def favorites(user=nil)
       if user
-        user = user.strip_ats
-        user = user.to_i if options['id']
+        user = if options['id']
+          user.to_i
+        else
+          user.strip_ats
+        end
       end
       count = options['number'] || DEFAULT_NUM_RESULTS
       statuses = client.favorites(user, :count => count, :include_entities => false)
@@ -307,9 +331,12 @@ module T
     method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     def follow(user, *users)
       users.unshift(user)
-      users.map!(&:strip_ats)
-      users.map!(&:to_i) if options['id']
-      users.threaded_each do |user|
+      if options['id']
+        users.map!(&:to_i)
+      else
+        users.map!(&:strip_ats)
+      end
+      users = users.threaded_map do |user|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.follow(user, :include_entities => false)
         end
@@ -317,7 +344,7 @@ module T
       number = users.length
       say "@#{@rcfile.default_profile[0]} is now following #{number} more #{number == 1 ? 'user' : 'users'}."
       say
-      say "Run `#{File.basename($0)} unfollow #{users.map{|user| "@#{user}"}.join(' ')}` to stop."
+      say "Run `#{File.basename($0)} unfollow #{users.map{|user| "@#{user.screen_name}"}.join(' ')}` to stop."
     end
 
     desc "followings [USER]", "Returns a list of the people you follow on Twitter."
@@ -334,8 +361,11 @@ module T
     method_option :unsorted, :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
     def followings(user=nil)
       if user
-        user = user.strip_ats
-        user = user.to_i if options['id']
+        user = if options['id']
+          user.to_i
+        else
+          user.strip_ats
+        end
       end
       following_ids = collect_with_cursor do |cursor|
         client.friend_ids(user, :cursor => cursor)
@@ -362,8 +392,11 @@ module T
     method_option :unsorted, :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
     def followers(user=nil)
       if user
-        user = user.strip_ats
-        user = user.to_i if options['id']
+        user = if options['id']
+          user.to_i
+        else
+          user.strip_ats
+        end
       end
       follower_ids = collect_with_cursor do |cursor|
         client.follower_ids(user, :cursor => cursor)
@@ -390,8 +423,11 @@ module T
     method_option :unsorted, :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
     def friends(user=nil)
       if user
-        user = user.strip_ats
-        user = user.to_i if options['id']
+        user = if options['id']
+          user.to_i
+        else
+          user.strip_ats
+        end
       end
       following_ids = collect_with_cursor do |cursor|
         client.friend_ids(user, :cursor => cursor)
@@ -422,8 +458,11 @@ module T
     method_option :unsorted, :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
     def leaders(user=nil)
       if user
-        user = user.strip_ats
-        user = user.to_i if options['id']
+        user = if options['id']
+          user.to_i
+        else
+          user.strip_ats
+        end
       end
       following_ids = collect_with_cursor do |cursor|
         client.friend_ids(user, :cursor => cursor)
@@ -457,7 +496,6 @@ module T
     method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
     method_option :status, :aliases => "-s", :type => :boolean, :default => false, :desc => "Specify input as a Twitter status ID instead of a screen name."
     def open(user)
-      user = user.strip_ats
       if options['id']
         user = client.user(user.to_i, :include_entities => false)
         Launchy.open("https://twitter.com/#{user.screen_name}", :dry_run => options.fetch('dry_run', false))
@@ -465,7 +503,7 @@ module T
         status = client.status(user.to_i, :include_entities => false, :include_my_retweet => false)
         Launchy.open("https://twitter.com/#{status.user.screen_name}/status/#{status.id}", :dry_run => options.fetch('dry_run', false))
       else
-        Launchy.open("https://twitter.com/#{user}", :dry_run => options.fetch('dry_run', false))
+        Launchy.open("https://twitter.com/#{user.strip_ats}", :dry_run => options.fetch('dry_run', false))
       end
     end
 
@@ -491,9 +529,12 @@ module T
     method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     def report_spam(user, *users)
       users.unshift(user)
-      users.map!(&:strip_ats)
-      users.map!(&:to_i) if options['id']
-      users.threaded_each do |user|
+      if options['id']
+        users.map!(&:to_i)
+      else
+        users.map!(&:strip_ats)
+      end
+      users = users.threaded_map do |user|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.report_spam(user, :include_entities => false)
         end
@@ -527,8 +568,11 @@ module T
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     def retweets(user=nil)
       if user
-        user = user.strip_ats
-        user = user.to_i if options['id']
+        user = if options['id']
+          user.to_i
+        else
+          user.strip_ats
+        end
       end
       count = options['number'] || DEFAULT_NUM_RESULTS
       statuses = client.retweeted_by(user, :count => count, :include_entities => false)
@@ -582,8 +626,11 @@ module T
     method_option :unsorted, :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
     def suggest(user=nil)
       if user
-        user = user.strip_ats
-        user = user.to_i if options['id']
+        user = if options['id']
+          user.to_i
+        else
+          user.strip_ats
+        end
       end
       limit = options['number'] || DEFAULT_NUM_RESULTS
       users = client.recommendations(user, :limit => limit, :include_entities => false)
@@ -599,8 +646,11 @@ module T
     def timeline(user=nil)
       count = options['number'] || DEFAULT_NUM_RESULTS
       if user
-        user = user.strip_ats
-        user = user.to_i if options['id']
+        user = if options['id']
+          user.to_i
+        else
+          user.strip_ats
+        end
         statuses = client.user_timeline(user, :count => count, :include_entities => false)
       else
         statuses = client.home_timeline(:count => count, :include_entities => false)
@@ -663,9 +713,12 @@ module T
     method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     def unfollow(user, *users)
       users.unshift(user)
-      users.map!(&:strip_ats)
-      users.map!(&:to_i) if options['id']
-      users.threaded_each do |user|
+      if options['id']
+        users.map!(&:to_i)
+      else
+        users.map!(&:strip_ats)
+      end
+      users = users.threaded_map do |user|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.unfollow(user, :include_entities => false)
         end
@@ -673,7 +726,7 @@ module T
       number = users.length
       say "@#{@rcfile.default_profile[0]} is no longer following #{number} #{number == 1 ? 'user' : 'users'}."
       say
-      say "Run `#{File.basename($0)} follow #{users.map{|user| "@#{user}"}.join(' ')}` to follow again."
+      say "Run `#{File.basename($0)} follow #{users.map{|user| "@#{user.screen_name}"}.join(' ')}` to follow again."
     end
 
     desc "update MESSAGE", "Post a Tweet."
@@ -702,8 +755,11 @@ module T
     method_option :unsorted, :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
     def users(user, *users)
       users.unshift(user)
-      users.map!(&:strip_ats)
-      users.map!(&:to_i) if options['id']
+      if options['id']
+        users.map!(&:to_i)
+      else
+        users.map!(&:strip_ats)
+      end
       users = client.users(users, :include_entities => false)
       print_user_list(users)
     end
@@ -718,8 +774,11 @@ module T
     desc "whois USER", "Retrieves profile information for the user."
     method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
     def whois(user)
-      user = user.strip_ats
-      user = user.to_i if options['id']
+      user = if options['id']
+        user.to_i
+      else
+        user.strip_ats
+      end
       user = client.user(user, :include_entities => false)
       array = []
       name_label = user.verified ? "Name (Verified)" : "Name"
@@ -740,6 +799,7 @@ module T
       array << ["Followers", number_with_delimiter(user.followers_count)]
       print_table(array)
     end
+    map %w(user) => :whois
 
     desc "delete SUBCOMMAND ...ARGS", "Delete Tweets, Direct Messages, etc."
     subcommand 'delete', T::Delete

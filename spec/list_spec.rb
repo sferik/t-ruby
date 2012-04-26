@@ -199,13 +199,13 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
           to_return(:body => fixture("users_list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should request the correct resource" do
-        @list.members("sferik", "presidents")
+        @list.members("sferik/presidents")
         a_get("/1/lists/members.json").
           with(:query => {:cursor => "-1", :include_entities => "false", :owner_screen_name => "sferik", :skip_status => "true", :slug => "presidents"}).
           should have_been_made
       end
       it "should have the correct output" do
-        @list.members("sferik", "presidents")
+        @list.members("sferik/presidents")
         $stdout.string.rstrip.should == "@pengwynn  @sferik"
       end
       context "--id" do
@@ -216,7 +216,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
             to_return(:body => fixture("users_list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         end
         it "should request the correct resource" do
-          @list.members("7505382", "presidents")
+          @list.members("7505382/presidents")
           a_get("/1/lists/members.json").
             with(:query => {:cursor => "-1", :include_entities => "false", :owner_id => "7505382", :skip_status => "true", :slug => "presidents"}).
             should have_been_made
@@ -390,13 +390,13 @@ ID                  Posted at     Screen name    Text
           to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should request the correct resource" do
-        @list.timeline("sferik", "presidents")
+        @list.timeline("sferik/presidents")
         a_get("/1/lists/statuses.json").
           with(:query => {:owner_screen_name => "sferik", :per_page => "20", :slug => "presidents", :include_entities => "false"}).
           should have_been_made
       end
       it "should have the correct output" do
-        @list.timeline("sferik", "presidents")
+        @list.timeline("sferik/presidents")
         $stdout.string.should == <<-eos
         natevillegas: RT @gelobautista #riordan RT @WilI_Smith: Yesterday is history. Tomorrow is a mystery. Today is a gift. That's why it's called the present. (7 months ago)
                   TD: @kelseysilver how long will you be in town? (7 months ago)
@@ -425,7 +425,7 @@ ID                  Posted at     Screen name    Text
             to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         end
         it "should request the correct resource" do
-          @list.timeline("7505382", "presidents")
+          @list.timeline("7505382/presidents")
           a_get("/1/lists/statuses.json").
             with(:query => {:owner_id => "7505382", :per_page => "20", :slug => "presidents", :include_entities => "false"}).
             should have_been_made

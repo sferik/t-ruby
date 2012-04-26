@@ -54,7 +54,7 @@ module T
       say "@#{@rcfile.default_profile[0]} created the list \"#{list_name}\"."
     end
 
-    desc "members [SCREEN_NAME] LIST_NAME", "Returns the members of a Twitter list."
+    desc "members [SCREEN_NAME/]LIST_NAME", "Returns the members of a Twitter list."
     method_option :created, :aliases => "-c", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter acount was created."
     method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by total number of favorites."
     method_option :followers, :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by total number of followers."
@@ -65,13 +65,14 @@ module T
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     method_option :tweets, :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by total number of Tweets."
     method_option :unsorted, :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
-    def members(*args)
-      list = args.pop
-      owner = args.pop || @rcfile.default_profile[0]
+    def members(list)
+      list = list.split('/')
+      list_name = list.pop
+      owner = list.pop || @rcfile.default_profile[0]
       owner = owner.strip_ats
       owner = owner.to_i if options['id']
       users = collect_with_cursor do |cursor|
-        client.list_members(owner, list, :cursor => cursor, :include_entities => false, :skip_status => true)
+        client.list_members(owner, list_name, :cursor => cursor, :include_entities => false, :skip_status => true)
       end
       print_user_list(users)
     end
@@ -93,18 +94,19 @@ module T
       say "Run `#{File.basename($0)} list add #{list_name} #{screen_names.join(' ')}` to undo."
     end
 
-    desc "timeline [SCREEN_NAME] LIST_NAME", "Show tweet timeline for members of the specified list."
+    desc "timeline [SCREEN_NAME/]LIST_NAME", "Show tweet timeline for members of the specified list."
     method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as a Twitter user ID instead of a screen name."
     method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "List in long format."
     method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => "Limit the number of results."
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
-    def timeline(*args)
-      list = args.pop
-      owner = args.pop || @rcfile.default_profile[0]
+    def timeline(list)
+      list = list.split('/')
+      list_name = list.pop
+      owner = list.pop || @rcfile.default_profile[0]
       owner = owner.strip_ats
       owner = owner.to_i if options['id']
       per_page = options['number'] || DEFAULT_NUM_RESULTS
-      statuses = client.list_timeline(owner, list, :include_entities => false, :per_page => per_page)
+      statuses = client.list_timeline(owner, list_name, :include_entities => false, :per_page => per_page)
       print_status_list(statuses)
     end
     map %w(tl) => :timeline

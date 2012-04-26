@@ -107,15 +107,6 @@ describe T::List do
       @list.members("presidents")
       $stdout.string.rstrip.should == "@pengwynn  @sferik"
     end
-    context "--created" do
-      before do
-        @list.options = @list.options.merge(:created => true)
-      end
-      it "should sort by the time wshen Twitter account was created" do
-        @list.members("presidents")
-        $stdout.string.rstrip.should == "@sferik    @pengwynn"
-      end
-    end
     context "--favorites" do
       before do
         @list.options = @list.options.merge(:favorites => true)
@@ -163,6 +154,15 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
 14100886  Mar  8  2008  3,913   32         185     1,871      2,767      @pengwynn    Wynn Netherland
 7505382   Jul 16  2007  2,962   727        29      88         898        @sferik      Erik Michaels-Ober
         eos
+      end
+    end
+    context "--posted" do
+      before do
+        @list.options = @list.options.merge(:posted => true)
+      end
+      it "should sort by the time wshen Twitter account was created" do
+        @list.members("presidents")
+        $stdout.string.rstrip.should == "@sferik    @pengwynn"
       end
     end
     context "--reverse" do

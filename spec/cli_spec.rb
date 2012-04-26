@@ -296,15 +296,6 @@ ID          Posted at     Screen name  Text
       @cli.disciples
       $stdout.string.rstrip.should == "@pengwynn  @sferik"
     end
-    context "--created" do
-      before do
-        @cli.options = @cli.options.merge(:created => true)
-      end
-      it "should sort by the time when Twitter acount was created" do
-        @cli.disciples
-        $stdout.string.rstrip.should == "@sferik    @pengwynn"
-      end
-    end
     context "--favorites" do
       before do
         @cli.options = @cli.options.merge(:favorites => true)
@@ -352,6 +343,15 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
 14100886  Mar  8  2008  3,913   32         185     1,871      2,767      @pengwynn    Wynn Netherland
 7505382   Jul 16  2007  2,962   727        29      88         898        @sferik      Erik Michaels-Ober
         eos
+      end
+    end
+    context "--posted" do
+      before do
+        @cli.options = @cli.options.merge(:posted => true)
+      end
+      it "should sort by the time when Twitter acount was created" do
+        @cli.disciples
+        $stdout.string.rstrip.should == "@sferik    @pengwynn"
       end
     end
     context "--reverse" do
@@ -716,15 +716,6 @@ ID                  Posted at     Screen name    Text
       @cli.followings
       $stdout.string.rstrip.should == "@pengwynn  @sferik"
     end
-    context "--created" do
-      before do
-        @cli.options = @cli.options.merge(:created => true)
-      end
-      it "should sort by the time when Twitter acount was created" do
-        @cli.followings
-        $stdout.string.rstrip.should == "@sferik    @pengwynn"
-      end
-    end
     context "--favorites" do
       before do
         @cli.options = @cli.options.merge(:favorites => true)
@@ -772,6 +763,15 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
 14100886  Mar  8  2008  3,913   32         185     1,871      2,767      @pengwynn    Wynn Netherland
 7505382   Jul 16  2007  2,962   727        29      88         898        @sferik      Erik Michaels-Ober
         eos
+      end
+    end
+    context "--posted" do
+      before do
+        @cli.options = @cli.options.merge(:posted => true)
+      end
+      it "should sort by the time when Twitter acount was created" do
+        @cli.followings
+        $stdout.string.rstrip.should == "@sferik    @pengwynn"
       end
     end
     context "--reverse" do
@@ -862,15 +862,6 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
       @cli.followers
       $stdout.string.rstrip.should == "@pengwynn  @sferik"
     end
-    context "--created" do
-      before do
-        @cli.options = @cli.options.merge(:created => true)
-      end
-      it "should sort by the time when Twitter acount was created" do
-        @cli.followers
-        $stdout.string.rstrip.should == "@sferik    @pengwynn"
-      end
-    end
     context "--favorites" do
       before do
         @cli.options = @cli.options.merge(:favorites => true)
@@ -918,6 +909,15 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
 14100886  Mar  8  2008  3,913   32         185     1,871      2,767      @pengwynn    Wynn Netherland
 7505382   Jul 16  2007  2,962   727        29      88         898        @sferik      Erik Michaels-Ober
         eos
+      end
+    end
+    context "--posted" do
+      before do
+        @cli.options = @cli.options.merge(:posted => true)
+      end
+      it "should sort by the time when Twitter acount was created" do
+        @cli.followers
+        $stdout.string.rstrip.should == "@sferik    @pengwynn"
       end
     end
     context "--reverse" do
@@ -1017,15 +1017,6 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
       @cli.friends
       $stdout.string.rstrip.should == "@pengwynn  @sferik"
     end
-    context "--created" do
-      before do
-        @cli.options = @cli.options.merge(:created => true)
-      end
-      it "should sort by the time when Twitter acount was created" do
-        @cli.friends
-        $stdout.string.rstrip.should == "@sferik    @pengwynn"
-      end
-    end
     context "--favorites" do
       before do
         @cli.options = @cli.options.merge(:favorites => true)
@@ -1073,6 +1064,15 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
 14100886  Mar  8  2008  3,913   32         185     1,871      2,767      @pengwynn    Wynn Netherland
 7505382   Jul 16  2007  2,962   727        29      88         898        @sferik      Erik Michaels-Ober
         eos
+      end
+    end
+    context "--posted" do
+      before do
+        @cli.options = @cli.options.merge(:posted => true)
+      end
+      it "should sort by the time when Twitter acount was created" do
+        @cli.friends
+        $stdout.string.rstrip.should == "@sferik    @pengwynn"
       end
     end
     context "--reverse" do
@@ -1181,15 +1181,6 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
       @cli.leaders
       $stdout.string.rstrip.should == "@pengwynn  @sferik"
     end
-    context "--created" do
-      before do
-        @cli.options = @cli.options.merge(:created => true)
-      end
-      it "should sort by the time when Twitter acount was created" do
-        @cli.leaders
-        $stdout.string.rstrip.should == "@sferik    @pengwynn"
-      end
-    end
     context "--favorites" do
       before do
         @cli.options = @cli.options.merge(:favorites => true)
@@ -1237,6 +1228,15 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
 14100886  Mar  8  2008  3,913   32         185     1,871      2,767      @pengwynn    Wynn Netherland
 7505382   Jul 16  2007  2,962   727        29      88         898        @sferik      Erik Michaels-Ober
         eos
+      end
+    end
+    context "--posted" do
+      before do
+        @cli.options = @cli.options.merge(:posted => true)
+      end
+      it "should sort by the time when Twitter acount was created" do
+        @cli.leaders
+        $stdout.string.rstrip.should == "@sferik    @pengwynn"
       end
     end
     context "--reverse" do
@@ -1781,15 +1781,6 @@ URL          https://twitter.com/sferik/status/55709764298092545
       @cli.suggest
       $stdout.string.rstrip.should == "@antpires     @jtrupiano    @maccman      @mlroach      @stuntmann82"
     end
-    context "--created" do
-      before do
-        @cli.options = @cli.options.merge(:created => true)
-      end
-      it "should sort by the time when Twitter acount was created" do
-        @cli.suggest
-        $stdout.string.rstrip.should == "@maccman      @mlroach      @jtrupiano    @stuntmann82  @antpires"
-      end
-    end
     context "--favorites" do
       before do
         @cli.options = @cli.options.merge(:favorites => true)
@@ -1854,6 +1845,15 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
         a_get("/1/users/recommendations.json").
           with(:query => {:limit => "1", :include_entities => "false", :screen_name => "sferik"}).
           should have_been_made
+      end
+    end
+    context "--posted" do
+      before do
+        @cli.options = @cli.options.merge(:posted => true)
+      end
+      it "should sort by the time when Twitter acount was created" do
+        @cli.suggest
+        $stdout.string.rstrip.should == "@maccman      @mlroach      @jtrupiano    @stuntmann82  @antpires"
       end
     end
     context "--reverse" do
@@ -2267,15 +2267,6 @@ WOEID     Parent ID  Type       Name           Country
       @cli.users("sferik", "pengwynn")
       $stdout.string.rstrip.should == "@pengwynn  @sferik"
     end
-    context "--created" do
-      before do
-        @cli.options = @cli.options.merge(:created => true)
-      end
-      it "should sort by the time when Twitter acount was created" do
-        @cli.users("sferik", "pengwynn")
-        $stdout.string.rstrip.should == "@sferik    @pengwynn"
-      end
-    end
     context "--favorites" do
       before do
         @cli.options = @cli.options.merge(:favorites => true)
@@ -2337,6 +2328,15 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
 14100886  Mar  8  2008  3,913   32         185     1,871      2,767      @pengwynn    Wynn Netherland
 7505382   Jul 16  2007  2,962   727        29      88         898        @sferik      Erik Michaels-Ober
         eos
+      end
+    end
+    context "--posted" do
+      before do
+        @cli.options = @cli.options.merge(:posted => true)
+      end
+      it "should sort by the time when Twitter acount was created" do
+        @cli.users("sferik", "pengwynn")
+        $stdout.string.rstrip.should == "@sferik    @pengwynn"
       end
     end
     context "--reverse" do

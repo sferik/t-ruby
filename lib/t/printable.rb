@@ -41,7 +41,7 @@ module T
 
       def print_user_list(users)
         users = users.sort_by{|user| user.screen_name.downcase} unless options['unsorted']
-        if options['created']
+        if options['posted']
           users = users.sort_by{|user| user.created_at}
         elsif options['favorites']
           users = users.sort_by{|user| user.favourites_count}

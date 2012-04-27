@@ -67,15 +67,15 @@ module T
     end
 
     desc "authorize", "Allows an application to request user authorization"
-    method_option :consumer_key, :aliases => "-c", :required => true
-    method_option :consumer_secret, :aliases => "-s", :required => true
+    method_option :consumer_key, :aliases => "-c", :required => true, :desc => "This can be found at https://dev.twitter.com/apps"
+    method_option :consumer_secret, :aliases => "-s", :required => true, :desc => "This can be found at https://dev.twitter.com/apps"
+    method_option :display_url, :aliases => "-d", :type => :boolean, :default => false, :desc => "Display the authorization URL instead of attempting to open it."
     method_option :prompt, :aliases => "-p", :type => :boolean, :default => true
-    method_option :dry_run, :type => :boolean
     def authorize
       request_token = consumer.get_request_token
       url = generate_authorize_url(request_token)
       if options['prompt']
-        say "In a moment, your web browser will open to the Twitter app authorization page."
+        say "In a moment, you will be directed to the Twitter app authorization page."
         say "Perform the following steps to complete the authorization process:"
         say "  1. Sign in to Twitter"
         say "  2. Press \"Authorize app\""
@@ -85,7 +85,7 @@ module T
         ask "Press [Enter] to open the Twitter app authorization page."
         say
       end
-      Launchy.open(url, :dry_run => options.fetch('dry_run', false))
+      Launchy.open(url, :dry_run => options['display_url'])
       pin = ask "Paste in the supplied PIN:"
       access_token = request_token.get_access_token(:oauth_verifier => pin.chomp)
       oauth_response = access_token.get('/1/account/verify_credentials.json')
@@ -519,18 +519,18 @@ module T
     map %w(replies) => :mentions
 
     desc "open USER", "Opens that user's profile in a web browser."
-    method_option :dry_run, :type => :boolean
+    method_option :display_url, :aliases => "-d", :type => :boolean, :default => false, :desc => "Display the requested URL instead of attempting to open it."
     method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
     method_option :status, :aliases => "-s", :type => :boolean, :default => false, :desc => "Specify input as a Twitter status ID instead of a screen name."
     def open(user)
       if options['id']
         user = client.user(user.to_i, :include_entities => false)
-        Launchy.open("https://twitter.com/#{user.screen_name}", :dry_run => options.fetch('dry_run', false))
+        Launchy.open("https://twitter.com/#{user.screen_name}", :dry_run => options['display_url'])
       elsif options['status']
         status = client.status(user.to_i, :include_entities => false, :include_my_retweet => false)
-        Launchy.open("https://twitter.com/#{status.user.screen_name}/status/#{status.id}", :dry_run => options.fetch('dry_run', false))
+        Launchy.open("https://twitter.com/#{status.user.screen_name}/status/#{status.id}", :dry_run => options['display_url'])
       else
-        Launchy.open("https://twitter.com/#{user.strip_ats}", :dry_run => options.fetch('dry_run', false))
+        Launchy.open("https://twitter.com/#{user.strip_ats}", :dry_run => options['display_url'])
       end
     end
 

@@ -2,7 +2,8 @@
 ### A command-line power tool for Twitter.
 
 The CLI attempts to mimic the [Twitter SMS commands][sms] wherever possible,
-however it offers many more commands than are available via SMS.
+however it offers vastly more commands and capabilities than are available via
+SMS.
 
 [travis]: http://travis-ci.org/sferik/t
 [gemnasium]: https://gemnasium.com/sferik/t
@@ -25,9 +26,10 @@ secret, which you can use to authorize your Twitter account.
 
     t authorize -c YOUR_CONSUMER_KEY -s YOUR_CONSUMER_SECRET
 
-This will open a new browser window where you can authenticate to Twitter and
-then enter the returned PIN back into the terminal.  Assuming that works,
-you'll be authorized to use the CLI.
+This will direct you to a URL where you can authenticate to Twitter and then
+enter the returned PIN back into the terminal.  Assuming that works, you'll be
+authorized to use `t` as that user. To authorize multiple accounts, simply
+repeat the last step while signed in to Twitter as a different user.
 
 You can see a list of all the accounts you've authorized.
 
@@ -61,7 +63,8 @@ type `t help TASK` to get help for a specific command.
 
 **Note**: If your tweet includes special characters (e.g. `!`), make sure to
 wrap it in single quotes instead of double quotes, so those characters are not
-interpreted by your shell.
+interpreted by your shell. However, if you use single quotes, your Tweet can't
+contain any apostrophes.
 
 ### <a name="stats"></a>Retrieve stats about users
     t users -l @sferik @gem
@@ -69,24 +72,25 @@ interpreted by your shell.
 ### <a name="follow"></a>Follow users
     t follow @sferik @gem
 
-### <a name="does-follow"></a>Does one user follow another user?
+### <a name="does-follow"></a>Find out if one user follows another
     t does_follow @ev @sferik
 
-**Note**: When this command returns false, `t` exits with a non-zero exit code,
-which which allows you to execute conditional commands, for example:
+**Note**: If the first user doesn't follow the second, `t` will exit with a
+non-zero exit code. This allows you to execute conditional commands, for
+example:
 
     t does_follow @ev @sferik && t dm @ev "What's up, bro?"
 
-### <a name="friends"></a>List your friends (ordered by number of followers)
+### <a name="friends"></a>List all your friends (ordered by number of followers)
     t friends -lf
 
-### <a name="leaders"></a>List your leaders (people you follow who don't follow you back)
+### <a name="leaders"></a>List all your leaders (people you follow who don't follow you back)
     t leaders -lf
 
 ### <a name="unfollow"></a>Unfollow everyone you follow who doesn't follow you back
     t leaders | xargs t unfollow
 
-### <a name="follow"></a>Follow back everyone who follows you
+### <a name="follow"></a>Follow everyone who follows you (who you don't already follow)
     t disciples | xargs t follow
 
 ### <a name="follow-roulette"></a>Follow roulette: randomly follow someone who follows you
@@ -96,7 +100,7 @@ which which allows you to execute conditional commands, for example:
     t timeline -n 200 --csv > timeline.csv
 
 ### <a name="favorite"></a>Favorite the last 10 tweets that mention you
-    t mentions -l -n 10 | awk '{print $1}' | xargs t favorite
+    t mentions -n 10 -l | awk '{print $1}' | xargs t favorite
 
 ### <a name="list-create"></a>Create a list
     t list create presidents

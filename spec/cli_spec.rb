@@ -558,6 +558,26 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
         @cli.does_contain("testcli/presidents", "testcli")
         $stdout.string.chomp.should == "Yes, @testcli/presidents contains @testcli."
       end
+      context "--id" do
+        before do
+          @cli.options = @cli.options.merge(:id => true)
+          stub_get("/1/users/show.json").
+            with(:query => {:user_id => "7505382", :include_entities => "false"}).
+            to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1/lists/members/show.json").
+            with(:query => {:owner_screen_name => "sferik", :screen_name => "sferik", :slug => "presidents"}).
+            to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        end
+        it "should request the correct resource" do
+          @cli.does_contain("7505382/presidents", "7505382")
+          a_get("/1/users/show.json").
+            with(:query => {:user_id => "7505382", :include_entities => "false"}).
+            should have_been_made.times(2)
+          a_get("/1/lists/members/show.json").
+            with(:query => {:owner_screen_name => "sferik", :screen_name => "sferik", :slug => "presidents"}).
+            should have_been_made
+        end
+      end
     end
     context "with a user passed" do
       it "should have the correct output" do
@@ -623,6 +643,32 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
       it "should have the correct output" do
         @cli.does_follow("ev", "testcli")
         $stdout.string.chomp.should == "Yes, @ev follows @testcli."
+      end
+      context "--id" do
+        before do
+          @cli.options = @cli.options.merge(:id => true)
+          stub_get("/1/users/show.json").
+            with(:query => {:user_id => "20", :include_entities => "false"}).
+            to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1/users/show.json").
+            with(:query => {:user_id => "428004849", :include_entities => "false"}).
+            to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1/friendships/exists.json").
+            with(:query => {:user_a => "sferik", :user_b => "sferik"}).
+            to_return(:body => fixture("true.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        end
+        it "should request the correct resource" do
+          @cli.does_follow("20", "428004849")
+          a_get("/1/users/show.json").
+            with(:query => {:user_id => "20", :include_entities => "false"}).
+            should have_been_made
+          a_get("/1/users/show.json").
+            with(:query => {:user_id => "428004849", :include_entities => "false"}).
+            should have_been_made
+          a_get("/1/friendships/exists.json").
+            with(:query => {:user_a => "sferik", :user_b => "sferik"}).
+            should have_been_made
+        end
       end
     end
     context "false" do
@@ -2005,6 +2051,18 @@ Source       Twitter for iPhone
 URL          https://twitter.com/sferik/status/55709764298092545
       eos
     end
+    context "--csv" do
+      before do
+        @cli.options = @cli.options.merge(:csv => true)
+      end
+      it "should have the correct output" do
+        @cli.status("55709764298092545")
+        $stdout.string.should == <<-eos
+ID,Text,Screen name,Posted at,Location,Retweets,Source,URL
+55709764298092545,The problem with your code is that it's doing exactly what you told it to do.,sferik,2011-04-06 19:13:37 +0000,,320,Twitter for iPhone,https://twitter.com/sferik/status/55709764298092545
+        eos
+      end
+    end
   end
 
   describe "#suggest" do
@@ -2684,7 +2742,6 @@ ID           7505382
 Name         Erik Michaels-Ober
 Bio          A mind forever voyaging through strange seas of thought, alone.
 Location     San Francisco
-URL          https://github.com/sferik
 Status       Not following
 Last update  RT @tenderlove: [ANN] sqlite3-ruby =&gt; sqlite3 (10 months ago)
 Since        Jul 16  2007
@@ -2693,7 +2750,20 @@ Favorites    1,040
 Listed       41
 Following    197
 Followers    1,048
+URL          https://github.com/sferik
       eos
+    end
+    context "--csv" do
+      before do
+        @cli.options = @cli.options.merge(:csv => true)
+      end
+      it "should have the correct output" do
+        @cli.whois("sferik")
+        $stdout.string.should == <<-eos
+ID,Verified,Name,Screen name,Bio,Location,Following,Last update,Lasted updated at,Since,Tweets,Favorites,Listed,Following,Followers,URL
+7505382,false,Erik Michaels-Ober,sferik,"A mind forever voyaging through strange seas of thought, alone.",San Francisco,false,RT @tenderlove: [ANN] sqlite3-ruby =&gt; sqlite3,2011-01-16 21:38:25 +0000,2007-07-16 12:59:01 +0000,3479,1040,41,197,1048,https://github.com/sferik
+        eos
+      end
     end
     context "--id" do
       before do

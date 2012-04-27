@@ -589,29 +589,38 @@ module T
     end
 
     desc "status STATUS_ID", "Retrieves detailed information about a Tweet."
+    method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     def status(status_id)
       status_id = status_id.strip_commas
       status = client.status(status_id.to_i, :include_entities => false, :include_my_retweet => false)
-      array = []
-      array << ["ID", status.id.to_s]
-      array << ["Text", status.text.gsub(/\n+/, ' ')]
-      array << ["Screen name", "@#{status.user.screen_name}"]
-      posted_at = status.created_at > 6.months.ago ? status.created_at.strftime("%b %e %H:%M") : status.created_at.strftime("%b %e  %Y")
-      array << ["Posted at", posted_at]
       if status.geo
-        location = Geokit::Geocoders::MultiGeocoder.reverse_geocode(status.geo.coordinates)
-        if location.city && location.state && location.country
-          array << ["Location", [location.city, location.state, location.country].join(", ")]
-        elsif location.state && location.country
-          array << ["Location", [location.state, location.country].join(", ")]
-        elsif location.country
-          array << ["Location", location.country]
+        geoloc = Geokit::Geocoders::MultiGeocoder.reverse_geocode(status.geo.coordinates)
+        location = if geoloc.city && geoloc.state && geoloc.country
+          [geoloc.city, geoloc.state, geoloc.country].join(", ")
+        elsif geoloc.state && geoloc.country
+          [geoloc.state, geoloc.country].join(", ")
+        else
+          geoloc.country
         end
+      else
+        location = nil
       end
-      array << ["Retweets", number_with_delimiter(status.retweet_count)]
-      array << ["Source", strip_tags(status.source)]
-      array << ["URL", "https://twitter.com/#{status.user.screen_name}/status/#{status.id}"]
-      print_table(array)
+      if options['csv']
+        say ["ID", "Text", "Screen name", "Posted at", "Location", "Retweets", "Source", "URL"].to_csv
+        say [status.id, status.text, status.user.screen_name, status.created_at.utc.strftime("%Y-%m-%d %H:%M:%S %z"), location, status.retweet_count, strip_tags(status.source), "https://twitter.com/#{status.user.screen_name}/status/#{status.id}"].to_csv
+      else
+        array = []
+        array << ["ID", status.id.to_s]
+        array << ["Text", status.text.gsub(/\n+/, ' ')]
+        array << ["Screen name", "@#{status.user.screen_name}"]
+        posted_at = status.created_at > 6.months.ago ? status.created_at.strftime("%b %e %H:%M") : status.created_at.strftime("%b %e  %Y")
+        array << ["Posted at", posted_at]
+        array << ["Location", location] unless location.nil?
+        array << ["Retweets", number_with_delimiter(status.retweet_count)]
+        array << ["Source", strip_tags(status.source)]
+        array << ["URL", "https://twitter.com/#{status.user.screen_name}/status/#{status.id}"]
+        print_table(array)
+      end
     end
 
     desc "suggest [USER]", "This command returns a listing of Twitter users' accounts we think you might enjoy following."
@@ -775,6 +784,7 @@ module T
     map %w(-v --version) => :version
 
     desc "whois USER", "Retrieves profile information for the user."
+    method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
     def whois(user)
       user = if options['id']
@@ -783,24 +793,29 @@ module T
         user.strip_ats
       end
       user = client.user(user, :include_entities => false)
-      array = []
-      name_label = user.verified ? "Name (Verified)" : "Name"
-      array << ["ID", user.id.to_s]
-      array << [name_label, user.name] unless user.name.nil?
-      array << ["Bio", user.description.gsub(/\n+/, ' ')] unless user.description.nil?
-      array << ["Location", user.location] unless user.location.nil?
-      array << ["URL", user.url] unless user.url.nil?
-      status = user.following ? "Following" : "Not following"
-      array << ["Status", status]
-      array << ["Last update", "#{user.status.text.gsub(/\n+/, ' ')} (#{time_ago_in_words(user.status.created_at)} ago)"] unless user.status.nil?
-      created_at = user.created_at > 6.months.ago ? user.created_at.strftime("%b %e %H:%M") : user.created_at.strftime("%b %e  %Y")
-      array << ["Since", created_at]
-      array << ["Tweets", number_with_delimiter(user.statuses_count)]
-      array << ["Favorites", number_with_delimiter(user.favourites_count)]
-      array << ["Listed", number_with_delimiter(user.listed_count)]
-      array << ["Following", number_with_delimiter(user.friends_count)]
-      array << ["Followers", number_with_delimiter(user.followers_count)]
-      print_table(array)
+      if options['csv']
+        say ["ID", "Verified", "Name", "Screen name", "Bio", "Location", "Following", "Last update", "Lasted updated at", "Since", "Tweets", "Favorites", "Listed", "Following", "Followers", "URL"].to_csv
+        say [user.id, user.verified?, user.name, user.screen_name, user.description, user.location, user.following?, user.status.text, user.status.created_at.utc.strftime("%Y-%m-%d %H:%M:%S %z"), user.created_at.utc.strftime("%Y-%m-%d %H:%M:%S %z"), user.statuses_count, user.favourites_count, user.listed_count, user.friends_count, user.followers_count, user.url].to_csv
+      else
+        array = []
+        name_label = user.verified ? "Name (Verified)" : "Name"
+        array << ["ID", user.id.to_s]
+        array << [name_label, user.name] unless user.name.nil?
+        array << ["Bio", user.description.gsub(/\n+/, ' ')] unless user.description.nil?
+        array << ["Location", user.location] unless user.location.nil?
+        status = user.following ? "Following" : "Not following"
+        array << ["Status", status]
+        array << ["Last update", "#{user.status.text.gsub(/\n+/, ' ')} (#{time_ago_in_words(user.status.created_at)} ago)"] unless user.status.nil?
+        created_at = user.created_at > 6.months.ago ? user.created_at.strftime("%b %e %H:%M") : user.created_at.strftime("%b %e  %Y")
+        array << ["Since", created_at]
+        array << ["Tweets", number_with_delimiter(user.statuses_count)]
+        array << ["Favorites", number_with_delimiter(user.favourites_count)]
+        array << ["Listed", number_with_delimiter(user.listed_count)]
+        array << ["Following", number_with_delimiter(user.friends_count)]
+        array << ["Followers", number_with_delimiter(user.followers_count)]
+        array << ["URL", user.url] unless user.url.nil?
+        print_table(array)
+      end
     end
     map %w(user) => :whois
 

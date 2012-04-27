@@ -65,6 +65,7 @@ module T
     end
 
     desc "information [USER/]LIST", "Retrieves detailed information about a Twitter list."
+    method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     def information(list)
       owner, list = list.split('/')
       if list.nil?
@@ -78,20 +79,25 @@ module T
         end
       end
       list = client.list(owner, list)
-      array = []
-      array << ["ID", list.id.to_s]
-      array << ["Description", list.description]
-      array << ["Slug", list.slug]
-      array << ["Screen name", "@#{list.user.screen_name}"]
-      created_at = list.created_at > 6.months.ago ? list.created_at.strftime("%b %e %H:%M") : list.created_at.strftime("%b %e  %Y")
-      array << ["Created at", created_at]
-      array << ["Members", number_with_delimiter(list.member_count)]
-      array << ["Subscribers", number_with_delimiter(list.subscriber_count)]
-      status = list.following ? "Following" : "Not following"
-      array << ["Status", status]
-      array << ["Mode", list.mode]
-      array << ["URL", "https://twitter.com#{list.uri}"]
-      print_table(array)
+      if options['csv']
+        say ["ID", "Description", "Slug", "Screen name", "Created at", "Members", "Subscribers", "Following", "Mode", "URL"].to_csv
+        say [list.id, list.description, list.slug, list.user.screen_name, list.created_at.utc.strftime("%Y-%m-%d %H:%M:%S %z"), list.member_count, list.subscriber_count, list.following?, list.mode, "https://twitter.com#{list.uri}"].to_csv
+      else
+        array = []
+        array << ["ID", list.id.to_s]
+        array << ["Description", list.description] unless list.description.nil?
+        array << ["Slug", list.slug]
+        array << ["Screen name", "@#{list.user.screen_name}"]
+        created_at = list.created_at > 6.months.ago ? list.created_at.strftime("%b %e %H:%M") : list.created_at.strftime("%b %e  %Y")
+        array << ["Created at", created_at]
+        array << ["Members", number_with_delimiter(list.member_count)]
+        array << ["Subscribers", number_with_delimiter(list.subscriber_count)]
+        status = list.following ? "Following" : "Not following"
+        array << ["Status", status]
+        array << ["Mode", list.mode]
+        array << ["URL", "https://twitter.com#{list.uri}"]
+        print_table(array)
+      end
     end
     map %w(detail) => :information
 

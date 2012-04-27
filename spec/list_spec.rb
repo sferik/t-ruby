@@ -111,7 +111,7 @@ ID           8863586
 Description  Presidents of the United States of America
 Slug         presidents
 Screen name  @sferik
-Created at   Mar 14  2010
+Created at   Mar 15  2010
 Members      2
 Subscribers  1
 Status       Not following
@@ -139,6 +139,18 @@ URL          https://twitter.com/sferik/presidents
             with(:query => {:owner_id => "7505382", :slug => "presidents"}).
             should have_been_made
         end
+      end
+    end
+    context "--csv" do
+      before do
+        @list.options = @list.options.merge(:csv => true)
+      end
+      it "should have the correct output" do
+        @list.information("presidents")
+        $stdout.string.should == <<-eos
+ID,Description,Slug,Screen name,Created at,Members,Subscribers,Following,Mode,URL
+8863586,Presidents of the United States of America,presidents,sferik,2010-03-15 12:10:13 +0000,2,1,false,public,https://twitter.com/sferik/presidents
+        eos
       end
     end
   end

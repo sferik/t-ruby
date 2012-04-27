@@ -1575,6 +1575,131 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
     end
   end
 
+  describe "#lists" do
+    before do
+      stub_get("/1/lists.json").
+        with(:query => {:cursor => "-1"}).
+        to_return(:body => fixture("lists.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+    end
+    it "should request the correct resource" do
+      @cli.lists
+      a_get("/1/lists.json").
+        with(:query => {:cursor => "-1"}).
+        should have_been_made
+    end
+    it "should have the correct output" do
+      @cli.lists
+      $stdout.string.rstrip.should == "@sferik/code-for-america  @sferik/presidents"
+    end
+    context "--csv" do
+      before do
+        @cli.options = @cli.options.merge(:csv => true)
+      end
+      it "should output in CSV format" do
+        @cli.lists
+        $stdout.string.should == <<-eos
+ID,Created at,Screen name,Slug,Members,Subscribers,Mode,Description
+21718825,2010-09-14 21:46:56 +0000,sferik,code-for-america,26,5,public,Code for America
+8863586,2010-03-15 06:10:13 +0000,sferik,presidents,2,1,public,Presidents of the United States of America
+        eos
+      end
+    end
+    context "--long" do
+      before do
+        @cli.options = @cli.options.merge(:long => true)
+      end
+      it "should output in long format" do
+        @cli.lists
+        $stdout.string.should == <<-eos
+ID        Created at    Slug                      Members  Subscribers  Mode    Description
+21718825  Sep 14  2010  @sferik/code-for-america  26       5            public  Code for America
+8863586   Mar 14  2010  @sferik/presidents        2        1            public  Presidents of the United States of America
+        eos
+      end
+    end
+    context "--members" do
+      before do
+        @cli.options = @cli.options.merge(:members => true)
+      end
+      it "should sort by the time when Twitter acount was created" do
+        @cli.lists
+        $stdout.string.rstrip.should == "@sferik/presidents        @sferik/code-for-america"
+      end
+    end
+    context "--mode" do
+      before do
+        @cli.options = @cli.options.merge(:mode => true)
+      end
+      it "should sort by the time when Twitter acount was created" do
+        @cli.lists
+        $stdout.string.rstrip.should == "@sferik/code-for-america  @sferik/presidents"
+      end
+    end
+    context "--posted" do
+      before do
+        @cli.options = @cli.options.merge(:posted => true)
+      end
+      it "should sort by the time when Twitter acount was created" do
+        @cli.lists
+        $stdout.string.rstrip.should == "@sferik/presidents        @sferik/code-for-america"
+      end
+    end
+    context "--reverse" do
+      before do
+        @cli.options = @cli.options.merge(:reverse => true)
+      end
+      it "should reverse the order of the sort" do
+        @cli.lists
+        $stdout.string.rstrip.should == "@sferik/presidents        @sferik/code-for-america"
+      end
+    end
+    context "--subscribers" do
+      before do
+        @cli.options = @cli.options.merge(:subscribers => true)
+      end
+      it "should sort by the time when Twitter acount was created" do
+        @cli.lists
+        $stdout.string.rstrip.should == "@sferik/presidents        @sferik/code-for-america"
+      end
+    end
+    context "--unsorted" do
+      before do
+        @cli.options = @cli.options.merge(:unsorted => true)
+      end
+      it "should not be sorted" do
+        @cli.lists
+        $stdout.string.rstrip.should == "@sferik/code-for-america  @sferik/presidents"
+      end
+    end
+    context "with a user passed" do
+      before do
+        stub_get("/1/lists.json").
+          with(:query => {:cursor => "-1", :screen_name => "sferik"}).
+          to_return(:body => fixture("lists.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should request the correct resource" do
+        @cli.lists("sferik")
+        a_get("/1/lists.json").
+          with(:query => {:cursor => "-1", :screen_name => "sferik"}).
+          should have_been_made
+      end
+      context "--id" do
+        before do
+          @cli.options = @cli.options.merge(:id => true)
+          stub_get("/1/lists.json").
+            with(:query => {:cursor => "-1", :user_id => "7505382"}).
+            to_return(:body => fixture("lists.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        end
+        it "should request the correct resource" do
+          @cli.lists("7505382")
+          a_get("/1/lists.json").
+            with(:query => {:cursor => "-1", :user_id => "7505382"}).
+            should have_been_made
+        end
+      end
+    end
+  end
+
   describe "#mentions" do
     before do
       stub_get("/1/statuses/mentions.json").

@@ -23,7 +23,45 @@ module T
         puts
       end
 
-      def print_status_list(statuses)
+      def print_lists(lists)
+        lists = lists.sort_by{|list| list.slug.downcase} unless options['unsorted']
+        if options['posted']
+          lists = lists.sort_by{|user| user.created_at}
+        elsif options['members']
+          lists = lists.sort_by{|user| user.member_count}
+        elsif options['mode']
+          lists = lists.sort_by{|user| user.mode}
+        elsif options['subscribers']
+          lists = lists.sort_by{|user| user.subscriber_count}
+        end
+        lists.reverse! if options['reverse']
+        if options['csv']
+          say ["ID", "Created at", "Screen name", "Slug", "Members", "Subscribers", "Mode", "Description"].to_csv unless lists.empty?
+          lists.each do |list|
+            say [list.id, list.created_at.utc.strftime("%Y-%m-%d %H:%M:%S %z"), list.user.screen_name, list.slug, list.member_count, list.subscriber_count, list.mode, list.description].to_csv
+          end
+        elsif options['long']
+          array = lists.map do |list|
+            created_at = list.created_at > 6.months.ago ? list.created_at.strftime("%b %e %H:%M") : list.created_at.strftime("%b %e  %Y")
+            [list.id.to_s, created_at, list.full_name, number_with_delimiter(list.member_count), number_with_delimiter(list.subscriber_count), list.mode, list.description]
+          end
+          if STDOUT.tty?
+            headings = ["ID", "Created at", "Slug", "Members", "Subscribers", "Mode", "Description"]
+            array.unshift(headings) unless lists.empty?
+          end
+          print_table(array)
+        else
+          if STDOUT.tty?
+            print_in_columns(lists.map(&:full_name))
+          else
+            lists.each do |list|
+              say list.full_name
+            end
+          end
+        end
+      end
+
+      def print_statuses(statuses)
         statuses.reverse! if options['reverse']
         if options['csv']
           say ["ID", "Posted at", "Screen name", "Text"].to_csv unless statuses.empty?
@@ -47,7 +85,7 @@ module T
         end
       end
 
-      def print_user_list(users)
+      def print_users(users)
         users = users.sort_by{|user| user.screen_name.downcase} unless options['unsorted']
         if options['posted']
           users = users.sort_by{|user| user.created_at}

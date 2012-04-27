@@ -67,7 +67,7 @@ module T
           end
         end
       end.flatten.compact
-      print_status_list(statuses)
+      print_statuses(statuses)
     end
     map %w(faves) => :favorites
 
@@ -82,7 +82,7 @@ module T
           end
         end
       end.flatten.compact
-      print_status_list(statuses)
+      print_statuses(statuses)
     end
     map %w(replies) => :mentions
 
@@ -97,7 +97,7 @@ module T
           end
         end
       end.flatten.compact
-      print_status_list(statuses)
+      print_statuses(statuses)
     end
     map %w(rts) => :retweets
 
@@ -112,7 +112,7 @@ module T
           end
         end
       end.flatten.compact
-      print_status_list(statuses)
+      print_statuses(statuses)
     end
     map %w(tl) => :timeline
 
@@ -133,7 +133,7 @@ module T
           end
         end
       end.flatten.compact
-      print_status_list(statuses)
+      print_statuses(statuses)
     end
 
   end

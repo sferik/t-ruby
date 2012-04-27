@@ -109,7 +109,7 @@ module T
     method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
     method_option :listed, :aliases => "-s", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
     method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
-    method_option :posted, :aliases => "-p", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter acount was posted."
+    method_option :posted, :aliases => "-p", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter account was posted."
     method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     method_option :tweets, :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by total number of Tweets."
     method_option :unsorted, :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
@@ -128,7 +128,7 @@ module T
       users = collect_with_cursor do |cursor|
         client.list_members(owner, list, :cursor => cursor, :include_entities => false, :skip_status => true)
       end
-      print_user_list(users)
+      print_users(users)
     end
 
     desc "remove LIST USER [USER...]", "Remove members from a list."
@@ -175,7 +175,7 @@ module T
       end
       per_page = options['number'] || DEFAULT_NUM_RESULTS
       statuses = client.list_timeline(owner, list, :include_entities => false, :per_page => per_page)
-      print_status_list(statuses)
+      print_statuses(statuses)
     end
     map %w(tl) => :timeline
 

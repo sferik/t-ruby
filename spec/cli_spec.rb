@@ -35,7 +35,7 @@ testcli
 
   describe "#authorize" do
     before do
-      @cli.options = @cli.options.merge(:profile => project_path + "/tmp/trc", :consumer_key => "abc123", :consumer_secret => "asdfasd223sd2", :prompt => true, :dry_run => true)
+      @cli.options = @cli.options.merge(:profile => project_path + "/tmp/trc", :consumer_key => "abc123", :consumer_secret => "asdfasd223sd2", :prompt => true, :display_url => true)
       stub_post("/oauth/request_token").
         to_return(:body => fixture("request_token"))
       stub_post("/oauth/access_token").
@@ -1600,7 +1600,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
         $stdout.string.should == <<-eos
 ID,Created at,Screen name,Slug,Members,Subscribers,Mode,Description
 21718825,2010-09-14 21:46:56 +0000,sferik,code-for-america,26,5,public,Code for America
-8863586,2010-03-15 06:10:13 +0000,sferik,presidents,2,1,public,Presidents of the United States of America
+8863586,2010-03-15 12:10:13 +0000,sferik,presidents,2,1,public,Presidents of the United States of America
         eos
       end
     end
@@ -1613,7 +1613,7 @@ ID,Created at,Screen name,Slug,Members,Subscribers,Mode,Description
         $stdout.string.should == <<-eos
 ID        Created at    Slug                      Members  Subscribers  Mode    Description
 21718825  Sep 14  2010  @sferik/code-for-america  26       5            public  Code for America
-8863586   Mar 14  2010  @sferik/presidents        2        1            public  Presidents of the United States of America
+8863586   Mar 15  2010  @sferik/presidents        2        1            public  Presidents of the United States of America
         eos
       end
     end
@@ -1835,7 +1835,7 @@ ID                  Posted at     Screen name    Text
 
   describe "#open" do
     before do
-      @cli.options = @cli.options.merge(:dry_run => true)
+      @cli.options = @cli.options.merge(:display_url => true)
     end
     it "should have the correct output" do
       lambda do

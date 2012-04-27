@@ -92,6 +92,9 @@ which which allows you to execute conditional commands, for example:
 ### <a name="follow-roulette"></a>Follow roulette: randomly follow someone who follows you
     t disciples | shuf | head -1 | xargs t follow
 
+### <a name="timeline"></a>Output the last 200 tweets in your timeline to a CSV file
+    t timeline -n 200 --csv > timeline.csv
+
 ### <a name="favorite"></a>Favorite the last 10 tweets that mention you
     t mentions -l -n 10 | awk '{print $1}' | xargs t favorite
 

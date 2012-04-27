@@ -45,7 +45,10 @@ username and consumer key pair, like so:
 
     t set default sferik UDfNTpOz5ZDG4a6w7dIWj
 
-Account information is stored in the YAML-formatted file `~/.trc`.
+Account information is stored in the YAML-formatted file `~/.trc`. **Note**:
+Anyone with access to this file can masquerade as you on Twitter, so it's
+important to keep it secure, just as you would treat your SSH private key. For
+this reason, the file is hidden and has the permission bits set to 0600.
 
 ## <a name="examples"></a>Usage Examples
 Typing `t help` will give you a list of all the available commands. You can

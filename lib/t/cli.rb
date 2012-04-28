@@ -47,7 +47,7 @@ module T
     check_unknown_options!
 
     option "host", :aliases => "-H", :type => :string, :default => DEFAULT_HOST, :desc => "Twitter API server"
-    option "no-color", :alias => "-N", :type => :boolean, :banner => "Disable colorization in output"
+    option "no-color", :aliases => "-N", :type => :boolean, :banner => "Disable colorization in output"
     option "no-ssl", :aliases => "-U", :type => :boolean, :default => false, :desc => "Disable SSL"
     option "profile", :aliases => "-P", :type => :string, :default => File.join(File.expand_path("~"), RCFile::FILE_NAME), :desc => "Path to RC file", :banner => "FILE"
 

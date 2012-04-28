@@ -75,58 +75,58 @@ describe RCFile do
     end
   end
 
-  describe '#default_consumer_key' do
+  describe '#active_consumer_key' do
     it 'should return default consumer key' do
       rcfile = RCFile.instance
       rcfile.path = fixture_path + "/.trc"
-      rcfile.default_consumer_key.should == 'abc123'
+      rcfile.active_consumer_key.should == 'abc123'
     end
   end
 
-  describe '#default_consumer_secret' do
+  describe '#active_consumer_secret' do
     it 'should return default consumer secret' do
       rcfile = RCFile.instance
       rcfile.path = fixture_path + "/.trc"
-      rcfile.default_consumer_secret.should == 'asdfasd223sd2'
+      rcfile.active_consumer_secret.should == 'asdfasd223sd2'
     end
   end
 
-  describe '#default_profile' do
+  describe '#active_profile' do
     it 'should return default profile' do
       rcfile = RCFile.instance
       rcfile.path = fixture_path + "/.trc"
-      rcfile.default_profile.should == ['testcli', 'abc123']
+      rcfile.active_profile.should == ['testcli', 'abc123']
     end
   end
 
-  describe '#default_profile=' do
+  describe '#active_profile=' do
     it 'should set default profile' do
       rcfile = RCFile.instance
       rcfile.path = project_path + "/tmp/trc"
-      rcfile.default_profile = {'username' => 'testcli', 'consumer_key' => 'abc123'}
-      rcfile.default_profile.should == ['testcli', 'abc123']
+      rcfile.active_profile = {'username' => 'testcli', 'consumer_key' => 'abc123'}
+      rcfile.active_profile.should == ['testcli', 'abc123']
     end
     it 'should write the data to disk' do
       rcfile = RCFile.instance
       rcfile.path = project_path + "/tmp/trc"
-      rcfile.default_profile = {'username' => 'testcli', 'consumer_key' => 'abc123'}
-      rcfile.default_profile.should == ['testcli', 'abc123']
+      rcfile.active_profile = {'username' => 'testcli', 'consumer_key' => 'abc123'}
+      rcfile.active_profile.should == ['testcli', 'abc123']
     end
   end
 
-  describe '#default_token' do
+  describe '#active_token' do
     it 'should return default token' do
       rcfile = RCFile.instance
       rcfile.path = fixture_path + "/.trc"
-      rcfile.default_token.should == '428004849-cebdct6bwobn'
+      rcfile.active_token.should == '428004849-cebdct6bwobn'
     end
   end
 
-  describe '#default_secret' do
+  describe '#active_secret' do
     it 'should return default secret' do
       rcfile = RCFile.instance
       rcfile.path = fixture_path + "/.trc"
-      rcfile.default_secret.should == 'epzrjvxtumoc'
+      rcfile.active_secret.should == 'epzrjvxtumoc'
     end
   end
 

@@ -28,7 +28,7 @@ describe T::CLI do
       @cli.accounts
       $stdout.string.should == <<-eos
 testcli
-  abc123 (default)
+  abc123 (active)
       eos
     end
   end

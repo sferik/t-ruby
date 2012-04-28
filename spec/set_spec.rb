@@ -18,6 +18,16 @@ describe T::Set do
     $stdout = @old_stdout
   end
 
+  describe "#active" do
+    before do
+      @t.options = @t.options.merge(:profile => fixture_path + "/.trc")
+    end
+    it "should have the correct output" do
+      @t.set("active", "testcli", "abc123")
+      $stdout.string.chomp.should == "Active account has been updated."
+    end
+  end
+
   describe "#bio" do
     before do
       @t.options = @t.options.merge(:profile => fixture_path + "/.trc")
@@ -34,16 +44,6 @@ describe T::Set do
     it "should have the correct output" do
       @t.set("bio", "A mind forever voyaging through strange seas of thought, alone.")
       $stdout.string.chomp.should == "@testcli's bio has been updated."
-    end
-  end
-
-  describe "#default" do
-    before do
-      @t.options = @t.options.merge(:profile => fixture_path + "/.trc")
-    end
-    it "should have the correct output" do
-      @t.set("default", "testcli", "abc123")
-      $stdout.string.chomp.should == "Default account has been updated."
     end
   end
 

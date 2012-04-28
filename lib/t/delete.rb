@@ -31,7 +31,7 @@ module T
         end
       end
       number = users.length
-      say "@#{@rcfile.default_profile[0]} unblocked #{number} #{number == 1 ? 'user' : 'users'}."
+      say "@#{@rcfile.active_profile[0]} unblocked #{number} #{number == 1 ? 'user' : 'users'}."
       say
       say "Run `#{File.basename($0)} block #{users.map{|user| "@#{user.screen_name}"}.join(' ')}` to block."
     end
@@ -47,7 +47,7 @@ module T
           return unless yes? "Are you sure you want to permanently delete the direct message to @#{direct_message.recipient.screen_name}: \"#{direct_message.text}\"? [y/N]"
         end
         direct_message = client.direct_message_destroy(direct_message_id.to_i, :include_entities => false)
-        say "@#{@rcfile.default_profile[0]} deleted the direct message sent to @#{direct_message.recipient.screen_name}: \"#{direct_message.text}\""
+        say "@#{@rcfile.active_profile[0]} deleted the direct message sent to @#{direct_message.recipient.screen_name}: \"#{direct_message.text}\""
       end
     end
     map %w(d m) => :dm
@@ -63,7 +63,7 @@ module T
           return unless yes? "Are you sure you want to remove @#{status.user.screen_name}'s status: \"#{status.text}\" from your favorites? [y/N]"
         end
         status = client.unfavorite(status_id.to_i, :include_entities => false)
-        say "@#{@rcfile.default_profile[0]} unfavorited @#{status.user.screen_name}'s status: \"#{status.text}\""
+        say "@#{@rcfile.active_profile[0]} unfavorited @#{status.user.screen_name}'s status: \"#{status.text}\""
       end
     end
     map %w(fave favourite) => :favorite
@@ -78,7 +78,7 @@ module T
         return unless yes? "Are you sure you want to permanently delete the list \"#{list.name}\"? [y/N]"
       end
       list = client.list_destroy(list.id)
-      say "@#{@rcfile.default_profile[0]} deleted the list \"#{list.name}\"."
+      say "@#{@rcfile.active_profile[0]} deleted the list \"#{list.name}\"."
     end
 
     desc "status STATUS_ID [STATUS_ID...]", "Delete Tweets."
@@ -92,7 +92,7 @@ module T
           return unless yes? "Are you sure you want to permanently delete @#{status.user.screen_name}'s status: \"#{status.text}\"? [y/N]"
         end
         status = client.status_destroy(status_id.to_i, :include_entities => false, :trim_user => true)
-        say "@#{@rcfile.default_profile[0]} deleted the status: \"#{status.text}\""
+        say "@#{@rcfile.active_profile[0]} deleted the status: \"#{status.text}\""
       end
     end
     map %w(post tweet update) => :status

@@ -26,29 +26,29 @@ class RCFile
     @data['configuration']
   end
 
-  def default_consumer_key
-    profiles[default_profile[0]][default_profile[1]]['consumer_key'] if default_profile && profiles[default_profile[0]] && profiles[default_profile[0]][default_profile[1]]
+  def active_consumer_key
+    profiles[active_profile[0]][active_profile[1]]['consumer_key'] if active_profile && profiles[active_profile[0]] && profiles[active_profile[0]][active_profile[1]]
   end
 
-  def default_consumer_secret
-    profiles[default_profile[0]][default_profile[1]]['consumer_secret'] if default_profile && profiles[default_profile[0]] && profiles[default_profile[0]][default_profile[1]]
+  def active_consumer_secret
+    profiles[active_profile[0]][active_profile[1]]['consumer_secret'] if active_profile && profiles[active_profile[0]] && profiles[active_profile[0]][active_profile[1]]
   end
 
-  def default_profile
+  def active_profile
     configuration['default_profile']
   end
 
-  def default_profile=(profile)
+  def active_profile=(profile)
     configuration['default_profile'] = [profile['username'], profile['consumer_key']]
     write
   end
 
-  def default_secret
-    profiles[default_profile[0]][default_profile[1]]['secret'] if default_profile && profiles[default_profile[0]] && profiles[default_profile[0]][default_profile[1]]
+  def active_secret
+    profiles[active_profile[0]][active_profile[1]]['secret'] if active_profile && profiles[active_profile[0]] && profiles[active_profile[0]][active_profile[1]]
   end
 
-  def default_token
-    profiles[default_profile[0]][default_profile[1]]['token'] if default_profile && profiles[default_profile[0]] && profiles[default_profile[0]][default_profile[1]]
+  def active_token
+    profiles[active_profile[0]][active_profile[1]]['token'] if active_profile && profiles[active_profile[0]] && profiles[active_profile[0]][active_profile[1]]
   end
 
   def delete

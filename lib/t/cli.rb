@@ -61,7 +61,7 @@ module T
       @rcfile.profiles.each do |profile|
         say profile[0]
         profile[1].keys.each do |key|
-          say "  #{key}#{@rcfile.default_profile[0] == profile[0] && @rcfile.default_profile[1] == key ? " (default)" : nil}"
+          say "  #{key}#{@rcfile.active_profile[0] == profile[0] && @rcfile.active_profile[1] == key ? " (active)" : nil}"
         end
       end
     end
@@ -100,7 +100,7 @@ module T
           'secret' => access_token.secret,
         }
       }
-      @rcfile.default_profile = {'username' => screen_name, 'consumer_key' => options['consumer_key']}
+      @rcfile.active_profile = {'username' => screen_name, 'consumer_key' => options['consumer_key']}
       say "Authorization successful."
     end
 
@@ -119,7 +119,7 @@ module T
         end
       end
       number = users.length
-      say "@#{@rcfile.default_profile[0]} blocked #{number} #{number == 1 ? 'user' : 'users'}."
+      say "@#{@rcfile.active_profile[0]} blocked #{number} #{number == 1 ? 'user' : 'users'}."
       say
       say "Run `#{File.basename($0)} delete block #{users.map{|user| "@#{user.screen_name}"}.join(' ')}` to unblock."
     end
@@ -232,7 +232,7 @@ module T
         user.strip_ats
       end
       direct_message = client.direct_message_create(user, message, :include_entities => false)
-      say "Direct Message sent from @#{@rcfile.default_profile[0]} to @#{direct_message.recipient.screen_name} (#{time_ago_in_words(direct_message.created_at)} ago)."
+      say "Direct Message sent from @#{@rcfile.active_profile[0]} to @#{direct_message.recipient.screen_name} (#{time_ago_in_words(direct_message.created_at)} ago)."
     end
     map %w(d m) => :dm
 
@@ -242,7 +242,7 @@ module T
       owner, list = list.split('/')
       if list.nil?
         list = owner
-        owner = @rcfile.default_profile[0]
+        owner = @rcfile.active_profile[0]
       else
         owner = if options['id']
           client.user(owner.to_i, :include_entities => false).screen_name
@@ -251,7 +251,7 @@ module T
         end
       end
       if user.nil?
-        user = @rcfile.default_profile[0]
+        user = @rcfile.active_profile[0]
       else
         user = if options['id']
           user = client.user(user.to_i, :include_entities => false).screen_name
@@ -277,7 +277,7 @@ module T
         user1.strip_ats
       end
       if user2.nil?
-        user2 = @rcfile.default_profile[0]
+        user2 = @rcfile.active_profile[0]
       else
         user2 = if options['id']
           client.user(user2.to_i, :include_entities => false).screen_name
@@ -304,7 +304,7 @@ module T
         end
       end
       number = favorites.length
-      say "@#{@rcfile.default_profile[0]} favorited #{number} #{number == 1 ? 'tweet' : 'tweets'}."
+      say "@#{@rcfile.active_profile[0]} favorited #{number} #{number == 1 ? 'tweet' : 'tweets'}."
       say
       say "Run `#{File.basename($0)} delete favorite #{status_ids.join(' ')}` to unfavorite."
     end
@@ -345,7 +345,7 @@ module T
         end
       end
       number = users.length
-      say "@#{@rcfile.default_profile[0]} is now following #{number} more #{number == 1 ? 'user' : 'users'}."
+      say "@#{@rcfile.active_profile[0]} is now following #{number} more #{number == 1 ? 'user' : 'users'}."
       say
       say "Run `#{File.basename($0)} unfollow #{users.map{|user| "@#{user.screen_name}"}.join(' ')}` to stop."
     end
@@ -547,7 +547,7 @@ module T
       opts = {:in_reply_to_status_id => status.id, :include_entities => false, :trim_user => true}
       opts.merge!(:lat => location.lat, :long => location.lng) if options['location']
       reply = client.update("#{users.join(' ')} #{message}", opts)
-      say "Reply created by @#{@rcfile.default_profile[0]} to #{users.join(' ')} (#{time_ago_in_words(reply.created_at)} ago)."
+      say "Reply created by @#{@rcfile.active_profile[0]} to #{users.join(' ')} (#{time_ago_in_words(reply.created_at)} ago)."
       say
       say "Run `#{File.basename($0)} delete status #{reply.id}` to delete."
     end
@@ -567,7 +567,7 @@ module T
         end
       end
       number = users.length
-      say "@#{@rcfile.default_profile[0]} reported #{number} #{number == 1 ? 'user' : 'users'}."
+      say "@#{@rcfile.active_profile[0]} reported #{number} #{number == 1 ? 'user' : 'users'}."
     end
     map %w(report reportspam spam) => :report_spam
 
@@ -581,7 +581,7 @@ module T
         end
       end
       number = retweets.length
-      say "@#{@rcfile.default_profile[0]} retweeted #{number} #{number == 1 ? 'tweet' : 'tweets'}."
+      say "@#{@rcfile.active_profile[0]} retweeted #{number} #{number == 1 ? 'tweet' : 'tweets'}."
       say
       say "Run `#{File.basename($0)} delete status #{status_ids.join(' ')}` to undo."
     end
@@ -760,7 +760,7 @@ module T
         end
       end
       number = users.length
-      say "@#{@rcfile.default_profile[0]} is no longer following #{number} #{number == 1 ? 'user' : 'users'}."
+      say "@#{@rcfile.active_profile[0]} is no longer following #{number} #{number == 1 ? 'user' : 'users'}."
       say
       say "Run `#{File.basename($0)} follow #{users.map{|user| "@#{user.screen_name}"}.join(' ')}` to follow again."
     end
@@ -771,7 +771,7 @@ module T
       opts = {:include_entities => false, :trim_user => true}
       opts.merge!(:lat => location.lat, :long => location.lng) if options['location']
       status = client.update(message, opts)
-      say "Tweet created by @#{@rcfile.default_profile[0]} (#{time_ago_in_words(status.created_at)} ago)."
+      say "Tweet created by @#{@rcfile.active_profile[0]} (#{time_ago_in_words(status.created_at)} ago)."
       say
       say "Run `#{File.basename($0)} delete status #{status.id}` to delete."
     end

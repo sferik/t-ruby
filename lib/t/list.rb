@@ -46,7 +46,7 @@ module T
         end
       end
       number = users.length
-      say "@#{@rcfile.default_profile[0]} added #{number} #{number == 1 ? 'member' : 'members'} to the list \"#{list}\"."
+      say "@#{@rcfile.active_profile[0]} added #{number} #{number == 1 ? 'member' : 'members'} to the list \"#{list}\"."
       say
       if options['id']
         say "Run `#{File.basename($0)} list remove --id #{list} #{users.join(' ')}` to undo."
@@ -61,7 +61,7 @@ module T
       opts = description.blank? ? {} : {:description => description}
       opts.merge!(:mode => 'private') if options['private']
       client.list_create(list, opts)
-      say "@#{@rcfile.default_profile[0]} created the list \"#{list}\"."
+      say "@#{@rcfile.active_profile[0]} created the list \"#{list}\"."
     end
 
     desc "information [USER/]LIST", "Retrieves detailed information about a Twitter list."
@@ -70,7 +70,7 @@ module T
       owner, list = list.split('/')
       if list.nil?
         list = owner
-        owner = @rcfile.default_profile[0]
+        owner = @rcfile.active_profile[0]
       else
         owner = if options['id']
           owner.to_i
@@ -117,7 +117,7 @@ module T
       owner, list = list.split('/')
       if list.nil?
         list = owner
-        owner = @rcfile.default_profile[0]
+        owner = @rcfile.active_profile[0]
       else
         owner = if options['id']
           owner.to_i
@@ -146,7 +146,7 @@ module T
         end
       end
       number = users.length
-      say "@#{@rcfile.default_profile[0]} removed #{number} #{number == 1 ? 'member' : 'members'} from the list \"#{list}\"."
+      say "@#{@rcfile.active_profile[0]} removed #{number} #{number == 1 ? 'member' : 'members'} from the list \"#{list}\"."
       say
       if options['id']
         say "Run `#{File.basename($0)} list add --id #{list} #{users.join(' ')}` to undo."
@@ -165,7 +165,7 @@ module T
       owner, list = list.split('/')
       if list.nil?
         list = owner
-        owner = @rcfile.default_profile[0]
+        owner = @rcfile.active_profile[0]
       else
         owner = if options['id']
           owner.to_i

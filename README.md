@@ -39,13 +39,13 @@ You can see a list of all the accounts you've authorized.
       UDfNTpOz5ZDG4a6w7dIWj
       uuP7Xbl2mEfGMiDu1uIyFN
     gem
-      thG9EfWoADtIr6NjbL9ON (default)
+      thG9EfWoADtIr6NjbL9ON (active)
 
-Notice that one account is marked as the default. To change the default use the
-`set` subcommand, passing either just the username, if it's unambiguous, or the
-username and consumer key pair, like so:
+Notice that one account is marked as the active. To change the active account
+use the `set` subcommand, passing either just the username, if it's
+unambiguous, or the username and consumer key pair, like so:
 
-    t set default sferik UDfNTpOz5ZDG4a6w7dIWj
+    t set active sferik UDfNTpOz5ZDG4a6w7dIWj
 
 Account information is stored in the YAML-formatted file `~/.trc`. **Note**:
 Anyone with access to this file can masquerade as you on Twitter, so it's

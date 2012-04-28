@@ -28,9 +28,9 @@ module T
     end
 
     desc "all QUERY", "Returns the #{DEFAULT_NUM_RESULTS} most recent Tweets that match a specified query."
-    method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
-    method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
-    method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS
+    method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
+    method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
+    method_option "number", :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS
     def all(query)
       rpp = options['number'] || DEFAULT_NUM_RESULTS
       statuses = client.search(query, :include_entities => false, :rpp => rpp)
@@ -57,8 +57,8 @@ module T
     end
 
     desc "favorites QUERY", "Returns Tweets you've favorited that mach a specified query."
-    method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
-    method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
+    method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
+    method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     def favorites(query)
       statuses = 1.upto(MAX_PAGES).threaded_map do |page|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
@@ -72,8 +72,8 @@ module T
     map %w(faves) => :favorites
 
     desc "mentions QUERY", "Returns Tweets mentioning you that mach a specified query."
-    method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
-    method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
+    method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
+    method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     def mentions(query)
       statuses = 1.upto(MAX_PAGES).threaded_map do |page|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
@@ -87,8 +87,8 @@ module T
     map %w(replies) => :mentions
 
     desc "retweets QUERY", "Returns Tweets you've retweeted that mach a specified query."
-    method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
-    method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
+    method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
+    method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     def retweets(query)
       statuses = 1.upto(MAX_PAGES).threaded_map do |page|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
@@ -102,8 +102,8 @@ module T
     map %w(rts) => :retweets
 
     desc "timeline QUERY", "Returns Tweets in your timeline that match a specified query."
-    method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
-    method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
+    method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
+    method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     def timeline(query)
       statuses = 1.upto(MAX_PAGES).threaded_map do |page|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
@@ -117,9 +117,9 @@ module T
     map %w(tl) => :timeline
 
     desc "user USER QUERY", "Returns Tweets in a user's timeline that match a specified query."
-    method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
-    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
-    method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
+    method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
+    method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
+    method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     def user(user, query)
       user = if options['id']
         user.to_i

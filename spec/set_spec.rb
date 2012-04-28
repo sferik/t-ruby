@@ -20,7 +20,7 @@ describe T::Set do
 
   describe "#active" do
     before do
-      @t.options = @t.options.merge(:profile => fixture_path + "/.trc")
+      @t.options = @t.options.merge("profile" => fixture_path + "/.trc")
     end
     it "should have the correct output" do
       @t.set("active", "testcli", "abc123")
@@ -30,7 +30,7 @@ describe T::Set do
 
   describe "#bio" do
     before do
-      @t.options = @t.options.merge(:profile => fixture_path + "/.trc")
+      @t.options = @t.options.merge("profile" => fixture_path + "/.trc")
       stub_post("/1/account/update_profile.json").
         with(:body => {:description => "A mind forever voyaging through strange seas of thought, alone.", :include_entities => "false"}).
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -49,7 +49,7 @@ describe T::Set do
 
   describe "#language" do
     before do
-      @t.options = @t.options.merge(:profile => fixture_path + "/.trc")
+      @t.options = @t.options.merge("profile" => fixture_path + "/.trc")
       stub_post("/1/account/settings.json").
         with(:body => {:lang => "en"}).
         to_return(:body => fixture("settings.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -68,7 +68,7 @@ describe T::Set do
 
   describe "#location" do
     before do
-      @t.options = @t.options.merge(:profile => fixture_path + "/.trc")
+      @t.options = @t.options.merge("profile" => fixture_path + "/.trc")
       stub_post("/1/account/update_profile.json").
         with(:body => {:location => "San Francisco", :include_entities => "false"}).
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -87,7 +87,7 @@ describe T::Set do
 
   describe "#name" do
     before do
-      @t.options = @t.options.merge(:profile => fixture_path + "/.trc")
+      @t.options = @t.options.merge("profile" => fixture_path + "/.trc")
       stub_post("/1/account/update_profile.json").
         with(:body => {:name => "Erik Michaels-Ober", :include_entities => "false"}).
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -106,7 +106,7 @@ describe T::Set do
 
   describe "#url" do
     before do
-      @t.options = @t.options.merge(:profile => fixture_path + "/.trc")
+      @t.options = @t.options.merge("profile" => fixture_path + "/.trc")
       stub_post("/1/account/update_profile.json").
         with(:body => {:url => "https://github.com/sferik", :include_entities => "false"}).
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})

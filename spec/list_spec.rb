@@ -22,7 +22,7 @@ describe T::List do
 
   describe "#add" do
     before do
-      @list.options = @list.options.merge(:profile => fixture_path + "/.trc")
+      @list.options = @list.options.merge("profile" => fixture_path + "/.trc")
       stub_get("/1/account/verify_credentials.json").
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       stub_post("/1/lists/members/create_all.json").
@@ -43,7 +43,7 @@ describe T::List do
     end
     context "--id" do
       before do
-        @list.options = @list.options.merge(:id => true)
+        @list.options = @list.options.merge("id" => true)
         stub_post("/1/lists/members/create_all.json").
           with(:body => {:user_id => "7505382", :slug => "presidents", :owner_screen_name => "sferik"}).
           to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -74,7 +74,7 @@ describe T::List do
 
   describe "#create" do
     before do
-      @list.options = @list.options.merge(:profile => fixture_path + "/.trc")
+      @list.options = @list.options.merge("profile" => fixture_path + "/.trc")
       stub_post("/1/lists/create.json").
         with(:body => {:name => "presidents"}).
         to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -93,7 +93,7 @@ describe T::List do
 
   describe "#information" do
     before do
-      @list.options = @list.options.merge(:profile => fixture_path + "/.trc")
+      @list.options = @list.options.merge("profile" => fixture_path + "/.trc")
       stub_get("/1/lists/show.json").
         with(:query => {:owner_screen_name => "testcli", :slug => "presidents"}).
         to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -128,7 +128,7 @@ URL          https://twitter.com/sferik/presidents
       end
       context "--id" do
         before do
-          @list.options = @list.options.merge(:id => true)
+          @list.options = @list.options.merge("id" => true)
           stub_get("/1/lists/show.json").
             with(:query => {:owner_id => "7505382", :slug => "presidents"}).
             to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -143,7 +143,7 @@ URL          https://twitter.com/sferik/presidents
     end
     context "--csv" do
       before do
-        @list.options = @list.options.merge(:csv => true)
+        @list.options = @list.options.merge("csv" => true)
       end
       it "should have the correct output" do
         @list.information("presidents")
@@ -173,7 +173,7 @@ ID,Description,Slug,Screen name,Created at,Members,Subscribers,Following,Mode,UR
     end
     context "--csv" do
       before do
-        @list.options = @list.options.merge(:csv => true)
+        @list.options = @list.options.merge("csv" => true)
       end
       it "should output in CSV format" do
         @list.members("presidents")
@@ -186,7 +186,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
     end
     context "--favorites" do
       before do
-        @list.options = @list.options.merge(:favorites => true)
+        @list.options = @list.options.merge("favorites" => true)
       end
       it "should sort by number of favorites" do
         @list.members("presidents")
@@ -195,7 +195,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
     end
     context "--followers" do
       before do
-        @list.options = @list.options.merge(:followers => true)
+        @list.options = @list.options.merge("followers" => true)
       end
       it "should sort by number of followers" do
         @list.members("presidents")
@@ -204,7 +204,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
     end
     context "--friends" do
       before do
-        @list.options = @list.options.merge(:friends => true)
+        @list.options = @list.options.merge("friends" => true)
       end
       it "should sort by number of friends" do
         @list.members("presidents")
@@ -213,7 +213,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
     end
     context "--listed" do
       before do
-        @list.options = @list.options.merge(:listed => true)
+        @list.options = @list.options.merge("listed" => true)
       end
       it "should sort by number of list memberships" do
         @list.members("presidents")
@@ -222,7 +222,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
     end
     context "--long" do
       before do
-        @list.options = @list.options.merge(:long => true)
+        @list.options = @list.options.merge("long" => true)
       end
       it "should output in long format" do
         @list.members("presidents")
@@ -235,7 +235,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
     end
     context "--posted" do
       before do
-        @list.options = @list.options.merge(:posted => true)
+        @list.options = @list.options.merge("posted" => true)
       end
       it "should sort by the time wshen Twitter account was created" do
         @list.members("presidents")
@@ -244,7 +244,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
     end
     context "--reverse" do
       before do
-        @list.options = @list.options.merge(:reverse => true)
+        @list.options = @list.options.merge("reverse" => true)
       end
       it "should reverse the order of the sort" do
         @list.members("presidents")
@@ -253,7 +253,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
     end
     context "--tweets" do
       before do
-        @list.options = @list.options.merge(:tweets => true)
+        @list.options = @list.options.merge("tweets" => true)
       end
       it "should sort by number of Tweets" do
         @list.members("presidents")
@@ -262,7 +262,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
     end
     context "--unsorted" do
       before do
-        @list.options = @list.options.merge(:unsorted => true)
+        @list.options = @list.options.merge("unsorted" => true)
       end
       it "should not be sorted" do
         @list.members("presidents")
@@ -278,7 +278,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
       end
       context "--id" do
         before do
-          @list.options = @list.options.merge(:id => true)
+          @list.options = @list.options.merge("id" => true)
           stub_get("/1/lists/members.json").
             with(:query => {:cursor => "-1", :include_entities => "false", :owner_id => "7505382", :skip_status => "true", :slug => "presidents"}).
             to_return(:body => fixture("users_list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -295,7 +295,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
 
   describe "#remove" do
     before do
-      @list.options = @list.options.merge(:profile => fixture_path + "/.trc")
+      @list.options = @list.options.merge("profile" => fixture_path + "/.trc")
       stub_get("/1/account/verify_credentials.json").
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
@@ -319,7 +319,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
     end
     context "--id" do
       before do
-        @list.options = @list.options.merge(:id => true)
+        @list.options = @list.options.merge("id" => true)
         stub_post("/1/lists/members/destroy_all.json").
           with(:body => {:user_id => "7505382", :slug => "presidents", :owner_screen_name => "sferik"}).
           to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -350,6 +350,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
 
   describe "#timeline" do
     before do
+      @list.options = @list.options.merge("no-color" => true)
       stub_get("/1/lists/statuses.json").
         with(:query => {:owner_screen_name => "testcli", :per_page => "20", :slug => "presidents", :include_entities => "false"}).
         to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -384,7 +385,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
     end
     context "--csv" do
       before do
-        @list.options = @list.options.merge(:csv => true)
+        @list.options = @list.options.merge("csv" => true)
       end
       it "should output in long format" do
         @list.timeline("presidents")
@@ -412,7 +413,7 @@ ID,Posted at,Screen name,Text
     end
     context "--long" do
       before do
-        @list.options = @list.options.merge(:long => true)
+        @list.options = @list.options.merge("long" => true)
       end
       it "should output in long format" do
         @list.timeline("presidents")
@@ -440,7 +441,7 @@ ID                  Posted at     Screen name    Text
     end
     context "--number" do
       before do
-        @list.options = @list.options.merge(:number => 1)
+        @list.options = @list.options.merge("number" => 1)
         stub_get("/1/lists/statuses.json").
           with(:query => {:owner_screen_name => "testcli", :per_page => "1", :slug => "presidents", :include_entities => "false"}).
           to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -454,7 +455,7 @@ ID                  Posted at     Screen name    Text
     end
     context "--reverse" do
       before do
-        @list.options = @list.options.merge(:reverse => true)
+        @list.options = @list.options.merge("reverse" => true)
       end
       it "should reverse the order of the sort" do
         @list.timeline("presidents")
@@ -488,7 +489,7 @@ ID                  Posted at     Screen name    Text
       end
       context "--id" do
         before do
-          @list.options = @list.options.merge(:id => true)
+          @list.options = @list.options.merge("id" => true)
           stub_get("/1/lists/statuses.json").
             with(:query => {:owner_id => "7505382", :per_page => "20", :slug => "presidents", :include_entities => "false"}).
             to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})

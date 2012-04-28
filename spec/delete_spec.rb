@@ -20,7 +20,7 @@ describe T::Delete do
 
   describe "#block" do
     before do
-      @delete.options = @delete.options.merge(:profile => fixture_path + "/.trc")
+      @delete.options = @delete.options.merge("profile" => fixture_path + "/.trc")
       stub_delete("/1/blocks/destroy.json").
         with(:query => {:screen_name => "sferik", :include_entities => "false"}).
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -37,7 +37,7 @@ describe T::Delete do
     end
     context "--id" do
       before do
-        @delete.options = @delete.options.merge(:id => true)
+        @delete.options = @delete.options.merge("id" => true)
         stub_delete("/1/blocks/destroy.json").
           with(:query => {:user_id => "7505382", :include_entities => "false"}).
           to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -53,7 +53,7 @@ describe T::Delete do
 
   describe "#dm" do
     before do
-      @delete.options = @delete.options.merge(:profile => fixture_path + "/.trc")
+      @delete.options = @delete.options.merge("profile" => fixture_path + "/.trc")
       stub_get("/1/direct_messages/show/1773478249.json").
         with(:query => {:include_entities => "false"}).
         to_return(:body => fixture("direct_message.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -90,7 +90,7 @@ describe T::Delete do
     end
     context "--force" do
       before do
-        @delete.options = @delete.options.merge(:force => true)
+        @delete.options = @delete.options.merge("force" => true)
       end
       it "should request the correct resource" do
         @delete.dm("1773478249")
@@ -107,7 +107,7 @@ describe T::Delete do
 
   describe "#favorite" do
     before do
-      @delete.options = @delete.options.merge(:profile => fixture_path + "/.trc")
+      @delete.options = @delete.options.merge("profile" => fixture_path + "/.trc")
       stub_get("/1/statuses/show/28439861609.json").
         with(:query => {:include_entities => "false", :include_my_retweet => "false", :trim_user => "true"}).
         to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -144,7 +144,7 @@ describe T::Delete do
     end
     context "--force" do
       before do
-        @delete.options = @delete.options.merge(:force => true)
+        @delete.options = @delete.options.merge("force" => true)
       end
       it "should request the correct resource" do
         @delete.favorite("28439861609")
@@ -161,7 +161,7 @@ describe T::Delete do
 
   describe "#list" do
     before do
-      @delete.options = @delete.options.merge(:profile => fixture_path + "/.trc")
+      @delete.options = @delete.options.merge("profile" => fixture_path + "/.trc")
       stub_get("/1/account/verify_credentials.json").
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       stub_get("/1/lists/show.json").
@@ -199,7 +199,7 @@ describe T::Delete do
     end
     context "--force" do
       before do
-        @delete.options = @delete.options.merge(:force => true)
+        @delete.options = @delete.options.merge("force" => true)
       end
       it "should request the correct resource" do
         @delete.list("presidents")
@@ -216,7 +216,7 @@ describe T::Delete do
     end
     context "--id" do
       before do
-        @delete.options = @delete.options.merge(:id => true)
+        @delete.options = @delete.options.merge("id" => true)
         stub_get("/1/lists/show.json").
           with(:query => {:owner_screen_name => "sferik", :list_id => "8863586"}).
           to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -239,7 +239,7 @@ describe T::Delete do
 
   describe "#status" do
     before do
-      @delete.options = @delete.options.merge(:profile => fixture_path + "/.trc")
+      @delete.options = @delete.options.merge("profile" => fixture_path + "/.trc")
       stub_get("/1/statuses/show/26755176471724032.json").
         with(:query => {:include_entities => "false", :include_my_retweet => "false", :trim_user => "true"}).
         to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -276,7 +276,7 @@ describe T::Delete do
     end
     context "--force" do
       before do
-        @delete.options = @delete.options.merge(:force => true)
+        @delete.options = @delete.options.merge("force" => true)
       end
       it "should request the correct resource" do
         @delete.status("26755176471724032")

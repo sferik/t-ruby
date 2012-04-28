@@ -22,7 +22,7 @@ describe T::CLI do
 
   describe "#account" do
     before do
-      @cli.options = @cli.options.merge(:profile => fixture_path + "/.trc")
+      @cli.options = @cli.options.merge("profile" => fixture_path + "/.trc")
     end
     it "should have the correct output" do
       @cli.accounts
@@ -35,7 +35,7 @@ testcli
 
   describe "#authorize" do
     before do
-      @cli.options = @cli.options.merge(:profile => project_path + "/tmp/trc", :consumer_key => "abc123", :consumer_secret => "asdfasd223sd2", :prompt => true, :display_url => true)
+      @cli.options = @cli.options.merge("profile" => project_path + "/tmp/trc", "consumer-key" => "abc123", "consumer-secret" => "asdfasd223sd2", "prompt" => true, "display-url" => true)
       stub_post("/oauth/request_token").
         to_return(:body => fixture("request_token"))
       stub_post("/oauth/access_token").
@@ -69,7 +69,7 @@ testcli
 
   describe "#block" do
     before do
-      @cli.options = @cli.options.merge(:profile => fixture_path + "/.trc")
+      @cli.options = @cli.options.merge("profile" => fixture_path + "/.trc")
       stub_post("/1/blocks/create.json").
         with(:body => {:screen_name => "sferik", :include_entities => "false"}).
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -86,7 +86,7 @@ testcli
     end
     context "--id" do
       before do
-        @cli.options = @cli.options.merge(:id => true)
+        @cli.options = @cli.options.merge("id" => true)
         stub_post("/1/blocks/create.json").
           with(:body => {:user_id => "7505382", :include_entities => "false"}).
           to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -129,7 +129,7 @@ testcli
     end
     context "--csv" do
       before do
-        @cli.options = @cli.options.merge(:csv => true)
+        @cli.options = @cli.options.merge("csv" => true)
       end
       it "should output in CSV format" do
         @cli.direct_messages
@@ -150,7 +150,7 @@ ID,Posted at,Screen name,Text
     end
     context "--long" do
       before do
-        @cli.options = @cli.options.merge(:long => true)
+        @cli.options = @cli.options.merge("long" => true)
       end
       it "should output in long format" do
         @cli.direct_messages
@@ -171,7 +171,7 @@ ID          Posted at     Screen name  Text
     end
     context "--number" do
       before do
-        @cli.options = @cli.options.merge(:number => 1)
+        @cli.options = @cli.options.merge("number" => 1)
         stub_get("/1/direct_messages.json").
           with(:query => {:count => "1", :include_entities => "false"}).
           to_return(:body => fixture("direct_messages.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -185,7 +185,7 @@ ID          Posted at     Screen name  Text
     end
     context "--reverse" do
       before do
-        @cli.options = @cli.options.merge(:reverse => true)
+        @cli.options = @cli.options.merge("reverse" => true)
       end
       it "should reverse the order of the sort" do
         @cli.direct_messages
@@ -234,7 +234,7 @@ ID          Posted at     Screen name  Text
     end
     context "--csv" do
       before do
-        @cli.options = @cli.options.merge(:csv => true)
+        @cli.options = @cli.options.merge("csv" => true)
       end
       it "should output in CSV format" do
         @cli.direct_messages_sent
@@ -255,7 +255,7 @@ ID,Posted at,Screen name,Text
     end
     context "--long" do
       before do
-        @cli.options = @cli.options.merge(:long => true)
+        @cli.options = @cli.options.merge("long" => true)
       end
       it "should output in long format" do
         @cli.direct_messages_sent
@@ -276,7 +276,7 @@ ID          Posted at     Screen name  Text
     end
     context "--number" do
       before do
-        @cli.options = @cli.options.merge(:number => 1)
+        @cli.options = @cli.options.merge("number" => 1)
         stub_get("/1/direct_messages/sent.json").
           with(:query => {:count => "1", :include_entities => "false"}).
           to_return(:body => fixture("direct_messages.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -290,7 +290,7 @@ ID          Posted at     Screen name  Text
     end
     context "--reverse" do
       before do
-        @cli.options = @cli.options.merge(:reverse => true)
+        @cli.options = @cli.options.merge("reverse" => true)
       end
       it "should reverse the order of the sort" do
         @cli.direct_messages_sent
@@ -340,7 +340,7 @@ ID          Posted at     Screen name  Text
     end
     context "--csv" do
       before do
-        @cli.options = @cli.options.merge(:csv => true)
+        @cli.options = @cli.options.merge("csv" => true)
       end
       it "should output in CSV format" do
         @cli.disciples
@@ -353,7 +353,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
     end
     context "--favorites" do
       before do
-        @cli.options = @cli.options.merge(:favorites => true)
+        @cli.options = @cli.options.merge("favorites" => true)
       end
       it "should sort by number of favorites" do
         @cli.disciples
@@ -362,7 +362,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
     end
     context "--followers" do
       before do
-        @cli.options = @cli.options.merge(:followers => true)
+        @cli.options = @cli.options.merge("followers" => true)
       end
       it "should sort by number of followers" do
         @cli.disciples
@@ -371,7 +371,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
     end
     context "--friends" do
       before do
-        @cli.options = @cli.options.merge(:friends => true)
+        @cli.options = @cli.options.merge("friends" => true)
       end
       it "should sort by number of friends" do
         @cli.disciples
@@ -380,7 +380,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
     end
     context "--listed" do
       before do
-        @cli.options = @cli.options.merge(:listed => true)
+        @cli.options = @cli.options.merge("listed" => true)
       end
       it "should sort by number of list memberships" do
         @cli.disciples
@@ -389,7 +389,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
     end
     context "--long" do
       before do
-        @cli.options = @cli.options.merge(:long => true)
+        @cli.options = @cli.options.merge("long" => true)
       end
       it "should output in long format" do
         @cli.disciples
@@ -402,7 +402,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
     end
     context "--posted" do
       before do
-        @cli.options = @cli.options.merge(:posted => true)
+        @cli.options = @cli.options.merge("posted" => true)
       end
       it "should sort by the time when Twitter acount was created" do
         @cli.disciples
@@ -411,7 +411,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
     end
     context "--reverse" do
       before do
-        @cli.options = @cli.options.merge(:reverse => true)
+        @cli.options = @cli.options.merge("reverse" => true)
       end
       it "should reverse the order of the sort" do
         @cli.disciples
@@ -420,7 +420,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
     end
     context "--tweets" do
       before do
-        @cli.options = @cli.options.merge(:tweets => true)
+        @cli.options = @cli.options.merge("tweets" => true)
       end
       it "should sort by number of Tweets" do
         @cli.disciples
@@ -429,7 +429,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
     end
     context "--unsorted" do
       before do
-        @cli.options = @cli.options.merge(:unsorted => true)
+        @cli.options = @cli.options.merge("unsorted" => true)
       end
       it "should not be sorted" do
         @cli.disciples
@@ -459,7 +459,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
       end
       context "--id" do
         before do
-          @cli.options = @cli.options.merge(:id => true)
+          @cli.options = @cli.options.merge("id" => true)
           stub_get("/1/followers/ids.json").
             with(:query => {:cursor => "-1", :user_id => "7505382"}).
             to_return(:body => fixture("followers_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -485,7 +485,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
 
   describe "#dm" do
     before do
-      @cli.options = @cli.options.merge(:profile => fixture_path + "/.trc")
+      @cli.options = @cli.options.merge("profile" => fixture_path + "/.trc")
       stub_post("/1/direct_messages/new.json").
         with(:body => {:screen_name => "pengwynn", :text => "Creating a fixture for the Twitter gem", :include_entities => "false"}).
         to_return(:body => fixture("direct_message.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -502,7 +502,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
     end
     context "--id" do
       before do
-        @cli.options = @cli.options.merge(:id => true)
+        @cli.options = @cli.options.merge("id" => true)
         stub_post("/1/direct_messages/new.json").
           with(:body => {:user_id => "14100886", :text => "Creating a fixture for the Twitter gem", :include_entities => "false"}).
           to_return(:body => fixture("direct_message.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -518,7 +518,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
 
   describe "#does_contain" do
     before do
-      @cli.options = @cli.options.merge(:profile => fixture_path + "/.trc")
+      @cli.options = @cli.options.merge("profile" => fixture_path + "/.trc")
       stub_get("/1/lists/members/show.json").
         with(:query => {:owner_screen_name => "testcli", :screen_name => "testcli", :slug => "presidents"}).
         to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -535,7 +535,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
     end
     context "--id" do
       before do
-        @cli.options = @cli.options.merge(:id => true)
+        @cli.options = @cli.options.merge("id" => true)
         stub_get("/1/users/show.json").
           with(:query => {:user_id => "7505382", :include_entities => "false"}).
           to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -560,7 +560,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
       end
       context "--id" do
         before do
-          @cli.options = @cli.options.merge(:id => true)
+          @cli.options = @cli.options.merge("id" => true)
           stub_get("/1/users/show.json").
             with(:query => {:user_id => "7505382", :include_entities => "false"}).
             to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -604,7 +604,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
 
   describe "#does_follow" do
     before do
-      @cli.options = @cli.options.merge(:profile => fixture_path + "/.trc")
+      @cli.options = @cli.options.merge("profile" => fixture_path + "/.trc")
       stub_get("/1/friendships/exists.json").
         with(:query => {:user_a => "ev", :user_b => "testcli"}).
         to_return(:body => fixture("true.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -621,7 +621,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
     end
     context "--id" do
       before do
-        @cli.options = @cli.options.merge(:id => true)
+        @cli.options = @cli.options.merge("id" => true)
         stub_get("/1/users/show.json").
           with(:query => {:user_id => "20", :include_entities => "false"}).
           to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -646,7 +646,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
       end
       context "--id" do
         before do
-          @cli.options = @cli.options.merge(:id => true)
+          @cli.options = @cli.options.merge("id" => true)
           stub_get("/1/users/show.json").
             with(:query => {:user_id => "20", :include_entities => "false"}).
             to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -690,7 +690,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
 
   describe "#favorite" do
     before do
-      @cli.options = @cli.options.merge(:profile => fixture_path + "/.trc")
+      @cli.options = @cli.options.merge("profile" => fixture_path + "/.trc")
       stub_post("/1/favorites/create/26755176471724032.json").
         to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
@@ -707,6 +707,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
 
   describe "#favorites" do
     before do
+      @cli.options = @cli.options.merge("no-color" => true)
       stub_get("/1/favorites.json").
         with(:query => {:count => "20", :include_entities => "false"}).
         to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -741,7 +742,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
     end
     context "--csv" do
       before do
-        @cli.options = @cli.options.merge(:csv => true)
+        @cli.options = @cli.options.merge("csv" => true)
       end
       it "should output in CSV format" do
         @cli.favorites
@@ -769,7 +770,7 @@ ID,Posted at,Screen name,Text
     end
     context "--long" do
       before do
-        @cli.options = @cli.options.merge(:long => true)
+        @cli.options = @cli.options.merge("long" => true)
       end
       it "should output in long format" do
         @cli.favorites
@@ -797,7 +798,7 @@ ID                  Posted at     Screen name    Text
     end
     context "--number" do
       before do
-        @cli.options = @cli.options.merge(:number => 1)
+        @cli.options = @cli.options.merge("number" => 1)
         stub_get("/1/favorites.json").
           with(:query => {:count => "1", :include_entities => "false"}).
           to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -811,7 +812,7 @@ ID                  Posted at     Screen name    Text
     end
     context "--reverse" do
       before do
-        @cli.options = @cli.options.merge(:reverse => true)
+        @cli.options = @cli.options.merge("reverse" => true)
       end
       it "should reverse the order of the sort" do
         @cli.favorites
@@ -850,7 +851,7 @@ ID                  Posted at     Screen name    Text
       end
       context "--id" do
         before do
-          @cli.options = @cli.options.merge(:id => true)
+          @cli.options = @cli.options.merge("id" => true)
           stub_get("/1/favorites/7505382.json").
             with(:query => {:count => "20", :include_entities => "false"}).
             to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -867,7 +868,7 @@ ID                  Posted at     Screen name    Text
 
   describe "#follow" do
     before do
-      @cli.options = @cli.options.merge(:profile => fixture_path + "/.trc")
+      @cli.options = @cli.options.merge("profile" => fixture_path + "/.trc")
     end
     context "one user" do
       it "should request the correct resource" do
@@ -888,7 +889,7 @@ ID                  Posted at     Screen name    Text
       end
       context "--id" do
         before do
-          @cli.options = @cli.options.merge(:id => true)
+          @cli.options = @cli.options.merge("id" => true)
           stub_post("/1/friendships/create.json").
             with(:body => {:user_id => "7505382", :include_entities => "false"}).
             to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -940,7 +941,7 @@ ID                  Posted at     Screen name    Text
     end
     context "--csv" do
       before do
-        @cli.options = @cli.options.merge(:csv => true)
+        @cli.options = @cli.options.merge("csv" => true)
       end
       it "should output in CSV format" do
         @cli.followings
@@ -953,7 +954,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
     end
     context "--favorites" do
       before do
-        @cli.options = @cli.options.merge(:favorites => true)
+        @cli.options = @cli.options.merge("favorites" => true)
       end
       it "should sort by number of favorites" do
         @cli.followings
@@ -962,7 +963,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
     end
     context "--followers" do
       before do
-        @cli.options = @cli.options.merge(:followers => true)
+        @cli.options = @cli.options.merge("followers" => true)
       end
       it "should sort by number of followers" do
         @cli.followings
@@ -971,7 +972,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
     end
     context "--friends" do
       before do
-        @cli.options = @cli.options.merge(:friends => true)
+        @cli.options = @cli.options.merge("friends" => true)
       end
       it "should sort by number of friends" do
         @cli.followings
@@ -980,7 +981,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
     end
     context "--listed" do
       before do
-        @cli.options = @cli.options.merge(:listed => true)
+        @cli.options = @cli.options.merge("listed" => true)
       end
       it "should sort by number of list memberships" do
         @cli.followings
@@ -989,7 +990,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
     end
     context "--long" do
       before do
-        @cli.options = @cli.options.merge(:long => true)
+        @cli.options = @cli.options.merge("long" => true)
       end
       it "should output in long format" do
         @cli.followings
@@ -1002,7 +1003,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
     end
     context "--posted" do
       before do
-        @cli.options = @cli.options.merge(:posted => true)
+        @cli.options = @cli.options.merge("posted" => true)
       end
       it "should sort by the time when Twitter acount was created" do
         @cli.followings
@@ -1011,7 +1012,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
     end
     context "--reverse" do
       before do
-        @cli.options = @cli.options.merge(:reverse => true)
+        @cli.options = @cli.options.merge("reverse" => true)
       end
       it "should reverse the order of the sort" do
         @cli.followings
@@ -1020,7 +1021,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
     end
     context "--tweets" do
       before do
-        @cli.options = @cli.options.merge(:tweets => true)
+        @cli.options = @cli.options.merge("tweets" => true)
       end
       it "should sort by number of Tweets" do
         @cli.followings
@@ -1029,7 +1030,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
     end
     context "--unsorted" do
       before do
-        @cli.options = @cli.options.merge(:unsorted => true)
+        @cli.options = @cli.options.merge("unsorted" => true)
       end
       it "should not be sorted" do
         @cli.followings
@@ -1054,7 +1055,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
     end
     context "--id" do
       before do
-        @cli.options = @cli.options.merge(:id => true)
+        @cli.options = @cli.options.merge("id" => true)
         stub_get("/1/friends/ids.json").
           with(:query => {:cursor => "-1", :user_id => "7505382"}).
           to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -1095,7 +1096,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
     end
     context "--csv" do
       before do
-        @cli.options = @cli.options.merge(:csv => true)
+        @cli.options = @cli.options.merge("csv" => true)
       end
       it "should output in CSV format" do
         @cli.followers
@@ -1108,7 +1109,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
     end
     context "--favorites" do
       before do
-        @cli.options = @cli.options.merge(:favorites => true)
+        @cli.options = @cli.options.merge("favorites" => true)
       end
       it "should sort by number of favorites" do
         @cli.followers
@@ -1117,7 +1118,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
     end
     context "--followers" do
       before do
-        @cli.options = @cli.options.merge(:followers => true)
+        @cli.options = @cli.options.merge("followers" => true)
       end
       it "should sort by number of followers" do
         @cli.followers
@@ -1126,7 +1127,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
     end
     context "--friends" do
       before do
-        @cli.options = @cli.options.merge(:friends => true)
+        @cli.options = @cli.options.merge("friends" => true)
       end
       it "should sort by number of friends" do
         @cli.followers
@@ -1135,7 +1136,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
     end
     context "--listed" do
       before do
-        @cli.options = @cli.options.merge(:listed => true)
+        @cli.options = @cli.options.merge("listed" => true)
       end
       it "should sort by number of list memberships" do
         @cli.followers
@@ -1144,7 +1145,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
     end
     context "--long" do
       before do
-        @cli.options = @cli.options.merge(:long => true)
+        @cli.options = @cli.options.merge("long" => true)
       end
       it "should output in long format" do
         @cli.followers
@@ -1157,7 +1158,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
     end
     context "--posted" do
       before do
-        @cli.options = @cli.options.merge(:posted => true)
+        @cli.options = @cli.options.merge("posted" => true)
       end
       it "should sort by the time when Twitter acount was created" do
         @cli.followers
@@ -1166,7 +1167,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
     end
     context "--reverse" do
       before do
-        @cli.options = @cli.options.merge(:reverse => true)
+        @cli.options = @cli.options.merge("reverse" => true)
       end
       it "should reverse the order of the sort" do
         @cli.followers
@@ -1175,7 +1176,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
     end
     context "--tweets" do
       before do
-        @cli.options = @cli.options.merge(:tweets => true)
+        @cli.options = @cli.options.merge("tweets" => true)
       end
       it "should sort by number of Tweets" do
         @cli.followers
@@ -1184,7 +1185,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
     end
     context "--unsorted" do
       before do
-        @cli.options = @cli.options.merge(:unsorted => true)
+        @cli.options = @cli.options.merge("unsorted" => true)
       end
       it "should not be sorted" do
         @cli.followers
@@ -1211,7 +1212,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
       end
       context "--id" do
         before do
-          @cli.options = @cli.options.merge(:id => true)
+          @cli.options = @cli.options.merge("id" => true)
           stub_get("/1/followers/ids.json").
             with(:query => {:cursor => "-1", :user_id => "7505382"}).
             to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -1259,7 +1260,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
     end
     context "--csv" do
       before do
-        @cli.options = @cli.options.merge(:csv => true)
+        @cli.options = @cli.options.merge("csv" => true)
       end
       it "should output in CSV format" do
         @cli.friends
@@ -1272,7 +1273,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
     end
     context "--favorites" do
       before do
-        @cli.options = @cli.options.merge(:favorites => true)
+        @cli.options = @cli.options.merge("favorites" => true)
       end
       it "should sort by number of favorites" do
         @cli.friends
@@ -1281,7 +1282,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
     end
     context "--followers" do
       before do
-        @cli.options = @cli.options.merge(:followers => true)
+        @cli.options = @cli.options.merge("followers" => true)
       end
       it "should sort by number of followers" do
         @cli.friends
@@ -1290,7 +1291,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
     end
     context "--friends" do
       before do
-        @cli.options = @cli.options.merge(:friends => true)
+        @cli.options = @cli.options.merge("friends" => true)
       end
       it "should sort by number of friends" do
         @cli.friends
@@ -1299,7 +1300,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
     end
     context "--listed" do
       before do
-        @cli.options = @cli.options.merge(:listed => true)
+        @cli.options = @cli.options.merge("listed" => true)
       end
       it "should sort by number of list memberships" do
         @cli.friends
@@ -1308,7 +1309,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
     end
     context "--long" do
       before do
-        @cli.options = @cli.options.merge(:long => true)
+        @cli.options = @cli.options.merge("long" => true)
       end
       it "should output in long format" do
         @cli.friends
@@ -1321,7 +1322,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
     end
     context "--posted" do
       before do
-        @cli.options = @cli.options.merge(:posted => true)
+        @cli.options = @cli.options.merge("posted" => true)
       end
       it "should sort by the time when Twitter acount was created" do
         @cli.friends
@@ -1330,7 +1331,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
     end
     context "--reverse" do
       before do
-        @cli.options = @cli.options.merge(:reverse => true)
+        @cli.options = @cli.options.merge("reverse" => true)
       end
       it "should reverse the order of the sort" do
         @cli.friends
@@ -1339,7 +1340,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
     end
     context "--tweets" do
       before do
-        @cli.options = @cli.options.merge(:tweets => true)
+        @cli.options = @cli.options.merge("tweets" => true)
       end
       it "should sort by number of Tweets" do
         @cli.friends
@@ -1348,7 +1349,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
     end
     context "--unsorted" do
       before do
-        @cli.options = @cli.options.merge(:unsorted => true)
+        @cli.options = @cli.options.merge("unsorted" => true)
       end
       it "should not be sorted" do
         @cli.friends
@@ -1378,7 +1379,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
       end
       context "--id" do
         before do
-          @cli.options = @cli.options.merge(:id => true)
+          @cli.options = @cli.options.merge("id" => true)
           stub_get("/1/friends/ids.json").
             with(:query => {:cursor => "-1", :user_id => "7505382"}).
             to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -1432,7 +1433,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
     end
     context "--csv" do
       before do
-        @cli.options = @cli.options.merge(:csv => true)
+        @cli.options = @cli.options.merge("csv" => true)
       end
       it "should output in CSV format" do
         @cli.leaders
@@ -1445,7 +1446,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
     end
     context "--favorites" do
       before do
-        @cli.options = @cli.options.merge(:favorites => true)
+        @cli.options = @cli.options.merge("favorites" => true)
       end
       it "should sort by number of favorites" do
         @cli.leaders
@@ -1454,7 +1455,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
     end
     context "--followers" do
       before do
-        @cli.options = @cli.options.merge(:followers => true)
+        @cli.options = @cli.options.merge("followers" => true)
       end
       it "should sort by number of followers" do
         @cli.leaders
@@ -1463,7 +1464,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
     end
     context "--friends" do
       before do
-        @cli.options = @cli.options.merge(:friends => true)
+        @cli.options = @cli.options.merge("friends" => true)
       end
       it "should sort by number of friends" do
         @cli.leaders
@@ -1472,7 +1473,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
     end
     context "--listed" do
       before do
-        @cli.options = @cli.options.merge(:listed => true)
+        @cli.options = @cli.options.merge("listed" => true)
       end
       it "should sort by number of list memberships" do
         @cli.leaders
@@ -1481,7 +1482,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
     end
     context "--long" do
       before do
-        @cli.options = @cli.options.merge(:long => true)
+        @cli.options = @cli.options.merge("long" => true)
       end
       it "should output in long format" do
         @cli.leaders
@@ -1494,7 +1495,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
     end
     context "--posted" do
       before do
-        @cli.options = @cli.options.merge(:posted => true)
+        @cli.options = @cli.options.merge("posted" => true)
       end
       it "should sort by the time when Twitter acount was created" do
         @cli.leaders
@@ -1503,7 +1504,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
     end
     context "--reverse" do
       before do
-        @cli.options = @cli.options.merge(:reverse => true)
+        @cli.options = @cli.options.merge("reverse" => true)
       end
       it "should reverse the order of the sort" do
         @cli.leaders
@@ -1512,7 +1513,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
     end
     context "--tweets" do
       before do
-        @cli.options = @cli.options.merge(:tweets => true)
+        @cli.options = @cli.options.merge("tweets" => true)
       end
       it "should sort by number of Tweets" do
         @cli.leaders
@@ -1521,7 +1522,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
     end
     context "--unsorted" do
       before do
-        @cli.options = @cli.options.merge(:unsorted => true)
+        @cli.options = @cli.options.merge("unsorted" => true)
       end
       it "should not be sorted" do
         @cli.leaders
@@ -1551,7 +1552,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
       end
       context "--id" do
         before do
-          @cli.options = @cli.options.merge(:id => true)
+          @cli.options = @cli.options.merge("id" => true)
           stub_get("/1/friends/ids.json").
             with(:query => {:cursor => "-1", :user_id => "7505382"}).
             to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -1593,7 +1594,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
     end
     context "--csv" do
       before do
-        @cli.options = @cli.options.merge(:csv => true)
+        @cli.options = @cli.options.merge("csv" => true)
       end
       it "should output in CSV format" do
         @cli.lists
@@ -1606,7 +1607,7 @@ ID,Created at,Screen name,Slug,Members,Subscribers,Mode,Description
     end
     context "--long" do
       before do
-        @cli.options = @cli.options.merge(:long => true)
+        @cli.options = @cli.options.merge("long" => true)
       end
       it "should output in long format" do
         @cli.lists
@@ -1619,7 +1620,7 @@ ID        Created at    Slug                      Members  Subscribers  Mode    
     end
     context "--members" do
       before do
-        @cli.options = @cli.options.merge(:members => true)
+        @cli.options = @cli.options.merge("members" => true)
       end
       it "should sort by the time when Twitter acount was created" do
         @cli.lists
@@ -1628,7 +1629,7 @@ ID        Created at    Slug                      Members  Subscribers  Mode    
     end
     context "--mode" do
       before do
-        @cli.options = @cli.options.merge(:mode => true)
+        @cli.options = @cli.options.merge("mode" => true)
       end
       it "should sort by the time when Twitter acount was created" do
         @cli.lists
@@ -1637,7 +1638,7 @@ ID        Created at    Slug                      Members  Subscribers  Mode    
     end
     context "--posted" do
       before do
-        @cli.options = @cli.options.merge(:posted => true)
+        @cli.options = @cli.options.merge("posted" => true)
       end
       it "should sort by the time when Twitter acount was created" do
         @cli.lists
@@ -1646,7 +1647,7 @@ ID        Created at    Slug                      Members  Subscribers  Mode    
     end
     context "--reverse" do
       before do
-        @cli.options = @cli.options.merge(:reverse => true)
+        @cli.options = @cli.options.merge("reverse" => true)
       end
       it "should reverse the order of the sort" do
         @cli.lists
@@ -1655,7 +1656,7 @@ ID        Created at    Slug                      Members  Subscribers  Mode    
     end
     context "--subscribers" do
       before do
-        @cli.options = @cli.options.merge(:subscribers => true)
+        @cli.options = @cli.options.merge("subscribers" => true)
       end
       it "should sort by the time when Twitter acount was created" do
         @cli.lists
@@ -1664,7 +1665,7 @@ ID        Created at    Slug                      Members  Subscribers  Mode    
     end
     context "--unsorted" do
       before do
-        @cli.options = @cli.options.merge(:unsorted => true)
+        @cli.options = @cli.options.merge("unsorted" => true)
       end
       it "should not be sorted" do
         @cli.lists
@@ -1685,7 +1686,7 @@ ID        Created at    Slug                      Members  Subscribers  Mode    
       end
       context "--id" do
         before do
-          @cli.options = @cli.options.merge(:id => true)
+          @cli.options = @cli.options.merge("id" => true)
           stub_get("/1/lists.json").
             with(:query => {:cursor => "-1", :user_id => "7505382"}).
             to_return(:body => fixture("lists.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -1702,6 +1703,7 @@ ID        Created at    Slug                      Members  Subscribers  Mode    
 
   describe "#mentions" do
     before do
+      @cli.options = @cli.options.merge("no-color" => true)
       stub_get("/1/statuses/mentions.json").
         with(:query => {:count => "20", :include_entities => "false"}).
         to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -1736,7 +1738,7 @@ ID        Created at    Slug                      Members  Subscribers  Mode    
     end
     context "--csv" do
       before do
-        @cli.options = @cli.options.merge(:csv => true)
+        @cli.options = @cli.options.merge("csv" => true)
       end
       it "should output in CSV format" do
         @cli.mentions
@@ -1764,7 +1766,7 @@ ID,Posted at,Screen name,Text
     end
     context "--long" do
       before do
-        @cli.options = @cli.options.merge(:long => true)
+        @cli.options = @cli.options.merge("long" => true)
       end
       it "should output in long format" do
         @cli.mentions
@@ -1792,7 +1794,7 @@ ID                  Posted at     Screen name    Text
     end
     context "--number" do
       before do
-        @cli.options = @cli.options.merge(:number => 1)
+        @cli.options = @cli.options.merge("number" => 1)
         stub_get("/1/statuses/mentions.json").
           with(:query => {:count => "1", :include_entities => "false"}).
           to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -1806,7 +1808,7 @@ ID                  Posted at     Screen name    Text
     end
     context "--reverse" do
       before do
-        @cli.options = @cli.options.merge(:reverse => true)
+        @cli.options = @cli.options.merge("reverse" => true)
       end
       it "should reverse the order of the sort" do
         @cli.mentions
@@ -1835,7 +1837,7 @@ ID                  Posted at     Screen name    Text
 
   describe "#open" do
     before do
-      @cli.options = @cli.options.merge(:display_url => true)
+      @cli.options = @cli.options.merge("display-url" => true)
     end
     it "should have the correct output" do
       lambda do
@@ -1844,7 +1846,7 @@ ID                  Posted at     Screen name    Text
     end
     context "--id" do
       before do
-        @cli.options = @cli.options.merge(:id => true)
+        @cli.options = @cli.options.merge("id" => true)
         stub_get("/1/users/show.json").
           with(:query => {:user_id => "420", :include_entities => "false"}).
           to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -1858,7 +1860,7 @@ ID                  Posted at     Screen name    Text
     end
     context "--status" do
       before do
-        @cli.options = @cli.options.merge(:status => true)
+        @cli.options = @cli.options.merge("status" => true)
         stub_get("/1/statuses/show/55709764298092545.json").
           with(:query => {:include_entities => "false", :include_my_retweet => "false"}).
           to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -1879,7 +1881,7 @@ ID                  Posted at     Screen name    Text
 
   describe "#reply" do
     before do
-      @cli.options = @cli.options.merge(:profile => fixture_path + "/.trc", :location => true)
+      @cli.options = @cli.options.merge("profile" => fixture_path + "/.trc", "location" => true)
       stub_get("/1/statuses/show/55709764298092545.json").
         with(:query => {:include_entities => "false", :include_my_retweet => "false"}).
         to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -1910,7 +1912,7 @@ ID                  Posted at     Screen name    Text
     end
     context "--all" do
       before do
-        @cli.options = @cli.options.merge(:all => true)
+        @cli.options = @cli.options.merge("all" => true)
       end
       it "should request the correct resource" do
         @cli.reply("55709764298092545", "Testing")
@@ -1934,7 +1936,7 @@ ID                  Posted at     Screen name    Text
 
   describe "#report_spam" do
     before do
-      @cli.options = @cli.options.merge(:profile => fixture_path + "/.trc")
+      @cli.options = @cli.options.merge("profile" => fixture_path + "/.trc")
       stub_post("/1/report_spam.json").
         with(:body => {:screen_name => "sferik", :include_entities => "false"}).
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -1951,7 +1953,7 @@ ID                  Posted at     Screen name    Text
     end
     context "--id" do
       before do
-        @cli.options = @cli.options.merge(:id => true)
+        @cli.options = @cli.options.merge("id" => true)
         stub_post("/1/report_spam.json").
           with(:body => {:user_id => "7505382", :include_entities => "false"}).
           to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -1967,7 +1969,7 @@ ID                  Posted at     Screen name    Text
 
   describe "#retweet" do
     before do
-      @cli.options = @cli.options.merge(:profile => fixture_path + "/.trc")
+      @cli.options = @cli.options.merge("profile" => fixture_path + "/.trc")
       stub_post("/1/statuses/retweet/26755176471724032.json").
         to_return(:body => fixture("retweet.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
@@ -1984,6 +1986,7 @@ ID                  Posted at     Screen name    Text
 
   describe "#retweets" do
     before do
+      @cli.options = @cli.options.merge("no-color" => true)
       stub_get("/1/statuses/retweeted_by_me.json").
         with(:query => {:count => "20", :include_entities => "false"}).
         to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -2020,7 +2023,7 @@ ID                  Posted at     Screen name    Text
     end
     context "--csv" do
       before do
-        @cli.options = @cli.options.merge(:csv => true)
+        @cli.options = @cli.options.merge("csv" => true)
       end
       it "should output in CSV format" do
         @cli.retweets
@@ -2048,7 +2051,7 @@ ID,Posted at,Screen name,Text
     end
     context "--long" do
       before do
-        @cli.options = @cli.options.merge(:long => true)
+        @cli.options = @cli.options.merge("long" => true)
       end
       it "should output in long format" do
         @cli.retweets
@@ -2076,7 +2079,7 @@ ID                  Posted at     Screen name    Text
     end
     context "--number" do
       before do
-        @cli.options = @cli.options.merge(:number => 1)
+        @cli.options = @cli.options.merge("number" => 1)
         stub_get("/1/statuses/retweeted_by_me.json").
           with(:query => {:count => "1", :include_entities => "false"}).
           to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -2090,7 +2093,7 @@ ID                  Posted at     Screen name    Text
     end
     context "--reverse" do
       before do
-        @cli.options = @cli.options.merge(:reverse => true)
+        @cli.options = @cli.options.merge("reverse" => true)
       end
       it "should reverse the order of the sort" do
         @cli.retweets
@@ -2129,7 +2132,7 @@ ID                  Posted at     Screen name    Text
       end
       context "--id" do
         before do
-          @cli.options = @cli.options.merge(:id => true)
+          @cli.options = @cli.options.merge("id" => true)
           stub_get("/1/statuses/retweeted_by_user.json").
             with(:query => {:count => "20", :include_entities => "false", :user_id => "7505382"}).
             to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -2178,7 +2181,7 @@ URL          https://twitter.com/sferik/status/55709764298092545
     end
     context "--csv" do
       before do
-        @cli.options = @cli.options.merge(:csv => true)
+        @cli.options = @cli.options.merge("csv" => true)
       end
       it "should have the correct output" do
         @cli.status("55709764298092545")
@@ -2212,7 +2215,7 @@ ID,Text,Screen name,Posted at,Location,Retweets,Source,URL
     end
     context "--csv" do
       before do
-        @cli.options = @cli.options.merge(:csv => true)
+        @cli.options = @cli.options.merge("csv" => true)
       end
       it "should output in CSV format" do
         @cli.suggest
@@ -2228,7 +2231,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
     end
     context "--favorites" do
       before do
-        @cli.options = @cli.options.merge(:favorites => true)
+        @cli.options = @cli.options.merge("favorites" => true)
       end
       it "should sort by number of favorites" do
         @cli.suggest
@@ -2237,7 +2240,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
     end
     context "--followers" do
       before do
-        @cli.options = @cli.options.merge(:followers => true)
+        @cli.options = @cli.options.merge("followers" => true)
       end
       it "should sort by number of followers" do
         @cli.suggest
@@ -2246,7 +2249,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
     end
     context "--friends" do
       before do
-        @cli.options = @cli.options.merge(:friends => true)
+        @cli.options = @cli.options.merge("friends" => true)
       end
       it "should sort by number of friends" do
         @cli.suggest
@@ -2255,7 +2258,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
     end
     context "--listed" do
       before do
-        @cli.options = @cli.options.merge(:listed => true)
+        @cli.options = @cli.options.merge("listed" => true)
       end
       it "should sort by number of list memberships" do
         @cli.suggest
@@ -2264,7 +2267,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
     end
     context "--long" do
       before do
-        @cli.options = @cli.options.merge(:long => true)
+        @cli.options = @cli.options.merge("long" => true)
       end
       it "should output in long format" do
         @cli.suggest
@@ -2280,7 +2283,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
     end
     context "--number" do
       before do
-        @cli.options = @cli.options.merge(:number => 1)
+        @cli.options = @cli.options.merge("number" => 1)
         stub_get("/1/users/recommendations.json").
           with(:query => {:limit => "1", :include_entities => "false", :screen_name => "sferik"}).
           to_return(:body => fixture("recommendations.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -2294,7 +2297,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
     end
     context "--posted" do
       before do
-        @cli.options = @cli.options.merge(:posted => true)
+        @cli.options = @cli.options.merge("posted" => true)
       end
       it "should sort by the time when Twitter acount was created" do
         @cli.suggest
@@ -2303,7 +2306,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
     end
     context "--reverse" do
       before do
-        @cli.options = @cli.options.merge(:reverse => true)
+        @cli.options = @cli.options.merge("reverse" => true)
       end
       it "should reverse the order of the sort" do
         @cli.suggest
@@ -2312,7 +2315,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
     end
     context "--tweets" do
       before do
-        @cli.options = @cli.options.merge(:tweets => true)
+        @cli.options = @cli.options.merge("tweets" => true)
       end
       it "should sort by number of Tweets" do
         @cli.suggest
@@ -2321,7 +2324,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
     end
     context "--unsorted" do
       before do
-        @cli.options = @cli.options.merge(:unsorted => true)
+        @cli.options = @cli.options.merge("unsorted" => true)
       end
       it "should not be sorted" do
         @cli.suggest
@@ -2341,7 +2344,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
       end
       context "--id" do
         before do
-          @cli.options = @cli.options.merge(:id => true)
+          @cli.options = @cli.options.merge("id" => true)
           stub_get("/1/users/recommendations.json").
             with(:query => {:limit => "20", :include_entities => "false", :user_id => "7505382"}).
             to_return(:body => fixture("recommendations.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -2358,6 +2361,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
 
   describe "#timeline" do
     before do
+      @cli.options = @cli.options.merge("no-color" => true)
       stub_get("/1/statuses/home_timeline.json").
         with(:query => {:count => "20", :include_entities => "false"}).
         to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -2394,7 +2398,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
     end
     context "--csv" do
       before do
-        @cli.options = @cli.options.merge(:csv => true)
+        @cli.options = @cli.options.merge("csv" => true)
       end
       it "should output in CSV format" do
         @cli.timeline
@@ -2422,7 +2426,7 @@ ID,Posted at,Screen name,Text
     end
     context "--long" do
       before do
-        @cli.options = @cli.options.merge(:long => true)
+        @cli.options = @cli.options.merge("long" => true)
       end
       it "should output in long format" do
         @cli.timeline
@@ -2450,7 +2454,7 @@ ID                  Posted at     Screen name    Text
     end
     context "--number" do
       before do
-        @cli.options = @cli.options.merge(:number => 1)
+        @cli.options = @cli.options.merge("number" => 1)
         stub_get("/1/statuses/home_timeline.json").
           with(:query => {:count => "1", :include_entities => "false"}).
           to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -2464,7 +2468,7 @@ ID                  Posted at     Screen name    Text
     end
     context "--reverse" do
       before do
-        @cli.options = @cli.options.merge(:reverse => true)
+        @cli.options = @cli.options.merge("reverse" => true)
       end
       it "should reverse the order of the sort" do
         @cli.timeline
@@ -2503,7 +2507,7 @@ ID                  Posted at     Screen name    Text
       end
       context "--id" do
         before do
-          @cli.options = @cli.options.merge(:id => true)
+          @cli.options = @cli.options.merge("id" => true)
           stub_get("/1/statuses/user_timeline.json").
             with(:query => {:count => "20", :include_entities => "false", :user_id => "7505382"}).
             to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -2532,9 +2536,9 @@ ID                  Posted at     Screen name    Text
       @cli.trends
       $stdout.string.rstrip.should == "#sevenwordsaftersex  Walkman              Allen Iverson"
     end
-    context "--exclude_hashtags" do
+    context "--exclude-hashtags" do
       before do
-        @cli.options = @cli.options.merge(:exclude_hashtags => true)
+        @cli.options = @cli.options.merge("exclude-hashtags" => true)
         stub_get("/1/trends/1.json").
           with(:query => {:exclude => "hashtags"}).
           to_return(:body => fixture("trends.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -2583,7 +2587,7 @@ ID                  Posted at     Screen name    Text
     end
     context "--csv" do
       before do
-        @cli.options = @cli.options.merge(:csv => true)
+        @cli.options = @cli.options.merge("csv" => true)
       end
       it "should output in CSV format" do
         @cli.trend_locations
@@ -2599,7 +2603,7 @@ WOEID,Parent ID,Type,Name,Country
     end
     context "--long" do
       before do
-        @cli.options = @cli.options.merge(:long => true)
+        @cli.options = @cli.options.merge("long" => true)
       end
       it "should output in long format" do
         @cli.trend_locations
@@ -2615,7 +2619,7 @@ WOEID     Parent ID  Type       Name           Country
     end
     context "--reverse" do
       before do
-        @cli.options = @cli.options.merge(:reverse => true)
+        @cli.options = @cli.options.merge("reverse" => true)
       end
       it "should reverse the order of the sort" do
         @cli.trend_locations
@@ -2624,7 +2628,7 @@ WOEID     Parent ID  Type       Name           Country
     end
     context "--unsorted" do
       before do
-        @cli.options = @cli.options.merge(:unsorted => true)
+        @cli.options = @cli.options.merge("unsorted" => true)
       end
       it "should not be sorted" do
         @cli.trend_locations
@@ -2635,7 +2639,7 @@ WOEID     Parent ID  Type       Name           Country
 
   describe "#unfollow" do
     before do
-      @cli.options = @cli.options.merge(:profile => fixture_path + "/.trc")
+      @cli.options = @cli.options.merge("profile" => fixture_path + "/.trc")
     end
     context "one user" do
       it "should request the correct resource" do
@@ -2656,7 +2660,7 @@ WOEID     Parent ID  Type       Name           Country
       end
       context "--id" do
         before do
-          @cli.options = @cli.options.merge(:id => true)
+          @cli.options = @cli.options.merge("id" => true)
           stub_delete("/1/friendships/destroy.json").
             with(:query => {:user_id => "7505382", :include_entities => "false"}).
             to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -2686,7 +2690,7 @@ WOEID     Parent ID  Type       Name           Country
 
   describe "#update" do
     before do
-      @cli.options = @cli.options.merge(:profile => fixture_path + "/.trc", :location => true)
+      @cli.options = @cli.options.merge("profile" => fixture_path + "/.trc", "location" => true)
       stub_post("/1/statuses/update.json").
         with(:body => {:status => "Testing", :lat => "37.76969909668", :long => "-122.39330291748", :include_entities => "false", :trim_user => "true"}).
         to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -2729,7 +2733,7 @@ WOEID     Parent ID  Type       Name           Country
     end
     context "--csv" do
       before do
-        @cli.options = @cli.options.merge(:csv => true)
+        @cli.options = @cli.options.merge("csv" => true)
       end
       it "should output in CSV format" do
         @cli.users("sferik", "pengwynn")
@@ -2742,7 +2746,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
     end
     context "--favorites" do
       before do
-        @cli.options = @cli.options.merge(:favorites => true)
+        @cli.options = @cli.options.merge("favorites" => true)
       end
       it "should sort by number of favorites" do
         @cli.users("sferik", "pengwynn")
@@ -2751,7 +2755,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
     end
     context "--followers" do
       before do
-        @cli.options = @cli.options.merge(:followers => true)
+        @cli.options = @cli.options.merge("followers" => true)
       end
       it "should sort by number of followers" do
         @cli.users("sferik", "pengwynn")
@@ -2760,7 +2764,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
     end
     context "--friends" do
       before do
-        @cli.options = @cli.options.merge(:friends => true)
+        @cli.options = @cli.options.merge("friends" => true)
       end
       it "should sort by number of friends" do
         @cli.users("sferik", "pengwynn")
@@ -2769,7 +2773,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
     end
     context "--id" do
       before do
-        @cli.options = @cli.options.merge(:id => true)
+        @cli.options = @cli.options.merge("id" => true)
         stub_get("/1/users/lookup.json").
           with(:query => {:user_id => "7505382,14100886", :include_entities => "false"}).
           to_return(:body => fixture("users.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -2783,7 +2787,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
     end
     context "--listed" do
       before do
-        @cli.options = @cli.options.merge(:listed => true)
+        @cli.options = @cli.options.merge("listed" => true)
       end
       it "should sort by number of list memberships" do
         @cli.users("sferik", "pengwynn")
@@ -2792,7 +2796,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
     end
     context "--long" do
       before do
-        @cli.options = @cli.options.merge(:long => true)
+        @cli.options = @cli.options.merge("long" => true)
       end
       it "should output in long format" do
         @cli.users("sferik", "pengwynn")
@@ -2805,7 +2809,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
     end
     context "--posted" do
       before do
-        @cli.options = @cli.options.merge(:posted => true)
+        @cli.options = @cli.options.merge("posted" => true)
       end
       it "should sort by the time when Twitter acount was created" do
         @cli.users("sferik", "pengwynn")
@@ -2814,7 +2818,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
     end
     context "--reverse" do
       before do
-        @cli.options = @cli.options.merge(:reverse => true)
+        @cli.options = @cli.options.merge("reverse" => true)
       end
       it "should reverse the order of the sort" do
         @cli.users("sferik", "pengwynn")
@@ -2823,7 +2827,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
     end
     context "--tweets" do
       before do
-        @cli.options = @cli.options.merge(:tweets => true)
+        @cli.options = @cli.options.merge("tweets" => true)
       end
       it "should sort by number of Tweets" do
         @cli.users("sferik", "pengwynn")
@@ -2832,7 +2836,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
     end
     context "--unsorted" do
       before do
-        @cli.options = @cli.options.merge(:unsorted => true)
+        @cli.options = @cli.options.merge("unsorted" => true)
       end
       it "should not be sorted" do
         @cli.users("sferik", "pengwynn")
@@ -2880,7 +2884,7 @@ URL          https://github.com/sferik
     end
     context "--csv" do
       before do
-        @cli.options = @cli.options.merge(:csv => true)
+        @cli.options = @cli.options.merge("csv" => true)
       end
       it "should have the correct output" do
         @cli.whois("sferik")
@@ -2892,7 +2896,7 @@ ID,Verified,Name,Screen name,Bio,Location,Following,Last update,Lasted updated a
     end
     context "--id" do
       before do
-        @cli.options = @cli.options.merge(:id => true)
+        @cli.options = @cli.options.merge("id" => true)
         stub_get("/1/users/show.json").
           with(:query => {:user_id => "7505382", :include_entities => "false"}).
           to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})

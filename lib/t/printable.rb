@@ -3,6 +3,7 @@ require 'csv'
 # 'fastercsv' required on Ruby versions < 1.9
 require 'fastercsv' unless Array.new.respond_to?(:to_csv)
 require 'highline'
+require 'thor/shell/color'
 
 module T
   module Printable
@@ -79,8 +80,17 @@ module T
           end
           print_table(array)
         else
-          statuses.each do |status|
-            say "#{status.user.screen_name.rjust(MAX_SCREEN_NAME_SIZE)}: #{status.text.gsub(/\n+/, ' ')} (#{time_ago_in_words(status.created_at)} ago)"
+          if STDOUT.tty? && !options['no-color']
+            statuses.each do |status|
+              say("  #{Thor::Shell::Color::BOLD}#{status.user.screen_name}", :yellow)
+              Thor::Shell::Basic.new.print_wrapped(status.text, :indent => 2)
+              say("  #{Thor::Shell::Color::BOLD}#{time_ago_in_words(status.created_at)} ago", :black)
+              say
+            end
+          else
+            statuses.each do |status|
+              say "#{status.user.screen_name.rjust(MAX_SCREEN_NAME_SIZE)}: #{status.text.gsub(/\n+/, ' ')} (#{time_ago_in_words(status.created_at)} ago)"
+            end
           end
         end
       end

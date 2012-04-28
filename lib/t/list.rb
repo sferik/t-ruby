@@ -32,7 +32,7 @@ module T
     end
 
     desc "add LIST USER [USER...]", "Add members to a list."
-    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
+    method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     def add(list, user, *users)
       users.unshift(user)
       if options['id']
@@ -56,7 +56,7 @@ module T
     end
 
     desc "create LIST [DESCRIPTION]", "Create a new list."
-    method_option :private, :aliases => "-p", :type => :boolean
+    method_option "private", :aliases => "-p", :type => :boolean
     def create(list, description="")
       opts = description.blank? ? {} : {:description => description}
       opts.merge!(:mode => 'private') if options['private']
@@ -65,7 +65,7 @@ module T
     end
 
     desc "information [USER/]LIST", "Retrieves detailed information about a Twitter list."
-    method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
+    method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     def information(list)
       owner, list = list.split('/')
       if list.nil?
@@ -102,17 +102,17 @@ module T
     map %w(detail) => :information
 
     desc "members [USER/]LIST", "Returns the members of a Twitter list."
-    method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
-    method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by total number of favorites."
-    method_option :followers, :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by total number of followers."
-    method_option :friends, :aliases => "-e", :type => :boolean, :default => false, :desc => "Sort by total number of friends."
-    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
-    method_option :listed, :aliases => "-s", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
-    method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
-    method_option :posted, :aliases => "-p", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter account was posted."
-    method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
-    method_option :tweets, :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by total number of Tweets."
-    method_option :unsorted, :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
+    method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
+    method_option "followers", :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by total number of favorites."
+    method_option "followers", :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by total number of followers."
+    method_option "friends", :aliases => "-e", :type => :boolean, :default => false, :desc => "Sort by total number of friends."
+    method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
+    method_option "listed", :aliases => "-s", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
+    method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
+    method_option "posted", :aliases => "-p", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter account was posted."
+    method_option "reverse", :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
+    method_option "tweets", :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by total number of Tweets."
+    method_option "unsorted", :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
     def members(list)
       owner, list = list.split('/')
       if list.nil?
@@ -132,7 +132,7 @@ module T
     end
 
     desc "remove LIST USER [USER...]", "Remove members from a list."
-    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
+    method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     def remove(list, user, *users)
       users.unshift(user)
       if options['id']
@@ -156,11 +156,11 @@ module T
     end
 
     desc "timeline [USER/]LIST", "Show tweet timeline for members of the specified list."
-    method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
-    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
-    method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
-    method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => "Limit the number of results."
-    method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
+    method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
+    method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
+    method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
+    method_option "number", :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => "Limit the number of results."
+    method_option "reverse", :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     def timeline(list)
       owner, list = list.split('/')
       if list.nil?

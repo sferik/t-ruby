@@ -54,7 +54,7 @@ describe T::Search do
     end
     context "--csv" do
       before do
-        @search.options = @search.options.merge(:csv => true)
+        @search.options = @search.options.merge("csv" => true)
       end
       it "should output in CSV format" do
         @search.all("twitter")
@@ -84,7 +84,7 @@ ID,Posted at,Screen name,Text
     end
     context "--long" do
       before do
-        @search.options = @search.options.merge(:long => true)
+        @search.options = @search.options.merge("long" => true)
       end
       it "should output in long format" do
         @search.all("twitter")
@@ -110,7 +110,7 @@ ID                  Posted at     Screen name       Text
     end
     context "--number" do
       before do
-        @search.options = @search.options.merge(:number => 1)
+        @search.options = @search.options.merge("number" => 1)
         stub_request(:get, "https://search.twitter.com/search.json").
           with(:query => {:q => "twitter", :include_entities => "false", :rpp => "1"}).
           to_return(:body => fixture("search.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -126,6 +126,7 @@ ID                  Posted at     Screen name       Text
 
   describe "#favorites" do
     before do
+      @search.options = @search.options.merge("no-color" => true)
       1.upto(16).each do |page|
         stub_get("/1/favorites.json").
           with(:query => {:count => "200", :page => "#{page}"}).
@@ -163,7 +164,7 @@ ID                  Posted at     Screen name       Text
     end
     context "--csv" do
       before do
-        @search.options = @search.options.merge(:csv => true)
+        @search.options = @search.options.merge("csv" => true)
       end
       it "should output in CSV format" do
         @search.favorites("twitter")
@@ -190,7 +191,7 @@ ID,Posted at,Screen name,Text
     end
     context "--long" do
       before do
-        @search.options = @search.options.merge(:long => true)
+        @search.options = @search.options.merge("long" => true)
       end
       it "should output in long format" do
         @search.favorites("twitter")
@@ -232,6 +233,7 @@ ID                  Posted at     Screen name  Text
 
   describe "#mentions" do
     before do
+      @search.options = @search.options.merge("no-color" => true)
       1.upto(16).each do |page|
         stub_get("/1/statuses/mentions.json").
           with(:query => {:count => "200", :page => "#{page}"}).
@@ -269,7 +271,7 @@ ID                  Posted at     Screen name  Text
     end
     context "--csv" do
       before do
-        @search.options = @search.options.merge(:csv => true)
+        @search.options = @search.options.merge("csv" => true)
       end
       it "should output in CSV format" do
         @search.mentions("twitter")
@@ -296,7 +298,7 @@ ID,Posted at,Screen name,Text
     end
     context "--long" do
       before do
-        @search.options = @search.options.merge(:long => true)
+        @search.options = @search.options.merge("long" => true)
       end
       it "should output in long format" do
         @search.mentions("twitter")
@@ -338,6 +340,7 @@ ID                  Posted at     Screen name  Text
 
   describe "#retweets" do
     before do
+      @search.options = @search.options.merge("no-color" => true)
       1.upto(16).each do |page|
         stub_get("/1/statuses/retweeted_by_me.json").
           with(:query => {:count => "200", :page => "#{page}"}).
@@ -375,7 +378,7 @@ ID                  Posted at     Screen name  Text
     end
     context "--csv" do
       before do
-        @search.options = @search.options.merge(:csv => true)
+        @search.options = @search.options.merge("csv" => true)
       end
       it "should output in CSV format" do
         @search.retweets("twitter")
@@ -402,7 +405,7 @@ ID,Posted at,Screen name,Text
     end
     context "--long" do
       before do
-        @search.options = @search.options.merge(:long => true)
+        @search.options = @search.options.merge("long" => true)
       end
       it "should output in long format" do
         @search.retweets("twitter")
@@ -444,6 +447,7 @@ ID                  Posted at     Screen name  Text
 
   describe "#timeline" do
     before do
+      @search.options = @search.options.merge("no-color" => true)
       1.upto(16).each do |page|
         stub_get("/1/statuses/home_timeline.json").
           with(:query => {:count => "200", :page => "#{page}"}).
@@ -481,7 +485,7 @@ ID                  Posted at     Screen name  Text
     end
     context "--csv" do
       before do
-        @search.options = @search.options.merge(:csv => true)
+        @search.options = @search.options.merge("csv" => true)
       end
       it "should output in CSV format" do
         @search.timeline("twitter")
@@ -508,7 +512,7 @@ ID,Posted at,Screen name,Text
     end
     context "--long" do
       before do
-        @search.options = @search.options.merge(:long => true)
+        @search.options = @search.options.merge("long" => true)
       end
       it "should output in long format" do
         @search.timeline("twitter")
@@ -550,6 +554,7 @@ ID                  Posted at     Screen name  Text
 
   describe "#user" do
     before do
+      @search.options = @search.options.merge("no-color" => true)
       1.upto(16).each do |page|
         stub_get("/1/statuses/user_timeline.json").
           with(:query => {:screen_name => "sferik", :count => "200", :page => "#{page}"}).
@@ -587,7 +592,7 @@ ID                  Posted at     Screen name  Text
     end
     context "--csv" do
       before do
-        @search.options = @search.options.merge(:csv => true)
+        @search.options = @search.options.merge("csv" => true)
       end
       it "should output in CSV format" do
         @search.user("sferik", "twitter")
@@ -614,7 +619,7 @@ ID,Posted at,Screen name,Text
     end
     context "--id" do
       before do
-        @search.options = @search.options.merge(:id => true)
+        @search.options = @search.options.merge("id" => true)
         1.upto(16).each do |page|
           stub_get("/1/statuses/user_timeline.json").
             with(:query => {:user_id => "7505382", :count => "200", :page => "#{page}"}).
@@ -632,7 +637,7 @@ ID,Posted at,Screen name,Text
     end
     context "--long" do
       before do
-        @search.options = @search.options.merge(:long => true)
+        @search.options = @search.options.merge("long" => true)
       end
       it "should output in long format" do
         @search.user("sferik", "twitter")

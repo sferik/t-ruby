@@ -46,9 +46,10 @@ module T
 
     check_unknown_options!
 
-    option :host, :aliases => "-H", :type => :string, :default => DEFAULT_HOST, :desc => "Twitter API server"
-    option :no_ssl, :aliases => "-U", :type => :boolean, :default => false, :desc => "Disable SSL"
-    option :profile, :aliases => "-P", :type => :string, :default => File.join(File.expand_path("~"), RCFile::FILE_NAME), :desc => "Path to RC file", :banner => "FILE"
+    option "host", :aliases => "-H", :type => :string, :default => DEFAULT_HOST, :desc => "Twitter API server"
+    option "no-color", :alias => "-N", :type => :boolean, :banner => "Disable colorization in output"
+    option "no-ssl", :aliases => "-U", :type => :boolean, :default => false, :desc => "Disable SSL"
+    option "profile", :aliases => "-P", :type => :string, :default => File.join(File.expand_path("~"), RCFile::FILE_NAME), :desc => "Path to RC file", :banner => "FILE"
 
     def initialize(*)
       super
@@ -67,10 +68,10 @@ module T
     end
 
     desc "authorize", "Allows an application to request user authorization"
-    method_option :consumer_key, :aliases => "-c", :required => true, :desc => "This can be found at https://dev.twitter.com/apps"
-    method_option :consumer_secret, :aliases => "-s", :required => true, :desc => "This can be found at https://dev.twitter.com/apps"
-    method_option :display_url, :aliases => "-d", :type => :boolean, :default => false, :desc => "Display the authorization URL instead of attempting to open it."
-    method_option :prompt, :aliases => "-p", :type => :boolean, :default => true
+    method_option "consumer-key", :aliases => "-c", :required => true, :desc => "This can be found at https://dev.twitter.com/apps"
+    method_option "consumer-secret", :aliases => "-s", :required => true, :desc => "This can be found at https://dev.twitter.com/apps"
+    method_option "display-url", :aliases => "-d", :type => :boolean, :default => false, :desc => "Display the authorization URL instead of attempting to open it."
+    method_option "prompt", :aliases => "-p", :type => :boolean, :default => true
     def authorize
       request_token = consumer.get_request_token
       url = generate_authorize_url(request_token)
@@ -85,27 +86,27 @@ module T
         ask "Press [Enter] to open the Twitter app authorization page."
         say
       end
-      Launchy.open(url, :dry_run => options['display_url'])
+      Launchy.open(url, :dry_run => options['display-url'])
       pin = ask "Paste in the supplied PIN:"
       access_token = request_token.get_access_token(:oauth_verifier => pin.chomp)
       oauth_response = access_token.get('/1/account/verify_credentials.json')
       screen_name = oauth_response.body.match(/"screen_name"\s*:\s*"(.*?)"/).captures.first
       @rcfile.path = options['profile'] if options['profile']
       @rcfile[screen_name] = {
-        options['consumer_key'] => {
+        options['consumer-key'] => {
           'username' => screen_name,
-          'consumer_key' => options['consumer_key'],
-          'consumer_secret' => options['consumer_secret'],
+          'consumer_key' => options['consumer-key'],
+          'consumer_secret' => options['consumer-secret'],
           'token' => access_token.token,
           'secret' => access_token.secret,
         }
       }
-      @rcfile.active_profile = {'username' => screen_name, 'consumer_key' => options['consumer_key']}
+      @rcfile.active_profile = {'username' => screen_name, 'consumer_key' => options['consumer-key']}
       say "Authorization successful."
     end
 
     desc "block USER [USER...]", "Block users."
-    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
+    method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     def block(user, *users)
       users.unshift(user)
       if options['id']
@@ -125,10 +126,10 @@ module T
     end
 
     desc "direct_messages", "Returns the #{DEFAULT_NUM_RESULTS} most recent Direct Messages sent to you."
-    method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
-    method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
-    method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => "Limit the number of results."
-    method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
+    method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
+    method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
+    method_option "number", :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => "Limit the number of results."
+    method_option "reverse", :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     def direct_messages
       count = options['number'] || DEFAULT_NUM_RESULTS
       direct_messages = client.direct_messages(:count => count, :include_entities => false)
@@ -157,10 +158,10 @@ module T
     map %w(directmessages dms) => :direct_messages
 
     desc "direct_messages_sent", "Returns the #{DEFAULT_NUM_RESULTS} most recent Direct Messages sent to you."
-    method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
-    method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
-    method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => "Limit the number of results."
-    method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
+    method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
+    method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
+    method_option "number", :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => "Limit the number of results."
+    method_option "reverse", :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     def direct_messages_sent
       count = options['number'] || DEFAULT_NUM_RESULTS
       direct_messages = client.direct_messages_sent(:count => count, :include_entities => false)
@@ -189,17 +190,17 @@ module T
     map %w(directmessagessent sent_messages sentmessages sms) => :direct_messages_sent
 
     desc "disciples [USER]", "Returns the list of people who follow you but you don't follow back."
-    method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
-    method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by number of favorites."
-    method_option :followers, :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by number of followers."
-    method_option :friends, :aliases => "-e", :type => :boolean, :default => false, :desc => "Sort by number of friends."
-    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
-    method_option :listed, :aliases => "-s", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
-    method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
-    method_option :posted, :aliases => "-p", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter account was posted."
-    method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
-    method_option :tweets, :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by number of Tweets."
-    method_option :unsorted, :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
+    method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
+    method_option "favorites", :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by number of favorites."
+    method_option "followers", :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by number of followers."
+    method_option "friends", :aliases => "-e", :type => :boolean, :default => false, :desc => "Sort by number of friends."
+    method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
+    method_option "listed", :aliases => "-s", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
+    method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
+    method_option "posted", :aliases => "-p", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter account was posted."
+    method_option "reverse", :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
+    method_option "tweets", :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by number of Tweets."
+    method_option "unsorted", :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
     def disciples(user=nil)
       if user
         user = if options['id']
@@ -224,7 +225,7 @@ module T
     end
 
     desc "dm USER MESSAGE", "Sends that person a Direct Message."
-    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
+    method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
     def dm(user, message)
       user = if options['id']
         user.to_i
@@ -237,7 +238,7 @@ module T
     map %w(d m) => :dm
 
     desc "does_contain [USER/]LIST USER", "Find out whether a list contains a user."
-    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
+    method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
     def does_contain(list, user=nil)
       owner, list = list.split('/')
       if list.nil?
@@ -269,7 +270,7 @@ module T
     map %w(dc doescontain) => :does_contain
 
     desc "does_follow USER [USER]", "Find out whether one user follows another."
-    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
+    method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
     def does_follow(user1, user2=nil)
       user1 = if options['id']
         client.user(user1.to_i, :include_entities => false).screen_name
@@ -311,11 +312,11 @@ module T
     map %w(fave favourite) => :favorite
 
     desc "favorites [USER]", "Returns the #{DEFAULT_NUM_RESULTS} most recent Tweets you favorited."
-    method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
-    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
-    method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
-    method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => "Limit the number of results."
-    method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
+    method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
+    method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
+    method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
+    method_option "number", :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => "Limit the number of results."
+    method_option "reverse", :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     def favorites(user=nil)
       if user
         user = if options['id']
@@ -331,7 +332,7 @@ module T
     map %w(faves favourites) => :favorites
 
     desc "follow USER [USER...]", "Allows you to start following users."
-    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
+    method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     def follow(user, *users)
       users.unshift(user)
       if options['id']
@@ -351,17 +352,17 @@ module T
     end
 
     desc "followings [USER]", "Returns a list of the people you follow on Twitter."
-    method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
-    method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by number of favorites."
-    method_option :followers, :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by number of followers."
-    method_option :friends, :aliases => "-e", :type => :boolean, :default => false, :desc => "Sort by number of friends."
-    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
-    method_option :listed, :aliases => "-s", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
-    method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
-    method_option :posted, :aliases => "-p", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter account was posted."
-    method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
-    method_option :tweets, :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by number of Tweets."
-    method_option :unsorted, :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
+    method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
+    method_option "favorites", :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by number of favorites."
+    method_option "followers", :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by number of followers."
+    method_option "friends", :aliases => "-e", :type => :boolean, :default => false, :desc => "Sort by number of friends."
+    method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
+    method_option "listed", :aliases => "-s", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
+    method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
+    method_option "posted", :aliases => "-p", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter account was posted."
+    method_option "reverse", :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
+    method_option "tweets", :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by number of Tweets."
+    method_option "unsorted", :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
     def followings(user=nil)
       if user
         user = if options['id']
@@ -382,17 +383,17 @@ module T
     end
 
     desc "followers [USER]", "Returns a list of the people who follow you on Twitter."
-    method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
-    method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by number of favorites."
-    method_option :followers, :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by number of followers."
-    method_option :friends, :aliases => "-e", :type => :boolean, :default => false, :desc => "Sort by number of friends."
-    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
-    method_option :listed, :aliases => "-s", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
-    method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
-    method_option :posted, :aliases => "-p", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter account was posted."
-    method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
-    method_option :tweets, :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by number of Tweets."
-    method_option :unsorted, :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
+    method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
+    method_option "favorites", :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by number of favorites."
+    method_option "followers", :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by number of followers."
+    method_option "friends", :aliases => "-e", :type => :boolean, :default => false, :desc => "Sort by number of friends."
+    method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
+    method_option "listed", :aliases => "-s", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
+    method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
+    method_option "posted", :aliases => "-p", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter account was posted."
+    method_option "reverse", :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
+    method_option "tweets", :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by number of Tweets."
+    method_option "unsorted", :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
     def followers(user=nil)
       if user
         user = if options['id']
@@ -413,17 +414,17 @@ module T
     end
 
     desc "friends [USER]", "Returns the list of people who you follow and follow you back."
-    method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
-    method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by number of favorites."
-    method_option :followers, :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by number of followers."
-    method_option :friends, :aliases => "-e", :type => :boolean, :default => false, :desc => "Sort by number of friends."
-    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
-    method_option :listed, :aliases => "-s", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
-    method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
-    method_option :posted, :aliases => "-p", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter account was posted."
-    method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
-    method_option :tweets, :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by number of Tweets."
-    method_option :unsorted, :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
+    method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
+    method_option "favorites", :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by number of favorites."
+    method_option "followers", :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by number of followers."
+    method_option "friends", :aliases => "-e", :type => :boolean, :default => false, :desc => "Sort by number of friends."
+    method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
+    method_option "listed", :aliases => "-s", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
+    method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
+    method_option "posted", :aliases => "-p", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter account was posted."
+    method_option "reverse", :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
+    method_option "tweets", :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by number of Tweets."
+    method_option "unsorted", :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
     def friends(user=nil)
       if user
         user = if options['id']
@@ -448,17 +449,17 @@ module T
     end
 
     desc "leaders [USER]", "Returns the list of people who you follow but don't follow you back."
-    method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
-    method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by number of favorites."
-    method_option :followers, :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by number of followers."
-    method_option :friends, :aliases => "-e", :type => :boolean, :default => false, :desc => "Sort by number of friends."
-    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
-    method_option :listed, :aliases => "-s", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
-    method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
-    method_option :posted, :aliases => "-p", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter account was posted."
-    method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
-    method_option :tweets, :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by number of Tweets."
-    method_option :unsorted, :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
+    method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
+    method_option "favorites", :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by number of favorites."
+    method_option "followers", :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by number of followers."
+    method_option "friends", :aliases => "-e", :type => :boolean, :default => false, :desc => "Sort by number of friends."
+    method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
+    method_option "listed", :aliases => "-s", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
+    method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
+    method_option "posted", :aliases => "-p", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter account was posted."
+    method_option "reverse", :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
+    method_option "tweets", :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by number of Tweets."
+    method_option "unsorted", :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
     def leaders(user=nil)
       if user
         user = if options['id']
@@ -483,15 +484,15 @@ module T
     end
 
     desc "lists [USER]", "Returns the lists created by a user."
-    method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
-    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
-    method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
-    method_option :members, :aliases => "-m", :type => :boolean, :default => false, :desc => "Sort by number of members."
-    method_option :mode, :aliases => "-o", :type => :boolean, :default => false, :desc => "Sort by mode."
-    method_option :posted, :aliases => "-p", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter list was posted."
-    method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
-    method_option :subscribers, :aliases => "-s", :type => :boolean, :default => false, :desc => "Sort by number of subscribers."
-    method_option :unsorted, :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
+    method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
+    method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
+    method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
+    method_option "members", :aliases => "-m", :type => :boolean, :default => false, :desc => "Sort by number of members."
+    method_option "mode", :aliases => "-o", :type => :boolean, :default => false, :desc => "Sort by mode."
+    method_option "posted", :aliases => "-p", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter list was posted."
+    method_option "reverse", :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
+    method_option "subscribers", :aliases => "-s", :type => :boolean, :default => false, :desc => "Sort by number of subscribers."
+    method_option "unsorted", :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
     def lists(user=nil)
       if user
         user = if options['id']
@@ -507,10 +508,10 @@ module T
     end
 
     desc "mentions", "Returns the #{DEFAULT_NUM_RESULTS} most recent Tweets mentioning you."
-    method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
-    method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
-    method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => "Limit the number of results."
-    method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
+    method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
+    method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
+    method_option "number", :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => "Limit the number of results."
+    method_option "reverse", :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     def mentions
       count = options['number'] || DEFAULT_NUM_RESULTS
       statuses = client.mentions(:count => count, :include_entities => false)
@@ -519,24 +520,24 @@ module T
     map %w(replies) => :mentions
 
     desc "open USER", "Opens that user's profile in a web browser."
-    method_option :display_url, :aliases => "-d", :type => :boolean, :default => false, :desc => "Display the requested URL instead of attempting to open it."
-    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
-    method_option :status, :aliases => "-s", :type => :boolean, :default => false, :desc => "Specify input as a Twitter status ID instead of a screen name."
+    method_option "display-url", :aliases => "-d", :type => :boolean, :default => false, :desc => "Display the requested URL instead of attempting to open it."
+    method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
+    method_option "status", :aliases => "-s", :type => :boolean, :default => false, :desc => "Specify input as a Twitter status ID instead of a screen name."
     def open(user)
       if options['id']
         user = client.user(user.to_i, :include_entities => false)
-        Launchy.open("https://twitter.com/#{user.screen_name}", :dry_run => options['display_url'])
+        Launchy.open("https://twitter.com/#{user.screen_name}", :dry_run => options['display-url'])
       elsif options['status']
         status = client.status(user.to_i, :include_entities => false, :include_my_retweet => false)
-        Launchy.open("https://twitter.com/#{status.user.screen_name}/status/#{status.id}", :dry_run => options['display_url'])
+        Launchy.open("https://twitter.com/#{status.user.screen_name}/status/#{status.id}", :dry_run => options['display-url'])
       else
-        Launchy.open("https://twitter.com/#{user.strip_ats}", :dry_run => options['display_url'])
+        Launchy.open("https://twitter.com/#{user.strip_ats}", :dry_run => options['display-url'])
       end
     end
 
     desc "reply STATUS_ID MESSAGE", "Post your Tweet as a reply directed at another person."
-    method_option :all, :aliases => "-a", :type => "boolean", :default => false, :desc => "Reply to all users mentioned in the Tweet."
-    method_option :location, :aliases => "-l", :type => :boolean, :default => false
+    method_option "all", :aliases => "-a", :type => "boolean", :default => false, :desc => "Reply to all users mentioned in the Tweet."
+    method_option "location", :aliases => "-l", :type => :boolean, :default => false
     def reply(status_id, message)
       status_id = status_id.strip_commas
       status = client.status(status_id.to_i, :include_entities => false, :include_my_retweet => false)
@@ -553,7 +554,7 @@ module T
     end
 
     desc "report_spam USER [USER...]", "Report users for spam."
-    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
+    method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     def report_spam(user, *users)
       users.unshift(user)
       if options['id']
@@ -588,11 +589,11 @@ module T
     map %w(rt) => :retweet
 
     desc "retweets [USER]", "Returns the #{DEFAULT_NUM_RESULTS} most recent Retweets by a user."
-    method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
-    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
-    method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
-    method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => "Limit the number of results."
-    method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
+    method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
+    method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
+    method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
+    method_option "number", :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => "Limit the number of results."
+    method_option "reverse", :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     def retweets(user=nil)
       if user
         user = if options['id']
@@ -613,7 +614,7 @@ module T
     end
 
     desc "status STATUS_ID", "Retrieves detailed information about a Tweet."
-    method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
+    method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     def status(status_id)
       status_id = status_id.strip_commas
       status = client.status(status_id.to_i, :include_entities => false, :include_my_retweet => false)
@@ -648,18 +649,18 @@ module T
     end
 
     desc "suggest [USER]", "Returns a listing of Twitter users' accounts you might enjoy following."
-    method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
-    method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by number of favorites."
-    method_option :followers, :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by number of followers."
-    method_option :friends, :aliases => "-e", :type => :boolean, :default => false, :desc => "Sort by number of friends."
-    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
-    method_option :listed, :aliases => "-s", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
-    method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
-    method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => "Limit the number of results."
-    method_option :posted, :aliases => "-p", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter account was posted."
-    method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
-    method_option :tweets, :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by number of Tweets."
-    method_option :unsorted, :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
+    method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
+    method_option "favorites", :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by number of favorites."
+    method_option "followers", :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by number of followers."
+    method_option "friends", :aliases => "-e", :type => :boolean, :default => false, :desc => "Sort by number of friends."
+    method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
+    method_option "listed", :aliases => "-s", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
+    method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
+    method_option "number", :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => "Limit the number of results."
+    method_option "posted", :aliases => "-p", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter account was posted."
+    method_option "reverse", :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
+    method_option "tweets", :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by number of Tweets."
+    method_option "unsorted", :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
     def suggest(user=nil)
       if user
         user = if options['id']
@@ -674,11 +675,11 @@ module T
     end
 
     desc "timeline [USER]", "Returns the #{DEFAULT_NUM_RESULTS} most recent Tweets posted by a user."
-    method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
-    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
-    method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
-    method_option :number, :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => "Limit the number of results."
-    method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
+    method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
+    method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
+    method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
+    method_option "number", :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => "Limit the number of results."
+    method_option "reverse", :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     def timeline(user=nil)
       count = options['number'] || DEFAULT_NUM_RESULTS
       if user
@@ -696,10 +697,10 @@ module T
     map %w(tl) => :timeline
 
     desc "trends [WOEID]", "Returns the top 10 trending topics."
-    method_option :exclude_hashtags, :aliases => "-x", :type => "boolean", :default => false, :desc => "Remove all hashtags from the trends list."
+    method_option "exclude-hashtags", :aliases => "-x", :type => "boolean", :default => false, :desc => "Remove all hashtags from the trends list."
     def trends(woe_id=1)
       opts = {}
-      opts.merge!(:exclude => "hashtags") if options['exclude_hashtags']
+      opts.merge!(:exclude => "hashtags") if options['exclude-hashtags']
       trends = client.trends(woe_id, opts)
       if STDOUT.tty?
         print_in_columns(trends.map(&:name))
@@ -711,10 +712,10 @@ module T
     end
 
     desc "trends_locations", "Returns the locations for which Twitter has trending topic information."
-    method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
-    method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
-    method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
-    method_option :unsorted, :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
+    method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
+    method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
+    method_option "reverse", :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
+    method_option "unsorted", :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
     def trend_locations
       places = client.trend_locations
       places = places.sort_by{|places| places.name.downcase} unless options['unsorted']
@@ -746,7 +747,7 @@ module T
     map %w(locations trendlocations) => :trend_locations
 
     desc "unfollow USER [USER...]", "Allows you to stop following users."
-    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
+    method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     def unfollow(user, *users)
       users.unshift(user)
       if options['id']
@@ -766,7 +767,7 @@ module T
     end
 
     desc "update MESSAGE", "Post a Tweet."
-    method_option :location, :aliases => "-l", :type => :boolean, :default => false
+    method_option "location", :aliases => "-l", :type => :boolean, :default => false
     def update(message)
       opts = {:include_entities => false, :trim_user => true}
       opts.merge!(:lat => location.lat, :long => location.lng) if options['location']
@@ -778,17 +779,17 @@ module T
     map %w(post tweet) => :update
 
     desc "users USER [USER...]", "Returns a list of users you specify."
-    method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
-    method_option :favorites, :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by number of favorites."
-    method_option :followers, :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by number of followers."
-    method_option :friends, :aliases => "-e", :type => :boolean, :default => false, :desc => "Sort by number of friends."
-    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
-    method_option :listed, :aliases => "-s", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
-    method_option :long, :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
-    method_option :posted, :aliases => "-p", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter account was posted."
-    method_option :reverse, :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
-    method_option :tweets, :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by number of Tweets."
-    method_option :unsorted, :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
+    method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
+    method_option "favorites", :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by number of favorites."
+    method_option "followers", :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by number of followers."
+    method_option "friends", :aliases => "-e", :type => :boolean, :default => false, :desc => "Sort by number of friends."
+    method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
+    method_option "listed", :aliases => "-s", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
+    method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
+    method_option "posted", :aliases => "-p", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter account was posted."
+    method_option "reverse", :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
+    method_option "tweets", :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by number of Tweets."
+    method_option "unsorted", :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
     def users(user, *users)
       users.unshift(user)
       if options['id']
@@ -808,8 +809,8 @@ module T
     map %w(-v --version) => :version
 
     desc "whois USER", "Retrieves profile information for the user."
-    method_option :csv, :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
-    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
+    method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
+    method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
     def whois(user)
       user = if options['id']
         user.to_i
@@ -859,8 +860,8 @@ module T
 
     def consumer
       OAuth::Consumer.new(
-        options['consumer_key'],
-        options['consumer_secret'],
+        options['consumer-key'],
+        options['consumer-secret'],
         :site => base_url
       )
     end

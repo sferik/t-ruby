@@ -16,8 +16,8 @@ module T
     end
 
     desc "block USER [USER...]", "Unblock users."
-    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
-    method_option :force, :aliases => "-f", :type => :boolean, :default => false
+    method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
+    method_option "force", :aliases => "-f", :type => :boolean, :default => false
     def block(user, *users)
       users.unshift(user)
       if options['id']
@@ -37,7 +37,7 @@ module T
     end
 
     desc "dm [DIRECT_MESSAGE_ID] [DIRECT_MESSAGE_ID...]", "Delete the last Direct Message sent."
-    method_option :force, :aliases => "-f", :type => :boolean, :default => false
+    method_option "force", :aliases => "-f", :type => :boolean, :default => false
     def dm(direct_message_id, *direct_message_ids)
       direct_message_ids.unshift(direct_message_id)
       direct_message_ids.map!(&:strip_commas)
@@ -53,7 +53,7 @@ module T
     map %w(d m) => :dm
 
     desc "favorite STATUS_ID [STATUS_ID...]", "Delete favorites."
-    method_option :force, :aliases => "-f", :type => :boolean, :default => false
+    method_option "force", :aliases => "-f", :type => :boolean, :default => false
     def favorite(status_id, *status_ids)
       status_ids.unshift(status_id)
       status_ids.map!(&:strip_commas)
@@ -69,8 +69,8 @@ module T
     map %w(fave favourite) => :favorite
 
     desc "list LIST", "Delete a list."
-    method_option :force, :aliases => "-f", :type => :boolean, :default => false
-    method_option :id, :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify list via ID instead of slug."
+    method_option "force", :aliases => "-f", :type => :boolean, :default => false
+    method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify list via ID instead of slug."
     def list(list)
       list = list.to_i if options['id']
       list = client.list(list)
@@ -82,7 +82,7 @@ module T
     end
 
     desc "status STATUS_ID [STATUS_ID...]", "Delete Tweets."
-    method_option :force, :aliases => "-f", :type => :boolean, :default => false
+    method_option "force", :aliases => "-f", :type => :boolean, :default => false
     def status(status_id, *status_ids)
       status_ids.unshift(status_id)
       status_ids.map!(&:strip_commas)

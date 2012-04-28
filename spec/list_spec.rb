@@ -350,7 +350,6 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
 
   describe "#timeline" do
     before do
-      @list.options = @list.options.merge("no-color" => true)
       stub_get("/1/lists/statuses.json").
         with(:query => {:owner_screen_name => "testcli", :per_page => "20", :slug => "presidents", :include_entities => "false"}).
         to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -363,25 +362,10 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen 
     end
     it "should have the correct output" do
       @list.timeline("presidents")
-      $stdout.string.should == <<-eos
-        natevillegas: RT @gelobautista #riordan RT @WilI_Smith: Yesterday is history. Tomorrow is a mystery. Today is a gift. That's why it's called the present. (7 months ago)
-                  TD: @kelseysilver how long will you be in town? (7 months ago)
-            rusashka: @maciej hahaha :) @gpena together we're going to cover all core 28 languages! (7 months ago)
-                 fat: @stevej @xc i'm going to picket when i get back. (7 months ago)
-                 wil: @0x9900 @paulnivin http://t.co/bwVdtAPe (7 months ago)
-            wangtian: @tianhonghe @xiangxin72 oh, you can even order specific items? (7 months ago)
-             shinypb: @kpk Pfft, I think you're forgetting mechanical television, which depended on a clever German. http://t.co/JvLNQCDm @skilldrick @hoverbird (7 months ago)
-              0x9900: @wil @paulnivin if you want to take you seriously don't say daemontools! (7 months ago)
-                 kpk: @shinypb @skilldrick @hoverbird invented it (7 months ago)
-          skilldrick: @shinypb Well played :) @hoverbird (7 months ago)
-                 sam: Can someone project the date that I'll get a 27" retina display? (7 months ago)
-             shinypb: @skilldrick @hoverbird Wow, I didn't even know they *had* TV in Britain. (7 months ago)
-               bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
-          skilldrick: @hoverbird @shinypb You guys must be soooo old, I don't remember the words to the duck tales intro at all. (7 months ago)
-                sean: @mep Thanks for coming by. Was great to have you. (7 months ago)
-           hoverbird: @shinypb @trammell it's all suck a "duck blur" sometimes. (7 months ago)
-        kelseysilver: San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 92 others) http://t.co/eoLANJZw (7 months ago)
-      eos
+      $stdout.string.should =~ /@natevillegas/
+      $stdout.string.should =~ /RT @gelobautista #riordan RT @WilI_Smith: Yesterday is history\. Tomorrow is a /
+      $stdout.string.should =~ /mystery\. Today is a gift\. That's why it's called the present\./
+      $stdout.string.should =~ /7 months ago/
     end
     context "--csv" do
       before do
@@ -438,6 +422,34 @@ ID                  Posted at     Screen name    Text
 194546264212385793  Apr 23  2011  @kelseysilver  San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 92 others) http://t.co/eoLANJZw
         eos
       end
+      context "--reverse" do
+        before do
+          @list.options = @list.options.merge("reverse" => true)
+        end
+        it "should reverse the order of the sort" do
+          @list.timeline("presidents")
+          $stdout.string.should == <<-eos
+ID                  Posted at     Screen name    Text
+194546264212385793  Apr 23  2011  @kelseysilver  San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 92 others) http://t.co/eoLANJZw
+194546388707717120  Apr 23  2011  @hoverbird     @shinypb @trammell it's all suck a "duck blur" sometimes.
+194546583608639488  Apr 23  2011  @sean          @mep Thanks for coming by. Was great to have you.
+194546649203347456  Apr 23  2011  @skilldrick    @hoverbird @shinypb You guys must be soooo old, I don't remember the words to the duck tales intro at all.
+194546727670390784  Apr 23  2011  @bartt         @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come.
+194546738810458112  Apr 23  2011  @shinypb       @skilldrick @hoverbird Wow, I didn't even know they *had* TV in Britain.
+194546811480969217  Apr 23  2011  @sam           Can someone project the date that I'll get a 27" retina display?
+194546876782092291  Apr 23  2011  @skilldrick    @shinypb Well played :) @hoverbird
+194547084349804544  Apr 23  2011  @kpk           @shinypb @skilldrick @hoverbird invented it
+194547260233760768  Apr 23  2011  @0x9900        @wil @paulnivin if you want to take you seriously don't say daemontools!
+194547402550689793  Apr 23  2011  @shinypb       @kpk Pfft, I think you're forgetting mechanical television, which depended on a clever German. http://t.co/JvLNQCDm @skilldrick @hoverbird
+194547528430137344  Apr 23  2011  @wangtian      @tianhonghe @xiangxin72 oh, you can even order specific items?
+194547658562605057  Apr 23  2011  @wil           @0x9900 @paulnivin http://t.co/bwVdtAPe
+194547824690597888  Apr 23  2011  @fat           @stevej @xc i'm going to picket when i get back.
+194547987593183233  Apr 23  2011  @rusashka      @maciej hahaha :) @gpena together we're going to cover all core 28 languages!
+194547993607806976  Apr 23  2011  @TD            @kelseysilver how long will you be in town?
+194548121416630272  Apr 23  2011  @natevillegas  RT @gelobautista #riordan RT @WilI_Smith: Yesterday is history. Tomorrow is a mystery. Today is a gift. That's why it's called the present.
+          eos
+        end
+      end
     end
     context "--number" do
       before do
@@ -451,33 +463,6 @@ ID                  Posted at     Screen name    Text
         a_get("/1/lists/statuses.json").
           with(:query => {:owner_screen_name => "testcli", :per_page => "1", :slug => "presidents", :include_entities => "false"}).
           should have_been_made
-      end
-    end
-    context "--reverse" do
-      before do
-        @list.options = @list.options.merge("reverse" => true)
-      end
-      it "should reverse the order of the sort" do
-        @list.timeline("presidents")
-        $stdout.string.should == <<-eos
-        kelseysilver: San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 92 others) http://t.co/eoLANJZw (7 months ago)
-           hoverbird: @shinypb @trammell it's all suck a "duck blur" sometimes. (7 months ago)
-                sean: @mep Thanks for coming by. Was great to have you. (7 months ago)
-          skilldrick: @hoverbird @shinypb You guys must be soooo old, I don't remember the words to the duck tales intro at all. (7 months ago)
-               bartt: @noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come. (7 months ago)
-             shinypb: @skilldrick @hoverbird Wow, I didn't even know they *had* TV in Britain. (7 months ago)
-                 sam: Can someone project the date that I'll get a 27" retina display? (7 months ago)
-          skilldrick: @shinypb Well played :) @hoverbird (7 months ago)
-                 kpk: @shinypb @skilldrick @hoverbird invented it (7 months ago)
-              0x9900: @wil @paulnivin if you want to take you seriously don't say daemontools! (7 months ago)
-             shinypb: @kpk Pfft, I think you're forgetting mechanical television, which depended on a clever German. http://t.co/JvLNQCDm @skilldrick @hoverbird (7 months ago)
-            wangtian: @tianhonghe @xiangxin72 oh, you can even order specific items? (7 months ago)
-                 wil: @0x9900 @paulnivin http://t.co/bwVdtAPe (7 months ago)
-                 fat: @stevej @xc i'm going to picket when i get back. (7 months ago)
-            rusashka: @maciej hahaha :) @gpena together we're going to cover all core 28 languages! (7 months ago)
-                  TD: @kelseysilver how long will you be in town? (7 months ago)
-        natevillegas: RT @gelobautista #riordan RT @WilI_Smith: Yesterday is history. Tomorrow is a mystery. Today is a gift. That's why it's called the present. (7 months ago)
-        eos
       end
     end
     context "with a user passed" do

@@ -80,6 +80,7 @@ module T
           end
           print_table(array)
         else
+          ENV['THOR_COLUMNS'] = "80"
           if STDOUT.tty? && !options['no-color']
             statuses.each do |status|
               say("   #{Thor::Shell::Color::BOLD}@#{status.user.screen_name}", :yellow)
@@ -89,7 +90,10 @@ module T
             end
           else
             statuses.each do |status|
-              say "#{status.user.screen_name.rjust(MAX_SCREEN_NAME_SIZE)}: #{status.text.gsub(/\n+/, ' ')} (#{time_ago_in_words(status.created_at)} ago)"
+              say("   @#{status.user.screen_name}")
+              Thor::Shell::Basic.new.print_wrapped(status.text, :indent => 3)
+              say("   #{time_ago_in_words(status.created_at)} ago")
+              say
             end
           end
         end

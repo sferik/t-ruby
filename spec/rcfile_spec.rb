@@ -51,7 +51,7 @@ describe RCFile do
       }
       rcfile['testcli'].keys.should == ['abc123']
     end
-    it 'should not be world writable' do
+    it 'should not be world readable or writable' do
       rcfile = RCFile.instance
       rcfile.path = project_path + "/tmp/trc"
       rcfile['testcli'] = {
@@ -63,21 +63,7 @@ describe RCFile do
           :secret => 'jkl012',
         }
       }
-      File.world_writable?(rcfile.path).should be_nil
-    end
-    it 'should not be world readable' do
-      rcfile = RCFile.instance
-      rcfile.path = project_path + "/tmp/trc"
-      rcfile['testcli'] = {
-        'abc123' => {
-          :username => 'testcli',
-          :consumer_key => 'abc123',
-          :consumer_secret => 'def456',
-          :token => 'ghi789',
-          :secret => 'jkl012',
-        }
-      }
-      File.world_readable?(rcfile.path).should be_nil
+      File.stat(rcfile.path).mode.should == 33152
     end
   end
 

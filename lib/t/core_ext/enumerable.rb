@@ -2,21 +2,18 @@ module Enumerable
 
   def threaded_each
     threads = []
-    result = each do |object|
+    each do |object|
       threads << Thread.new{yield object}
     end
-    threads.each(&:join)
-    result
+    threads.each(&:value)
   end
 
   def threaded_map
-    results = map{nil}
     threads = []
-    each_with_index do |object, index|
-      threads << Thread.new{results[index] = yield object}
+    each do |object|
+      threads << Thread.new{yield object}
     end
-    threads.each(&:join)
-    results
+    threads.map(&:value)
   end
 
 end

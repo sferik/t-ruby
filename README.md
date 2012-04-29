@@ -123,6 +123,9 @@ example:
 ### <a name="search-all"></a>Search Twitter for the 20 most recent Tweets that match a specified query
     t search all "query"
 
+### Start downloading the latest Linux kernel via BitTorrent (possibly NSFW, depending on where you work)
+    t search all "lang:en filter:links linux torrent" -n 1 | grep -io "http://t.co/[a-z0-9]*" | xargs open
+
 ### <a name="search-retweets"></a>Search Tweets you've favorited that match a specified query
     t search favorites "query"
 

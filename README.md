@@ -172,8 +172,12 @@ terminology used throughout `t`:
                               |       followings        |
                               |_________________________|
 
+## <a name="screenshots"></a>Screenshots
+![Timeline](https://github.com/sferik/t/raw/master/screenshots/timeline.png)
+![List](https://github.com/sferik/t/raw/master/screenshots/list.png)
+
 ## <a name="history"></a>History
-![History](http://twitter.rubyforge.org/images/terminal_output.png "History")
+![History](https://github.com/sferik/t/raw/master/screenshots/history.png)
 
 The [twitter gem][gem] previously contained a command-line interface, up until
 version 0.5.0, when it was [removed][]. This project is offered as a sucessor

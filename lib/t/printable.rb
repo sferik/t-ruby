@@ -84,9 +84,9 @@ module T
           if STDOUT.tty? && !options['no-color']
             say unless statuses.empty?
             statuses.each do |status|
-              say("   @#{status.user.screen_name}", :yellow, :bold)
+              say("   #{Thor::Shell::Color::BOLD}@#{status.user.screen_name}", :yellow)
               print_wrapped(status.text, :indent => 3)
-              say("   #{time_ago_in_words(status.created_at)} ago", :black, :bold)
+              say("   #{Thor::Shell::Color::BOLD}#{time_ago_in_words(status.created_at)} ago", :black)
               say
             end
           else

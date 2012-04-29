@@ -41,9 +41,9 @@ You can see a list of all the accounts you've authorized.
     gem
       thG9EfWoADtIr6NjbL9ON (active)
 
-Notice that one account is marked as the active. To change the active account
-use the `set` subcommand, passing either just the username, if it's
-unambiguous, or the username and consumer key pair, like so:
+Notice that one account is marked as active. To change the active account use
+the `set` subcommand, passing either just the username, if it's unambiguous, or
+the username and consumer key pair, like so:
 
     t set active sferik UDfNTpOz5ZDG4a6w7dIWj
 

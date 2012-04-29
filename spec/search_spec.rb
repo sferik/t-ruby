@@ -143,7 +143,7 @@ ID                  Posted at     Screen name       Text
     it "should have the correct output" do
       @search.favorites("twitter")
       $stdout.string.should =~ /@bartt/
-      $stdout.string.should =~ /@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons\. Lot’s of /
+      $stdout.string.should =~ /@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons\. Lot’s/
       $stdout.string.should =~ /fun\. Expect improvements in the weeks to come\./
       $stdout.string.should =~ /7 months ago/
     end
@@ -235,7 +235,7 @@ ID                  Posted at     Screen name  Text
     it "should have the correct output" do
       @search.mentions("twitter")
       $stdout.string.should =~ /@bartt/
-      $stdout.string.should =~ /@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons\. Lot’s of /
+      $stdout.string.should =~ /@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons\. Lot’s/
       $stdout.string.should =~ /fun\. Expect improvements in the weeks to come\./
       $stdout.string.should =~ /7 months ago/
     end
@@ -327,7 +327,7 @@ ID                  Posted at     Screen name  Text
     it "should have the correct output" do
       @search.retweets("twitter")
       $stdout.string.should =~ /@bartt/
-      $stdout.string.should =~ /@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons\. Lot’s of /
+      $stdout.string.should =~ /@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons\. Lot’s/
       $stdout.string.should =~ /fun\. Expect improvements in the weeks to come\./
       $stdout.string.should =~ /7 months ago/
     end
@@ -419,7 +419,7 @@ ID                  Posted at     Screen name  Text
     it "should have the correct output" do
       @search.timeline("twitter")
       $stdout.string.should =~ /@bartt/
-      $stdout.string.should =~ /@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons\. Lot’s of /
+      $stdout.string.should =~ /@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons\. Lot’s/
       $stdout.string.should =~ /fun\. Expect improvements in the weeks to come\./
       $stdout.string.should =~ /7 months ago/
     end
@@ -511,7 +511,7 @@ ID                  Posted at     Screen name  Text
     it "should have the correct output" do
       @search.user("sferik", "twitter")
       $stdout.string.should =~ /@bartt/
-      $stdout.string.should =~ /@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons\. Lot’s of /
+      $stdout.string.should =~ /@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons\. Lot’s/
       $stdout.string.should =~ /fun\. Expect improvements in the weeks to come\./
       $stdout.string.should =~ /7 months ago/
     end

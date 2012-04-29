@@ -1,9 +1,8 @@
 # Twitter CLI [![Build Status](https://secure.travis-ci.org/sferik/t.png?branch=master)][travis] [![Dependency Status](https://gemnasium.com/sferik/t.png?travis)][gemnasium]
 ### A command-line power tool for Twitter.
 
-The CLI attempts to mimic the [Twitter SMS commands][sms] wherever possible,
-however it offers vastly more commands and capabilities than are available via
-SMS.
+The CLI takes syntactic cues from the [Twitter SMS commands][sms], however it
+offers vastly more commands and capabilities than are available via SMS.
 
 [travis]: http://travis-ci.org/sferik/t
 [gemnasium]: https://gemnasium.com/sferik/t
@@ -11,29 +10,35 @@ SMS.
 [sms]: https://support.twitter.com/articles/14020-twitter-sms-command
 
 ## Installation
+    # Requires Ruby :)
     gem install t
 
 ## Configuration
 
-Because Twitter requires OAuth for most of its functionality, you'll need to
+Twitter requires OAuth for most of its functionality, so you'll need to
 register a new application at <http://dev.twitter.com/apps/new>. Once you
-create your application make sure to set the "Application Type" to "Read, Write
-and Access direct messages", otherwise you won't be able to post status updates
-or send direct messages via the CLI.
+create your application, make sure to set your application's Access Level to
+"Read, Write and Access direct messages", otherwise you may receive an error
+that looks something like this:
 
-Once you have registered your application, you'll be given a consumer key and
-secret, which you can use to authorize your Twitter account.
+    Read-only application cannot POST
+
+Once you've successfully registered your application, you'll be given a
+consumer key and secret, which you can use to authorize your Twitter account.
 
     t authorize -c YOUR_CONSUMER_KEY -s YOUR_CONSUMER_SECRET
 
-This will direct you to a URL where you can authenticate to Twitter and then
-enter the returned PIN back into the terminal.  Assuming that works, you'll be
-authorized to use `t` as that user. To authorize multiple accounts, simply
-repeat the last step while signed in to Twitter as a different user.
+This command directs you to a URL where you can sign-in to Twitter and then
+enter the returned PIN back into the terminal. If you type the PIN correctly,
+you should now be authorized authorized to use `t` as that user. To authorize
+multiple accounts, simply repeat the last step, signing into Twitter as a
+different user.
 
-You can see a list of all the accounts you've authorized.
+You can see a list of all the accounts you've authorized by typing the command:
 
     t accounts
+
+The output of which will be structured like this:
 
     sferik
       UDfNTpOz5ZDG4a6w7dIWj
@@ -41,20 +46,21 @@ You can see a list of all the accounts you've authorized.
     gem
       thG9EfWoADtIr6NjbL9ON (active)
 
-Notice that one account is marked as active. To change the active account use
-the `set` subcommand, passing either just the username, if it's unambiguous, or
-the username and consumer key pair, like so:
+**Note**: One account (specifically, the last one you authorized) is marked as
+active. To change the active account use the `set` subcommand, passing either
+just the username, if it's unambiguous, or the username and consumer key pair.
+Something like this:
 
     t set active sferik UDfNTpOz5ZDG4a6w7dIWj
 
-Account information is stored in the YAML-formatted file `~/.trc`. **Note**:
-Anyone with access to this file can masquerade as you on Twitter, so it's
-important to keep it secure, just as you would treat your SSH private key. For
-this reason, the file is hidden and has the permission bits set to 0600.
+Account information is stored in a YAML-formatted file located at `~/.trc`.
+**Note**: Anyone with access to this file can masquerade as you on Twitter, so
+it's important to keep it secure, just as you would treat your SSH private key.
+For this reason, the file is hidden and has the permission bits set to 0600.
 
 ## Usage Examples
-Typing `t help` will give you a list of all the available commands. You can
-type `t help TASK` to get help for a specific command.
+Typing `t help` will list all the available commands. You can type `t help
+TASK` to get help for a specific command.
 
     t help
 
@@ -63,32 +69,36 @@ type `t help TASK` to get help for a specific command.
 
 **Note**: If your tweet includes special characters (e.g. `!`), make sure to
 wrap it in single quotes instead of double quotes, so those characters are not
-interpreted by your shell. However, if you use single quotes, your Tweet can't
-contain any apostrophes.
+interpreted by your shell. (However, if you use single quotes, your Tweet
+obviously can't contain any apostrophes.)
 
-### Retrieve stats about users
+### Retrieve detailed information about a Twitter user
+    t whois @sferik
+
+### Retrieve stats for multiple users
     t users -l @sferik @gem
 
 ### Follow users
     t follow @sferik @gem
 
-### Find out if one user follows another
+### Check whether one user follows another
     t does_follow @ev @sferik
 
-**Note**: If the first user doesn't follow the second, `t` will exit with a
-non-zero exit code. This allows you to execute conditional commands, for
-example:
+**Note**: If the first user does not follow the second, `t` will exit with a
+non-zero exit code. This allows you to execute commands conditionally, for
+example, only attempt to send a user a direct message if he are already
+follows you:
 
-    t does_follow @ev @sferik && t dm @ev "What's up, bro?"
+    t does_follow @ev && t dm @ev "What's up, bro?"
 
-### Create a list for everyone you're currently following
+### Create a list for everyone you're following
     t list create following-`date "+%Y-%m-%d"`
 
-### Add everyone you're currently following to that list (up to 500 users)
+### Add everyone you're following to that list (up to 500 users)
     t followings | xargs t list add following-`date "+%Y-%m-%d"`
 
-### List all the members of a list
-    t list members following-`date "+%Y-%m-%d"`
+### List all the members of a list, in long format
+    t list members -l following-`date "+%Y-%m-%d"`
 
 ### List all your lists, in long format
     t lists -l
@@ -105,11 +115,11 @@ example:
 ### Follow roulette: randomly follow someone who follows you (who you don't already follow)
     t disciples | shuf | head -1 | xargs t follow
 
-### Output the last 200 tweets in your timeline to a CSV file
-    t timeline -n 200 --csv > timeline.csv
-
 ### Favorite the last 10 tweets that mention you
     t mentions -n 10 -l | awk '{print $1}' | xargs t favorite
+
+### Output the last 200 tweets in your timeline to a CSV file
+    t timeline -n 200 --csv > timeline.csv
 
 ### Count the number of employees who work for Twitter
     t list members twitter team | wc -l
@@ -117,8 +127,8 @@ example:
 ### Search Twitter for the 20 most recent Tweets that match a specified query
     t search all "query"
 
-### Start downloading the latest Linux kernel via BitTorrent (possibly NSFW, depending on where you work)
-    t search all "lang:en filter:links linux torrent" -n 1 | grep -io "http://t.co/[a-z0-9]*" | xargs open
+### Download the latest Linux kernel via BitTorrent (possibly NSFW, depending where you work)
+    t search all "lang:en filter:links linux torrent" -n 1 | grep -o "http://t.co/[0-9A-Za-z]*" | xargs open
 
 ### Search Tweets you've favorited that match a specified query
     t search favorites "query"
@@ -136,13 +146,18 @@ example:
     t search user @sferik "query"
 
 ## Features
+* Deep search: Instead of using the Twitter Search API, [which only only goes
+  back 6-9 days][index], `t search` fetches up to 3,200 tweets via the REST API
+  and then checks each one against a regular expression.
 * Multithreaded: Whenever possible, Twitter API requests are made in parallel,
   resulting in faster performance for bulk operations.
 * Designed for Unix: Output is designed to be piped to other Unix utilities,
   like grep, cut, awk, bc, wc, and xargs for advanced text processing.
-* 99% C0 Code Coverage: Well tested, with a 3:1 test-to-code ratio.
-* Generate spreadsheets: Output any command in CSV format simply by adding the
-  `--csv` flag.
+* Generate spreadsheets: Convert the output of any command to CSV format simply
+  by adding the `--csv` flag.
+* 98% C0 Code Coverage: Well tested, with a 3:1 test-to-code ratio.
+
+[search]: https://dev.twitter.com/docs/using-search
 
 ## Relationship Terminology
 
@@ -150,7 +165,7 @@ There is some ambiguity in the terminology used to describe relationships on
 Twitter. For example, some people use the term "friends" to mean everyone you
 follow. In `t`, "friends" refers to just the subset of people who follow you
 back (i.e., friendship is bidirectional). Here is the full table of terminology
-used throughout `t`:
+used by `t`:
 
                                ___________________________________________________
                               |                         |                         |
@@ -174,7 +189,7 @@ used throughout `t`:
 The [twitter gem][gem] previously contained a command-line interface, up until
 version 0.5.0, when it was [removed][]. This project is offered as a sucessor
 to that effort, however it is a clean room implementation that contains none of
-John Nunemaker's original code.
+the original code.
 
 [removed]: https://github.com/jnunemaker/twitter/commit/dd2445e3e2c97f38b28a3f32ea902536b3897adf
 ![History](https://github.com/sferik/t/raw/master/screenshots/history.png)
@@ -212,16 +227,20 @@ bug report should include a pull request with failing specs.
 [gist]: https://gist.github.com/
 
 ## Submitting a Pull Request
-1. Fork the project.
-2. Create a topic branch.
-3. Implement your feature or bug fix.
-4. Add specs for your feature or bug fix.
-5. Run `bundle exec rake spec`. If your changes are not 100% covered, go back
-   to step 4.
-6. Commit and push your changes.
-7. Submit a pull request. Please do not include changes to the gemspec,
-   version, or history file. (If you want to create your own version for some
-   reason, please do so in a separate commit.)
+1. [Fork the repository.][fork]
+2. [Create a topic branch.][branch]
+3. Add specs for your unimplemented feature or bug fix.
+4. Run `bundle exec rake spec`. If your specs pass, return to step 3.
+5. Implement your feature or bug fix.
+6. Run `bundle exec rake spec`. If your specs fail, return to step 5.
+7. Run `open coverage/index.html`. If your changes are not completely covered
+   by your tests, return to step 3.
+6. Add, commit, and push your changes.
+7. [Submit a pull request.][pr]
+
+[fork]: http://help.github.com/fork-a-repo/
+[branch]: http://learn.github.com/p/branching.html
+[pr]: http://help.github.com/send-pull-requests/
 
 ## Supported Ruby Versions
 This library aims to support and is [tested against][travis] the following Ruby
@@ -234,8 +253,7 @@ implementations:
 
 [rubinius]: http://rubini.us/
 
-If something doesn't work on one of these interpreters, it should be considered
-a bug.
+If something doesn't work on one of these Ruby versions, it's a bug.
 
 This library may inadvertently work (or seem to work) on other Ruby
 implementations, however support will only be provided for the versions listed
@@ -244,9 +262,9 @@ above.
 If you would like this library to support another Ruby version, you may
 volunteer to be a maintainer. Being a maintainer entails making sure all tests
 run and pass on that implementation. When something breaks on your
-implementation, you will be personally responsible for providing patches in a
-timely fashion. If critical issues for a particular implementation exist at the
-time of a major release, support for that Ruby version may be dropped.
+implementation, you will be responsible for providing patches in a timely
+fashion. If critical issues for a particular implementation exist at the time
+of a major release, support for that Ruby version may be dropped.
 
 ## Copyright
 Copyright (c) 2011 Erik Michaels-Ober. See [LICENSE][] for details.

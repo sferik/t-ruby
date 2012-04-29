@@ -229,7 +229,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
         $stdout.string.should == <<-eos
 ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen name  Name
 14100886  Mar  8  2008  3,913   32         185     1,871      2,767      @pengwynn    Wynn Netherland
-7505382   Jul 16  2007  2,962   727        29      88         898        @sferik      Erik Michaels-Ober
+ 7505382  Jul 16  2007  2,962   727        29      88         898        @sferik      Erik Michaels-Ober
         eos
       end
     end

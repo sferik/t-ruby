@@ -42,7 +42,7 @@ module T
       elsif options['long']
         array = statuses.map do |status|
           created_at = status.created_at > 6.months.ago ? status.created_at.strftime("%b %e %H:%M") : status.created_at.strftime("%b %e  %Y")
-          [status.id.to_s, created_at, "@#{status.from_user}", status.text.gsub(/\n+/, ' ')]
+          [status.id, created_at, "@#{status.from_user}", status.text.gsub(/\n+/, ' ')]
         end
         if STDOUT.tty?
           headings = ["ID", "Posted at", "Screen name", "Text"]

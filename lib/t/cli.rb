@@ -142,7 +142,7 @@ module T
       elsif options['long']
         array = direct_messages.map do |direct_message|
           created_at = direct_message.created_at > 6.months.ago ? direct_message.created_at.strftime("%b %e %H:%M") : direct_message.created_at.strftime("%b %e  %Y")
-          [direct_message.id.to_s, created_at, "@#{direct_message.sender.screen_name}", direct_message.text.gsub(/\n+/, ' ')]
+          [direct_message.id, created_at, "@#{direct_message.sender.screen_name}", direct_message.text.gsub(/\n+/, ' ')]
         end
         if STDOUT.tty?
           headings = ["ID", "Posted at", "Screen name", "Text"]
@@ -174,7 +174,7 @@ module T
       elsif options['long']
         array = direct_messages.map do |direct_message|
           created_at = direct_message.created_at > 6.months.ago ? direct_message.created_at.strftime("%b %e %H:%M") : direct_message.created_at.strftime("%b %e  %Y")
-          [direct_message.id.to_s, created_at, "@#{direct_message.recipient.screen_name}", direct_message.text.gsub(/\n+/, ' ')]
+          [direct_message.id, created_at, "@#{direct_message.recipient.screen_name}", direct_message.text.gsub(/\n+/, ' ')]
         end
         if STDOUT.tty?
           headings = ["ID", "Posted at", "Screen name", "Text"]
@@ -727,7 +727,7 @@ module T
         end
       elsif options['long']
         array = places.map do |place|
-          [place.woeid.to_s, place.parent_id.to_s, place.place_type, place.name, place.country]
+          [place.woeid, place.parent_id, place.place_type, place.name, place.country]
         end
         if STDOUT.tty?
           headings = ["WOEID", "Parent ID", "Type", "Name", "Country"]

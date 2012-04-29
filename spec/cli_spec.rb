@@ -396,7 +396,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
         $stdout.string.should == <<-eos
 ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen name  Name
 14100886  Mar  8  2008  3,913   32         185     1,871      2,767      @pengwynn    Wynn Netherland
-7505382   Jul 16  2007  2,962   727        29      88         898        @sferik      Erik Michaels-Ober
+ 7505382  Jul 16  2007  2,962   727        29      88         898        @sferik      Erik Michaels-Ober
         eos
       end
     end
@@ -982,7 +982,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
         $stdout.string.should == <<-eos
 ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen name  Name
 14100886  Mar  8  2008  3,913   32         185     1,871      2,767      @pengwynn    Wynn Netherland
-7505382   Jul 16  2007  2,962   727        29      88         898        @sferik      Erik Michaels-Ober
+ 7505382  Jul 16  2007  2,962   727        29      88         898        @sferik      Erik Michaels-Ober
         eos
       end
     end
@@ -1137,7 +1137,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
         $stdout.string.should == <<-eos
 ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen name  Name
 14100886  Mar  8  2008  3,913   32         185     1,871      2,767      @pengwynn    Wynn Netherland
-7505382   Jul 16  2007  2,962   727        29      88         898        @sferik      Erik Michaels-Ober
+ 7505382  Jul 16  2007  2,962   727        29      88         898        @sferik      Erik Michaels-Ober
         eos
       end
     end
@@ -1301,7 +1301,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
         $stdout.string.should == <<-eos
 ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen name  Name
 14100886  Mar  8  2008  3,913   32         185     1,871      2,767      @pengwynn    Wynn Netherland
-7505382   Jul 16  2007  2,962   727        29      88         898        @sferik      Erik Michaels-Ober
+ 7505382  Jul 16  2007  2,962   727        29      88         898        @sferik      Erik Michaels-Ober
         eos
       end
     end
@@ -1474,7 +1474,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
         $stdout.string.should == <<-eos
 ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen name  Name
 14100886  Mar  8  2008  3,913   32         185     1,871      2,767      @pengwynn    Wynn Netherland
-7505382   Jul 16  2007  2,962   727        29      88         898        @sferik      Erik Michaels-Ober
+ 7505382  Jul 16  2007  2,962   727        29      88         898        @sferik      Erik Michaels-Ober
         eos
       end
     end
@@ -1599,7 +1599,7 @@ ID,Created at,Screen name,Slug,Members,Subscribers,Mode,Description
         $stdout.string.should == <<-eos
 ID        Created at    Slug                      Members  Subscribers  Mode    Description
 21718825  Sep 14  2010  @sferik/code-for-america  26       5            public  Code for America
-8863586   Mar 15  2010  @sferik/presidents        2        1            public  Presidents of the United States of America
+ 8863586  Mar 15  2010  @sferik/presidents        2        1            public  Presidents of the United States of America
         eos
       end
     end
@@ -2230,7 +2230,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
 ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen name   Name
 40514587  May 16  2009  183     2          2       198        158        @antpires     AntonioPires
 14736332  May 11  2008  3,850   117        99      545        802        @jtrupiano    John Trupiano
-2006261   Mar 23  2007  4,497   9          171     967        2,028      @maccman      Alex MacCaw
+ 2006261  Mar 23  2007  4,497   9          171     967        2,028      @maccman      Alex MacCaw
 14451152  Apr 20  2008  6,251   10         20      403        299        @mlroach      Matt Laroche
 16052754  Aug 30  2008  24      0          1       5          42         @stuntmann82  stuntmann82
         eos
@@ -2549,11 +2549,11 @@ WOEID,Parent ID,Type,Name,Country
         @cli.trend_locations
         $stdout.string.rstrip.should == <<-eos.rstrip
 WOEID     Parent ID  Type       Name           Country
-2367105              Town       Boston         United States
-2459115              Town       New York       United States
-2487956              Town       San Francisco  United States
+ 2367105             Town       Boston         United States
+ 2459115             Town       New York       United States
+ 2487956             Town       San Francisco  United States
 23424977             Country    United States  United States
-1                    Supername  Worldwide
+       1             Supername  Worldwide
         eos
       end
     end
@@ -2743,7 +2743,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
         $stdout.string.should == <<-eos
 ID        Since         Tweets  Favorites  Listed  Following  Followers  Screen name  Name
 14100886  Mar  8  2008  3,913   32         185     1,871      2,767      @pengwynn    Wynn Netherland
-7505382   Jul 16  2007  2,962   727        29      88         898        @sferik      Erik Michaels-Ober
+ 7505382  Jul 16  2007  2,962   727        29      88         898        @sferik      Erik Michaels-Ober
         eos
       end
     end

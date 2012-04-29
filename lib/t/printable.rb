@@ -84,14 +84,14 @@ module T
           if STDOUT.tty? && !options['no-color']
             statuses.each do |status|
               say("   #{Thor::Shell::Color::BOLD}@#{status.user.screen_name}", :yellow)
-              Thor::Shell::Basic.new.print_wrapped(status.text, :indent => 3)
+              print_wrapped(status.text, :indent => 3)
               say("   #{Thor::Shell::Color::BOLD}#{time_ago_in_words(status.created_at)} ago", :black)
               say
             end
           else
             statuses.each do |status|
               say("   @#{status.user.screen_name}")
-              Thor::Shell::Basic.new.print_wrapped(status.text, :indent => 3)
+              print_wrapped(status.text, :indent => 3)
               say("   #{time_ago_in_words(status.created_at)} ago")
               say
             end

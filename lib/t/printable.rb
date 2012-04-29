@@ -49,8 +49,10 @@ module T
           if STDOUT.tty?
             headings = ["ID", "Created at", "Slug", "Members", "Subscribers", "Mode", "Description"]
             array.unshift(headings) unless lists.empty?
+            print_table(array, :truncate => true)
+          else
+            print_table(array)
           end
-          print_table(array)
         else
           if STDOUT.tty?
             print_in_columns(lists.map(&:full_name))
@@ -77,10 +79,11 @@ module T
           if STDOUT.tty?
             headings = ["ID", "Posted at", "Screen name", "Text"]
             array.unshift(headings) unless statuses.empty?
+            print_table(array, :truncate => true)
+          else
+            print_table(array)
           end
-          print_table(array)
         else
-          ENV['THOR_COLUMNS'] = "80"
           if STDOUT.tty? && !options['no-color']
             say unless statuses.empty?
             statuses.each do |status|
@@ -130,8 +133,10 @@ module T
           if STDOUT.tty?
             headings = ["ID", "Since", "Tweets", "Favorites", "Listed", "Following", "Followers", "Screen name", "Name"]
             array.unshift(headings) unless users.empty?
+            print_table(array, :truncate => true)
+          else
+            print_table(array)
           end
-          print_table(array)
         else
           if STDOUT.tty?
             print_in_columns(users.map{|user| "@#{user.screen_name}"})

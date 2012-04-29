@@ -147,8 +147,10 @@ module T
         if STDOUT.tty?
           headings = ["ID", "Posted at", "Screen name", "Text"]
           array.unshift(headings) unless direct_messages.empty?
+          print_table(array, :truncate => true)
+        else
+          print_table(array)
         end
-        print_table(array)
       else
         direct_messages.each do |direct_message|
           say "#{direct_message.sender.screen_name.rjust(MAX_SCREEN_NAME_SIZE)}: #{direct_message.text.gsub(/\n+/, ' ')} (#{time_ago_in_words(direct_message.created_at)} ago)"
@@ -179,8 +181,10 @@ module T
         if STDOUT.tty?
           headings = ["ID", "Posted at", "Screen name", "Text"]
           array.unshift(headings) unless direct_messages.empty?
+          print_table(array, :truncate => true)
+        else
+          print_table(array)
         end
-        print_table(array)
       else
         direct_messages.each do |direct_message|
           say "#{direct_message.recipient.screen_name.rjust(MAX_SCREEN_NAME_SIZE)}: #{direct_message.text.gsub(/\n+/, ' ')} (#{time_ago_in_words(direct_message.created_at)} ago)"
@@ -732,8 +736,10 @@ module T
         if STDOUT.tty?
           headings = ["WOEID", "Parent ID", "Type", "Name", "Country"]
           array.unshift(headings) unless places.empty?
+          print_table(array, :truncate => true)
+        else
+          print_table(array)
         end
-        print_table(array)
       else
         if STDOUT.tty?
           print_in_columns(places.map(&:name))

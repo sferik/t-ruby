@@ -47,8 +47,10 @@ module T
         if STDOUT.tty?
           headings = ["ID", "Posted at", "Screen name", "Text"]
           array.unshift(headings) unless statuses.empty?
+          print_table(array, :truncate => true)
+        else
+          print_table(array)
         end
-        print_table(array)
       else
         statuses.each do |status|
           say "#{status.from_user.rjust(MAX_SCREEN_NAME_SIZE)}: #{status.text.gsub(/\n+/, ' ')} (#{time_ago_in_words(status.created_at)} ago)"

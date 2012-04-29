@@ -5,6 +5,8 @@ unless ENV['CI']
   end
 end
 
+ENV['THOR_COLUMNS'] = "80"
+
 require 't'
 require 'rspec'
 require 'timecop'

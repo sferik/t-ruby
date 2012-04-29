@@ -83,9 +83,9 @@ module T
           ENV['THOR_COLUMNS'] = "80"
           if STDOUT.tty? && !options['no-color']
             statuses.each do |status|
-              say("   #{Thor::Shell::Color::BOLD}@#{status.user.screen_name}", :yellow)
+              say("   @#{status.user.screen_name}", :yellow, :bold)
               print_wrapped(status.text, :indent => 3)
-              say("   #{Thor::Shell::Color::BOLD}#{time_ago_in_words(status.created_at)} ago", :black)
+              say("   #{time_ago_in_words(status.created_at)} ago", :black, :bold)
               say
             end
           else

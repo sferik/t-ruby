@@ -81,7 +81,19 @@ example:
 
     t does_follow @ev @sferik && t dm @ev "What's up, bro?"
 
-### List all your friends (ordered by number of followers)
+### Create a list for everyone you're currently following
+    t list create following-`date "+%Y-%m-%d"`
+
+### Add everyone you're currently following to that list (up to 500 users)
+    t followings | xargs t list add following-`date "+%Y-%m-%d"`
+
+### List all the members of a list
+    t list members following-`date "+%Y-%m-%d"`
+
+### List all your lists, in long format
+    t lists -l
+
+### List all your friends, ordered by number of followers
     t friends -lf
 
 ### List all your leaders (people you follow who don't follow you back)
@@ -90,10 +102,7 @@ example:
 ### Unfollow everyone you follow who doesn't follow you back
     t leaders | xargs t unfollow
 
-### Follow everyone who follows you (who you don't already follow)
-    t disciples | xargs t follow
-
-### Follow roulette: randomly follow someone who follows you
+### Follow roulette: randomly follow someone who follows you (who you don't already follow)
     t disciples | shuf | head -1 | xargs t follow
 
 ### Output the last 200 tweets in your timeline to a CSV file
@@ -102,22 +111,7 @@ example:
 ### Favorite the last 10 tweets that mention you
     t mentions -n 10 -l | awk '{print $1}' | xargs t favorite
 
-### Create a list
-    t list create presidents
-
-### Add users to a list
-    t list add presidents @BarackObama @Jasonfinn
-
-### Create a list that contains today's date in the name
-    t list create following-`date "+%Y-%m-%d"`
-
-### Add everyone you're following to a list
-    t followings | xargs t list add following-`date "+%Y-%m-%d"`
-
-### Display members of a list
-    t list members following-`date "+%Y-%m-%d"`
-
-### Count the number of Twitter employees
+### Count the number of employees who work for Twitter
     t list members twitter team | wc -l
 
 ### Search Twitter for the 20 most recent Tweets that match a specified query
@@ -138,25 +132,25 @@ example:
 ### Search Tweets in your timeline that match a specified query
     t search timeline "query"
 
-### Search Tweets in a user's timeline that match a specified query
+### Search Tweets in another user's timeline that match a specified query
     t search user @sferik "query"
 
 ## Features
 * Multithreaded: Whenever possible, Twitter API requests are made in parallel,
   resulting in faster performance for bulk operations.
-* Designed for Unix: All output is designed to be piped to other Unix
-  utilities, like grep, cut, awk, bc, wc, and xargs for advanced processing.
-* 99% C0 Code Coverage: Extremely well tested, with a 3:1 test-to-code ratio.
+* Designed for Unix: Output is designed to be piped to other Unix utilities,
+  like grep, cut, awk, bc, wc, and xargs for advanced text processing.
+* 99% C0 Code Coverage: Well tested, with a 3:1 test-to-code ratio.
 * Generate spreadsheets: Output any command in CSV format simply by adding the
   `--csv` flag.
 
 ## Relationship Terminology
 
 There is some ambiguity in the terminology used to describe relationships on
-Twitter. For example, some people use the term "friends" to mean the set of
-everyone you follow, while we use it to mean just the subset of people who
-follow you back (i.e., friendship is bidirectional). Here is the full table of
-terminology used throughout `t`:
+Twitter. For example, some people use the term "friends" to mean everyone you
+follow. In `t`, "friends" refers to just the subset of people who follow you
+back (i.e., friendship is bidirectional). Here is the full table of terminology
+used throughout `t`:
 
                                ___________________________________________________
                               |                         |                         |
@@ -177,14 +171,13 @@ terminology used throughout `t`:
 ![List](https://github.com/sferik/t/raw/master/screenshots/list.png)
 
 ## History
-![History](https://github.com/sferik/t/raw/master/screenshots/history.png)
-
 The [twitter gem][gem] previously contained a command-line interface, up until
 version 0.5.0, when it was [removed][]. This project is offered as a sucessor
 to that effort, however it is a clean room implementation that contains none of
 John Nunemaker's original code.
 
 [removed]: https://github.com/jnunemaker/twitter/commit/dd2445e3e2c97f38b28a3f32ea902536b3897adf
+![History](https://github.com/sferik/t/raw/master/screenshots/history.png)
 
 ## Contributing
 In the spirit of [free software][fsf], **everyone** is encouraged to help

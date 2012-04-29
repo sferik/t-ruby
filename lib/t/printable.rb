@@ -82,6 +82,7 @@ module T
         else
           ENV['THOR_COLUMNS'] = "80"
           if STDOUT.tty? && !options['no-color']
+            say unless statuses.empty?
             statuses.each do |status|
               say("   @#{status.user.screen_name}", :yellow, :bold)
               print_wrapped(status.text, :indent => 3)
@@ -89,6 +90,7 @@ module T
               say
             end
           else
+            say unless statuses.empty?
             statuses.each do |status|
               say("   @#{status.user.screen_name}")
               print_wrapped(status.text, :indent => 3)

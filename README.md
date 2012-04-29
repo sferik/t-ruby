@@ -10,10 +10,10 @@ SMS.
 [gem]: https://rubygems.org/gems/twitter
 [sms]: https://support.twitter.com/articles/14020-twitter-sms-command
 
-## <a name="installation"></a>Installation
+## Installation
     gem install t
 
-## <a name="configuration"></a>Configuration
+## Configuration
 
 Because Twitter requires OAuth for most of its functionality, you'll need to
 register a new application at <http://dev.twitter.com/apps/new>. Once you
@@ -52,13 +52,13 @@ Anyone with access to this file can masquerade as you on Twitter, so it's
 important to keep it secure, just as you would treat your SSH private key. For
 this reason, the file is hidden and has the permission bits set to 0600.
 
-## <a name="examples"></a>Usage Examples
+## Usage Examples
 Typing `t help` will give you a list of all the available commands. You can
 type `t help TASK` to get help for a specific command.
 
     t help
 
-### <a name="update"></a>Update your status
+### Update your status
     t update "I'm tweeting from the command line. Isn't that special?"
 
 **Note**: If your tweet includes special characters (e.g. `!`), make sure to
@@ -66,13 +66,13 @@ wrap it in single quotes instead of double quotes, so those characters are not
 interpreted by your shell. However, if you use single quotes, your Tweet can't
 contain any apostrophes.
 
-### <a name="stats"></a>Retrieve stats about users
+### Retrieve stats about users
     t users -l @sferik @gem
 
-### <a name="follow"></a>Follow users
+### Follow users
     t follow @sferik @gem
 
-### <a name="does-follow"></a>Find out if one user follows another
+### Find out if one user follows another
     t does_follow @ev @sferik
 
 **Note**: If the first user doesn't follow the second, `t` will exit with a
@@ -81,67 +81,67 @@ example:
 
     t does_follow @ev @sferik && t dm @ev "What's up, bro?"
 
-### <a name="friends"></a>List all your friends (ordered by number of followers)
+### List all your friends (ordered by number of followers)
     t friends -lf
 
-### <a name="leaders"></a>List all your leaders (people you follow who don't follow you back)
+### List all your leaders (people you follow who don't follow you back)
     t leaders -lf
 
-### <a name="unfollow"></a>Unfollow everyone you follow who doesn't follow you back
+### Unfollow everyone you follow who doesn't follow you back
     t leaders | xargs t unfollow
 
-### <a name="follow"></a>Follow everyone who follows you (who you don't already follow)
+### Follow everyone who follows you (who you don't already follow)
     t disciples | xargs t follow
 
-### <a name="follow-roulette"></a>Follow roulette: randomly follow someone who follows you
+### Follow roulette: randomly follow someone who follows you
     t disciples | shuf | head -1 | xargs t follow
 
-### <a name="timeline"></a>Output the last 200 tweets in your timeline to a CSV file
+### Output the last 200 tweets in your timeline to a CSV file
     t timeline -n 200 --csv > timeline.csv
 
-### <a name="favorite"></a>Favorite the last 10 tweets that mention you
+### Favorite the last 10 tweets that mention you
     t mentions -n 10 -l | awk '{print $1}' | xargs t favorite
 
-### <a name="list-create"></a>Create a list
+### Create a list
     t list create presidents
 
-### <a name="list-add"></a>Add users to a list
+### Add users to a list
     t list add presidents @BarackObama @Jasonfinn
 
 ### Create a list that contains today's date in the name
     t list create following-`date "+%Y-%m-%d"`
 
-### <a name="followings"></a>Add everyone you're following to a list
+### Add everyone you're following to a list
     t followings | xargs t list add following-`date "+%Y-%m-%d"`
 
-### <a name="list-members"></a>Display members of a list
+### Display members of a list
     t list members following-`date "+%Y-%m-%d"`
 
-### <a name="list-members-count"></a>Count the number of Twitter employees
+### Count the number of Twitter employees
     t list members twitter team | wc -l
 
-### <a name="search-all"></a>Search Twitter for the 20 most recent Tweets that match a specified query
+### Search Twitter for the 20 most recent Tweets that match a specified query
     t search all "query"
 
 ### Start downloading the latest Linux kernel via BitTorrent (possibly NSFW, depending on where you work)
     t search all "lang:en filter:links linux torrent" -n 1 | grep -io "http://t.co/[a-z0-9]*" | xargs open
 
-### <a name="search-retweets"></a>Search Tweets you've favorited that match a specified query
+### Search Tweets you've favorited that match a specified query
     t search favorites "query"
 
-### <a name="search-mentions"></a>Search Tweets mentioning you that match a specified query
+### Search Tweets mentioning you that match a specified query
     t search mentions "query"
 
-### <a name="search-retweets"></a>Search Tweets you've retweeted that match a specified query
+### Search Tweets you've retweeted that match a specified query
     t search retweets "query"
 
-### <a name="search-timeline"></a>Search Tweets in your timeline that match a specified query
+### Search Tweets in your timeline that match a specified query
     t search timeline "query"
 
-### <a name="search-user"></a>Search Tweets in a user's timeline that match a specified query
+### Search Tweets in a user's timeline that match a specified query
     t search user @sferik "query"
 
-## <a name="features"></a>Features
+## Features
 * Multithreaded: Whenever possible, Twitter API requests are made in parallel,
   resulting in faster performance for bulk operations.
 * Designed for Unix: All output is designed to be piped to other Unix
@@ -150,7 +150,7 @@ example:
 * Generate spreadsheets: Output any command in CSV format simply by adding the
   `--csv` flag.
 
-## <a name="terminology"></a>Relationship Terminology
+## Relationship Terminology
 
 There is some ambiguity in the terminology used to describe relationships on
 Twitter. For example, some people use the term "friends" to mean the set of
@@ -172,11 +172,11 @@ terminology used throughout `t`:
                               |       followings        |
                               |_________________________|
 
-## <a name="screenshots"></a>Screenshots
+## Screenshots
 ![Timeline](https://github.com/sferik/t/raw/master/screenshots/timeline.png)
 ![List](https://github.com/sferik/t/raw/master/screenshots/list.png)
 
-## <a name="history"></a>History
+## History
 ![History](https://github.com/sferik/t/raw/master/screenshots/history.png)
 
 The [twitter gem][gem] previously contained a command-line interface, up until
@@ -186,7 +186,7 @@ John Nunemaker's original code.
 
 [removed]: https://github.com/jnunemaker/twitter/commit/dd2445e3e2c97f38b28a3f32ea902536b3897adf
 
-## <a name="contributing"></a>Contributing
+## Contributing
 In the spirit of [free software][fsf], **everyone** is encouraged to help
 improve this project.
 
@@ -207,7 +207,7 @@ Here are some ways *you* can contribute:
 
 [issues]: https://github.com/sferik/t/issues
 
-## <a name="issues"></a>Submitting an Issue
+## Submitting an Issue
 We use the [GitHub issue tracker][issues] to track bugs and features. Before
 submitting a bug report or feature request, check to make sure it hasn't
 already been submitted. You can indicate support for an existing issue by
@@ -218,7 +218,7 @@ bug report should include a pull request with failing specs.
 
 [gist]: https://gist.github.com/
 
-## <a name="pulls"></a>Submitting a Pull Request
+## Submitting a Pull Request
 1. Fork the project.
 2. Create a topic branch.
 3. Implement your feature or bug fix.
@@ -230,7 +230,7 @@ bug report should include a pull request with failing specs.
    version, or history file. (If you want to create your own version for some
    reason, please do so in a separate commit.)
 
-## <a name="versions"></a>Supported Ruby Versions
+## Supported Ruby Versions
 This library aims to support and is [tested against][travis] the following Ruby
 implementations:
 
@@ -255,7 +255,7 @@ implementation, you will be personally responsible for providing patches in a
 timely fashion. If critical issues for a particular implementation exist at the
 time of a major release, support for that Ruby version may be dropped.
 
-## <a name="copyright"></a>Copyright
+## Copyright
 Copyright (c) 2011 Erik Michaels-Ober. See [LICENSE][] for details.
 
 [license]: https://github.com/sferik/t/blob/master/LICENSE.md

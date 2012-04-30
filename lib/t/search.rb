@@ -3,7 +3,7 @@ require 'csv'
 # 'fastercsv' required on Ruby versions < 1.9
 require 'fastercsv' unless Array.new.respond_to?(:to_csv)
 require 'retryable'
-require 't/core_ext/enumerable'
+require 't/collectable'
 require 't/printable'
 require 't/rcfile'
 require 't/requestable'
@@ -12,11 +12,11 @@ require 'thor'
 module T
   class Search < Thor
     include ActionView::Helpers::DateHelper
+    include T::Collectable
     include T::Printable
     include T::Requestable
 
     DEFAULT_NUM_RESULTS = 20
-    MAX_PAGES = 16
     MAX_NUM_RESULTS = 200
     MAX_SCREEN_NAME_SIZE = 20
 
@@ -62,13 +62,16 @@ module T
     method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     def favorites(query)
-      statuses = 1.upto(MAX_PAGES).threaded_map do |page|
+      opts = {:count => MAX_NUM_RESULTS}
+      statuses = collect_with_max_id do |max_id|
+        opts[:max_id] = max_id unless max_id.nil?
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-          client.favorites(:page => page, :count => MAX_NUM_RESULTS).select do |status|
-            /#{query}/i.match(status.text)
-          end
+          client.favorites(opts)
         end
       end.flatten.compact
+      statuses = statuses.select do |status|
+        /#{query}/i.match(status.text)
+      end
       print_statuses(statuses)
     end
     map %w(faves) => :favorites
@@ -77,13 +80,16 @@ module T
     method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     def mentions(query)
-      statuses = 1.upto(MAX_PAGES).threaded_map do |page|
+      opts = {:count => MAX_NUM_RESULTS}
+      statuses = collect_with_max_id do |max_id|
+        opts[:max_id] = max_id unless max_id.nil?
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-          client.mentions(:page => page, :count => MAX_NUM_RESULTS).select do |status|
-            /#{query}/i.match(status.text)
-          end
+          client.mentions(opts)
         end
       end.flatten.compact
+      statuses = statuses.select do |status|
+        /#{query}/i.match(status.text)
+      end
       print_statuses(statuses)
     end
     map %w(replies) => :mentions
@@ -92,13 +98,16 @@ module T
     method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     def retweets(query)
-      statuses = 1.upto(MAX_PAGES).threaded_map do |page|
+      opts = {:count => MAX_NUM_RESULTS}
+      statuses = collect_with_max_id do |max_id|
+        opts[:max_id] = max_id unless max_id.nil?
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-          client.retweeted_by(:page => page, :count => MAX_NUM_RESULTS).select do |status|
-            /#{query}/i.match(status.text)
-          end
+          client.retweeted_by(opts)
         end
       end.flatten.compact
+      statuses = statuses.select do |status|
+        /#{query}/i.match(status.text)
+      end
       print_statuses(statuses)
     end
     map %w(rts) => :retweets
@@ -107,13 +116,16 @@ module T
     method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     def timeline(query)
-      statuses = 1.upto(MAX_PAGES).threaded_map do |page|
+      opts = {:count => MAX_NUM_RESULTS}
+      statuses = collect_with_max_id do |max_id|
+        opts[:max_id] = max_id unless max_id.nil?
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-          client.home_timeline(:page => page, :count => MAX_NUM_RESULTS).select do |status|
-            /#{query}/i.match(status.text)
-          end
+          client.home_timeline(opts)
         end
       end.flatten.compact
+      statuses = statuses.select do |status|
+        /#{query}/i.match(status.text)
+      end
       print_statuses(statuses)
     end
     map %w(tl) => :timeline
@@ -128,13 +140,16 @@ module T
       else
         user.strip_ats
       end
-      statuses = 1.upto(MAX_PAGES).threaded_map do |page|
+      opts = {:count => MAX_NUM_RESULTS}
+      statuses = collect_with_max_id do |max_id|
+        opts[:max_id] = max_id unless max_id.nil?
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-          client.user_timeline(user, :page => page, :count => MAX_NUM_RESULTS).select do |status|
-            /#{query}/i.match(status.text)
-          end
+          client.user_timeline(user, opts)
         end
       end.flatten.compact
+      statuses = statuses.select do |status|
+        /#{query}/i.match(status.text)
+      end
       print_statuses(statuses)
     end
 

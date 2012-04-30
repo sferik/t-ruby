@@ -126,19 +126,21 @@ ID                  Posted at     Screen name       Text
 
   describe "#favorites" do
     before do
-      1.upto(16).each do |page|
-        stub_get("/1/favorites.json").
-          with(:query => {:count => "200", :page => "#{page}"}).
-          to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      end
+      stub_get("/1/favorites.json").
+        with(:query => {:count => "200"}).
+        to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1/favorites.json").
+        with(:query => {:count => "200", :max_id => "194546264212385792"}).
+        to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @search.favorites("twitter")
-      1.upto(16).each do |page|
-        a_get("/1/favorites.json").
-          with(:query => {:count => "200", :page => "#{page}"}).
-          should have_been_made
-      end
+      a_get("/1/favorites.json").
+        with(:query => {:count => "200"}).
+        should have_been_made
+      a_get("/1/favorites.json").
+        with(:query => {:count => "200", :max_id => "194546264212385792"}).
+        should have_been_made
     end
     it "should have the correct output" do
       @search.favorites("twitter")
@@ -156,21 +158,6 @@ ID                  Posted at     Screen name       Text
         $stdout.string.should == <<-eos
 ID,Posted at,Screen name,Text
 194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
         eos
       end
     end
@@ -183,34 +170,19 @@ ID,Posted at,Screen name,Text
         $stdout.string.should == <<-eos
 ID                  Posted at     Screen name  Text
 194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
         eos
       end
     end
     context "Twitter is down" do
       it "should retry 3 times and then raise an error" do
         stub_get("/1/favorites.json").
-          with(:query => {:count => "200", :page => "16"}).
+          with(:query => {:count => "200"}).
           to_return(:status => 502)
         lambda do
           @search.favorites("twitter")
         end.should raise_error("Twitter is down or being upgraded.")
         a_get("/1/favorites.json").
-          with(:query => {:count => "200", :page => "16"}).
+          with(:query => {:count => "200"}).
           should have_been_made.times(3)
       end
     end
@@ -218,19 +190,21 @@ ID                  Posted at     Screen name  Text
 
   describe "#mentions" do
     before do
-      1.upto(16).each do |page|
-        stub_get("/1/statuses/mentions.json").
-          with(:query => {:count => "200", :page => "#{page}"}).
-          to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      end
+      stub_get("/1/statuses/mentions.json").
+        with(:query => {:count => "200"}).
+        to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1/statuses/mentions.json").
+        with(:query => {:count => "200", :max_id => "194546264212385792"}).
+        to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @search.mentions("twitter")
-      1.upto(16).each do |page|
-        a_get("/1/statuses/mentions.json").
-          with(:query => {:count => "200", :page => "#{page}"}).
-          should have_been_made
-      end
+      a_get("/1/statuses/mentions.json").
+        with(:query => {:count => "200"}).
+        should have_been_made
+      a_get("/1/statuses/mentions.json").
+        with(:query => {:count => "200", :max_id => "194546264212385792"}).
+        should have_been_made
     end
     it "should have the correct output" do
       @search.mentions("twitter")
@@ -248,21 +222,6 @@ ID                  Posted at     Screen name  Text
         $stdout.string.should == <<-eos
 ID,Posted at,Screen name,Text
 194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
         eos
       end
     end
@@ -275,34 +234,19 @@ ID,Posted at,Screen name,Text
         $stdout.string.should == <<-eos
 ID                  Posted at     Screen name  Text
 194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
         eos
       end
     end
     context "Twitter is down" do
       it "should retry 3 times and then raise an error" do
         stub_get("/1/statuses/mentions.json").
-          with(:query => {:count => "200", :page => "16"}).
+          with(:query => {:count => "200"}).
           to_return(:status => 502)
         lambda do
           @search.mentions("twitter")
         end.should raise_error("Twitter is down or being upgraded.")
         a_get("/1/statuses/mentions.json").
-          with(:query => {:count => "200", :page => "16"}).
+          with(:query => {:count => "200"}).
           should have_been_made.times(3)
       end
     end
@@ -310,19 +254,21 @@ ID                  Posted at     Screen name  Text
 
   describe "#retweets" do
     before do
-      1.upto(16).each do |page|
-        stub_get("/1/statuses/retweeted_by_me.json").
-          with(:query => {:count => "200", :page => "#{page}"}).
-          to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      end
+      stub_get("/1/statuses/retweeted_by_me.json").
+        with(:query => {:count => "200"}).
+        to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1/statuses/retweeted_by_me.json").
+        with(:query => {:count => "200", :max_id => "194546264212385792"}).
+        to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @search.retweets("twitter")
-      1.upto(16).each do |page|
-        a_get("/1/statuses/retweeted_by_me.json").
-          with(:query => {:count => "200", :page => "#{page}"}).
-          should have_been_made
-      end
+      a_get("/1/statuses/retweeted_by_me.json").
+        with(:query => {:count => "200"}).
+        should have_been_made
+      a_get("/1/statuses/retweeted_by_me.json").
+        with(:query => {:count => "200", :max_id => "194546264212385792"}).
+        should have_been_made
     end
     it "should have the correct output" do
       @search.retweets("twitter")
@@ -340,21 +286,6 @@ ID                  Posted at     Screen name  Text
         $stdout.string.should == <<-eos
 ID,Posted at,Screen name,Text
 194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
         eos
       end
     end
@@ -367,34 +298,19 @@ ID,Posted at,Screen name,Text
         $stdout.string.should == <<-eos
 ID                  Posted at     Screen name  Text
 194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
         eos
       end
     end
     context "Twitter is down" do
       it "should retry 3 times and then raise an error" do
         stub_get("/1/statuses/retweeted_by_me.json").
-          with(:query => {:count => "200", :page => "16"}).
+          with(:query => {:count => "200"}).
           to_return(:status => 502)
         lambda do
           @search.retweets("twitter")
         end.should raise_error("Twitter is down or being upgraded.")
         a_get("/1/statuses/retweeted_by_me.json").
-          with(:query => {:count => "200", :page => "16"}).
+          with(:query => {:count => "200"}).
           should have_been_made.times(3)
       end
     end
@@ -402,19 +318,21 @@ ID                  Posted at     Screen name  Text
 
   describe "#timeline" do
     before do
-      1.upto(16).each do |page|
-        stub_get("/1/statuses/home_timeline.json").
-          with(:query => {:count => "200", :page => "#{page}"}).
-          to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      end
+      stub_get("/1/statuses/home_timeline.json").
+        with(:query => {:count => "200"}).
+        to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1/statuses/home_timeline.json").
+        with(:query => {:count => "200", :max_id => "194546264212385792"}).
+        to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @search.timeline("twitter")
-      1.upto(16).each do |page|
-        a_get("/1/statuses/home_timeline.json").
-          with(:query => {:count => "200", :page => "#{page}"}).
-          should have_been_made
-      end
+      a_get("/1/statuses/home_timeline.json").
+        with(:query => {:count => "200"}).
+        should have_been_made
+      a_get("/1/statuses/home_timeline.json").
+        with(:query => {:count => "200", :max_id => "194546264212385792"}).
+        should have_been_made
     end
     it "should have the correct output" do
       @search.timeline("twitter")
@@ -432,21 +350,6 @@ ID                  Posted at     Screen name  Text
         $stdout.string.should == <<-eos
 ID,Posted at,Screen name,Text
 194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
         eos
       end
     end
@@ -459,34 +362,19 @@ ID,Posted at,Screen name,Text
         $stdout.string.should == <<-eos
 ID                  Posted at     Screen name  Text
 194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
         eos
       end
     end
     context "Twitter is down" do
       it "should retry 3 times and then raise an error" do
         stub_get("/1/statuses/home_timeline.json").
-          with(:query => {:count => "200", :page => "16"}).
+          with(:query => {:count => "200"}).
           to_return(:status => 502)
         lambda do
           @search.timeline("twitter")
         end.should raise_error("Twitter is down or being upgraded.")
         a_get("/1/statuses/home_timeline.json").
-          with(:query => {:count => "200", :page => "16"}).
+          with(:query => {:count => "200"}).
           should have_been_made.times(3)
       end
     end
@@ -494,19 +382,21 @@ ID                  Posted at     Screen name  Text
 
   describe "#user" do
     before do
-      1.upto(16).each do |page|
-        stub_get("/1/statuses/user_timeline.json").
-          with(:query => {:screen_name => "sferik", :count => "200", :page => "#{page}"}).
-          to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      end
+      stub_get("/1/statuses/user_timeline.json").
+        with(:query => {:count => "200", :screen_name => "sferik"}).
+        to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1/statuses/user_timeline.json").
+        with(:query => {:count => "200", :max_id => "194546264212385792", :screen_name => "sferik"}).
+        to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @search.user("sferik", "twitter")
-      1.upto(16).each do |page|
-        a_get("/1/statuses/user_timeline.json").
-          with(:query => {:screen_name => "sferik", :count => "200", :page => "#{page}"}).
-          should have_been_made
-      end
+      a_get("/1/statuses/user_timeline.json").
+        with(:query => {:count => "200", :screen_name => "sferik"}).
+        should have_been_made
+      a_get("/1/statuses/user_timeline.json").
+        with(:query => {:count => "200", :max_id => "194546264212385792", :screen_name => "sferik"}).
+        should have_been_made
     end
     it "should have the correct output" do
       @search.user("sferik", "twitter")
@@ -524,40 +414,27 @@ ID                  Posted at     Screen name  Text
         $stdout.string.should == <<-eos
 ID,Posted at,Screen name,Text
 194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
         eos
       end
     end
     context "--id" do
       before do
         @search.options = @search.options.merge("id" => true)
-        1.upto(16).each do |page|
-          stub_get("/1/statuses/user_timeline.json").
-            with(:query => {:user_id => "7505382", :count => "200", :page => "#{page}"}).
-            to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        end
+        stub_get("/1/statuses/user_timeline.json").
+          with(:query => {:count => "200", :user_id => "7505382"}).
+          to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1/statuses/user_timeline.json").
+          with(:query => {:count => "200", :max_id => "194546264212385792", :user_id => "7505382"}).
+          to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should request the correct resource" do
         @search.user("7505382", "twitter")
-        1.upto(16).each do |page|
-          a_get("/1/statuses/user_timeline.json").
-            with(:query => {:user_id => "7505382", :count => "200", :page => "#{page}"}).
-            should have_been_made
-        end
+        a_get("/1/statuses/user_timeline.json").
+          with(:query => {:count => "200", :user_id => "7505382"}).
+          should have_been_made
+        a_get("/1/statuses/user_timeline.json").
+          with(:query => {:count => "200", :max_id => "194546264212385792", :user_id => "7505382"}).
+          should have_been_made
       end
     end
     context "--long" do
@@ -569,34 +446,19 @@ ID,Posted at,Screen name,Text
         $stdout.string.should == <<-eos
 ID                  Posted at     Screen name  Text
 194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
         eos
       end
     end
     context "Twitter is down" do
       it "should retry 3 times and then raise an error" do
         stub_get("/1/statuses/user_timeline.json").
-          with(:query => {:screen_name => "sferik", :count => "200", :page => "16"}).
+          with(:query => {:screen_name => "sferik", :count => "200"}).
           to_return(:status => 502)
         lambda do
           @search.user("sferik", "twitter")
         end.should raise_error("Twitter is down or being upgraded.")
         a_get("/1/statuses/user_timeline.json").
-          with(:query => {:screen_name => "sferik", :count => "200", :page => "16"}).
+          with(:query => {:screen_name => "sferik", :count => "200"}).
           should have_been_made.times(3)
       end
     end

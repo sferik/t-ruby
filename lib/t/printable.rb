@@ -64,6 +64,19 @@ module T
         end
       end
 
+      def print_status(status)
+        if STDOUT.tty? && !options['no-color']
+          say("   #{Thor::Shell::Color::BOLD}@#{status.user.screen_name}", :yellow)
+          print_wrapped(status.text, :indent => 3)
+          say("   #{Thor::Shell::Color::BOLD}#{time_ago_in_words(status.created_at)} ago", :black)
+        else
+          say("   @#{status.user.screen_name}")
+          print_wrapped(status.text, :indent => 3)
+          say("   #{time_ago_in_words(status.created_at)} ago")
+        end
+        say
+      end
+
       def print_statuses(statuses)
         statuses.reverse! if options['reverse']
         if options['csv']
@@ -84,22 +97,9 @@ module T
             print_table(array)
           end
         else
-          if STDOUT.tty? && !options['no-color']
-            say unless statuses.empty?
-            statuses.each do |status|
-              say("   #{Thor::Shell::Color::BOLD}@#{status.user.screen_name}", :yellow)
-              print_wrapped(status.text, :indent => 3)
-              say("   #{Thor::Shell::Color::BOLD}#{time_ago_in_words(status.created_at)} ago", :black)
-              say
-            end
-          else
-            say unless statuses.empty?
-            statuses.each do |status|
-              say("   @#{status.user.screen_name}")
-              print_wrapped(status.text, :indent => 3)
-              say("   #{time_ago_in_words(status.created_at)} ago")
-              say
-            end
+          say unless statuses.empty?
+          statuses.each do |status|
+            print_status(status)
           end
         end
       end

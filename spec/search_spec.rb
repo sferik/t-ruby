@@ -252,6 +252,98 @@ ID                  Posted at     Screen name  Text
     end
   end
 
+  describe "#list" do
+    before do
+      stub_get("/1/lists/statuses.json").
+        with(:query => {:count => "200", :owner_screen_name => "testcli", :slug => "presidents"}).
+        to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1/lists/statuses.json").
+        with(:query => {:count => "200", :max_id => "194546264212385792", :owner_screen_name => "testcli", :slug => "presidents"}).
+        to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+    end
+    it "should request the correct resource" do
+      @search.list("presidents", "twitter")
+      a_get("/1/lists/statuses.json").
+        with(:query => {:count => "200", :owner_screen_name => "testcli", :slug => "presidents"}).
+        should have_been_made
+      a_get("/1/lists/statuses.json").
+        with(:query => {:count => "200", :max_id => "194546264212385792", :owner_screen_name => "testcli", :slug => "presidents"}).
+        should have_been_made
+    end
+    it "should have the correct output" do
+      @search.list("presidents", "twitter")
+      $stdout.string.should =~ /@bartt/
+      $stdout.string.should =~ /@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons\. Lot’s/
+      $stdout.string.should =~ /fun\. Expect improvements in the weeks to come\./
+      $stdout.string.should =~ /7 months ago/
+    end
+    context "--csv" do
+      before do
+        @search.options = @search.options.merge("csv" => true)
+      end
+      it "should output in CSV format" do
+        @search.list("presidents", "twitter")
+        $stdout.string.should == <<-eos
+ID,Posted at,Screen name,Text
+194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
+        eos
+      end
+    end
+    context "--long" do
+      before do
+        @search.options = @search.options.merge("long" => true)
+      end
+      it "should output in long format" do
+        @search.list("presidents", "twitter")
+        $stdout.string.should == <<-eos
+ID                  Posted at     Screen name  Text
+194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
+        eos
+      end
+    end
+    context "with a user passed" do
+      it "should request the correct resource" do
+        @search.list("testcli/presidents", "twitter")
+        a_get("/1/lists/statuses.json").
+          with(:query => {:count => "200", :owner_screen_name => "testcli", :slug => "presidents"}).
+          should have_been_made
+      end
+      context "--id" do
+        before do
+          @search.options = @search.options.merge("id" => true)
+          stub_get("/1/lists/statuses.json").
+            with(:query => {:count => "200", :owner_id => "7505382", :slug => "presidents"}).
+            to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1/lists/statuses.json").
+            with(:query => {:count => "200", :max_id => "194546264212385792", :owner_id => "7505382", :slug => "presidents"}).
+            to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        end
+        it "should request the correct resource" do
+          @search.list("7505382/presidents", "twitter")
+          a_get("/1/lists/statuses.json").
+            with(:query => {:count => "200", :owner_id => "7505382", :slug => "presidents"}).
+            should have_been_made
+          a_get("/1/lists/statuses.json").
+            with(:query => {:count => "200", :max_id => "194546264212385792", :owner_id => "7505382", :slug => "presidents"}).
+            should have_been_made
+        end
+      end
+    end
+    context "Twitter is down" do
+      it "should retry 3 times and then raise an error" do
+        stub_get("/1/lists/statuses.json").
+          with(:query => {:count => "200", :owner_screen_name => "testcli", :slug => "presidents"}).
+          to_return(:status => 502)
+        lambda do
+          @search.list("presidents", "twitter")
+        end.should raise_error("Twitter is down or being upgraded.")
+        a_get("/1/lists/statuses.json").
+          with(:query => {:count => "200", :owner_screen_name => "testcli", :slug => "presidents"}).
+          should have_been_made.times(3)
+      end
+    end
+  end
+
   describe "#retweets" do
     before do
       stub_get("/1/statuses/retweeted_by_me.json").

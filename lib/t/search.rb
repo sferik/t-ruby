@@ -58,7 +58,7 @@ module T
       end
     end
 
-    desc "favorites QUERY", "Returns Tweets you've favorited that mach a specified query."
+    desc "favorites QUERY", "Returns Tweets you've favorited that match a specified query."
     method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     def favorites(query)
@@ -76,7 +76,36 @@ module T
     end
     map %w(faves) => :favorites
 
-    desc "mentions QUERY", "Returns Tweets mentioning you that mach a specified query."
+    desc "list [USER/]LIST QUERY", "Returns Tweets on a list that match specified query."
+    method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
+    method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
+    method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
+    def list(list, query)
+      owner, list = list.split('/')
+      if list.nil?
+        list = owner
+        owner = @rcfile.active_profile[0]
+      else
+        owner = if options['id']
+          owner.to_i
+        else
+          owner.strip_ats
+        end
+      end
+      opts = {:count => MAX_NUM_RESULTS}
+      statuses = collect_with_max_id do |max_id|
+        opts[:max_id] = max_id unless max_id.nil?
+        retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
+          client.list_timeline(owner, list, opts)
+        end
+      end.flatten.compact
+      statuses = statuses.select do |status|
+        /#{query}/i.match(status.text)
+      end
+      print_statuses(statuses)
+    end
+
+    desc "mentions QUERY", "Returns Tweets mentioning you that match a specified query."
     method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     def mentions(query)
@@ -94,7 +123,7 @@ module T
     end
     map %w(replies) => :mentions
 
-    desc "retweets QUERY", "Returns Tweets you've retweeted that mach a specified query."
+    desc "retweets QUERY", "Returns Tweets you've retweeted that match a specified query."
     method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     def retweets(query)

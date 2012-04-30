@@ -218,11 +218,10 @@ Here are some ways *you* can contribute:
 ## Submitting an Issue
 We use the [GitHub issue tracker][issues] to track bugs and features. Before
 submitting a bug report or feature request, check to make sure it hasn't
-already been submitted. You can indicate support for an existing issue by
-voting it up. When submitting a bug report, please include a [Gist][] that
-includes a stack trace and any details that may be necessary to reproduce the
-bug, including your gem version, Ruby version, and operating system. Ideally, a
-bug report should include a pull request with failing specs.
+already been submitted. When submitting a bug report, please include a [Gist][]
+that includes a stack trace and any details that may be necessary to reproduce
+the bug, including your gem version, Ruby version, and operating system.
+Ideally, a bug report should include a pull request with failing specs.
 
 [gist]: https://gist.github.com/
 

@@ -10,6 +10,7 @@ require 'geokit'
 require 'launchy'
 require 'oauth'
 require 'open-uri'
+require 't/authorizable'
 require 't/collectable'
 require 't/core_ext/string'
 require 't/delete'
@@ -35,6 +36,7 @@ module T
     include ActionView::Helpers::DateHelper
     include ActionView::Helpers::NumberHelper
     include ActionView::Helpers::TextHelper
+    include T::Authorizable
     include T::Collectable
     include T::Printable
     include T::Requestable
@@ -864,34 +866,12 @@ module T
 
   private
 
-    def consumer
-      OAuth::Consumer.new(
-        options['consumer-key'],
-        options['consumer-secret'],
-        :site => base_url
-      )
-    end
-
-    def generate_authorize_url(request_token)
-      request = consumer.create_signed_request(:get, consumer.authorize_path, request_token, pin_auth_parameters)
-      params = request['Authorization'].sub(/^OAuth\s+/, '').split(/,\s+/).map do |param|
-        key, value = param.split('=')
-        value =~ /"(.*?)"/
-        "#{key}=#{CGI::escape($1)}"
-      end.join('&')
-      "#{base_url}#{request.path}?#{params}"
-    end
-
     def location
       return @location if @location
       ip_address = Kernel::open("http://checkip.dyndns.org/") do |body|
         /(?:\d{1,3}\.){3}\d{1,3}/.match(body.read)[0]
       end
       @location = Geokit::Geocoders::MultiGeocoder.geocode(ip_address)
-    end
-
-    def pin_auth_parameters
-      {:oauth_callback => 'oob'}
     end
 
   end

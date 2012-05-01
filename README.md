@@ -121,8 +121,8 @@ follows you:
 ### Output the last 200 tweets in your timeline to a CSV file
     t timeline -n 200 --csv > timeline.csv
 
-### Stream a random sample of Tweets (Control-C to stop)
-    t stream sample
+### Start streaming a real-time sample of all Tweets (Control-C to stop)
+    t stream all
 
 ### Count the number of employees who work for Twitter
     t list members twitter team | wc -l

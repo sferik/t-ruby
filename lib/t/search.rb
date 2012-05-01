@@ -52,8 +52,16 @@ module T
           print_table(array)
         end
       else
+        say unless statuses.empty?
         statuses.each do |status|
-          say "#{status.from_user.rjust(MAX_SCREEN_NAME_SIZE)}: #{status.text.gsub(/\n+/, ' ')} (#{time_ago_in_words(status.created_at)} ago)"
+          if STDOUT.tty? && !options['no-color']
+            say("   #{Thor::Shell::Color::BOLD}@#{status.from_user}", :yellow)
+            print_wrapped(status.text, :indent => 3)
+          else
+            say("   @#{status.from_user}")
+            print_wrapped(status.text, :indent => 3)
+          end
+          say
         end
       end
     end

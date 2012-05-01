@@ -34,23 +34,8 @@ describe T::Search do
     end
     it "should have the correct output" do
       @search.all("twitter")
-      $stdout.string.should == <<-eos
-          JessRoveel: Pondre lo mas importante de Hamlet en Twitter para recordarlo mejor :D (7 months ago)
-         lauravgeest: Twitter doet het al 7 uur niet meer (7 months ago)
-      Jenny_Bearx333: I keep thinking that twitter is @instagram , and therefore double tap all the pics I like... #NotWorking (7 months ago)
-         misspoxtonX: RT @jordantaylorhi: twitter friends &gt; twats at school (7 months ago)
-     PatrickBrickman: RT @zeus30hightower: Too all Bama fans and followers my cousin mark Barron doesn't have a twitter so please disregard any tweets from that user (7 months ago)
-            KolonelX: Ik refresh twitter op me telefoon terwijl ik tweetdeck voor me open heb staan (7 months ago)
-            VLGPRLG5: @mikeyway and you too RT @NimcyGD: @gerardway Get your ass back to twitter, okay? :3 (7 months ago)
-           xRhiBabyx: Trying to persuade the boyf to get on twitter and failing. Help? @holly_haime @Ckwarburton @samwarburton_ @chrishaime @rowloboy (7 months ago)
-            juliotrv: RT @lookinglassbr: Lançamentos outono-inverno 2012...CONFIRA em http://t.co/YAk8OXp7 http://t.co/fmmrVrbG (7 months ago)
-     shanleyaustin27: RT @caaammmmi: @shanleyaustin27 .....and this hahahahaa http://t.co/wzCMx6ZU (7 months ago)
-         Dame_Valuta: RT @Paiser10: Great @chelseafc training at Nou Camp! #cfc http://t.co/k00TnRyR (7 months ago)
-        miss_indyiah: smh, @IndianaHustle done turned into a twitter addict..fuck goin on lol ? (7 months ago)
-      CAROLINEWOLLER: RT @Mark_Ingram28: To all Bama fans and followers, please unfollow and pay no attention to any user posing to be Mark Barron. My bro doesn't have a twitter! (7 months ago)
-     shelbytrenchdww: RT @The90sLife: Admit it, we all have a cabinet that looks like this. http://t.co/gQEkQw5G (7 months ago)
-             kabos84: RT @JF_q8: بالله  عليكم ،، مو عيب !!! .. http://t.co/e29GV7Ow (7 months ago)
-      eos
+      $stdout.string.should =~ /@JessRoveel/
+      $stdout.string.should =~ /Pondre lo mas importante de Hamlet en Twitter para recordarlo mejor :D/
     end
     context "--csv" do
       before do

@@ -210,7 +210,7 @@ Here are some ways *you* can contribute:
 * by writing code (**no patch is too small**: fix typos, add comments, clean up
   inconsistent whitespace)
 * by refactoring code
-* by closing [issues][]
+* by fixing [issues][]
 * by reviewing patches
 
 [issues]: https://github.com/sferik/t/issues
@@ -234,8 +234,8 @@ Ideally, a bug report should include a pull request with failing specs.
 6. Run `bundle exec rake spec`. If your specs fail, return to step 5.
 7. Run `open coverage/index.html`. If your changes are not completely covered
    by your tests, return to step 3.
-6. Add, commit, and push your changes.
-7. [Submit a pull request.][pr]
+8. Add, commit, and push your changes.
+9. [Submit a pull request.][pr]
 
 [fork]: http://help.github.com/fork-a-repo/
 [branch]: http://learn.github.com/p/branching.html

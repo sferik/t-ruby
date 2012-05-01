@@ -365,7 +365,6 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
       $stdout.string.should =~ /@natevillegas/
       $stdout.string.should =~ /RT @gelobautista #riordan RT @WilI_Smith: Yesterday is history\. Tomorrow is a /
       $stdout.string.should =~ /mystery\. Today is a gift\. That's why it's called the present\./
-      $stdout.string.should =~ /7 months ago/
     end
     context "--csv" do
       before do

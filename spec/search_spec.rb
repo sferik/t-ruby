@@ -147,7 +147,6 @@ ID                  Posted at     Screen name       Text
       $stdout.string.should =~ /@bartt/
       $stdout.string.should =~ /@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons\. Lot’s/
       $stdout.string.should =~ /fun\. Expect improvements in the weeks to come\./
-      $stdout.string.should =~ /7 months ago/
     end
     context "--csv" do
       before do
@@ -211,7 +210,6 @@ ID                  Posted at     Screen name  Text
       $stdout.string.should =~ /@bartt/
       $stdout.string.should =~ /@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons\. Lot’s/
       $stdout.string.should =~ /fun\. Expect improvements in the weeks to come\./
-      $stdout.string.should =~ /7 months ago/
     end
     context "--csv" do
       before do
@@ -275,7 +273,6 @@ ID                  Posted at     Screen name  Text
       $stdout.string.should =~ /@bartt/
       $stdout.string.should =~ /@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons\. Lot’s/
       $stdout.string.should =~ /fun\. Expect improvements in the weeks to come\./
-      $stdout.string.should =~ /7 months ago/
     end
     context "--csv" do
       before do
@@ -367,7 +364,6 @@ ID                  Posted at     Screen name  Text
       $stdout.string.should =~ /@bartt/
       $stdout.string.should =~ /@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons\. Lot’s/
       $stdout.string.should =~ /fun\. Expect improvements in the weeks to come\./
-      $stdout.string.should =~ /7 months ago/
     end
     context "--csv" do
       before do
@@ -431,7 +427,6 @@ ID                  Posted at     Screen name  Text
       $stdout.string.should =~ /@bartt/
       $stdout.string.should =~ /@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons\. Lot’s/
       $stdout.string.should =~ /fun\. Expect improvements in the weeks to come\./
-      $stdout.string.should =~ /7 months ago/
     end
     context "--csv" do
       before do
@@ -495,7 +490,6 @@ ID                  Posted at     Screen name  Text
       $stdout.string.should =~ /@bartt/
       $stdout.string.should =~ /@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons\. Lot’s/
       $stdout.string.should =~ /fun\. Expect improvements in the weeks to come\./
-      $stdout.string.should =~ /7 months ago/
     end
     context "--csv" do
       before do

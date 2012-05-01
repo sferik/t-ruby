@@ -464,8 +464,6 @@ ID                  Posted at     Screen name    Text
           should have_been_made
       end
     end
-    context "--stream" do
-    end
     context "with a user passed" do
       it "should request the correct resource" do
         @list.timeline("testcli/presidents")

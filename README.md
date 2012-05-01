@@ -121,6 +121,9 @@ follows you:
 ### Output the last 200 tweets in your timeline to a CSV file
     t timeline -n 200 --csv > timeline.csv
 
+### Stream a random sample of Tweets (Control-C to stop)
+    t stream sample
+
 ### Count the number of employees who work for Twitter
     t list members twitter team | wc -l
 
@@ -155,7 +158,7 @@ follows you:
   like grep, cut, awk, bc, wc, and xargs for advanced text processing.
 * Generate spreadsheets: Convert the output of any command to CSV format simply
   by adding the `--csv` flag.
-* 98% C0 Code Coverage: Well tested, with a 3:1 test-to-code ratio.
+* 95% C0 Code Coverage: Well tested, with a 2.5:1 test-to-code ratio.
 
 [search]: https://dev.twitter.com/docs/using-search
 

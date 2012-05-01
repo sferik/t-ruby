@@ -15,6 +15,15 @@ module T
 
     private
 
+      def build_long_status(status)
+        created_at = status.created_at > 6.months.ago ? status.created_at.strftime("%b %e %H:%M") : status.created_at.strftime("%b %e  %Y")
+        [status.id, created_at, "@#{status.user.screen_name}", HTMLEntities.new.decode(status.text).gsub(/\n+/, ' ')]
+      end
+
+      def print_csv_status(status)
+        say [status.id, status.created_at.utc.strftime("%Y-%m-%d %H:%M:%S %z"), status.user.screen_name, HTMLEntities.new.decode(status.text)].to_csv
+      end
+
       def print_in_columns(array)
         cols = HighLine::SystemExtensions.terminal_size[0]
         width = (array.map{|el| el.to_s.size}.max || 0) + 2
@@ -81,12 +90,11 @@ module T
         if options['csv']
           say ["ID", "Posted at", "Screen name", "Text"].to_csv unless statuses.empty?
           statuses.each do |status|
-            say [status.id, status.created_at.utc.strftime("%Y-%m-%d %H:%M:%S %z"), status.user.screen_name, HTMLEntities.new.decode(status.text)].to_csv
+            print_csv_status(status)
           end
         elsif options['long']
           array = statuses.map do |status|
-            created_at = status.created_at > 6.months.ago ? status.created_at.strftime("%b %e %H:%M") : status.created_at.strftime("%b %e  %Y")
-            [status.id, created_at, "@#{status.user.screen_name}", HTMLEntities.new.decode(status.text).gsub(/\n+/, ' ')]
+            build_long_status(status)
           end
           if STDOUT.tty?
             headings = ["ID", "Posted at", "Screen name", "Text"]
@@ -96,7 +104,6 @@ module T
             print_table(array)
           end
         else
-          say unless statuses.empty?
           statuses.each do |status|
             print_status(status)
           end

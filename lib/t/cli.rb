@@ -20,6 +20,7 @@ require 't/rcfile'
 require 't/requestable'
 require 't/search'
 require 't/set'
+require 't/stream'
 require 't/version'
 require 'thor'
 require 'time'
@@ -863,6 +864,9 @@ module T
 
     desc "set SUBCOMMAND ...ARGS", "Change various account settings."
     subcommand 'set', T::Set
+
+    desc "stream SUBCOMMAND ...ARGS", "Commands for streaming Tweets."
+    subcommand 'stream', T::Stream
 
   private
 

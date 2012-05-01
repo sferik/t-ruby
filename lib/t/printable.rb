@@ -3,6 +3,7 @@ require 'csv'
 # 'fastercsv' required on Ruby versions < 1.9
 require 'fastercsv' unless Array.new.respond_to?(:to_csv)
 require 'highline'
+require 'htmlentities'
 require 'thor/shell/color'
 
 module T
@@ -67,25 +68,25 @@ module T
       def print_status(status)
         if STDOUT.tty? && !options['no-color']
           say("   #{Thor::Shell::Color::BOLD}@#{status.user.screen_name}", :yellow)
-          print_wrapped(status.text, :indent => 3)
+          print_wrapped(HTMLEntities.new.decode(status.text), :indent => 3)
         else
           say("   @#{status.user.screen_name}")
-          print_wrapped(status.text, :indent => 3)
+          print_wrapped(HTMLEntities.new.decode(status.text), :indent => 3)
         end
         say
       end
 
       def print_statuses(statuses)
-        statuses.reverse! if options['reverse']
+        statuses.reverse! if options['reverse'] || options['stream']
         if options['csv']
           say ["ID", "Posted at", "Screen name", "Text"].to_csv unless statuses.empty?
           statuses.each do |status|
-            say [status.id, status.created_at.utc.strftime("%Y-%m-%d %H:%M:%S %z"), status.user.screen_name, status.text].to_csv
+            say [status.id, status.created_at.utc.strftime("%Y-%m-%d %H:%M:%S %z"), status.user.screen_name, HTMLEntities.new.decode(status.text)].to_csv
           end
         elsif options['long']
           array = statuses.map do |status|
             created_at = status.created_at > 6.months.ago ? status.created_at.strftime("%b %e %H:%M") : status.created_at.strftime("%b %e  %Y")
-            [status.id, created_at, "@#{status.user.screen_name}", status.text.gsub(/\n+/, ' ')]
+            [status.id, created_at, "@#{status.user.screen_name}", HTMLEntities.new.decode(status.text).gsub(/\n+/, ' ')]
           end
           if STDOUT.tty?
             headings = ["ID", "Posted at", "Screen name", "Text"]

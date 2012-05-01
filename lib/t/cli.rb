@@ -144,7 +144,7 @@ module T
       elsif options['long']
         array = direct_messages.map do |direct_message|
           created_at = direct_message.created_at > 6.months.ago ? direct_message.created_at.strftime("%b %e %H:%M") : direct_message.created_at.strftime("%b %e  %Y")
-          [direct_message.id, created_at, "@#{direct_message.sender.screen_name}", direct_message.text.gsub(/\n+/, ' ')]
+          [direct_message.id, created_at, "@#{direct_message.sender.screen_name}", HTMLEntities.new.decode(direct_message.text).gsub(/\n+/, ' ')]
         end
         if STDOUT.tty?
           headings = ["ID", "Posted at", "Screen name", "Text"]
@@ -178,7 +178,7 @@ module T
       elsif options['long']
         array = direct_messages.map do |direct_message|
           created_at = direct_message.created_at > 6.months.ago ? direct_message.created_at.strftime("%b %e %H:%M") : direct_message.created_at.strftime("%b %e  %Y")
-          [direct_message.id, created_at, "@#{direct_message.recipient.screen_name}", direct_message.text.gsub(/\n+/, ' ')]
+          [direct_message.id, created_at, "@#{direct_message.recipient.screen_name}", HTMLEntities.new.decode(direct_message.text).gsub(/\n+/, ' ')]
         end
         if STDOUT.tty?
           headings = ["ID", "Posted at", "Screen name", "Text"]
@@ -638,11 +638,11 @@ module T
       end
       if options['csv']
         say ["ID", "Text", "Screen name", "Posted at", "Location", "Retweets", "Source", "URL"].to_csv
-        say [status.id, status.text, status.user.screen_name, status.created_at.utc.strftime("%Y-%m-%d %H:%M:%S %z"), location, status.retweet_count, strip_tags(status.source), "https://twitter.com/#{status.user.screen_name}/status/#{status.id}"].to_csv
+        say [status.id, HTMLEntities.new.decode(status.text), status.user.screen_name, status.created_at.utc.strftime("%Y-%m-%d %H:%M:%S %z"), location, status.retweet_count, strip_tags(status.source), "https://twitter.com/#{status.user.screen_name}/status/#{status.id}"].to_csv
       else
         array = []
         array << ["ID", status.id.to_s]
-        array << ["Text", status.text.gsub(/\n+/, ' ')]
+        array << ["Text", HTMLEntities.new.decode(status.text).gsub(/\n+/, ' ')]
         array << ["Screen name", "@#{status.user.screen_name}"]
         posted_at = status.created_at > 6.months.ago ? status.created_at.strftime("%b %e %H:%M") : status.created_at.strftime("%b %e  %Y")
         array << ["Posted at", posted_at]
@@ -828,7 +828,7 @@ module T
       user = client.user(user, :include_entities => false)
       if options['csv']
         say ["ID", "Verified", "Name", "Screen name", "Bio", "Location", "Following", "Last update", "Lasted updated at", "Since", "Tweets", "Favorites", "Listed", "Following", "Followers", "URL"].to_csv
-        say [user.id, user.verified?, user.name, user.screen_name, user.description, user.location, user.following?, user.status.text, user.status.created_at.utc.strftime("%Y-%m-%d %H:%M:%S %z"), user.created_at.utc.strftime("%Y-%m-%d %H:%M:%S %z"), user.statuses_count, user.favourites_count, user.listed_count, user.friends_count, user.followers_count, user.url].to_csv
+        say [user.id, user.verified?, user.name, user.screen_name, user.description, user.location, user.following?, HTMLEntities.new.decode(user.status.text), user.status.created_at.utc.strftime("%Y-%m-%d %H:%M:%S %z"), user.created_at.utc.strftime("%Y-%m-%d %H:%M:%S %z"), user.statuses_count, user.favourites_count, user.listed_count, user.friends_count, user.followers_count, user.url].to_csv
       else
         array = []
         name_label = user.verified ? "Name (Verified)" : "Name"
@@ -838,7 +838,7 @@ module T
         array << ["Location", user.location] unless user.location.nil?
         status = user.following ? "Following" : "Not following"
         array << ["Status", status]
-        array << ["Last update", "#{user.status.text.gsub(/\n+/, ' ')} (#{time_ago_in_words(user.status.created_at)} ago)"] unless user.status.nil?
+        array << ["Last update", "#{HTMLEntities.new.decode(user.status.text).gsub(/\n+/, ' ')} (#{time_ago_in_words(user.status.created_at)} ago)"] unless user.status.nil?
         created_at = user.created_at > 6.months.ago ? user.created_at.strftime("%b %e %H:%M") : user.created_at.strftime("%b %e  %Y")
         array << ["Since", created_at]
         array << ["Tweets", number_with_delimiter(user.statuses_count)]

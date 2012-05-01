@@ -743,7 +743,7 @@ ID,Posted at,Screen name,Text
 194546876782092291,2011-04-23 22:02:44 +0000,skilldrick,@shinypb Well played :) @hoverbird
 194546811480969217,2011-04-23 22:02:29 +0000,sam,"Can someone project the date that I'll get a 27"" retina display?"
 194546738810458112,2011-04-23 22:02:11 +0000,shinypb,"@skilldrick @hoverbird Wow, I didn't even know they *had* TV in Britain."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
+194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -> FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
 194546649203347456,2011-04-23 22:01:50 +0000,skilldrick,"@hoverbird @shinypb You guys must be soooo old, I don't remember the words to the duck tales intro at all."
 194546583608639488,2011-04-23 22:01:34 +0000,sean,@mep Thanks for coming by. Was great to have you.
 194546388707717120,2011-04-23 22:00:48 +0000,hoverbird,"@shinypb @trammell it's all suck a ""duck blur"" sometimes."
@@ -1723,7 +1723,7 @@ ID,Posted at,Screen name,Text
 194546876782092291,2011-04-23 22:02:44 +0000,skilldrick,@shinypb Well played :) @hoverbird
 194546811480969217,2011-04-23 22:02:29 +0000,sam,"Can someone project the date that I'll get a 27"" retina display?"
 194546738810458112,2011-04-23 22:02:11 +0000,shinypb,"@skilldrick @hoverbird Wow, I didn't even know they *had* TV in Britain."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
+194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -> FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
 194546649203347456,2011-04-23 22:01:50 +0000,skilldrick,"@hoverbird @shinypb You guys must be soooo old, I don't remember the words to the duck tales intro at all."
 194546583608639488,2011-04-23 22:01:34 +0000,sean,@mep Thanks for coming by. Was great to have you.
 194546388707717120,2011-04-23 22:00:48 +0000,hoverbird,"@shinypb @trammell it's all suck a ""duck blur"" sometimes."
@@ -1992,7 +1992,7 @@ ID,Posted at,Screen name,Text
 194546876782092291,2011-04-23 22:02:44 +0000,skilldrick,@shinypb Well played :) @hoverbird
 194546811480969217,2011-04-23 22:02:29 +0000,sam,"Can someone project the date that I'll get a 27"" retina display?"
 194546738810458112,2011-04-23 22:02:11 +0000,shinypb,"@skilldrick @hoverbird Wow, I didn't even know they *had* TV in Britain."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
+194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -> FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
 194546649203347456,2011-04-23 22:01:50 +0000,skilldrick,"@hoverbird @shinypb You guys must be soooo old, I don't remember the words to the duck tales intro at all."
 194546583608639488,2011-04-23 22:01:34 +0000,sean,@mep Thanks for coming by. Was great to have you.
 194546388707717120,2011-04-23 22:00:48 +0000,hoverbird,"@shinypb @trammell it's all suck a ""duck blur"" sometimes."
@@ -2351,7 +2351,7 @@ ID,Posted at,Screen name,Text
 194546876782092291,2011-04-23 22:02:44 +0000,skilldrick,@shinypb Well played :) @hoverbird
 194546811480969217,2011-04-23 22:02:29 +0000,sam,"Can someone project the date that I'll get a 27"" retina display?"
 194546738810458112,2011-04-23 22:02:11 +0000,shinypb,"@skilldrick @hoverbird Wow, I didn't even know they *had* TV in Britain."
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
+194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -> FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
 194546649203347456,2011-04-23 22:01:50 +0000,skilldrick,"@hoverbird @shinypb You guys must be soooo old, I don't remember the words to the duck tales intro at all."
 194546583608639488,2011-04-23 22:01:34 +0000,sean,@mep Thanks for coming by. Was great to have you.
 194546388707717120,2011-04-23 22:00:48 +0000,hoverbird,"@shinypb @trammell it's all suck a ""duck blur"" sometimes."
@@ -2808,7 +2808,7 @@ Name         Erik Michaels-Ober
 Bio          A mind forever voyaging through strange seas of thought, alone.
 Location     San Francisco
 Status       Not following
-Last update  RT @tenderlove: [ANN] sqlite3-ruby =&gt; sqlite3 (10 months ago)
+Last update  RT @tenderlove: [ANN] sqlite3-ruby => sqlite3 (10 months ago)
 Since        Jul 16  2007
 Tweets       3,479
 Favorites    1,040
@@ -2826,7 +2826,7 @@ URL          https://github.com/sferik
         @cli.whois("sferik")
         $stdout.string.should == <<-eos
 ID,Verified,Name,Screen name,Bio,Location,Following,Last update,Lasted updated at,Since,Tweets,Favorites,Listed,Following,Followers,URL
-7505382,false,Erik Michaels-Ober,sferik,"A mind forever voyaging through strange seas of thought, alone.",San Francisco,false,RT @tenderlove: [ANN] sqlite3-ruby =&gt; sqlite3,2011-01-16 21:38:25 +0000,2007-07-16 12:59:01 +0000,3479,1040,41,197,1048,https://github.com/sferik
+7505382,false,Erik Michaels-Ober,sferik,"A mind forever voyaging through strange seas of thought, alone.",San Francisco,false,RT @tenderlove: [ANN] sqlite3-ruby => sqlite3,2011-01-16 21:38:25 +0000,2007-07-16 12:59:01 +0000,3479,1040,41,197,1048,https://github.com/sferik
         eos
       end
     end

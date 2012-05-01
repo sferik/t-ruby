@@ -48,7 +48,7 @@ ID,Posted at,Screen name,Text
 194521262415032320,2011-04-23 20:20:57 +0000,JessRoveel,Pondre lo mas importante de Hamlet en Twitter para recordarlo mejor :D
 194521262326951936,2011-04-23 20:20:57 +0000,lauravgeest,Twitter doet het al 7 uur niet meer
 194521262234669056,2011-04-23 20:20:57 +0000,Jenny_Bearx333,"I keep thinking that twitter is @instagram , and therefore double tap all the pics I like... #NotWorking"
-194521262138204160,2011-04-23 20:20:57 +0000,misspoxtonX,RT @jordantaylorhi: twitter friends &gt; twats at school
+194521262138204160,2011-04-23 20:20:57 +0000,misspoxtonX,RT @jordantaylorhi: twitter friends > twats at school
 194521262134001665,2011-04-23 20:20:57 +0000,PatrickBrickman,RT @zeus30hightower: Too all Bama fans and followers my cousin mark Barron doesn't have a twitter so please disregard any tweets from that user
 194521262129811456,2011-04-23 20:20:57 +0000,KolonelX,Ik refresh twitter op me telefoon terwijl ik tweetdeck voor me open heb staan
 194521261852995586,2011-04-23 20:20:57 +0000,VLGPRLG5,"@mikeyway and you too RT @NimcyGD: @gerardway Get your ass back to twitter, okay? :3"
@@ -130,7 +130,7 @@ ID                  Posted at     Screen name       Text
     it "should have the correct output" do
       @search.favorites("twitter")
       $stdout.string.should =~ /@bartt/
-      $stdout.string.should =~ /@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons\. Lot’s/
+      $stdout.string.should =~ /@noahlt @gaarf Yup, now owning @twitter -> FB from FE to daemons\. Lot’s/
       $stdout.string.should =~ /fun\. Expect improvements in the weeks to come\./
     end
     context "--csv" do
@@ -141,7 +141,7 @@ ID                  Posted at     Screen name       Text
         @search.favorites("twitter")
         $stdout.string.should == <<-eos
 ID,Posted at,Screen name,Text
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
+194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -> FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
         eos
       end
     end
@@ -193,7 +193,7 @@ ID                  Posted at     Screen name  Text
     it "should have the correct output" do
       @search.mentions("twitter")
       $stdout.string.should =~ /@bartt/
-      $stdout.string.should =~ /@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons\. Lot’s/
+      $stdout.string.should =~ /@noahlt @gaarf Yup, now owning @twitter -> FB from FE to daemons\. Lot’s/
       $stdout.string.should =~ /fun\. Expect improvements in the weeks to come\./
     end
     context "--csv" do
@@ -204,7 +204,7 @@ ID                  Posted at     Screen name  Text
         @search.mentions("twitter")
         $stdout.string.should == <<-eos
 ID,Posted at,Screen name,Text
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
+194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -> FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
         eos
       end
     end
@@ -256,7 +256,7 @@ ID                  Posted at     Screen name  Text
     it "should have the correct output" do
       @search.list("presidents", "twitter")
       $stdout.string.should =~ /@bartt/
-      $stdout.string.should =~ /@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons\. Lot’s/
+      $stdout.string.should =~ /@noahlt @gaarf Yup, now owning @twitter -> FB from FE to daemons\. Lot’s/
       $stdout.string.should =~ /fun\. Expect improvements in the weeks to come\./
     end
     context "--csv" do
@@ -267,7 +267,7 @@ ID                  Posted at     Screen name  Text
         @search.list("presidents", "twitter")
         $stdout.string.should == <<-eos
 ID,Posted at,Screen name,Text
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
+194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -> FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
         eos
       end
     end
@@ -347,7 +347,7 @@ ID                  Posted at     Screen name  Text
     it "should have the correct output" do
       @search.retweets("twitter")
       $stdout.string.should =~ /@bartt/
-      $stdout.string.should =~ /@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons\. Lot’s/
+      $stdout.string.should =~ /@noahlt @gaarf Yup, now owning @twitter -> FB from FE to daemons\. Lot’s/
       $stdout.string.should =~ /fun\. Expect improvements in the weeks to come\./
     end
     context "--csv" do
@@ -358,7 +358,7 @@ ID                  Posted at     Screen name  Text
         @search.retweets("twitter")
         $stdout.string.should == <<-eos
 ID,Posted at,Screen name,Text
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
+194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -> FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
         eos
       end
     end
@@ -410,7 +410,7 @@ ID                  Posted at     Screen name  Text
     it "should have the correct output" do
       @search.timeline("twitter")
       $stdout.string.should =~ /@bartt/
-      $stdout.string.should =~ /@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons\. Lot’s/
+      $stdout.string.should =~ /@noahlt @gaarf Yup, now owning @twitter -> FB from FE to daemons\. Lot’s/
       $stdout.string.should =~ /fun\. Expect improvements in the weeks to come\./
     end
     context "--csv" do
@@ -421,7 +421,7 @@ ID                  Posted at     Screen name  Text
         @search.timeline("twitter")
         $stdout.string.should == <<-eos
 ID,Posted at,Screen name,Text
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
+194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -> FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
         eos
       end
     end
@@ -473,7 +473,7 @@ ID                  Posted at     Screen name  Text
     it "should have the correct output" do
       @search.user("sferik", "twitter")
       $stdout.string.should =~ /@bartt/
-      $stdout.string.should =~ /@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons\. Lot’s/
+      $stdout.string.should =~ /@noahlt @gaarf Yup, now owning @twitter -> FB from FE to daemons\. Lot’s/
       $stdout.string.should =~ /fun\. Expect improvements in the weeks to come\./
     end
     context "--csv" do
@@ -484,7 +484,7 @@ ID                  Posted at     Screen name  Text
         @search.user("sferik", "twitter")
         $stdout.string.should == <<-eos
 ID,Posted at,Screen name,Text
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -&gt; FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
+194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -> FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
         eos
       end
     end

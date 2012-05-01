@@ -25,6 +25,18 @@ module T
       client.follow(screen_names)
     end
 
+    desc "matrix", "There is no spoon."
+    def matrix
+      client.on_timeline_status do |status|
+        print("#{Thor::Shell::Color::BOLD}#{Thor::Shell::Color::GREEN}#{Thor::Shell::Color::ON_BLACK}#{status.text.gsub("\n", '')}#{Thor::Shell::Color::CLEAR}")
+      end
+      Signal.trap("TERM") do
+        client.stop
+        shutdown
+      end
+      client.sample
+    end
+
     desc "sample", "Stream a random sample of Tweets (Control-C to stop)"
     def sample
       client.on_timeline_status do |status|

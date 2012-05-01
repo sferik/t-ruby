@@ -107,7 +107,7 @@ module T
     method_option "followers", :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by total number of followers."
     method_option "friends", :aliases => "-e", :type => :boolean, :default => false, :desc => "Sort by total number of friends."
     method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
-    method_option "listed", :aliases => "-s", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
+    method_option "listed", :aliases => "-d", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
     method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     method_option "posted", :aliases => "-p", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter account was posted."
     method_option "reverse", :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."

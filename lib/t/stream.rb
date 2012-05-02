@@ -1,5 +1,7 @@
+require 't/cli'
 require 't/printable'
 require 't/rcfile'
+require 't/search'
 require 'thor'
 require 'tweetstream'
 
@@ -39,6 +41,11 @@ module T
     desc "search KEYWORD [KEYWORD...]", "Stream Tweets that contain specified keywords, joined with logical ORs (Control-C to stop)"
     def search(keyword, *keywords)
       keywords.unshift(keyword)
+      client.on_inited do
+        search= T::Search.new
+        search.options = search.options.merge(:reverse => true)
+        search.all(keywords.join(' OR '))
+      end
       client.on_timeline_status do |status|
         print_status(status)
       end
@@ -51,6 +58,11 @@ module T
 
     desc "timeline", "Stream your timeline (Control-C to stop)"
     def timeline
+      client.on_inited do
+        cli = T::CLI.new
+        cli.options = cli.options.merge(:reverse => true)
+        cli.timeline
+      end
       client.on_timeline_status do |status|
         print_status(status)
       end

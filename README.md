@@ -46,17 +46,17 @@ The output of which will be structured like this:
     gem
       thG9EfWoADtIr6NjbL9ON (active)
 
-**Note**: One account (specifically, the last one you authorized) is marked as
-active. To change the active account use the `set` subcommand, passing either
-just the username, if it's unambiguous, or the username and consumer key pair.
-Something like this:
+**Note**: One of your authorized accounts (specifically, the last one
+authorized) will be set as active. To change the active account, use the `set`
+subcommand, passing either just the username, if it's unambiguous, or the
+username and consumer key pair, like this:
 
     t set active sferik UDfNTpOz5ZDG4a6w7dIWj
 
 Account information is stored in a YAML-formatted file located at `~/.trc`.
 **Note**: Anyone with access to this file can masquerade as you on Twitter, so
 it's important to keep it secure, just as you would treat your SSH private key.
-For this reason, the file is hidden and has the permission bits set to 0600.
+For this reason, the file is hidden and has the permission bits set to `0600`.
 
 ## Usage Examples
 Typing `t help` will list all the available commands. You can type `t help
@@ -86,8 +86,7 @@ obviously can't contain any apostrophes.)
 
 **Note**: If the first user does not follow the second, `t` will exit with a
 non-zero exit code. This allows you to execute commands conditionally, for
-example, only attempt to send a user a direct message if he are already
-follows you:
+example, send a user a direct message only if he already follows you:
 
     t does_follow @ev && t dm @ev "What's up, bro?"
 
@@ -103,7 +102,7 @@ follows you:
 ### List all your lists, in long format
     t lists -l
 
-### List all your friends, ordered by number of followers
+### List all your friends, in long format, ordered by number of followers
     t friends -lf
 
 ### List all your leaders (people you follow who don't follow you back)
@@ -112,7 +111,7 @@ follows you:
 ### Unfollow everyone you follow who doesn't follow you back
     t leaders | xargs t unfollow
 
-### Follow roulette: randomly follow someone who follows you (who you don't already follow)
+### Twitter roulette: randomly follow someone who follows you (who you don't already follow)
     t disciples | shuf | head -1 | xargs t follow
 
 ### Favorite the last 10 tweets that mention you
@@ -121,8 +120,8 @@ follows you:
 ### Output the last 200 tweets in your timeline to a CSV file
     t timeline -n 200 --csv > timeline.csv
 
-### Start streaming a real-time sample of all Tweets (Control-C to stop)
-    t stream all
+### Start streaming your timeline (Control-C to stop)
+    t stream timeline
 
 ### Count the number of employees who work for Twitter
     t list members twitter team | wc -l

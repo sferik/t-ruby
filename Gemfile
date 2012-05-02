@@ -8,6 +8,4 @@ platforms :mri do
   gem 'ruby-prof'
 end
 
-gem 'tweetstream', :path => "../tweetstream"
-
 gemspec

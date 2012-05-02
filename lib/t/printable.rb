@@ -5,6 +5,7 @@ require 'fastercsv' unless Array.new.respond_to?(:to_csv)
 require 'highline'
 require 'htmlentities'
 require 'thor/shell/color'
+require 'time'
 
 module T
   module Printable
@@ -16,32 +17,44 @@ module T
     private
 
       def build_long_list(list)
-        created_at = list.created_at > 6.months.ago ? list.created_at.strftime("%b %e %H:%M") : list.created_at.strftime("%b %e  %Y")
+        created_at = if Time.parse(list.created_at.to_s) > 6.months.ago
+          list.created_at.strftime("%b %e %H:%M")
+        else
+          list.created_at.strftime("%b %e  %Y")
+        end
         [list.id, created_at, "@#{list.user.screen_name}", list.slug, number_with_delimiter(list.member_count), number_with_delimiter(list.subscriber_count), list.mode, list.description]
       end
 
       def build_long_status(status)
-        created_at = status.created_at > 6.months.ago ? status.created_at.strftime("%b %e %H:%M") : status.created_at.strftime("%b %e  %Y")
+        created_at = if Time.parse(status.created_at.to_s) > 6.months.ago
+          Time.parse(status.created_at.to_s).strftime("%b %e %H:%M")
+        else
+          Time.parse(status.created_at.to_s).strftime("%b %e  %Y")
+        end
         [status.id, created_at, "@#{status.user.screen_name}", HTMLEntities.new.decode(status.text).gsub(/\n+/, ' ')]
       end
 
       def build_long_user(user)
-        created_at = user.created_at > 6.months.ago ? user.created_at.strftime("%b %e %H:%M") : user.created_at.strftime("%b %e  %Y")
+        created_at = if user.created_at > 6.months.ago
+          Time.parse(user.created_at.to_s).strftime("%b %e %H:%M")
+        else
+          user.created_at.strftime("%b %e  %Y")
+        end
         [user.id, created_at, number_with_delimiter(user.statuses_count), number_with_delimiter(user.favourites_count), number_with_delimiter(user.listed_count), number_with_delimiter(user.friends_count), number_with_delimiter(user.followers_count), "@#{user.screen_name}", user.name]
       end
 
       def print_csv_list(list)
-        created_at = list.created_at.utc.strftime("%Y-%m-%d %H:%M:%S %z")
+        created_at = Time.parse(list.created_at.to_s).utc.strftime("%Y-%m-%d %H:%M:%S %z")
         say [list.id, created_at, list.user.screen_name, list.slug, list.member_count, list.subscriber_count, list.mode, list.description].to_csv
       end
 
       def print_csv_status(status)
-        created_at = status.created_at.utc.strftime("%Y-%m-%d %H:%M:%S %z")
+        created_at = Time.parse(status.created_at.to_s).utc.strftime("%Y-%m-%d %H:%M:%S %z")
         say [status.id, created_at, status.user.screen_name, HTMLEntities.new.decode(status.text)].to_csv
       end
 
       def print_csv_user(user)
-        created_at = user.created_at.utc.strftime("%Y-%m-%d %H:%M:%S %z")
+        created_at = Time.parse(user.created_at.to_s).utc.strftime("%Y-%m-%d %H:%M:%S %z")
         say [user.id, created_at, user.statuses_count, user.favourites_count, user.listed_count, user.friends_count, user.followers_count, user.screen_name, user.name].to_csv
       end
 

@@ -17,7 +17,7 @@ module T
 
       def build_long_list(list)
         created_at = list.created_at > 6.months.ago ? list.created_at.strftime("%b %e %H:%M") : list.created_at.strftime("%b %e  %Y")
-        [list.id, created_at, list.full_name, number_with_delimiter(list.member_count), number_with_delimiter(list.subscriber_count), list.mode, list.description]
+        [list.id, created_at, "@#{list.user.screen_name}", list.slug, number_with_delimiter(list.member_count), number_with_delimiter(list.subscriber_count), list.mode, list.description]
       end
 
       def build_long_status(status)
@@ -55,6 +55,14 @@ module T
         puts
       end
 
+      def list_headings
+        ["ID", "Created at", "Screen name", "Slug", "Members", "Subscribers", "Mode", "Description"]
+      end
+
+      def status_headings
+        ["ID", "Posted at", "Screen name", "Text"]
+      end
+
       def print_lists(lists)
         lists = lists.sort_by{|list| list.slug.downcase} unless options['unsorted']
         if options['posted']
@@ -68,7 +76,7 @@ module T
         end
         lists.reverse! if options['reverse']
         if options['csv']
-          say ["ID", "Created at", "Screen name", "Slug", "Members", "Subscribers", "Mode", "Description"].to_csv unless lists.empty?
+          say list_headings.to_csv unless lists.empty?
           lists.each do |list|
             print_csv_list(list)
           end
@@ -77,8 +85,7 @@ module T
             build_long_list(list)
           end
           if STDOUT.tty?
-            headings = ["ID", "Created at", "Slug", "Members", "Subscribers", "Mode", "Description"]
-            array.unshift(headings) unless lists.empty?
+            array.unshift(list_headings) unless lists.empty?
             print_table(array, :truncate => true)
           else
             print_table(array)
@@ -108,7 +115,7 @@ module T
       def print_statuses(statuses)
         statuses.reverse! if options['reverse'] || options['stream']
         if options['csv']
-          say ["ID", "Posted at", "Screen name", "Text"].to_csv unless statuses.empty?
+          say status_headings.to_csv unless statuses.empty?
           statuses.each do |status|
             print_csv_status(status)
           end
@@ -117,8 +124,7 @@ module T
             build_long_status(status)
           end
           if STDOUT.tty?
-            headings = ["ID", "Posted at", "Screen name", "Text"]
-            array.unshift(headings) unless statuses.empty?
+            array.unshift(status_headings) unless statuses.empty?
             print_table(array, :truncate => true)
           else
             print_table(array)
@@ -128,6 +134,10 @@ module T
             print_status(status)
           end
         end
+      end
+
+      def user_headings
+        ["ID", "Since", "Tweets", "Favorites", "Listed", "Following", "Followers", "Screen name", "Name"]
       end
 
       def print_users(users)
@@ -147,7 +157,7 @@ module T
         end
         users.reverse! if options['reverse']
         if options['csv']
-          say ["ID", "Since", "Tweets", "Favorites", "Listed", "Following", "Followers", "Screen name", "Name"].to_csv unless users.empty?
+          say user_headings.to_csv unless users.empty?
           users.each do |user|
             print_csv_user(user)
           end
@@ -156,8 +166,7 @@ module T
             build_long_user(user)
           end
           if STDOUT.tty?
-            headings = ["ID", "Since", "Tweets", "Favorites", "Listed", "Following", "Followers", "Screen name", "Name"]
-            array.unshift(headings) unless users.empty?
+            array.unshift(user_headings) unless users.empty?
             print_table(array, :truncate => true)
           else
             print_table(array)

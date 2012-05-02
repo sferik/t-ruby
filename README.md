@@ -30,9 +30,9 @@ consumer key and secret, which you can use to authorize your Twitter account.
 
 This command directs you to a URL where you can sign-in to Twitter and then
 enter the returned PIN back into the terminal. If you type the PIN correctly,
-you should now be authorized authorized to use `t` as that user. To authorize
-multiple accounts, simply repeat the last step, signing into Twitter as a
-different user.
+you should now be authorized to use `t` as that user. To authorize multiple
+accounts, simply repeat the last step, signing into Twitter as a different
+user.
 
 You can see a list of all the accounts you've authorized by typing the command:
 
@@ -48,12 +48,13 @@ The output of which will be structured like this:
 
 **Note**: One of your authorized accounts (specifically, the last one
 authorized) will be set as active. To change the active account, use the `set`
-subcommand, passing either just the username, if it's unambiguous, or the
-username and consumer key pair, like this:
+subcommand, passing either just a username, if it's unambiguous, or a username
+and consumer key pair, like this:
 
     t set active sferik UDfNTpOz5ZDG4a6w7dIWj
 
 Account information is stored in a YAML-formatted file located at `~/.trc`.
+
 **Note**: Anyone with access to this file can masquerade as you on Twitter, so
 it's important to keep it secure, just as you would treat your SSH private key.
 For this reason, the file is hidden and has the permission bits set to `0600`.

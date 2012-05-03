@@ -26,7 +26,7 @@ module T
 
     desc "bio DESCRIPTION", "Edits your Bio information on your Twitter profile."
     def bio(description)
-      client.update_profile(:description => description, :include_entities => false)
+      client.update_profile(:description => description)
       say "@#{@rcfile.active_profile[0]}'s bio has been updated."
     end
 
@@ -38,19 +38,19 @@ module T
 
     desc "location PLACE_NAME", "Updates the location field in your profile."
     def location(place_name)
-      client.update_profile(:location => place_name, :include_entities => false)
+      client.update_profile(:location => place_name)
       say "@#{@rcfile.active_profile[0]}'s location has been updated."
     end
 
     desc "name NAME", "Sets the name field on your Twitter profile."
     def name(name)
-      client.update_profile(:name => name, :include_entities => false)
+      client.update_profile(:name => name)
       say "@#{@rcfile.active_profile[0]}'s name has been updated."
     end
 
     desc "url URL", "Sets the URL field on your profile."
     def url(url)
-      client.update_profile(:url => url, :include_entities => false)
+      client.update_profile(:url => url)
       say "@#{@rcfile.active_profile[0]}'s URL has been updated."
     end
 

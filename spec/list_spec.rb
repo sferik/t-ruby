@@ -158,13 +158,13 @@ ID,Description,Slug,Screen name,Created at,Members,Subscribers,Following,Mode,UR
   describe "#members" do
     before do
       stub_get("/1/lists/members.json").
-        with(:query => {:cursor => "-1", :include_entities => "false", :owner_screen_name => "testcli", :skip_status => "true", :slug => "presidents"}).
+        with(:query => {:cursor => "-1", :owner_screen_name => "testcli", :skip_status => "true", :slug => "presidents"}).
         to_return(:body => fixture("users_list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @list.members("presidents")
       a_get("/1/lists/members.json").
-        with(:query => {:cursor => "-1", :include_entities => "false", :owner_screen_name => "testcli", :skip_status => "true", :slug => "presidents"}).
+        with(:query => {:cursor => "-1", :owner_screen_name => "testcli", :skip_status => "true", :slug => "presidents"}).
         should have_been_made
     end
     it "should have the correct output" do
@@ -273,20 +273,20 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
       it "should request the correct resource" do
         @list.members("testcli/presidents")
         a_get("/1/lists/members.json").
-          with(:query => {:cursor => "-1", :include_entities => "false", :owner_screen_name => "testcli", :skip_status => "true", :slug => "presidents"}).
+          with(:query => {:cursor => "-1", :owner_screen_name => "testcli", :skip_status => "true", :slug => "presidents"}).
           should have_been_made
       end
       context "--id" do
         before do
           @list.options = @list.options.merge("id" => true)
           stub_get("/1/lists/members.json").
-            with(:query => {:cursor => "-1", :include_entities => "false", :owner_id => "7505382", :skip_status => "true", :slug => "presidents"}).
+            with(:query => {:cursor => "-1", :owner_id => "7505382", :skip_status => "true", :slug => "presidents"}).
             to_return(:body => fixture("users_list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         end
         it "should request the correct resource" do
           @list.members("7505382/presidents")
           a_get("/1/lists/members.json").
-            with(:query => {:cursor => "-1", :include_entities => "false", :owner_id => "7505382", :skip_status => "true", :slug => "presidents"}).
+            with(:query => {:cursor => "-1", :owner_id => "7505382", :skip_status => "true", :slug => "presidents"}).
             should have_been_made
         end
       end
@@ -351,13 +351,13 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
   describe "#timeline" do
     before do
       stub_get("/1/lists/statuses.json").
-        with(:query => {:owner_screen_name => "testcli", :per_page => "20", :slug => "presidents", :include_entities => "false"}).
+        with(:query => {:owner_screen_name => "testcli", :per_page => "20", :slug => "presidents"}).
         to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @list.timeline("presidents")
       a_get("/1/lists/statuses.json").
-        with(:query => {:owner_screen_name => "testcli", :per_page => "20", :slug => "presidents", :include_entities => "false"}).
+        with(:query => {:owner_screen_name => "testcli", :per_page => "20", :slug => "presidents"}).
         should have_been_made
     end
     it "should have the correct output" do
@@ -454,13 +454,13 @@ ID                  Posted at     Screen name    Text
       before do
         @list.options = @list.options.merge("number" => 1)
         stub_get("/1/lists/statuses.json").
-          with(:query => {:owner_screen_name => "testcli", :per_page => "1", :slug => "presidents", :include_entities => "false"}).
+          with(:query => {:owner_screen_name => "testcli", :per_page => "1", :slug => "presidents"}).
           to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should limit the number of results" do
         @list.timeline("presidents")
         a_get("/1/lists/statuses.json").
-          with(:query => {:owner_screen_name => "testcli", :per_page => "1", :slug => "presidents", :include_entities => "false"}).
+          with(:query => {:owner_screen_name => "testcli", :per_page => "1", :slug => "presidents"}).
           should have_been_made
       end
     end
@@ -468,20 +468,20 @@ ID                  Posted at     Screen name    Text
       it "should request the correct resource" do
         @list.timeline("testcli/presidents")
         a_get("/1/lists/statuses.json").
-          with(:query => {:owner_screen_name => "testcli", :per_page => "20", :slug => "presidents", :include_entities => "false"}).
+          with(:query => {:owner_screen_name => "testcli", :per_page => "20", :slug => "presidents"}).
           should have_been_made
       end
       context "--id" do
         before do
           @list.options = @list.options.merge("id" => true)
           stub_get("/1/lists/statuses.json").
-            with(:query => {:owner_id => "7505382", :per_page => "20", :slug => "presidents", :include_entities => "false"}).
+            with(:query => {:owner_id => "7505382", :per_page => "20", :slug => "presidents"}).
             to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         end
         it "should request the correct resource" do
           @list.timeline("7505382/presidents")
           a_get("/1/lists/statuses.json").
-            with(:query => {:owner_id => "7505382", :per_page => "20", :slug => "presidents", :include_entities => "false"}).
+            with(:query => {:owner_id => "7505382", :per_page => "20", :slug => "presidents"}).
             should have_been_made
         end
       end

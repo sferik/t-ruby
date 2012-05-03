@@ -34,7 +34,7 @@ module T
     method_option "number", :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS
     def all(query)
       rpp = options['number'] || DEFAULT_NUM_RESULTS
-      statuses = client.search(query, :include_entities => false, :rpp => rpp)
+      statuses = client.search(query, :rpp => rpp)
       if options['csv']
         say ["ID", "Posted at", "Screen name", "Text"].to_csv unless statuses.empty?
         statuses.each do |status|

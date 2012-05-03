@@ -23,13 +23,13 @@ describe T::Search do
   describe "#all" do
     before do
       stub_request(:get, "https://search.twitter.com/search.json").
-        with(:query => {:q => "twitter", :include_entities => "false", :rpp => "20"}).
+        with(:query => {:q => "twitter", :rpp => "20"}).
         to_return(:body => fixture("search.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @search.all("twitter")
       a_request(:get, "https://search.twitter.com/search.json").
-        with(:query => {:q => "twitter", :include_entities => "false", :rpp => "20"}).
+        with(:query => {:q => "twitter", :rpp => "20"}).
         should have_been_made
     end
     it "should have the correct output" do
@@ -97,13 +97,13 @@ ID                  Posted at     Screen name       Text
       before do
         @search.options = @search.options.merge("number" => 1)
         stub_request(:get, "https://search.twitter.com/search.json").
-          with(:query => {:q => "twitter", :include_entities => "false", :rpp => "1"}).
+          with(:query => {:q => "twitter", :rpp => "1"}).
           to_return(:body => fixture("search.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should limit the number of results" do
         @search.all("twitter")
         a_request(:get, "https://search.twitter.com/search.json").
-          with(:query => {:q => "twitter", :include_entities => "false", :rpp => "1"}).
+          with(:query => {:q => "twitter", :rpp => "1"}).
           should have_been_made
       end
     end

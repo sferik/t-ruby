@@ -22,13 +22,13 @@ describe T::Delete do
     before do
       @delete.options = @delete.options.merge("profile" => fixture_path + "/.trc")
       stub_delete("/1/blocks/destroy.json").
-        with(:query => {:screen_name => "sferik", :include_entities => "false"}).
+        with(:query => {:screen_name => "sferik"}).
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @delete.block("sferik")
       a_delete("/1/blocks/destroy.json").
-        with(:query => {:screen_name => "sferik", :include_entities => "false"}).
+        with(:query => {:screen_name => "sferik"}).
         should have_been_made
     end
     it "should have the correct output" do
@@ -39,13 +39,13 @@ describe T::Delete do
       before do
         @delete.options = @delete.options.merge("id" => true)
         stub_delete("/1/blocks/destroy.json").
-          with(:query => {:user_id => "7505382", :include_entities => "false"}).
+          with(:query => {:user_id => "7505382"}).
           to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should request the correct resource" do
         @delete.block("7505382")
         a_delete("/1/blocks/destroy.json").
-          with(:query => {:user_id => "7505382", :include_entities => "false"}).
+          with(:query => {:user_id => "7505382"}).
           should have_been_made
       end
     end
@@ -55,10 +55,8 @@ describe T::Delete do
     before do
       @delete.options = @delete.options.merge("profile" => fixture_path + "/.trc")
       stub_get("/1/direct_messages/show/1773478249.json").
-        with(:query => {:include_entities => "false"}).
         to_return(:body => fixture("direct_message.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       stub_delete("/1/direct_messages/destroy/1773478249.json").
-        with(:query => {:include_entities => "false"}).
         to_return(:body => fixture("direct_message.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
@@ -66,10 +64,8 @@ describe T::Delete do
       $stdin.should_receive(:gets).and_return("yes")
       @delete.dm("1773478249")
       a_get("/1/direct_messages/show/1773478249.json").
-        with(:query => {:include_entities => "false"}).
         should have_been_made
       a_delete("/1/direct_messages/destroy/1773478249.json").
-        with(:query => {:include_entities => "false"}).
         should have_been_made
     end
     context "yes" do
@@ -95,7 +91,6 @@ describe T::Delete do
       it "should request the correct resource" do
         @delete.dm("1773478249")
         a_delete("/1/direct_messages/destroy/1773478249.json").
-          with(:query => {:include_entities => "false"}).
           should have_been_made
       end
       it "should have the correct output" do
@@ -109,10 +104,9 @@ describe T::Delete do
     before do
       @delete.options = @delete.options.merge("profile" => fixture_path + "/.trc")
       stub_get("/1/statuses/show/28439861609.json").
-        with(:query => {:include_entities => "false", :include_my_retweet => "false", :trim_user => "true"}).
+        with(:query => {:include_my_retweet => "false", :trim_user => "true"}).
         to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       stub_delete("/1/favorites/destroy/28439861609.json").
-        with(:query => {:include_entities => "false"}).
         to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
@@ -120,10 +114,9 @@ describe T::Delete do
       $stdin.should_receive(:gets).and_return("yes")
       @delete.favorite("28439861609")
       a_get("/1/statuses/show/28439861609.json").
-        with(:query => {:include_entities => "false", :include_my_retweet => "false", :trim_user => "true"}).
+        with(:query => {:include_my_retweet => "false", :trim_user => "true"}).
         should have_been_made
       a_delete("/1/favorites/destroy/28439861609.json").
-        with(:query => {:include_entities => "false"}).
         should have_been_made
     end
     context "yes" do
@@ -149,7 +142,6 @@ describe T::Delete do
       it "should request the correct resource" do
         @delete.favorite("28439861609")
         a_delete("/1/favorites/destroy/28439861609.json").
-          with(:query => {:include_entities => "false"}).
           should have_been_made
       end
       it "should have the correct output" do
@@ -241,10 +233,10 @@ describe T::Delete do
     before do
       @delete.options = @delete.options.merge("profile" => fixture_path + "/.trc")
       stub_get("/1/statuses/show/26755176471724032.json").
-        with(:query => {:include_entities => "false", :include_my_retweet => "false", :trim_user => "true"}).
+        with(:query => {:include_my_retweet => "false", :trim_user => "true"}).
         to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       stub_delete("/1/statuses/destroy/26755176471724032.json").
-        with(:query => {:include_entities => "false", :trim_user => "true"}).
+        with(:query => {:trim_user => "true"}).
         to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
@@ -252,10 +244,10 @@ describe T::Delete do
       $stdin.should_receive(:gets).and_return("yes")
       @delete.status("26755176471724032")
       a_get("/1/statuses/show/26755176471724032.json").
-        with(:query => {:include_entities => "false", :include_my_retweet => "false", :trim_user => "true"}).
+        with(:query => {:include_my_retweet => "false", :trim_user => "true"}).
         should have_been_made
       a_delete("/1/statuses/destroy/26755176471724032.json").
-        with(:query => {:include_entities => "false", :trim_user => "true"}).
+        with(:query => {:trim_user => "true"}).
         should have_been_made
     end
     context "yes" do
@@ -281,7 +273,7 @@ describe T::Delete do
       it "should request the correct resource" do
         @delete.status("26755176471724032")
         a_delete("/1/statuses/destroy/26755176471724032.json").
-          with(:query => {:include_entities => "false", :trim_user => "true"}).
+          with(:query => {:trim_user => "true"}).
           should have_been_made
       end
       it "should have the correct output" do

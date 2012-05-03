@@ -126,7 +126,7 @@ module T
         end
       end
       users = collect_with_cursor do |cursor|
-        client.list_members(owner, list, :cursor => cursor, :include_entities => false, :skip_status => true)
+        client.list_members(owner, list, :cursor => cursor, :skip_status => true)
       end
       print_users(users)
     end
@@ -174,7 +174,7 @@ module T
         end
       end
       per_page = options['number'] || DEFAULT_NUM_RESULTS
-      statuses = client.list_timeline(owner, list, :include_entities => false, :per_page => per_page)
+      statuses = client.list_timeline(owner, list, :per_page => per_page)
       print_statuses(statuses)
     end
     map %w(tl) => :timeline

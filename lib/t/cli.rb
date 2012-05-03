@@ -113,7 +113,7 @@ module T
       end
       users = users.threaded_map do |user|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-          client.block(user, :include_entities => false)
+          client.block(user)
         end
       end
       number = users.length
@@ -129,7 +129,7 @@ module T
     method_option "reverse", :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     def direct_messages
       count = options['number'] || DEFAULT_NUM_RESULTS
-      direct_messages = client.direct_messages(:count => count, :include_entities => false)
+      direct_messages = client.direct_messages(:count => count)
       direct_messages.reverse! if options['reverse']
       if options['csv']
         say ["ID", "Posted at", "Screen name", "Text"].to_csv unless direct_messages.empty?
@@ -163,7 +163,7 @@ module T
     method_option "reverse", :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     def direct_messages_sent
       count = options['number'] || DEFAULT_NUM_RESULTS
-      direct_messages = client.direct_messages_sent(:count => count, :include_entities => false)
+      direct_messages = client.direct_messages_sent(:count => count)
       direct_messages.reverse! if options['reverse']
       if options['csv']
         say ["ID", "Posted at", "Screen name", "Text"].to_csv unless direct_messages.empty?
@@ -219,7 +219,7 @@ module T
       disciple_ids = (follower_ids - following_ids)
       users = disciple_ids.in_groups_of(MAX_USERS_PER_REQUEST, false).threaded_map do |disciple_id_group|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-          client.users(disciple_id_group, :include_entities => false)
+          client.users(disciple_id_group)
         end
       end.flatten
       print_users(users)
@@ -233,7 +233,7 @@ module T
       else
         user.strip_ats
       end
-      direct_message = client.direct_message_create(user, message, :include_entities => false)
+      direct_message = client.direct_message_create(user, message)
       say "Direct Message sent from @#{@rcfile.active_profile[0]} to @#{direct_message.recipient.screen_name} (#{time_ago_in_words(direct_message.created_at)} ago)."
     end
     map %w(d m) => :dm
@@ -247,7 +247,7 @@ module T
         owner = @rcfile.active_profile[0]
       else
         owner = if options['id']
-          client.user(owner.to_i, :include_entities => false).screen_name
+          client.user(owner.to_i).screen_name
         else
           owner.strip_ats
         end
@@ -256,7 +256,7 @@ module T
         user = @rcfile.active_profile[0]
       else
         user = if options['id']
-          user = client.user(user.to_i, :include_entities => false).screen_name
+          user = client.user(user.to_i).screen_name
         else
           user.strip_ats
         end
@@ -274,7 +274,7 @@ module T
     method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
     def does_follow(user1, user2=nil)
       user1 = if options['id']
-        client.user(user1.to_i, :include_entities => false).screen_name
+        client.user(user1.to_i).screen_name
       else
         user1.strip_ats
       end
@@ -282,7 +282,7 @@ module T
         user2 = @rcfile.active_profile[0]
       else
         user2 = if options['id']
-          client.user(user2.to_i, :include_entities => false).screen_name
+          client.user(user2.to_i).screen_name
         else
           user2.strip_ats
         end
@@ -302,7 +302,7 @@ module T
       status_ids.map!(&:strip_commas)
       favorites = status_ids.threaded_map do |status_id|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-          client.favorite(status_id.to_i, :include_entities => false)
+          client.favorite(status_id.to_i)
         end
       end
       number = favorites.length
@@ -327,7 +327,7 @@ module T
         end
       end
       count = options['number'] || DEFAULT_NUM_RESULTS
-      statuses = client.favorites(user, :count => count, :include_entities => false)
+      statuses = client.favorites(user, :count => count)
       print_statuses(statuses)
     end
     map %w(faves favourites) => :favorites
@@ -343,7 +343,7 @@ module T
       end
       users = users.threaded_map do |user|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-          client.follow(user, :include_entities => false)
+          client.follow(user)
         end
       end
       number = users.length
@@ -377,7 +377,7 @@ module T
       end
       users = following_ids.in_groups_of(MAX_USERS_PER_REQUEST, false).threaded_map do |following_id_group|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-          client.users(following_id_group, :include_entities => false)
+          client.users(following_id_group)
         end
       end.flatten
       print_users(users)
@@ -408,7 +408,7 @@ module T
       end
       users = follower_ids.in_groups_of(MAX_USERS_PER_REQUEST, false).threaded_map do |follower_id_group|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-          client.users(follower_id_group, :include_entities => false)
+          client.users(follower_id_group)
         end
       end.flatten
       print_users(users)
@@ -443,7 +443,7 @@ module T
       friend_ids = (following_ids & follower_ids)
       users = friend_ids.in_groups_of(MAX_USERS_PER_REQUEST, false).threaded_map do |friend_id_group|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-          client.users(friend_id_group, :include_entities => false)
+          client.users(friend_id_group)
         end
       end.flatten
       print_users(users)
@@ -478,7 +478,7 @@ module T
       leader_ids = (following_ids - follower_ids)
       users = leader_ids.in_groups_of(MAX_USERS_PER_REQUEST, false).threaded_map do |leader_id_group|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-          client.users(leader_id_group, :include_entities => false)
+          client.users(leader_id_group)
         end
       end.flatten
       print_users(users)
@@ -515,7 +515,7 @@ module T
     method_option "reverse", :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     def mentions
       count = options['number'] || DEFAULT_NUM_RESULTS
-      statuses = client.mentions(:count => count, :include_entities => false)
+      statuses = client.mentions(:count => count)
       print_statuses(statuses)
     end
     map %w(replies) => :mentions
@@ -526,10 +526,10 @@ module T
     method_option "status", :aliases => "-s", :type => :boolean, :default => false, :desc => "Specify input as a Twitter status ID instead of a screen name."
     def open(user)
       if options['id']
-        user = client.user(user.to_i, :include_entities => false)
+        user = client.user(user.to_i)
         Launchy.open("https://twitter.com/#{user.screen_name}", :dry_run => options['display-url'])
       elsif options['status']
-        status = client.status(user.to_i, :include_entities => false, :include_my_retweet => false)
+        status = client.status(user.to_i, :include_my_retweet => false)
         Launchy.open("https://twitter.com/#{status.user.screen_name}/status/#{status.id}", :dry_run => options['display-url'])
       else
         Launchy.open("https://twitter.com/#{user.strip_ats}", :dry_run => options['display-url'])
@@ -541,7 +541,7 @@ module T
     method_option "location", :aliases => "-l", :type => :boolean, :default => false
     def reply(status_id, message)
       status_id = status_id.strip_commas
-      status = client.status(status_id.to_i, :include_entities => false, :include_my_retweet => false)
+      status = client.status(status_id.to_i, :include_my_retweet => false)
       users = Array(status.user.screen_name)
       if options['all']
         # twitter-text requires $KCODE to be set to UTF8 on Ruby versions < 1.8
@@ -552,7 +552,7 @@ module T
         users.uniq!
       end
       users.map!(&:prepend_at)
-      opts = {:in_reply_to_status_id => status.id, :include_entities => false, :trim_user => true}
+      opts = {:in_reply_to_status_id => status.id, :trim_user => true}
       opts.merge!(:lat => location.lat, :long => location.lng) if options['location']
       reply = client.update("#{users.join(' ')} #{message}", opts)
       say "Reply created by @#{@rcfile.active_profile[0]} to #{users.join(' ')} (#{time_ago_in_words(reply.created_at)} ago)."
@@ -571,7 +571,7 @@ module T
       end
       users = users.threaded_map do |user|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-          client.report_spam(user, :include_entities => false)
+          client.report_spam(user)
         end
       end
       number = users.length
@@ -585,7 +585,7 @@ module T
       status_ids.map!(&:strip_commas)
       retweets = status_ids.threaded_map do |status_id|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-          client.retweet(status_id.to_i, :include_entities => false, :trim_user => true)
+          client.retweet(status_id.to_i, :trim_user => true)
         end
       end
       number = retweets.length
@@ -610,7 +610,7 @@ module T
         end
       end
       count = options['number'] || DEFAULT_NUM_RESULTS
-      statuses = client.retweeted_by(user, :count => count, :include_entities => false)
+      statuses = client.retweeted_by(user, :count => count)
       print_statuses(statuses)
     end
     map %w(rts) => :retweets
@@ -624,7 +624,7 @@ module T
     method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     def status(status_id)
       status_id = status_id.strip_commas
-      status = client.status(status_id.to_i, :include_entities => false, :include_my_retweet => false)
+      status = client.status(status_id.to_i, :include_my_retweet => false)
       if status.geo
         geoloc = Geokit::Geocoders::MultiGeocoder.reverse_geocode(status.geo.coordinates)
         location = if geoloc.city && geoloc.state && geoloc.country
@@ -677,7 +677,7 @@ module T
         end
       end
       limit = options['number'] || DEFAULT_NUM_RESULTS
-      users = client.recommendations(user, :limit => limit, :include_entities => false)
+      users = client.recommendations(user, :limit => limit)
       print_users(users)
     end
 
@@ -695,9 +695,9 @@ module T
         else
           user.strip_ats
         end
-        statuses = client.user_timeline(user, :count => count, :include_entities => false)
+        statuses = client.user_timeline(user, :count => count)
       else
-        statuses = client.home_timeline(:count => count, :include_entities => false)
+        statuses = client.home_timeline(:count => count)
       end
       print_statuses(statuses)
     end
@@ -766,7 +766,7 @@ module T
       end
       users = users.threaded_map do |user|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-          client.unfollow(user, :include_entities => false)
+          client.unfollow(user)
         end
       end
       number = users.length
@@ -778,7 +778,7 @@ module T
     desc "update MESSAGE", "Post a Tweet."
     method_option "location", :aliases => "-l", :type => :boolean, :default => false
     def update(message)
-      opts = {:include_entities => false, :trim_user => true}
+      opts = {:trim_user => true}
       opts.merge!(:lat => location.lat, :long => location.lng) if options['location']
       status = client.update(message, opts)
       say "Tweet created by @#{@rcfile.active_profile[0]} (#{time_ago_in_words(status.created_at)} ago)."
@@ -806,7 +806,7 @@ module T
       else
         users.map!(&:strip_ats)
       end
-      users = client.users(users, :include_entities => false)
+      users = client.users(users)
       print_users(users)
     end
     map %w(stats) => :users
@@ -826,7 +826,7 @@ module T
       else
         user.strip_ats
       end
-      user = client.user(user, :include_entities => false)
+      user = client.user(user)
       if options['csv']
         say ["ID", "Verified", "Name", "Screen name", "Bio", "Location", "Following", "Last update", "Lasted updated at", "Since", "Tweets", "Favorites", "Listed", "Following", "Followers", "URL"].to_csv
         say [user.id, user.verified?, user.name, user.screen_name, user.description, user.location, user.following?, HTMLEntities.new.decode(user.status.text), user.status.created_at.utc.strftime("%Y-%m-%d %H:%M:%S %z"), user.created_at.utc.strftime("%Y-%m-%d %H:%M:%S %z"), user.statuses_count, user.favourites_count, user.listed_count, user.friends_count, user.followers_count, user.url].to_csv

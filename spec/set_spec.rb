@@ -32,13 +32,13 @@ describe T::Set do
     before do
       @t.options = @t.options.merge("profile" => fixture_path + "/.trc")
       stub_post("/1/account/update_profile.json").
-        with(:body => {:description => "A mind forever voyaging through strange seas of thought, alone.", :include_entities => "false"}).
+        with(:body => {:description => "A mind forever voyaging through strange seas of thought, alone."}).
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @t.set("bio", "A mind forever voyaging through strange seas of thought, alone.")
       a_post("/1/account/update_profile.json").
-        with(:body => {:description => "A mind forever voyaging through strange seas of thought, alone.", :include_entities => "false"}).
+        with(:body => {:description => "A mind forever voyaging through strange seas of thought, alone."}).
         should have_been_made
     end
     it "should have the correct output" do
@@ -70,13 +70,13 @@ describe T::Set do
     before do
       @t.options = @t.options.merge("profile" => fixture_path + "/.trc")
       stub_post("/1/account/update_profile.json").
-        with(:body => {:location => "San Francisco", :include_entities => "false"}).
+        with(:body => {:location => "San Francisco"}).
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @t.set("location", "San Francisco")
       a_post("/1/account/update_profile.json").
-        with(:body => {:location => "San Francisco", :include_entities => "false"}).
+        with(:body => {:location => "San Francisco"}).
         should have_been_made
     end
     it "should have the correct output" do
@@ -89,13 +89,13 @@ describe T::Set do
     before do
       @t.options = @t.options.merge("profile" => fixture_path + "/.trc")
       stub_post("/1/account/update_profile.json").
-        with(:body => {:name => "Erik Michaels-Ober", :include_entities => "false"}).
+        with(:body => {:name => "Erik Michaels-Ober"}).
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @t.set("name", "Erik Michaels-Ober")
       a_post("/1/account/update_profile.json").
-        with(:body => {:name => "Erik Michaels-Ober", :include_entities => "false"}).
+        with(:body => {:name => "Erik Michaels-Ober"}).
         should have_been_made
     end
     it "should have the correct output" do
@@ -108,13 +108,13 @@ describe T::Set do
     before do
       @t.options = @t.options.merge("profile" => fixture_path + "/.trc")
       stub_post("/1/account/update_profile.json").
-        with(:body => {:url => "https://github.com/sferik", :include_entities => "false"}).
+        with(:body => {:url => "https://github.com/sferik"}).
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @t.set("url", "https://github.com/sferik")
       a_post("/1/account/update_profile.json").
-        with(:body => {:url => "https://github.com/sferik", :include_entities => "false"}).
+        with(:body => {:url => "https://github.com/sferik"}).
         should have_been_made
     end
     it "should have the correct output" do

@@ -27,7 +27,7 @@ module T
       end
       users = users.threaded_map do |user|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-          client.unblock(user, :include_entities => false)
+          client.unblock(user)
         end
       end
       number = users.length
@@ -43,10 +43,10 @@ module T
       direct_message_ids.map!(&:strip_commas)
       direct_message_ids.each do |direct_message_id|
         unless options['force']
-          direct_message = client.direct_message(direct_message_id.to_i, :include_entities => false)
+          direct_message = client.direct_message(direct_message_id.to_i)
           return unless yes? "Are you sure you want to permanently delete the direct message to @#{direct_message.recipient.screen_name}: \"#{direct_message.text}\"? [y/N]"
         end
-        direct_message = client.direct_message_destroy(direct_message_id.to_i, :include_entities => false)
+        direct_message = client.direct_message_destroy(direct_message_id.to_i)
         say "@#{@rcfile.active_profile[0]} deleted the direct message sent to @#{direct_message.recipient.screen_name}: \"#{direct_message.text}\""
       end
     end
@@ -59,10 +59,10 @@ module T
       status_ids.map!(&:strip_commas)
       status_ids.each do |status_id|
         unless options['force']
-          status = client.status(status_id.to_i, :include_entities => false, :include_my_retweet => false, :trim_user => true)
+          status = client.status(status_id.to_i, :include_my_retweet => false, :trim_user => true)
           return unless yes? "Are you sure you want to remove @#{status.user.screen_name}'s status: \"#{status.text}\" from your favorites? [y/N]"
         end
-        status = client.unfavorite(status_id.to_i, :include_entities => false)
+        status = client.unfavorite(status_id.to_i)
         say "@#{@rcfile.active_profile[0]} unfavorited @#{status.user.screen_name}'s status: \"#{status.text}\""
       end
     end
@@ -88,10 +88,10 @@ module T
       status_ids.map!(&:strip_commas)
       status_ids.each do |status_id|
         unless options['force']
-          status = client.status(status_id.to_i, :include_entities => false, :include_my_retweet => false, :trim_user => true)
+          status = client.status(status_id.to_i, :include_my_retweet => false, :trim_user => true)
           return unless yes? "Are you sure you want to permanently delete @#{status.user.screen_name}'s status: \"#{status.text}\"? [y/N]"
         end
-        status = client.status_destroy(status_id.to_i, :include_entities => false, :trim_user => true)
+        status = client.status_destroy(status_id.to_i, :trim_user => true)
         say "@#{@rcfile.active_profile[0]} deleted the status: \"#{status.text}\""
       end
     end

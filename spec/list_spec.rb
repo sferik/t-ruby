@@ -452,15 +452,31 @@ ID                  Posted at     Screen name    Text
     end
     context "--number" do
       before do
-        @list.options = @list.options.merge("number" => 1)
         stub_get("/1/lists/statuses.json").
           with(:query => {:owner_screen_name => "testcli", :per_page => "1", :slug => "presidents"}).
           to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1/lists/statuses.json").
+          with(:query => {:owner_screen_name => "testcli", :per_page => "200", :slug => "presidents"}).
+          to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1/lists/statuses.json").
+          with(:query => {:owner_screen_name => "testcli", :per_page => "145", :max_id => "194546264212385792", :slug => "presidents"}).
+          to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
-      it "should limit the number of results" do
+      it "should limit the number of results to 1" do
+        @list.options = @list.options.merge("number" => 1)
         @list.timeline("presidents")
         a_get("/1/lists/statuses.json").
           with(:query => {:owner_screen_name => "testcli", :per_page => "1", :slug => "presidents"}).
+          should have_been_made
+      end
+      it "should limit the number of results to 345" do
+        @list.options = @list.options.merge("number" => 345)
+        @list.timeline("presidents")
+        a_get("/1/lists/statuses.json").
+          with(:query => {:owner_screen_name => "testcli", :per_page => "200", :slug => "presidents"}).
+          should have_been_made
+        a_get("/1/lists/statuses.json").
+          with(:query => {:owner_screen_name => "testcli", :per_page => "145", :max_id => "194546264212385792", :slug => "presidents"}).
           should have_been_made
       end
     end

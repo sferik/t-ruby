@@ -27,11 +27,6 @@ require 'time'
 require 'twitter'
 require 'yaml'
 
-# twitter-text requires $KCODE to be set to UTF8 on Ruby versions < 1.8
-major, minor, patch = RUBY_VERSION.split('.')
-$KCODE='u' if major.to_i == 1 && minor.to_i < 9
-require 'twitter-text'
-
 module T
   class CLI < Thor
     include ActionView::Helpers::DateHelper
@@ -41,7 +36,6 @@ module T
     include T::Collectable
     include T::Printable
     include T::Requestable
-    include Twitter::Extractor
 
     DEFAULT_NUM_RESULTS = 20
     MAX_SCREEN_NAME_SIZE = 20
@@ -549,8 +543,14 @@ module T
       status_id = status_id.strip_commas
       status = client.status(status_id.to_i, :include_entities => false, :include_my_retweet => false)
       users = Array(status.user.screen_name)
-      users += extract_mentioned_screen_names(status.text) if options['all']
-      users.uniq!
+      if options['all']
+        # twitter-text requires $KCODE to be set to UTF8 on Ruby versions < 1.8
+        major, minor, patch = RUBY_VERSION.split('.')
+        $KCODE='u' if major.to_i == 1 && minor.to_i < 9
+        require 'twitter-text'
+        users += Twitter::Extractor.extract_mentioned_screen_names(status.text)
+        users.uniq!
+      end
       users.map!(&:prepend_at)
       opts = {:in_reply_to_status_id => status.id, :include_entities => false, :trim_user => true}
       opts.merge!(:lat => location.lat, :long => location.lng) if options['location']

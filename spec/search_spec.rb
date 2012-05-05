@@ -95,15 +95,31 @@ ID                  Posted at     Screen name       Text
     end
     context "--number" do
       before do
-        @search.options = @search.options.merge("number" => 1)
         stub_request(:get, "https://search.twitter.com/search.json").
           with(:query => {:q => "twitter", :rpp => "1"}).
           to_return(:body => fixture("search.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_request(:get, "https://search.twitter.com/search.json").
+          with(:query => {:q => "twitter", :rpp => "200"}).
+          to_return(:body => fixture("search.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_request(:get, "https://search.twitter.com/search.json").
+          with(:query => {:q => "twitter", :rpp => "145", :max_id => "194521261307727871"}).
+          to_return(:body => fixture("search.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
-      it "should limit the number of results" do
+      it "should limit the number of results to 1" do
+        @search.options = @search.options.merge("number" => 1)
         @search.all("twitter")
         a_request(:get, "https://search.twitter.com/search.json").
           with(:query => {:q => "twitter", :rpp => "1"}).
+          should have_been_made
+      end
+      it "should limit the number of results to 345" do
+        @search.options = @search.options.merge("number" => 345)
+        @search.all("twitter")
+        a_request(:get, "https://search.twitter.com/search.json").
+          with(:query => {:q => "twitter", :rpp => "200"}).
+          should have_been_made
+        a_request(:get, "https://search.twitter.com/search.json").
+          with(:query => {:q => "twitter", :rpp => "145", :max_id => "194521261307727871"}).
           should have_been_made
       end
     end

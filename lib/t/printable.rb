@@ -106,6 +106,16 @@ module T
         end
       end
 
+      def print_names(array)
+        if STDOUT.tty?
+          print_columns(array.map(&:name))
+        else
+          array.each do |element|
+            say element.name
+          end
+        end
+      end
+
       def print_table_with_headings(array, headings)
         if STDOUT.tty?
           array.unshift(headings) unless array.flatten.empty?

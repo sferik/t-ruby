@@ -715,13 +715,7 @@ module T
       opts = {}
       opts.merge!(:exclude => "hashtags") if options['exclude-hashtags']
       trends = client.trends(woe_id, opts)
-      if STDOUT.tty?
-        print_columns(trends.map(&:name))
-      else
-        trends.each do |trend|
-          say trend.name
-        end
-      end
+      print_names(trends)
     end
 
     desc "trends_locations", "Returns the locations for which Twitter has trending topic information."
@@ -744,13 +738,7 @@ module T
         end
         print_table_with_headings(array, TREND_HEADINGS)
       else
-        if STDOUT.tty?
-          print_columns(places.map(&:name))
-        else
-          places.each do |place|
-            say place.name
-          end
-        end
+        print_names(places)
       end
     end
     map %w(locations trendlocations) => :trend_locations

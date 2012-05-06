@@ -2206,6 +2206,7 @@ ID           55709764298092545
 Text         The problem with your code is that it's doing exactly what you told it to do.
 Screen name  @sferik
 Posted at    Apr  6  2011
+Location     Blowfish Sushi To Die For, 2170 Bryant St, San Francisco, California, United States
 Retweets     320
 Source       Twitter for iPhone
 URL          https://twitter.com/sferik/status/55709764298092545
@@ -2219,7 +2220,107 @@ URL          https://twitter.com/sferik/status/55709764298092545
         @cli.status("55709764298092545")
         $stdout.string.should == <<-eos
 ID,Text,Screen name,Posted at,Location,Retweets,Source,URL
-55709764298092545,The problem with your code is that it's doing exactly what you told it to do.,sferik,2011-04-06 19:13:37 +0000,,320,Twitter for iPhone,https://twitter.com/sferik/status/55709764298092545
+55709764298092545,The problem with your code is that it's doing exactly what you told it to do.,sferik,2011-04-06 19:13:37 +0000,"Blowfish Sushi To Die For, 2170 Bryant St, San Francisco, California, United States",320,Twitter for iPhone,https://twitter.com/sferik/status/55709764298092545
+        eos
+      end
+    end
+    context "with no street address" do
+      before do
+        stub_get("/1/statuses/show/55709764298092545.json").
+          with(:query => {:include_my_retweet => "false"}).
+          to_return(:body => fixture("status_no_street_address.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should have the correct output" do
+        @cli.status("55709764298092545")
+        $stdout.string.should == <<-eos
+ID           55709764298092545
+Text         The problem with your code is that it's doing exactly what you told it to do.
+Screen name  @sferik
+Posted at    Apr  6  2011
+Location     Blowfish Sushi To Die For, San Francisco, California, United States
+Retweets     320
+Source       Twitter for iPhone
+URL          https://twitter.com/sferik/status/55709764298092545
+        eos
+      end
+    end
+    context "with no locality" do
+      before do
+        stub_get("/1/statuses/show/55709764298092545.json").
+          with(:query => {:include_my_retweet => "false"}).
+          to_return(:body => fixture("status_no_locality.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should have the correct output" do
+        @cli.status("55709764298092545")
+        $stdout.string.should == <<-eos
+ID           55709764298092545
+Text         The problem with your code is that it's doing exactly what you told it to do.
+Screen name  @sferik
+Posted at    Apr  6  2011
+Location     Blowfish Sushi To Die For, San Francisco, California, United States
+Retweets     320
+Source       Twitter for iPhone
+URL          https://twitter.com/sferik/status/55709764298092545
+        eos
+      end
+    end
+    context "with no attributes" do
+      before do
+        stub_get("/1/statuses/show/55709764298092545.json").
+          with(:query => {:include_my_retweet => "false"}).
+          to_return(:body => fixture("status_no_attributes.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should have the correct output" do
+        @cli.status("55709764298092545")
+        $stdout.string.should == <<-eos
+ID           55709764298092545
+Text         The problem with your code is that it's doing exactly what you told it to do.
+Screen name  @sferik
+Posted at    Apr  6  2011
+Location     Blowfish Sushi To Die For, San Francisco, United States
+Retweets     320
+Source       Twitter for iPhone
+URL          https://twitter.com/sferik/status/55709764298092545
+        eos
+      end
+    end
+    context "with no country" do
+      before do
+        stub_get("/1/statuses/show/55709764298092545.json").
+          with(:query => {:include_my_retweet => "false"}).
+          to_return(:body => fixture("status_no_country.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should have the correct output" do
+        @cli.status("55709764298092545")
+        $stdout.string.should == <<-eos
+ID           55709764298092545
+Text         The problem with your code is that it's doing exactly what you told it to do.
+Screen name  @sferik
+Posted at    Apr  6  2011
+Location     Blowfish Sushi To Die For, San Francisco
+Retweets     320
+Source       Twitter for iPhone
+URL          https://twitter.com/sferik/status/55709764298092545
+        eos
+      end
+    end
+    context "with no full name" do
+      before do
+        stub_get("/1/statuses/show/55709764298092545.json").
+          with(:query => {:include_my_retweet => "false"}).
+          to_return(:body => fixture("status_no_full_name.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should have the correct output" do
+        @cli.status("55709764298092545")
+        $stdout.string.should == <<-eos
+ID           55709764298092545
+Text         The problem with your code is that it's doing exactly what you told it to do.
+Screen name  @sferik
+Posted at    Apr  6  2011
+Location     Blowfish Sushi To Die For
+Retweets     320
+Source       Twitter for iPhone
+URL          https://twitter.com/sferik/status/55709764298092545
         eos
       end
     end

@@ -132,7 +132,7 @@ module T
       end
       direct_messages.reverse! if options['reverse']
       if options['csv']
-        say ["ID", "Posted at", "Screen name", "Text"].to_csv unless direct_messages.empty?
+        say STATUS_HEADINGS.to_csv unless direct_messages.empty?
         direct_messages.each do |direct_message|
           say [direct_message.id, direct_message.created_at.utc.strftime("%Y-%m-%d %H:%M:%S %z"), direct_message.sender.screen_name, direct_message.text].to_csv
         end
@@ -162,7 +162,7 @@ module T
       end
       direct_messages.reverse! if options['reverse']
       if options['csv']
-        say ["ID", "Posted at", "Screen name", "Text"].to_csv unless direct_messages.empty?
+        say STATUS_HEADINGS.to_csv unless direct_messages.empty?
         direct_messages.each do |direct_message|
           say [direct_message.id, direct_message.created_at.utc.strftime("%Y-%m-%d %H:%M:%S %z"), direct_message.recipient.screen_name, direct_message.text].to_csv
         end
@@ -728,7 +728,7 @@ module T
       places = places.sort_by{|places| places.name.downcase} unless options['unsorted']
       places.reverse! if options['reverse']
       if options['csv']
-        say ["WOEID", "Parent ID", "Type", "Name", "Country"].to_csv unless places.empty?
+        say TREND_HEADINGS.to_csv unless places.empty?
         places.each do |place|
           say [place.woeid, place.parent_id, place.place_type, place.name, place.country].to_csv
         end

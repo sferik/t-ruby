@@ -38,7 +38,7 @@ module T
         client.search(query, opts)
       end
       if options['csv']
-        say ["ID", "Posted at", "Screen name", "Text"].to_csv unless statuses.empty?
+        say STATUS_HEADINGS.to_csv unless statuses.empty?
         statuses.each do |status|
           say [status.id, status.created_at.utc.strftime("%Y-%m-%d %H:%M:%S %z"), status.from_user, HTMLEntities.new.decode(status.text)].to_csv
         end

@@ -59,11 +59,10 @@ module T
         statuses.each do |status|
           if STDOUT.tty? && !options['no-color']
             say("   @#{status.from_user}", [:bold, :yellow])
-            print_wrapped(HTMLEntities.new.decode(status.text), :indent => 3)
           else
             say("   @#{status.from_user}")
-            print_wrapped(HTMLEntities.new.decode(status.text), :indent => 3)
           end
+          print_wrapped(HTMLEntities.new.decode(status.text), :indent => 3)
           say
         end
       end

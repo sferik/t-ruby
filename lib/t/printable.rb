@@ -117,11 +117,10 @@ module T
       def print_status(status)
         if STDOUT.tty? && !options['no-color']
           say("   @#{status.user.screen_name}", [:bold, :yellow])
-          print_wrapped(HTMLEntities.new.decode(status.text), :indent => 3)
         else
           say("   @#{status.user.screen_name}")
-          print_wrapped(HTMLEntities.new.decode(status.text), :indent => 3)
         end
+        print_wrapped(HTMLEntities.new.decode(status.text), :indent => 3)
         say
       end
 

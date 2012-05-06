@@ -48,8 +48,7 @@ module T
           [status.id, created_at, "@#{status.from_user}", HTMLEntities.new.decode(status.text).gsub(/\n+/, ' ')]
         end
         if STDOUT.tty?
-          headings = ["ID", "Posted at", "Screen name", "Text"]
-          array.unshift(headings) unless statuses.empty?
+          array.unshift(STATUS_HEADINGS) unless statuses.empty?
           print_table(array, :truncate => true)
         else
           print_table(array)

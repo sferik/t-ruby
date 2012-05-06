@@ -17,7 +17,7 @@ module T
     method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     def all
       if options['csv']
-        say status_headings.to_csv
+        say STATUS_HEADINGS.to_csv
       end
       client.on_timeline_status do |status|
         if options['csv']
@@ -96,7 +96,7 @@ module T
     method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     def users(screen_name, *screen_names)
       if options['csv']
-        say status_headings.to_csv
+        say STATUS_HEADINGS.to_csv
       end
       screen_names.unshift(screen_name)
       client.on_timeline_status do |status|

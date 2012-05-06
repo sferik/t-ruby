@@ -142,8 +142,7 @@ module T
           [direct_message.id, created_at, "@#{direct_message.sender.screen_name}", HTMLEntities.new.decode(direct_message.text).gsub(/\n+/, ' ')]
         end
         if STDOUT.tty?
-          headings = ["ID", "Posted at", "Screen name", "Text"]
-          array.unshift(headings) unless direct_messages.empty?
+          array.unshift(STATUS_HEADINGS) unless direct_messages.empty?
           print_table(array, :truncate => true)
         else
           print_table(array)
@@ -178,8 +177,7 @@ module T
           [direct_message.id, created_at, "@#{direct_message.recipient.screen_name}", HTMLEntities.new.decode(direct_message.text).gsub(/\n+/, ' ')]
         end
         if STDOUT.tty?
-          headings = ["ID", "Posted at", "Screen name", "Text"]
-          array.unshift(headings) unless direct_messages.empty?
+          array.unshift(STATUS_HEADINGS) unless direct_messages.empty?
           print_table(array, :truncate => true)
         else
           print_table(array)
@@ -755,8 +753,7 @@ module T
           [place.woeid, place.parent_id, place.place_type, place.name, place.country]
         end
         if STDOUT.tty?
-          headings = ["WOEID", "Parent ID", "Type", "Name", "Country"]
-          array.unshift(headings) unless places.empty?
+          array.unshift(TREND_HEADINGS) unless places.empty?
           print_table(array, :truncate => true)
         else
           print_table(array)

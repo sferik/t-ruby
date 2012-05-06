@@ -10,6 +10,11 @@ require 'time'
 module T
   module Printable
     MAX_SCREEN_NAME_SIZE = 20
+    LIST_HEADINGS =["ID", "Created at", "Screen name", "Slug", "Members", "Subscribers", "Mode", "Description"]
+    STATUS_HEADINGS = ["ID", "Posted at", "Screen name", "Text"]
+    TREND_HEADINGS = ["WOEID", "Parent ID", "Type", "Name", "Country"]
+    USER_HEADINGS = ["ID", "Since", "Tweets", "Favorites", "Listed", "Following", "Followers", "Screen name", "Name"]
+
     include ActionView::Helpers::NumberHelper
 
     def self.included(base)
@@ -68,14 +73,6 @@ module T
         puts
       end
 
-      def list_headings
-        ["ID", "Created at", "Screen name", "Slug", "Members", "Subscribers", "Mode", "Description"]
-      end
-
-      def status_headings
-        ["ID", "Posted at", "Screen name", "Text"]
-      end
-
       def print_lists(lists)
         lists = lists.sort_by{|list| list.slug.downcase} unless options['unsorted']
         if options['posted']
@@ -89,7 +86,7 @@ module T
         end
         lists.reverse! if options['reverse']
         if options['csv']
-          say list_headings.to_csv unless lists.empty?
+          say LIST_HEADINGS.to_csv unless lists.empty?
           lists.each do |list|
             print_csv_list(list)
           end
@@ -98,7 +95,7 @@ module T
             build_long_list(list)
           end
           if STDOUT.tty?
-            array.unshift(list_headings) unless lists.empty?
+            array.unshift(LIST_HEADINGS) unless lists.empty?
             print_table(array, :truncate => true)
           else
             print_table(array)
@@ -127,7 +124,7 @@ module T
       def print_statuses(statuses)
         statuses.reverse! if options['reverse'] || options['stream']
         if options['csv']
-          say status_headings.to_csv unless statuses.empty?
+          say STATUS_HEADINGS.to_csv unless statuses.empty?
           statuses.each do |status|
             print_csv_status(status)
           end
@@ -136,7 +133,7 @@ module T
             build_long_status(status)
           end
           if STDOUT.tty?
-            array.unshift(status_headings) unless statuses.empty?
+            array.unshift(STATUS_HEADINGS) unless statuses.empty?
             print_table(array, :truncate => true)
           else
             print_table(array)
@@ -146,10 +143,6 @@ module T
             print_status(status)
           end
         end
-      end
-
-      def user_headings
-        ["ID", "Since", "Tweets", "Favorites", "Listed", "Following", "Followers", "Screen name", "Name"]
       end
 
       def print_users(users)
@@ -169,7 +162,7 @@ module T
         end
         users.reverse! if options['reverse']
         if options['csv']
-          say user_headings.to_csv unless users.empty?
+          say USER_HEADINGS.to_csv unless users.empty?
           users.each do |user|
             print_csv_user(user)
           end
@@ -178,7 +171,7 @@ module T
             build_long_user(user)
           end
           if STDOUT.tty?
-            array.unshift(user_headings) unless users.empty?
+            array.unshift(USER_HEADINGS) unless users.empty?
             print_table(array, :truncate => true)
           else
             print_table(array)

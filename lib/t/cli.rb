@@ -6,9 +6,6 @@ require 'active_support/core_ext/numeric/time'
 require 'csv'
 # 'fastercsv' required on Ruby versions < 1.9
 require 'fastercsv' unless Array.new.respond_to?(:to_csv)
-require 'geokit'
-require 'launchy'
-require 'oauth'
 require 'open-uri'
 require 't/authorizable'
 require 't/collectable'
@@ -83,6 +80,7 @@ module T
         ask "Press [Enter] to open the Twitter app authorization page."
         say
       end
+      require 'launchy'
       Launchy.open(url, :dry_run => options['display-url'])
       pin = ask "Paste in the supplied PIN:"
       access_token = request_token.get_access_token(:oauth_verifier => pin.chomp)
@@ -533,6 +531,7 @@ module T
     method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
     method_option "status", :aliases => "-s", :type => :boolean, :default => false, :desc => "Specify input as a Twitter status ID instead of a screen name."
     def open(user)
+      require 'launchy'
       if options['id']
         user = client.user(user.to_i)
         Launchy.open("https://twitter.com/#{user.screen_name}", :dry_run => options['display-url'])
@@ -635,17 +634,22 @@ module T
     def status(status_id)
       status_id = status_id.strip_commas
       status = client.status(status_id.to_i, :include_my_retweet => false)
-      if status.geo
-        geoloc = Geokit::Geocoders::MultiGeocoder.reverse_geocode(status.geo.coordinates)
-        location = if geoloc.city && geoloc.state && geoloc.country
-          [geoloc.city, geoloc.state, geoloc.country].join(", ")
-        elsif geoloc.state && geoloc.country
-          [geoloc.state, geoloc.country].join(", ")
+      location = if status.place
+        if status.place.name && status.place.attributes && status.place.attributes['street_address'] && status.place.attributes['locality'] && status.place.attributes['region'] && status.place.country
+          [status.place.name, status.place.attributes['street_address'], status.place.attributes['locality'], status.place.attributes['region'], status.place.country].join(", ")
+        elsif status.place.name && status.place.attributes && status.place.attributes['locality'] && status.place.attributes['region'] && status.place.country
+          [status.place.name, status.place.attributes['locality'], status.place.attributes['region'], status.place.country].join(", ")
+        elsif status.place.full_name && status.place.attributes && status.place.attributes['region'] && status.place.country
+          [status.place.full_name, status.place.attributes['region'], status.place.country].join(", ")
+        elsif status.place.full_name && status.place.country
+          [status.place.full_name, status.place.country].join(", ")
+        elsif status.place.full_name
+          status.place.full_name
         else
-          geoloc.country
+          status.place.name
         end
-      else
-        location = nil
+      elsif status.geo
+        reverse_geocode(status.geo)
       end
       if options['csv']
         say ["ID", "Text", "Screen name", "Posted at", "Location", "Retweets", "Source", "URL"].to_csv
@@ -886,10 +890,23 @@ module T
 
     def location
       return @location if @location
+      require 'geokit'
       ip_address = Kernel::open("http://checkip.dyndns.org/") do |body|
         /(?:\d{1,3}\.){3}\d{1,3}/.match(body.read)[0]
       end
       @location = Geokit::Geocoders::MultiGeocoder.geocode(ip_address)
+    end
+
+    def reverse_geocode(geo)
+      require 'geokit'
+      geoloc = Geokit::Geocoders::MultiGeocoder.reverse_geocode(geo.coordinates)
+      if geoloc.city && geoloc.state && geoloc.country
+        [geoloc.city, geoloc.state, geoloc.country].join(", ")
+      elsif geoloc.state && geoloc.country
+        [geoloc.state, geoloc.country].join(", ")
+      else
+        geoloc.country
+      end
     end
 
   end

@@ -22,30 +22,26 @@ module T
     private
 
       def build_long_list(list)
-        created_at = if Time.parse(list.created_at.to_s) > 6.months.ago
-          list.created_at.strftime("%b %e %H:%M")
-        else
-          list.created_at.strftime("%b %e  %Y")
-        end
+        created_at = formatted_date(list)
         [list.id, created_at, "@#{list.user.screen_name}", list.slug, number_with_delimiter(list.member_count), number_with_delimiter(list.subscriber_count), list.mode, list.description]
       end
 
       def build_long_status(status)
-        created_at = if Time.parse(status.created_at.to_s) > 6.months.ago
-          Time.parse(status.created_at.to_s).strftime("%b %e %H:%M")
-        else
-          Time.parse(status.created_at.to_s).strftime("%b %e  %Y")
-        end
+        created_at = formatted_date(status)
         [status.id, created_at, "@#{status.from_user}", HTMLEntities.new.decode(status.text).gsub(/\n+/, ' ')]
       end
 
       def build_long_user(user)
-        created_at = if user.created_at > 6.months.ago
-          Time.parse(user.created_at.to_s).strftime("%b %e %H:%M")
-        else
-          user.created_at.strftime("%b %e  %Y")
-        end
+        created_at = formatted_date(user)
         [user.id, created_at, number_with_delimiter(user.statuses_count), number_with_delimiter(user.favourites_count), number_with_delimiter(user.listed_count), number_with_delimiter(user.friends_count), number_with_delimiter(user.followers_count), "@#{user.screen_name}", user.name]
+      end
+
+      def formatted_date(object)
+        created_at = if object.created_at > 6.months.ago
+          Time.parse(object.created_at.to_s).strftime("%b %e %H:%M")
+        else
+          Time.parse(object.created_at.to_s).strftime("%b %e  %Y")
+        end
       end
 
       def print_columns(array)

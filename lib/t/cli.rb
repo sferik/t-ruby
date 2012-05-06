@@ -138,7 +138,7 @@ module T
         end
       elsif options['long']
         array = direct_messages.map do |direct_message|
-          created_at = direct_message.created_at > 6.months.ago ? direct_message.created_at.strftime("%b %e %H:%M") : direct_message.created_at.strftime("%b %e  %Y")
+          created_at = formatted_date(direct_message)
           [direct_message.id, created_at, "@#{direct_message.sender.screen_name}", HTMLEntities.new.decode(direct_message.text).gsub(/\n+/, ' ')]
         end
         print_table_with_headings(array, STATUS_HEADINGS)
@@ -168,7 +168,7 @@ module T
         end
       elsif options['long']
         array = direct_messages.map do |direct_message|
-          created_at = direct_message.created_at > 6.months.ago ? direct_message.created_at.strftime("%b %e %H:%M") : direct_message.created_at.strftime("%b %e  %Y")
+          created_at = formatted_date(direct_message)
           [direct_message.id, created_at, "@#{direct_message.recipient.screen_name}", HTMLEntities.new.decode(direct_message.text).gsub(/\n+/, ' ')]
         end
         print_table_with_headings(array, STATUS_HEADINGS)
@@ -828,7 +828,7 @@ module T
         status = user.following ? "Following" : "Not following"
         array << ["Status", status]
         array << ["Last update", "#{HTMLEntities.new.decode(user.status.text).gsub(/\n+/, ' ')} (#{time_ago_in_words(user.status.created_at)} ago)"] unless user.status.nil?
-        created_at = user.created_at > 6.months.ago ? user.created_at.strftime("%b %e %H:%M") : user.created_at.strftime("%b %e  %Y")
+        created_at = formatted_date(user)
         array << ["Since", created_at]
         array << ["Tweets", number_with_delimiter(user.statuses_count)]
         array << ["Favorites", number_with_delimiter(user.favourites_count)]

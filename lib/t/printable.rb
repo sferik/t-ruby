@@ -92,22 +92,16 @@ module T
           end
           print_table_with_headings(array, LIST_HEADINGS)
         else
-          if STDOUT.tty?
-            print_columns(lists.map(&:full_name))
-          else
-            lists.each do |list|
-              say list.full_name
-            end
-          end
+          print_attribute(lists, :full_name)
         end
       end
 
-      def print_names(array)
+      def print_attribute(array, attribute)
         if STDOUT.tty?
-          print_columns(array.map(&:name))
+          print_columns(array.map(&attribute.to_sym))
         else
           array.each do |element|
-            say element.name
+            say element.send(attribute.to_sym)
           end
         end
       end
@@ -177,13 +171,7 @@ module T
           end
           print_table_with_headings(array, USER_HEADINGS)
         else
-          if STDOUT.tty?
-            print_columns(users.map{|user| "@#{user.screen_name}"})
-          else
-            users.each do |user|
-              say "@#{user.screen_name}"
-            end
-          end
+          print_attribute(users, :screen_name)
         end
       end
 

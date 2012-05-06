@@ -10,6 +10,7 @@ require 'time'
 module T
   module Printable
     MAX_SCREEN_NAME_SIZE = 20
+    DIRECT_MESSAGE_HEADINGS = ["ID", "Posted at", "Screen name", "Text"]
     LIST_HEADINGS =["ID", "Created at", "Screen name", "Slug", "Members", "Subscribers", "Mode", "Description"]
     STATUS_HEADINGS = ["ID", "Posted at", "Screen name", "Text"]
     TREND_HEADINGS = ["WOEID", "Parent ID", "Type", "Name", "Country"]

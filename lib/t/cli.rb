@@ -132,7 +132,7 @@ module T
       end
       direct_messages.reverse! if options['reverse']
       if options['csv']
-        say STATUS_HEADINGS.to_csv unless direct_messages.empty?
+        say DIRECT_MESSAGE_HEADINGS.to_csv unless direct_messages.empty?
         direct_messages.each do |direct_message|
           say [direct_message.id, direct_message.created_at.utc.strftime("%Y-%m-%d %H:%M:%S %z"), direct_message.sender.screen_name, direct_message.text].to_csv
         end
@@ -141,7 +141,7 @@ module T
           created_at = formatted_date(direct_message)
           [direct_message.id, created_at, "@#{direct_message.sender.screen_name}", HTMLEntities.new.decode(direct_message.text).gsub(/\n+/, ' ')]
         end
-        print_table_with_headings(array, STATUS_HEADINGS)
+        print_table_with_headings(array, DIRECT_MESSAGE_HEADINGS)
       else
         direct_messages.each do |direct_message|
           say "#{direct_message.sender.screen_name.rjust(MAX_SCREEN_NAME_SIZE)}: #{direct_message.text.gsub(/\n+/, ' ')} (#{time_ago_in_words(direct_message.created_at)} ago)"
@@ -162,7 +162,7 @@ module T
       end
       direct_messages.reverse! if options['reverse']
       if options['csv']
-        say STATUS_HEADINGS.to_csv unless direct_messages.empty?
+        say DIRECT_MESSAGE_HEADINGS.to_csv unless direct_messages.empty?
         direct_messages.each do |direct_message|
           say [direct_message.id, direct_message.created_at.utc.strftime("%Y-%m-%d %H:%M:%S %z"), direct_message.recipient.screen_name, direct_message.text].to_csv
         end
@@ -171,7 +171,7 @@ module T
           created_at = formatted_date(direct_message)
           [direct_message.id, created_at, "@#{direct_message.recipient.screen_name}", HTMLEntities.new.decode(direct_message.text).gsub(/\n+/, ' ')]
         end
-        print_table_with_headings(array, STATUS_HEADINGS)
+        print_table_with_headings(array, DIRECT_MESSAGE_HEADINGS)
       else
         direct_messages.each do |direct_message|
           say "#{direct_message.recipient.screen_name.rjust(MAX_SCREEN_NAME_SIZE)}: #{direct_message.text.gsub(/\n+/, ' ')} (#{time_ago_in_words(direct_message.created_at)} ago)"

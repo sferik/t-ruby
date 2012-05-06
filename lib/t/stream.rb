@@ -26,10 +26,7 @@ module T
           print_status(status)
         end
       end
-      Signal.trap("TERM") do
-        client.stop
-        shutdown
-      end
+      until_term
       client.sample
     end
 
@@ -38,10 +35,7 @@ module T
       client.on_timeline_status do |status|
         say(status.text.gsub("\n", ''), [:bold, :green, :on_black])
       end
-      Signal.trap("TERM") do
-        client.stop
-        shutdown
-      end
+      until_term
       client.sample
     end
 
@@ -62,10 +56,7 @@ module T
           print_status(status)
         end
       end
-      Signal.trap("TERM") do
-        client.stop
-        shutdown
-      end
+      until_term
       client.track(keywords)
     end
 
@@ -85,10 +76,7 @@ module T
           print_status(status)
         end
       end
-      Signal.trap("TERM") do
-        client.stop
-        shutdown
-      end
+      until_term
       client.userstream
     end
 
@@ -106,10 +94,7 @@ module T
           print_status(status)
         end
       end
-      Signal.trap("TERM") do
-        client.stop
-        shutdown
-      end
+      until_term
       client.follow(screen_names)
     end
 
@@ -124,6 +109,13 @@ module T
         :oauth_token => @rcfile.active_token,
         :oauth_token_secret => @rcfile.active_secret
       )
+    end
+
+    def until_term
+      Signal.trap("TERM") do
+        client.stop
+        shutdown
+      end
     end
 
   end

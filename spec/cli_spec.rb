@@ -197,7 +197,7 @@ ID          Posted at     Screen name  Text
         a_get("/1/direct_messages.json").
           with(:query => {:count => "145", :max_id => "1624782205"}).
           should have_been_made
-      end      
+      end
     end
     context "--reverse" do
       before do
@@ -318,7 +318,7 @@ ID          Posted at     Screen name  Text
         a_get("/1/direct_messages/sent.json").
           with(:query => {:count => "145", :max_id => "1624782205"}).
           should have_been_made
-      end          
+      end
     end
     context "--reverse" do
       before do

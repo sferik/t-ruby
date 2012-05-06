@@ -173,8 +173,10 @@ module T
           owner.strip_ats
         end
       end
-      count = options['number'] || DEFAULT_NUM_RESULTS
-      statuses = collect_with_count(:list_timeline, count, {:args => [owner, list], :count_key => :per_page})
+      per_page = options['number'] || DEFAULT_NUM_RESULTS
+      statuses = collect_with_per_page(per_page) do |opts|
+        client.list_timeline(owner, list, opts)
+      end
       print_statuses(statuses)
     end
     map %w(tl) => :timeline

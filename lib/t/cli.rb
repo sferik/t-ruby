@@ -40,7 +40,6 @@ module T
     DEFAULT_NUM_RESULTS = 20
     MAX_SCREEN_NAME_SIZE = 20
     MAX_USERS_PER_REQUEST = 100
-    MAX_NUM_RESULTS = 200
 
     check_unknown_options!
 
@@ -130,7 +129,9 @@ module T
     method_option "reverse", :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     def direct_messages
       count = options['number'] || DEFAULT_NUM_RESULTS
-      direct_messages = collect_with_count(:direct_messages, count)
+      direct_messages = collect_with_count(count) do |opts|
+        client.direct_messages(opts)
+      end
       direct_messages.reverse! if options['reverse']
       if options['csv']
         say ["ID", "Posted at", "Screen name", "Text"].to_csv unless direct_messages.empty?
@@ -164,7 +165,9 @@ module T
     method_option "reverse", :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     def direct_messages_sent
       count = options['number'] || DEFAULT_NUM_RESULTS
-      direct_messages = collect_with_count(:direct_messages_sent, count)
+      direct_messages = collect_with_count(count) do |opts|
+        client.direct_messages_sent(opts)
+      end
       direct_messages.reverse! if options['reverse']
       if options['csv']
         say ["ID", "Posted at", "Screen name", "Text"].to_csv unless direct_messages.empty?
@@ -328,7 +331,9 @@ module T
         end
       end
       count = options['number'] || DEFAULT_NUM_RESULTS
-      statuses = collect_with_count(:favorites, count, {:args => [user]})
+      statuses = collect_with_count(count) do |opts|
+        client.favorites(user, opts)
+      end
       print_statuses(statuses)
     end
     map %w(faves favourites) => :favorites
@@ -516,7 +521,9 @@ module T
     method_option "reverse", :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     def mentions
       count = options['number'] || DEFAULT_NUM_RESULTS
-      statuses = collect_with_count(:mentions, count)
+      statuses = collect_with_count(count) do |opts|
+        client.mentions(opts)
+      end
       print_statuses(statuses)
     end
     map %w(replies) => :mentions
@@ -611,7 +618,9 @@ module T
         end
       end
       count = options['number'] || DEFAULT_NUM_RESULTS
-      statuses = collect_with_count(:retweeted_by, count, {:args => [user]})
+      statuses = collect_with_count(count) do |opts|
+        client.retweeted_by(user, opts)
+      end
       print_statuses(statuses)
     end
     map %w(rts) => :retweets
@@ -696,9 +705,13 @@ module T
         else
           user.strip_ats
         end
-        statuses = collect_with_count(:user_timeline, count, {:args => [user]})
+        statuses = collect_with_count(count) do |opts|
+          client.user_timeline(user, opts)
+        end
       else
-        statuses = collect_with_count(:home_timeline, count)
+        statuses = collect_with_count(count) do |opts|
+          client.home_timeline(opts)
+        end
       end
       print_statuses(statuses)
     end

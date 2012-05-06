@@ -33,8 +33,10 @@ module T
     method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     method_option "number", :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS
     def all(query)
-      count = options['number'] || DEFAULT_NUM_RESULTS
-      statuses = collect_with_count(:search, count, {:args => [query], :count_key => :rpp})
+      rpp = options['number'] || DEFAULT_NUM_RESULTS
+      statuses = collect_with_rpp(rpp) do |opts|
+        client.search(query, opts)
+      end
       if options['csv']
         say ["ID", "Posted at", "Screen name", "Text"].to_csv unless statuses.empty?
         statuses.each do |status|

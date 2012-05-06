@@ -141,12 +141,7 @@ module T
           created_at = direct_message.created_at > 6.months.ago ? direct_message.created_at.strftime("%b %e %H:%M") : direct_message.created_at.strftime("%b %e  %Y")
           [direct_message.id, created_at, "@#{direct_message.sender.screen_name}", HTMLEntities.new.decode(direct_message.text).gsub(/\n+/, ' ')]
         end
-        if STDOUT.tty?
-          array.unshift(STATUS_HEADINGS) unless direct_messages.empty?
-          print_table(array, :truncate => true)
-        else
-          print_table(array)
-        end
+        print_table_with_headings(array, STATUS_HEADINGS)
       else
         direct_messages.each do |direct_message|
           say "#{direct_message.sender.screen_name.rjust(MAX_SCREEN_NAME_SIZE)}: #{direct_message.text.gsub(/\n+/, ' ')} (#{time_ago_in_words(direct_message.created_at)} ago)"
@@ -176,12 +171,7 @@ module T
           created_at = direct_message.created_at > 6.months.ago ? direct_message.created_at.strftime("%b %e %H:%M") : direct_message.created_at.strftime("%b %e  %Y")
           [direct_message.id, created_at, "@#{direct_message.recipient.screen_name}", HTMLEntities.new.decode(direct_message.text).gsub(/\n+/, ' ')]
         end
-        if STDOUT.tty?
-          array.unshift(STATUS_HEADINGS) unless direct_messages.empty?
-          print_table(array, :truncate => true)
-        else
-          print_table(array)
-        end
+        print_table_with_headings(array, STATUS_HEADINGS)
       else
         direct_messages.each do |direct_message|
           say "#{direct_message.recipient.screen_name.rjust(MAX_SCREEN_NAME_SIZE)}: #{direct_message.text.gsub(/\n+/, ' ')} (#{time_ago_in_words(direct_message.created_at)} ago)"
@@ -726,7 +716,7 @@ module T
       opts.merge!(:exclude => "hashtags") if options['exclude-hashtags']
       trends = client.trends(woe_id, opts)
       if STDOUT.tty?
-        print_in_columns(trends.map(&:name))
+        print_columns(trends.map(&:name))
       else
         trends.each do |trend|
           say trend.name
@@ -752,15 +742,10 @@ module T
         array = places.map do |place|
           [place.woeid, place.parent_id, place.place_type, place.name, place.country]
         end
-        if STDOUT.tty?
-          array.unshift(TREND_HEADINGS) unless places.empty?
-          print_table(array, :truncate => true)
-        else
-          print_table(array)
-        end
+        print_table_with_headings(array, TREND_HEADINGS)
       else
         if STDOUT.tty?
-          print_in_columns(places.map(&:name))
+          print_columns(places.map(&:name))
         else
           places.each do |place|
             say place.name

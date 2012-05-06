@@ -47,12 +47,7 @@ module T
           created_at = status.created_at > 6.months.ago ? status.created_at.strftime("%b %e %H:%M") : status.created_at.strftime("%b %e  %Y")
           [status.id, created_at, "@#{status.from_user}", HTMLEntities.new.decode(status.text).gsub(/\n+/, ' ')]
         end
-        if STDOUT.tty?
-          array.unshift(STATUS_HEADINGS) unless statuses.empty?
-          print_table(array, :truncate => true)
-        else
-          print_table(array)
-        end
+        print_table_with_headings(array, STATUS_HEADINGS)
       else
         say unless statuses.empty?
         statuses.each do |status|

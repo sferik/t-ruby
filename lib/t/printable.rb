@@ -48,6 +48,16 @@ module T
         [user.id, created_at, number_with_delimiter(user.statuses_count), number_with_delimiter(user.favourites_count), number_with_delimiter(user.listed_count), number_with_delimiter(user.friends_count), number_with_delimiter(user.followers_count), "@#{user.screen_name}", user.name]
       end
 
+      def print_columns(array)
+        cols = HighLine::SystemExtensions.terminal_size[0]
+        width = (array.map{|el| el.to_s.size}.max || 0) + 2
+        array.each_with_index do |value, index|
+          puts if (((index) % (cols / width))).zero? && !index.zero?
+          printf("%-#{width}s", value)
+        end
+        puts
+      end
+
       def print_csv_list(list)
         created_at = Time.parse(list.created_at.to_s).utc.strftime("%Y-%m-%d %H:%M:%S %z")
         say [list.id, created_at, list.user.screen_name, list.slug, list.member_count, list.subscriber_count, list.mode, list.description].to_csv
@@ -61,16 +71,6 @@ module T
       def print_csv_user(user)
         created_at = Time.parse(user.created_at.to_s).utc.strftime("%Y-%m-%d %H:%M:%S %z")
         say [user.id, created_at, user.statuses_count, user.favourites_count, user.listed_count, user.friends_count, user.followers_count, user.screen_name, user.name].to_csv
-      end
-
-      def print_in_columns(array)
-        cols = HighLine::SystemExtensions.terminal_size[0]
-        width = (array.map{|el| el.to_s.size}.max || 0) + 2
-        array.each_with_index do |value, index|
-          puts if (((index) % (cols / width))).zero? && !index.zero?
-          printf("%-#{width}s", value)
-        end
-        puts
       end
 
       def print_lists(lists)
@@ -94,20 +94,24 @@ module T
           array = lists.map do |list|
             build_long_list(list)
           end
-          if STDOUT.tty?
-            array.unshift(LIST_HEADINGS) unless lists.empty?
-            print_table(array, :truncate => true)
-          else
-            print_table(array)
-          end
+          print_table_with_headings(array, LIST_HEADINGS)
         else
           if STDOUT.tty?
-            print_in_columns(lists.map(&:full_name))
+            print_columns(lists.map(&:full_name))
           else
             lists.each do |list|
               say list.full_name
             end
           end
+        end
+      end
+
+      def print_table_with_headings(array, headings)
+        if STDOUT.tty?
+          array.unshift(headings) unless array.flatten.empty?
+          print_table(array, :truncate => true)
+        else
+          print_table(array)
         end
       end
 
@@ -132,12 +136,7 @@ module T
           array = statuses.map do |status|
             build_long_status(status)
           end
-          if STDOUT.tty?
-            array.unshift(STATUS_HEADINGS) unless statuses.empty?
-            print_table(array, :truncate => true)
-          else
-            print_table(array)
-          end
+          print_table_with_headings(array, STATUS_HEADINGS)
         else
           statuses.each do |status|
             print_status(status)
@@ -170,15 +169,10 @@ module T
           array = users.map do |user|
             build_long_user(user)
           end
-          if STDOUT.tty?
-            array.unshift(USER_HEADINGS) unless users.empty?
-            print_table(array, :truncate => true)
-          else
-            print_table(array)
-          end
+          print_table_with_headings(array, USER_HEADINGS)
         else
           if STDOUT.tty?
-            print_in_columns(users.map{|user| "@#{user.screen_name}"})
+            print_columns(users.map{|user| "@#{user.screen_name}"})
           else
             users.each do |user|
               say "@#{user.screen_name}"

@@ -37,7 +37,7 @@ module T
     desc "matrix", "Unfortunately, no one can be told what the Matrix is. You have to see it for yourself."
     def matrix
       client.on_timeline_status do |status|
-        print("#{Thor::Shell::Color::BOLD}#{Thor::Shell::Color::GREEN}#{Thor::Shell::Color::ON_BLACK}#{status.text.gsub("\n", '')}#{Thor::Shell::Color::CLEAR}")
+        say(status.text.gsub("\n", ''), [:bold, :green, :on_black])
       end
       Signal.trap("TERM") do
         client.stop

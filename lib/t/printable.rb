@@ -116,7 +116,7 @@ module T
 
       def print_status(status)
         if STDOUT.tty? && !options['no-color']
-          say("   #{Thor::Shell::Color::BOLD}@#{status.user.screen_name}", :yellow)
+          say("   @#{status.user.screen_name}", [:bold, :yellow])
           print_wrapped(HTMLEntities.new.decode(status.text), :indent => 3)
         else
           say("   @#{status.user.screen_name}")

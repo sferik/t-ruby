@@ -56,7 +56,7 @@ module T
         say unless statuses.empty?
         statuses.each do |status|
           if STDOUT.tty? && !options['no-color']
-            say("   #{Thor::Shell::Color::BOLD}@#{status.from_user}", :yellow)
+            say("   @#{status.from_user}", [:bold, :yellow])
             print_wrapped(HTMLEntities.new.decode(status.text), :indent => 3)
           else
             say("   @#{status.from_user}")

@@ -525,7 +525,7 @@ module T
         Launchy.open("https://twitter.com/#{user.screen_name}", :dry_run => options['display-url'])
       elsif options['status']
         status = client.status(user.to_i, :include_my_retweet => false)
-        Launchy.open("https://twitter.com/#{status.user.screen_name}/status/#{status.id}", :dry_run => options['display-url'])
+        Launchy.open("https://twitter.com/#{status.from_user}/status/#{status.id}", :dry_run => options['display-url'])
       else
         Launchy.open("https://twitter.com/#{user.strip_ats}", :dry_run => options['display-url'])
       end
@@ -537,7 +537,7 @@ module T
     def reply(status_id, message)
       status_id = status_id.strip_commas
       status = client.status(status_id.to_i, :include_my_retweet => false)
-      users = Array(status.user.screen_name)
+      users = Array(status.from_user)
       if options['all']
         # twitter-text requires $KCODE to be set to UTF8 on Ruby versions < 1.8
         major, minor, patch = RUBY_VERSION.split('.')
@@ -641,18 +641,18 @@ module T
       end
       if options['csv']
         say ["ID", "Text", "Screen name", "Posted at", "Location", "Retweets", "Source", "URL"].to_csv
-        say [status.id, HTMLEntities.new.decode(status.text), status.user.screen_name, status.created_at.utc.strftime("%Y-%m-%d %H:%M:%S %z"), location, status.retweet_count, strip_tags(status.source), "https://twitter.com/#{status.user.screen_name}/status/#{status.id}"].to_csv
+        say [status.id, HTMLEntities.new.decode(status.text), status.from_user, status.created_at.utc.strftime("%Y-%m-%d %H:%M:%S %z"), location, status.retweet_count, strip_tags(status.source), "https://twitter.com/#{status.from_user}/status/#{status.id}"].to_csv
       else
         array = []
         array << ["ID", status.id.to_s]
         array << ["Text", HTMLEntities.new.decode(status.text).gsub(/\n+/, ' ')]
-        array << ["Screen name", "@#{status.user.screen_name}"]
+        array << ["Screen name", "@#{status.from_user}"]
         posted_at = status.created_at > 6.months.ago ? status.created_at.strftime("%b %e %H:%M") : status.created_at.strftime("%b %e  %Y")
         array << ["Posted at", posted_at]
         array << ["Location", location] unless location.nil?
         array << ["Retweets", number_with_delimiter(status.retweet_count)]
         array << ["Source", strip_tags(status.source)]
-        array << ["URL", "https://twitter.com/#{status.user.screen_name}/status/#{status.id}"]
+        array << ["URL", "https://twitter.com/#{status.from_user}/status/#{status.id}"]
         print_table(array)
       end
     end

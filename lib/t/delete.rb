@@ -60,10 +60,10 @@ module T
       status_ids.each do |status_id|
         unless options['force']
           status = client.status(status_id.to_i, :include_my_retweet => false, :trim_user => true)
-          return unless yes? "Are you sure you want to remove @#{status.user.screen_name}'s status: \"#{status.text}\" from your favorites? [y/N]"
+          return unless yes? "Are you sure you want to remove @#{status.from_user}'s status: \"#{status.text}\" from your favorites? [y/N]"
         end
         status = client.unfavorite(status_id.to_i)
-        say "@#{@rcfile.active_profile[0]} unfavorited @#{status.user.screen_name}'s status: \"#{status.text}\""
+        say "@#{@rcfile.active_profile[0]} unfavorited @#{status.from_user}'s status: \"#{status.text}\""
       end
     end
     map %w(fave favourite) => :favorite
@@ -89,7 +89,7 @@ module T
       status_ids.each do |status_id|
         unless options['force']
           status = client.status(status_id.to_i, :include_my_retweet => false, :trim_user => true)
-          return unless yes? "Are you sure you want to permanently delete @#{status.user.screen_name}'s status: \"#{status.text}\"? [y/N]"
+          return unless yes? "Are you sure you want to permanently delete @#{status.from_user}'s status: \"#{status.text}\"? [y/N]"
         end
         status = client.status_destroy(status_id.to_i, :trim_user => true)
         say "@#{@rcfile.active_profile[0]} deleted the status: \"#{status.text}\""

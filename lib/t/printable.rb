@@ -36,7 +36,7 @@ module T
         else
           Time.parse(status.created_at.to_s).strftime("%b %e  %Y")
         end
-        [status.id, created_at, "@#{status.user.screen_name}", HTMLEntities.new.decode(status.text).gsub(/\n+/, ' ')]
+        [status.id, created_at, "@#{status.from_user}", HTMLEntities.new.decode(status.text).gsub(/\n+/, ' ')]
       end
 
       def build_long_user(user)
@@ -65,7 +65,7 @@ module T
 
       def print_csv_status(status)
         created_at = Time.parse(status.created_at.to_s).utc.strftime("%Y-%m-%d %H:%M:%S %z")
-        say [status.id, created_at, status.user.screen_name, HTMLEntities.new.decode(status.text)].to_csv
+        say [status.id, created_at, status.from_user, HTMLEntities.new.decode(status.text)].to_csv
       end
 
       def print_csv_user(user)
@@ -117,9 +117,9 @@ module T
 
       def print_status(status)
         if STDOUT.tty? && !options['no-color']
-          say("   @#{status.user.screen_name}", [:bold, :yellow])
+          say("   @#{status.from_user}", [:bold, :yellow])
         else
-          say("   @#{status.user.screen_name}")
+          say("   @#{status.from_user}")
         end
         print_wrapped(HTMLEntities.new.decode(status.text), :indent => 3)
         say

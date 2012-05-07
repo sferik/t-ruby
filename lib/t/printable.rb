@@ -33,6 +33,10 @@ module T
         [user.id, ls_formatted_time(user), number_with_delimiter(user.statuses_count), number_with_delimiter(user.favourites_count), number_with_delimiter(user.listed_count), number_with_delimiter(user.friends_count), number_with_delimiter(user.followers_count), "@#{user.screen_name}", user.name]
       end
 
+      def csv_formatted_time(object, key=:created_at)
+        Time.parse(object.send(key.to_sym).to_s).utc.strftime("%Y-%m-%d %H:%M:%S %z")
+      end
+
       def ls_formatted_time(object, key=:created_at)
         if object.send(key.to_sym) > 6.months.ago
           Time.parse(object.send(key.to_sym).to_s).strftime("%b %e %H:%M")
@@ -42,18 +46,15 @@ module T
       end
 
       def print_csv_list(list)
-        created_at = Time.parse(list.created_at.to_s).utc.strftime("%Y-%m-%d %H:%M:%S %z")
-        say [list.id, created_at, list.user.screen_name, list.slug, list.member_count, list.subscriber_count, list.mode, list.description].to_csv
+        say [list.id, csv_formatted_time(list), list.user.screen_name, list.slug, list.member_count, list.subscriber_count, list.mode, list.description].to_csv
       end
 
       def print_csv_status(status)
-        created_at = Time.parse(status.created_at.to_s).utc.strftime("%Y-%m-%d %H:%M:%S %z")
-        say [status.id, created_at, status.from_user, HTMLEntities.new.decode(status.text)].to_csv
+        say [status.id, csv_formatted_time(status), status.from_user, HTMLEntities.new.decode(status.text)].to_csv
       end
 
       def print_csv_user(user)
-        created_at = Time.parse(user.created_at.to_s).utc.strftime("%Y-%m-%d %H:%M:%S %z")
-        say [user.id, created_at, user.statuses_count, user.favourites_count, user.listed_count, user.friends_count, user.followers_count, user.screen_name, user.name].to_csv
+        say [user.id, csv_formatted_time(user), user.statuses_count, user.favourites_count, user.listed_count, user.friends_count, user.followers_count, user.screen_name, user.name].to_csv
       end
 
       def print_lists(lists)

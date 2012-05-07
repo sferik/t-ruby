@@ -1,3 +1,4 @@
+require 'retryable'
 require 't/core_ext/enumerable'
 require 't/core_ext/string'
 require 't/rcfile'

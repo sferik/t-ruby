@@ -3,7 +3,6 @@ require 'csv'
 # 'fastercsv' required on Ruby versions < 1.9
 require 'fastercsv' unless Array.new.respond_to?(:to_csv)
 require 'htmlentities'
-require 'retryable'
 require 't/collectable'
 require 't/printable'
 require 't/rcfile'
@@ -63,10 +62,8 @@ module T
       opts = {:count => MAX_NUM_RESULTS}
       statuses = collect_with_max_id do |max_id|
         opts[:max_id] = max_id unless max_id.nil?
-        retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-          client.favorites(opts)
-        end
-      end.flatten.compact
+        client.favorites(opts)
+      end
       statuses = statuses.select do |status|
         /#{query}/i.match(status.text)
       end
@@ -93,10 +90,8 @@ module T
       opts = {:count => MAX_NUM_RESULTS}
       statuses = collect_with_max_id do |max_id|
         opts[:max_id] = max_id unless max_id.nil?
-        retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-          client.list_timeline(owner, list, opts)
-        end
-      end.flatten.compact
+        client.list_timeline(owner, list, opts)
+      end
       statuses = statuses.select do |status|
         /#{query}/i.match(status.text)
       end
@@ -110,10 +105,8 @@ module T
       opts = {:count => MAX_NUM_RESULTS}
       statuses = collect_with_max_id do |max_id|
         opts[:max_id] = max_id unless max_id.nil?
-        retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-          client.mentions(opts)
-        end
-      end.flatten.compact
+        client.mentions(opts)
+      end
       statuses = statuses.select do |status|
         /#{query}/i.match(status.text)
       end
@@ -128,10 +121,8 @@ module T
       opts = {:count => MAX_NUM_RESULTS}
       statuses = collect_with_max_id do |max_id|
         opts[:max_id] = max_id unless max_id.nil?
-        retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-          client.retweeted_by(opts)
-        end
-      end.flatten.compact
+        client.retweeted_by(opts)
+      end
       statuses = statuses.select do |status|
         /#{query}/i.match(status.text)
       end
@@ -155,17 +146,13 @@ module T
         end
         statuses = collect_with_max_id do |max_id|
           opts[:max_id] = max_id unless max_id.nil?
-          retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-            client.user_timeline(user, opts)
-          end
-        end.flatten.compact
+          client.user_timeline(user, opts)
+        end
       else
         statuses = collect_with_max_id do |max_id|
           opts[:max_id] = max_id unless max_id.nil?
-          retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-            client.home_timeline(opts)
-          end
-        end.flatten.compact
+          client.home_timeline(opts)
+        end
       end
       statuses = statuses.select do |status|
         /#{query}/i.match(status.text)

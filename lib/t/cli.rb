@@ -7,6 +7,7 @@ require 'csv'
 # 'fastercsv' required on Ruby versions < 1.9
 require 'fastercsv' unless Array.new.respond_to?(:to_csv)
 require 'open-uri'
+require 'retryable'
 require 't/authorizable'
 require 't/collectable'
 require 't/core_ext/string'

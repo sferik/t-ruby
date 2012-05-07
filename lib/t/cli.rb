@@ -500,6 +500,11 @@ module T
       print_lists(lists)
     end
 
+    desc "matrix", "Unfortunately, no one can be told what the Matrix is. You have to see it for yourself."
+    def matrix
+      T::Stream.new.matrix
+    end
+
     desc "mentions", "Returns the #{DEFAULT_NUM_RESULTS} most recent Tweets mentioning you."
     method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."

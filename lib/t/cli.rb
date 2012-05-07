@@ -41,7 +41,7 @@ module T
     check_unknown_options!
 
     option "host", :aliases => "-H", :type => :string, :default => DEFAULT_HOST, :desc => "Twitter API server"
-    option "no-color", :aliases => "-N", :type => :boolean, :banner => "Disable colorization in output"
+    option "no-color", :aliases => "-N", :type => :boolean, :desc => "Disable colorization in output"
     option "no-ssl", :aliases => "-U", :type => :boolean, :default => false, :desc => "Disable SSL"
     option "profile", :aliases => "-P", :type => :string, :default => File.join(File.expand_path("~"), RCFile::FILE_NAME), :desc => "Path to RC file", :banner => "FILE"
 
@@ -62,8 +62,8 @@ module T
     end
 
     desc "authorize", "Allows an application to request user authorization"
-    method_option "consumer-key", :aliases => "-c", :required => true, :desc => "This can be found at https://dev.twitter.com/apps"
-    method_option "consumer-secret", :aliases => "-s", :required => true, :desc => "This can be found at https://dev.twitter.com/apps"
+    method_option "consumer-key", :aliases => "-c", :required => true, :desc => "This can be found at https://dev.twitter.com/apps", :banner => "KEY"
+    method_option "consumer-secret", :aliases => "-s", :required => true, :desc => "This can be found at https://dev.twitter.com/apps", :banner => "SECRET"
     method_option "display-url", :aliases => "-d", :type => :boolean, :default => false, :desc => "Display the authorization URL instead of attempting to open it."
     method_option "prompt", :aliases => "-p", :type => :boolean, :default => true
     def authorize

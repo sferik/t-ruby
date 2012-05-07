@@ -88,12 +88,10 @@ module T
         array << ["Description", list.description] unless list.description.nil?
         array << ["Slug", list.slug]
         array << ["Screen name", "@#{list.user.screen_name}"]
-        created_at = list.created_at > 6.months.ago ? list.created_at.strftime("%b %e %H:%M") : list.created_at.strftime("%b %e  %Y")
-        array << ["Created at", created_at]
+        array << ["Created at", ls_formatted_time(list)]
         array << ["Members", number_with_delimiter(list.member_count)]
         array << ["Subscribers", number_with_delimiter(list.subscriber_count)]
-        status = list.following ? "Following" : "Not following"
-        array << ["Status", status]
+        array << ["Status", list.following ? "Following" : "Not following"]
         array << ["Mode", list.mode]
         array << ["URL", "https://twitter.com#{list.uri}"]
         print_table(array)

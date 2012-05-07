@@ -22,25 +22,22 @@ module T
     private
 
       def build_long_list(list)
-        created_at = formatted_date(list)
-        [list.id, created_at, "@#{list.user.screen_name}", list.slug, number_with_delimiter(list.member_count), number_with_delimiter(list.subscriber_count), list.mode, list.description]
+        [list.id, ls_formatted_time(list), "@#{list.user.screen_name}", list.slug, number_with_delimiter(list.member_count), number_with_delimiter(list.subscriber_count), list.mode, list.description]
       end
 
       def build_long_status(status)
-        created_at = formatted_date(status)
-        [status.id, created_at, "@#{status.from_user}", HTMLEntities.new.decode(status.text).gsub(/\n+/, ' ')]
+        [status.id, ls_formatted_time(status), "@#{status.from_user}", HTMLEntities.new.decode(status.text).gsub(/\n+/, ' ')]
       end
 
       def build_long_user(user)
-        created_at = formatted_date(user)
-        [user.id, created_at, number_with_delimiter(user.statuses_count), number_with_delimiter(user.favourites_count), number_with_delimiter(user.listed_count), number_with_delimiter(user.friends_count), number_with_delimiter(user.followers_count), "@#{user.screen_name}", user.name]
+        [user.id, ls_formatted_time(user), number_with_delimiter(user.statuses_count), number_with_delimiter(user.favourites_count), number_with_delimiter(user.listed_count), number_with_delimiter(user.friends_count), number_with_delimiter(user.followers_count), "@#{user.screen_name}", user.name]
       end
 
-      def formatted_date(object)
-        created_at = if object.created_at > 6.months.ago
-          Time.parse(object.created_at.to_s).strftime("%b %e %H:%M")
+      def ls_formatted_time(object, key=:created_at)
+        if object.send(key.to_sym) > 6.months.ago
+          Time.parse(object.send(key.to_sym).to_s).strftime("%b %e %H:%M")
         else
-          Time.parse(object.created_at.to_s).strftime("%b %e  %Y")
+          Time.parse(object.send(key.to_sym).to_s).strftime("%b %e  %Y")
         end
       end
 

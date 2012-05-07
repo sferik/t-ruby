@@ -139,8 +139,7 @@ module T
         end
       elsif options['long']
         array = direct_messages.map do |direct_message|
-          created_at = formatted_date(direct_message)
-          [direct_message.id, created_at, "@#{direct_message.sender.screen_name}", HTMLEntities.new.decode(direct_message.text).gsub(/\n+/, ' ')]
+          [direct_message.id, ls_formatted_time(direct_message), "@#{direct_message.sender.screen_name}", HTMLEntities.new.decode(direct_message.text).gsub(/\n+/, ' ')]
         end
         print_table_with_headings(array, DIRECT_MESSAGE_HEADINGS)
       else
@@ -169,8 +168,7 @@ module T
         end
       elsif options['long']
         array = direct_messages.map do |direct_message|
-          created_at = formatted_date(direct_message)
-          [direct_message.id, created_at, "@#{direct_message.recipient.screen_name}", HTMLEntities.new.decode(direct_message.text).gsub(/\n+/, ' ')]
+          [direct_message.id, ls_formatted_time(direct_message), "@#{direct_message.recipient.screen_name}", HTMLEntities.new.decode(direct_message.text).gsub(/\n+/, ' ')]
         end
         print_table_with_headings(array, DIRECT_MESSAGE_HEADINGS)
       else
@@ -831,11 +829,9 @@ module T
         array << [name_label, user.name] unless user.name.nil?
         array << ["Bio", user.description.gsub(/\n+/, ' ')] unless user.description.nil?
         array << ["Location", user.location] unless user.location.nil?
-        status = user.following ? "Following" : "Not following"
-        array << ["Status", status]
+        array << ["Status", user.following ? "Following" : "Not following"]
         array << ["Last update", "#{HTMLEntities.new.decode(user.status.text).gsub(/\n+/, ' ')} (#{time_ago_in_words(user.status.created_at)} ago)"] unless user.status.nil?
-        created_at = formatted_date(user)
-        array << ["Since", created_at]
+        array << ["Since", ls_formatted_time(user)]
         array << ["Tweets", number_with_delimiter(user.statuses_count)]
         array << ["Favorites", number_with_delimiter(user.favourites_count)]
         array << ["Listed", number_with_delimiter(user.listed_count)]

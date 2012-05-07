@@ -43,8 +43,7 @@ module T
         end
       elsif options['long']
         array = statuses.map do |status|
-          created_at = status.created_at > 6.months.ago ? status.created_at.strftime("%b %e %H:%M") : status.created_at.strftime("%b %e  %Y")
-          [status.id, created_at, "@#{status.from_user}", HTMLEntities.new.decode(status.text).gsub(/\n+/, ' ')]
+          [status.id, ls_formatted_time(status), "@#{status.from_user}", HTMLEntities.new.decode(status.text).gsub(/\n+/, ' ')]
         end
         print_table_with_headings(array, STATUS_HEADINGS)
       else

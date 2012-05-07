@@ -141,44 +141,38 @@ module T
 
     desc "timeline QUERY", "Returns Tweets in your timeline that match a specified query."
     method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
+    method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
     method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
-    def timeline(query)
+    def timeline(*args)
       opts = {:count => MAX_NUM_RESULTS}
-      statuses = collect_with_max_id do |max_id|
-        opts[:max_id] = max_id unless max_id.nil?
-        retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-          client.home_timeline(opts)
+      query = args.pop
+      user = args.pop
+      if user
+        user = if options['id']
+          user.to_i
+        else
+          user.strip_ats
         end
-      end.flatten.compact
+        statuses = collect_with_max_id do |max_id|
+          opts[:max_id] = max_id unless max_id.nil?
+          retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
+            client.user_timeline(user, opts)
+          end
+        end.flatten.compact
+      else
+        statuses = collect_with_max_id do |max_id|
+          opts[:max_id] = max_id unless max_id.nil?
+          retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
+            client.home_timeline(opts)
+          end
+        end.flatten.compact
+      end
       statuses = statuses.select do |status|
         /#{query}/i.match(status.text)
       end
       print_statuses(statuses)
     end
     map %w(tl) => :timeline
-
-    desc "user USER QUERY", "Returns Tweets in a user's timeline that match a specified query."
-    method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
-    method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
-    method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
-    def user(user, query)
-      user = if options['id']
-        user.to_i
-      else
-        user.strip_ats
-      end
-      opts = {:count => MAX_NUM_RESULTS}
-      statuses = collect_with_max_id do |max_id|
-        opts[:max_id] = max_id unless max_id.nil?
-        retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-          client.user_timeline(user, opts)
-        end
-      end.flatten.compact
-      statuses = statuses.select do |status|
-        /#{query}/i.match(status.text)
-      end
-      print_statuses(statuses)
-    end
 
   end
 end

@@ -15,7 +15,7 @@ module T
 
     def collect_with_max_id(collection=[], max_id=nil, &block)
       array = yield max_id
-      return collection unless !array.nil?
+      return collection if array.nil?
       collection += array
       array.empty? ? collection : collect_with_max_id(collection, array.last.id - 1, &block)
     end

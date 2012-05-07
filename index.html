@@ -33,13 +33,13 @@
 <p>The CLI takes syntactic cues from the <a href="https://support.twitter.com/articles/14020-twitter-sms-command">Twitter SMS commands</a>, however it
 offers vastly more commands and capabilities than are available via SMS.</p>
 
-<h2>Installation</h2>
+<h2 id="installation">Installation</h2>
 
 <pre><code># Requires Ruby :)
 gem install t
 </code></pre>
 
-<h2>Configuration</h2>
+<h2 id="configuration">Configuration</h2>
 
 <p>Twitter requires OAuth for most of its functionality, so you'll need to
 register a new application at <a href="http://dev.twitter.com/apps/new">http://dev.twitter.com/apps/new</a>. Once you
@@ -89,7 +89,7 @@ username and consumer key pair, like this:</p>
 it's important to keep it secure, just as you would treat your SSH private key.
 For this reason, the file is hidden and has the permission bits set to <code>0600</code>.</p>
 
-<h2>Usage Examples</h2>
+<h2 id="usage">Usage Examples</h2>
 
 <p>Typing <code>t help</code> will list all the available commands. You can type <code>t help
 TASK</code> to get help for a specific command.</p>
@@ -229,7 +229,7 @@ example, send a user a direct message only if he already follows you:</p>
 <pre><code>t search user @sferik "query"
 </code></pre>
 
-<h2>Features</h2>
+<h2 id="features">Features</h2>
 
 <ul>
 <li>Deep search: Instead of using the Twitter Search API, [which only only goes
@@ -242,7 +242,9 @@ like grep, cut, awk, bc, wc, and xargs for advanced text processing.</li>
 <li>Generate spreadsheets: Convert the output of any command to CSV format simply
 by adding the <code>--csv</code> flag.</li>
 <li>95% C0 Code Coverage: Well tested, with a 2.5:1 test-to-code ratio.</li>
-</ul><h2>Relationship Terminology</h2>
+</ul>
+
+<h2 id="relationship-terminology">Relationship Terminology</h2>
 
 <p>There is some ambiguity in the terminology used to describe relationships on
 Twitter. For example, some people use the term "friends" to mean everyone you
@@ -265,11 +267,11 @@ used by <code>t</code>:</p>
                           |_________________________|
 </code></pre>
 
-<h2>Screenshots</h2>
+<h2 id="screenshots">Screenshots</h2>
 
 <p><img src="https://github.com/sferik/t/raw/master/screenshots/timeline.png" alt="Timeline"><img src="https://github.com/sferik/t/raw/master/screenshots/list.png" alt="List"></p>
 
-<h2>History</h2>
+<h2 id="history">History</h2>
 
 <p>The <a href="https://rubygems.org/gems/twitter">twitter gem</a> previously contained a command-line interface, up until
 version 0.5.0, when it was <a href="https://github.com/jnunemaker/twitter/commit/dd2445e3e2c97f38b28a3f32ea902536b3897adf">removed</a>. This project is offered as a sucessor
@@ -278,7 +280,7 @@ the original code.</p>
 
 <p><img src="https://github.com/sferik/t/raw/master/screenshots/history.png" alt="History"></p>
 
-<h2>Contributing</h2>
+<h2 id="contributing">Contributing</h2>
 
 <p>In the spirit of <a href="http://www.fsf.org/licensing/essays/free-sw.html">free software</a>, <strong>everyone</strong> is encouraged to help
 improve this project.</p>

@@ -32,10 +32,6 @@ def geokit
   require 'geokit'
 end
 
-def highline
-  require 'highline'
-end
-
 def htmlentities
   require 'htmlentities'
 end
@@ -126,11 +122,6 @@ RBench.run(1) do
   report "geokit" do
     one{geokit}
     two{geokit}
-  end
-
-  report "highline" do
-    one{highline}
-    two{highline}
   end
 
   report "htmlentities" do

@@ -2,7 +2,6 @@ require 'action_view'
 require 'csv'
 # 'fastercsv' required on Ruby versions < 1.9
 require 'fastercsv' unless Array.new.respond_to?(:to_csv)
-require 'highline'
 require 'htmlentities'
 require 'thor/shell/color'
 require 'time'
@@ -43,16 +42,6 @@ module T
         else
           Time.parse(object.created_at.to_s).strftime("%b %e  %Y")
         end
-      end
-
-      def print_columns(array)
-        cols = HighLine::SystemExtensions.terminal_size[0]
-        width = (array.map{|el| el.to_s.size}.max || 0) + 2
-        array.each_with_index do |value, index|
-          puts if (((index) % (cols / width))).zero? && !index.zero?
-          printf("%-#{width}s", value)
-        end
-        puts
       end
 
       def print_csv_list(list)
@@ -99,7 +88,7 @@ module T
 
       def print_attribute(array, attribute)
         if STDOUT.tty?
-          print_columns(array.map(&attribute.to_sym))
+          print_in_columns(array.map(&attribute.to_sym))
         else
           array.each do |element|
             say element.send(attribute.to_sym)

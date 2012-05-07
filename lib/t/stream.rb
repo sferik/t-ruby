@@ -1,3 +1,4 @@
+require 't/cli'
 require 't/printable'
 require 't/rcfile'
 require 't/search'

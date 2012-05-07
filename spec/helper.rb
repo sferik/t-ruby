@@ -11,6 +11,7 @@ require 't'
 require 'rspec'
 require 'timecop'
 require 'webmock/rspec'
+T.env = 'test'
 
 def a_delete(path, endpoint=Twitter.endpoint)
   a_request(:delete, endpoint + path)

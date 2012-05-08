@@ -1,4 +1,4 @@
-# Twitter CLI [![Build Status](https://secure.travis-ci.org/sferik/t.png?branch=master)][travis] [![Dependency Status](https://gemnasium.com/sferik/t.png?travis)][gemnasium]
+# Twitter CLI [![Build Status](https://secure.travis-ci.org/sferik/t.png?branch=master)][travis] [![Dependency Status](https://gemnasium.com/sferik/t.png?travis)][gemnasium] [![Click here to make a donation to T](http://www.pledgie.com/campaigns/17330.png)][pledgie]
 ### A command-line power tool for Twitter.
 
 The CLI takes syntactic cues from the [Twitter SMS commands][sms], however it
@@ -6,6 +6,7 @@ offers vastly more commands and capabilities than are available via SMS.
 
 [travis]: http://travis-ci.org/sferik/t
 [gemnasium]: https://gemnasium.com/sferik/t
+[pledgie]: http://www.pledgie.com/campaigns/17330
 [gem]: https://rubygems.org/gems/twitter
 [sms]: https://support.twitter.com/articles/14020-twitter-sms-command
 
@@ -198,10 +199,10 @@ the original code.
 ![History](https://github.com/sferik/t/raw/master/screenshots/history.png)
 
 ## Contributing
-In the spirit of [free software][fsf], **everyone** is encouraged to help
+In the spirit of [free software][free-sw], **everyone** is encouraged to help
 improve this project.
 
-[fsf]: http://www.fsf.org/licensing/essays/free-sw.html
+[free-sw]: http://www.fsf.org/licensing/essays/free-sw.html
 
 Here are some ways *you* can contribute:
 
@@ -215,6 +216,7 @@ Here are some ways *you* can contribute:
 * by refactoring code
 * by fixing [issues][]
 * by reviewing patches
+* [financially][pledgie]
 
 [issues]: https://github.com/sferik/t/issues
 

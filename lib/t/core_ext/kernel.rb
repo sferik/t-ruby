@@ -2,12 +2,12 @@ require 'active_support/core_ext/string/output_safety'
 
 module Kernel
 
-  def Bignum(arg, base=0)
-    Integer(arg, base)
+  def Bignum(arg)
+    Integer(arg)
   end
 
-  def Fixnum(arg, base=0)
-    Integer(arg, base)
+  def Fixnum(arg)
+    Integer(arg)
   end
 
   def NilClass(arg)

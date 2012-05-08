@@ -29,18 +29,20 @@ module T
         if options['csv']
           say STATUS_HEADINGS.to_csv
         elsif options['long'] && STDOUT.tty?
-          say STATUS_HEADINGS.size.times.map do |index|
+          headings = STATUS_HEADINGS.size.times.map do |index|
             STATUS_HEADINGS_FORMATTING[index] % STATUS_HEADINGS[index]
           end
+          print_table([headings])
         end
       end
       client.on_timeline_status do |status|
         if options['csv']
           print_csv_status(status)
         elsif options['long']
-          print_table build_long_status(status).each_with_index.map do |element, index|
+          array = build_long_status(status).each_with_index.map do |element, index|
             STATUS_HEADINGS_FORMATTING[index] % element
           end
+          print_table([array])
         else
           print_status(status)
         end
@@ -74,9 +76,10 @@ module T
         if options['csv']
           print_csv_status(status)
         elsif options['long']
-          print_table build_long_status(status).each_with_index.map do |element, index|
+          array = build_long_status(status).each_with_index.map do |element, index|
             STATUS_HEADINGS_FORMATTING[index] % element
           end
+          print_table([array])
         else
           print_status(status)
         end
@@ -100,9 +103,10 @@ module T
         if options['csv']
           print_csv_status(status)
         elsif options['long']
-          print_table build_long_status(status).each_with_index.map do |element, index|
+          array = build_long_status(status).each_with_index.map do |element, index|
             STATUS_HEADINGS_FORMATTING[index] % element
           end
+          print_table([array])
         else
           print_status(status)
         end
@@ -120,16 +124,20 @@ module T
         if options['csv']
           say STATUS_HEADINGS.to_csv
         elsif options['long'] && STDOUT.tty?
-          say STATUS_HEADINGS.size.times.map do |index|
+          headings = STATUS_HEADINGS.size.times.map do |index|
             STATUS_HEADINGS_FORMATTING[index] % STATUS_HEADINGS[index]
           end
+          print_table([headings])
         end
       end
       client.on_timeline_status do |status|
         if options['csv']
           print_csv_status(status)
         elsif options['long']
-          print_table(build_long_status(status))
+          array = build_long_status(status).each_with_index.map do |element, index|
+            STATUS_HEADINGS_FORMATTING[index] % element
+          end
+          print_table([array])
         else
           print_status(status)
         end

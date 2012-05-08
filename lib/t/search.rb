@@ -19,6 +19,7 @@ module T
     DEFAULT_NUM_RESULTS = 20
     MAX_NUM_RESULTS = 200
     MAX_SCREEN_NAME_SIZE = 20
+    MAX_USERS_PER_REQUEST = 20
 
     check_unknown_options!
 
@@ -27,7 +28,7 @@ module T
       @rcfile = RCFile.instance
     end
 
-    desc "all QUERY", "Returns the #{DEFAULT_NUM_RESULTS} most recent Tweets that match a specified query."
+    desc "all QUERY", "Returns the #{DEFAULT_NUM_RESULTS} most recent Tweets that match the specified query."
     method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     method_option "number", :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS
@@ -54,7 +55,7 @@ module T
       end
     end
 
-    desc "favorites QUERY", "Returns Tweets you've favorited that match a specified query."
+    desc "favorites QUERY", "Returns Tweets you've favorited that match the specified query."
     method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     def favorites(query)
@@ -97,7 +98,7 @@ module T
       print_statuses(statuses)
     end
 
-    desc "mentions QUERY", "Returns Tweets mentioning you that match a specified query."
+    desc "mentions QUERY", "Returns Tweets mentioning you that match the specified query."
     method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     def mentions(query)
@@ -113,7 +114,7 @@ module T
     end
     map %w(replies) => :mentions
 
-    desc "retweets QUERY", "Returns Tweets you've retweeted that match a specified query."
+    desc "retweets QUERY", "Returns Tweets you've retweeted that match the specified query."
     method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     def retweets(query)
@@ -129,7 +130,7 @@ module T
     end
     map %w(rts) => :retweets
 
-    desc "timeline QUERY", "Returns Tweets in your timeline that match a specified query."
+    desc "timeline QUERY", "Returns Tweets in your timeline that match the specified query."
     method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
     method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
@@ -159,6 +160,26 @@ module T
       print_statuses(statuses)
     end
     map %w(tl) => :timeline
+
+    desc "users QUERY", "Returns users that match the specified query."
+    method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
+    method_option "favorites", :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by number of favorites."
+    method_option "followers", :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by number of followers."
+    method_option "friends", :aliases => "-e", :type => :boolean, :default => false, :desc => "Sort by number of friends."
+    method_option "listed", :aliases => "-d", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
+    method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
+    method_option "posted", :aliases => "-p", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter account was posted."
+    method_option "reverse", :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
+    method_option "tweets", :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by number of Tweets."
+    method_option "unsorted", :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
+    def users(query)
+      users = 1.upto(50).threaded_map do |page|
+        retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
+          client.user_search(query, :page => page, :per_page => MAX_USERS_PER_REQUEST)
+        end
+      end.flatten
+      print_users(users)
+    end
 
   end
 end

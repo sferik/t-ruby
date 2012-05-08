@@ -39,7 +39,7 @@ module T
       if options['csv']
         say STATUS_HEADINGS.to_csv unless statuses.empty?
         statuses.each do |status|
-          say [status.id, status.created_at.utc.strftime("%Y-%m-%d %H:%M:%S %z"), status.from_user, HTMLEntities.new.decode(status.text)].to_csv
+          say [status.id, csv_formatted_time(status), status.from_user, HTMLEntities.new.decode(status.text)].to_csv
         end
       elsif options['long']
         array = statuses.map do |status|

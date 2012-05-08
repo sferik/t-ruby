@@ -135,7 +135,7 @@ module T
       if options['csv']
         say DIRECT_MESSAGE_HEADINGS.to_csv unless direct_messages.empty?
         direct_messages.each do |direct_message|
-          say [direct_message.id, direct_message.created_at.utc.strftime("%Y-%m-%d %H:%M:%S %z"), direct_message.sender.screen_name, direct_message.text].to_csv
+          say [direct_message.id, csv_formatted_time(direct_message), direct_message.sender.screen_name, direct_message.text].to_csv
         end
       elsif options['long']
         array = direct_messages.map do |direct_message|
@@ -164,7 +164,7 @@ module T
       if options['csv']
         say DIRECT_MESSAGE_HEADINGS.to_csv unless direct_messages.empty?
         direct_messages.each do |direct_message|
-          say [direct_message.id, direct_message.created_at.utc.strftime("%Y-%m-%d %H:%M:%S %z"), direct_message.recipient.screen_name, direct_message.text].to_csv
+          say [direct_message.id, csv_formatted_time(direct_message), direct_message.recipient.screen_name, direct_message.text].to_csv
         end
       elsif options['long']
         array = direct_messages.map do |direct_message|
@@ -535,6 +535,23 @@ module T
       end
     end
 
+    desc "rate_limit", "Returns information related to Twitter API rate limiting."
+    method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
+    def rate_limit
+      rate_limit_status = client.rate_limit_status
+      if options['csv']
+        say ["Hourly limit", "Remaining hits", "Reset time"].to_csv
+        say [rate_limit_status.hourly_limit, rate_limit_status.remaining_hits, csv_formatted_time(rate_limit_status, :reset_time)].to_csv
+      else
+        array = []
+        array << ["Hourly limit", number_with_delimiter(rate_limit_status.hourly_limit)]
+        array << ["Remaining hits", number_with_delimiter(rate_limit_status.remaining_hits)]
+        array << ["Reset time", ls_formatted_time(rate_limit_status, :reset_time)]
+        print_table(array)
+      end
+    end
+    map %w(ratelimit rl) => :rate_limit
+
     desc "reply STATUS_ID MESSAGE", "Post your Tweet as a reply directed at another person."
     method_option "all", :aliases => "-a", :type => "boolean", :default => false, :desc => "Reply to all users mentioned in the Tweet."
     method_option "location", :aliases => "-l", :type => :boolean, :default => false
@@ -645,7 +662,7 @@ module T
       end
       if options['csv']
         say ["ID", "Text", "Screen name", "Posted at", "Location", "Retweets", "Source", "URL"].to_csv
-        say [status.id, HTMLEntities.new.decode(status.text), status.from_user, status.created_at.utc.strftime("%Y-%m-%d %H:%M:%S %z"), location, status.retweet_count, strip_tags(status.source), "https://twitter.com/#{status.from_user}/status/#{status.id}"].to_csv
+        say [status.id, HTMLEntities.new.decode(status.text), status.from_user, csv_formatted_time(status), location, status.retweet_count, strip_tags(status.source), "https://twitter.com/#{status.from_user}/status/#{status.id}"].to_csv
       else
         array = []
         array << ["ID", status.id.to_s]
@@ -821,12 +838,11 @@ module T
       user = client.user(user)
       if options['csv']
         say ["ID", "Verified", "Name", "Screen name", "Bio", "Location", "Following", "Last update", "Lasted updated at", "Since", "Tweets", "Favorites", "Listed", "Following", "Followers", "URL"].to_csv
-        say [user.id, user.verified?, user.name, user.screen_name, user.description, user.location, user.following?, HTMLEntities.new.decode(user.status.text), user.status.created_at.utc.strftime("%Y-%m-%d %H:%M:%S %z"), user.created_at.utc.strftime("%Y-%m-%d %H:%M:%S %z"), user.statuses_count, user.favourites_count, user.listed_count, user.friends_count, user.followers_count, user.url].to_csv
+        say [user.id, user.verified?, user.name, user.screen_name, user.description, user.location, user.following?, HTMLEntities.new.decode(user.status.text), csv_formatted_time(user.status), csv_formatted_time(user), user.statuses_count, user.favourites_count, user.listed_count, user.friends_count, user.followers_count, user.url].to_csv
       else
         array = []
-        name_label = user.verified ? "Name (Verified)" : "Name"
         array << ["ID", user.id.to_s]
-        array << [name_label, user.name] unless user.name.nil?
+        array << [user.verified ? "Name (Verified)" : "Name", user.name] unless user.name.nil?
         array << ["Bio", user.description.gsub(/\n+/, ' ')] unless user.description.nil?
         array << ["Location", user.location] unless user.location.nil?
         array << ["Status", user.following ? "Following" : "Not following"]

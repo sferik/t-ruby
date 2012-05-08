@@ -3,16 +3,15 @@ require 'csv'
 # 'fastercsv' required on Ruby versions < 1.9
 require 'fastercsv' unless Array.new.respond_to?(:to_csv)
 require 'htmlentities'
+require 't/core_ext/kernel'
 require 'thor/shell/color'
 require 'time'
 
 module T
   module Printable
     MAX_SCREEN_NAME_SIZE = 20
-    DIRECT_MESSAGE_HEADINGS = ["ID", "Posted at", "Screen name", "Text"]
-    LIST_HEADINGS =["ID", "Created at", "Screen name", "Slug", "Members", "Subscribers", "Mode", "Description"]
+    LIST_HEADINGS = ["ID", "Created at", "Screen name", "Slug", "Members", "Subscribers", "Mode", "Description"]
     STATUS_HEADINGS = ["ID", "Posted at", "Screen name", "Text"]
-    TREND_HEADINGS = ["WOEID", "Parent ID", "Type", "Name", "Country"]
     USER_HEADINGS = ["ID", "Since", "Tweets", "Favorites", "Listed", "Following", "Followers", "Screen name", "Name"]
 
     include ActionView::Helpers::NumberHelper
@@ -22,7 +21,7 @@ module T
     private
 
       def build_long_list(list)
-        [list.id, ls_formatted_time(list), "@#{list.user.screen_name}", list.slug, number_with_delimiter(list.member_count), number_with_delimiter(list.subscriber_count), list.mode, list.description]
+        [list.id, ls_formatted_time(list), "@#{list.user.screen_name}", list.slug, list.member_count, list.subscriber_count, list.mode, list.description]
       end
 
       def build_long_status(status)
@@ -30,7 +29,7 @@ module T
       end
 
       def build_long_user(user)
-        [user.id, ls_formatted_time(user), number_with_delimiter(user.statuses_count), number_with_delimiter(user.favourites_count), number_with_delimiter(user.listed_count), number_with_delimiter(user.friends_count), number_with_delimiter(user.followers_count), "@#{user.screen_name}", user.name]
+        [user.id, ls_formatted_time(user), user.statuses_count, user.favourites_count, user.listed_count, user.friends_count, user.followers_count, "@#{user.screen_name}", user.name]
       end
 
       def csv_formatted_time(object, key=:created_at)
@@ -78,7 +77,8 @@ module T
           array = lists.map do |list|
             build_long_list(list)
           end
-          print_table_with_headings(array, LIST_HEADINGS)
+          format = options['format'] || LIST_HEADINGS.size.times.map{"%s"}
+          print_table_with_headings(array, LIST_HEADINGS, format)
         else
           print_attribute(lists, :full_name)
         end
@@ -94,9 +94,15 @@ module T
         end
       end
 
-      def print_table_with_headings(array, headings)
+      def print_table_with_headings(array, headings, format)
+        return if array.flatten.empty?
         if STDOUT.tty?
-          array.unshift(headings) unless array.flatten.empty?
+          array.unshift(headings)
+          array.map! do |row|
+            row.each_with_index.map do |element, index|
+              Kernel.send(element.class.name.to_sym, format[index] % element)
+            end
+          end
           print_table(array, :truncate => true)
         else
           print_table(array)
@@ -124,7 +130,8 @@ module T
           array = statuses.map do |status|
             build_long_status(status)
           end
-          print_table_with_headings(array, STATUS_HEADINGS)
+          format = options['format'] || STATUS_HEADINGS.size.times.map{"%s"}
+          print_table_with_headings(array, STATUS_HEADINGS, format)
         else
           statuses.each do |status|
             print_status(status)
@@ -157,7 +164,8 @@ module T
           array = users.map do |user|
             build_long_user(user)
           end
-          print_table_with_headings(array, USER_HEADINGS)
+          format = options['format'] || USER_HEADINGS.size.times.map{"%s"}
+          print_table_with_headings(array, USER_HEADINGS, format)
         else
           print_attribute(users, :screen_name)
         end

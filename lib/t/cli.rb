@@ -38,6 +38,8 @@ module T
     DEFAULT_NUM_RESULTS = 20
     MAX_SCREEN_NAME_SIZE = 20
     MAX_USERS_PER_REQUEST = 100
+    DIRECT_MESSAGE_HEADINGS = ["ID", "Posted at", "Screen name", "Text"]
+    TREND_HEADINGS = ["WOEID", "Parent ID", "Type", "Name", "Country"]
 
     check_unknown_options!
 
@@ -141,7 +143,7 @@ module T
         array = direct_messages.map do |direct_message|
           [direct_message.id, ls_formatted_time(direct_message), "@#{direct_message.sender.screen_name}", HTMLEntities.new.decode(direct_message.text).gsub(/\n+/, ' ')]
         end
-        print_table_with_headings(array, DIRECT_MESSAGE_HEADINGS)
+        print_table_with_headings(array, DIRECT_MESSAGE_HEADINGS, DIRECT_MESSAGE_HEADINGS.size.times.map{"%s"})
       else
         direct_messages.each do |direct_message|
           say "#{direct_message.sender.screen_name.rjust(MAX_SCREEN_NAME_SIZE)}: #{direct_message.text.gsub(/\n+/, ' ')} (#{time_ago_in_words(direct_message.created_at)} ago)"
@@ -170,7 +172,7 @@ module T
         array = direct_messages.map do |direct_message|
           [direct_message.id, ls_formatted_time(direct_message), "@#{direct_message.recipient.screen_name}", HTMLEntities.new.decode(direct_message.text).gsub(/\n+/, ' ')]
         end
-        print_table_with_headings(array, DIRECT_MESSAGE_HEADINGS)
+        print_table_with_headings(array, DIRECT_MESSAGE_HEADINGS, DIRECT_MESSAGE_HEADINGS.size.times.map{"%s"})
       else
         direct_messages.each do |direct_message|
           say "#{direct_message.recipient.screen_name.rjust(MAX_SCREEN_NAME_SIZE)}: #{direct_message.text.gsub(/\n+/, ' ')} (#{time_ago_in_words(direct_message.created_at)} ago)"
@@ -757,7 +759,7 @@ module T
         array = places.map do |place|
           [place.woeid, place.parent_id, place.place_type, place.name, place.country]
         end
-        print_table_with_headings(array, TREND_HEADINGS)
+        print_table_with_headings(array, TREND_HEADINGS, TREND_HEADINGS.size.times.map{"%s"})
       else
         print_attribute(places, :name)
       end

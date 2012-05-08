@@ -179,7 +179,7 @@ module T
     end
     map %w(directmessagessent sent_messages sentmessages sms) => :direct_messages_sent
 
-    desc "disciples [USER]", "Returns the list of people who follow you but you don't follow back."
+    desc "groupies [USER]", "Returns the list of people who follow you but you don't follow back."
     method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     method_option "favorites", :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by number of favorites."
     method_option "followers", :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by number of followers."
@@ -191,7 +191,7 @@ module T
     method_option "reverse", :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     method_option "tweets", :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by number of Tweets."
     method_option "unsorted", :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
-    def disciples(user=nil)
+    def groupies(user=nil)
       if user
         user = if options['id']
           user.to_i
@@ -213,6 +213,7 @@ module T
       end.flatten
       print_users(users)
     end
+    map %w(disciples) => :groupies
 
     desc "dm USER MESSAGE", "Sends that person a Direct Message."
     method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."

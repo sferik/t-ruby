@@ -342,7 +342,7 @@ ID          Posted at     Screen name  Text
     end
   end
 
-  describe "#disciples" do
+  describe "#groupies" do
     before do
       stub_get("/1/followers/ids.json").
         with(:query => {:cursor => "-1"}).
@@ -355,7 +355,7 @@ ID          Posted at     Screen name  Text
         to_return(:body => fixture("users.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
-      @cli.disciples
+      @cli.groupies
       a_get("/1/followers/ids.json").
         with(:query => {:cursor => "-1"}).
         should have_been_made
@@ -367,7 +367,7 @@ ID          Posted at     Screen name  Text
         should have_been_made
     end
     it "should have the correct output" do
-      @cli.disciples
+      @cli.groupies
       $stdout.string.rstrip.should == "pengwynn  sferik"
     end
     context "--csv" do
@@ -375,7 +375,7 @@ ID          Posted at     Screen name  Text
         @cli.options = @cli.options.merge("csv" => true)
       end
       it "should output in CSV format" do
-        @cli.disciples
+        @cli.groupies
         $stdout.string.should == <<-eos
 ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
 14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
@@ -388,7 +388,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
         @cli.options = @cli.options.merge("favorites" => true)
       end
       it "should sort by number of favorites" do
-        @cli.disciples
+        @cli.groupies
         $stdout.string.rstrip.should == "pengwynn  sferik"
       end
     end
@@ -397,7 +397,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
         @cli.options = @cli.options.merge("followers" => true)
       end
       it "should sort by number of followers" do
-        @cli.disciples
+        @cli.groupies
         $stdout.string.rstrip.should == "sferik    pengwynn"
       end
     end
@@ -406,7 +406,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
         @cli.options = @cli.options.merge("friends" => true)
       end
       it "should sort by number of friends" do
-        @cli.disciples
+        @cli.groupies
         $stdout.string.rstrip.should == "sferik    pengwynn"
       end
     end
@@ -415,7 +415,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
         @cli.options = @cli.options.merge("listed" => true)
       end
       it "should sort by number of list memberships" do
-        @cli.disciples
+        @cli.groupies
         $stdout.string.rstrip.should == "sferik    pengwynn"
       end
     end
@@ -424,7 +424,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
         @cli.options = @cli.options.merge("long" => true)
       end
       it "should output in long format" do
-        @cli.disciples
+        @cli.groupies
         $stdout.string.should == <<-eos
 ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
 14100886  Mar  8  2008  3,913   32         185     1,871      2,767      @pen...
@@ -437,7 +437,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
         @cli.options = @cli.options.merge("posted" => true)
       end
       it "should sort by the time when Twitter acount was created" do
-        @cli.disciples
+        @cli.groupies
         $stdout.string.rstrip.should == "sferik    pengwynn"
       end
     end
@@ -446,7 +446,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
         @cli.options = @cli.options.merge("reverse" => true)
       end
       it "should reverse the order of the sort" do
-        @cli.disciples
+        @cli.groupies
         $stdout.string.rstrip.should == "sferik    pengwynn"
       end
     end
@@ -455,7 +455,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
         @cli.options = @cli.options.merge("tweets" => true)
       end
       it "should sort by number of Tweets" do
-        @cli.disciples
+        @cli.groupies
         $stdout.string.rstrip.should == "sferik    pengwynn"
       end
     end
@@ -464,7 +464,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
         @cli.options = @cli.options.merge("unsorted" => true)
       end
       it "should not be sorted" do
-        @cli.disciples
+        @cli.groupies
         $stdout.string.rstrip.should == "sferik    pengwynn"
       end
     end
@@ -478,7 +478,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
           to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should request the correct resource" do
-        @cli.disciples("sferik")
+        @cli.groupies("sferik")
         a_get("/1/followers/ids.json").
           with(:query => {:cursor => "-1", :screen_name => "sferik"}).
           should have_been_made
@@ -500,7 +500,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
             to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         end
         it "should request the correct resource" do
-          @cli.disciples("7505382")
+          @cli.groupies("7505382")
           a_get("/1/followers/ids.json").
             with(:query => {:cursor => "-1", :user_id => "7505382"}).
             should have_been_made

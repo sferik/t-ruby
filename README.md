@@ -114,7 +114,7 @@ example, send a user a direct message only if he already follows you:
     t leaders | xargs t unfollow
 
 ### Twitter roulette: randomly follow someone who follows you (who you don't already follow)
-    t disciples | shuf | head -1 | xargs t follow
+    t groupies | shuf | head -1 | xargs t follow
 
 ### Favorite the last 10 tweets that mention you
     t mentions -n 10 -l | awk '{print $1}' | xargs t favorite
@@ -176,7 +176,7 @@ used by `t`:
                               |     YOU FOLLOW THEM     |  YOU DON'T FOLLOW THEM  |
      _________________________|_________________________|_________________________|_________________________
     |                         |                         |                         |                         |
-    |     THEY FOLLOW YOU     |         friends         |        disciples        |        followers        |
+    |     THEY FOLLOW YOU     |         friends         |        groupies         |        followers        |
     |_________________________|_________________________|_________________________|_________________________|
     |                         |                         |
     |  THEY DON'T FOLLOW YOU  |         leaders         |

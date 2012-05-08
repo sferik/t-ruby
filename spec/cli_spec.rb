@@ -1926,7 +1926,7 @@ ID                  Posted at     Screen name    Text
       $stdout.string.should == <<-eos
 Hourly limit    20,000
 Remaining hits  19,993
-Reset time      Oct 26  2010
+Reset time      Oct 26  2010 (about 1 year from now)
       eos
     end
     context "--csv" do
@@ -2237,7 +2237,7 @@ ID                  Posted at     Screen name    Text
 ID           55709764298092545
 Text         The problem with your code is that it's doing exactly what you told it to do.
 Screen name  @sferik
-Posted at    Apr  6  2011
+Posted at    Apr  6  2011 (8 months ago)
 Location     Blowfish Sushi To Die For, 2170 Bryant St, San Francisco, California, United States
 Retweets     320
 Source       Twitter for iPhone
@@ -2268,7 +2268,7 @@ ID,Text,Screen name,Posted at,Location,Retweets,Source,URL
 ID           55709764298092545
 Text         The problem with your code is that it's doing exactly what you told it to do.
 Screen name  @sferik
-Posted at    Apr  6  2011
+Posted at    Apr  6  2011 (8 months ago)
 Location     Blowfish Sushi To Die For, San Francisco, California, United States
 Retweets     320
 Source       Twitter for iPhone
@@ -2288,7 +2288,7 @@ URL          https://twitter.com/sferik/status/55709764298092545
 ID           55709764298092545
 Text         The problem with your code is that it's doing exactly what you told it to do.
 Screen name  @sferik
-Posted at    Apr  6  2011
+Posted at    Apr  6  2011 (8 months ago)
 Location     Blowfish Sushi To Die For, San Francisco, California, United States
 Retweets     320
 Source       Twitter for iPhone
@@ -2308,7 +2308,7 @@ URL          https://twitter.com/sferik/status/55709764298092545
 ID           55709764298092545
 Text         The problem with your code is that it's doing exactly what you told it to do.
 Screen name  @sferik
-Posted at    Apr  6  2011
+Posted at    Apr  6  2011 (8 months ago)
 Location     Blowfish Sushi To Die For, San Francisco, United States
 Retweets     320
 Source       Twitter for iPhone
@@ -2328,7 +2328,7 @@ URL          https://twitter.com/sferik/status/55709764298092545
 ID           55709764298092545
 Text         The problem with your code is that it's doing exactly what you told it to do.
 Screen name  @sferik
-Posted at    Apr  6  2011
+Posted at    Apr  6  2011 (8 months ago)
 Location     Blowfish Sushi To Die For, San Francisco
 Retweets     320
 Source       Twitter for iPhone
@@ -2348,7 +2348,7 @@ URL          https://twitter.com/sferik/status/55709764298092545
 ID           55709764298092545
 Text         The problem with your code is that it's doing exactly what you told it to do.
 Screen name  @sferik
-Posted at    Apr  6  2011
+Posted at    Apr  6  2011 (8 months ago)
 Location     Blowfish Sushi To Die For
 Retweets     320
 Source       Twitter for iPhone
@@ -3068,7 +3068,7 @@ Bio          A mind forever voyaging through strange seas of thought, alone.
 Location     San Francisco
 Status       Not following
 Last update  RT @tenderlove: [ANN] sqlite3-ruby => sqlite3 (10 months ago)
-Since        Jul 16  2007
+Since        Jul 16  2007 (over 4 years ago)
 Tweets       3,479
 Favorites    1,040
 Listed       41

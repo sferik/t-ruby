@@ -111,7 +111,7 @@ ID           8863586
 Description  Presidents of the United States of America
 Slug         presidents
 Screen name  @sferik
-Created at   Mar 15  2010
+Created at   Mar 15  2010 (over 1 year ago)
 Members      2
 Subscribers  1
 Status       Not following

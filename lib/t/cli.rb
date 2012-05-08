@@ -547,7 +547,7 @@ module T
         array = []
         array << ["Hourly limit", number_with_delimiter(rate_limit_status.hourly_limit)]
         array << ["Remaining hits", number_with_delimiter(rate_limit_status.remaining_hits)]
-        array << ["Reset time", ls_formatted_time(rate_limit_status, :reset_time)]
+        array << ["Reset time", "#{ls_formatted_time(rate_limit_status, :reset_time)} (#{distance_of_time_in_words_to_now(rate_limit_status.reset_time)} from now)"]
         print_table(array)
       end
     end
@@ -669,8 +669,7 @@ module T
         array << ["ID", status.id.to_s]
         array << ["Text", HTMLEntities.new.decode(status.text).gsub(/\n+/, ' ')]
         array << ["Screen name", "@#{status.from_user}"]
-        posted_at = status.created_at > 6.months.ago ? status.created_at.strftime("%b %e %H:%M") : status.created_at.strftime("%b %e  %Y")
-        array << ["Posted at", posted_at]
+        array << ["Posted at", "#{ls_formatted_time(status)} (#{time_ago_in_words(status.created_at)} ago)"]
         array << ["Location", location] unless location.nil?
         array << ["Retweets", number_with_delimiter(status.retweet_count)]
         array << ["Source", strip_tags(status.source)]
@@ -848,7 +847,7 @@ module T
         array << ["Location", user.location] unless user.location.nil?
         array << ["Status", user.following ? "Following" : "Not following"]
         array << ["Last update", "#{HTMLEntities.new.decode(user.status.text).gsub(/\n+/, ' ')} (#{time_ago_in_words(user.status.created_at)} ago)"] unless user.status.nil?
-        array << ["Since", ls_formatted_time(user)]
+        array << ["Since", "#{ls_formatted_time(user)} (#{time_ago_in_words(user.created_at)} ago)"]
         array << ["Tweets", number_with_delimiter(user.statuses_count)]
         array << ["Favorites", number_with_delimiter(user.favourites_count)]
         array << ["Listed", number_with_delimiter(user.listed_count)]

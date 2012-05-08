@@ -88,7 +88,7 @@ module T
         array << ["Description", list.description] unless list.description.nil?
         array << ["Slug", list.slug]
         array << ["Screen name", "@#{list.user.screen_name}"]
-        array << ["Created at", ls_formatted_time(list)]
+        array << ["Created at", "#{ls_formatted_time(list)} (#{time_ago_in_words(list.created_at)} ago)"]
         array << ["Members", number_with_delimiter(list.member_count)]
         array << ["Subscribers", number_with_delimiter(list.subscriber_count)]
         array << ["Status", list.following ? "Following" : "Not following"]
@@ -97,7 +97,7 @@ module T
         print_table(array)
       end
     end
-    map %w(detail) => :information
+    map %w(details) => :information
 
     desc "members [USER/]LIST", "Returns the members of a Twitter list."
     method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."

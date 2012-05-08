@@ -1926,7 +1926,7 @@ ID                  Posted at     Screen name    Text
       $stdout.string.should == <<-eos
 Hourly limit    20,000
 Remaining hits  19,993
-Reset time      Oct 25  2010
+Reset time      Oct 26  2010
       eos
     end
     context "--csv" do
@@ -1937,7 +1937,7 @@ Reset time      Oct 25  2010
         @cli.rate_limit
         $stdout.string.should == <<-eos
 Hourly limit,Remaining hits,Reset time
-20000,19993,2010-10-26 02:43:08 +0000
+20000,19993,2010-10-26 12:43:08 +0000
         eos
       end
     end

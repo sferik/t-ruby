@@ -291,10 +291,10 @@ module T
     desc "favorite STATUS_ID [STATUS_ID...]", "Marks Tweets as favorites."
     def favorite(status_id, *status_ids)
       status_ids.unshift(status_id)
-      status_ids.map!(&:strip_commas)
+      status_ids.map!(&:to_i)
       favorites = status_ids.threaded_map do |status_id|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-          client.favorite(status_id.to_i)
+          client.favorite(status_id)
         end
       end
       number = favorites.length
@@ -559,7 +559,6 @@ module T
     method_option "all", :aliases => "-a", :type => "boolean", :default => false, :desc => "Reply to all users mentioned in the Tweet."
     method_option "location", :aliases => "-l", :type => :boolean, :default => false
     def reply(status_id, message)
-      status_id = status_id.strip_commas
       status = client.status(status_id.to_i, :include_my_retweet => false)
       users = Array(status.from_user)
       if options['all']
@@ -601,10 +600,10 @@ module T
     desc "retweet STATUS_ID [STATUS_ID...]", "Sends Tweets to your followers."
     def retweet(status_id, *status_ids)
       status_ids.unshift(status_id)
-      status_ids.map!(&:strip_commas)
+      status_ids.map!(&:to_i)
       retweets = status_ids.threaded_map do |status_id|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-          client.retweet(status_id.to_i, :trim_user => true)
+          client.retweet(status_id, :trim_user => true)
         end
       end
       number = retweets.length
@@ -644,7 +643,6 @@ module T
     desc "status STATUS_ID", "Retrieves detailed information about a Tweet."
     method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     def status(status_id)
-      status_id = status_id.strip_commas
       status = client.status(status_id.to_i, :include_my_retweet => false)
       location = if status.place
         if status.place.name && status.place.attributes && status.place.attributes['street_address'] && status.place.attributes['locality'] && status.place.attributes['region'] && status.place.country

@@ -8,8 +8,10 @@ class String
     self.tr('@', '')
   end
 
-  def strip_commas
-    self.tr(',', '')
+  alias_method :old_to_i, :to_i
+
+  def to_i(base=10)
+    self.tr(',', '').old_to_i(base)
   end
 
 end

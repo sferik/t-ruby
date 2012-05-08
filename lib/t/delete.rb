@@ -41,13 +41,13 @@ module T
     method_option "force", :aliases => "-f", :type => :boolean, :default => false
     def dm(direct_message_id, *direct_message_ids)
       direct_message_ids.unshift(direct_message_id)
-      direct_message_ids.map!(&:strip_commas)
+      direct_message_ids.map!(&:to_i)
       direct_message_ids.each do |direct_message_id|
         unless options['force']
-          direct_message = client.direct_message(direct_message_id.to_i)
+          direct_message = client.direct_message(direct_message_id)
           return unless yes? "Are you sure you want to permanently delete the direct message to @#{direct_message.recipient.screen_name}: \"#{direct_message.text}\"? [y/N]"
         end
-        direct_message = client.direct_message_destroy(direct_message_id.to_i)
+        direct_message = client.direct_message_destroy(direct_message_id)
         say "@#{@rcfile.active_profile[0]} deleted the direct message sent to @#{direct_message.recipient.screen_name}: \"#{direct_message.text}\""
       end
     end
@@ -57,13 +57,13 @@ module T
     method_option "force", :aliases => "-f", :type => :boolean, :default => false
     def favorite(status_id, *status_ids)
       status_ids.unshift(status_id)
-      status_ids.map!(&:strip_commas)
+      status_ids.map!(&:to_i)
       status_ids.each do |status_id|
         unless options['force']
-          status = client.status(status_id.to_i, :include_my_retweet => false, :trim_user => true)
+          status = client.status(status_id, :include_my_retweet => false, :trim_user => true)
           return unless yes? "Are you sure you want to remove @#{status.from_user}'s status: \"#{status.text}\" from your favorites? [y/N]"
         end
-        status = client.unfavorite(status_id.to_i)
+        status = client.unfavorite(status_id)
         say "@#{@rcfile.active_profile[0]} unfavorited @#{status.from_user}'s status: \"#{status.text}\""
       end
     end
@@ -86,13 +86,13 @@ module T
     method_option "force", :aliases => "-f", :type => :boolean, :default => false
     def status(status_id, *status_ids)
       status_ids.unshift(status_id)
-      status_ids.map!(&:strip_commas)
+      status_ids.map!(&:to_i)
       status_ids.each do |status_id|
         unless options['force']
-          status = client.status(status_id.to_i, :include_my_retweet => false, :trim_user => true)
+          status = client.status(status_id, :include_my_retweet => false, :trim_user => true)
           return unless yes? "Are you sure you want to permanently delete @#{status.from_user}'s status: \"#{status.text}\"? [y/N]"
         end
-        status = client.status_destroy(status_id.to_i, :trim_user => true)
+        status = client.status_destroy(status_id, :trim_user => true)
         say "@#{@rcfile.active_profile[0]} deleted the status: \"#{status.text}\""
       end
     end

@@ -7,7 +7,7 @@ describe RCFile do
     RCFile.instance.reset
   end
 
-  it 'should be a singleton class' do
+  it 'is a singleton' do
     RCFile.should be_a Class
     lambda do
       RCFile.new

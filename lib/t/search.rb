@@ -40,11 +40,11 @@ module T
       if options['csv']
         say STATUS_HEADINGS.to_csv unless statuses.empty?
         statuses.each do |status|
-          say [status.id, csv_formatted_time(status), status.from_user, HTMLEntities.new.decode(status.text)].to_csv
+          say [status.id, csv_formatted_time(status), status.from_user, HTMLEntities.new.decode(status.full_text)].to_csv
         end
       elsif options['long']
         array = statuses.map do |status|
-          [status.id, ls_formatted_time(status), "@#{status.from_user}", HTMLEntities.new.decode(status.text).gsub(/\n+/, ' ')]
+          [status.id, ls_formatted_time(status), "@#{status.from_user}", HTMLEntities.new.decode(status.full_text).gsub(/\n+/, ' ')]
         end
         format = options['format'] || STATUS_HEADINGS.size.times.map{"%s"}
         print_table_with_headings(array, STATUS_HEADINGS, format)
@@ -66,7 +66,7 @@ module T
         client.favorites(opts)
       end
       statuses = statuses.select do |status|
-        /#{query}/i.match(status.text)
+        /#{query}/i.match(status.full_text)
       end
       print_statuses(statuses)
     end
@@ -94,7 +94,7 @@ module T
         client.list_timeline(owner, list, opts)
       end
       statuses = statuses.select do |status|
-        /#{query}/i.match(status.text)
+        /#{query}/i.match(status.full_text)
       end
       print_statuses(statuses)
     end
@@ -109,7 +109,7 @@ module T
         client.mentions(opts)
       end
       statuses = statuses.select do |status|
-        /#{query}/i.match(status.text)
+        /#{query}/i.match(status.full_text)
       end
       print_statuses(statuses)
     end
@@ -125,7 +125,7 @@ module T
         client.retweeted_by(opts)
       end
       statuses = statuses.select do |status|
-        /#{query}/i.match(status.text)
+        /#{query}/i.match(status.full_text)
       end
       print_statuses(statuses)
     end
@@ -156,7 +156,7 @@ module T
         end
       end
       statuses = statuses.select do |status|
-        /#{query}/i.match(status.text)
+        /#{query}/i.match(status.full_text)
       end
       print_statuses(statuses)
     end

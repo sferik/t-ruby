@@ -25,7 +25,7 @@ module T
       end
 
       def build_long_status(status)
-        [status.id, ls_formatted_time(status), "@#{status.from_user}", HTMLEntities.new.decode(status.text).gsub(/\n+/, ' ')]
+        [status.id, ls_formatted_time(status), "@#{status.from_user}", HTMLEntities.new.decode(status.full_text).gsub(/\n+/, ' ')]
       end
 
       def build_long_user(user)
@@ -49,7 +49,7 @@ module T
       end
 
       def print_csv_status(status)
-        say [status.id, csv_formatted_time(status), status.from_user, HTMLEntities.new.decode(status.text)].to_csv
+        say [status.id, csv_formatted_time(status), status.from_user, HTMLEntities.new.decode(status.full_text)].to_csv
       end
 
       def print_csv_user(user)
@@ -115,7 +115,7 @@ module T
         else
           say("   @#{status.from_user}")
         end
-        print_wrapped(HTMLEntities.new.decode(status.text), :indent => 3)
+        print_wrapped(HTMLEntities.new.decode(status.full_text), :indent => 3)
         say
       end
 

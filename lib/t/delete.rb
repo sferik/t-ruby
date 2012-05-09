@@ -61,10 +61,10 @@ module T
       status_ids.each do |status_id|
         unless options['force']
           status = client.status(status_id, :include_my_retweet => false, :trim_user => true)
-          return unless yes? "Are you sure you want to remove @#{status.from_user}'s status: \"#{status.text}\" from your favorites? [y/N]"
+          return unless yes? "Are you sure you want to remove @#{status.from_user}'s status: \"#{status.full_text}\" from your favorites? [y/N]"
         end
         status = client.unfavorite(status_id)
-        say "@#{@rcfile.active_profile[0]} unfavorited @#{status.from_user}'s status: \"#{status.text}\""
+        say "@#{@rcfile.active_profile[0]} unfavorited @#{status.from_user}'s status: \"#{status.full_text}\""
       end
     end
     map %w(fave favourite) => :favorite
@@ -90,10 +90,10 @@ module T
       status_ids.each do |status_id|
         unless options['force']
           status = client.status(status_id, :include_my_retweet => false, :trim_user => true)
-          return unless yes? "Are you sure you want to permanently delete @#{status.from_user}'s status: \"#{status.text}\"? [y/N]"
+          return unless yes? "Are you sure you want to permanently delete @#{status.from_user}'s status: \"#{status.full_text}\"? [y/N]"
         end
         status = client.status_destroy(status_id, :trim_user => true)
-        say "@#{@rcfile.active_profile[0]} deleted the status: \"#{status.text}\""
+        say "@#{@rcfile.active_profile[0]} deleted the status: \"#{status.full_text}\""
       end
     end
     map %w(post tweet update) => :status

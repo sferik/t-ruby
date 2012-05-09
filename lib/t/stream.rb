@@ -53,7 +53,7 @@ module T
     desc "matrix", "Unfortunately, no one can be told what the Matrix is. You have to see it for yourself."
     def matrix
       client.on_timeline_status do |status|
-        say(status.text.gsub("\n", ''), [:bold, :green, :on_black])
+        say(status.full_text.gsub("\n", ''), [:bold, :green, :on_black])
       end
       client.sample
     end

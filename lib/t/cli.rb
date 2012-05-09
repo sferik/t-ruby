@@ -568,7 +568,7 @@ module T
         major, minor, patch = RUBY_VERSION.split('.')
         $KCODE='u' if major.to_i == 1 && minor.to_i < 9
         require 'twitter-text'
-        users += Twitter::Extractor.extract_mentioned_screen_names(status.text)
+        users += Twitter::Extractor.extract_mentioned_screen_names(status.full_text)
         users.uniq!
       end
       users.map!(&:prepend_at)
@@ -665,11 +665,11 @@ module T
       end
       if options['csv']
         say ["ID", "Text", "Screen name", "Posted at", "Location", "Retweets", "Source", "URL"].to_csv
-        say [status.id, HTMLEntities.new.decode(status.text), status.from_user, csv_formatted_time(status), location, status.retweet_count, strip_tags(status.source), "https://twitter.com/#{status.from_user}/status/#{status.id}"].to_csv
+        say [status.id, HTMLEntities.new.decode(status.full_text), status.from_user, csv_formatted_time(status), location, status.retweet_count, strip_tags(status.source), "https://twitter.com/#{status.from_user}/status/#{status.id}"].to_csv
       else
         array = []
         array << ["ID", status.id.to_s]
-        array << ["Text", HTMLEntities.new.decode(status.text).gsub(/\n+/, ' ')]
+        array << ["Text", HTMLEntities.new.decode(status.full_text).gsub(/\n+/, ' ')]
         array << ["Screen name", "@#{status.from_user}"]
         array << ["Posted at", "#{ls_formatted_time(status)} (#{time_ago_in_words(status.created_at)} ago)"]
         array << ["Location", location] unless location.nil?

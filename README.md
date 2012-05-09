@@ -163,6 +163,23 @@ example, send a user a direct message only if he already follows you:
 
 [search]: https://dev.twitter.com/docs/using-search
 
+# Using T for Backup
+
+[@jphpsf][jphpsf] wrote a [blog post][blog] explaining how to use `t` to backup
+your Twitter account.
+
+[jphpsf]: https://github.com/jphpsf
+[blog]: http://blog.jphpsf.com/2012/05/07/backing-up-your-twitter-account-with-t/
+
+`t` was also mentioned on [an episode of the Ruby 5 podcast][ruby5].
+
+[ruby5]: http://ruby5.envylabs.com/episodes/273-episode-269-may-4th-2012/stories/2400-t-command-line-power-tool-for-twitter
+
+If you discuss `t` in a blog post or podcast, [let me know][email] and I'll
+link it here.
+
+[email]: mailto:sferik@gmail.com
+
 ## Relationship Terminology
 
 There is some ambiguity in the terminology used to describe relationships on

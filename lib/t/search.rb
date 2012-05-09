@@ -46,7 +46,8 @@ module T
         array = statuses.map do |status|
           [status.id, ls_formatted_time(status), "@#{status.from_user}", HTMLEntities.new.decode(status.text).gsub(/\n+/, ' ')]
         end
-        print_table_with_headings(array, STATUS_HEADINGS, STATUS_HEADINGS.size.times.map{"%s"})
+        format = options['format'] || STATUS_HEADINGS.size.times.map{"%s"}
+        print_table_with_headings(array, STATUS_HEADINGS, format)
       else
         say unless statuses.empty?
         statuses.each do |status|

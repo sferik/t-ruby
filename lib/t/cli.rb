@@ -143,7 +143,8 @@ module T
         array = direct_messages.map do |direct_message|
           [direct_message.id, ls_formatted_time(direct_message), "@#{direct_message.sender.screen_name}", HTMLEntities.new.decode(direct_message.text).gsub(/\n+/, ' ')]
         end
-        print_table_with_headings(array, DIRECT_MESSAGE_HEADINGS, DIRECT_MESSAGE_HEADINGS.size.times.map{"%s"})
+        format = options['format'] || DIRECT_MESSAGE_HEADINGS.size.times.map{"%s"}
+        print_table_with_headings(array, DIRECT_MESSAGE_HEADINGS, format)
       else
         direct_messages.each do |direct_message|
           say "#{direct_message.sender.screen_name.rjust(MAX_SCREEN_NAME_SIZE)}: #{direct_message.text.gsub(/\n+/, ' ')} (#{time_ago_in_words(direct_message.created_at)} ago)"
@@ -172,7 +173,8 @@ module T
         array = direct_messages.map do |direct_message|
           [direct_message.id, ls_formatted_time(direct_message), "@#{direct_message.recipient.screen_name}", HTMLEntities.new.decode(direct_message.text).gsub(/\n+/, ' ')]
         end
-        print_table_with_headings(array, DIRECT_MESSAGE_HEADINGS, DIRECT_MESSAGE_HEADINGS.size.times.map{"%s"})
+        format = options['format'] || DIRECT_MESSAGE_HEADINGS.size.times.map{"%s"}
+        print_table_with_headings(array, DIRECT_MESSAGE_HEADINGS, format)
       else
         direct_messages.each do |direct_message|
           say "#{direct_message.recipient.screen_name.rjust(MAX_SCREEN_NAME_SIZE)}: #{direct_message.text.gsub(/\n+/, ' ')} (#{time_ago_in_words(direct_message.created_at)} ago)"
@@ -757,7 +759,8 @@ module T
         array = places.map do |place|
           [place.woeid, place.parent_id, place.place_type, place.name, place.country]
         end
-        print_table_with_headings(array, TREND_HEADINGS, TREND_HEADINGS.size.times.map{"%s"})
+        format = options['format'] || TREND_HEADINGS.size.times.map{"%s"}
+        print_table_with_headings(array, TREND_HEADINGS, format)
       else
         print_attribute(places, :name)
       end

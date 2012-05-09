@@ -12,34 +12,13 @@ begin
 rescue Interrupt
   pute "Quitting..."
   exit 1
-rescue Twitter::Error::BadRequest => error
-  pute error.message
-  exit 400
 rescue OAuth::Unauthorized
   pute "Authorization failed"
-  exit 401
+  exit 1
 rescue Twitter::Error::Unauthorized => error
   pute "#{error.message} Run `#{$0} authorize --consumer-key=CONSUMER_KEY --consumer-secret=CONSUMER_SECRET` to authorize."
-  exit 401
-rescue Twitter::Error::Forbidden => error
+  exit 1
+rescue Twitter::Error => error
   pute error.message
-  exit 403
-rescue Twitter::Error::NotFound => error
-  pute error.message
-  exit 404
-rescue Twitter::Error::NotAcceptable => error
-  pute error.message
-  exit 406
-rescue Twitter::Error::EnhanceYourCalm => error
-  pute error.message
-  exit 420
-rescue Twitter::Error::InternalServerError => error
-  pute error.message
-  exit 500
-rescue Twitter::Error::BadGateway => error
-  pute error.message
-  exit 502
-rescue Twitter::Error::ServiceUnavailable => error
-  pute error.message
-  exit 503
+  exit 1
 end

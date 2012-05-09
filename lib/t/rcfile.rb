@@ -86,7 +86,7 @@ private
   end
 
   def write
-    File.open(@path, File::RDWR|File::CREAT, 0600) do |rcfile|
+    File.open(@path, File::RDWR|File::TRUNC|File::CREAT, 0600) do |rcfile|
       rcfile.write @data.to_yaml
     end
   end

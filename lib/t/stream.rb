@@ -111,11 +111,12 @@ module T
       client.userstream
     end
 
-    desc "users SCREEN_NAME [SCREEN_NAME...]", "Stream Tweets either from or in reply to specified users (Control-C to stop)"
+    desc "users USER_ID [USER_ID...]", "Stream Tweets either from or in reply to specified users (Control-C to stop)"
     method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
-    def users(screen_name, *screen_names)
-      screen_names.unshift(screen_name)
+    def users(user_id, *user_ids)
+      user_ids.unshift(user_id)
+      user_ids.map!(&:to_i)
       client.on_inited do
         if options['csv']
           say STATUS_HEADINGS.to_csv
@@ -138,7 +139,7 @@ module T
           print_status(status)
         end
       end
-      client.follow(screen_names)
+      client.follow(user_ids)
     end
 
   private

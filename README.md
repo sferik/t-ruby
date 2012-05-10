@@ -1,4 +1,7 @@
-# Twitter CLI [![Build Status](https://secure.travis-ci.org/sferik/t.png?branch=master)][travis] [![Dependency Status](https://gemnasium.com/sferik/t.png?travis)][gemnasium] [![Click here to make a donation to T](http://www.pledgie.com/campaigns/17330.png)][pledgie]
+# Twitter CLI [![Build Status](https://secure.travis-ci.org/sferik/t.png?branch=master)][travis] [![Dependency Status](https://gemnasium.com/sferik/t.png?travis)][gemnasium] [![Click here to make a donation to T](http://www.pledgie.com/campaigns/17330.png)][pledgie] 
+
+# [![Application icon](https://github.com/sferik/t/raw/master/cli-bird.png)][icon]
+
 ### A command-line power tool for Twitter.
 
 The CLI takes syntactic cues from the [Twitter SMS commands][sms], however it
@@ -285,6 +288,7 @@ fashion. If critical issues for a particular implementation exist at the time
 of a major release, support for that Ruby version may be dropped.
 
 ## Copyright
-Copyright (c) 2011 Erik Michaels-Ober. See [LICENSE][] for details.
-
+Copyright (c) 2011 Erik Michaels-Ober. See [LICENSE][] for details.  
+Application icon by [@nvk][icon]. 
 [license]: https://github.com/sferik/t/blob/master/LICENSE.md
+[icon]: http://rodolfonovak.com

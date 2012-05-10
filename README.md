@@ -1,6 +1,8 @@
-# Twitter CLI [![Build Status](https://secure.travis-ci.org/sferik/t.png?branch=master)][travis] [![Dependency Status](https://gemnasium.com/sferik/t.png?travis)][gemnasium] [![Click here to make a donation to T](http://www.pledgie.com/campaigns/17330.png)][pledgie] 
+# [![Application icon](https://github.com/sferik/t/raw/master/icon/t.png)][icon]
 
-# [![Application icon](https://github.com/sferik/t/raw/master/cli-bird.png)][icon]
+[icon]: https://github.com/sferik/t/raw/master/icon/t.png
+
+# Twitter CLI [![Build Status](https://secure.travis-ci.org/sferik/t.png?branch=master)][travis] [![Dependency Status](https://gemnasium.com/sferik/t.png?travis)][gemnasium] [![Click here to make a donation to T](http://www.pledgie.com/campaigns/17330.png)][pledgie]
 
 ### A command-line power tool for Twitter.
 
@@ -10,12 +12,10 @@ offers vastly more commands and capabilities than are available via SMS.
 [travis]: http://travis-ci.org/sferik/t
 [gemnasium]: https://gemnasium.com/sferik/t
 [pledgie]: http://www.pledgie.com/campaigns/17330
-[gem]: https://rubygems.org/gems/twitter
 [sms]: https://support.twitter.com/articles/14020-twitter-sms-command
 
 ## Installation
-    # Requires Ruby :)
-    gem install t
+    gem install t # Requires Ruby :)
 
 ## Configuration
 
@@ -215,6 +215,7 @@ version 0.5.0, when it was [removed][]. This project is offered as a sucessor
 to that effort, however it is a clean room implementation that contains none of
 the original code.
 
+[gem]: https://rubygems.org/gems/twitter
 [removed]: https://github.com/jnunemaker/twitter/commit/dd2445e3e2c97f38b28a3f32ea902536b3897adf
 ![History](https://github.com/sferik/t/raw/master/screenshots/history.png)
 
@@ -288,7 +289,7 @@ fashion. If critical issues for a particular implementation exist at the time
 of a major release, support for that Ruby version may be dropped.
 
 ## Copyright
-Copyright (c) 2011 Erik Michaels-Ober. See [LICENSE][] for details.  
-Application icon by [@nvk][icon]. 
+Copyright (c) 2011 Erik Michaels-Ober. See [LICENSE][] for details.
+Application icon by [@nvk][nvk].
 [license]: https://github.com/sferik/t/blob/master/LICENSE.md
-[icon]: http://rodolfonovak.com
+[nvk]: http://rodolfonovak.com

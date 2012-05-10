@@ -1,6 +1,6 @@
 # Twitter CLI [![Build Status](https://secure.travis-ci.org/sferik/t.png?branch=master)][travis] [![Dependency Status](https://gemnasium.com/sferik/t.png?travis)][gemnasium] [![Click here to make a donation to T](http://www.pledgie.com/campaigns/17330.png)][pledgie] 
 
-# [![Application icon](https://github.com/nvk/t/raw/7f9b6f02f66e736b3e081b4efe8e4578037d630e/cli-bird.png)][icon]
+# [![Application icon](https://github.com/sferik/t/raw/master/cli-bird.png)][icon]
 
 ### A command-line power tool for Twitter.
 
@@ -289,6 +289,6 @@ of a major release, support for that Ruby version may be dropped.
 
 ## Copyright
 Copyright (c) 2011 Erik Michaels-Ober. See [LICENSE][] for details.  
-App ICON by [@nvk][icon]. 
+Application icon by [@nvk][icon]. 
 [license]: https://github.com/sferik/t/blob/master/LICENSE.md
 [icon]: http://rodolfonovak.com

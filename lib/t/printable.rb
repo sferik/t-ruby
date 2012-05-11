@@ -16,8 +16,6 @@ module T
 
     include ActionView::Helpers::NumberHelper
 
-    def self.included(base)
-
     private
 
       def build_long_list(list)
@@ -170,8 +168,6 @@ module T
           print_attribute(users, :screen_name)
         end
       end
-
-    end
 
   end
 end

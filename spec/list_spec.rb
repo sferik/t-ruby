@@ -382,6 +382,9 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
         @list.timeline("presidents")
         $stdout.string.should == <<-eos
 ID,Posted at,Screen name,Text
+194548141663027221,2011-04-23 22:08:32 +0000,ryanbigg,"Things that have made my life better, in order of greatness: GitHub, Travis CI, the element Oxygen."
+194563027248121416,2011-04-23 22:08:11 +0000,sfbike,"Bike to Work Counts in: 73% of morning Market traffic was bikes! 1,031 bikers counted in 1 hour--that's 17 per minute. Way to roll, SF!"
+194548120271416632,2011-04-23 22:07:51 +0000,levie,"I know you're as rare as leprechauns, but if you're an amazing designer then Box wants to hire you. Email recruiting@box.com"
 194548121416630272,2011-04-23 22:07:41 +0000,natevillegas,RT @gelobautista #riordan RT @WilI_Smith: Yesterday is history. Tomorrow is a mystery. Today is a gift. That's why it's called the present.
 194547993607806976,2011-04-23 22:07:10 +0000,TD,@kelseysilver how long will you be in town?
 194547987593183233,2011-04-23 22:07:09 +0000,rusashka,@maciej hahaha :) @gpena together we're going to cover all core 28 languages!
@@ -410,6 +413,9 @@ ID,Posted at,Screen name,Text
         @list.timeline("presidents")
         $stdout.string.should == <<-eos
 ID                  Posted at     Screen name    Text
+194548141663027221  Apr 23  2011  @ryanbigg      Things that have made my lif...
+194563027248121416  Apr 23  2011  @sfbike        Bike to Work Counts in: 73% ...
+194548120271416632  Apr 23  2011  @levie         I know you're as rare as lep...
 194548121416630272  Apr 23  2011  @natevillegas  RT @gelobautista #riordan RT...
 194547993607806976  Apr 23  2011  @TD            @kelseysilver how long will ...
 194547987593183233  Apr 23  2011  @rusashka      @maciej hahaha :) @gpena tog...
@@ -454,6 +460,9 @@ ID                  Posted at     Screen name    Text
 194547987593183233  Apr 23  2011  @rusashka      @maciej hahaha :) @gpena tog...
 194547993607806976  Apr 23  2011  @TD            @kelseysilver how long will ...
 194548121416630272  Apr 23  2011  @natevillegas  RT @gelobautista #riordan RT...
+194548120271416632  Apr 23  2011  @levie         I know you're as rare as lep...
+194563027248121416  Apr 23  2011  @sfbike        Bike to Work Counts in: 73% ...
+194548141663027221  Apr 23  2011  @ryanbigg      Things that have made my lif...
           eos
         end
       end
@@ -467,8 +476,13 @@ ID                  Posted at     Screen name    Text
           with(:query => {:owner_screen_name => "testcli", :per_page => "200", :slug => "presidents"}).
           to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         stub_get("/1/lists/statuses.json").
-          with(:query => {:owner_screen_name => "testcli", :per_page => "145", :max_id => "194546264212385792", :slug => "presidents"}).
-          to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          with(:query => {:owner_screen_name => "testcli", :per_page => "200", :max_id => "194546264212385792", :slug => "presidents"}).
+          to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        (5..185).step(20).to_a.reverse.each do |count|
+          stub_get("/1/lists/statuses.json").
+            with(:query => {:owner_screen_name => "testcli", :per_page => count, :max_id => "194546264212385792", :slug => "presidents"}).
+            to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        end
       end
       it "should limit the number of results to 1" do
         @list.options = @list.options.merge("number" => 1)
@@ -484,8 +498,13 @@ ID                  Posted at     Screen name    Text
           with(:query => {:owner_screen_name => "testcli", :per_page => "200", :slug => "presidents"}).
           should have_been_made
         a_get("/1/lists/statuses.json").
-          with(:query => {:owner_screen_name => "testcli", :per_page => "145", :max_id => "194546264212385792", :slug => "presidents"}).
-          should have_been_made
+          with(:query => {:owner_screen_name => "testcli", :per_page => "200", :max_id => "194546264212385792", :slug => "presidents"}).
+          should have_been_made.times(7)
+        (5..185).step(20).to_a.reverse.each do |count|
+          a_get("/1/lists/statuses.json").
+            with(:query => {:owner_screen_name => "testcli", :per_page => count, :max_id => "194546264212385792", :slug => "presidents"}).
+            should have_been_made
+        end
       end
     end
     context "with a user passed" do

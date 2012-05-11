@@ -31,14 +31,16 @@ module T
       end
 
       def csv_formatted_time(object, key=:created_at)
-        Time.parse(object.send(key.to_sym).to_s).utc.strftime("%Y-%m-%d %H:%M:%S %z")
+        time = object.send(key.to_sym)
+        time.utc.strftime("%Y-%m-%d %H:%M:%S %z")
       end
 
       def ls_formatted_time(object, key=:created_at)
-        if object.send(key.to_sym) > 6.months.ago
-          Time.parse(object.send(key.to_sym).to_s).strftime("%b %e %H:%M")
+        time = T.local_time object.send(key.to_sym)
+        if time > 6.months.ago
+          time.strftime("%b %e %H:%M")
         else
-          Time.parse(object.send(key.to_sym).to_s).strftime("%b %e  %Y")
+          time.strftime("%b %e  %Y")
         end
       end
 

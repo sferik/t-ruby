@@ -3,6 +3,16 @@ require 'helper'
 
 describe T::List do
 
+  before :all do
+    Timecop.freeze(Time.utc(2011, 11, 24, 16, 20, 0))
+    T.utc_offset = 'PST'
+  end
+
+  after :all do
+    T.utc_offset = nil
+    Timecop.return
+  end
+
   before do
     rcfile = RCFile.instance
     rcfile.path = fixture_path + "/.trc"
@@ -11,11 +21,9 @@ describe T::List do
     $stderr = StringIO.new
     @old_stdout = $stdout
     $stdout = StringIO.new
-    Timecop.freeze(Time.utc(2011, 11, 24, 16, 20, 0))
   end
 
   after do
-    Timecop.return
     $stderr = @old_stderr
     $stdout = @old_stdout
   end

@@ -59,7 +59,7 @@ and consumer key pair, like this:
 
 Account information is stored in a YAML-formatted file located at `~/.trc`.
 
-**Note**: Anyone with access to this file can masquerade as you on Twitter, so
+**Note**: Anyone with access to this file can impersonate you on Twitter, so
 it's important to keep it secure, just as you would treat your SSH private key.
 For this reason, the file is hidden and has the permission bits set to `0600`.
 

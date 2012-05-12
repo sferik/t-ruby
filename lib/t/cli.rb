@@ -611,7 +611,7 @@ module T
       number = retweets.length
       say "@#{@rcfile.active_profile[0]} retweeted #{number} #{number == 1 ? 'tweet' : 'tweets'}."
       say
-      say "Run `#{File.basename($0)} delete status #{status_ids.join(' ')}` to undo."
+      say "Run `#{File.basename($0)} delete status #{retweets.map(&:id).join(' ')}` to undo."
     end
     map %w(rt) => :retweet
 

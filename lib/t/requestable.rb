@@ -5,8 +5,6 @@ module T
     DEFAULT_HOST = 'api.twitter.com'
     DEFAULT_PROTOCOL = 'https'
 
-    def self.included(base)
-
     private
 
       def base_url
@@ -32,8 +30,6 @@ module T
       def protocol
         options['no-ssl'] ? 'http' : DEFAULT_PROTOCOL
       end
-
-    end
 
   end
 end

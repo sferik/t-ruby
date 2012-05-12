@@ -1,4 +1,3 @@
-require 'action_view'
 require 'csv'
 # 'fastercsv' required on Ruby versions < 1.9
 require 'fastercsv' unless Array.new.respond_to?(:to_csv)
@@ -11,7 +10,6 @@ require 'thor'
 
 module T
   class Search < Thor
-    include ActionView::Helpers::DateHelper
     include T::Collectable
     include T::Printable
     include T::Requestable

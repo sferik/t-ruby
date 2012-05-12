@@ -1,4 +1,3 @@
-require 'action_view'
 require 'csv'
 # 'fastercsv' required on Ruby versions < 1.9
 require 'fastercsv' unless Array.new.respond_to?(:to_csv)
@@ -13,10 +12,6 @@ module T
     LIST_HEADINGS = ["ID", "Created at", "Screen name", "Slug", "Members", "Subscribers", "Mode", "Description"]
     STATUS_HEADINGS = ["ID", "Posted at", "Screen name", "Text"]
     USER_HEADINGS = ["ID", "Since", "Tweets", "Favorites", "Listed", "Following", "Followers", "Screen name", "Name"]
-
-    include ActionView::Helpers::NumberHelper
-
-    def self.included(base)
 
     private
 
@@ -33,14 +28,16 @@ module T
       end
 
       def csv_formatted_time(object, key=:created_at)
-        Time.parse(object.send(key.to_sym).to_s).utc.strftime("%Y-%m-%d %H:%M:%S %z")
+        time = object.send(key.to_sym)
+        time.utc.strftime("%Y-%m-%d %H:%M:%S %z")
       end
 
       def ls_formatted_time(object, key=:created_at)
-        if object.send(key.to_sym) > 6.months.ago
-          Time.parse(object.send(key.to_sym).to_s).strftime("%b %e %H:%M")
+        time = T.local_time object.send(key.to_sym)
+        if time > 6.months.ago
+          time.strftime("%b %e %H:%M")
         else
-          Time.parse(object.send(key.to_sym).to_s).strftime("%b %e  %Y")
+          time.strftime("%b %e  %Y")
         end
       end
 
@@ -170,8 +167,6 @@ module T
           print_attribute(users, :screen_name)
         end
       end
-
-    end
 
   end
 end

@@ -1,8 +1,8 @@
-require 'action_view'
 require 'active_support/core_ext/array/grouping'
 require 'active_support/core_ext/date/calculations'
 require 'active_support/core_ext/integer/time'
 require 'active_support/core_ext/numeric/time'
+require 't/format_helpers'
 require 'csv'
 # 'fastercsv' required on Ruby versions < 1.9
 require 'fastercsv' unless Array.new.respond_to?(:to_csv)
@@ -27,13 +27,11 @@ require 'yaml'
 
 module T
   class CLI < Thor
-    include ActionView::Helpers::DateHelper
-    include ActionView::Helpers::NumberHelper
-    include ActionView::Helpers::TextHelper
     include T::Authorizable
     include T::Collectable
     include T::Printable
     include T::Requestable
+    include T::FormatHelpers
 
     DEFAULT_NUM_RESULTS = 20
     MAX_SCREEN_NAME_SIZE = 20

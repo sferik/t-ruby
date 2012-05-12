@@ -1,5 +1,5 @@
-require 'action_view'
 require 'active_support/core_ext/array/grouping'
+require 't/format_helpers'
 require 'csv'
 # 'fastercsv' required on Ruby versions < 1.9
 require 'fastercsv' unless Array.new.respond_to?(:to_csv)
@@ -14,10 +14,10 @@ require 'thor'
 
 module T
   class List < Thor
-    include ActionView::Helpers::DateHelper
     include T::Collectable
     include T::Printable
     include T::Requestable
+    include T::FormatHelpers
 
     DEFAULT_NUM_RESULTS = 20
     MAX_SCREEN_NAME_SIZE = 20

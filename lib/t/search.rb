@@ -129,7 +129,7 @@ module T
     end
     map %w(rts) => :retweets
 
-    desc "timeline QUERY", "Returns Tweets in your timeline that match the specified query."
+    desc "timeline [USER] QUERY", "Returns Tweets in your timeline that match the specified query."
     method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
     method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."

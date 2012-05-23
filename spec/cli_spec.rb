@@ -672,13 +672,13 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
     before do
       @cli.options = @cli.options.merge("profile" => fixture_path + "/.trc")
       stub_get("/1/friendships/exists.json").
-        with(:query => {:user_a => "ev", :user_b => "testcli"}).
+        with(:query => {:screen_name_a => "ev", :screen_name_b => "testcli"}).
         to_return(:body => fixture("true.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @cli.does_follow("ev")
       a_get("/1/friendships/exists.json").
-        with(:query => {:user_a => "ev", :user_b => "testcli"}).
+        with(:query => {:screen_name_a => "ev", :screen_name_b => "testcli"}).
         should have_been_made
     end
     it "should have the correct output" do
@@ -692,7 +692,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
           with(:query => {:user_id => "20"}).
           to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         stub_get("/1/friendships/exists.json").
-          with(:query => {:user_a => "sferik", :user_b => "testcli"}).
+          with(:query => {:screen_name_a => "sferik", :screen_name_b => "testcli"}).
           to_return(:body => fixture("true.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should request the correct resource" do
@@ -701,7 +701,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
           with(:query => {:user_id => "20"}).
           should have_been_made
         a_get("/1/friendships/exists.json").
-          with(:query => {:user_a => "sferik", :user_b => "testcli"}).
+          with(:query => {:screen_name_a => "sferik", :screen_name_b => "testcli"}).
           should have_been_made
       end
     end
@@ -720,7 +720,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
             with(:query => {:user_id => "428004849"}).
             to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
           stub_get("/1/friendships/exists.json").
-            with(:query => {:user_a => "sferik", :user_b => "sferik"}).
+            with(:query => {:screen_name_a => "sferik", :screen_name_b => "sferik"}).
             to_return(:body => fixture("true.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         end
         it "should request the correct resource" do
@@ -732,7 +732,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
             with(:query => {:user_id => "428004849"}).
             should have_been_made
           a_get("/1/friendships/exists.json").
-            with(:query => {:user_a => "sferik", :user_b => "sferik"}).
+            with(:query => {:screen_name_a => "sferik", :screen_name_b => "sferik"}).
             should have_been_made
         end
       end
@@ -740,7 +740,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
     context "false" do
       before do
         stub_get("/1/friendships/exists.json").
-          with(:query => {:user_a => "ev", :user_b => "testcli"}).
+          with(:query => {:screen_name_a => "ev", :screen_name_b => "testcli"}).
           to_return(:body => fixture("false.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should exit" do
@@ -748,7 +748,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
           @cli.does_follow("ev")
         end.should raise_error(SystemExit)
         a_get("/1/friendships/exists.json").
-          with(:query => {:user_a => "ev", :user_b => "testcli"}).
+          with(:query => {:screen_name_a => "ev", :screen_name_b => "testcli"}).
           should have_been_made
       end
     end

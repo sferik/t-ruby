@@ -123,16 +123,16 @@ testcli
     it "should have the correct output" do
       @cli.direct_messages
       $stdout.string.should == <<-eos
-              sferik: Sounds good. Meeting Tuesday is fine. (about 1 year ago)
-              sferik: That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does that work for you? (about 1 year ago)
-              sferik: I asked Yehuda about the stipend. I believe it has already been sent. Glad you're feeling better. (about 1 year ago)
-              sferik: Just checking in. How's everything going? (about 1 year ago)
-              sferik: Not sure about the payment. Feel free to ask Leah or Yehuda directly. Think you'll be able to finish up your work on graphs this weekend? (about 1 year ago)
-              sferik: How are the graph enhancements coming? (about 1 year ago)
-              sferik: How are the graphs coming? I'm really looking forward to seeing what you do with Raphaël. (about 1 year ago)
-              sferik: Awesome! Any luck duplicating the Gemfile.lock error with Ruby 1.9.2 final? (about 1 year ago)
-              sferik: I just committed a bunch of cleanup and fixes to RailsAdmin that touched many of files. Make sure you pull to avoid conflicts. (about 1 year ago)
-              sferik: I'm trying to debug the issue you were having with the Bundler Gemfile.lock shortref. What version of Ruby and RubyGems are you running? (about 1 year ago)
+              sferik: Sounds good. Meeting Tuesday is fine. (about a year ago)
+              sferik: That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does that work for you? (about a year ago)
+              sferik: I asked Yehuda about the stipend. I believe it has already been sent. Glad you're feeling better. (about a year ago)
+              sferik: Just checking in. How's everything going? (about a year ago)
+              sferik: Not sure about the payment. Feel free to ask Leah or Yehuda directly. Think you'll be able to finish up your work on graphs this weekend? (about a year ago)
+              sferik: How are the graph enhancements coming? (about a year ago)
+              sferik: How are the graphs coming? I'm really looking forward to seeing what you do with Raphaël. (about a year ago)
+              sferik: Awesome! Any luck duplicating the Gemfile.lock error with Ruby 1.9.2 final? (about a year ago)
+              sferik: I just committed a bunch of cleanup and fixes to RailsAdmin that touched many of files. Make sure you pull to avoid conflicts. (about a year ago)
+              sferik: I'm trying to debug the issue you were having with the Bundler Gemfile.lock shortref. What version of Ruby and RubyGems are you running? (about a year ago)
       eos
     end
     context "--csv" do
@@ -214,16 +214,16 @@ ID          Posted at     Screen name  Text
       it "should reverse the order of the sort" do
         @cli.direct_messages
         $stdout.string.should == <<-eos
-              sferik: I'm trying to debug the issue you were having with the Bundler Gemfile.lock shortref. What version of Ruby and RubyGems are you running? (about 1 year ago)
-              sferik: I just committed a bunch of cleanup and fixes to RailsAdmin that touched many of files. Make sure you pull to avoid conflicts. (about 1 year ago)
-              sferik: Awesome! Any luck duplicating the Gemfile.lock error with Ruby 1.9.2 final? (about 1 year ago)
-              sferik: How are the graphs coming? I'm really looking forward to seeing what you do with Raphaël. (about 1 year ago)
-              sferik: How are the graph enhancements coming? (about 1 year ago)
-              sferik: Not sure about the payment. Feel free to ask Leah or Yehuda directly. Think you'll be able to finish up your work on graphs this weekend? (about 1 year ago)
-              sferik: Just checking in. How's everything going? (about 1 year ago)
-              sferik: I asked Yehuda about the stipend. I believe it has already been sent. Glad you're feeling better. (about 1 year ago)
-              sferik: That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does that work for you? (about 1 year ago)
-              sferik: Sounds good. Meeting Tuesday is fine. (about 1 year ago)
+              sferik: I'm trying to debug the issue you were having with the Bundler Gemfile.lock shortref. What version of Ruby and RubyGems are you running? (about a year ago)
+              sferik: I just committed a bunch of cleanup and fixes to RailsAdmin that touched many of files. Make sure you pull to avoid conflicts. (about a year ago)
+              sferik: Awesome! Any luck duplicating the Gemfile.lock error with Ruby 1.9.2 final? (about a year ago)
+              sferik: How are the graphs coming? I'm really looking forward to seeing what you do with Raphaël. (about a year ago)
+              sferik: How are the graph enhancements coming? (about a year ago)
+              sferik: Not sure about the payment. Feel free to ask Leah or Yehuda directly. Think you'll be able to finish up your work on graphs this weekend? (about a year ago)
+              sferik: Just checking in. How's everything going? (about a year ago)
+              sferik: I asked Yehuda about the stipend. I believe it has already been sent. Glad you're feeling better. (about a year ago)
+              sferik: That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does that work for you? (about a year ago)
+              sferik: Sounds good. Meeting Tuesday is fine. (about a year ago)
         eos
       end
     end
@@ -244,16 +244,16 @@ ID          Posted at     Screen name  Text
     it "should have the correct output" do
       @cli.direct_messages_sent
       $stdout.string.should == <<-eos
-           hurrycane: Sounds good. Meeting Tuesday is fine. (about 1 year ago)
-           hurrycane: That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does that work for you? (about 1 year ago)
-           hurrycane: I asked Yehuda about the stipend. I believe it has already been sent. Glad you're feeling better. (about 1 year ago)
-           hurrycane: Just checking in. How's everything going? (about 1 year ago)
-           hurrycane: Not sure about the payment. Feel free to ask Leah or Yehuda directly. Think you'll be able to finish up your work on graphs this weekend? (about 1 year ago)
-           hurrycane: How are the graph enhancements coming? (about 1 year ago)
-           hurrycane: How are the graphs coming? I'm really looking forward to seeing what you do with Raphaël. (about 1 year ago)
-           hurrycane: Awesome! Any luck duplicating the Gemfile.lock error with Ruby 1.9.2 final? (about 1 year ago)
-           hurrycane: I just committed a bunch of cleanup and fixes to RailsAdmin that touched many of files. Make sure you pull to avoid conflicts. (about 1 year ago)
-           hurrycane: I'm trying to debug the issue you were having with the Bundler Gemfile.lock shortref. What version of Ruby and RubyGems are you running? (about 1 year ago)
+           hurrycane: Sounds good. Meeting Tuesday is fine. (about a year ago)
+           hurrycane: That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does that work for you? (about a year ago)
+           hurrycane: I asked Yehuda about the stipend. I believe it has already been sent. Glad you're feeling better. (about a year ago)
+           hurrycane: Just checking in. How's everything going? (about a year ago)
+           hurrycane: Not sure about the payment. Feel free to ask Leah or Yehuda directly. Think you'll be able to finish up your work on graphs this weekend? (about a year ago)
+           hurrycane: How are the graph enhancements coming? (about a year ago)
+           hurrycane: How are the graphs coming? I'm really looking forward to seeing what you do with Raphaël. (about a year ago)
+           hurrycane: Awesome! Any luck duplicating the Gemfile.lock error with Ruby 1.9.2 final? (about a year ago)
+           hurrycane: I just committed a bunch of cleanup and fixes to RailsAdmin that touched many of files. Make sure you pull to avoid conflicts. (about a year ago)
+           hurrycane: I'm trying to debug the issue you were having with the Bundler Gemfile.lock shortref. What version of Ruby and RubyGems are you running? (about a year ago)
       eos
     end
     context "--csv" do
@@ -335,16 +335,16 @@ ID          Posted at     Screen name  Text
       it "should reverse the order of the sort" do
         @cli.direct_messages_sent
         $stdout.string.should == <<-eos
-           hurrycane: I'm trying to debug the issue you were having with the Bundler Gemfile.lock shortref. What version of Ruby and RubyGems are you running? (about 1 year ago)
-           hurrycane: I just committed a bunch of cleanup and fixes to RailsAdmin that touched many of files. Make sure you pull to avoid conflicts. (about 1 year ago)
-           hurrycane: Awesome! Any luck duplicating the Gemfile.lock error with Ruby 1.9.2 final? (about 1 year ago)
-           hurrycane: How are the graphs coming? I'm really looking forward to seeing what you do with Raphaël. (about 1 year ago)
-           hurrycane: How are the graph enhancements coming? (about 1 year ago)
-           hurrycane: Not sure about the payment. Feel free to ask Leah or Yehuda directly. Think you'll be able to finish up your work on graphs this weekend? (about 1 year ago)
-           hurrycane: Just checking in. How's everything going? (about 1 year ago)
-           hurrycane: I asked Yehuda about the stipend. I believe it has already been sent. Glad you're feeling better. (about 1 year ago)
-           hurrycane: That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does that work for you? (about 1 year ago)
-           hurrycane: Sounds good. Meeting Tuesday is fine. (about 1 year ago)
+           hurrycane: I'm trying to debug the issue you were having with the Bundler Gemfile.lock shortref. What version of Ruby and RubyGems are you running? (about a year ago)
+           hurrycane: I just committed a bunch of cleanup and fixes to RailsAdmin that touched many of files. Make sure you pull to avoid conflicts. (about a year ago)
+           hurrycane: Awesome! Any luck duplicating the Gemfile.lock error with Ruby 1.9.2 final? (about a year ago)
+           hurrycane: How are the graphs coming? I'm really looking forward to seeing what you do with Raphaël. (about a year ago)
+           hurrycane: How are the graph enhancements coming? (about a year ago)
+           hurrycane: Not sure about the payment. Feel free to ask Leah or Yehuda directly. Think you'll be able to finish up your work on graphs this weekend? (about a year ago)
+           hurrycane: Just checking in. How's everything going? (about a year ago)
+           hurrycane: I asked Yehuda about the stipend. I believe it has already been sent. Glad you're feeling better. (about a year ago)
+           hurrycane: That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does that work for you? (about a year ago)
+           hurrycane: Sounds good. Meeting Tuesday is fine. (about a year ago)
         eos
       end
     end
@@ -538,7 +538,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
     end
     it "should have the correct output" do
       @cli.dm("pengwynn", "Creating a fixture for the Twitter gem")
-      $stdout.string.chomp.should == "Direct Message sent from @testcli to @pengwynn (about 1 year ago)."
+      $stdout.string.chomp.should == "Direct Message sent from @testcli to @pengwynn (about a year ago)."
     end
     context "--id" do
       before do
@@ -1934,7 +1934,7 @@ ID                  Posted at     Screen name    Text
       $stdout.string.should == <<-eos
 Hourly limit    20,000
 Remaining hits  19,993
-Reset time      Oct 26  2010 (about 1 year from now)
+Reset time      Oct 26  2010 (about a year from now)
       eos
     end
     context "--csv" do
@@ -3076,7 +3076,7 @@ Bio          A mind forever voyaging through strange seas of thought, alone.
 Location     San Francisco
 Status       Not following
 Last update  RT @tenderlove: [ANN] sqlite3-ruby => sqlite3 (10 months ago)
-Since        Jul 16  2007 (over 4 years ago)
+Since        Jul 16  2007 (4 years ago)
 Tweets       3,479
 Favorites    1,040
 Listed       41

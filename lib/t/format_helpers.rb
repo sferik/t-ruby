@@ -13,40 +13,36 @@ module T
       when 0...1
         case seconds
         when 0...1
-          'less than a second'
+          'a split second'
         when 1...2
-          '1 second'
-        when 2..29
+          'a second'
+        when 2...60
           '%d seconds' % seconds
-        when 30..39
-          'half a minute'
-        else
-          'less than a minute'
         end
       when 1...2
-        '1 minute'
-      when 2..44
+        'a minute'
+      when 2...60
         '%d minutes' % minutes
-      when 45..89
-        'about an hour'
-      # 90 minutes up to 24 hours
-      when 90..1439
-        'about %d hours' % (minutes.to_f / 60.0).round
-      # 24 hours up to 42 hours
-      when 1440..2519
-        '1 day'
-      # 42 hours up to 30 days
-      when 2520..43199
+      when 60...120
+        'an hour'
+      # 120 minutes up to 23.5 hours
+      when 120...1410
+        '%d hours' % (minutes.to_f / 60.0).round
+      # 23.5 hours up to 48 hours
+      when 1410...2880
+        'a day'
+      # 48 hours up to 29.5 days
+      when 2880...42480
         '%d days' % (minutes.to_f / 1440.0).round
-      # 30 days up to 60 days
-      when 43200..86399
-        'about a month'
-      # 60 days up to 365 days
-      when 86400..525599
-        '%d months' % (minutes.to_f / 43200.0).round
-      # 1 year to 2 years
-      when 525600..1051199
-        'about a year'
+      # 29.5 days up to 60 days
+      when 42480...86400
+        'a month'
+      # 60 days up to 11.5 months
+      when 86400...503700
+        '%d months' % (minutes.to_f / 43800.0).round
+      # 11.5 months up to 2 years
+      when 503700...1051200
+        'a year'
       else
         '%d years' % (minutes.to_f / 525600.0).round
       end

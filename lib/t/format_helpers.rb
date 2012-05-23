@@ -1,3 +1,4 @@
+require 'active_support/core_ext/array/grouping'
 require 'date'
 
 module T
@@ -5,8 +6,7 @@ module T
     private
 
     # https://github.com/rails/rails/blob/bd8a970/actionpack/lib/action_view/helpers/date_helper.rb
-    def distance_of_time_in_words_to_now(from_time)
-      to_time = Time.now
+    def distance_of_time_in_words(from_time, to_time=Time.now)
       seconds = (to_time - from_time).abs
       minutes = seconds / 60
       case minutes
@@ -47,16 +47,17 @@ module T
         '%d years' % (minutes.to_f / 525600.0).round
       end
     end
-    alias :time_ago_in_words :distance_of_time_in_words_to_now
+    alias :time_ago_in_words :distance_of_time_in_words
+    alias :time_from_now_in_words :distance_of_time_in_words
 
     def strip_tags(html)
       html.gsub(/<.+?>/, '')
     end
 
-    def number_with_delimiter(num)
-      digits = num.to_s.split(//)
-      groups = digits.reverse.in_groups_of(3).map {|g| g.join('') }
-      groups.join(',').reverse
+    def number_with_delimiter(number, delimiter=",")
+      digits = number.to_s.split(//)
+      groups = digits.reverse.in_groups_of(3).map{|g| g.join('')}
+      groups.join(delimiter).reverse
     end
 
   end

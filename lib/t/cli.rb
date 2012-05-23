@@ -549,7 +549,7 @@ module T
         array = []
         array << ["Hourly limit", number_with_delimiter(rate_limit_status.hourly_limit)]
         array << ["Remaining hits", number_with_delimiter(rate_limit_status.remaining_hits)]
-        array << ["Reset time", "#{ls_formatted_time(rate_limit_status, :reset_time)} (#{distance_of_time_in_words_to_now(rate_limit_status.reset_time)} from now)"]
+        array << ["Reset time", "#{ls_formatted_time(rate_limit_status, :reset_time)} (#{time_from_now_in_words(rate_limit_status.reset_time)} from now)"]
         print_table(array)
       end
     end

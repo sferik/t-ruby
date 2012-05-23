@@ -41,8 +41,8 @@ describe T::FormatHelpers do
     it "returns \"1 minute\" if difference is a minute" do
       @test.send(:distance_of_time_in_words_to_now, (Time.utc(2011, 11, 24, 16, 21, 0))).should == "1 minute"
     end
-    it "returns \"2 minute\" if difference is 2 minutes" do
-      @test.send(:distance_of_time_in_words_to_now, (Time.utc(2011, 11, 24, 16, 21, 0))).should == "1 minute"
+    it "returns \"2 minutes\" if difference is 2 minutes" do
+      @test.send(:distance_of_time_in_words_to_now, (Time.utc(2011, 11, 24, 16, 22, 0))).should == "2 minutes"
     end
     it "returns \"about an hour\" if difference is 45 minutes" do
       @test.send(:distance_of_time_in_words_to_now, (Time.utc(2011, 11, 24, 17, 5, 0))).should == "about an hour"

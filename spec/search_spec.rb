@@ -53,6 +53,11 @@ describe T::Search do
         @search.all("twitter")
         $stdout.string.should == <<-eos
 ID,Posted at,Screen name,Text
+194521323202624150,2011-04-23 20:20:57 +0000,Somedude,Gotta get right with twitter
+194526951936212623,2011-04-23 20:20:57 +0000,TestMan,Twitter to Facebook test
+194521346690562622,2011-04-23 20:20:57 +0000,Jena_Jones,test my new twitter..... :)
+194521262134160820,2011-04-23 20:20:57 +0000,misterpic,Wallah there should be a test before you can get a twitter account some people are so dumb... better
+194521016652621340,2011-04-23 20:20:57 +0000,RRabbit,Twitter is kinda fun... Kinda!
 194521262415032320,2011-04-23 20:20:57 +0000,JessRoveel,Pondre lo mas importante de Hamlet en Twitter para recordarlo mejor :D
 194521262326951936,2011-04-23 20:20:57 +0000,lauravgeest,Twitter doet het al 7 uur niet meer
 194521262234669056,2011-04-23 20:20:57 +0000,Jenny_Bearx333,"I keep thinking that twitter is @instagram , and therefore double tap all the pics I like... #NotWorking"
@@ -83,6 +88,11 @@ ID,Posted at,Screen name,Text
         @search.all("twitter")
         $stdout.string.should == <<-eos
 ID                  Posted at     Screen name       Text
+194521323202624150  Apr 23  2011  @Somedude         Gotta get right with twitter
+194526951936212623  Apr 23  2011  @TestMan          Twitter to Facebook test
+194521346690562622  Apr 23  2011  @Jena_Jones       test my new twitter..... :)
+194521262134160820  Apr 23  2011  @misterpic        Wallah there should be a ...
+194521016652621340  Apr 23  2011  @RRabbit          Twitter is kinda fun... K...
 194521262415032320  Apr 23  2011  @JessRoveel       Pondre lo mas importante ...
 194521262326951936  Apr 23  2011  @lauravgeest      Twitter doet het al 7 uur...
 194521262234669056  Apr 23  2011  @Jenny_Bearx333   I keep thinking that twit...
@@ -110,8 +120,13 @@ ID                  Posted at     Screen name       Text
           with(:query => {:q => "twitter", :rpp => "200"}).
           to_return(:body => fixture("search.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         stub_request(:get, "https://search.twitter.com/search.json").
-          with(:query => {:q => "twitter", :rpp => "145", :max_id => "194521261307727871"}).
+          with(:query => {:q => "twitter", :rpp => "200", :max_id => "194521261307727871"}).
           to_return(:body => fixture("search.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        (5..185).step(20).to_a.reverse.each do |count|
+          stub_request(:get, "https://search.twitter.com/search.json").
+            with(:query => {:q => "twitter", :rpp => count, :max_id => "194521261307727871"}).
+            to_return(:body => fixture("search.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        end
       end
       it "should limit the number of results to 1" do
         @search.options = @search.options.merge("number" => 1)
@@ -127,8 +142,13 @@ ID                  Posted at     Screen name       Text
           with(:query => {:q => "twitter", :rpp => "200"}).
           should have_been_made
         a_request(:get, "https://search.twitter.com/search.json").
-          with(:query => {:q => "twitter", :rpp => "145", :max_id => "194521261307727871"}).
-          should have_been_made
+          with(:query => {:q => "twitter", :rpp => "200", :max_id => "194521261307727871"}).
+          should have_been_made.times(7)
+        (5..185).step(20).to_a.reverse.each do |count|
+          a_request(:get, "https://search.twitter.com/search.json").
+            with(:query => {:q => "twitter", :rpp => count, :max_id => "194521261307727871"}).
+            should have_been_made
+        end
       end
     end
   end

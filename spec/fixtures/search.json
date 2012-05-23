@@ -9,6 +9,116 @@
   "results": [
     {
       "created_at": "Mon, 23 Apr 2011 20:20:57 +0000",
+      "from_user": "Somedude",
+      "from_user_id": 818993897,
+      "from_user_id_str": "818993897",
+      "from_user_name": "Random Dude",
+      "geo": null,
+      "id": 194521323202624150,
+      "id_str": "194521323202624150",
+      "iso_language_code": "en",
+      "metadata": {
+        "result_type": "recent"
+      },
+      "profile_image_url": "http://a0.twimg.com/profile_images/1014656526/pic.jpg",
+      "profile_image_url_https": "https://si0.twimg.com/profile_images/1014656526/pic.jpg",
+      "source": "&lt;a href=&quot;http://twitter.com/&quot;&gt;web&lt;/a&gt;",
+      "text": "Gotta get right with twitter",
+      "to_user": null,
+      "to_user_id": null,
+      "to_user_id_str": null,
+      "to_user_name": null
+    },
+    {
+      "created_at": "Mon, 23 Apr 2011 20:20:57 +0000",
+      "from_user": "TestMan",
+      "from_user_id": 32702507980,
+      "from_user_id_str": "32702507980",
+      "from_user_name": "Test Account",
+      "geo": null,
+      "id": 194526951936212623,
+      "id_str": "194526951936212623",
+      "iso_language_code": "en",
+      "metadata": {
+        "result_type": "recent"
+      },
+      "profile_image_url": "http://a0.twimg.com/profile_images/2147508883/IMG-20120404-WA003_normal.jpg",
+      "profile_image_url_https": "https://si0.twimg.com/profile_images/2147508883/IMG-20120404-WA003_normal.jpg",
+      "source": "&lt;a href=&quot;http://blackberry.com/twitter&quot; rel=&quot;nofollow&quot;&gt;Twitter for BlackBerry®&lt;/a&gt;",
+      "text": "Twitter to Facebook test",
+      "to_user": null,
+      "to_user_id": null,
+      "to_user_id_str": null,
+      "to_user_name": null
+    },
+    {
+      "created_at": "Mon, 23 Apr 2011 20:20:57 +0000",
+      "from_user": "Jena_Jones",
+      "from_user_id": 13938181651,
+      "from_user_id_str": "13938181651",
+      "from_user_name": "Jena Jones",
+      "geo": null,
+      "id": 194521346690562622,
+      "id_str": "194521346690562622",
+      "iso_language_code": "en",
+      "metadata": {
+        "result_type": "recent"
+      },
+      "profile_image_url": "http://a0.twimg.com/profile_images/2156571407/543631_337343819653633_100001340549098_850013_1999940127_n_normal.jpg",
+      "profile_image_url_https": "https://si0.twimg.com/profile_images/2156571407/543631_337343819653633_100001340549098_850013_1999940127_n_normal.jpg",
+      "source": "&lt;a href=&quot;http://mobile.twitter.com&quot; rel=&quot;nofollow&quot;&gt;Mobile Web&lt;/a&gt;",
+      "text": "test my new twitter..... :)",
+      "to_user": null,
+      "to_user_id": null,
+      "to_user_id_str": null,
+      "to_user_name": null
+    },
+    {
+      "created_at": "Mon, 23 Apr 2011 20:20:57 +0000",
+      "from_user": "misterpic",
+      "from_user_id": 259342250,
+      "from_user_id_str": "259342250",
+      "from_user_name": "mister pic!",
+      "geo": null,
+      "id": 194521262134160820,
+      "id_str": "194521262134160820",
+      "iso_language_code": "en",
+      "metadata": {
+        "result_type": "recent"
+      },
+      "profile_image_url": "http://a0.twimg.com/profile_images/2159952653/P2191655_normal.JPG",
+      "profile_image_url_https": "https://si0.twimg.com/profile_images/2159952653/P2191655_normal.JPG",
+      "source": "&lt;a href=&quot;http://twitter.com/#!/download/iphone&quot; rel=&quot;nofollow&quot;&gt;Twitter for iPhone&lt;/a&gt;",
+      "text": "Wallah there should be a test before you can get a twitter account some people are so dumb... better",
+      "to_user": null,
+      "to_user_id": null,
+      "to_user_id_str": null,
+      "to_user_name": null
+    },
+    {
+      "created_at": "Mon, 23 Apr 2011 20:20:57 +0000",
+      "from_user": "RRabbit",
+      "from_user_id": 91022555146,
+      "from_user_id_str": "91022555146",
+      "from_user_name": "Rogger Rabbit",
+      "geo": null,
+      "id": 194521016652621340,
+      "id_str": "194521016652621340",
+      "iso_language_code": "en",
+      "metadata": {
+        "result_type": "recent"
+      },
+      "profile_image_url": "http://a0.twimg.com/profile_images/1663790229/390753_10150394068222898_738242897_8656853_1501249832_n_1__normal.jpg",
+      "profile_image_url_https": "https://si0.twimg.com/profile_images/1663790229/390753_10150394068222898_738242897_8656853_1501249832_n_1__normal.jpg",
+      "source": "&lt;a href=&quot;http://twitter.com/#!/download/iphone&quot; rel=&quot;nofollow&quot;&gt;Twitter for iPhone&lt;/a&gt;",
+      "text": "Twitter is kinda fun... Kinda!",
+      "to_user": null,
+      "to_user_id": null,
+      "to_user_id_str": null,
+      "to_user_name": null
+    },
+    {
+      "created_at": "Mon, 23 Apr 2011 20:20:57 +0000",
       "from_user": "JessRoveel",
       "from_user_id": 99818387,
       "from_user_id_str": "99818387",
@@ -340,7 +450,7 @@
       "to_user_name": null
     }
   ],
-  "results_per_page": 15,
+  "results_per_page": 20,
   "since_id": 0,
   "since_id_str": "0"
 }

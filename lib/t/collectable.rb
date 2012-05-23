@@ -33,8 +33,9 @@ module T
         opts[:max_id] = max_id unless max_id.nil?
         opts[key] = number unless number >= MAX_NUM_RESULTS
         if number > 0
-          number -= MAX_NUM_RESULTS
-          yield opts
+          statuses = yield opts
+          number -= statuses.length
+          statuses
         end
       end.flatten.compact
     end

@@ -1,4 +1,5 @@
 require 'thor'
+require 'twitter'
 
 module T
   autoload :Collectable, 't/collectable'
@@ -175,7 +176,6 @@ module T
     def users(query)
       require 't/core_ext/enumerable'
       require 'retryable'
-      require 'twitter'
       users = 1.upto(50).threaded_map do |page|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.user_search(query, :page => page, :per_page => MAX_USERS_PER_REQUEST)

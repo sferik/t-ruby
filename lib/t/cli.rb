@@ -1,4 +1,5 @@
 require 'thor'
+require 'twitter'
 
 module T
   autoload :Authorizable, 't/authorizable'
@@ -100,7 +101,6 @@ module T
       end
       require 't/core_ext/enumerable'
       require 'retryable'
-      require 'twitter'
       users = users.threaded_map do |user|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.block(user)
@@ -209,7 +209,6 @@ module T
       require 'active_support/core_ext/array/grouping'
       require 't/core_ext/enumerable'
       require 'retryable'
-      require 'twitter'
       users = disciple_ids.in_groups_of(MAX_USERS_PER_REQUEST, false).threaded_map do |disciple_id_group|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.users(disciple_id_group)
@@ -300,7 +299,6 @@ module T
       status_ids.map!(&:to_i)
       require 't/core_ext/enumerable'
       require 'retryable'
-      require 'twitter'
       favorites = status_ids.threaded_map do |status_id|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.favorite(status_id)
@@ -348,7 +346,6 @@ module T
       end
       require 't/core_ext/enumerable'
       require 'retryable'
-      require 'twitter'
       users = users.threaded_map do |user|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.follow(user)
@@ -387,7 +384,6 @@ module T
       require 'active_support/core_ext/array/grouping'
       require 't/core_ext/enumerable'
       require 'retryable'
-      require 'twitter'
       users = following_ids.in_groups_of(MAX_USERS_PER_REQUEST, false).threaded_map do |following_id_group|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.users(following_id_group)
@@ -423,7 +419,6 @@ module T
       require 'active_support/core_ext/array/grouping'
       require 't/core_ext/enumerable'
       require 'retryable'
-      require 'twitter'
       users = follower_ids.in_groups_of(MAX_USERS_PER_REQUEST, false).threaded_map do |follower_id_group|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.users(follower_id_group)
@@ -463,7 +458,6 @@ module T
       require 'active_support/core_ext/array/grouping'
       require 't/core_ext/enumerable'
       require 'retryable'
-      require 'twitter'
       users = friend_ids.in_groups_of(MAX_USERS_PER_REQUEST, false).threaded_map do |friend_id_group|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.users(friend_id_group)
@@ -503,7 +497,6 @@ module T
       require 'active_support/core_ext/array/grouping'
       require 't/core_ext/enumerable'
       require 'retryable'
-      require 'twitter'
       users = leader_ids.in_groups_of(MAX_USERS_PER_REQUEST, false).threaded_map do |leader_id_group|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.users(leader_id_group)
@@ -629,7 +622,6 @@ module T
       end
       require 't/core_ext/enumerable'
       require 'retryable'
-      require 'twitter'
       users = users.threaded_map do |user|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.report_spam(user)
@@ -646,7 +638,6 @@ module T
       status_ids.map!(&:to_i)
       require 't/core_ext/enumerable'
       require 'retryable'
-      require 'twitter'
       retweets = status_ids.threaded_map do |status_id|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.retweet(status_id, :trim_user => true)
@@ -831,7 +822,6 @@ module T
       end
       require 't/core_ext/enumerable'
       require 'retryable'
-      require 'twitter'
       users = users.threaded_map do |user|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.unfollow(user)

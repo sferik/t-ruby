@@ -1,3 +1,5 @@
+require 'oauth'
+
 module T
   module Authorizable
 
@@ -11,7 +13,6 @@ module T
     end
 
     def consumer
-      require 'oauth'
       OAuth::Consumer.new(
         options['consumer-key'],
         options['consumer-secret'],

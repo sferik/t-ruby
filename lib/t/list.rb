@@ -1,4 +1,5 @@
 require 'thor'
+require 'twitter'
 
 module T
   autoload :Collectable, 't/collectable'
@@ -37,7 +38,6 @@ module T
       require 'active_support/core_ext/array/grouping'
       require 't/core_ext/enumerable'
       require 'retryable'
-      require 'twitter'
       users.in_groups_of(MAX_USERS_PER_REQUEST, false).threaded_each do |user_id_group|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.list_add_members(list, user_id_group)
@@ -144,7 +144,6 @@ module T
       require 'active_support/core_ext/array/grouping'
       require 't/core_ext/enumerable'
       require 'retryable'
-      require 'twitter'
       users.in_groups_of(MAX_USERS_PER_REQUEST, false).threaded_each do |user_id_group|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.list_remove_members(list, user_id_group)

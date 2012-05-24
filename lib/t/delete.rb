@@ -1,4 +1,5 @@
 require 'thor'
+require 'twitter'
 
 module T
   autoload :RCFile, 't/rcfile'
@@ -26,7 +27,6 @@ module T
       end
       require 't/core_ext/enumerable'
       require 'retryable'
-      require 'twitter'
       users = users.threaded_map do |user|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.unblock(user)

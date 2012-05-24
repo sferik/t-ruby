@@ -1,5 +1,3 @@
-require 'retryable'
-
 module T
   module Collectable
 
@@ -10,6 +8,8 @@ module T
     end
 
     def collect_with_cursor(collection=[], cursor=-1, &block)
+      require 'retryable'
+      require 'twitter'
       object = retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
         yield cursor
       end
@@ -18,6 +18,8 @@ module T
     end
 
     def collect_with_max_id(collection=[], max_id=nil, &block)
+      require 'retryable'
+      require 'twitter'
       array = retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
         yield max_id
       end

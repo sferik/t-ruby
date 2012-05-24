@@ -1,14 +1,10 @@
-require 'csv'
-# 'fastercsv' required on Ruby versions < 1.9
-require 'fastercsv' unless Array.new.respond_to?(:to_csv)
-require 'htmlentities'
-require 't/collectable'
-require 't/printable'
-require 't/rcfile'
-require 't/requestable'
 require 'thor'
 
 module T
+  autoload :Collectable, 't/collectable'
+  autoload :Printable, 't/printable'
+  autoload :RCFile, 't/rcfile'
+  autoload :Requestable, 't/requestable'
   class Search < Thor
     include T::Collectable
     include T::Printable
@@ -35,7 +31,10 @@ module T
       statuses = collect_with_rpp(rpp) do |opts|
         client.search(query, opts)
       end
+      require 'htmlentities'
       if options['csv']
+        require 'csv'
+        require 'fastercsv' unless Array.new.respond_to?(:to_csv)
         say STATUS_HEADINGS.to_csv unless statuses.empty?
         statuses.each do |status|
           say [status.id, csv_formatted_time(status), status.from_user, HTMLEntities.new.decode(status.full_text)].to_csv
@@ -80,6 +79,7 @@ module T
         list = owner
         owner = @rcfile.active_profile[0]
       else
+        require 't/core_ext/string'
         owner = if options['id']
           owner.to_i
         else
@@ -138,6 +138,7 @@ module T
       query = args.pop
       user = args.pop
       if user
+        require 't/core_ext/string'
         user = if options['id']
           user.to_i
         else
@@ -172,6 +173,9 @@ module T
     method_option "tweets", :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by number of Tweets."
     method_option "unsorted", :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
     def users(query)
+      require 't/core_ext/enumerable'
+      require 'retryable'
+      require 'twitter'
       users = 1.upto(50).threaded_map do |page|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.user_search(query, :page => page, :per_page => MAX_USERS_PER_REQUEST)

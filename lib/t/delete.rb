@@ -1,11 +1,8 @@
-require 'retryable'
-require 't/core_ext/enumerable'
-require 't/core_ext/string'
-require 't/rcfile'
-require 't/requestable'
 require 'thor'
 
 module T
+  autoload :RCFile, 't/rcfile'
+  autoload :Requestable, 't/requestable'
   class Delete < Thor
     include T::Requestable
 
@@ -21,11 +18,15 @@ module T
     method_option "force", :aliases => "-f", :type => :boolean, :default => false
     def block(user, *users)
       users.unshift(user)
+      require 't/core_ext/string'
       if options['id']
         users.map!(&:to_i)
       else
         users.map!(&:strip_ats)
       end
+      require 't/core_ext/enumerable'
+      require 'retryable'
+      require 'twitter'
       users = users.threaded_map do |user|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.unblock(user)
@@ -41,6 +42,7 @@ module T
     method_option "force", :aliases => "-f", :type => :boolean, :default => false
     def dm(direct_message_id, *direct_message_ids)
       direct_message_ids.unshift(direct_message_id)
+      require 't/core_ext/string'
       direct_message_ids.map!(&:to_i)
       direct_message_ids.each do |direct_message_id|
         unless options['force']
@@ -57,6 +59,7 @@ module T
     method_option "force", :aliases => "-f", :type => :boolean, :default => false
     def favorite(status_id, *status_ids)
       status_ids.unshift(status_id)
+      require 't/core_ext/string'
       status_ids.map!(&:to_i)
       status_ids.each do |status_id|
         unless options['force']
@@ -73,7 +76,10 @@ module T
     method_option "force", :aliases => "-f", :type => :boolean, :default => false
     method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify list via ID instead of slug."
     def list(list)
-      list = list.to_i if options['id']
+      if options['id']
+        require 't/core_ext/string'
+        list = list.to_i
+      end
       list = client.list(list)
       unless options['force']
         return unless yes? "Are you sure you want to permanently delete the list \"#{list.name}\"? [y/N]"
@@ -86,6 +92,7 @@ module T
     method_option "force", :aliases => "-f", :type => :boolean, :default => false
     def status(status_id, *status_ids)
       status_ids.unshift(status_id)
+      require 't/core_ext/string'
       status_ids.map!(&:to_i)
       status_ids.each do |status_id|
         unless options['force']

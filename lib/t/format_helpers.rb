@@ -1,9 +1,6 @@
-require 'active_support/core_ext/array/grouping'
-require 'date'
-
 module T
   module FormatHelpers
-    private
+  private
 
     # https://github.com/rails/rails/blob/bd8a970/actionpack/lib/action_view/helpers/date_helper.rb
     def distance_of_time_in_words(from_time, to_time=Time.now)
@@ -56,6 +53,7 @@ module T
 
     def number_with_delimiter(number, delimiter=",")
       digits = number.to_s.split(//)
+      require 'active_support/core_ext/array/grouping'
       groups = digits.reverse.in_groups_of(3).map{|g| g.join('')}
       groups.join(delimiter).reverse
     end

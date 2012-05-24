@@ -1,6 +1,6 @@
-require 'time'
 require 'active_support/string_inquirer'
 require 't/cli'
+require 'time'
 
 module T
   class << self

@@ -1,18 +1,11 @@
-require 'active_support/core_ext/array/grouping'
-require 't/format_helpers'
-require 'csv'
-# 'fastercsv' required on Ruby versions < 1.9
-require 'fastercsv' unless Array.new.respond_to?(:to_csv)
-require 'retryable'
-require 't/collectable'
-require 't/core_ext/enumerable'
-require 't/core_ext/string'
-require 't/printable'
-require 't/rcfile'
-require 't/requestable'
 require 'thor'
 
 module T
+  autoload :Collectable, 't/collectable'
+  autoload :FormatHelpers, 't/format_helpers'
+  autoload :Printable, 't/printable'
+  autoload :RCFile, 't/rcfile'
+  autoload :Requestable, 't/requestable'
   class List < Thor
     include T::Collectable
     include T::Printable
@@ -35,11 +28,16 @@ module T
     method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     def add(list, user, *users)
       users.unshift(user)
+      require 't/core_ext/string'
       if options['id']
         users.map!(&:to_i)
       else
         users.map!(&:strip_ats)
       end
+      require 'active_support/core_ext/array/grouping'
+      require 't/core_ext/enumerable'
+      require 'retryable'
+      require 'twitter'
       users.in_groups_of(MAX_USERS_PER_REQUEST, false).threaded_each do |user_id_group|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.list_add_members(list, user_id_group)
@@ -57,8 +55,8 @@ module T
 
     desc "create LIST [DESCRIPTION]", "Create a new list."
     method_option "private", :aliases => "-p", :type => :boolean
-    def create(list, description="")
-      opts = description.blank? ? {} : {:description => description}
+    def create(list, description=nil)
+      opts = description ? {:description => description} : {}
       opts.merge!(:mode => 'private') if options['private']
       client.list_create(list, opts)
       say "@#{@rcfile.active_profile[0]} created the list \"#{list}\"."
@@ -72,6 +70,7 @@ module T
         list = owner
         owner = @rcfile.active_profile[0]
       else
+        require 't/core_ext/string'
         owner = if options['id']
           owner.to_i
         else
@@ -80,6 +79,8 @@ module T
       end
       list = client.list(owner, list)
       if options['csv']
+        require 'csv'
+        require 'fastercsv' unless Array.new.respond_to?(:to_csv)
         say ["ID", "Description", "Slug", "Screen name", "Created at", "Members", "Subscribers", "Following", "Mode", "URL"].to_csv
         say [list.id, list.description, list.slug, list.user.screen_name, csv_formatted_time(list), list.member_count, list.subscriber_count, list.following?, list.mode, "https://twitter.com#{list.uri}"].to_csv
       else
@@ -117,6 +118,7 @@ module T
         list = owner
         owner = @rcfile.active_profile[0]
       else
+        require 't/core_ext/string'
         owner = if options['id']
           owner.to_i
         else
@@ -133,11 +135,16 @@ module T
     method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     def remove(list, user, *users)
       users.unshift(user)
+      require 't/core_ext/string'
       if options['id']
         users.map!(&:to_i)
       else
         users.map!(&:strip_ats)
       end
+      require 'active_support/core_ext/array/grouping'
+      require 't/core_ext/enumerable'
+      require 'retryable'
+      require 'twitter'
       users.in_groups_of(MAX_USERS_PER_REQUEST, false).threaded_each do |user_id_group|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.list_remove_members(list, user_id_group)
@@ -165,6 +172,7 @@ module T
         list = owner
         owner = @rcfile.active_profile[0]
       else
+        require 't/core_ext/string'
         owner = if options['id']
           owner.to_i
         else

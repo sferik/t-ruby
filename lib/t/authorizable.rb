@@ -1,9 +1,17 @@
-require 'oauth'
-
 module T
   module Authorizable
 
+    DEFAULT_HOST = 'api.twitter.com'
+    DEFAULT_PROTOCOL = 'https'
+
+  private
+
+    def base_url
+      "#{protocol}://#{host}"
+    end
+
     def consumer
+      require 'oauth'
       OAuth::Consumer.new(
         options['consumer-key'],
         options['consumer-secret'],

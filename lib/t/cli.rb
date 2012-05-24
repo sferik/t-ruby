@@ -1,31 +1,18 @@
-require 'active_support/core_ext/array/grouping'
-require 'active_support/core_ext/date/calculations'
-require 'active_support/core_ext/integer/time'
-require 'active_support/core_ext/numeric/time'
-require 't/format_helpers'
-require 'csv'
-# 'fastercsv' required on Ruby versions < 1.9
-require 'fastercsv' unless Array.new.respond_to?(:to_csv)
-require 'open-uri'
-require 'retryable'
-require 't/authorizable'
-require 't/collectable'
-require 't/core_ext/string'
-require 't/delete'
-require 't/list'
-require 't/printable'
-require 't/rcfile'
-require 't/requestable'
-require 't/search'
-require 't/set'
-require 't/stream'
-require 't/version'
 require 'thor'
-require 'time'
-require 'twitter'
-require 'yaml'
 
 module T
+  autoload :Authorizable, 't/authorizable'
+  autoload :Collectable, 't/collectable'
+  autoload :Delete, 't/delete'
+  autoload :FormatHelpers, 't/format_helpers'
+  autoload :List, 't/list'
+  autoload :Printable, 't/printable'
+  autoload :RCFile, 't/rcfile'
+  autoload :Requestable, 't/requestable'
+  autoload :Search, 't/search'
+  autoload :Set, 't/set'
+  autoload :Stream, 't/stream'
+  autoload :Version, 't/version'
   class CLI < Thor
     include T::Authorizable
     include T::Collectable
@@ -105,11 +92,15 @@ module T
     method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     def block(user, *users)
       users.unshift(user)
+      require 't/core_ext/string'
       if options['id']
         users.map!(&:to_i)
       else
         users.map!(&:strip_ats)
       end
+      require 't/core_ext/enumerable'
+      require 'retryable'
+      require 'twitter'
       users = users.threaded_map do |user|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.block(user)
@@ -132,10 +123,13 @@ module T
         client.direct_messages(opts)
       end
       direct_messages.reverse! if options['reverse']
+      require 'htmlentities'
       if options['csv']
+        require 'csv'
+        require 'fastercsv' unless Array.new.respond_to?(:to_csv)
         say DIRECT_MESSAGE_HEADINGS.to_csv unless direct_messages.empty?
         direct_messages.each do |direct_message|
-          say [direct_message.id, csv_formatted_time(direct_message), direct_message.sender.screen_name, direct_message.text].to_csv
+          say [direct_message.id, csv_formatted_time(direct_message), direct_message.sender.screen_name, HTMLEntities.new.decode(direct_message.text)].to_csv
         end
       elsif options['long']
         array = direct_messages.map do |direct_message|
@@ -162,10 +156,13 @@ module T
         client.direct_messages_sent(opts)
       end
       direct_messages.reverse! if options['reverse']
+      require 'htmlentities'
       if options['csv']
+        require 'csv'
+        require 'fastercsv' unless Array.new.respond_to?(:to_csv)
         say DIRECT_MESSAGE_HEADINGS.to_csv unless direct_messages.empty?
         direct_messages.each do |direct_message|
-          say [direct_message.id, csv_formatted_time(direct_message), direct_message.recipient.screen_name, direct_message.text].to_csv
+          say [direct_message.id, csv_formatted_time(direct_message), direct_message.recipient.screen_name, HTMLEntities.new.decode(direct_message.text)].to_csv
         end
       elsif options['long']
         array = direct_messages.map do |direct_message|
@@ -195,6 +192,7 @@ module T
     method_option "unsorted", :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
     def groupies(user=nil)
       if user
+        require 't/core_ext/string'
         user = if options['id']
           user.to_i
         else
@@ -208,6 +206,10 @@ module T
         client.friend_ids(user, :cursor => cursor)
       end
       disciple_ids = (follower_ids - following_ids)
+      require 'active_support/core_ext/array/grouping'
+      require 't/core_ext/enumerable'
+      require 'retryable'
+      require 'twitter'
       users = disciple_ids.in_groups_of(MAX_USERS_PER_REQUEST, false).threaded_map do |disciple_id_group|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.users(disciple_id_group)
@@ -220,6 +222,7 @@ module T
     desc "dm USER MESSAGE", "Sends that person a Direct Message."
     method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
     def dm(user, message)
+      require 't/core_ext/string'
       user = if options['id']
         user.to_i
       else
@@ -238,6 +241,7 @@ module T
         list = owner
         owner = @rcfile.active_profile[0]
       else
+        require 't/core_ext/string'
         owner = if options['id']
           client.user(owner.to_i).screen_name
         else
@@ -247,6 +251,7 @@ module T
       if user.nil?
         user = @rcfile.active_profile[0]
       else
+        require 't/core_ext/string'
         user = if options['id']
           user = client.user(user.to_i).screen_name
         else
@@ -265,6 +270,7 @@ module T
     desc "does_follow USER [USER]", "Find out whether one user follows another."
     method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
     def does_follow(user1, user2=nil)
+      require 't/core_ext/string'
       user1 = if options['id']
         client.user(user1.to_i).screen_name
       else
@@ -292,6 +298,9 @@ module T
     def favorite(status_id, *status_ids)
       status_ids.unshift(status_id)
       status_ids.map!(&:to_i)
+      require 't/core_ext/enumerable'
+      require 'retryable'
+      require 'twitter'
       favorites = status_ids.threaded_map do |status_id|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.favorite(status_id)
@@ -312,6 +321,7 @@ module T
     method_option "reverse", :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     def favorites(user=nil)
       if user
+        require 't/core_ext/string'
         user = if options['id']
           user.to_i
         else
@@ -330,11 +340,15 @@ module T
     method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     def follow(user, *users)
       users.unshift(user)
+      require 't/core_ext/string'
       if options['id']
         users.map!(&:to_i)
       else
         users.map!(&:strip_ats)
       end
+      require 't/core_ext/enumerable'
+      require 'retryable'
+      require 'twitter'
       users = users.threaded_map do |user|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.follow(user)
@@ -360,6 +374,7 @@ module T
     method_option "unsorted", :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
     def followings(user=nil)
       if user
+        require 't/core_ext/string'
         user = if options['id']
           user.to_i
         else
@@ -369,6 +384,10 @@ module T
       following_ids = collect_with_cursor do |cursor|
         client.friend_ids(user, :cursor => cursor)
       end
+      require 'active_support/core_ext/array/grouping'
+      require 't/core_ext/enumerable'
+      require 'retryable'
+      require 'twitter'
       users = following_ids.in_groups_of(MAX_USERS_PER_REQUEST, false).threaded_map do |following_id_group|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.users(following_id_group)
@@ -391,6 +410,7 @@ module T
     method_option "unsorted", :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
     def followers(user=nil)
       if user
+        require 't/core_ext/string'
         user = if options['id']
           user.to_i
         else
@@ -400,6 +420,10 @@ module T
       follower_ids = collect_with_cursor do |cursor|
         client.follower_ids(user, :cursor => cursor)
       end
+      require 'active_support/core_ext/array/grouping'
+      require 't/core_ext/enumerable'
+      require 'retryable'
+      require 'twitter'
       users = follower_ids.in_groups_of(MAX_USERS_PER_REQUEST, false).threaded_map do |follower_id_group|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.users(follower_id_group)
@@ -422,6 +446,7 @@ module T
     method_option "unsorted", :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
     def friends(user=nil)
       if user
+        require 't/core_ext/string'
         user = if options['id']
           user.to_i
         else
@@ -435,6 +460,10 @@ module T
         client.follower_ids(user, :cursor => cursor)
       end
       friend_ids = (following_ids & follower_ids)
+      require 'active_support/core_ext/array/grouping'
+      require 't/core_ext/enumerable'
+      require 'retryable'
+      require 'twitter'
       users = friend_ids.in_groups_of(MAX_USERS_PER_REQUEST, false).threaded_map do |friend_id_group|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.users(friend_id_group)
@@ -457,6 +486,7 @@ module T
     method_option "unsorted", :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
     def leaders(user=nil)
       if user
+        require 't/core_ext/string'
         user = if options['id']
           user.to_i
         else
@@ -470,6 +500,10 @@ module T
         client.follower_ids(user, :cursor => cursor)
       end
       leader_ids = (following_ids - follower_ids)
+      require 'active_support/core_ext/array/grouping'
+      require 't/core_ext/enumerable'
+      require 'retryable'
+      require 'twitter'
       users = leader_ids.in_groups_of(MAX_USERS_PER_REQUEST, false).threaded_map do |leader_id_group|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.users(leader_id_group)
@@ -490,6 +524,7 @@ module T
     method_option "unsorted", :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
     def lists(user=nil)
       if user
+        require 't/core_ext/string'
         user = if options['id']
           user.to_i
         else
@@ -534,6 +569,7 @@ module T
         status = client.status(user.to_i, :include_my_retweet => false)
         Launchy.open("https://twitter.com/#{status.from_user}/status/#{status.id}", :dry_run => options['display-url'])
       else
+        require 't/core_ext/string'
         Launchy.open("https://twitter.com/#{user.strip_ats}", :dry_run => options['display-url'])
       end
     end
@@ -543,6 +579,8 @@ module T
     def rate_limit
       rate_limit_status = client.rate_limit_status
       if options['csv']
+        require 'csv'
+        require 'fastercsv' unless Array.new.respond_to?(:to_csv)
         say ["Hourly limit", "Remaining hits", "Reset time"].to_csv
         say [rate_limit_status.hourly_limit, rate_limit_status.remaining_hits, csv_formatted_time(rate_limit_status, :reset_time)].to_csv
       else
@@ -569,6 +607,7 @@ module T
         users += Twitter::Extractor.extract_mentioned_screen_names(status.full_text)
         users.uniq!
       end
+      require 't/core_ext/string'
       users.map!(&:prepend_at)
       opts = {:in_reply_to_status_id => status.id, :trim_user => true}
       opts.merge!(:lat => location.lat, :long => location.lng) if options['location']
@@ -582,11 +621,15 @@ module T
     method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     def report_spam(user, *users)
       users.unshift(user)
+      require 't/core_ext/string'
       if options['id']
         users.map!(&:to_i)
       else
         users.map!(&:strip_ats)
       end
+      require 't/core_ext/enumerable'
+      require 'retryable'
+      require 'twitter'
       users = users.threaded_map do |user|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.report_spam(user)
@@ -601,6 +644,9 @@ module T
     def retweet(status_id, *status_ids)
       status_ids.unshift(status_id)
       status_ids.map!(&:to_i)
+      require 't/core_ext/enumerable'
+      require 'retryable'
+      require 'twitter'
       retweets = status_ids.threaded_map do |status_id|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.retweet(status_id, :trim_user => true)
@@ -621,6 +667,7 @@ module T
     method_option "reverse", :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     def retweets(user=nil)
       if user
+        require 't/core_ext/string'
         user = if options['id']
           user.to_i
         else
@@ -661,7 +708,10 @@ module T
       elsif status.geo
         reverse_geocode(status.geo)
       end
+      require 'htmlentities'
       if options['csv']
+        require 'csv'
+        require 'fastercsv' unless Array.new.respond_to?(:to_csv)
         say ["ID", "Text", "Screen name", "Posted at", "Location", "Retweets", "Source", "URL"].to_csv
         say [status.id, HTMLEntities.new.decode(status.full_text), status.from_user, csv_formatted_time(status), location, status.retweet_count, strip_tags(status.source), "https://twitter.com/#{status.from_user}/status/#{status.id}"].to_csv
       else
@@ -693,6 +743,7 @@ module T
     method_option "unsorted", :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
     def suggest(user=nil)
       if user
+        require 't/core_ext/string'
         user = if options['id']
           user.to_i
         else
@@ -713,6 +764,7 @@ module T
     def timeline(user=nil)
       count = options['number'] || DEFAULT_NUM_RESULTS
       if user
+        require 't/core_ext/string'
         user = if options['id']
           user.to_i
         else
@@ -749,6 +801,8 @@ module T
       places = places.sort_by{|places| places.name.downcase} unless options['unsorted']
       places.reverse! if options['reverse']
       if options['csv']
+        require 'csv'
+        require 'fastercsv' unless Array.new.respond_to?(:to_csv)
         say TREND_HEADINGS.to_csv unless places.empty?
         places.each do |place|
           say [place.woeid, place.parent_id, place.place_type, place.name, place.country].to_csv
@@ -769,11 +823,15 @@ module T
     method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     def unfollow(user, *users)
       users.unshift(user)
+      require 't/core_ext/string'
       if options['id']
         users.map!(&:to_i)
       else
         users.map!(&:strip_ats)
       end
+      require 't/core_ext/enumerable'
+      require 'retryable'
+      require 'twitter'
       users = users.threaded_map do |user|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.unfollow(user)
@@ -811,6 +869,7 @@ module T
     method_option "unsorted", :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
     def users(user, *users)
       users.unshift(user)
+      require 't/core_ext/string'
       if options['id']
         users.map!(&:to_i)
       else
@@ -831,13 +890,17 @@ module T
     method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
     def whois(user)
+      require 't/core_ext/string'
       user = if options['id']
         user.to_i
       else
         user.strip_ats
       end
       user = client.user(user)
+      require 'htmlentities'
       if options['csv']
+        require 'csv'
+        require 'fastercsv' unless Array.new.respond_to?(:to_csv)
         say ["ID", "Verified", "Name", "Screen name", "Bio", "Location", "Following", "Last update", "Lasted updated at", "Since", "Tweets", "Favorites", "Listed", "Following", "Followers", "URL"].to_csv
         say [user.id, user.verified?, user.name, user.screen_name, user.description, user.location, user.following?, HTMLEntities.new.decode(user.status.text), csv_formatted_time(user.status), csv_formatted_time(user), user.statuses_count, user.favourites_count, user.listed_count, user.friends_count, user.followers_count, user.url].to_csv
       else
@@ -880,6 +943,7 @@ module T
     def location
       return @location if @location
       require 'geokit'
+      require 'open-uri'
       ip_address = Kernel::open("http://checkip.dyndns.org/") do |body|
         /(?:\d{1,3}\.){3}\d{1,3}/.match(body.read)[0]
       end

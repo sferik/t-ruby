@@ -1,5 +1,4 @@
 require 'singleton'
-require 'yaml'
 
 class RCFile
   FILE_NAME = '.trc'
@@ -60,6 +59,7 @@ class RCFile
   end
 
   def load
+    require 'yaml'
     YAML.load_file(@path)
   rescue Errno::ENOENT
     default_structure
@@ -86,6 +86,7 @@ private
   end
 
   def write
+    require 'yaml'
     File.open(@path, File::RDWR|File::TRUNC|File::CREAT, 0600) do |rcfile|
       rcfile.write @data.to_yaml
     end

@@ -1,9 +1,8 @@
-require 't/core_ext/string'
-require 't/rcfile'
-require 't/requestable'
 require 'thor'
 
 module T
+  autoload :RCFile, 't/rcfile'
+  autoload :Requestable, 't/requestable'
   class Set < Thor
     include T::Requestable
 
@@ -16,6 +15,7 @@ module T
 
     desc "active SCREEN_NAME [CONSUMER_KEY]", "Set your active account."
     def active(screen_name, consumer_key=nil)
+      require 't/core_ext/string'
       screen_name = screen_name.strip_ats
       @rcfile.path = options['profile'] if options['profile']
       consumer_key = @rcfile[screen_name].keys.last if consumer_key.nil?

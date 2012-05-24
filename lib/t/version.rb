@@ -13,7 +13,7 @@ module T
 
     # @return [Integer]
     def self.patch
-      7
+      8
     end
 
     # @return [String, NilClass]

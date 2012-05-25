@@ -160,7 +160,7 @@ describe T::Delete do
         with(:query => {:owner_screen_name => "sferik", :slug => 'presidents'}).
         to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       stub_delete("/1/lists/destroy.json").
-        with(:query => {:owner_screen_name => "sferik", :list_id => "8863586"}).
+        with(:query => {:owner_id => "7505382", :list_id => "8863586"}).
         to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
@@ -170,7 +170,7 @@ describe T::Delete do
       a_get("/1/account/verify_credentials.json").
         should have_been_made
       a_delete("/1/lists/destroy.json").
-        with(:query => {:owner_screen_name => "sferik", :list_id => "8863586"}).
+        with(:query => {:owner_id => "7505382", :list_id => "8863586"}).
         should have_been_made
     end
     context "yes" do
@@ -198,7 +198,7 @@ describe T::Delete do
         a_get("/1/account/verify_credentials.json").
           should have_been_made
         a_delete("/1/lists/destroy.json").
-          with(:query => {:owner_screen_name => "sferik", :list_id => "8863586"}).
+          with(:query => {:owner_id => "7505382", :list_id => "8863586"}).
           should have_been_made
       end
       it "should have the correct output" do
@@ -223,7 +223,7 @@ describe T::Delete do
         a_get("/1/account/verify_credentials.json").
           should have_been_made
         a_delete("/1/lists/destroy.json").
-          with(:query => {:owner_screen_name => "sferik", :list_id => "8863586"}).
+          with(:query => {:owner_id => "7505382", :list_id => "8863586"}).
           should have_been_made
       end
     end

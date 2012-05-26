@@ -1,8 +1,8 @@
 # encoding: utf-8
 
+require 'oauth'
 require 'thor'
 require 'twitter'
-require 'oath'
 
 module T
   autoload :Authorizable, 't/authorizable'

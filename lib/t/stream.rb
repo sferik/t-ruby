@@ -46,7 +46,7 @@ module T
           end
           print_table([array], :truncate => STDOUT.tty?)
         else
-          print_status(status)
+          print_message(status.user.screen_name, status.text)
         end
       end
       client.sample
@@ -83,7 +83,7 @@ module T
           end
           print_table([array], :truncate => STDOUT.tty?)
         else
-          print_status(status)
+          print_message(status.user.screen_name, status.text)
         end
       end
       client.track(keywords)
@@ -110,7 +110,7 @@ module T
           end
           print_table([array], :truncate => STDOUT.tty?)
         else
-          print_status(status)
+          print_message(status.user.screen_name, status.text)
         end
       end
       client.userstream
@@ -144,7 +144,7 @@ module T
           end
           print_table([array], :truncate => STDOUT.tty?)
         else
-          print_status(status)
+          print_message(status.user.screen_name, status.text)
         end
       end
       client.follow(user_ids)

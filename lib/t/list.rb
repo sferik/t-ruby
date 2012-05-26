@@ -14,7 +14,6 @@ module T
     include T::FormatHelpers
 
     DEFAULT_NUM_RESULTS = 20
-    MAX_SCREEN_NAME_SIZE = 20
     MAX_USERS_PER_LIST = 500
     MAX_USERS_PER_REQUEST = 100
 

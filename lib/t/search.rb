@@ -13,7 +13,6 @@ module T
 
     DEFAULT_NUM_RESULTS = 20
     MAX_NUM_RESULTS = 200
-    MAX_SCREEN_NAME_SIZE = 20
     MAX_USERS_PER_REQUEST = 20
 
     check_unknown_options!
@@ -49,7 +48,7 @@ module T
       else
         say unless statuses.empty?
         statuses.each do |status|
-          print_status(status)
+          print_message(status.from_user, status.full_text)
         end
       end
     end

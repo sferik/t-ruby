@@ -42,8 +42,82 @@ describe T::Search do
     end
     it "should have the correct output" do
       @search.all("twitter")
-      $stdout.string.should =~ /@JessRoveel/
-      $stdout.string.should =~ /Pondre lo mas importante de Hamlet en Twitter para recordarlo mejor :D/
+      $stdout.string.should == <<-eos
+
+\e[1m\e[33m   @Somedude\e[0m
+   Gotta get right with twitter
+
+\e[1m\e[33m   @TestMan\e[0m
+   Twitter to Facebook test
+
+\e[1m\e[33m   @Jena_Jones\e[0m
+   test my new twitter..... :)
+
+\e[1m\e[33m   @misterpic\e[0m
+   Wallah there should be a test before you can get a twitter account some 
+   people are so dumb... better
+
+\e[1m\e[33m   @RRabbit\e[0m
+   Twitter is kinda fun... Kinda!
+
+\e[1m\e[33m   @JessRoveel\e[0m
+   Pondre lo mas importante de Hamlet en Twitter para recordarlo mejor :D
+
+\e[1m\e[33m   @lauravgeest\e[0m
+   Twitter doet het al 7 uur niet meer
+
+\e[1m\e[33m   @Jenny_Bearx333\e[0m
+   I keep thinking that twitter is @instagram , and therefore double tap all the 
+   pics I like... #NotWorking
+
+\e[1m\e[33m   @misspoxtonX\e[0m
+   RT @jordantaylorhi: twitter friends > twats at school
+
+\e[1m\e[33m   @PatrickBrickman\e[0m
+   RT @zeus30hightower: Too all Bama fans and followers my cousin mark Barron 
+   doesn't have a twitter so please disregard any tweets from that user
+
+\e[1m\e[33m   @KolonelX\e[0m
+   Ik refresh twitter op me telefoon terwijl ik tweetdeck voor me open heb staan
+
+\e[1m\e[33m   @VLGPRLG5\e[0m
+   @mikeyway and you too RT @NimcyGD: @gerardway Get your ass back to twitter, 
+   okay? :3
+
+\e[1m\e[33m   @xRhiBabyx\e[0m
+   Trying to persuade the boyf to get on twitter and failing. Help? @holly_haime 
+   @Ckwarburton @samwarburton_ @chrishaime @rowloboy
+
+\e[1m\e[33m   @juliotrv\e[0m
+   RT @lookinglassbr: Lançamentos outono-inverno 2012...CONFIRA em 
+   http://t.co/YAk8OXp7 http://t.co/fmmrVrbG
+
+\e[1m\e[33m   @shanleyaustin27\e[0m
+   RT @caaammmmi: @shanleyaustin27 .....and this hahahahaa http://t.co/wzCMx6ZU
+
+\e[1m\e[33m   @Dame_Valuta\e[0m
+   RT @Paiser10: Great @chelseafc training at Nou Camp! #cfc 
+   http://t.co/k00TnRyR
+
+\e[1m\e[33m   @miss_indyiah\e[0m
+   smh, @IndianaHustle done turned into a twitter addict..fuck goin on lol ?
+
+\e[1m\e[33m   @CAROLINEWOLLER\e[0m
+   RT @Mark_Ingram28: To all Bama fans and followers, please unfollow and pay no 
+   attention to any user posing to be Mark Barron. My bro doesn't have a 
+   twitter!
+
+\e[1m\e[33m   @shelbytrenchdww\e[0m
+   RT @The90sLife: Admit it, we all have a cabinet that looks like this. 
+   http://t.co/gQEkQw5G
+
+\e[1m\e[33m   @kabos84\e[0m
+   RT @JF_q8: بالله عليكم ،، مو عيب !!!
+
+
+   .. http://t.co/e29GV7Ow
+
+      eos
     end
     context "--csv" do
       before do
@@ -173,9 +247,12 @@ ID                  Posted at     Screen name       Text
     end
     it "should have the correct output" do
       @search.favorites("twitter")
-      $stdout.string.should =~ /@bartt/
-      $stdout.string.should =~ /@noahlt @gaarf Yup, now owning @twitter -> FB from FE to daemons\. Lot’s/
-      $stdout.string.should =~ /fun\. Expect improvements in the weeks to come\./
+      $stdout.string.should == <<-eos
+\e[1m\e[33m   @bartt\e[0m
+   @noahlt @gaarf Yup, now owning @twitter -> FB from FE to daemons. Lot’s of 
+   fun. Expect improvements in the weeks to come.
+
+      eos
     end
     context "--csv" do
       before do
@@ -236,9 +313,12 @@ ID                  Posted at     Screen name  Text
     end
     it "should have the correct output" do
       @search.mentions("twitter")
-      $stdout.string.should =~ /@bartt/
-      $stdout.string.should =~ /@noahlt @gaarf Yup, now owning @twitter -> FB from FE to daemons\. Lot’s/
-      $stdout.string.should =~ /fun\. Expect improvements in the weeks to come\./
+      $stdout.string.should == <<-eos
+\e[1m\e[33m   @bartt\e[0m
+   @noahlt @gaarf Yup, now owning @twitter -> FB from FE to daemons. Lot’s of 
+   fun. Expect improvements in the weeks to come.
+
+      eos
     end
     context "--csv" do
       before do
@@ -299,9 +379,12 @@ ID                  Posted at     Screen name  Text
     end
     it "should have the correct output" do
       @search.list("presidents", "twitter")
-      $stdout.string.should =~ /@bartt/
-      $stdout.string.should =~ /@noahlt @gaarf Yup, now owning @twitter -> FB from FE to daemons\. Lot’s/
-      $stdout.string.should =~ /fun\. Expect improvements in the weeks to come\./
+      $stdout.string.should == <<-eos
+\e[1m\e[33m   @bartt\e[0m
+   @noahlt @gaarf Yup, now owning @twitter -> FB from FE to daemons. Lot’s of 
+   fun. Expect improvements in the weeks to come.
+
+      eos
     end
     context "--csv" do
       before do
@@ -390,9 +473,12 @@ ID                  Posted at     Screen name  Text
     end
     it "should have the correct output" do
       @search.retweets("twitter")
-      $stdout.string.should =~ /@bartt/
-      $stdout.string.should =~ /@noahlt @gaarf Yup, now owning @twitter -> FB from FE to daemons\. Lot’s/
-      $stdout.string.should =~ /fun\. Expect improvements in the weeks to come\./
+      $stdout.string.should == <<-eos
+\e[1m\e[33m   @bartt\e[0m
+   @noahlt @gaarf Yup, now owning @twitter -> FB from FE to daemons. Lot’s of 
+   fun. Expect improvements in the weeks to come.
+
+      eos
     end
     context "--csv" do
       before do
@@ -453,9 +539,12 @@ ID                  Posted at     Screen name  Text
     end
     it "should have the correct output" do
       @search.timeline("twitter")
-      $stdout.string.should =~ /@bartt/
-      $stdout.string.should =~ /@noahlt @gaarf Yup, now owning @twitter -> FB from FE to daemons\. Lot’s/
-      $stdout.string.should =~ /fun\. Expect improvements in the weeks to come\./
+      $stdout.string.should == <<-eos
+\e[1m\e[33m   @bartt\e[0m
+   @noahlt @gaarf Yup, now owning @twitter -> FB from FE to daemons. Lot’s of 
+   fun. Expect improvements in the weeks to come.
+
+      eos
     end
     context "--csv" do
       before do
@@ -514,9 +603,12 @@ ID                  Posted at     Screen name  Text
       end
       it "should have the correct output" do
         @search.timeline("sferik", "twitter")
-        $stdout.string.should =~ /@bartt/
-        $stdout.string.should =~ /@noahlt @gaarf Yup, now owning @twitter -> FB from FE to daemons\. Lot’s/
-        $stdout.string.should =~ /fun\. Expect improvements in the weeks to come\./
+        $stdout.string.should == <<-eos
+\e[1m\e[33m   @bartt\e[0m
+   @noahlt @gaarf Yup, now owning @twitter -> FB from FE to daemons. Lot’s of 
+   fun. Expect improvements in the weeks to come.
+
+        eos
       end
       context "--csv" do
         before do

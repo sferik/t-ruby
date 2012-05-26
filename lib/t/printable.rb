@@ -1,6 +1,5 @@
 module T
   module Printable
-    MAX_SCREEN_NAME_SIZE = 20
     LIST_HEADINGS = ["ID", "Created at", "Screen name", "Slug", "Members", "Subscribers", "Mode", "Description"]
     STATUS_HEADINGS = ["ID", "Posted at", "Screen name", "Text"]
     USER_HEADINGS = ["ID", "Since", "Tweets", "Favorites", "Listed", "Following", "Followers", "Screen name", "Name"]
@@ -112,14 +111,14 @@ module T
       end
     end
 
-    def print_status(status)
+    def print_message(from_user, message)
       if STDOUT.tty? && !options['no-color']
-        say("   @#{status.from_user}", [:bold, :yellow])
+        say("   @#{from_user}", [:bold, :yellow])
       else
-        say("   @#{status.from_user}")
+        say("   @#{from_user}")
       end
       require 'htmlentities'
-      print_wrapped(HTMLEntities.new.decode(status.full_text), :indent => 3)
+      print_wrapped(HTMLEntities.new.decode(message), :indent => 3)
       say
     end
 
@@ -140,7 +139,7 @@ module T
         print_table_with_headings(array, STATUS_HEADINGS, format)
       else
         statuses.each do |status|
-          print_status(status)
+          print_message(status.user.screen_name, status.full_text)
         end
       end
     end

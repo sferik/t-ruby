@@ -126,16 +126,42 @@ testcli
     it "should have the correct output" do
       @cli.direct_messages
       $stdout.string.should == <<-eos
-              sferik: Sounds good. Meeting Tuesday is fine. (a year ago)
-              sferik: That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does that work for you? (a year ago)
-              sferik: I asked Yehuda about the stipend. I believe it has already been sent. Glad you're feeling better. (a year ago)
-              sferik: Just checking in. How's everything going? (a year ago)
-              sferik: Not sure about the payment. Feel free to ask Leah or Yehuda directly. Think you'll be able to finish up your work on graphs this weekend? (a year ago)
-              sferik: How are the graph enhancements coming? (a year ago)
-              sferik: How are the graphs coming? I'm really looking forward to seeing what you do with Raphaël. (a year ago)
-              sferik: Awesome! Any luck duplicating the Gemfile.lock error with Ruby 1.9.2 final? (a year ago)
-              sferik: I just committed a bunch of cleanup and fixes to RailsAdmin that touched many of files. Make sure you pull to avoid conflicts. (a year ago)
-              sferik: I'm trying to debug the issue you were having with the Bundler Gemfile.lock shortref. What version of Ruby and RubyGems are you running? (a year ago)
+\e[1m\e[33m   @sferik\e[0m
+   Sounds good. Meeting Tuesday is fine.
+
+\e[1m\e[33m   @sferik\e[0m
+   That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does 
+   that work for you?
+
+\e[1m\e[33m   @sferik\e[0m
+   I asked Yehuda about the stipend. I believe it has already been sent. Glad 
+   you're feeling better.
+
+\e[1m\e[33m   @sferik\e[0m
+   Just checking in. How's everything going?
+
+\e[1m\e[33m   @sferik\e[0m
+   Not sure about the payment. Feel free to ask Leah or Yehuda directly. Think 
+   you'll be able to finish up your work on graphs this weekend?
+
+\e[1m\e[33m   @sferik\e[0m
+   How are the graph enhancements coming?
+
+\e[1m\e[33m   @sferik\e[0m
+   How are the graphs coming? I'm really looking forward to seeing what you do 
+   with Raphaël.
+
+\e[1m\e[33m   @sferik\e[0m
+   Awesome! Any luck duplicating the Gemfile.lock error with Ruby 1.9.2 final?
+
+\e[1m\e[33m   @sferik\e[0m
+   I just committed a bunch of cleanup and fixes to RailsAdmin that touched many 
+   of files. Make sure you pull to avoid conflicts.
+
+\e[1m\e[33m   @sferik\e[0m
+   I'm trying to debug the issue you were having with the Bundler Gemfile.lock 
+   shortref. What version of Ruby and RubyGems are you running?
+
       eos
     end
     context "--csv" do
@@ -227,16 +253,42 @@ ID          Posted at     Screen name  Text
       it "should reverse the order of the sort" do
         @cli.direct_messages
         $stdout.string.should == <<-eos
-              sferik: I'm trying to debug the issue you were having with the Bundler Gemfile.lock shortref. What version of Ruby and RubyGems are you running? (a year ago)
-              sferik: I just committed a bunch of cleanup and fixes to RailsAdmin that touched many of files. Make sure you pull to avoid conflicts. (a year ago)
-              sferik: Awesome! Any luck duplicating the Gemfile.lock error with Ruby 1.9.2 final? (a year ago)
-              sferik: How are the graphs coming? I'm really looking forward to seeing what you do with Raphaël. (a year ago)
-              sferik: How are the graph enhancements coming? (a year ago)
-              sferik: Not sure about the payment. Feel free to ask Leah or Yehuda directly. Think you'll be able to finish up your work on graphs this weekend? (a year ago)
-              sferik: Just checking in. How's everything going? (a year ago)
-              sferik: I asked Yehuda about the stipend. I believe it has already been sent. Glad you're feeling better. (a year ago)
-              sferik: That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does that work for you? (a year ago)
-              sferik: Sounds good. Meeting Tuesday is fine. (a year ago)
+\e[1m\e[33m   @sferik\e[0m
+   I'm trying to debug the issue you were having with the Bundler Gemfile.lock 
+   shortref. What version of Ruby and RubyGems are you running?
+
+\e[1m\e[33m   @sferik\e[0m
+   I just committed a bunch of cleanup and fixes to RailsAdmin that touched many 
+   of files. Make sure you pull to avoid conflicts.
+
+\e[1m\e[33m   @sferik\e[0m
+   Awesome! Any luck duplicating the Gemfile.lock error with Ruby 1.9.2 final?
+
+\e[1m\e[33m   @sferik\e[0m
+   How are the graphs coming? I'm really looking forward to seeing what you do 
+   with Raphaël.
+
+\e[1m\e[33m   @sferik\e[0m
+   How are the graph enhancements coming?
+
+\e[1m\e[33m   @sferik\e[0m
+   Not sure about the payment. Feel free to ask Leah or Yehuda directly. Think 
+   you'll be able to finish up your work on graphs this weekend?
+
+\e[1m\e[33m   @sferik\e[0m
+   Just checking in. How's everything going?
+
+\e[1m\e[33m   @sferik\e[0m
+   I asked Yehuda about the stipend. I believe it has already been sent. Glad 
+   you're feeling better.
+
+\e[1m\e[33m   @sferik\e[0m
+   That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does 
+   that work for you?
+
+\e[1m\e[33m   @sferik\e[0m
+   Sounds good. Meeting Tuesday is fine.
+
         eos
       end
     end
@@ -260,16 +312,42 @@ ID          Posted at     Screen name  Text
     it "should have the correct output" do
       @cli.direct_messages_sent
       $stdout.string.should == <<-eos
-           hurrycane: Sounds good. Meeting Tuesday is fine. (a year ago)
-           hurrycane: That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does that work for you? (a year ago)
-           hurrycane: I asked Yehuda about the stipend. I believe it has already been sent. Glad you're feeling better. (a year ago)
-           hurrycane: Just checking in. How's everything going? (a year ago)
-           hurrycane: Not sure about the payment. Feel free to ask Leah or Yehuda directly. Think you'll be able to finish up your work on graphs this weekend? (a year ago)
-           hurrycane: How are the graph enhancements coming? (a year ago)
-           hurrycane: How are the graphs coming? I'm really looking forward to seeing what you do with Raphaël. (a year ago)
-           hurrycane: Awesome! Any luck duplicating the Gemfile.lock error with Ruby 1.9.2 final? (a year ago)
-           hurrycane: I just committed a bunch of cleanup and fixes to RailsAdmin that touched many of files. Make sure you pull to avoid conflicts. (a year ago)
-           hurrycane: I'm trying to debug the issue you were having with the Bundler Gemfile.lock shortref. What version of Ruby and RubyGems are you running? (a year ago)
+\e[1m\e[33m   @hurrycane\e[0m
+   Sounds good. Meeting Tuesday is fine.
+
+\e[1m\e[33m   @hurrycane\e[0m
+   That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does 
+   that work for you?
+
+\e[1m\e[33m   @hurrycane\e[0m
+   I asked Yehuda about the stipend. I believe it has already been sent. Glad 
+   you're feeling better.
+
+\e[1m\e[33m   @hurrycane\e[0m
+   Just checking in. How's everything going?
+
+\e[1m\e[33m   @hurrycane\e[0m
+   Not sure about the payment. Feel free to ask Leah or Yehuda directly. Think 
+   you'll be able to finish up your work on graphs this weekend?
+
+\e[1m\e[33m   @hurrycane\e[0m
+   How are the graph enhancements coming?
+
+\e[1m\e[33m   @hurrycane\e[0m
+   How are the graphs coming? I'm really looking forward to seeing what you do 
+   with Raphaël.
+
+\e[1m\e[33m   @hurrycane\e[0m
+   Awesome! Any luck duplicating the Gemfile.lock error with Ruby 1.9.2 final?
+
+\e[1m\e[33m   @hurrycane\e[0m
+   I just committed a bunch of cleanup and fixes to RailsAdmin that touched many 
+   of files. Make sure you pull to avoid conflicts.
+
+\e[1m\e[33m   @hurrycane\e[0m
+   I'm trying to debug the issue you were having with the Bundler Gemfile.lock 
+   shortref. What version of Ruby and RubyGems are you running?
+
       eos
     end
     context "--csv" do
@@ -361,16 +439,42 @@ ID          Posted at     Screen name  Text
       it "should reverse the order of the sort" do
         @cli.direct_messages_sent
         $stdout.string.should == <<-eos
-           hurrycane: I'm trying to debug the issue you were having with the Bundler Gemfile.lock shortref. What version of Ruby and RubyGems are you running? (a year ago)
-           hurrycane: I just committed a bunch of cleanup and fixes to RailsAdmin that touched many of files. Make sure you pull to avoid conflicts. (a year ago)
-           hurrycane: Awesome! Any luck duplicating the Gemfile.lock error with Ruby 1.9.2 final? (a year ago)
-           hurrycane: How are the graphs coming? I'm really looking forward to seeing what you do with Raphaël. (a year ago)
-           hurrycane: How are the graph enhancements coming? (a year ago)
-           hurrycane: Not sure about the payment. Feel free to ask Leah or Yehuda directly. Think you'll be able to finish up your work on graphs this weekend? (a year ago)
-           hurrycane: Just checking in. How's everything going? (a year ago)
-           hurrycane: I asked Yehuda about the stipend. I believe it has already been sent. Glad you're feeling better. (a year ago)
-           hurrycane: That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does that work for you? (a year ago)
-           hurrycane: Sounds good. Meeting Tuesday is fine. (a year ago)
+\e[1m\e[33m   @hurrycane\e[0m
+   I'm trying to debug the issue you were having with the Bundler Gemfile.lock 
+   shortref. What version of Ruby and RubyGems are you running?
+
+\e[1m\e[33m   @hurrycane\e[0m
+   I just committed a bunch of cleanup and fixes to RailsAdmin that touched many 
+   of files. Make sure you pull to avoid conflicts.
+
+\e[1m\e[33m   @hurrycane\e[0m
+   Awesome! Any luck duplicating the Gemfile.lock error with Ruby 1.9.2 final?
+
+\e[1m\e[33m   @hurrycane\e[0m
+   How are the graphs coming? I'm really looking forward to seeing what you do 
+   with Raphaël.
+
+\e[1m\e[33m   @hurrycane\e[0m
+   How are the graph enhancements coming?
+
+\e[1m\e[33m   @hurrycane\e[0m
+   Not sure about the payment. Feel free to ask Leah or Yehuda directly. Think 
+   you'll be able to finish up your work on graphs this weekend?
+
+\e[1m\e[33m   @hurrycane\e[0m
+   Just checking in. How's everything going?
+
+\e[1m\e[33m   @hurrycane\e[0m
+   I asked Yehuda about the stipend. I believe it has already been sent. Glad 
+   you're feeling better.
+
+\e[1m\e[33m   @hurrycane\e[0m
+   That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does 
+   that work for you?
+
+\e[1m\e[33m   @hurrycane\e[0m
+   Sounds good. Meeting Tuesday is fine.
+
         eos
       end
     end
@@ -564,7 +668,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
     end
     it "should have the correct output" do
       @cli.dm("pengwynn", "Creating a fixture for the Twitter gem")
-      $stdout.string.chomp.should == "Direct Message sent from @testcli to @pengwynn (a year ago)."
+      $stdout.string.chomp.should == "Direct Message sent from @testcli to @pengwynn."
     end
     context "--id" do
       before do
@@ -785,9 +889,76 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
     end
     it "should have the correct output" do
       @cli.favorites
-      $stdout.string.should =~ /@natevillegas/
-      $stdout.string.should =~ /RT @gelobautista #riordan RT @WilI_Smith: Yesterday is history\. Tomorrow is a /
-      $stdout.string.should =~ /mystery\. Today is a gift\. That's why it's called the present\./
+      $stdout.string.should == <<-eos
+\e[1m\e[33m   @ryanbigg\e[0m
+   Things that have made my life better, in order of greatness: GitHub, Travis 
+   CI, the element Oxygen.
+
+\e[1m\e[33m   @sfbike\e[0m
+   Bike to Work Counts in: 73% of morning Market traffic was bikes! 1,031 bikers 
+   counted in 1 hour--that's 17 per minute. Way to roll, SF!
+
+\e[1m\e[33m   @levie\e[0m
+   I know you're as rare as leprechauns, but if you're an amazing designer then 
+   Box wants to hire you. Email recruiting@box.com
+
+\e[1m\e[33m   @natevillegas\e[0m
+   RT @gelobautista #riordan RT @WilI_Smith: Yesterday is history. Tomorrow is a 
+   mystery. Today is a gift. That's why it's called the present.
+
+\e[1m\e[33m   @TD\e[0m
+   @kelseysilver how long will you be in town?
+
+\e[1m\e[33m   @rusashka\e[0m
+   @maciej hahaha :) @gpena together we're going to cover all core 28 languages!
+
+\e[1m\e[33m   @fat\e[0m
+   @stevej @xc i'm going to picket when i get back.
+
+\e[1m\e[33m   @wil\e[0m
+   @0x9900 @paulnivin http://t.co/bwVdtAPe
+
+\e[1m\e[33m   @wangtian\e[0m
+   @tianhonghe @xiangxin72 oh, you can even order specific items?
+
+\e[1m\e[33m   @shinypb\e[0m
+   @kpk Pfft, I think you're forgetting mechanical television, which depended on 
+   a clever German. http://t.co/JvLNQCDm @skilldrick @hoverbird
+
+\e[1m\e[33m   @0x9900\e[0m
+   @wil @paulnivin if you want to take you seriously don't say daemontools!
+
+\e[1m\e[33m   @kpk\e[0m
+   @shinypb @skilldrick @hoverbird invented it
+
+\e[1m\e[33m   @skilldrick\e[0m
+   @shinypb Well played :) @hoverbird
+
+\e[1m\e[33m   @sam\e[0m
+   Can someone project the date that I'll get a 27\" retina display?
+
+\e[1m\e[33m   @shinypb\e[0m
+   @skilldrick @hoverbird Wow, I didn't even know they *had* TV in Britain.
+
+\e[1m\e[33m   @bartt\e[0m
+   @noahlt @gaarf Yup, now owning @twitter -> FB from FE to daemons. Lot’s of 
+   fun. Expect improvements in the weeks to come.
+
+\e[1m\e[33m   @skilldrick\e[0m
+   @hoverbird @shinypb You guys must be soooo old, I don't remember the words to 
+   the duck tales intro at all.
+
+\e[1m\e[33m   @sean\e[0m
+   @mep Thanks for coming by. Was great to have you.
+
+\e[1m\e[33m   @hoverbird\e[0m
+   @shinypb @trammell it's all suck a \"duck blur\" sometimes.
+
+\e[1m\e[33m   @kelseysilver\e[0m
+   San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 
+   92 others) http://t.co/eoLANJZw
+
+      eos
     end
     context "--csv" do
       before do
@@ -1800,9 +1971,76 @@ ID        Created at    Screen name  Slug              Members  Subscribers  ...
     end
     it "should have the correct output" do
       @cli.mentions
-      $stdout.string.should =~ /@natevillegas/
-      $stdout.string.should =~ /RT @gelobautista #riordan RT @WilI_Smith: Yesterday is history\. Tomorrow is a /
-      $stdout.string.should =~ /mystery\. Today is a gift\. That's why it's called the present\./
+      $stdout.string.should == <<-eos
+\e[1m\e[33m   @ryanbigg\e[0m
+   Things that have made my life better, in order of greatness: GitHub, Travis 
+   CI, the element Oxygen.
+
+\e[1m\e[33m   @sfbike\e[0m
+   Bike to Work Counts in: 73% of morning Market traffic was bikes! 1,031 bikers 
+   counted in 1 hour--that's 17 per minute. Way to roll, SF!
+
+\e[1m\e[33m   @levie\e[0m
+   I know you're as rare as leprechauns, but if you're an amazing designer then 
+   Box wants to hire you. Email recruiting@box.com
+
+\e[1m\e[33m   @natevillegas\e[0m
+   RT @gelobautista #riordan RT @WilI_Smith: Yesterday is history. Tomorrow is a 
+   mystery. Today is a gift. That's why it's called the present.
+
+\e[1m\e[33m   @TD\e[0m
+   @kelseysilver how long will you be in town?
+
+\e[1m\e[33m   @rusashka\e[0m
+   @maciej hahaha :) @gpena together we're going to cover all core 28 languages!
+
+\e[1m\e[33m   @fat\e[0m
+   @stevej @xc i'm going to picket when i get back.
+
+\e[1m\e[33m   @wil\e[0m
+   @0x9900 @paulnivin http://t.co/bwVdtAPe
+
+\e[1m\e[33m   @wangtian\e[0m
+   @tianhonghe @xiangxin72 oh, you can even order specific items?
+
+\e[1m\e[33m   @shinypb\e[0m
+   @kpk Pfft, I think you're forgetting mechanical television, which depended on 
+   a clever German. http://t.co/JvLNQCDm @skilldrick @hoverbird
+
+\e[1m\e[33m   @0x9900\e[0m
+   @wil @paulnivin if you want to take you seriously don't say daemontools!
+
+\e[1m\e[33m   @kpk\e[0m
+   @shinypb @skilldrick @hoverbird invented it
+
+\e[1m\e[33m   @skilldrick\e[0m
+   @shinypb Well played :) @hoverbird
+
+\e[1m\e[33m   @sam\e[0m
+   Can someone project the date that I'll get a 27\" retina display?
+
+\e[1m\e[33m   @shinypb\e[0m
+   @skilldrick @hoverbird Wow, I didn't even know they *had* TV in Britain.
+
+\e[1m\e[33m   @bartt\e[0m
+   @noahlt @gaarf Yup, now owning @twitter -> FB from FE to daemons. Lot’s of 
+   fun. Expect improvements in the weeks to come.
+
+\e[1m\e[33m   @skilldrick\e[0m
+   @hoverbird @shinypb You guys must be soooo old, I don't remember the words to 
+   the duck tales intro at all.
+
+\e[1m\e[33m   @sean\e[0m
+   @mep Thanks for coming by. Was great to have you.
+
+\e[1m\e[33m   @hoverbird\e[0m
+   @shinypb @trammell it's all suck a \"duck blur\" sometimes.
+
+\e[1m\e[33m   @kelseysilver\e[0m
+   San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 
+   92 others) http://t.co/eoLANJZw
+
+      eos
     end
     context "--csv" do
       before do
@@ -2044,7 +2282,7 @@ Hourly limit,Remaining hits,Reset time
     end
     it "should have the correct output" do
       @cli.reply("55709764298092545", "Testing")
-      $stdout.string.should =~ /^Reply created by @testcli to @sferik \(8 months ago\)\.$/
+      $stdout.string.split("\n").first.should == "Reply posted by @testcli to @sferik."
     end
     context "--all" do
       before do
@@ -2065,7 +2303,7 @@ Hourly limit,Remaining hits,Reset time
       end
       it "should have the correct output" do
         @cli.reply("55709764298092545", "Testing")
-        $stdout.string.should =~ /^Reply created by @testcli to @sferik \(8 months ago\)\.$/
+        $stdout.string.split("\n").first.should == "Reply posted by @testcli to @sferik."
       end
     end
   end
@@ -2135,9 +2373,76 @@ Hourly limit,Remaining hits,Reset time
       end
       it "should have the correct output" do
         @cli.retweets
-        $stdout.string.should =~ /@natevillegas/
-        $stdout.string.should =~ /RT @gelobautista #riordan RT @WilI_Smith: Yesterday is history\. Tomorrow is a /
-        $stdout.string.should =~ /mystery\. Today is a gift\. That's why it's called the present\./
+        $stdout.string.should == <<-eos
+\e[1m\e[33m   @ryanbigg\e[0m
+   Things that have made my life better, in order of greatness: GitHub, Travis 
+   CI, the element Oxygen.
+
+\e[1m\e[33m   @sfbike\e[0m
+   Bike to Work Counts in: 73% of morning Market traffic was bikes! 1,031 bikers 
+   counted in 1 hour--that's 17 per minute. Way to roll, SF!
+
+\e[1m\e[33m   @levie\e[0m
+   I know you're as rare as leprechauns, but if you're an amazing designer then 
+   Box wants to hire you. Email recruiting@box.com
+
+\e[1m\e[33m   @natevillegas\e[0m
+   RT @gelobautista #riordan RT @WilI_Smith: Yesterday is history. Tomorrow is a 
+   mystery. Today is a gift. That's why it's called the present.
+
+\e[1m\e[33m   @TD\e[0m
+   @kelseysilver how long will you be in town?
+
+\e[1m\e[33m   @rusashka\e[0m
+   @maciej hahaha :) @gpena together we're going to cover all core 28 languages!
+
+\e[1m\e[33m   @fat\e[0m
+   @stevej @xc i'm going to picket when i get back.
+
+\e[1m\e[33m   @wil\e[0m
+   @0x9900 @paulnivin http://t.co/bwVdtAPe
+
+\e[1m\e[33m   @wangtian\e[0m
+   @tianhonghe @xiangxin72 oh, you can even order specific items?
+
+\e[1m\e[33m   @shinypb\e[0m
+   @kpk Pfft, I think you're forgetting mechanical television, which depended on 
+   a clever German. http://t.co/JvLNQCDm @skilldrick @hoverbird
+
+\e[1m\e[33m   @0x9900\e[0m
+   @wil @paulnivin if you want to take you seriously don't say daemontools!
+
+\e[1m\e[33m   @kpk\e[0m
+   @shinypb @skilldrick @hoverbird invented it
+
+\e[1m\e[33m   @skilldrick\e[0m
+   @shinypb Well played :) @hoverbird
+
+\e[1m\e[33m   @sam\e[0m
+   Can someone project the date that I'll get a 27\" retina display?
+
+\e[1m\e[33m   @shinypb\e[0m
+   @skilldrick @hoverbird Wow, I didn't even know they *had* TV in Britain.
+
+\e[1m\e[33m   @bartt\e[0m
+   @noahlt @gaarf Yup, now owning @twitter -> FB from FE to daemons. Lot’s of 
+   fun. Expect improvements in the weeks to come.
+
+\e[1m\e[33m   @skilldrick\e[0m
+   @hoverbird @shinypb You guys must be soooo old, I don't remember the words to 
+   the duck tales intro at all.
+
+\e[1m\e[33m   @sean\e[0m
+   @mep Thanks for coming by. Was great to have you.
+
+\e[1m\e[33m   @hoverbird\e[0m
+   @shinypb @trammell it's all suck a \"duck blur\" sometimes.
+
+\e[1m\e[33m   @kelseysilver\e[0m
+   San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 
+   92 others) http://t.co/eoLANJZw
+
+        eos
       end
     end
     context "--csv" do
@@ -2630,9 +2935,76 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
       end
       it "should have the correct output" do
         @cli.timeline
-        $stdout.string.should =~ /@natevillegas/
-        $stdout.string.should =~ /RT @gelobautista #riordan RT @WilI_Smith: Yesterday is history\. Tomorrow is a /
-        $stdout.string.should =~ /mystery\. Today is a gift\. That's why it's called the present\./
+        $stdout.string.should == <<-eos
+\e[1m\e[33m   @ryanbigg\e[0m
+   Things that have made my life better, in order of greatness: GitHub, Travis 
+   CI, the element Oxygen.
+
+\e[1m\e[33m   @sfbike\e[0m
+   Bike to Work Counts in: 73% of morning Market traffic was bikes! 1,031 bikers 
+   counted in 1 hour--that's 17 per minute. Way to roll, SF!
+
+\e[1m\e[33m   @levie\e[0m
+   I know you're as rare as leprechauns, but if you're an amazing designer then 
+   Box wants to hire you. Email recruiting@box.com
+
+\e[1m\e[33m   @natevillegas\e[0m
+   RT @gelobautista #riordan RT @WilI_Smith: Yesterday is history. Tomorrow is a 
+   mystery. Today is a gift. That's why it's called the present.
+
+\e[1m\e[33m   @TD\e[0m
+   @kelseysilver how long will you be in town?
+
+\e[1m\e[33m   @rusashka\e[0m
+   @maciej hahaha :) @gpena together we're going to cover all core 28 languages!
+
+\e[1m\e[33m   @fat\e[0m
+   @stevej @xc i'm going to picket when i get back.
+
+\e[1m\e[33m   @wil\e[0m
+   @0x9900 @paulnivin http://t.co/bwVdtAPe
+
+\e[1m\e[33m   @wangtian\e[0m
+   @tianhonghe @xiangxin72 oh, you can even order specific items?
+
+\e[1m\e[33m   @shinypb\e[0m
+   @kpk Pfft, I think you're forgetting mechanical television, which depended on 
+   a clever German. http://t.co/JvLNQCDm @skilldrick @hoverbird
+
+\e[1m\e[33m   @0x9900\e[0m
+   @wil @paulnivin if you want to take you seriously don't say daemontools!
+
+\e[1m\e[33m   @kpk\e[0m
+   @shinypb @skilldrick @hoverbird invented it
+
+\e[1m\e[33m   @skilldrick\e[0m
+   @shinypb Well played :) @hoverbird
+
+\e[1m\e[33m   @sam\e[0m
+   Can someone project the date that I'll get a 27\" retina display?
+
+\e[1m\e[33m   @shinypb\e[0m
+   @skilldrick @hoverbird Wow, I didn't even know they *had* TV in Britain.
+
+\e[1m\e[33m   @bartt\e[0m
+   @noahlt @gaarf Yup, now owning @twitter -> FB from FE to daemons. Lot’s of 
+   fun. Expect improvements in the weeks to come.
+
+\e[1m\e[33m   @skilldrick\e[0m
+   @hoverbird @shinypb You guys must be soooo old, I don't remember the words to 
+   the duck tales intro at all.
+
+\e[1m\e[33m   @sean\e[0m
+   @mep Thanks for coming by. Was great to have you.
+
+\e[1m\e[33m   @hoverbird\e[0m
+   @shinypb @trammell it's all suck a \"duck blur\" sometimes.
+
+\e[1m\e[33m   @kelseysilver\e[0m
+   San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 
+   92 others) http://t.co/eoLANJZw
+
+        eos
       end
     end
     context "--csv" do
@@ -3026,7 +3398,7 @@ WOEID     Parent ID  Type       Name           Country
     end
     it "should have the correct output" do
       @cli.update("Testing")
-      $stdout.string.should =~ /^Tweet created by @testcli \(8 months ago\)\.$/
+      $stdout.string.split("\n").first.should == "Tweet posted by @testcli."
     end
   end
 

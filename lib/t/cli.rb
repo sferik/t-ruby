@@ -22,7 +22,6 @@ module T
     include T::FormatHelpers
 
     DEFAULT_NUM_RESULTS = 20
-    MAX_SCREEN_NAME_SIZE = 20
     MAX_USERS_PER_REQUEST = 100
     DIRECT_MESSAGE_HEADINGS = ["ID", "Posted at", "Screen name", "Text"]
     TREND_HEADINGS = ["WOEID", "Parent ID", "Type", "Name", "Country"]
@@ -139,7 +138,7 @@ module T
         print_table_with_headings(array, DIRECT_MESSAGE_HEADINGS, format)
       else
         direct_messages.each do |direct_message|
-          say "#{direct_message.sender.screen_name.rjust(MAX_SCREEN_NAME_SIZE)}: #{direct_message.text.gsub(/\n+/, ' ')} (#{time_ago_in_words(direct_message.created_at)} ago)"
+          print_message(direct_message.sender.screen_name, direct_message.text)
         end
       end
     end
@@ -172,7 +171,7 @@ module T
         print_table_with_headings(array, DIRECT_MESSAGE_HEADINGS, format)
       else
         direct_messages.each do |direct_message|
-          say "#{direct_message.recipient.screen_name.rjust(MAX_SCREEN_NAME_SIZE)}: #{direct_message.text.gsub(/\n+/, ' ')} (#{time_ago_in_words(direct_message.created_at)} ago)"
+          print_message(direct_message.recipient.screen_name, direct_message.text)
         end
       end
     end

@@ -52,14 +52,16 @@ module T
     end
 
     desc "authorize", "Allows an application to request user authorization"
-    method_option "consumer-key", :aliases => "-c", :required => true, :desc => "This can be found at https://dev.twitter.com/apps", :banner => "KEY"
-    method_option "consumer-secret", :aliases => "-s", :required => true, :desc => "This can be found at https://dev.twitter.com/apps", :banner => "SECRET"
     method_option "display-url", :aliases => "-d", :type => :boolean, :default => false, :desc => "Display the authorization URL instead of attempting to open it."
     method_option "prompt", :aliases => "-p", :type => :boolean, :default => true
     def authorize
-      request_token = consumer.get_request_token
-      url = generate_authorize_url(request_token)
       if options['prompt']
+        key = ask "Enter your consumer key:"
+        secret = ask "Enter your consumer secret:"
+        consumer = OAuth::Consumer.new(key, secret, :site => base_url)
+        request_token = consumer.get_request_token
+        url = generate_authorize_url(consumer, request_token)
+        say
         say "In a moment, you will be directed to the Twitter app authorization page."
         say "Perform the following steps to complete the authorization process:"
         say "  1. Sign in to Twitter"

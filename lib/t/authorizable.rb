@@ -12,15 +12,7 @@ module T
       "#{protocol}://#{host}"
     end
 
-    def consumer
-      OAuth::Consumer.new(
-        options['consumer-key'],
-        options['consumer-secret'],
-        :site => base_url
-      )
-    end
-
-    def generate_authorize_url(request_token)
+    def generate_authorize_url(consumer, request_token)
       request = consumer.create_signed_request(:get, consumer.authorize_path, request_token, pin_auth_parameters)
       params = request['Authorization'].sub(/^OAuth\s+/, '').split(/,\s+/).map do |param|
         key, value = param.split('=')

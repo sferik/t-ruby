@@ -2,6 +2,7 @@
 
 require 'thor'
 require 'twitter'
+require 'oath'
 
 module T
   autoload :Authorizable, 't/authorizable'

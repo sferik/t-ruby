@@ -228,7 +228,7 @@ module T
         user.strip_ats
       end
       direct_message = client.direct_message_create(user, message)
-      say "Direct Message sent from @#{@rcfile.active_profile[0]} to @#{direct_message.recipient.screen_name} (#{time_ago_in_words(direct_message.created_at)} ago)."
+      say "Direct Message sent from @#{@rcfile.active_profile[0]} to @#{direct_message.recipient.screen_name}."
     end
     map %w(d m) => :dm
 
@@ -605,7 +605,7 @@ module T
       opts = {:in_reply_to_status_id => status.id, :trim_user => true}
       opts.merge!(:lat => location.lat, :long => location.lng) if options['location']
       reply = client.update("#{users.join(' ')} #{message}", opts)
-      say "Reply created by @#{@rcfile.active_profile[0]} to #{users.join(' ')} (#{time_ago_in_words(reply.created_at)} ago)."
+      say "Reply posted by @#{@rcfile.active_profile[0]} to #{users.join(' ')}."
       say
       say "Run `#{File.basename($0)} delete status #{reply.id}` to delete."
     end
@@ -839,7 +839,7 @@ module T
       opts = {:trim_user => true}
       opts.merge!(:lat => location.lat, :long => location.lng) if options['location']
       status = client.update(message, opts)
-      say "Tweet created by @#{@rcfile.active_profile[0]} (#{time_ago_in_words(status.created_at)} ago)."
+      say "Tweet posted by @#{@rcfile.active_profile[0]}."
       say
       say "Run `#{File.basename($0)} delete status #{status.id}` to delete."
     end

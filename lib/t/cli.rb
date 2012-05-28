@@ -95,15 +95,15 @@ module T
       screen_name = oauth_response.body.match(/"screen_name"\s*:\s*"(.*?)"/).captures.first
       @rcfile.path = options['profile'] if options['profile']
       @rcfile[screen_name] = {
-        options['consumer-key'] => {
+        key => {
           'username' => screen_name,
-          'consumer_key' => options['consumer-key'],
-          'consumer_secret' => options['consumer-secret'],
+          'consumer_key' => key,
+          'consumer_secret' => secret,
           'token' => access_token.token,
           'secret' => access_token.secret,
         }
       }
-      @rcfile.active_profile = {'username' => screen_name, 'consumer_key' => options['consumer-key']}
+      @rcfile.active_profile = {'username' => screen_name, 'consumer_key' => key}
       say "Authorization successful."
     end
 

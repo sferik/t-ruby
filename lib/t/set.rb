@@ -19,8 +19,8 @@ module T
       screen_name = screen_name.strip_ats
       @rcfile.path = options['profile'] if options['profile']
       consumer_key = @rcfile[screen_name].keys.last if consumer_key.nil?
-      @rcfile.active_profile = {'username' => screen_name, 'consumer_key' => consumer_key}
-      say "Active account has been updated."
+      @rcfile.active_profile = {'username' => @rcfile[screen_name][consumer_key]["username"], 'consumer_key' => consumer_key}
+      say "Active account has been updated to #{@rcfile.active_profile[0]}."
     end
     map %w(default) => :active
 

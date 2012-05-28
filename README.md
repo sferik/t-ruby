@@ -44,24 +44,27 @@ Once you've verified that Ruby is installed, type:
 
 ## Configuration
 
-Twitter requires OAuth for most of its functionality, so you'll need to
-register a new application at <http://dev.twitter.com/apps/new>. Once you
-create your application, make sure to set your application's Access Level to
-"Read, Write and Access direct messages", otherwise you may receive an error
-that looks something like this:
+Twitter requires OAuth for most of its functionality, so you'll need a
+registered Twitter application. If you've never registered a Twitter
+application before, it's easy! Just sign-in using your Twitter account and the
+fill out the short form at <http://dev.twitter.com/apps/new>. If you've
+previously registered a Twitter application, it should be listed at
+<http://dev.twitter.com/apps>. Once you've registered an application, make sure
+to set your application's Access Level to "Read, Write and Access direct
+messages", otherwise you'll receive an error that looks like this:
 
     Read-only application cannot POST
 
-Once you've successfully registered your application, you'll be given a
-consumer key and secret, which you can use to authorize your Twitter account.
+Now, you're ready to authorize a Twitter account with your application. To
+proceed, type the following command at the prompt and follow the instructions:
 
-    t authorize -c YOUR_CONSUMER_KEY -s YOUR_CONSUMER_SECRET
+    t authorize
 
-This command directs you to a URL where you can sign-in to Twitter and then
-enter the returned PIN back into the terminal. If you type the PIN correctly,
-you should now be authorized to use `t` as that user. To authorize multiple
-accounts, simply repeat the last step, signing into Twitter as a different
-user.
+This command will direct you to a URL where you can sign-in to Twitter,
+authorize the application, and then enter the returned PIN back into the
+terminal. If you type the PIN correctly, you should now be authorized to use
+`t` as that user. To authorize multiple accounts, simply repeat the last step,
+signing into Twitter as a different user.
 
 You can see a list of all the accounts you've authorized by typing the command:
 

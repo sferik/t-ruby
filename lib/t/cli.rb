@@ -5,7 +5,6 @@ require 'thor'
 require 'twitter'
 
 module T
-  autoload :Authorizable, 't/authorizable'
   autoload :Collectable, 't/collectable'
   autoload :Delete, 't/delete'
   autoload :FormatHelpers, 't/format_helpers'
@@ -18,12 +17,13 @@ module T
   autoload :Stream, 't/stream'
   autoload :Version, 't/version'
   class CLI < Thor
-    include T::Authorizable
     include T::Collectable
     include T::Printable
     include T::Requestable
     include T::FormatHelpers
 
+    DEFAULT_HOST = 'api.twitter.com'
+    DEFAULT_PROTOCOL = 'https'
     DEFAULT_NUM_RESULTS = 20
     MAX_USERS_PER_REQUEST = 100
     DIRECT_MESSAGE_HEADINGS = ["ID", "Posted at", "Screen name", "Text"]
@@ -953,6 +953,24 @@ module T
       text.to_s.scan(valid_mentions).map do |before, at, screen_name|
         screen_name
       end
+    end
+
+    def base_url
+      "#{protocol}://#{host}"
+    end
+
+    def generate_authorize_url(consumer, request_token)
+      request = consumer.create_signed_request(:get, consumer.authorize_path, request_token, pin_auth_parameters)
+      params = request['Authorization'].sub(/^OAuth\s+/, '').split(/,\s+/).map do |param|
+        key, value = param.split('=')
+        value =~ /"(.*?)"/
+        "#{key}=#{CGI::escape($1)}"
+      end.join('&')
+      "#{base_url}#{request.path}?#{params}"
+    end
+
+    def pin_auth_parameters
+      {:oauth_callback => 'oob'}
     end
 
     def location

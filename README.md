@@ -2,7 +2,10 @@
 
 [icon]: https://github.com/sferik/t/raw/master/icon/t.png
 
-# Twitter CLI [![Build Status](https://secure.travis-ci.org/sferik/t.png?branch=master)][travis] [![Dependency Status](https://gemnasium.com/sferik/t.png?travis)][gemnasium] [![Click here to make a donation to T](http://www.pledgie.com/campaigns/17330.png)][pledgie]
+# Twitter CLI
+[![Build Status](https://secure.travis-ci.org/sferik/t.png?branch=master)][travis]
+[![Dependency Status](https://gemnasium.com/sferik/t.png?travis)][gemnasium]
+[![Click here to make a donation to T](http://www.pledgie.com/campaigns/17330.png)][pledgie]
 
 ### A command-line power tool for Twitter.
 
@@ -15,7 +18,29 @@ offers vastly more commands and capabilities than are available via SMS.
 [sms]: https://support.twitter.com/articles/14020-twitter-sms-command
 
 ## Installation
-    gem install t # Requires Ruby :)
+
+First, make sure you have Ruby installed.
+
+**On a Mac**, open /Applications/Utilities/Terminal.app and type:
+
+    ruby -v
+
+If the output looks something like this, you're in good shape:
+
+    ruby 1.9.3p194 (2012-04-20 revision 35410) [x86_64-darwin12.0.0]
+
+If the output looks more like this, you need to [install Ruby][ruby]:
+
+    ruby: command not found
+
+**On Windows**, you can install Ruby with [RubyInstaller][].
+
+Once you've verified that Ruby is installed, type:
+
+    gem install t
+
+[ruby]: http://www.ruby-lang.org/en/downloads/
+[rubyinstaller]: http://rubyinstaller.org/
 
 ## Configuration
 

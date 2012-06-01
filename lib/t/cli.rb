@@ -55,20 +55,33 @@ module T
     desc "authorize", "Allows an application to request user authorization"
     method_option "display-url", :aliases => "-d", :type => :boolean, :default => false, :desc => "Display the authorization URL instead of attempting to open it."
     def authorize
-      say "Welcome! In order to use t, the first thing you'll need to do is"
-      say "register a new application. Once you're redirected to Twitter's"
-      say "developer area, here's what you'll need to do:"
-      say "  1. Sign in, if required"
-      say "  2. Complete the required fields and submit the form."
-      say "     Note: Your application must have a unique name."
-      say "     We recommend: \"<your handle>/t\"."
-      say "  3. Go to the Settings tab of your application, and change the Access"
-      say "     setting to \"Read, Write and Access direct messages\", and submit the form."
-      say "  4. Go to the Details tab to view the consumer key and secret,"
-      say "     which you'll need to enter once you're done."
-      say
-      ask "Press [Enter] to open the page to create your application."
-      say
+      @rcfile.path = options['profile'] if options['profile']
+      if @rcfile.empty?
+        say "Welcome! In order to use t, the first thing you'll need to do is"
+        say "register a new application. Once you're redirected to Twitter's"
+        say "developer area, here's what you'll need to do:"
+        say "  1. Sign in if required, and click \"new application\"."
+        say "  2. Complete the required fields and submit the form."
+        say "     Note: Your application must have a unique name."
+        say "     We recommend: \"<your handle>/t\"."
+        say "  3. Go to the Settings tab of your application, and change the Access"
+        say "     setting to \"Read, Write and Access direct messages\", and submit the form."
+        say "  4. Go to the Details tab to view the consumer key and secret,"
+        say "     which you'll need to copy and paste below once you're done."
+        say
+        ask "Press [Enter] to open the Twitter developer area and create your application."
+        say
+      else
+        say "Looks like you already have an application registered, so we will just"
+        say "open up the page with your list of Twitter applications. Here's what"
+        say "you'll need to do next:"
+        say "  1. Sign in, if required."
+        say "  2. Select the application for which you'd like to authorize and account."
+        say "  3. Copy and paste the app's consumer key and secret below when prompted."
+        say
+        ask "Press [Enter] to open your list of Twitter applications."
+        say
+      end
       require 'launchy'
       Launchy.open("https://dev.twitter.com/apps", :dry_run => options['display-url'])
       key = ask "Enter your consumer key:"
@@ -91,7 +104,6 @@ module T
       access_token = request_token.get_access_token(:oauth_verifier => pin.chomp)
       oauth_response = access_token.get('/1/account/verify_credentials.json')
       screen_name = oauth_response.body.match(/"screen_name"\s*:\s*"(.*?)"/).captures.first
-      @rcfile.path = options['profile'] if options['profile']
       @rcfile[screen_name] = {
         key => {
           'username' => screen_name,

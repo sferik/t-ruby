@@ -1,15 +1,8 @@
-require 'active_support/string_inquirer'
 require 't/cli'
 require 'time'
 
 module T
   class << self
-
-    attr_reader :env
-
-    def env=(environment)
-      @env = ActiveSupport::StringInquirer.new(environment)
-    end
 
     # Convert time to local time by applying the `utc_offset` setting.
     def local_time(time)

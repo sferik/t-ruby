@@ -12,7 +12,6 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'thor', ['>= 0.15.2', '< 2']
   gem.add_dependency 'tweetstream', '~> 2.0'
   gem.add_dependency 'twitter', '~> 2.5'
-  gem.add_dependency 'twitter-text', '~> 1.4'
   gem.add_development_dependency 'pry'
   gem.add_development_dependency 'rake'
   gem.add_development_dependency 'rspec'

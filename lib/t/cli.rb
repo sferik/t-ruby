@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require 'thor'
 require 'twitter'
 
@@ -587,11 +589,7 @@ module T
       status = client.status(status_id.to_i, :include_my_retweet => false)
       users = Array(status.from_user)
       if options['all']
-        # twitter-text requires $KCODE to be set to UTF8 on Ruby versions < 1.8
-        major, minor, patch = RUBY_VERSION.split('.')
-        $KCODE='u' if major.to_i == 1 && minor.to_i < 9
-        require 'twitter-text'
-        users += Twitter::Extractor.extract_mentioned_screen_names(status.full_text)
+        users += extract_mentioned_screen_names(status.full_text)
         users.uniq!
       end
       require 't/core_ext/string'
@@ -923,6 +921,22 @@ module T
     subcommand 'stream', T::Stream
 
   private
+
+    def extract_mentioned_screen_names(text)
+      valid_mention_preceding_chars = /(?:[^a-zA-Z0-9_!#\$%&*@＠]|^|RT:?)/o
+      at_signs = /[@＠]/
+      valid_mentions = /
+        (#{valid_mention_preceding_chars})  # $1: Preceeding character
+        (#{at_signs})                       # $2: At mark
+        ([a-zA-Z0-9_]{1,20})                # $3: Screen name
+      /ox
+
+      return [] if text !~ at_signs
+
+      text.to_s.scan(valid_mentions).map do |before, at, screen_name|
+        screen_name
+      end
+    end
 
     def location
       return @location if @location

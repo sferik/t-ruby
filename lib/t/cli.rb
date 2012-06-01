@@ -55,24 +55,22 @@ module T
     desc "authorize", "Allows an application to request user authorization"
     method_option "display-url", :aliases => "-d", :type => :boolean, :default => false, :desc => "Display the authorization URL instead of attempting to open it."
     def authorize
-      say
       say "Welcome! In order to use t, the first thing you'll need to do is"
       say "register a new application. Once you're redirected to Twitter's"
       say "developer area, here's what you'll need to do:"
       say "  1. Sign in, if required"
-      say "  2. Choose a name for your application. We suggest using"
-      say "     '<your handle>/t', as it needs to be unique."
-      say "  3. Complete the remaining required fields, and submit the form."
-      say "  4. Go to the Settings tab of your application."
-      say "  5. Change the Access setting to 'Read, Write and Access direct"
-      say "     messages', and submit the form."
-      say "  6. Go to the Details tab to view the consumer key and secret,"
-      say "     which you'll need to enter here in a second."
+      say "  2. Complete the required fields and submit the form."
+      say "     Note: Your application must have a unique name."
+      say "     We recommend: \"<your handle>/t\"."
+      say "  3. Go to the Settings tab of your application, and change the Access"
+      say "     setting to \"Read, Write and Access direct messages\", and submit the form."
+      say "  4. Go to the Details tab to view the consumer key and secret,"
+      say "     which you'll need to enter once you're done."
       say
       ask "Press [Enter] to open the page to create your application."
       say
       require 'launchy'
-      Launchy.open("https://dev.twitter.com/apps/new", :dry_run => options['display-url'])
+      Launchy.open("https://dev.twitter.com/apps", :dry_run => options['display-url'])
       key = ask "Enter your consumer key:"
       secret = ask "Enter your consumer secret:"
       consumer = OAuth::Consumer.new(key, secret, :site => base_url)

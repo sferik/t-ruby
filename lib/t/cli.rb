@@ -205,10 +205,9 @@ module T
         client.friend_ids(user, :cursor => cursor)
       end
       disciple_ids = (follower_ids - following_ids)
-      require 'active_support/core_ext/array/grouping'
       require 't/core_ext/enumerable'
       require 'retryable'
-      users = disciple_ids.in_groups_of(MAX_USERS_PER_REQUEST, false).threaded_map do |disciple_id_group|
+      users = disciple_ids.each_slice(MAX_USERS_PER_REQUEST).threaded_map do |disciple_id_group|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.users(disciple_id_group)
         end
@@ -380,10 +379,9 @@ module T
       following_ids = collect_with_cursor do |cursor|
         client.friend_ids(user, :cursor => cursor)
       end
-      require 'active_support/core_ext/array/grouping'
       require 't/core_ext/enumerable'
       require 'retryable'
-      users = following_ids.in_groups_of(MAX_USERS_PER_REQUEST, false).threaded_map do |following_id_group|
+      users = following_ids.each_slice(MAX_USERS_PER_REQUEST).threaded_map do |following_id_group|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.users(following_id_group)
         end
@@ -415,10 +413,9 @@ module T
       follower_ids = collect_with_cursor do |cursor|
         client.follower_ids(user, :cursor => cursor)
       end
-      require 'active_support/core_ext/array/grouping'
       require 't/core_ext/enumerable'
       require 'retryable'
-      users = follower_ids.in_groups_of(MAX_USERS_PER_REQUEST, false).threaded_map do |follower_id_group|
+      users = follower_ids.each_slice(MAX_USERS_PER_REQUEST).threaded_map do |follower_id_group|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.users(follower_id_group)
         end
@@ -454,10 +451,9 @@ module T
         client.follower_ids(user, :cursor => cursor)
       end
       friend_ids = (following_ids & follower_ids)
-      require 'active_support/core_ext/array/grouping'
       require 't/core_ext/enumerable'
       require 'retryable'
-      users = friend_ids.in_groups_of(MAX_USERS_PER_REQUEST, false).threaded_map do |friend_id_group|
+      users = friend_ids.each_slice(MAX_USERS_PER_REQUEST).threaded_map do |friend_id_group|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.users(friend_id_group)
         end
@@ -493,10 +489,9 @@ module T
         client.follower_ids(user, :cursor => cursor)
       end
       leader_ids = (following_ids - follower_ids)
-      require 'active_support/core_ext/array/grouping'
       require 't/core_ext/enumerable'
       require 'retryable'
-      users = leader_ids.in_groups_of(MAX_USERS_PER_REQUEST, false).threaded_map do |leader_id_group|
+      users = leader_ids.each_slice(MAX_USERS_PER_REQUEST).threaded_map do |leader_id_group|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.users(leader_id_group)
         end

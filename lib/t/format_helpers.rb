@@ -53,8 +53,7 @@ module T
 
     def number_with_delimiter(number, delimiter=",")
       digits = number.to_s.split(//)
-      require 'active_support/core_ext/array/grouping'
-      groups = digits.reverse.in_groups_of(3).map{|g| g.join('')}
+      groups = digits.reverse.each_slice(3).map{|g| g.join('')}
       groups.join(delimiter).reverse
     end
 

@@ -34,10 +34,9 @@ module T
       else
         users.map!(&:strip_ats)
       end
-      require 'active_support/core_ext/array/grouping'
       require 't/core_ext/enumerable'
       require 'retryable'
-      users.in_groups_of(MAX_USERS_PER_REQUEST, false).threaded_each do |user_id_group|
+      users.each_slice(MAX_USERS_PER_REQUEST).threaded_each do |user_id_group|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.list_add_members(list, user_id_group)
         end
@@ -140,10 +139,9 @@ module T
       else
         users.map!(&:strip_ats)
       end
-      require 'active_support/core_ext/array/grouping'
       require 't/core_ext/enumerable'
       require 'retryable'
-      users.in_groups_of(MAX_USERS_PER_REQUEST, false).threaded_each do |user_id_group|
+      users.each_slice(MAX_USERS_PER_REQUEST).threaded_each do |user_id_group|
         retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
           client.list_remove_members(list, user_id_group)
         end

@@ -3,6 +3,7 @@ module T
     LIST_HEADINGS = ["ID", "Created at", "Screen name", "Slug", "Members", "Subscribers", "Mode", "Description"]
     STATUS_HEADINGS = ["ID", "Posted at", "Screen name", "Text"]
     USER_HEADINGS = ["ID", "Since", "Tweets", "Favorites", "Listed", "Following", "Followers", "Screen name", "Name"]
+    MONTH_IN_SECONDS = 2592000
 
   private
 
@@ -26,10 +27,7 @@ module T
 
     def ls_formatted_time(object, key=:created_at)
       time = T.local_time(object.send(key.to_sym))
-      require 'active_support/core_ext/date/calculations'
-      require 'active_support/core_ext/integer/time'
-      require 'active_support/core_ext/numeric/time'
-      if time > 6.months.ago
+      if time > Time.now - MONTH_IN_SECONDS * 6
         time.strftime("%b %e %H:%M")
       else
         time.strftime("%b %e  %Y")

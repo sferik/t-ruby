@@ -52,7 +52,7 @@ testcli
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
-      $stdout.should_receive(:print).with("Press [Enter] to open the page to create your application. ")
+      $stdout.should_receive(:print)
       $stdin.should_receive(:gets).and_return("\n")
       $stdout.should_receive(:print).with("Enter your consumer key: ")
       $stdin.should_receive(:gets).and_return("abc123")
@@ -72,7 +72,7 @@ testcli
     end
     it "should not raise error" do
       lambda do
-        $stdout.should_receive(:print).with("Press [Enter] to open the page to create your application. ")
+        $stdout.should_receive(:print)
         $stdin.should_receive(:gets).and_return("\n")
         $stdout.should_receive(:print).with("Enter your consumer key: ")
         $stdin.should_receive(:gets).and_return("abc123")

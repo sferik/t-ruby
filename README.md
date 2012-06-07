@@ -187,7 +187,7 @@ example, send a user a direct message only if he already follows you:
 * Multithreaded: Whenever possible, Twitter API requests are made in parallel,
   resulting in faster performance for bulk operations.
 * Designed for Unix: Output is designed to be piped to other Unix utilities,
-  like grep, cut, awk, bc, wc, and xargs for advanced text processing.
+  like grep, comm, cut, awk, bc, wc, and xargs for advanced text processing.
 * Generate spreadsheets: Convert the output of any command to CSV format simply
   by adding the `--csv` flag.
 * 95% C0 Code Coverage: Well tested, with a 2.5:1 test-to-code ratio.

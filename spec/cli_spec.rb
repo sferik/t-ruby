@@ -43,7 +43,7 @@ testcli
 
   describe "#authorize" do
     before do
-      @cli.options = @cli.options.merge("profile" => project_path + "/tmp/trc", "consumer-key" => "abc123", "consumer-secret" => "asdfasd223sd2", "prompt" => true, "display-url" => true)
+      @cli.options = @cli.options.merge("profile" => project_path + "/tmp/trc", "display-url" => true)
       stub_post("/oauth/request_token").
         to_return(:body => fixture("request_token"))
       stub_post("/oauth/access_token").
@@ -52,6 +52,12 @@ testcli
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
+      $stdout.should_receive(:print)
+      $stdin.should_receive(:gets).and_return("\n")
+      $stdout.should_receive(:print).with("Enter your consumer key: ")
+      $stdin.should_receive(:gets).and_return("abc123")
+      $stdout.should_receive(:print).with("Enter your consumer secret: ")
+      $stdin.should_receive(:gets).and_return("asdfasd223sd2")
       $stdout.should_receive(:print).with("Press [Enter] to open the Twitter app authorization page. ")
       $stdin.should_receive(:gets).and_return("\n")
       $stdout.should_receive(:print).with("Paste in the supplied PIN: ")
@@ -66,6 +72,12 @@ testcli
     end
     it "should not raise error" do
       lambda do
+        $stdout.should_receive(:print)
+        $stdin.should_receive(:gets).and_return("\n")
+        $stdout.should_receive(:print).with("Enter your consumer key: ")
+        $stdin.should_receive(:gets).and_return("abc123")
+        $stdout.should_receive(:print).with("Enter your consumer secret: ")
+        $stdin.should_receive(:gets).and_return("asdfasd223sd2")
         $stdout.should_receive(:print).with("Press [Enter] to open the Twitter app authorization page. ")
         $stdin.should_receive(:gets).and_return("\n")
         $stdout.should_receive(:print).with("Paste in the supplied PIN: ")

@@ -1,10 +1,10 @@
 # encoding: utf-8
 
+require 'oauth'
 require 'thor'
 require 'twitter'
 
 module T
-  autoload :Authorizable, 't/authorizable'
   autoload :Collectable, 't/collectable'
   autoload :Delete, 't/delete'
   autoload :FormatHelpers, 't/format_helpers'
@@ -17,12 +17,13 @@ module T
   autoload :Stream, 't/stream'
   autoload :Version, 't/version'
   class CLI < Thor
-    include T::Authorizable
     include T::Collectable
     include T::Printable
     include T::Requestable
     include T::FormatHelpers
 
+    DEFAULT_HOST = 'api.twitter.com'
+    DEFAULT_PROTOCOL = 'https'
     DEFAULT_NUM_RESULTS = 20
     MAX_USERS_PER_REQUEST = 100
     DIRECT_MESSAGE_HEADINGS = ["ID", "Posted at", "Screen name", "Text"]
@@ -52,41 +53,67 @@ module T
     end
 
     desc "authorize", "Allows an application to request user authorization"
-    method_option "consumer-key", :aliases => "-c", :required => true, :desc => "This can be found at https://dev.twitter.com/apps", :banner => "KEY"
-    method_option "consumer-secret", :aliases => "-s", :required => true, :desc => "This can be found at https://dev.twitter.com/apps", :banner => "SECRET"
     method_option "display-url", :aliases => "-d", :type => :boolean, :default => false, :desc => "Display the authorization URL instead of attempting to open it."
-    method_option "prompt", :aliases => "-p", :type => :boolean, :default => true
     def authorize
-      request_token = consumer.get_request_token
-      url = generate_authorize_url(request_token)
-      if options['prompt']
-        say "In a moment, you will be directed to the Twitter app authorization page."
-        say "Perform the following steps to complete the authorization process:"
-        say "  1. Sign in to Twitter"
-        say "  2. Press \"Authorize app\""
-        say "  3. Copy or memorize the supplied PIN"
-        say "  4. Return to the terminal to enter the PIN"
+      @rcfile.path = options['profile'] if options['profile']
+      if @rcfile.empty?
+        say "Welcome! In order to use t, the first thing you'll need to do is"
+        say "register a new application. Once you're redirected to Twitter's"
+        say "developer area, here's what you'll need to do:"
+        say "  1. Sign in if required, and click \"new application\"."
+        say "  2. Complete the required fields and submit the form."
+        say "     Note: Your application must have a unique name."
+        say "     We recommend: \"<your handle>/t\"."
+        say "  3. Go to the Settings tab of your application, and change the Access"
+        say "     setting to \"Read, Write and Access direct messages\", and submit the form."
+        say "  4. Go to the Details tab to view the consumer key and secret,"
+        say "     which you'll need to copy and paste below once you're done."
         say
-        ask "Press [Enter] to open the Twitter app authorization page."
+        ask "Press [Enter] to open the Twitter developer area and create your application."
+        say
+      else
+        say "Looks like you already have an application registered, so we will just"
+        say "open up the page with your list of Twitter applications. Here's what"
+        say "you'll need to do next:"
+        say "  1. Sign in, if required."
+        say "  2. Select the application for which you'd like to authorize and account."
+        say "  3. Copy and paste the app's consumer key and secret below when prompted."
+        say
+        ask "Press [Enter] to open your list of Twitter applications."
         say
       end
       require 'launchy'
+      Launchy.open("https://dev.twitter.com/apps", :dry_run => options['display-url'])
+      key = ask "Enter your consumer key:"
+      secret = ask "Enter your consumer secret:"
+      consumer = OAuth::Consumer.new(key, secret, :site => base_url)
+      request_token = consumer.get_request_token
+      url = generate_authorize_url(consumer, request_token)
+      say
+      say "In a moment, you will be directed to the Twitter app authorization page."
+      say "Perform the following steps to complete the authorization process:"
+      say "  1. Sign in to Twitter"
+      say "  2. Press \"Authorize app\""
+      say "  3. Copy or memorize the supplied PIN"
+      say "  4. Return to the terminal to enter the PIN"
+      say
+      ask "Press [Enter] to open the Twitter app authorization page."
+      say
       Launchy.open(url, :dry_run => options['display-url'])
       pin = ask "Paste in the supplied PIN:"
       access_token = request_token.get_access_token(:oauth_verifier => pin.chomp)
       oauth_response = access_token.get('/1/account/verify_credentials.json')
       screen_name = oauth_response.body.match(/"screen_name"\s*:\s*"(.*?)"/).captures.first
-      @rcfile.path = options['profile'] if options['profile']
       @rcfile[screen_name] = {
-        options['consumer-key'] => {
+        key => {
           'username' => screen_name,
-          'consumer_key' => options['consumer-key'],
-          'consumer_secret' => options['consumer-secret'],
+          'consumer_key' => key,
+          'consumer_secret' => secret,
           'token' => access_token.token,
           'secret' => access_token.secret,
         }
       }
-      @rcfile.active_profile = {'username' => screen_name, 'consumer_key' => options['consumer-key']}
+      @rcfile.active_profile = {'username' => screen_name, 'consumer_key' => key}
       say "Authorization successful."
     end
 
@@ -936,6 +963,24 @@ module T
       text.to_s.scan(valid_mentions).map do |before, at, screen_name|
         screen_name
       end
+    end
+
+    def base_url
+      "#{protocol}://#{host}"
+    end
+
+    def generate_authorize_url(consumer, request_token)
+      request = consumer.create_signed_request(:get, consumer.authorize_path, request_token, pin_auth_parameters)
+      params = request['Authorization'].sub(/^OAuth\s+/, '').split(/,\s+/).map do |param|
+        key, value = param.split('=')
+        value =~ /"(.*?)"/
+        "#{key}=#{CGI::escape($1)}"
+      end.join('&')
+      "#{base_url}#{request.path}?#{params}"
+    end
+
+    def pin_auth_parameters
+      {:oauth_callback => 'oob'}
     end
 
     def location

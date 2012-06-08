@@ -34,12 +34,9 @@ module T
       else
         users.map!(&:strip_ats)
       end
-      require 't/core_ext/enumerable'
       require 'retryable'
-      users.each_slice(MAX_USERS_PER_REQUEST).threaded_each do |user_id_group|
-        retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-          client.list_add_members(list, user_id_group)
-        end
+      retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
+        client.list_add_members(list, users)
       end
       number = users.length
       say "@#{@rcfile.active_profile[0]} added #{number} #{number == 1 ? 'member' : 'members'} to the list \"#{list}\"."
@@ -139,12 +136,9 @@ module T
       else
         users.map!(&:strip_ats)
       end
-      require 't/core_ext/enumerable'
       require 'retryable'
-      users.each_slice(MAX_USERS_PER_REQUEST).threaded_each do |user_id_group|
-        retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-          client.list_remove_members(list, user_id_group)
-        end
+      retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
+        client.list_remove_members(list, users)
       end
       number = users.length
       say "@#{@rcfile.active_profile[0]} removed #{number} #{number == 1 ? 'member' : 'members'} from the list \"#{list}\"."

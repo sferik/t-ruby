@@ -25,7 +25,6 @@ module T
     DEFAULT_HOST = 'api.twitter.com'
     DEFAULT_PROTOCOL = 'https'
     DEFAULT_NUM_RESULTS = 20
-    MAX_USERS_PER_REQUEST = 100
     DIRECT_MESSAGE_HEADINGS = ["ID", "Posted at", "Screen name", "Text"]
     TREND_HEADINGS = ["WOEID", "Parent ID", "Type", "Name", "Country"]
 
@@ -127,12 +126,9 @@ module T
       else
         users.map!(&:strip_ats)
       end
-      require 't/core_ext/enumerable'
       require 'retryable'
-      users = users.threaded_map do |user|
-        retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-          client.block(user)
-        end
+      users = retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
+        client.block(users)
       end
       number = users.length
       say "@#{@rcfile.active_profile[0]} blocked #{number} #{number == 1 ? 'user' : 'users'}."
@@ -227,20 +223,21 @@ module T
           user.strip_ats
         end
       end
-      follower_ids = collect_with_cursor do |cursor|
-        client.follower_ids(user, :cursor => cursor)
-      end
-      following_ids = collect_with_cursor do |cursor|
-        client.friend_ids(user, :cursor => cursor)
-      end
-      disciple_ids = (follower_ids - following_ids)
-      require 't/core_ext/enumerable'
-      require 'retryable'
-      users = disciple_ids.each_slice(MAX_USERS_PER_REQUEST).threaded_map do |disciple_id_group|
-        retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-          client.users(disciple_id_group)
+      follower_ids = Thread.new do
+        collect_with_cursor do |cursor|
+          client.follower_ids(user, :cursor => cursor)
         end
-      end.flatten
+      end
+      following_ids = Thread.new do
+        collect_with_cursor do |cursor|
+          client.friend_ids(user, :cursor => cursor)
+        end
+      end
+      disciple_ids = (follower_ids.value - following_ids.value)
+      require 'retryable'
+      users = retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
+        client.users(disciple_ids)
+      end
       print_users(users)
     end
     map %w(disciples) => :groupies
@@ -324,12 +321,9 @@ module T
     def favorite(status_id, *status_ids)
       status_ids.unshift(status_id)
       status_ids.map!(&:to_i)
-      require 't/core_ext/enumerable'
       require 'retryable'
-      favorites = status_ids.threaded_map do |status_id|
-        retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-          client.favorite(status_id)
-        end
+      favorites = retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
+        client.favorite(status_ids)
       end
       number = favorites.length
       say "@#{@rcfile.active_profile[0]} favorited #{number} #{number == 1 ? 'tweet' : 'tweets'}."
@@ -371,12 +365,9 @@ module T
       else
         users.map!(&:strip_ats)
       end
-      require 't/core_ext/enumerable'
       require 'retryable'
-      users = users.threaded_map do |user|
-        retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-          client.follow(user)
-        end
+      users = retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
+        client.follow(users)
       end
       number = users.length
       say "@#{@rcfile.active_profile[0]} is now following #{number} more #{number == 1 ? 'user' : 'users'}."
@@ -408,13 +399,10 @@ module T
       following_ids = collect_with_cursor do |cursor|
         client.friend_ids(user, :cursor => cursor)
       end
-      require 't/core_ext/enumerable'
       require 'retryable'
-      users = following_ids.each_slice(MAX_USERS_PER_REQUEST).threaded_map do |following_id_group|
-        retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-          client.users(following_id_group)
-        end
-      end.flatten
+      users = retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
+        client.users(following_ids)
+      end
       print_users(users)
     end
 
@@ -442,13 +430,10 @@ module T
       follower_ids = collect_with_cursor do |cursor|
         client.follower_ids(user, :cursor => cursor)
       end
-      require 't/core_ext/enumerable'
       require 'retryable'
-      users = follower_ids.each_slice(MAX_USERS_PER_REQUEST).threaded_map do |follower_id_group|
-        retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-          client.users(follower_id_group)
-        end
-      end.flatten
+      users = retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
+        client.users(follower_ids)
+      end
       print_users(users)
     end
 
@@ -473,20 +458,21 @@ module T
           user.strip_ats
         end
       end
-      following_ids = collect_with_cursor do |cursor|
-        client.friend_ids(user, :cursor => cursor)
-      end
-      follower_ids = collect_with_cursor do |cursor|
-        client.follower_ids(user, :cursor => cursor)
-      end
-      friend_ids = (following_ids & follower_ids)
-      require 't/core_ext/enumerable'
-      require 'retryable'
-      users = friend_ids.each_slice(MAX_USERS_PER_REQUEST).threaded_map do |friend_id_group|
-        retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-          client.users(friend_id_group)
+      following_ids = Thread.new do
+        collect_with_cursor do |cursor|
+          client.friend_ids(user, :cursor => cursor)
         end
-      end.flatten
+      end
+      follower_ids = Thread.new do
+        collect_with_cursor do |cursor|
+          client.follower_ids(user, :cursor => cursor)
+        end
+      end
+      friend_ids = (following_ids.value & follower_ids.value)
+      require 'retryable'
+      users = retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
+        client.users(friend_ids)
+      end
       print_users(users)
     end
 
@@ -511,20 +497,21 @@ module T
           user.strip_ats
         end
       end
-      following_ids = collect_with_cursor do |cursor|
-        client.friend_ids(user, :cursor => cursor)
-      end
-      follower_ids = collect_with_cursor do |cursor|
-        client.follower_ids(user, :cursor => cursor)
-      end
-      leader_ids = (following_ids - follower_ids)
-      require 't/core_ext/enumerable'
-      require 'retryable'
-      users = leader_ids.each_slice(MAX_USERS_PER_REQUEST).threaded_map do |leader_id_group|
-        retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-          client.users(leader_id_group)
+      following_ids = Thread.new do
+        collect_with_cursor do |cursor|
+          client.friend_ids(user, :cursor => cursor)
         end
-      end.flatten
+      end
+      follower_ids = Thread.new do
+        collect_with_cursor do |cursor|
+          client.follower_ids(user, :cursor => cursor)
+        end
+      end
+      leader_ids = (following_ids.value - follower_ids.value)
+      require 'retryable'
+      users = retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
+        client.users(leader_ids)
+      end
       print_users(users)
     end
 
@@ -639,12 +626,9 @@ module T
       else
         users.map!(&:strip_ats)
       end
-      require 't/core_ext/enumerable'
       require 'retryable'
-      users = users.threaded_map do |user|
-        retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-          client.report_spam(user)
-        end
+      users = retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
+        client.report_spam(users)
       end
       number = users.length
       say "@#{@rcfile.active_profile[0]} reported #{number} #{number == 1 ? 'user' : 'users'}."
@@ -655,12 +639,9 @@ module T
     def retweet(status_id, *status_ids)
       status_ids.unshift(status_id)
       status_ids.map!(&:to_i)
-      require 't/core_ext/enumerable'
       require 'retryable'
-      retweets = status_ids.threaded_map do |status_id|
-        retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-          client.retweet(status_id, :trim_user => true)
-        end
+      retweets = retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
+        client.retweet(status_ids, :trim_user => true)
       end
       number = retweets.length
       say "@#{@rcfile.active_profile[0]} retweeted #{number} #{number == 1 ? 'tweet' : 'tweets'}."
@@ -839,12 +820,9 @@ module T
       else
         users.map!(&:strip_ats)
       end
-      require 't/core_ext/enumerable'
       require 'retryable'
-      users = users.threaded_map do |user|
-        retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-          client.unfollow(user)
-        end
+      users = retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
+        client.unfollow(users)
       end
       number = users.length
       say "@#{@rcfile.active_profile[0]} is no longer following #{number} #{number == 1 ? 'user' : 'users'}."

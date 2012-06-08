@@ -13,7 +13,6 @@ module T
 
     DEFAULT_NUM_RESULTS = 20
     MAX_NUM_RESULTS = 200
-    MAX_USERS_PER_REQUEST = 20
 
     check_unknown_options!
 
@@ -29,7 +28,7 @@ module T
     def all(query)
       rpp = options['number'] || DEFAULT_NUM_RESULTS
       statuses = collect_with_rpp(rpp) do |opts|
-        client.search(query, opts)
+        client.search(query, opts).results
       end
       require 'htmlentities'
       if options['csv']
@@ -173,13 +172,9 @@ module T
     method_option "tweets", :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by number of Tweets."
     method_option "unsorted", :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
     def users(query)
-      require 't/core_ext/enumerable'
-      require 'retryable'
-      users = 1.upto(50).threaded_map do |page|
-        retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-          client.user_search(query, :page => page, :per_page => MAX_USERS_PER_REQUEST)
-        end
-      end.flatten
+      users = collect_with_page do |page|
+        client.user_search(query, :page => page)
+      end
       print_users(users)
     end
 

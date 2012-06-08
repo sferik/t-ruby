@@ -1139,46 +1139,81 @@ ID                  Posted at     Screen name    Text
       @cli.options = @cli.options.merge("profile" => fixture_path + "/.trc")
     end
     context "one user" do
-      it "should request the correct resource" do
+      before do
+        stub_get("/1/friends/ids.json").
+          with(:query => {:cursor => "-1"}).
+          to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1/users/lookup.json").
+          with(:query => {:screen_name => "sferik,pengwynn"}).
+          to_return(:body => fixture("users.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         stub_post("/1/friendships/create.json").
-          with(:body => {:screen_name => "sferik"}).
+          with(:body => {:user_id => "14100886"}).
           to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        @cli.follow("sferik")
+      end
+      it "should request the correct resource" do
+        @cli.follow("sferik", "pengwynn")
+        a_get("/1/friends/ids.json").
+          with(:query => {:cursor => "-1"}).
+          should have_been_made
+        a_get("/1/users/lookup.json").
+          with(:query => {:screen_name => "sferik,pengwynn"}).
+          should have_been_made
         a_post("/1/friendships/create.json").
-          with(:body => {:screen_name => "sferik"}).
+          with(:body => {:user_id => "14100886"}).
           should have_been_made
       end
       it "should have the correct output" do
-        stub_post("/1/friendships/create.json").
-          with(:body => {:screen_name => "sferik"}).
-          to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        @cli.follow("sferik")
+        @cli.follow("sferik", "pengwynn")
         $stdout.string.should =~ /^@testcli is now following 1 more user\.$/
       end
       context "--id" do
         before do
           @cli.options = @cli.options.merge("id" => true)
+          stub_get("/1/friends/ids.json").
+            with(:query => {:cursor => "-1"}).
+            to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1/users/lookup.json").
+            with(:query => {:user_id => "7505382,14100886"}).
+            to_return(:body => fixture("users.json"), :headers => {:content_type => "application/json; charset=utf-8"})
           stub_post("/1/friendships/create.json").
-            with(:body => {:user_id => "7505382"}).
+            with(:body => {:user_id => "14100886"}).
             to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         end
         it "should request the correct resource" do
-          @cli.follow("7505382")
+          @cli.follow("7505382", "14100886")
+          a_get("/1/friends/ids.json").
+            with(:query => {:cursor => "-1"}).
+            should have_been_made
+          a_get("/1/users/lookup.json").
+            with(:query => {:user_id => "7505382,14100886"}).
+            should have_been_made
           a_post("/1/friendships/create.json").
-            with(:body => {:user_id => "7505382"}).
+            with(:body => {:user_id => "14100886"}).
             should have_been_made
         end
       end
       context "Twitter is down" do
         it "should retry 3 times and then raise an error" do
+          stub_get("/1/friends/ids.json").
+            with(:query => {:cursor => "-1"}).
+            to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1/users/lookup.json").
+            with(:query => {:screen_name => "sferik,pengwynn"}).
+            to_return(:body => fixture("users.json"), :headers => {:content_type => "application/json; charset=utf-8"})
           stub_post("/1/friendships/create.json").
-            with(:body => {:screen_name => "sferik"}).
+            with(:body => {:user_id => "14100886"}).
             to_return(:status => 502)
           lambda do
-            @cli.follow("sferik")
+            @cli.follow("sferik", "pengwynn")
           end.should raise_error("Twitter is down or being upgraded.")
+          a_get("/1/friends/ids.json").
+            with(:query => {:cursor => "-1"}).
+            should have_been_made.times(3)
+          a_get("/1/users/lookup.json").
+            with(:query => {:screen_name => "sferik,pengwynn"}).
+            should have_been_made.times(3)
           a_post("/1/friendships/create.json").
-            with(:body => {:screen_name => "sferik"}).
+            with(:body => {:user_id => "14100886"}).
             should have_been_made.times(3)
         end
       end
@@ -2666,101 +2701,101 @@ ID,Text,Screen name,Posted at,Location,Retweets,Source,URL
     end
     context "with no street address" do
       before do
-        stub_get("/1/statuses/show/55709764298092545.json").
+        stub_get("/1/statuses/show/55709764298092550.json").
           with(:query => {:include_my_retweet => "false"}).
           to_return(:body => fixture("status_no_street_address.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should have the correct output" do
-        @cli.status("55709764298092545")
+        @cli.status("55709764298092550")
         $stdout.string.should == <<-eos
-ID           55709764298092545
+ID           55709764298092550
 Text         The problem with your code is that it's doing exactly what you told it to do.
 Screen name  @sferik
 Posted at    Apr  6  2011 (8 months ago)
 Location     Blowfish Sushi To Die For, San Francisco, California, United States
 Retweets     320
 Source       Twitter for iPhone
-URL          https://twitter.com/sferik/status/55709764298092545
+URL          https://twitter.com/sferik/status/55709764298092550
         eos
       end
     end
     context "with no locality" do
       before do
-        stub_get("/1/statuses/show/55709764298092545.json").
+        stub_get("/1/statuses/show/55709764298092549.json").
           with(:query => {:include_my_retweet => "false"}).
           to_return(:body => fixture("status_no_locality.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should have the correct output" do
-        @cli.status("55709764298092545")
+        @cli.status("55709764298092549")
         $stdout.string.should == <<-eos
-ID           55709764298092545
+ID           55709764298092549
 Text         The problem with your code is that it's doing exactly what you told it to do.
 Screen name  @sferik
 Posted at    Apr  6  2011 (8 months ago)
 Location     Blowfish Sushi To Die For, San Francisco, California, United States
 Retweets     320
 Source       Twitter for iPhone
-URL          https://twitter.com/sferik/status/55709764298092545
+URL          https://twitter.com/sferik/status/55709764298092549
         eos
       end
     end
     context "with no attributes" do
       before do
-        stub_get("/1/statuses/show/55709764298092545.json").
+        stub_get("/1/statuses/show/55709764298092546.json").
           with(:query => {:include_my_retweet => "false"}).
           to_return(:body => fixture("status_no_attributes.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should have the correct output" do
-        @cli.status("55709764298092545")
+        @cli.status("55709764298092546")
         $stdout.string.should == <<-eos
-ID           55709764298092545
+ID           55709764298092546
 Text         The problem with your code is that it's doing exactly what you told it to do.
 Screen name  @sferik
 Posted at    Apr  6  2011 (8 months ago)
 Location     Blowfish Sushi To Die For, San Francisco, United States
 Retweets     320
 Source       Twitter for iPhone
-URL          https://twitter.com/sferik/status/55709764298092545
+URL          https://twitter.com/sferik/status/55709764298092546
         eos
       end
     end
     context "with no country" do
       before do
-        stub_get("/1/statuses/show/55709764298092545.json").
+        stub_get("/1/statuses/show/55709764298092547.json").
           with(:query => {:include_my_retweet => "false"}).
           to_return(:body => fixture("status_no_country.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should have the correct output" do
-        @cli.status("55709764298092545")
+        @cli.status("55709764298092547")
         $stdout.string.should == <<-eos
-ID           55709764298092545
+ID           55709764298092547
 Text         The problem with your code is that it's doing exactly what you told it to do.
 Screen name  @sferik
 Posted at    Apr  6  2011 (8 months ago)
 Location     Blowfish Sushi To Die For, San Francisco
 Retweets     320
 Source       Twitter for iPhone
-URL          https://twitter.com/sferik/status/55709764298092545
+URL          https://twitter.com/sferik/status/55709764298092547
         eos
       end
     end
     context "with no full name" do
       before do
-        stub_get("/1/statuses/show/55709764298092545.json").
+        stub_get("/1/statuses/show/55709764298092548.json").
           with(:query => {:include_my_retweet => "false"}).
           to_return(:body => fixture("status_no_full_name.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should have the correct output" do
-        @cli.status("55709764298092545")
+        @cli.status("55709764298092548")
         $stdout.string.should == <<-eos
-ID           55709764298092545
+ID           55709764298092548
 Text         The problem with your code is that it's doing exactly what you told it to do.
 Screen name  @sferik
 Posted at    Apr  6  2011 (8 months ago)
 Location     Blowfish Sushi To Die For
 Retweets     320
 Source       Twitter for iPhone
-URL          https://twitter.com/sferik/status/55709764298092545
+URL          https://twitter.com/sferik/status/55709764298092548
         eos
       end
     end

@@ -1,4 +1,5 @@
 require 'twitter'
+require 'retryable'
 
 module T
   module Collectable
@@ -10,7 +11,6 @@ module T
     end
 
     def collect_with_cursor(collection=[], cursor=-1, &block)
-      require 'retryable'
       object = retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
         yield cursor
       end
@@ -19,7 +19,6 @@ module T
     end
 
     def collect_with_max_id(collection=[], max_id=nil, &block)
-      require 'retryable'
       array = retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
         yield max_id
       end
@@ -31,7 +30,7 @@ module T
     def collect_with_number(number, key, &block)
       opts = {}
       opts[key] = MAX_NUM_RESULTS
-      statuses = collect_with_max_id do |max_id|
+      collect_with_max_id do |max_id|
         opts[:max_id] = max_id unless max_id.nil?
         opts[key] = number unless number >= MAX_NUM_RESULTS
         if number > 0
@@ -48,6 +47,15 @@ module T
 
     def collect_with_rpp(rpp, &block)
       collect_with_number(rpp, :rpp, &block)
+    end
+
+    def collect_with_page(collection=[], page=1, &block)
+      array = retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
+        yield page
+      end
+      return collection if array.nil?
+      collection += array
+      array.empty? ? collection.flatten.uniq : collect_with_page(collection, page + 1, &block)
     end
 
   end

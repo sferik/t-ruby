@@ -213,6 +213,7 @@ module T
     method_option "posted", :aliases => "-p", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter account was posted."
     method_option "reverse", :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     method_option "tweets", :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by number of Tweets."
+    method_option "tweeted", :aliases => "-w", :type => :boolean, :default => false, :desc => "Sort by the time of the last Tweet."
     method_option "unsorted", :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
     def groupies(user=nil)
       if user
@@ -386,6 +387,7 @@ module T
     method_option "posted", :aliases => "-p", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter account was posted."
     method_option "reverse", :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     method_option "tweets", :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by number of Tweets."
+    method_option "tweeted", :aliases => "-w", :type => :boolean, :default => false, :desc => "Sort by the time of the last Tweet."
     method_option "unsorted", :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
     def followings(user=nil)
       if user
@@ -417,6 +419,7 @@ module T
     method_option "posted", :aliases => "-p", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter account was posted."
     method_option "reverse", :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     method_option "tweets", :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by number of Tweets."
+    method_option "tweeted", :aliases => "-w", :type => :boolean, :default => false, :desc => "Sort by the time of the last Tweet."
     method_option "unsorted", :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
     def followers(user=nil)
       if user
@@ -448,6 +451,7 @@ module T
     method_option "posted", :aliases => "-p", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter account was posted."
     method_option "reverse", :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     method_option "tweets", :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by number of Tweets."
+    method_option "tweeted", :aliases => "-w", :type => :boolean, :default => false, :desc => "Sort by the time of the last Tweet."
     method_option "unsorted", :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
     def friends(user=nil)
       if user
@@ -487,6 +491,7 @@ module T
     method_option "posted", :aliases => "-p", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter account was posted."
     method_option "reverse", :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     method_option "tweets", :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by number of Tweets."
+    method_option "tweeted", :aliases => "-w", :type => :boolean, :default => false, :desc => "Sort by the time of the last Tweet."
     method_option "unsorted", :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
     def leaders(user=nil)
       if user
@@ -731,6 +736,7 @@ module T
     method_option "posted", :aliases => "-p", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter account was posted."
     method_option "reverse", :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     method_option "tweets", :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by number of Tweets."
+    method_option "tweeted", :aliases => "-w", :type => :boolean, :default => false, :desc => "Sort by the time of the last Tweet."
     method_option "unsorted", :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
     def suggest(user=nil)
       if user
@@ -853,6 +859,7 @@ module T
     method_option "posted", :aliases => "-p", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter account was posted."
     method_option "reverse", :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     method_option "tweets", :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by number of Tweets."
+    method_option "tweeted", :aliases => "-w", :type => :boolean, :default => false, :desc => "Sort by the time of the last Tweet."
     method_option "unsorted", :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
     def users(user, *users)
       users.unshift(user)

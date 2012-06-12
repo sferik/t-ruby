@@ -701,10 +701,46 @@ ID                  Posted at     Screen name  Text
       it "should output in CSV format" do
         @search.users("Erik")
         $stdout.string.should == <<-eos
-ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
+ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
+14100886,2008-03-08 16:34:22 +0000,2010-10-21 10:33:15 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
+7505382,2007-07-16 12:59:01 +0000,,2962,727,29,88,898,sferik,Erik Michaels-Ober
         eos
+      end
+    end
+    context "--favorites" do
+      before do
+        @search.options = @search.options.merge("favorites" => true)
+      end
+      it "should sort by number of favorites" do
+        @search.users("Erik")
+        $stdout.string.chomp.should == "pengwynn  sferik"
+      end
+    end
+    context "--followers" do
+      before do
+        @search.options = @search.options.merge("followers" => true)
+      end
+      it "should sort by number of followers" do
+        @search.users("Erik")
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--friends" do
+      before do
+        @search.options = @search.options.merge("friends" => true)
+      end
+      it "should sort by number of friends" do
+        @search.users("Erik")
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--listed" do
+      before do
+        @search.options = @search.options.merge("listed" => true)
+      end
+      it "should sort by number of list memberships" do
+        @search.users("Erik")
+        $stdout.string.chomp.should == "sferik    pengwynn"
       end
     end
     context "--long" do
@@ -714,10 +750,55 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
       it "should output in long format" do
         @search.users("Erik")
         $stdout.string.should == <<-eos
-ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
+ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
+14100886  Mar  8  2008  Oct 21  2010       3913         32     185       1871...
+ 7505382  Jul 16  2007                     2962        727      29         88...
         eos
+      end
+    end
+    context "--posted" do
+      before do
+        @search.options = @search.options.merge("posted" => true)
+      end
+      it "should sort by the time wshen Twitter account was created" do
+        @search.users("Erik")
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--reverse" do
+      before do
+        @search.options = @search.options.merge("reverse" => true)
+      end
+      it "should reverse the order of the sort" do
+        @search.users("Erik")
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--tweets" do
+      before do
+        @search.options = @search.options.merge("tweets" => true)
+      end
+      it "should sort by number of Tweets" do
+        @search.users("Erik")
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--tweeted" do
+      before do
+        @search.options = @search.options.merge("tweeted" => true)
+      end
+      it "should sort by the time of the last Tweet" do
+        @search.users("Erik")
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--unsorted" do
+      before do
+        @search.options = @search.options.merge("unsorted" => true)
+      end
+      it "should not be sorted" do
+        @search.users("Erik")
+        $stdout.string.chomp.should == "sferik    pengwynn"
       end
     end
     context "Twitter is down" do

@@ -177,7 +177,7 @@ ID,Description,Slug,Screen name,Created at,Members,Subscribers,Following,Mode,UR
     end
     it "should have the correct output" do
       @list.members("presidents")
-      $stdout.string.rstrip.should == "pengwynn  sferik"
+      $stdout.string.chomp.should == "pengwynn  sferik"
     end
     context "--csv" do
       before do
@@ -186,9 +186,9 @@ ID,Description,Slug,Screen name,Created at,Members,Subscribers,Following,Mode,UR
       it "should output in CSV format" do
         @list.members("presidents")
         $stdout.string.should == <<-eos
-ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
+ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
+14100886,2008-03-08 16:34:22 +0000,2010-10-21 10:33:15 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
+7505382,2007-07-16 12:59:01 +0000,,2962,727,29,88,898,sferik,Erik Michaels-Ober
         eos
       end
     end
@@ -198,7 +198,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
       end
       it "should sort by number of favorites" do
         @list.members("presidents")
-        $stdout.string.rstrip.should == "pengwynn  sferik"
+        $stdout.string.chomp.should == "pengwynn  sferik"
       end
     end
     context "--followers" do
@@ -207,7 +207,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
       end
       it "should sort by number of followers" do
         @list.members("presidents")
-        $stdout.string.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.should == "sferik    pengwynn"
       end
     end
     context "--friends" do
@@ -216,7 +216,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
       end
       it "should sort by number of friends" do
         @list.members("presidents")
-        $stdout.string.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.should == "sferik    pengwynn"
       end
     end
     context "--listed" do
@@ -225,7 +225,7 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
       end
       it "should sort by number of list memberships" do
         @list.members("presidents")
-        $stdout.string.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.should == "sferik    pengwynn"
       end
     end
     context "--long" do
@@ -235,9 +235,9 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
       it "should output in long format" do
         @list.members("presidents")
         $stdout.string.should == <<-eos
-ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
+ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
+14100886  Mar  8  2008  Oct 21  2010       3913         32     185       1871...
+ 7505382  Jul 16  2007                     2962        727      29         88...
         eos
       end
     end
@@ -247,7 +247,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
       end
       it "should sort by the time wshen Twitter account was created" do
         @list.members("presidents")
-        $stdout.string.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.should == "sferik    pengwynn"
       end
     end
     context "--reverse" do
@@ -256,7 +256,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
       end
       it "should reverse the order of the sort" do
         @list.members("presidents")
-        $stdout.string.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.should == "sferik    pengwynn"
       end
     end
     context "--tweets" do
@@ -265,7 +265,16 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
       end
       it "should sort by number of Tweets" do
         @list.members("presidents")
-        $stdout.string.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--tweeted" do
+      before do
+        @list.options = @list.options.merge("tweeted" => true)
+      end
+      it "should sort by the time of the last Tweet" do
+        @list.members("presidents")
+        $stdout.string.chomp.should == "sferik    pengwynn"
       end
     end
     context "--unsorted" do
@@ -274,7 +283,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
       end
       it "should not be sorted" do
         @list.members("presidents")
-        $stdout.string.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.should == "sferik    pengwynn"
       end
     end
     context "with a user passed" do

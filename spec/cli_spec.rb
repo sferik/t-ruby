@@ -60,7 +60,7 @@ testcli
       $stdin.should_receive(:gets).and_return("asdfasd223sd2")
       $stdout.should_receive(:print).with("Press [Enter] to open the Twitter app authorization page. ")
       $stdin.should_receive(:gets).and_return("\n")
-      $stdout.should_receive(:print).with("Paste in the supplied PIN: ")
+      $stdout.should_receive(:print).with("Enter the supplied PIN: ")
       $stdin.should_receive(:gets).and_return("1234567890")
       @cli.authorize
       a_post("/oauth/request_token").
@@ -80,7 +80,7 @@ testcli
         $stdin.should_receive(:gets).and_return("asdfasd223sd2")
         $stdout.should_receive(:print).with("Press [Enter] to open the Twitter app authorization page. ")
         $stdin.should_receive(:gets).and_return("\n")
-        $stdout.should_receive(:print).with("Paste in the supplied PIN: ")
+        $stdout.should_receive(:print).with("Enter the supplied PIN: ")
         $stdin.should_receive(:gets).and_return("1234567890")
         @cli.authorize
       end.should_not raise_error

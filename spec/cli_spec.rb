@@ -43,7 +43,7 @@ testcli
 
   describe "#authorize" do
     before do
-      @cli.options = @cli.options.merge("profile" => project_path + "/tmp/trc", "display-url" => true)
+      @cli.options = @cli.options.merge("profile" => project_path + "/tmp/authorize", "display-url" => true)
       stub_post("/oauth/request_token").
         to_return(:body => fixture("request_token"))
       stub_post("/oauth/access_token").
@@ -529,7 +529,7 @@ ID          Posted at     Screen name  Text
         $stdout.string.should == <<-eos
 ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
 14100886,2008-03-08 16:34:22 +0000,2010-10-21 10:33:15 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-7505382,2007-07-16 12:59:01 +0000,,2962,727,29,88,898,sferik,Erik Michaels-Ober
+7505382,2007-07-16 12:59:01 +0000,2011-01-16 21:38:25 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
         eos
       end
     end
@@ -578,7 +578,7 @@ ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name
         $stdout.string.should == <<-eos
 ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
 14100886  Mar  8  2008  Oct 21  2010       3913         32     185       1871...
- 7505382  Jul 16  2007                     2962        727      29         88...
+ 7505382  Jul 16  2007  Jan 16  2011       2962        727      29         88...
         eos
       end
     end
@@ -615,7 +615,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by the time of the last Tweet" do
         @cli.groupies
-        $stdout.string.chomp.should == "sferik    pengwynn"
+        $stdout.string.chomp.should == "pengwynn  sferik"
       end
     end
     context "--unsorted" do
@@ -1260,7 +1260,7 @@ ID                  Posted at     Screen name    Text
         $stdout.string.should == <<-eos
 ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
 14100886,2008-03-08 16:34:22 +0000,2010-10-21 10:33:15 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-7505382,2007-07-16 12:59:01 +0000,,2962,727,29,88,898,sferik,Erik Michaels-Ober
+7505382,2007-07-16 12:59:01 +0000,2011-01-16 21:38:25 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
         eos
       end
     end
@@ -1309,7 +1309,7 @@ ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name
         $stdout.string.should == <<-eos
 ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
 14100886  Mar  8  2008  Oct 21  2010       3913         32     185       1871...
- 7505382  Jul 16  2007                     2962        727      29         88...
+ 7505382  Jul 16  2007  Jan 16  2011       2962        727      29         88...
         eos
       end
     end
@@ -1346,7 +1346,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by the time of the last Tweet" do
         @cli.followings
-        $stdout.string.chomp.should == "sferik    pengwynn"
+        $stdout.string.chomp.should == "pengwynn  sferik"
       end
     end
     context "--unsorted" do
@@ -1424,7 +1424,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
         $stdout.string.should == <<-eos
 ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
 14100886,2008-03-08 16:34:22 +0000,2010-10-21 10:33:15 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-7505382,2007-07-16 12:59:01 +0000,,2962,727,29,88,898,sferik,Erik Michaels-Ober
+7505382,2007-07-16 12:59:01 +0000,2011-01-16 21:38:25 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
         eos
       end
     end
@@ -1473,7 +1473,7 @@ ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name
         $stdout.string.should == <<-eos
 ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
 14100886  Mar  8  2008  Oct 21  2010       3913         32     185       1871...
- 7505382  Jul 16  2007                     2962        727      29         88...
+ 7505382  Jul 16  2007  Jan 16  2011       2962        727      29         88...
         eos
       end
     end
@@ -1510,7 +1510,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by the time of the last Tweet" do
         @cli.followers
-        $stdout.string.chomp.should == "sferik    pengwynn"
+        $stdout.string.chomp.should == "pengwynn  sferik"
       end
     end
     context "--unsorted" do
@@ -1597,7 +1597,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
         $stdout.string.should == <<-eos
 ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
 14100886,2008-03-08 16:34:22 +0000,2010-10-21 10:33:15 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-7505382,2007-07-16 12:59:01 +0000,,2962,727,29,88,898,sferik,Erik Michaels-Ober
+7505382,2007-07-16 12:59:01 +0000,2011-01-16 21:38:25 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
         eos
       end
     end
@@ -1646,7 +1646,7 @@ ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name
         $stdout.string.should == <<-eos
 ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
 14100886  Mar  8  2008  Oct 21  2010       3913         32     185       1871...
- 7505382  Jul 16  2007                     2962        727      29         88...
+ 7505382  Jul 16  2007  Jan 16  2011       2962        727      29         88...
         eos
       end
     end
@@ -1683,7 +1683,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by the time of the last Tweet" do
         @cli.friends
-        $stdout.string.chomp.should == "sferik    pengwynn"
+        $stdout.string.chomp.should == "pengwynn  sferik"
       end
     end
     context "--unsorted" do
@@ -1779,7 +1779,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
         $stdout.string.should == <<-eos
 ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
 14100886,2008-03-08 16:34:22 +0000,2010-10-21 10:33:15 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-7505382,2007-07-16 12:59:01 +0000,,2962,727,29,88,898,sferik,Erik Michaels-Ober
+7505382,2007-07-16 12:59:01 +0000,2011-01-16 21:38:25 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
         eos
       end
     end
@@ -1828,8 +1828,8 @@ ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name
         $stdout.string.should == <<-eos
 ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
 14100886  Mar  8  2008  Oct 21  2010       3913         32     185       1871...
- 7505382  Jul 16  2007                     2962        727      29         88...
-        eos
+ 7505382  Jul 16  2007  Jan 16  2011       2962        727      29         88...
+         eos
       end
     end
     context "--posted" do
@@ -1865,7 +1865,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by the time of the last Tweet" do
         @cli.leaders
-        $stdout.string.chomp.should == "sferik    pengwynn"
+        $stdout.string.chomp.should == "pengwynn  sferik"
       end
     end
     context "--unsorted" do
@@ -3528,7 +3528,7 @@ WOEID     Parent ID  Type       Name           Country
         $stdout.string.should == <<-eos
 ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
 14100886,2008-03-08 16:34:22 +0000,2010-10-21 10:33:15 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-7505382,2007-07-16 12:59:01 +0000,,2962,727,29,88,898,sferik,Erik Michaels-Ober
+7505382,2007-07-16 12:59:01 +0000,2011-01-16 21:38:25 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
         eos
       end
     end
@@ -3591,7 +3591,7 @@ ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name
         $stdout.string.should == <<-eos
 ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
 14100886  Mar  8  2008  Oct 21  2010       3913         32     185       1871...
- 7505382  Jul 16  2007                     2962        727      29         88...
+ 7505382  Jul 16  2007  Jan 16  2011       2962        727      29         88...
         eos
       end
     end
@@ -3628,7 +3628,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by the time of the last Tweet" do
         @cli.users("sferik", "pengwynn")
-        $stdout.string.chomp.should == "sferik    pengwynn"
+        $stdout.string.chomp.should == "pengwynn  sferik"
       end
     end
     context "--unsorted" do

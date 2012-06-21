@@ -701,7 +701,7 @@ sferik    sferik    sferik    sferik    sferik    sferik    sferik    sferik
 sferik    sferik    sferik    sferik    sferik    sferik    sferik    sferik
 sferik    sferik    sferik    sferik    sferik    sferik    sferik    sferik
 sferik    sferik    sferik    sferik    sferik    sferik    sferik    sferik
-sferik    sferik    sferik    sferik    
+sferik    sferik    sferik    sferik
       eos
     end
     context "--csv" do

@@ -18,8 +18,8 @@ module T
     check_unknown_options!
 
     def initialize(*)
+      @rcfile = T::RCFile.instance
       super
-      @rcfile = RCFile.instance
     end
 
     desc "all QUERY", "Returns the #{DEFAULT_NUM_RESULTS} most recent Tweets that match the specified query."

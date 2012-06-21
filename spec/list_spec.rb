@@ -13,9 +13,8 @@ describe T::List do
     Timecop.return
   end
 
-  before do
-    rcfile = RCFile.instance
-    rcfile.path = fixture_path + "/.trc"
+  before :each do
+    T::RCFile.instance.path = fixture_path + "/.trc"
     @list = T::List.new
     @old_stderr = $stderr
     $stderr = StringIO.new
@@ -23,7 +22,8 @@ describe T::List do
     $stdout = StringIO.new
   end
 
-  after do
+  after :each do
+    T::RCFile.instance.reset
     $stderr = @old_stderr
     $stdout = @old_stdout
   end

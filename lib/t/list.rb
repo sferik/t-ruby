@@ -20,8 +20,8 @@ module T
     check_unknown_options!
 
     def initialize(*)
+      @rcfile = T::RCFile.instance
       super
-      @rcfile = RCFile.instance
     end
 
     desc "add LIST USER [USER...]", "Add members to a list."

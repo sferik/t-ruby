@@ -16,8 +16,8 @@ module T
     ]
 
     def initialize(*)
+      @rcfile = T::RCFile.instance
       super
-      @rcfile = RCFile.instance
     end
 
     desc "all", "Stream a random sample of all Tweets (Control-C to stop)"

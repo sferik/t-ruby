@@ -34,11 +34,11 @@ module T
     option "host", :aliases => "-H", :type => :string, :default => DEFAULT_HOST, :desc => "Twitter API server"
     option "no-color", :aliases => "-N", :type => :boolean, :desc => "Disable colorization in output"
     option "no-ssl", :aliases => "-U", :type => :boolean, :default => false, :desc => "Disable SSL"
-    option "profile", :aliases => "-P", :type => :string, :default => File.join(File.expand_path("~"), RCFile::FILE_NAME), :desc => "Path to RC file", :banner => "FILE"
+    option "profile", :aliases => "-P", :type => :string, :default => File.join(File.expand_path("~"), T::RCFile::FILE_NAME), :desc => "Path to RC file", :banner => "FILE"
 
     def initialize(*)
+      @rcfile = T::RCFile.instance
       super
-      @rcfile = RCFile.instance
     end
 
     desc "accounts", "List accounts"

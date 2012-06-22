@@ -21,7 +21,7 @@ offers vastly more commands and capabilities than are available via SMS.
 
 First, make sure you have Ruby installed.
 
-**On a Mac**, open /Applications/Utilities/Terminal.app and type:
+**On a Mac**, open `/Applications/Utilities/Terminal.app` and type:
 
     ruby -v
 

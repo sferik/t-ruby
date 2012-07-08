@@ -8,4 +8,6 @@ platforms :mri do
   gem 'ruby-prof'
 end
 
+gem 'thor', :github => 'wycats/thor', :branch => 'enum'
+
 gemspec

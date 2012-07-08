@@ -4,11 +4,6 @@ require 'oauth'
 require 't'
 require 'twitter'
 
-# Output message to $stderr, prefixed with the program name
-def pute(message="")
-  $stderr.puts "#{$0}: #{message}"
-end
-
 begin
   T::CLI.start(ARGV)
 rescue Interrupt
@@ -24,4 +19,9 @@ rescue Twitter::Error::Unauthorized => error
 rescue Twitter::Error => error
   pute error.message
   exit 1
+end
+
+# Output message to $stderr, prefixed with the program name
+def pute(message="")
+  $stderr.puts "#{$0}: #{message}"
 end

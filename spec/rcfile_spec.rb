@@ -5,6 +5,7 @@ describe T::RCFile do
 
   after :each do
     T::RCFile.instance.reset
+    File.delete(project_path + "/tmp/trc") if File.exist?(project_path + "/tmp/trc")
   end
 
   it 'is a singleton' do
@@ -133,7 +134,7 @@ describe T::RCFile do
   describe '#delete' do
     it 'should delete the rcfile' do
       path = project_path + "/tmp/trc"
-      FileUtils.touch(path)
+      File.open(path, 'w'){|file| file.write(YAML.dump({}))}
       File.exist?(path).should be_true
       rcfile = T::RCFile.instance
       rcfile.path = path

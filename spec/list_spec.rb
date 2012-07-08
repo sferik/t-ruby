@@ -192,42 +192,6 @@ ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name
         eos
       end
     end
-    context "--favorites" do
-      before do
-        @list.options = @list.options.merge("favorites" => true)
-      end
-      it "should sort by number of favorites" do
-        @list.members("presidents")
-        $stdout.string.chomp.should == "pengwynn  sferik"
-      end
-    end
-    context "--followers" do
-      before do
-        @list.options = @list.options.merge("followers" => true)
-      end
-      it "should sort by number of followers" do
-        @list.members("presidents")
-        $stdout.string.chomp.should == "sferik    pengwynn"
-      end
-    end
-    context "--friends" do
-      before do
-        @list.options = @list.options.merge("friends" => true)
-      end
-      it "should sort by number of friends" do
-        @list.members("presidents")
-        $stdout.string.chomp.should == "sferik    pengwynn"
-      end
-    end
-    context "--listed" do
-      before do
-        @list.options = @list.options.merge("listed" => true)
-      end
-      it "should sort by number of list memberships" do
-        @list.members("presidents")
-        $stdout.string.chomp.should == "sferik    pengwynn"
-      end
-    end
     context "--long" do
       before do
         @list.options = @list.options.merge("long" => true)
@@ -241,15 +205,6 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
         eos
       end
     end
-    context "--posted" do
-      before do
-        @list.options = @list.options.merge("posted" => true)
-      end
-      it "should sort by the time wshen Twitter account was created" do
-        @list.members("presidents")
-        $stdout.string.chomp.should == "sferik    pengwynn"
-      end
-    end
     context "--reverse" do
       before do
         @list.options = @list.options.merge("reverse" => true)
@@ -259,18 +214,63 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
         $stdout.string.chomp.should == "sferik    pengwynn"
       end
     end
-    context "--tweets" do
+    context "--sort=favorites" do
       before do
-        @list.options = @list.options.merge("tweets" => true)
+        @list.options = @list.options.merge("sort" => "favorites")
+      end
+      it "should sort by number of favorites" do
+        @list.members("presidents")
+        $stdout.string.chomp.should == "pengwynn  sferik"
+      end
+    end
+    context "--sort=followers" do
+      before do
+        @list.options = @list.options.merge("sort" => "followers")
+      end
+      it "should sort by number of followers" do
+        @list.members("presidents")
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--sort=friends" do
+      before do
+        @list.options = @list.options.merge("sort" => "friends")
+      end
+      it "should sort by number of friends" do
+        @list.members("presidents")
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--sort=listed" do
+      before do
+        @list.options = @list.options.merge("sort" => "listed")
+      end
+      it "should sort by number of list memberships" do
+        @list.members("presidents")
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--sort=since" do
+      before do
+        @list.options = @list.options.merge("sort" => "since")
+      end
+      it "should sort by the time wshen Twitter account was created" do
+        @list.members("presidents")
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--sort=tweets" do
+      before do
+        @list.options = @list.options.merge("sort" => "tweets")
       end
       it "should sort by number of Tweets" do
         @list.members("presidents")
         $stdout.string.chomp.should == "pengwynn  sferik"
       end
     end
-    context "--tweeted" do
+    context "--sort=tweeted" do
       before do
-        @list.options = @list.options.merge("tweeted" => true)
+        @list.options = @list.options.merge("sort" => "tweeted")
       end
       it "should sort by the time of the last Tweet" do
         @list.members("presidents")

@@ -533,42 +533,6 @@ ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name
         eos
       end
     end
-    context "--favorites" do
-      before do
-        @cli.options = @cli.options.merge("favorites" => true)
-      end
-      it "should sort by number of favorites" do
-        @cli.groupies
-        $stdout.string.chomp.should == "pengwynn  sferik"
-      end
-    end
-    context "--followers" do
-      before do
-        @cli.options = @cli.options.merge("followers" => true)
-      end
-      it "should sort by number of followers" do
-        @cli.groupies
-        $stdout.string.chomp.should == "sferik    pengwynn"
-      end
-    end
-    context "--friends" do
-      before do
-        @cli.options = @cli.options.merge("friends" => true)
-      end
-      it "should sort by number of friends" do
-        @cli.groupies
-        $stdout.string.chomp.should == "sferik    pengwynn"
-      end
-    end
-    context "--listed" do
-      before do
-        @cli.options = @cli.options.merge("listed" => true)
-      end
-      it "should sort by number of list memberships" do
-        @cli.groupies
-        $stdout.string.chomp.should == "sferik    pengwynn"
-      end
-    end
     context "--long" do
       before do
         @cli.options = @cli.options.merge("long" => true)
@@ -582,15 +546,6 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
         eos
       end
     end
-    context "--posted" do
-      before do
-        @cli.options = @cli.options.merge("posted" => true)
-      end
-      it "should sort by the time when Twitter acount was created" do
-        @cli.groupies
-        $stdout.string.chomp.should == "sferik    pengwynn"
-      end
-    end
     context "--reverse" do
       before do
         @cli.options = @cli.options.merge("reverse" => true)
@@ -600,18 +555,63 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
         $stdout.string.chomp.should == "sferik    pengwynn"
       end
     end
-    context "--tweets" do
+    context "--sort=favorites" do
       before do
-        @cli.options = @cli.options.merge("tweets" => true)
+        @cli.options = @cli.options.merge("sort" => "favorites")
+      end
+      it "should sort by number of favorites" do
+        @cli.groupies
+        $stdout.string.chomp.should == "pengwynn  sferik"
+      end
+    end
+    context "--sort=followers" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "followers")
+      end
+      it "should sort by number of followers" do
+        @cli.groupies
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--sort=friends" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "friends")
+      end
+      it "should sort by number of friends" do
+        @cli.groupies
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--sort=listed" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "listed")
+      end
+      it "should sort by number of list memberships" do
+        @cli.groupies
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--sort=since" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "since")
+      end
+      it "should sort by the time when Twitter acount was created" do
+        @cli.groupies
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--sort=tweets" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "tweets")
       end
       it "should sort by number of Tweets" do
         @cli.groupies
         $stdout.string.chomp.should == "pengwynn  sferik"
       end
     end
-    context "--tweeted" do
+    context "--sort=tweeted" do
       before do
-        @cli.options = @cli.options.merge("tweeted" => true)
+        @cli.options = @cli.options.merge("sort" => "tweeted")
       end
       it "should sort by the time of the last Tweet" do
         @cli.groupies
@@ -1264,42 +1264,6 @@ ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name
         eos
       end
     end
-    context "--favorites" do
-      before do
-        @cli.options = @cli.options.merge("favorites" => true)
-      end
-      it "should sort by number of favorites" do
-        @cli.followings
-        $stdout.string.chomp.should == "pengwynn  sferik"
-      end
-    end
-    context "--followers" do
-      before do
-        @cli.options = @cli.options.merge("followers" => true)
-      end
-      it "should sort by number of followers" do
-        @cli.followings
-        $stdout.string.chomp.should == "sferik    pengwynn"
-      end
-    end
-    context "--friends" do
-      before do
-        @cli.options = @cli.options.merge("friends" => true)
-      end
-      it "should sort by number of friends" do
-        @cli.followings
-        $stdout.string.chomp.should == "sferik    pengwynn"
-      end
-    end
-    context "--listed" do
-      before do
-        @cli.options = @cli.options.merge("listed" => true)
-      end
-      it "should sort by number of list memberships" do
-        @cli.followings
-        $stdout.string.chomp.should == "sferik    pengwynn"
-      end
-    end
     context "--long" do
       before do
         @cli.options = @cli.options.merge("long" => true)
@@ -1313,15 +1277,6 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
         eos
       end
     end
-    context "--posted" do
-      before do
-        @cli.options = @cli.options.merge("posted" => true)
-      end
-      it "should sort by the time when Twitter acount was created" do
-        @cli.followings
-        $stdout.string.chomp.should == "sferik    pengwynn"
-      end
-    end
     context "--reverse" do
       before do
         @cli.options = @cli.options.merge("reverse" => true)
@@ -1331,18 +1286,63 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
         $stdout.string.chomp.should == "sferik    pengwynn"
       end
     end
-    context "--tweets" do
+    context "--sort=favorites" do
       before do
-        @cli.options = @cli.options.merge("tweets" => true)
+        @cli.options = @cli.options.merge("sort" => "favorites")
+      end
+      it "should sort by number of favorites" do
+        @cli.followings
+        $stdout.string.chomp.should == "pengwynn  sferik"
+      end
+    end
+    context "--sort=followers" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "followers")
+      end
+      it "should sort by number of followers" do
+        @cli.followings
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--sort=friends" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "friends")
+      end
+      it "should sort by number of friends" do
+        @cli.followings
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--sort=listed" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "listed")
+      end
+      it "should sort by number of list memberships" do
+        @cli.followings
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--sort=since" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "since")
+      end
+      it "should sort by the time when Twitter acount was created" do
+        @cli.followings
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--sort=tweets" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "tweets")
       end
       it "should sort by number of Tweets" do
         @cli.followings
         $stdout.string.chomp.should == "pengwynn  sferik"
       end
     end
-    context "--tweeted" do
+    context "--sort=tweeted" do
       before do
-        @cli.options = @cli.options.merge("tweeted" => true)
+        @cli.options = @cli.options.merge("sort" => "tweeted")
       end
       it "should sort by the time of the last Tweet" do
         @cli.followings
@@ -1428,42 +1428,6 @@ ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name
         eos
       end
     end
-    context "--favorites" do
-      before do
-        @cli.options = @cli.options.merge("favorites" => true)
-      end
-      it "should sort by number of favorites" do
-        @cli.followers
-        $stdout.string.chomp.should == "pengwynn  sferik"
-      end
-    end
-    context "--followers" do
-      before do
-        @cli.options = @cli.options.merge("followers" => true)
-      end
-      it "should sort by number of followers" do
-        @cli.followers
-        $stdout.string.chomp.should == "sferik    pengwynn"
-      end
-    end
-    context "--friends" do
-      before do
-        @cli.options = @cli.options.merge("friends" => true)
-      end
-      it "should sort by number of friends" do
-        @cli.followers
-        $stdout.string.chomp.should == "sferik    pengwynn"
-      end
-    end
-    context "--listed" do
-      before do
-        @cli.options = @cli.options.merge("listed" => true)
-      end
-      it "should sort by number of list memberships" do
-        @cli.followers
-        $stdout.string.chomp.should == "sferik    pengwynn"
-      end
-    end
     context "--long" do
       before do
         @cli.options = @cli.options.merge("long" => true)
@@ -1477,15 +1441,6 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
         eos
       end
     end
-    context "--posted" do
-      before do
-        @cli.options = @cli.options.merge("posted" => true)
-      end
-      it "should sort by the time when Twitter acount was created" do
-        @cli.followers
-        $stdout.string.chomp.should == "sferik    pengwynn"
-      end
-    end
     context "--reverse" do
       before do
         @cli.options = @cli.options.merge("reverse" => true)
@@ -1495,18 +1450,63 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
         $stdout.string.chomp.should == "sferik    pengwynn"
       end
     end
-    context "--tweets" do
+    context "--sort=favorites" do
       before do
-        @cli.options = @cli.options.merge("tweets" => true)
+        @cli.options = @cli.options.merge("sort" => "favorites")
+      end
+      it "should sort by number of favorites" do
+        @cli.followers
+        $stdout.string.chomp.should == "pengwynn  sferik"
+      end
+    end
+    context "--sort=followers" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "followers")
+      end
+      it "should sort by number of followers" do
+        @cli.followers
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--sort=friends" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "friends")
+      end
+      it "should sort by number of friends" do
+        @cli.followers
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--sort=listed" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "listed")
+      end
+      it "should sort by number of list memberships" do
+        @cli.followers
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--sort=since" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "since")
+      end
+      it "should sort by the time when Twitter acount was created" do
+        @cli.followers
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--sort=tweets" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "tweets")
       end
       it "should sort by number of Tweets" do
         @cli.followers
         $stdout.string.chomp.should == "pengwynn  sferik"
       end
     end
-    context "--tweeted" do
+    context "--sort=tweeted" do
       before do
-        @cli.options = @cli.options.merge("tweeted" => true)
+        @cli.options = @cli.options.merge("sort" => "tweeted")
       end
       it "should sort by the time of the last Tweet" do
         @cli.followers
@@ -1601,42 +1601,6 @@ ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name
         eos
       end
     end
-    context "--favorites" do
-      before do
-        @cli.options = @cli.options.merge("favorites" => true)
-      end
-      it "should sort by number of favorites" do
-        @cli.friends
-        $stdout.string.chomp.should == "pengwynn  sferik"
-      end
-    end
-    context "--followers" do
-      before do
-        @cli.options = @cli.options.merge("followers" => true)
-      end
-      it "should sort by number of followers" do
-        @cli.friends
-        $stdout.string.chomp.should == "sferik    pengwynn"
-      end
-    end
-    context "--friends" do
-      before do
-        @cli.options = @cli.options.merge("friends" => true)
-      end
-      it "should sort by number of friends" do
-        @cli.friends
-        $stdout.string.chomp.should == "sferik    pengwynn"
-      end
-    end
-    context "--listed" do
-      before do
-        @cli.options = @cli.options.merge("listed" => true)
-      end
-      it "should sort by number of list memberships" do
-        @cli.friends
-        $stdout.string.chomp.should == "sferik    pengwynn"
-      end
-    end
     context "--long" do
       before do
         @cli.options = @cli.options.merge("long" => true)
@@ -1650,15 +1614,6 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
         eos
       end
     end
-    context "--posted" do
-      before do
-        @cli.options = @cli.options.merge("posted" => true)
-      end
-      it "should sort by the time when Twitter acount was created" do
-        @cli.friends
-        $stdout.string.chomp.should == "sferik    pengwynn"
-      end
-    end
     context "--reverse" do
       before do
         @cli.options = @cli.options.merge("reverse" => true)
@@ -1668,18 +1623,63 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
         $stdout.string.chomp.should == "sferik    pengwynn"
       end
     end
-    context "--tweets" do
+    context "--sort=favorites" do
       before do
-        @cli.options = @cli.options.merge("tweets" => true)
+        @cli.options = @cli.options.merge("sort" => "favorites")
+      end
+      it "should sort by number of favorites" do
+        @cli.friends
+        $stdout.string.chomp.should == "pengwynn  sferik"
+      end
+    end
+    context "--sort=followers" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "followers")
+      end
+      it "should sort by number of followers" do
+        @cli.friends
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--sort=friends" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "friends")
+      end
+      it "should sort by number of friends" do
+        @cli.friends
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--sort=listed" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "listed")
+      end
+      it "should sort by number of list memberships" do
+        @cli.friends
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--sort=since" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "since")
+      end
+      it "should sort by the time when Twitter acount was created" do
+        @cli.friends
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--sort=tweets" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "tweets")
       end
       it "should sort by number of Tweets" do
         @cli.friends
         $stdout.string.chomp.should == "pengwynn  sferik"
       end
     end
-    context "--tweeted" do
+    context "--sort=tweeted" do
       before do
-        @cli.options = @cli.options.merge("tweeted" => true)
+        @cli.options = @cli.options.merge("sort" => "tweeted")
       end
       it "should sort by the time of the last Tweet" do
         @cli.friends
@@ -1783,42 +1783,6 @@ ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name
         eos
       end
     end
-    context "--favorites" do
-      before do
-        @cli.options = @cli.options.merge("favorites" => true)
-      end
-      it "should sort by number of favorites" do
-        @cli.leaders
-        $stdout.string.chomp.should == "pengwynn  sferik"
-      end
-    end
-    context "--followers" do
-      before do
-        @cli.options = @cli.options.merge("followers" => true)
-      end
-      it "should sort by number of followers" do
-        @cli.leaders
-        $stdout.string.chomp.should == "sferik    pengwynn"
-      end
-    end
-    context "--friends" do
-      before do
-        @cli.options = @cli.options.merge("friends" => true)
-      end
-      it "should sort by number of friends" do
-        @cli.leaders
-        $stdout.string.chomp.should == "sferik    pengwynn"
-      end
-    end
-    context "--listed" do
-      before do
-        @cli.options = @cli.options.merge("listed" => true)
-      end
-      it "should sort by number of list memberships" do
-        @cli.leaders
-        $stdout.string.chomp.should == "sferik    pengwynn"
-      end
-    end
     context "--long" do
       before do
         @cli.options = @cli.options.merge("long" => true)
@@ -1832,15 +1796,6 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
          eos
       end
     end
-    context "--posted" do
-      before do
-        @cli.options = @cli.options.merge("posted" => true)
-      end
-      it "should sort by the time when Twitter acount was created" do
-        @cli.leaders
-        $stdout.string.chomp.should == "sferik    pengwynn"
-      end
-    end
     context "--reverse" do
       before do
         @cli.options = @cli.options.merge("reverse" => true)
@@ -1850,18 +1805,63 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
         $stdout.string.chomp.should == "sferik    pengwynn"
       end
     end
-    context "--tweets" do
+    context "--sort=favorites" do
       before do
-        @cli.options = @cli.options.merge("tweets" => true)
+        @cli.options = @cli.options.merge("sort" => "favorites")
+      end
+      it "should sort by number of favorites" do
+        @cli.leaders
+        $stdout.string.chomp.should == "pengwynn  sferik"
+      end
+    end
+    context "--sort=followers" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "followers")
+      end
+      it "should sort by number of followers" do
+        @cli.leaders
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--sort=friends" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "friends")
+      end
+      it "should sort by number of friends" do
+        @cli.leaders
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--sort=listed" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "listed")
+      end
+      it "should sort by number of list memberships" do
+        @cli.leaders
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--sort=since" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "since")
+      end
+      it "should sort by the time when Twitter acount was created" do
+        @cli.leaders
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--sort=tweets" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "tweets")
       end
       it "should sort by number of Tweets" do
         @cli.leaders
         $stdout.string.chomp.should == "pengwynn  sferik"
       end
     end
-    context "--tweeted" do
+    context "--sort=tweeted" do
       before do
-        @cli.options = @cli.options.merge("tweeted" => true)
+        @cli.options = @cli.options.merge("sort" => "tweeted")
       end
       it "should sort by the time of the last Tweet" do
         @cli.leaders
@@ -1966,33 +1966,6 @@ ID        Created at    Screen name  Slug              Members  Subscribers  ...
         eos
       end
     end
-    context "--members" do
-      before do
-        @cli.options = @cli.options.merge("members" => true)
-      end
-      it "should sort by the time when Twitter acount was created" do
-        @cli.lists
-        $stdout.string.chomp.should == "@sferik/presidents        @sferik/code-for-america"
-      end
-    end
-    context "--mode" do
-      before do
-        @cli.options = @cli.options.merge("mode" => true)
-      end
-      it "should sort by the time when Twitter acount was created" do
-        @cli.lists
-        $stdout.string.chomp.should == "@sferik/code-for-america  @sferik/presidents"
-      end
-    end
-    context "--posted" do
-      before do
-        @cli.options = @cli.options.merge("posted" => true)
-      end
-      it "should sort by the time when Twitter acount was created" do
-        @cli.lists
-        $stdout.string.chomp.should == "@sferik/presidents        @sferik/code-for-america"
-      end
-    end
     context "--reverse" do
       before do
         @cli.options = @cli.options.merge("reverse" => true)
@@ -2002,9 +1975,36 @@ ID        Created at    Screen name  Slug              Members  Subscribers  ...
         $stdout.string.chomp.should == "@sferik/presidents        @sferik/code-for-america"
       end
     end
-    context "--subscribers" do
+    context "--sort=members" do
       before do
-        @cli.options = @cli.options.merge("subscribers" => true)
+        @cli.options = @cli.options.merge("sort" => "members")
+      end
+      it "should sort by the time when Twitter acount was created" do
+        @cli.lists
+        $stdout.string.chomp.should == "@sferik/presidents        @sferik/code-for-america"
+      end
+    end
+    context "--sort=mode" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "mode")
+      end
+      it "should sort by the time when Twitter acount was created" do
+        @cli.lists
+        $stdout.string.chomp.should == "@sferik/code-for-america  @sferik/presidents"
+      end
+    end
+    context "--sort=posted" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "posted")
+      end
+      it "should sort by the time when Twitter acount was created" do
+        @cli.lists
+        $stdout.string.chomp.should == "@sferik/presidents        @sferik/code-for-america"
+      end
+    end
+    context "--sort=subscribers" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "subscribers")
       end
       it "should sort by the time when Twitter acount was created" do
         @cli.lists
@@ -2882,42 +2882,6 @@ ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name
         eos
       end
     end
-    context "--favorites" do
-      before do
-        @cli.options = @cli.options.merge("favorites" => true)
-      end
-      it "should sort by number of favorites" do
-        @cli.suggest
-        $stdout.string.chomp.should == "stuntmann82  antpires     maccman      mlroach      jtrupiano"
-      end
-    end
-    context "--followers" do
-      before do
-        @cli.options = @cli.options.merge("followers" => true)
-      end
-      it "should sort by number of followers" do
-        @cli.suggest
-        $stdout.string.chomp.should == "stuntmann82  antpires     mlroach      jtrupiano    maccman"
-      end
-    end
-    context "--friends" do
-      before do
-        @cli.options = @cli.options.merge("friends" => true)
-      end
-      it "should sort by number of friends" do
-        @cli.suggest
-        $stdout.string.chomp.should == "stuntmann82  antpires     mlroach      jtrupiano    maccman"
-      end
-    end
-    context "--listed" do
-      before do
-        @cli.options = @cli.options.merge("listed" => true)
-      end
-      it "should sort by number of list memberships" do
-        @cli.suggest
-        $stdout.string.chomp.should == "stuntmann82  antpires     mlroach      jtrupiano    maccman"
-      end
-    end
     context "--long" do
       before do
         @cli.options = @cli.options.merge("long" => true)
@@ -2948,15 +2912,6 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
           should have_been_made
       end
     end
-    context "--posted" do
-      before do
-        @cli.options = @cli.options.merge("posted" => true)
-      end
-      it "should sort by the time when Twitter acount was created" do
-        @cli.suggest
-        $stdout.string.chomp.should == "maccman      mlroach      jtrupiano    stuntmann82  antpires"
-      end
-    end
     context "--reverse" do
       before do
         @cli.options = @cli.options.merge("reverse" => true)
@@ -2966,18 +2921,63 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
         $stdout.string.chomp.should == "stuntmann82  mlroach      maccman      jtrupiano    antpires"
       end
     end
-    context "--tweets" do
+    context "--sort=favorites" do
       before do
-        @cli.options = @cli.options.merge("tweets" => true)
+        @cli.options = @cli.options.merge("sort" => "favorites")
+      end
+      it "should sort by number of favorites" do
+        @cli.suggest
+        $stdout.string.chomp.should == "stuntmann82  antpires     maccman      mlroach      jtrupiano"
+      end
+    end
+    context "--sort=followers" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "followers")
+      end
+      it "should sort by number of followers" do
+        @cli.suggest
+        $stdout.string.chomp.should == "stuntmann82  antpires     mlroach      jtrupiano    maccman"
+      end
+    end
+    context "--sort=friends" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "friends")
+      end
+      it "should sort by number of friends" do
+        @cli.suggest
+        $stdout.string.chomp.should == "stuntmann82  antpires     mlroach      jtrupiano    maccman"
+      end
+    end
+    context "--sort=listed" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "listed")
+      end
+      it "should sort by number of list memberships" do
+        @cli.suggest
+        $stdout.string.chomp.should == "stuntmann82  antpires     mlroach      jtrupiano    maccman"
+      end
+    end
+    context "--sort=since" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "since")
+      end
+      it "should sort by the time when Twitter acount was created" do
+        @cli.suggest
+        $stdout.string.chomp.should == "maccman      mlroach      jtrupiano    stuntmann82  antpires"
+      end
+    end
+    context "--sort=tweets" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "tweets")
       end
       it "should sort by number of Tweets" do
         @cli.suggest
         $stdout.string.chomp.should == "stuntmann82  antpires     jtrupiano    maccman      mlroach"
       end
     end
-    context "--tweeted" do
+    context "--sort=tweeted" do
       before do
-        @cli.options = @cli.options.merge("tweeted" => true)
+        @cli.options = @cli.options.merge("sort" => "tweeted")
       end
       it "should sort by the time of the last Tweet" do
         @cli.suggest
@@ -3532,27 +3532,49 @@ ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name
         eos
       end
     end
-    context "--favorites" do
+    context "--long" do
       before do
-        @cli.options = @cli.options.merge("favorites" => true)
+        @cli.options = @cli.options.merge("long" => true)
+      end
+      it "should output in long format" do
+        @cli.users("sferik", "pengwynn")
+        $stdout.string.should == <<-eos
+ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
+14100886  Mar  8  2008  Jul  7 12:33       6940        192     358       3427...
+ 7505382  Jul 16  2007  Jul  8 10:29       7890       3755     118        212...
+        eos
+      end
+    end
+    context "--reverse" do
+      before do
+        @cli.options = @cli.options.merge("reverse" => true)
+      end
+      it "should reverse the order of the sort" do
+        @cli.users("sferik", "pengwynn")
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--sort=favorites" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "favorites")
       end
       it "should sort by number of favorites" do
         @cli.users("sferik", "pengwynn")
         $stdout.string.chomp.should == "pengwynn  sferik"
       end
     end
-    context "--followers" do
+    context "--sort=followers" do
       before do
-        @cli.options = @cli.options.merge("followers" => true)
+        @cli.options = @cli.options.merge("sort" => "followers")
       end
       it "should sort by number of followers" do
         @cli.users("sferik", "pengwynn")
         $stdout.string.chomp.should == "sferik    pengwynn"
       end
     end
-    context "--friends" do
+    context "--sort=friends" do
       before do
-        @cli.options = @cli.options.merge("friends" => true)
+        @cli.options = @cli.options.merge("sort" => "friends")
       end
       it "should sort by number of friends" do
         @cli.users("sferik", "pengwynn")
@@ -3573,58 +3595,36 @@ ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name
           should have_been_made
       end
     end
-    context "--listed" do
+    context "--sort=listed" do
       before do
-        @cli.options = @cli.options.merge("listed" => true)
+        @cli.options = @cli.options.merge("sort" => "listed")
       end
       it "should sort by number of list memberships" do
         @cli.users("sferik", "pengwynn")
         $stdout.string.chomp.should == "sferik    pengwynn"
       end
     end
-    context "--long" do
+    context "--sort=since" do
       before do
-        @cli.options = @cli.options.merge("long" => true)
-      end
-      it "should output in long format" do
-        @cli.users("sferik", "pengwynn")
-        $stdout.string.should == <<-eos
-ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
-14100886  Mar  8  2008  Jul  7 12:33       6940        192     358       3427...
- 7505382  Jul 16  2007  Jul  8 10:29       7890       3755     118        212...
-        eos
-      end
-    end
-    context "--posted" do
-      before do
-        @cli.options = @cli.options.merge("posted" => true)
+        @cli.options = @cli.options.merge("sort" => "since")
       end
       it "should sort by the time when Twitter acount was created" do
         @cli.users("sferik", "pengwynn")
         $stdout.string.chomp.should == "sferik    pengwynn"
       end
     end
-    context "--reverse" do
+    context "--sort=tweets" do
       before do
-        @cli.options = @cli.options.merge("reverse" => true)
-      end
-      it "should reverse the order of the sort" do
-        @cli.users("sferik", "pengwynn")
-        $stdout.string.chomp.should == "sferik    pengwynn"
-      end
-    end
-    context "--tweets" do
-      before do
-        @cli.options = @cli.options.merge("tweets" => true)
+        @cli.options = @cli.options.merge("sort" => "tweets")
       end
       it "should sort by number of Tweets" do
         @cli.users("sferik", "pengwynn")
         $stdout.string.chomp.should == "pengwynn  sferik"
       end
     end
-    context "--tweeted" do
+    context "--sort=tweeted" do
       before do
-        @cli.options = @cli.options.merge("tweeted" => true)
+        @cli.options = @cli.options.merge("sort" => "tweeted")
       end
       it "should sort by the time of the last Tweet" do
         @cli.users("sferik", "pengwynn")

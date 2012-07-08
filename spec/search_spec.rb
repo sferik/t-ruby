@@ -707,42 +707,6 @@ ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name
         eos
       end
     end
-    context "--favorites" do
-      before do
-        @search.options = @search.options.merge("favorites" => true)
-      end
-      it "should sort by number of favorites" do
-        @search.users("Erik")
-        $stdout.string.chomp.should == "pengwynn  sferik"
-      end
-    end
-    context "--followers" do
-      before do
-        @search.options = @search.options.merge("followers" => true)
-      end
-      it "should sort by number of followers" do
-        @search.users("Erik")
-        $stdout.string.chomp.should == "sferik    pengwynn"
-      end
-    end
-    context "--friends" do
-      before do
-        @search.options = @search.options.merge("friends" => true)
-      end
-      it "should sort by number of friends" do
-        @search.users("Erik")
-        $stdout.string.chomp.should == "sferik    pengwynn"
-      end
-    end
-    context "--listed" do
-      before do
-        @search.options = @search.options.merge("listed" => true)
-      end
-      it "should sort by number of list memberships" do
-        @search.users("Erik")
-        $stdout.string.chomp.should == "sferik    pengwynn"
-      end
-    end
     context "--long" do
       before do
         @search.options = @search.options.merge("long" => true)
@@ -756,15 +720,6 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
         eos
       end
     end
-    context "--posted" do
-      before do
-        @search.options = @search.options.merge("posted" => true)
-      end
-      it "should sort by the time wshen Twitter account was created" do
-        @search.users("Erik")
-        $stdout.string.chomp.should == "sferik    pengwynn"
-      end
-    end
     context "--reverse" do
       before do
         @search.options = @search.options.merge("reverse" => true)
@@ -774,18 +729,63 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
         $stdout.string.chomp.should == "sferik    pengwynn"
       end
     end
-    context "--tweets" do
+    context "--sort=favorites" do
       before do
-        @search.options = @search.options.merge("tweets" => true)
+        @search.options = @search.options.merge("sort" => "favorites")
+      end
+      it "should sort by number of favorites" do
+        @search.users("Erik")
+        $stdout.string.chomp.should == "pengwynn  sferik"
+      end
+    end
+    context "--sort=followers" do
+      before do
+        @search.options = @search.options.merge("sort" => "followers")
+      end
+      it "should sort by number of followers" do
+        @search.users("Erik")
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--sort=friends" do
+      before do
+        @search.options = @search.options.merge("sort" => "friends")
+      end
+      it "should sort by number of friends" do
+        @search.users("Erik")
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--sort=listed" do
+      before do
+        @search.options = @search.options.merge("sort" => "listed")
+      end
+      it "should sort by number of list memberships" do
+        @search.users("Erik")
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--sort=since" do
+      before do
+        @search.options = @search.options.merge("sort" => "since")
+      end
+      it "should sort by the time wshen Twitter account was created" do
+        @search.users("Erik")
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--sort=tweets" do
+      before do
+        @search.options = @search.options.merge("sort" => "tweets")
       end
       it "should sort by number of Tweets" do
         @search.users("Erik")
         $stdout.string.chomp.should == "pengwynn  sferik"
       end
     end
-    context "--tweeted" do
+    context "--sort=tweeted" do
       before do
-        @search.options = @search.options.merge("tweeted" => true)
+        @search.options = @search.options.merge("sort" => "tweeted")
       end
       it "should sort by the time of the last Tweet" do
         @search.users("Erik")

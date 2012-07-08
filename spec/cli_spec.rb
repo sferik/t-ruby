@@ -528,8 +528,8 @@ ID          Posted at     Screen name  Text
         @cli.groupies
         $stdout.string.should == <<-eos
 ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
-14100886,2008-03-08 16:34:22 +0000,2010-10-21 10:33:15 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-7505382,2007-07-16 12:59:01 +0000,2011-01-16 21:38:25 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
+14100886,2008-03-08 16:34:22 +0000,2012-07-07 20:33:19 +0000,6940,192,358,3427,5457,pengwynn,Wynn Netherland ⚡
+7505382,2007-07-16 12:59:01 +0000,2012-07-08 18:29:20 +0000,7890,3755,118,212,2262,sferik,Erik Michaels-Ober
         eos
       end
     end
@@ -577,8 +577,8 @@ ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name
         @cli.groupies
         $stdout.string.should == <<-eos
 ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
-14100886  Mar  8  2008  Oct 21  2010       3913         32     185       1871...
- 7505382  Jul 16  2007  Jan 16  2011       2962        727      29         88...
+14100886  Mar  8  2008  Jul  7 12:33       6940        192     358       3427...
+ 7505382  Jul 16  2007  Jul  8 10:29       7890       3755     118        212...
         eos
       end
     end
@@ -606,7 +606,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by number of Tweets" do
         @cli.groupies
-        $stdout.string.chomp.should == "sferik    pengwynn"
+        $stdout.string.chomp.should == "pengwynn  sferik"
       end
     end
     context "--tweeted" do
@@ -624,7 +624,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should not be sorted" do
         @cli.groupies
-        $stdout.string.chomp.should == "sferik    pengwynn"
+        $stdout.string.chomp.should == "pengwynn  sferik"
       end
     end
     context "with a user passed" do
@@ -1259,8 +1259,8 @@ ID                  Posted at     Screen name    Text
         @cli.followings
         $stdout.string.should == <<-eos
 ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
-14100886,2008-03-08 16:34:22 +0000,2010-10-21 10:33:15 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-7505382,2007-07-16 12:59:01 +0000,2011-01-16 21:38:25 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
+14100886,2008-03-08 16:34:22 +0000,2012-07-07 20:33:19 +0000,6940,192,358,3427,5457,pengwynn,Wynn Netherland ⚡
+7505382,2007-07-16 12:59:01 +0000,2012-07-08 18:29:20 +0000,7890,3755,118,212,2262,sferik,Erik Michaels-Ober
         eos
       end
     end
@@ -1308,8 +1308,8 @@ ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name
         @cli.followings
         $stdout.string.should == <<-eos
 ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
-14100886  Mar  8  2008  Oct 21  2010       3913         32     185       1871...
- 7505382  Jul 16  2007  Jan 16  2011       2962        727      29         88...
+14100886  Mar  8  2008  Jul  7 12:33       6940        192     358       3427...
+ 7505382  Jul 16  2007  Jul  8 10:29       7890       3755     118        212...
         eos
       end
     end
@@ -1337,7 +1337,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by number of Tweets" do
         @cli.followings
-        $stdout.string.chomp.should == "sferik    pengwynn"
+        $stdout.string.chomp.should == "pengwynn  sferik"
       end
     end
     context "--tweeted" do
@@ -1355,7 +1355,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should not be sorted" do
         @cli.followings
-        $stdout.string.chomp.should == "sferik    pengwynn"
+        $stdout.string.chomp.should == "pengwynn  sferik"
       end
     end
     context "with a user passed" do
@@ -1423,8 +1423,8 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
         @cli.followers
         $stdout.string.should == <<-eos
 ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
-14100886,2008-03-08 16:34:22 +0000,2010-10-21 10:33:15 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-7505382,2007-07-16 12:59:01 +0000,2011-01-16 21:38:25 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
+14100886,2008-03-08 16:34:22 +0000,2012-07-07 20:33:19 +0000,6940,192,358,3427,5457,pengwynn,Wynn Netherland ⚡
+7505382,2007-07-16 12:59:01 +0000,2012-07-08 18:29:20 +0000,7890,3755,118,212,2262,sferik,Erik Michaels-Ober
         eos
       end
     end
@@ -1472,8 +1472,8 @@ ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name
         @cli.followers
         $stdout.string.should == <<-eos
 ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
-14100886  Mar  8  2008  Oct 21  2010       3913         32     185       1871...
- 7505382  Jul 16  2007  Jan 16  2011       2962        727      29         88...
+14100886  Mar  8  2008  Jul  7 12:33       6940        192     358       3427...
+ 7505382  Jul 16  2007  Jul  8 10:29       7890       3755     118        212...
         eos
       end
     end
@@ -1501,7 +1501,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by number of Tweets" do
         @cli.followers
-        $stdout.string.chomp.should == "sferik    pengwynn"
+        $stdout.string.chomp.should == "pengwynn  sferik"
       end
     end
     context "--tweeted" do
@@ -1519,7 +1519,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should not be sorted" do
         @cli.followers
-        $stdout.string.chomp.should == "sferik    pengwynn"
+        $stdout.string.chomp.should == "pengwynn  sferik"
       end
     end
     context "with a user passed" do
@@ -1596,8 +1596,8 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
         @cli.friends
         $stdout.string.should == <<-eos
 ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
-14100886,2008-03-08 16:34:22 +0000,2010-10-21 10:33:15 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-7505382,2007-07-16 12:59:01 +0000,2011-01-16 21:38:25 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
+14100886,2008-03-08 16:34:22 +0000,2012-07-07 20:33:19 +0000,6940,192,358,3427,5457,pengwynn,Wynn Netherland ⚡
+7505382,2007-07-16 12:59:01 +0000,2012-07-08 18:29:20 +0000,7890,3755,118,212,2262,sferik,Erik Michaels-Ober
         eos
       end
     end
@@ -1645,8 +1645,8 @@ ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name
         @cli.friends
         $stdout.string.should == <<-eos
 ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
-14100886  Mar  8  2008  Oct 21  2010       3913         32     185       1871...
- 7505382  Jul 16  2007  Jan 16  2011       2962        727      29         88...
+14100886  Mar  8  2008  Jul  7 12:33       6940        192     358       3427...
+ 7505382  Jul 16  2007  Jul  8 10:29       7890       3755     118        212...
         eos
       end
     end
@@ -1674,7 +1674,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by number of Tweets" do
         @cli.friends
-        $stdout.string.chomp.should == "sferik    pengwynn"
+        $stdout.string.chomp.should == "pengwynn  sferik"
       end
     end
     context "--tweeted" do
@@ -1692,7 +1692,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should not be sorted" do
         @cli.friends
-        $stdout.string.chomp.should == "sferik    pengwynn"
+        $stdout.string.chomp.should == "pengwynn  sferik"
       end
     end
     context "with a user passed" do
@@ -1778,8 +1778,8 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
         @cli.leaders
         $stdout.string.should == <<-eos
 ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
-14100886,2008-03-08 16:34:22 +0000,2010-10-21 10:33:15 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-7505382,2007-07-16 12:59:01 +0000,2011-01-16 21:38:25 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
+14100886,2008-03-08 16:34:22 +0000,2012-07-07 20:33:19 +0000,6940,192,358,3427,5457,pengwynn,Wynn Netherland ⚡
+7505382,2007-07-16 12:59:01 +0000,2012-07-08 18:29:20 +0000,7890,3755,118,212,2262,sferik,Erik Michaels-Ober
         eos
       end
     end
@@ -1827,8 +1827,8 @@ ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name
         @cli.leaders
         $stdout.string.should == <<-eos
 ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
-14100886  Mar  8  2008  Oct 21  2010       3913         32     185       1871...
- 7505382  Jul 16  2007  Jan 16  2011       2962        727      29         88...
+14100886  Mar  8  2008  Jul  7 12:33       6940        192     358       3427...
+ 7505382  Jul 16  2007  Jul  8 10:29       7890       3755     118        212...
          eos
       end
     end
@@ -1856,7 +1856,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by number of Tweets" do
         @cli.leaders
-        $stdout.string.chomp.should == "sferik    pengwynn"
+        $stdout.string.chomp.should == "pengwynn  sferik"
       end
     end
     context "--tweeted" do
@@ -1874,7 +1874,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should not be sorted" do
         @cli.leaders
-        $stdout.string.chomp.should == "sferik    pengwynn"
+        $stdout.string.chomp.should == "pengwynn  sferik"
       end
     end
     context "with a user passed" do
@@ -3527,8 +3527,8 @@ WOEID     Parent ID  Type       Name           Country
         @cli.users("sferik", "pengwynn")
         $stdout.string.should == <<-eos
 ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
-14100886,2008-03-08 16:34:22 +0000,2010-10-21 10:33:15 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-7505382,2007-07-16 12:59:01 +0000,2011-01-16 21:38:25 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
+14100886,2008-03-08 16:34:22 +0000,2012-07-07 20:33:19 +0000,6940,192,358,3427,5457,pengwynn,Wynn Netherland ⚡
+7505382,2007-07-16 12:59:01 +0000,2012-07-08 18:29:20 +0000,7890,3755,118,212,2262,sferik,Erik Michaels-Ober
         eos
       end
     end
@@ -3590,8 +3590,8 @@ ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name
         @cli.users("sferik", "pengwynn")
         $stdout.string.should == <<-eos
 ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
-14100886  Mar  8  2008  Oct 21  2010       3913         32     185       1871...
- 7505382  Jul 16  2007  Jan 16  2011       2962        727      29         88...
+14100886  Mar  8  2008  Jul  7 12:33       6940        192     358       3427...
+ 7505382  Jul 16  2007  Jul  8 10:29       7890       3755     118        212...
         eos
       end
     end
@@ -3619,7 +3619,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by number of Tweets" do
         @cli.users("sferik", "pengwynn")
-        $stdout.string.chomp.should == "sferik    pengwynn"
+        $stdout.string.chomp.should == "pengwynn  sferik"
       end
     end
     context "--tweeted" do
@@ -3637,7 +3637,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should not be sorted" do
         @cli.users("sferik", "pengwynn")
-        $stdout.string.chomp.should == "sferik    pengwynn"
+        $stdout.string.chomp.should == "pengwynn  sferik"
       end
     end
   end
@@ -3666,16 +3666,16 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       $stdout.string.should == <<-eos
 ID           7505382
 Name         Erik Michaels-Ober
-Bio          A mind forever voyaging through strange seas of thought, alone.
+Bio          Vagabond.
 Location     San Francisco
 Status       Not following
-Last update  RT @tenderlove: [ANN] sqlite3-ruby => sqlite3 (10 months ago)
+Last update  @goldman You're near my home town! Say hi to Woodstock for me. (7 months ago)
 Since        Jul 16  2007 (4 years ago)
-Tweets       3,479
-Favorites    1,040
-Listed       41
-Following    197
-Followers    1,048
+Tweets       7,890
+Favorites    3,755
+Listed       118
+Following    212
+Followers    2,262
 URL          https://github.com/sferik
       eos
     end
@@ -3687,7 +3687,7 @@ URL          https://github.com/sferik
         @cli.whois("sferik")
         $stdout.string.should == <<-eos
 ID,Verified,Name,Screen name,Bio,Location,Following,Last update,Lasted updated at,Since,Tweets,Favorites,Listed,Following,Followers,URL
-7505382,false,Erik Michaels-Ober,sferik,"A mind forever voyaging through strange seas of thought, alone.",San Francisco,false,RT @tenderlove: [ANN] sqlite3-ruby => sqlite3,2011-01-16 21:38:25 +0000,2007-07-16 12:59:01 +0000,3479,1040,41,197,1048,https://github.com/sferik
+7505382,false,Erik Michaels-Ober,sferik,Vagabond.,San Francisco,false,@goldman You're near my home town! Say hi to Woodstock for me.,2012-07-08 18:29:20 +0000,2007-07-16 12:59:01 +0000,7890,3755,118,212,2262,https://github.com/sferik
         eos
       end
     end

@@ -32,17 +32,17 @@ describe T::Set do
     before do
       @set.options = @set.options.merge("profile" => fixture_path + "/.trc")
       stub_post("/1/account/update_profile.json").
-        with(:body => {:description => "A mind forever voyaging through strange seas of thought, alone."}).
+        with(:body => {:description => "Vagabond."}).
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
-      @set.bio("A mind forever voyaging through strange seas of thought, alone.")
+      @set.bio("Vagabond.")
       a_post("/1/account/update_profile.json").
-        with(:body => {:description => "A mind forever voyaging through strange seas of thought, alone."}).
+        with(:body => {:description => "Vagabond."}).
         should have_been_made
     end
     it "should have the correct output" do
-      @set.bio("A mind forever voyaging through strange seas of thought, alone.")
+      @set.bio("Vagabond.")
       $stdout.string.chomp.should == "@testcli's bio has been updated."
     end
   end

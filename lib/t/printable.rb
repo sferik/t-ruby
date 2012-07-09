@@ -123,7 +123,7 @@ module T
     end
 
     def print_statuses(statuses)
-      statuses.reverse! if options['reverse'] || options['stream']
+      statuses.reverse! if options['reverse']
       if options['csv']
         require 'csv'
         require 'fastercsv' unless Array.new.respond_to?(:to_csv)

@@ -30,6 +30,7 @@ module T
       statuses = collect_with_rpp(rpp) do |opts|
         client.search(query, opts).results
       end
+      statuses.reverse! if options['reverse']
       require 'htmlentities'
       if options['csv']
         require 'csv'

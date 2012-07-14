@@ -1,0 +1,66 @@
+#compdef t
+#autoload
+
+# t zsh completion, based on homebrew completion
+
+local -a _1st_arguments
+_1st_arguments=(
+  "accounts:List accounts"
+  "authorize:Allows an application to request user authorization"
+  "block:Block users."
+  "delete:Delete Tweets, Direct Messages, etc."
+  "direct_messages:Returns the 20 most recent Direct Messages sent to you."
+  "direct_messages_sent:Returns the 20 most recent Direct Messages you've sent."
+  "dm:Sends that person a Direct Message."
+  "does_contain:Find out whether a list contains a user."
+  "does_follow:Find out whether one user follows another."
+  "favorite:Marks Tweets as favorites."
+  "favorites:Returns the 20 most recent Tweets you favorited."
+  "follow:Allows you to start following users."
+  "followers:Returns a list of the people who follow you on Twitter."
+  "followings:Returns a list of the people you follow on Twitter."
+  "friends:Returns the list of people who you follow and follow you back."
+  "groupies:Returns the list of people who follow you but you do not follow back."
+  "help:Describe available tasks or one specific task"
+  "leaders:Returns the list of people who you follow but do not follow you back."
+  "list:Do various things with lists."
+  "lists:Returns the lists created by a user."
+  "matrix:Unfortunately, no one can be told what the Matrix is. You have to see it for yourself."
+  "mentions:Returns the 20 most recent Tweets mentioning you."
+  "open:Opens that user's profile in a web browser."
+  "rate_limit:Returns information related to Twitter API rate limiting."
+  "reply:Post your Tweet as a reply directed at another person."
+  "report_spam:Report users for spam."
+  "retweet:Sends Tweets to your followers."
+  "retweets:Returns the 20 most recent Retweets by a user."
+  "ruler:Prints a 140-character ruler"
+  "search:Search through Tweets."
+  "set:Change various account settings."
+  "status:Retrieves detailed information about a Tweet."
+  "stream:Commands for streaming Tweets."
+  "suggest:Returns a listing of Twitter users' accounts you might enjoy following."
+  "timeline:Returns the 20 most recent Tweets posted by a user."
+  "trends:Returns the top 10 trending topics."
+  "trends_locations:Returns the locations for which Twitter has trending topic information."
+  "unfollow:Allows you to stop following users."
+  "update:Post a Tweet."
+  "users:Returns a list of users you specify."
+  "version:Show version."
+  "whois:Retrieves profile information for the user."
+)
+
+local expl
+
+_arguments \
+  '(-H --host)'{-H,--host}'[Change Twitter API host]' \
+  '(-N --no-color)'{-N,--no-color}'[Disable colorized output]' \
+  '(-U --no-ssl)'{-U,--no-ssl}'[Disable SSL]' \
+  '(-P --profile)'{-P,--profile}'[Path to RC file]' \
+  '*:: :->subcmds' && return 0
+
+if (( CURRENT == 1 )); then
+  _describe -t commands "t subcommand" _1st_arguments
+  return
+fi
+
+# vim: ft=zsh sw=2 ts=2 et

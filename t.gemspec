@@ -11,7 +11,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'retryable', '~> 1.2'
   gem.add_dependency 'thor', ['>= 0.15.2', '< 2']
   gem.add_dependency 'tweetstream', '~> 2.0'
-  gem.add_dependency 'twitter', '~> 3.0'
+  gem.add_dependency 'twitter', '~> 3.4'
   gem.add_development_dependency 'pry'
   gem.add_development_dependency 'rake'
   gem.add_development_dependency 'rspec'

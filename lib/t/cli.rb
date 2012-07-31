@@ -660,17 +660,21 @@ module T
     method_option "number", :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => "Limit the number of results."
     method_option "reverse", :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     def retweets(user=nil)
-      if user
+      count = options['number'] || DEFAULT_NUM_RESULTS
+      statuses = if user
         require 't/core_ext/string'
         user = if options['id']
           user.to_i
         else
           user.strip_ats
         end
-      end
-      count = options['number'] || DEFAULT_NUM_RESULTS
-      statuses = collect_with_count(count) do |opts|
-        client.retweeted_by(user, opts)
+        collect_with_count(count) do |opts|
+          client.retweeted_by_user(user, opts)
+        end
+      else
+        collect_with_count(count) do |opts|
+          client.retweeted_by_me(opts)
+        end
       end
       print_statuses(statuses)
     end

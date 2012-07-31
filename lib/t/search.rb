@@ -120,7 +120,7 @@ module T
       opts = {:count => MAX_NUM_RESULTS}
       statuses = collect_with_max_id do |max_id|
         opts[:max_id] = max_id unless max_id.nil?
-        client.retweeted_by(opts)
+        client.retweeted_by_me(opts)
       end
       statuses = statuses.select do |status|
         /#{query}/i.match(status.full_text)

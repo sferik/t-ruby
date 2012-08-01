@@ -760,6 +760,7 @@ module T
     method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     method_option "number", :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => "Limit the number of results."
     method_option "reverse", :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
+    method_option "status", :aliases => "-s", :type => :boolean, :default => false, :desc => "Output in the default format with statuses."
     def timeline(user=nil)
       count = options['number'] || DEFAULT_NUM_RESULTS
       if user

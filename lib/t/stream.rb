@@ -92,6 +92,7 @@ module T
     desc "timeline", "Stream your timeline (Control-C to stop)"
     method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
+    #method_option "status", :aliases => "-s", :type => :boolean, :default => false, :desc => "Output in the default format with statuses."
     def timeline
       require 'tweetstream'
       client.on_inited do
@@ -109,7 +110,9 @@ module T
             STATUS_HEADINGS_FORMATTING[index] % element
           end
           print_table([array], :truncate => STDOUT.tty?)
-        else
+        #elsif options['status'] 
+        #  print_message(status.user.screen_name, status.text)
+        #else
           print_message(status.user.screen_name, status.text)
         end
       end

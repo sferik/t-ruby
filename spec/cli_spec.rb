@@ -3241,6 +3241,84 @@ ID                  Posted at     Screen name    Text
         end
       end
     end
+    context "--status" do
+      before do
+        @cli.options = @cli.options.merge("status" => true)
+      end
+      it "should output the default timeline but with statuses" do
+        @cli.timeline
+        $stdout.string.should == <<-eos
+\e[1m\e[33m   @ryanbigg \e[0m\e[33m194548141663027221\e[0m
+   Things that have made my life better, in order of greatness: GitHub, Travis 
+   CI, the element Oxygen.
+
+\e[1m\e[33m   @sfbike \e[0m\e[33m194563027248121416\e[0m
+   Bike to Work Counts in: 73% of morning Market traffic was bikes! 1,031 bikers 
+   counted in 1 hour--that's 17 per minute. Way to roll, SF!
+
+\e[1m\e[33m   @levie \e[0m\e[33m194548120271416632\e[0m
+   I know you're as rare as leprechauns, but if you're an amazing designer then 
+   Box wants to hire you. Email recruiting@box.com
+
+\e[1m\e[33m   @natevillegas \e[0m\e[33m194548121416630272\e[0m
+   RT @gelobautista #riordan RT @WilI_Smith: Yesterday is history. Tomorrow is a 
+   mystery. Today is a gift. That's why it's called the present.
+
+\e[1m\e[33m   @TD \e[0m\e[33m194547993607806976\e[0m
+   @kelseysilver how long will you be in town?
+
+\e[1m\e[33m   @rusashka \e[0m\e[33m194547987593183233\e[0m
+   @maciej hahaha :) @gpena together we're going to cover all core 28 languages!
+
+\e[1m\e[33m   @fat \e[0m\e[33m194547824690597888\e[0m
+   @stevej @xc i'm going to picket when i get back.
+
+\e[1m\e[33m   @wil \e[0m\e[33m194547658562605057\e[0m
+   @0x9900 @paulnivin http://t.co/bwVdtAPe
+
+\e[1m\e[33m   @wangtian \e[0m\e[33m194547528430137344\e[0m
+   @tianhonghe @xiangxin72 oh, you can even order specific items?
+
+\e[1m\e[33m   @shinypb \e[0m\e[33m194547402550689793\e[0m
+   @kpk Pfft, I think you're forgetting mechanical television, which depended on 
+   a clever German. http://t.co/JvLNQCDm @skilldrick @hoverbird
+
+\e[1m\e[33m   @0x9900 \e[0m\e[33m194547260233760768\e[0m
+   @wil @paulnivin if you want to take you seriously don't say daemontools!
+
+\e[1m\e[33m   @kpk \e[0m\e[33m194547084349804544\e[0m
+   @shinypb @skilldrick @hoverbird invented it
+
+\e[1m\e[33m   @skilldrick \e[0m\e[33m194546876782092291\e[0m
+   @shinypb Well played :) @hoverbird
+
+\e[1m\e[33m   @sam \e[0m\e[33m194546811480969217\e[0m
+   Can someone project the date that I'll get a 27\" retina display?
+
+\e[1m\e[33m   @shinypb \e[0m\e[33m194546738810458112\e[0m
+   @skilldrick @hoverbird Wow, I didn't even know they *had* TV in Britain.
+
+\e[1m\e[33m   @bartt \e[0m\e[33m194546727670390784\e[0m
+   @noahlt @gaarf Yup, now owning @twitter -> FB from FE to daemons. Lot’s of 
+   fun. Expect improvements in the weeks to come.
+
+\e[1m\e[33m   @skilldrick \e[0m\e[33m194546649203347456\e[0m
+   @hoverbird @shinypb You guys must be soooo old, I don't remember the words to 
+   the duck tales intro at all.
+
+\e[1m\e[33m   @sean \e[0m\e[33m194546583608639488\e[0m
+   @mep Thanks for coming by. Was great to have you.
+
+\e[1m\e[33m   @hoverbird \e[0m\e[33m194546388707717120\e[0m
+   @shinypb @trammell it's all suck a \"duck blur\" sometimes.
+
+\e[1m\e[33m   @kelseysilver \e[0m\e[33m194546264212385793\e[0m
+   San Francisco here I come! (@ Newark Liberty International Airport (EWR) w/ 
+   92 others) http://t.co/eoLANJZw
+
+        eos
+      end
+    end
     context "with a user passed" do
       before do
         stub_get("/1/statuses/user_timeline.json").

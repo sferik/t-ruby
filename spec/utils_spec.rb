@@ -1,22 +1,22 @@
 # encoding: utf-8
 require 'helper'
 
-describe T::FormatHelpers do
+describe T::Utils do
 
   before :all do
     Timecop.freeze(Time.utc(2011, 11, 24, 16, 20, 0))
     T.utc_offset = 'PST'
+    class Test; end
+  end
+
+  before :each do
+    @test = Test.new
+    @test.extend(T::Utils)
   end
 
   after :all do
     T.utc_offset = nil
     Timecop.return
-  end
-
-  before do
-    class Test; end
-    @test = Test.new
-    @test.extend(T::FormatHelpers)
   end
 
   describe "#distance_of_time_in_words" do

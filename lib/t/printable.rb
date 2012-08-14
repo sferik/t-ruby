@@ -2,7 +2,7 @@ module T
   module Printable
     LIST_HEADINGS = ["ID", "Created at", "Screen name", "Slug", "Members", "Subscribers", "Mode", "Description"]
     STATUS_HEADINGS = ["ID", "Posted at", "Screen name", "Text"]
-    USER_HEADINGS = ["ID", "Since", "Tweets", "Favorites", "Listed", "Following", "Followers", "Screen name", "Name"]
+    USER_HEADINGS = ["ID", "Since", "Last tweeted at", "Tweets", "Favorites", "Listed", "Following", "Followers", "Screen name", "Name"]
     MONTH_IN_SECONDS = 2592000
 
   private
@@ -17,15 +17,17 @@ module T
     end
 
     def build_long_user(user)
-      [user.id, ls_formatted_time(user), user.statuses_count, user.favourites_count, user.listed_count, user.friends_count, user.followers_count, "@#{user.screen_name}", user.name]
+      [user.id, ls_formatted_time(user), ls_formatted_time(user.status), user.statuses_count, user.favourites_count, user.listed_count, user.friends_count, user.followers_count, "@#{user.screen_name}", user.name]
     end
 
     def csv_formatted_time(object, key=:created_at)
+      return nil if object.nil?
       time = object.send(key.to_sym)
       time.utc.strftime("%Y-%m-%d %H:%M:%S %z")
     end
 
     def ls_formatted_time(object, key=:created_at)
+      return "" if object.nil?
       time = T.local_time(object.send(key.to_sym))
       if time > Time.now - MONTH_IN_SECONDS * 6
         time.strftime("%b %e %H:%M")
@@ -50,20 +52,22 @@ module T
     def print_csv_user(user)
       require 'csv'
       require 'fastercsv' unless Array.new.respond_to?(:to_csv)
-      say [user.id, csv_formatted_time(user), user.statuses_count, user.favourites_count, user.listed_count, user.friends_count, user.followers_count, user.screen_name, user.name].to_csv
+      say [user.id, csv_formatted_time(user), csv_formatted_time(user.status), user.statuses_count, user.favourites_count, user.listed_count, user.friends_count, user.followers_count, user.screen_name, user.name].to_csv
     end
 
     def print_lists(lists)
-      lists = lists.sort_by{|list| list.slug.downcase} unless options['unsorted']
-      if options['posted']
-        lists = lists.sort_by{|user| user.created_at}
-      elsif options['members']
-        lists = lists.sort_by{|user| user.member_count}
-      elsif options['mode']
-        lists = lists.sort_by{|user| user.mode}
-      elsif options['subscribers']
-        lists = lists.sort_by{|user| user.subscriber_count}
-      end
+      lists = case options['sort']
+      when 'members'
+        lists.sort_by{|user| user.member_count}
+      when 'mode'
+        lists.sort_by{|user| user.mode}
+      when 'posted'
+        lists.sort_by{|user| user.created_at}
+      when 'subscribers'
+        lists.sort_by{|user| user.subscriber_count}
+      else
+        lists.sort_by{|list| list.slug.downcase}
+      end unless options['unsorted']
       lists.reverse! if options['reverse']
       if options['csv']
         require 'csv'
@@ -122,7 +126,7 @@ module T
     end
 
     def print_statuses(statuses)
-      statuses.reverse! if options['reverse'] || options['stream']
+      statuses.reverse! if options['reverse']
       if options['csv']
         require 'csv'
         require 'fastercsv' unless Array.new.respond_to?(:to_csv)
@@ -144,20 +148,24 @@ module T
     end
 
     def print_users(users)
-      users = users.sort_by{|user| user.screen_name.downcase} unless options['unsorted']
-      if options['posted']
-        users = users.sort_by{|user| user.created_at}
-      elsif options['favorites']
-        users = users.sort_by{|user| user.favourites_count}
-      elsif options['followers']
-        users = users.sort_by{|user| user.followers_count}
-      elsif options['friends']
-        users = users.sort_by{|user| user.friends_count}
-      elsif options['listed']
-        users = users.sort_by{|user| user.listed_count}
-      elsif options['tweets']
-        users = users.sort_by{|user| user.statuses_count}
-      end
+      users = case options['sort']
+      when 'favorites'
+        users.sort_by{|user| user.favourites_count}
+      when 'followers'
+        users.sort_by{|user| user.followers_count}
+      when 'friends'
+        users.sort_by{|user| user.friends_count}
+      when 'listed'
+        users.sort_by{|user| user.listed_count}
+      when 'since'
+        users.sort_by{|user| user.created_at}
+      when 'tweets'
+        users.sort_by{|user| user.statuses_count}
+      when 'tweeted'
+        users.sort_by{|user| user.status.created_at rescue Time.at(0)}
+      else
+        users.sort_by{|user| user.screen_name.downcase}
+      end unless options['unsorted']
       users.reverse! if options['reverse']
       if options['csv']
         require 'csv'

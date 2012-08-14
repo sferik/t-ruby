@@ -1,17 +1,17 @@
 require 'thor'
 require 'twitter'
+require 't/collectable'
+require 't/printable'
+require 't/rcfile'
+require 't/requestable'
+require 't/utils'
 
 module T
-  autoload :Collectable, 't/collectable'
-  autoload :FormatHelpers, 't/format_helpers'
-  autoload :Printable, 't/printable'
-  autoload :RCFile, 't/rcfile'
-  autoload :Requestable, 't/requestable'
   class List < Thor
     include T::Collectable
     include T::Printable
     include T::Requestable
-    include T::FormatHelpers
+    include T::Utils
 
     DEFAULT_NUM_RESULTS = 20
     MAX_USERS_PER_LIST = 500
@@ -20,29 +20,18 @@ module T
     check_unknown_options!
 
     def initialize(*)
+      @rcfile = T::RCFile.instance
       super
-      @rcfile = RCFile.instance
     end
 
     desc "add LIST USER [USER...]", "Add members to a list."
     method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     def add(list, user, *users)
-      users.unshift(user)
-      require 't/core_ext/string'
-      if options['id']
-        users.map!(&:to_i)
-      else
-        users.map!(&:strip_ats)
+      users, number = fetch_users(users.unshift(user), options) do |users|
+        client.list_add_members(list, users)
+        users
       end
-      require 't/core_ext/enumerable'
-      require 'retryable'
-      users.each_slice(MAX_USERS_PER_REQUEST).threaded_each do |user_id_group|
-        retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-          client.list_add_members(list, user_id_group)
-        end
-      end
-      number = users.length
-      say "@#{@rcfile.active_profile[0]} added #{number} #{number == 1 ? 'member' : 'members'} to the list \"#{list}\"."
+      say "@#{@rcfile.active_profile[0]} added #{pluralize(number, 'member')} to the list \"#{list}\"."
       say
       if options['id']
         say "Run `#{File.basename($0)} list remove --id #{list} #{users.join(' ')}` to undo."
@@ -63,18 +52,7 @@ module T
     desc "information [USER/]LIST", "Retrieves detailed information about a Twitter list."
     method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     def information(list)
-      owner, list = list.split('/')
-      if list.nil?
-        list = owner
-        owner = @rcfile.active_profile[0]
-      else
-        require 't/core_ext/string'
-        owner = if options['id']
-          owner.to_i
-        else
-          owner.strip_ats
-        end
-      end
+      owner, list = extract_owner(list, options)
       list = client.list(owner, list)
       if options['csv']
         require 'csv'
@@ -100,29 +78,13 @@ module T
 
     desc "members [USER/]LIST", "Returns the members of a Twitter list."
     method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
-    method_option "followers", :aliases => "-v", :type => :boolean, :default => false, :desc => "Sort by total number of favorites."
-    method_option "followers", :aliases => "-f", :type => :boolean, :default => false, :desc => "Sort by total number of followers."
-    method_option "friends", :aliases => "-e", :type => :boolean, :default => false, :desc => "Sort by total number of friends."
     method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
-    method_option "listed", :aliases => "-d", :type => :boolean, :default => false, :desc => "Sort by number of list memberships."
     method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
-    method_option "posted", :aliases => "-p", :type => :boolean, :default => false, :desc => "Sort by the time when Twitter account was posted."
     method_option "reverse", :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
-    method_option "tweets", :aliases => "-t", :type => :boolean, :default => false, :desc => "Sort by total number of Tweets."
+    method_option "sort", :aliases => "-s", :type => :string, :enum => %w(favorites followers friends listed screen_name since tweets tweeted), :default => "screen_name", :desc => "Specify the order of the results.", :banner => "ORDER"
     method_option "unsorted", :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
     def members(list)
-      owner, list = list.split('/')
-      if list.nil?
-        list = owner
-        owner = @rcfile.active_profile[0]
-      else
-        require 't/core_ext/string'
-        owner = if options['id']
-          owner.to_i
-        else
-          owner.strip_ats
-        end
-      end
+      owner, list = extract_owner(list, options)
       users = collect_with_cursor do |cursor|
         client.list_members(owner, list, :cursor => cursor, :skip_status => true)
       end
@@ -132,22 +94,11 @@ module T
     desc "remove LIST USER [USER...]", "Remove members from a list."
     method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     def remove(list, user, *users)
-      users.unshift(user)
-      require 't/core_ext/string'
-      if options['id']
-        users.map!(&:to_i)
-      else
-        users.map!(&:strip_ats)
+      users, number = fetch_users(users.unshift(user), options) do |users|
+        client.list_remove_members(list, users)
+        users
       end
-      require 't/core_ext/enumerable'
-      require 'retryable'
-      users.each_slice(MAX_USERS_PER_REQUEST).threaded_each do |user_id_group|
-        retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-          client.list_remove_members(list, user_id_group)
-        end
-      end
-      number = users.length
-      say "@#{@rcfile.active_profile[0]} removed #{number} #{number == 1 ? 'member' : 'members'} from the list \"#{list}\"."
+      say "@#{@rcfile.active_profile[0]} removed #{pluralize(number, 'member')} from the list \"#{list}\"."
       say
       if options['id']
         say "Run `#{File.basename($0)} list add --id #{list} #{users.join(' ')}` to undo."
@@ -163,18 +114,7 @@ module T
     method_option "number", :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => "Limit the number of results."
     method_option "reverse", :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     def timeline(list)
-      owner, list = list.split('/')
-      if list.nil?
-        list = owner
-        owner = @rcfile.active_profile[0]
-      else
-        require 't/core_ext/string'
-        owner = if options['id']
-          owner.to_i
-        else
-          owner.strip_ats
-        end
-      end
+      owner, list = extract_owner(list, options)
       per_page = options['number'] || DEFAULT_NUM_RESULTS
       statuses = collect_with_per_page(per_page) do |opts|
         client.list_timeline(owner, list, opts)

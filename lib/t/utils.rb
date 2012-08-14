@@ -1,5 +1,5 @@
 module T
-  module FormatHelpers
+  module Utils
   private
 
     # https://github.com/rails/rails/blob/bd8a970/actionpack/lib/action_view/helpers/date_helper.rb
@@ -47,6 +47,40 @@ module T
     alias :time_ago_in_words :distance_of_time_in_words
     alias :time_from_now_in_words :distance_of_time_in_words
 
+    def fetch_users(users, options, &block)
+      format_users!(users, options)
+      require 'retryable'
+      users = retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
+        yield users
+      end
+      [users, users.length]
+    end
+
+    def format_users!(users, options)
+      require 't/core_ext/string'
+      if options['id']
+        users.map!(&:to_i)
+      else
+        users.map!(&:strip_ats)
+      end
+    end
+
+    def extract_owner(list, options)
+      owner, list = list.split('/')
+      if list.nil?
+        list = owner
+        owner = @rcfile.active_profile[0]
+      else
+        require 't/core_ext/string'
+        owner = if options['id']
+          owner.to_i
+        else
+          owner.strip_ats
+        end
+      end
+      [owner, list]
+    end
+
     def strip_tags(html)
       html.gsub(/<.+?>/, '')
     end
@@ -55,6 +89,10 @@ module T
       digits = number.to_s.split(//)
       groups = digits.reverse.each_slice(3).map{|g| g.join('')}
       groups.join(delimiter).reverse
+    end
+
+    def pluralize(count, singular, plural=nil)
+      "#{count || 0} " + ((count == 1 || count =~ /^1(\.0+)?$/) ? singular : (plural || "#{singular}s"))
     end
 
   end

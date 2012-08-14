@@ -13,9 +13,8 @@ describe T::Search do
     Timecop.return
   end
 
-  before do
-    rcfile = RCFile.instance
-    rcfile.path = fixture_path + "/.trc"
+  before :each do
+    T::RCFile.instance.path = fixture_path + "/.trc"
     @search = T::Search.new
     @old_stderr = $stderr
     $stderr = StringIO.new
@@ -23,7 +22,8 @@ describe T::Search do
     $stdout = StringIO.new
   end
 
-  after do
+  after :each do
+    T::RCFile.instance.reset
     $stderr = @old_stderr
     $stdout = @old_stdout
   end
@@ -291,6 +291,34 @@ ID                  Posted at     Screen name  Text
           should have_been_made.times(3)
       end
     end
+    context "with a user passed" do
+      before do
+        stub_get("/1/favorites/sferik.json").
+          with(:query => {:count => "200"}).
+          to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1/favorites/sferik.json").
+          with(:query => {:count => "200", :max_id => "194546264212385792"}).
+          to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should request the correct resource" do
+        @search.favorites("sferik", "twitter")
+        a_get("/1/favorites/sferik.json").
+          with(:query => {:count => "200"}).
+          should have_been_made
+        a_get("/1/favorites/sferik.json").
+          with(:query => {:count => "200", :max_id => "194546264212385792"}).
+          should have_been_made
+      end
+      it "should have the correct output" do
+        @search.favorites("sferik", "twitter")
+        $stdout.string.should == <<-eos
+\e[1m\e[33m   @bartt\e[0m
+   @noahlt @gaarf Yup, now owning @twitter -> FB from FE to daemons. Lot’s of 
+   fun. Expect improvements in the weeks to come.
+
+        eos
+      end
+    end
   end
 
   describe "#mentions" do
@@ -517,6 +545,34 @@ ID                  Posted at     Screen name  Text
           should have_been_made.times(3)
       end
     end
+    context "with a user passed" do
+      before do
+        stub_get("/1/statuses/retweeted_by_user.json").
+          with(:query => {:count => "200", :screen_name => "sferik"}).
+          to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1/statuses/retweeted_by_user.json").
+          with(:query => {:count => "200", :max_id => "194546264212385792", :screen_name => "sferik"}).
+          to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should request the correct resource" do
+        @search.retweets("sferik", "twitter")
+        a_get("/1/statuses/retweeted_by_user.json").
+          with(:query => {:count => "200", :screen_name => "sferik"}).
+          should have_been_made
+        a_get("/1/statuses/retweeted_by_user.json").
+          with(:query => {:count => "200", :max_id => "194546264212385792", :screen_name => "sferik"}).
+          should have_been_made
+      end
+      it "should have the correct output" do
+        @search.retweets("sferik", "twitter")
+        $stdout.string.should == <<-eos
+\e[1m\e[33m   @bartt\e[0m
+   @noahlt @gaarf Yup, now owning @twitter -> FB from FE to daemons. Lot’s of 
+   fun. Expect improvements in the weeks to come.
+
+        eos
+      end
+    end
   end
 
   describe "#timeline" do
@@ -672,37 +728,27 @@ ID                  Posted at     Screen name  Text
 
   describe "#users" do
     before do
-      1.upto(50).each do |page|
-        stub_get("/1/users/search.json").
-          with(:query => {:page => page.to_s, :per_page => "20", :q => "Erik", }).
-          to_return(:body => fixture("users.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      end
+      stub_get("/1/users/search.json").
+        with(:query => {:page => "1", :q => "Erik"}).
+        to_return(:body => fixture("users.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1/users/search.json").
+        with(:query => {:page => "2", :q => "Erik"}).
+        to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @search.users("Erik")
       1.upto(50).each do |page|
         a_get("/1/users/search.json").
-          with(:query => {:page => page.to_s, :per_page => "20", :q => "Erik", }).
+          with(:query => {:page => "1", :q => "Erik"}).
+          should have_been_made
+        a_get("/1/users/search.json").
+          with(:query => {:page => "2", :q => "Erik"}).
           should have_been_made
       end
     end
     it "should have the correct output" do
       @search.users("Erik")
-      $stdout.string.should == <<-eos
-pengwynn  pengwynn  pengwynn  pengwynn  pengwynn  pengwynn  pengwynn  pengwynn
-pengwynn  pengwynn  pengwynn  pengwynn  pengwynn  pengwynn  pengwynn  pengwynn
-pengwynn  pengwynn  pengwynn  pengwynn  pengwynn  pengwynn  pengwynn  pengwynn
-pengwynn  pengwynn  pengwynn  pengwynn  pengwynn  pengwynn  pengwynn  pengwynn
-pengwynn  pengwynn  pengwynn  pengwynn  pengwynn  pengwynn  pengwynn  pengwynn
-pengwynn  pengwynn  pengwynn  pengwynn  pengwynn  pengwynn  pengwynn  pengwynn
-pengwynn  pengwynn  sferik    sferik    sferik    sferik    sferik    sferik
-sferik    sferik    sferik    sferik    sferik    sferik    sferik    sferik
-sferik    sferik    sferik    sferik    sferik    sferik    sferik    sferik
-sferik    sferik    sferik    sferik    sferik    sferik    sferik    sferik
-sferik    sferik    sferik    sferik    sferik    sferik    sferik    sferik
-sferik    sferik    sferik    sferik    sferik    sferik    sferik    sferik
-sferik    sferik    sferik    sferik    
-      eos
+      $stdout.string.chomp.should == "pengwynn  sferik"
     end
     context "--csv" do
       before do
@@ -711,107 +757,9 @@ sferik    sferik    sferik    sferik
       it "should output in CSV format" do
         @search.users("Erik")
         $stdout.string.should == <<-eos
-ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
+ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
+14100886,2008-03-08 16:34:22 +0000,2012-07-07 20:33:19 +0000,6940,192,358,3427,5457,pengwynn,Wynn Netherland ⚡
+7505382,2007-07-16 12:59:01 +0000,2012-07-08 18:29:20 +0000,7890,3755,118,212,2262,sferik,Erik Michaels-Ober
         eos
       end
     end
@@ -822,120 +770,103 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
       it "should output in long format" do
         @search.users("Erik")
         $stdout.string.should == <<-eos
-ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
+ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
+14100886  Mar  8  2008  Jul  7 12:33       6940        192     358       3427...
+ 7505382  Jul 16  2007  Jul  8 10:29       7890       3755     118        212...
         eos
+      end
+    end
+    context "--reverse" do
+      before do
+        @search.options = @search.options.merge("reverse" => true)
+      end
+      it "should reverse the order of the sort" do
+        @search.users("Erik")
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--sort=favorites" do
+      before do
+        @search.options = @search.options.merge("sort" => "favorites")
+      end
+      it "should sort by number of favorites" do
+        @search.users("Erik")
+        $stdout.string.chomp.should == "pengwynn  sferik"
+      end
+    end
+    context "--sort=followers" do
+      before do
+        @search.options = @search.options.merge("sort" => "followers")
+      end
+      it "should sort by number of followers" do
+        @search.users("Erik")
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--sort=friends" do
+      before do
+        @search.options = @search.options.merge("sort" => "friends")
+      end
+      it "should sort by number of friends" do
+        @search.users("Erik")
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--sort=listed" do
+      before do
+        @search.options = @search.options.merge("sort" => "listed")
+      end
+      it "should sort by number of list memberships" do
+        @search.users("Erik")
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--sort=since" do
+      before do
+        @search.options = @search.options.merge("sort" => "since")
+      end
+      it "should sort by the time wshen Twitter account was created" do
+        @search.users("Erik")
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--sort=tweets" do
+      before do
+        @search.options = @search.options.merge("sort" => "tweets")
+      end
+      it "should sort by number of Tweets" do
+        @search.users("Erik")
+        $stdout.string.chomp.should == "pengwynn  sferik"
+      end
+    end
+    context "--sort=tweeted" do
+      before do
+        @search.options = @search.options.merge("sort" => "tweeted")
+      end
+      it "should sort by the time of the last Tweet" do
+        @search.users("Erik")
+        $stdout.string.chomp.should == "pengwynn  sferik"
+      end
+    end
+    context "--unsorted" do
+      before do
+        @search.options = @search.options.merge("unsorted" => true)
+      end
+      it "should not be sorted" do
+        @search.users("Erik")
+        $stdout.string.chomp.should == "pengwynn  sferik"
       end
     end
     context "Twitter is down" do
       it "should retry 3 times and then raise an error" do
         stub_get("/1/users/search.json").
-          with(:query => {:page => "50", :per_page => "20", :q => "Erik", }).
+          with(:query => {:page => "2", :q => "Erik", }).
           to_return(:status => 502)
         lambda do
           @search.users("Erik")
         end.should raise_error("Twitter is down or being upgraded.")
         a_get("/1/users/search.json").
-          with(:query => {:page => "50", :per_page => "20", :q => "Erik", }).
+          with(:query => {:page => "2", :q => "Erik", }).
           should have_been_made.times(3)
       end
     end

@@ -21,7 +21,7 @@ offers vastly more commands and capabilities than are available via SMS.
 
 First, make sure you have Ruby installed.
 
-**On a Mac**, open /Applications/Utilities/Terminal.app and type:
+**On a Mac**, open `/Applications/Utilities/Terminal.app` and type:
 
     ruby -v
 
@@ -35,7 +35,7 @@ If the output looks more like this, you need to [install Ruby][ruby]:
 
 **On Windows**, you can install Ruby with [RubyInstaller][].
 
-Once you've verified that Ruby is installed, type:
+Once you've verified that Ruby is installed:
 
     gem install t
 
@@ -136,13 +136,16 @@ example, send a user a direct message only if he already follows you:
     t lists -l
 
 ### List all your friends, in long format, ordered by number of followers
-    t friends -lf
+    t friends -l --sort=followers
 
 ### List all your leaders (people you follow who don't follow you back)
-    t leaders -lf
+    t leaders -l --sort=followers
 
 ### Unfollow everyone you follow who doesn't follow you back
     t leaders | xargs t unfollow
+
+### Unfollow 10 people who haven't tweeted in the longest time
+    t followings -l --sort=tweeted | head -10 | awk '{print $1}' | xargs t unfollow
 
 ### Twitter roulette: randomly follow someone who follows you (who you don't already follow)
     t groupies | shuf | head -1 | xargs t follow
@@ -182,12 +185,12 @@ example, send a user a direct message only if he already follows you:
 
 ## Features
 * Deep search: Instead of using the Twitter Search API, [which only only goes
-  back 6-9 days][index], `t search` fetches up to 3,200 tweets via the REST API
+  back 6-9 days][search], `t search` fetches up to 3,200 tweets via the REST API
   and then checks each one against a regular expression.
-* Multithreaded: Whenever possible, Twitter API requests are made in parallel,
+* Multi-threaded: Whenever possible, Twitter API requests are made in parallel,
   resulting in faster performance for bulk operations.
 * Designed for Unix: Output is designed to be piped to other Unix utilities,
-  like grep, cut, awk, bc, wc, and xargs for advanced text processing.
+  like grep, comm, cut, awk, bc, wc, and xargs for advanced text processing.
 * Generate spreadsheets: Convert the output of any command to CSV format simply
   by adding the `--csv` flag.
 * 95% C0 Code Coverage: Well tested, with a 2.5:1 test-to-code ratio.

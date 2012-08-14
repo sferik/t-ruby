@@ -1,16 +1,16 @@
 require 'thor'
+require 't/rcfile'
+require 't/requestable'
 
 module T
-  autoload :RCFile, 't/rcfile'
-  autoload :Requestable, 't/requestable'
   class Set < Thor
     include T::Requestable
 
     check_unknown_options!
 
     def initialize(*)
+      @rcfile = T::RCFile.instance
       super
-      @rcfile = RCFile.instance
     end
 
     desc "active SCREEN_NAME [CONSUMER_KEY]", "Set your active account."

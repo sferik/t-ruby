@@ -1,11 +1,11 @@
 require 'thor'
 require 'twitter'
+require 't/collectable'
+require 't/printable'
+require 't/rcfile'
+require 't/requestable'
 
 module T
-  autoload :Collectable, 't/collectable'
-  autoload :Printable, 't/printable'
-  autoload :RCFile, 't/rcfile'
-  autoload :Requestable, 't/requestable'
   class Search < Thor
     include T::Collectable
     include T::Printable

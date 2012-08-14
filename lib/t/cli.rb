@@ -2,19 +2,18 @@
 require 'oauth'
 require 'thor'
 require 'twitter'
+require 't/collectable'
+require 't/delete'
+require 't/list'
+require 't/printable'
+require 't/rcfile'
+require 't/requestable'
+require 't/search'
+require 't/set'
+require 't/stream'
+require 't/utils'
 
 module T
-  autoload :Collectable, 't/collectable'
-  autoload :Delete, 't/delete'
-  autoload :List, 't/list'
-  autoload :Printable, 't/printable'
-  autoload :RCFile, 't/rcfile'
-  autoload :Requestable, 't/requestable'
-  autoload :Search, 't/search'
-  autoload :Set, 't/set'
-  autoload :Stream, 't/stream'
-  autoload :Utils, 't/utils'
-  autoload :Version, 't/version'
   class CLI < Thor
     include T::Collectable
     include T::Printable
@@ -808,6 +807,7 @@ module T
 
     desc "version", "Show version."
     def version
+      require 't/version'
       say T::Version
     end
     map %w(-v --version) => :version

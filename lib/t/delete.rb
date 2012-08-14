@@ -1,10 +1,10 @@
 require 'thor'
 require 'twitter'
+require 't/rcfile'
+require 't/requestable'
+require 't/utils'
 
 module T
-  autoload :RCFile, 't/rcfile'
-  autoload :Requestable, 't/requestable'
-  autoload :Utils, 't/utils'
   class Delete < Thor
     include T::Requestable
     include T::Utils

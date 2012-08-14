@@ -53,14 +53,30 @@ module T
       end
     end
 
-    desc "favorites QUERY", "Returns Tweets you've favorited that match the specified query."
+    desc "favorites [USER] QUERY", "Returns Tweets you've favorited that match the specified query."
     method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
+    method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
     method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
-    def favorites(query)
+    def favorites(*args)
       opts = {:count => MAX_NUM_RESULTS}
-      statuses = collect_with_max_id do |max_id|
-        opts[:max_id] = max_id unless max_id.nil?
-        client.favorites(opts)
+      query = args.pop
+      user = args.pop
+      if user
+        require 't/core_ext/string'
+        user = if options['id']
+          user.to_i
+        else
+          user.strip_ats
+        end
+        statuses = collect_with_max_id do |max_id|
+          opts[:max_id] = max_id unless max_id.nil?
+          client.favorites(user, opts)
+        end
+      else
+        statuses = collect_with_max_id do |max_id|
+          opts[:max_id] = max_id unless max_id.nil?
+          client.favorites(opts)
+        end
       end
       statuses = statuses.select do |status|
         /#{query}/i.match(status.full_text)

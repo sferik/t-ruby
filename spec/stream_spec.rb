@@ -15,8 +15,8 @@ describe T::Stream do
     context '--csv' do
       before :each do
         @stream.options = @stream.options.merge("csv" => true)
-        @tweetstream_client.stub(:on_timeline_status)
-          .and_yield(fixture("status.json"))
+        @tweetstream_client.stub(:on_timeline_status).
+          and_yield(fixture("status.json"))
       end
 
       it "should output in CSV format" do

@@ -722,7 +722,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
     end
     it "should have the correct output" do
       @cli.does_contain("presidents")
-      $stdout.string.chomp.should == "Yes, @testcli/presidents contains @testcli."
+      $stdout.string.chomp.should == "Yes, presidents contains @testcli."
     end
     context "--id" do
       before do
@@ -747,7 +747,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
     context "with an owner passed" do
       it "should have the correct output" do
         @cli.does_contain("testcli/presidents", "testcli")
-        $stdout.string.chomp.should == "Yes, @testcli/presidents contains @testcli."
+        $stdout.string.chomp.should == "Yes, presidents contains @testcli."
       end
       context "--id" do
         before do
@@ -756,16 +756,16 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
             with(:query => {:user_id => "7505382"}).
             to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
           stub_get("/1/lists/members/show.json").
-            with(:query => {:owner_screen_name => "sferik", :screen_name => "sferik", :slug => "presidents"}).
+            with(:query => {:owner_id => "7505382", :screen_name => "sferik", :slug => "presidents"}).
             to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         end
         it "should request the correct resource" do
           @cli.does_contain("7505382/presidents", "7505382")
           a_get("/1/users/show.json").
             with(:query => {:user_id => "7505382"}).
-            should have_been_made.times(2)
+            should have_been_made
           a_get("/1/lists/members/show.json").
-            with(:query => {:owner_screen_name => "sferik", :screen_name => "sferik", :slug => "presidents"}).
+            with(:query => {:owner_id => "7505382", :screen_name => "sferik", :slug => "presidents"}).
             should have_been_made
         end
       end
@@ -773,7 +773,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
     context "with a user passed" do
       it "should have the correct output" do
         @cli.does_contain("presidents", "testcli")
-        $stdout.string.chomp.should == "Yes, @testcli/presidents contains @testcli."
+        $stdout.string.chomp.should == "Yes, presidents contains @testcli."
       end
     end
     context "false" do

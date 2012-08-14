@@ -64,6 +64,22 @@ module T
       end
     end
 
+    def extract_owner(list, options)
+      owner, list = list.split('/')
+      if list.nil?
+        list = owner
+        owner = @rcfile.active_profile[0]
+      else
+        require 't/core_ext/string'
+        owner = if options['id']
+          owner.to_i
+        else
+          owner.strip_ats
+        end
+      end
+      return [owner, list]
+    end
+
     def strip_tags(html)
       html.gsub(/<.+?>/, '')
     end

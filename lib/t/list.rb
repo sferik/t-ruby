@@ -52,18 +52,7 @@ module T
     desc "information [USER/]LIST", "Retrieves detailed information about a Twitter list."
     method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     def information(list)
-      owner, list = list.split('/')
-      if list.nil?
-        list = owner
-        owner = @rcfile.active_profile[0]
-      else
-        require 't/core_ext/string'
-        owner = if options['id']
-          owner.to_i
-        else
-          owner.strip_ats
-        end
-      end
+      owner, list = extract_owner(list, options)
       list = client.list(owner, list)
       if options['csv']
         require 'csv'
@@ -95,18 +84,7 @@ module T
     method_option "sort", :aliases => "-s", :type => :string, :enum => %w(favorites followers friends listed screen_name since tweets tweeted), :default => "screen_name", :desc => "Specify the order of the results.", :banner => "ORDER"
     method_option "unsorted", :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
     def members(list)
-      owner, list = list.split('/')
-      if list.nil?
-        list = owner
-        owner = @rcfile.active_profile[0]
-      else
-        require 't/core_ext/string'
-        owner = if options['id']
-          owner.to_i
-        else
-          owner.strip_ats
-        end
-      end
+      owner, list = extract_owner(list, options)
       users = collect_with_cursor do |cursor|
         client.list_members(owner, list, :cursor => cursor, :skip_status => true)
       end
@@ -136,18 +114,7 @@ module T
     method_option "number", :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => "Limit the number of results."
     method_option "reverse", :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     def timeline(list)
-      owner, list = list.split('/')
-      if list.nil?
-        list = owner
-        owner = @rcfile.active_profile[0]
-      else
-        require 't/core_ext/string'
-        owner = if options['id']
-          owner.to_i
-        else
-          owner.strip_ats
-        end
-      end
+      owner, list = extract_owner(list, options)
       per_page = options['number'] || DEFAULT_NUM_RESULTS
       statuses = collect_with_per_page(per_page) do |opts|
         client.list_timeline(owner, list, opts)

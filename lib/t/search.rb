@@ -4,12 +4,14 @@ require 't/collectable'
 require 't/printable'
 require 't/rcfile'
 require 't/requestable'
+require 't/utils'
 
 module T
   class Search < Thor
     include T::Collectable
     include T::Printable
     include T::Requestable
+    include T::Utils
 
     DEFAULT_NUM_RESULTS = 20
     MAX_NUM_RESULTS = 200
@@ -90,18 +92,7 @@ module T
     method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
     method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     def list(list, query)
-      owner, list = list.split('/')
-      if list.nil?
-        list = owner
-        owner = @rcfile.active_profile[0]
-      else
-        require 't/core_ext/string'
-        owner = if options['id']
-          owner.to_i
-        else
-          owner.strip_ats
-        end
-      end
+      owner, list = extract_owner(list, options)
       opts = {:count => MAX_NUM_RESULTS}
       statuses = collect_with_max_id do |max_id|
         opts[:max_id] = max_id unless max_id.nil?

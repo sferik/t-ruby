@@ -1,7 +1,7 @@
 # encoding: utf-8
 require 'helper'
 
-describe T::FormatHelpers do
+describe T::Utils do
 
   before :all do
     Timecop.freeze(Time.utc(2011, 11, 24, 16, 20, 0))
@@ -11,7 +11,7 @@ describe T::FormatHelpers do
 
   before :each do
     @test = Test.new
-    @test.extend(T::FormatHelpers)
+    @test.extend(T::Utils)
   end
 
   after :all do

@@ -3,15 +3,15 @@ require 'twitter'
 
 module T
   autoload :Collectable, 't/collectable'
-  autoload :FormatHelpers, 't/format_helpers'
   autoload :Printable, 't/printable'
   autoload :RCFile, 't/rcfile'
   autoload :Requestable, 't/requestable'
+  autoload :Utils, 't/utils'
   class List < Thor
     include T::Collectable
     include T::Printable
     include T::Requestable
-    include T::FormatHelpers
+    include T::Utils
 
     DEFAULT_NUM_RESULTS = 20
     MAX_USERS_PER_LIST = 500

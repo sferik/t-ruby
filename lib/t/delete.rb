@@ -3,11 +3,11 @@ require 'twitter'
 
 module T
   autoload :RCFile, 't/rcfile'
-  autoload :RequestHelpers, 't/request_helpers'
   autoload :Requestable, 't/requestable'
+  autoload :Utils, 't/utils'
   class Delete < Thor
-    include T::RequestHelpers
     include T::Requestable
+    include T::Utils
 
     check_unknown_options!
 
@@ -20,7 +20,7 @@ module T
     method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     method_option "force", :aliases => "-f", :type => :boolean, :default => false
     def block(user, *users)
-      users = fetch_users(users.unshift(user)) do |users|
+      users = fetch_users(users.unshift(user), options) do |users|
         client.unblock(users)
       end
       number = users.length

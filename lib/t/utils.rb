@@ -1,5 +1,5 @@
 module T
-  module FormatHelpers
+  module Utils
   private
 
     # https://github.com/rails/rails/blob/bd8a970/actionpack/lib/action_view/helpers/date_helper.rb
@@ -46,6 +46,23 @@ module T
     end
     alias :time_ago_in_words :distance_of_time_in_words
     alias :time_from_now_in_words :distance_of_time_in_words
+
+    def fetch_users(users, options, &block)
+      format_users!(users, options)
+      require 'retryable'
+      retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
+        yield users
+      end
+    end
+
+    def format_users!(users, options)
+      require 't/core_ext/string'
+      if options['id']
+        users.map!(&:to_i)
+      else
+        users.map!(&:strip_ats)
+      end
+    end
 
     def strip_tags(html)
       html.gsub(/<.+?>/, '')

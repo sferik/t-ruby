@@ -2,14 +2,13 @@ require 'singleton'
 
 module T
   class RCFile
-    FILE_NAME = '.trc'
-    attr_reader :path
-
     include Singleton
+    attr_reader :path
+    FILE_NAME = '.trc'
 
     def initialize
       @path = File.join(File.expand_path("~"), FILE_NAME)
-      @data = load
+      @data = load_file
     end
 
     def [](username)
@@ -59,7 +58,7 @@ module T
       @data == default_structure
     end
 
-    def load
+    def load_file
       require 'yaml'
       YAML.load_file(@path)
     rescue Errno::ENOENT
@@ -68,7 +67,7 @@ module T
 
     def path=(path)
       @path = path
-      @data = load
+      @data = load_file
       @path
     end
 

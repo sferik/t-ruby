@@ -160,19 +160,19 @@ describe T::RCFile do
     end
   end
 
-  describe '#load' do
+  describe '#load_file' do
     context 'when file exists at path' do
       it 'should load data from file' do
         rcfile = T::RCFile.instance
         rcfile.path = fixture_path + "/.trc"
-        rcfile.load['profiles']['testcli']['abc123']['username'].should == 'testcli'
+        rcfile.load_file['profiles']['testcli']['abc123']['username'].should == 'testcli'
       end
     end
     context 'when file does not exist at path' do
       it 'should load default structure' do
         rcfile = T::RCFile.instance
         rcfile.path = File.expand_path('../fixtures/foo', __FILE__)
-        rcfile.load.keys.sort.should == ['configuration', 'profiles']
+        rcfile.load_file.keys.sort.should == ['configuration', 'profiles']
       end
     end
   end

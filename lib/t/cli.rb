@@ -1,5 +1,4 @@
 # encoding: utf-8
-
 require 'oauth'
 require 'thor'
 require 'twitter'
@@ -11,6 +10,7 @@ module T
   autoload :List, 't/list'
   autoload :Printable, 't/printable'
   autoload :RCFile, 't/rcfile'
+  autoload :RequestHelpers, 't/request_helpers'
   autoload :Requestable, 't/requestable'
   autoload :Search, 't/search'
   autoload :Set, 't/set'
@@ -18,9 +18,10 @@ module T
   autoload :Version, 't/version'
   class CLI < Thor
     include T::Collectable
-    include T::Printable
-    include T::Requestable
     include T::FormatHelpers
+    include T::Printable
+    include T::RequestHelpers
+    include T::Requestable
 
     DEFAULT_HOST = 'api.twitter.com'
     DEFAULT_PROTOCOL = 'https'
@@ -117,15 +118,7 @@ module T
     desc "block USER [USER...]", "Block users."
     method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     def block(user, *users)
-      users.unshift(user)
-      require 't/core_ext/string'
-      if options['id']
-        users.map!(&:to_i)
-      else
-        users.map!(&:strip_ats)
-      end
-      require 'retryable'
-      users = retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
+      users = fetch_users(users.unshift(user)) do |users|
         client.block(users)
       end
       number = users.length
@@ -351,15 +344,7 @@ module T
     desc "follow USER [USER...]", "Allows you to start following users."
     method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     def follow(user, *users)
-      users.unshift(user)
-      require 't/core_ext/string'
-      if options['id']
-        users.map!(&:to_i)
-      else
-        users.map!(&:strip_ats)
-      end
-      require 'retryable'
-      users = retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
+      users = fetch_users(users.unshift(user)) do |users|
         client.follow(users)
       end
       number = users.length
@@ -782,15 +767,7 @@ module T
     desc "unfollow USER [USER...]", "Allows you to stop following users."
     method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     def unfollow(user, *users)
-      users.unshift(user)
-      require 't/core_ext/string'
-      if options['id']
-        users.map!(&:to_i)
-      else
-        users.map!(&:strip_ats)
-      end
-      require 'retryable'
-      users = retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
+      users = fetch_users(users.unshift(user)) do |users|
         client.unfollow(users)
       end
       number = users.length

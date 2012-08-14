@@ -27,11 +27,11 @@ module T
     end
 
     def active_consumer_key
-      profiles[active_profile[0]][active_profile[1]]['consumer_key'] if active_profile && profiles[active_profile[0]] && profiles[active_profile[0]][active_profile[1]]
+      profiles[active_profile[0]][active_profile[1]]['consumer_key'] if active_profile?
     end
 
     def active_consumer_secret
-      profiles[active_profile[0]][active_profile[1]]['consumer_secret'] if active_profile && profiles[active_profile[0]] && profiles[active_profile[0]][active_profile[1]]
+      profiles[active_profile[0]][active_profile[1]]['consumer_secret'] if active_profile?
     end
 
     def active_profile
@@ -44,11 +44,11 @@ module T
     end
 
     def active_secret
-      profiles[active_profile[0]][active_profile[1]]['secret'] if active_profile && profiles[active_profile[0]] && profiles[active_profile[0]][active_profile[1]]
+      profiles[active_profile[0]][active_profile[1]]['secret'] if active_profile?
     end
 
     def active_token
-      profiles[active_profile[0]][active_profile[1]]['token'] if active_profile && profiles[active_profile[0]] && profiles[active_profile[0]][active_profile[1]]
+      profiles[active_profile[0]][active_profile[1]]['token'] if active_profile?
     end
 
     def delete
@@ -81,6 +81,10 @@ module T
     end
 
   private
+
+    def active_profile?
+      active_profile && profiles[active_profile[0]] && profiles[active_profile[0]][active_profile[1]]
+    end
 
     def default_structure
       {'configuration' => {}, 'profiles' => {}}

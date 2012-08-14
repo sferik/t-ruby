@@ -20,10 +20,9 @@ module T
     method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     method_option "force", :aliases => "-f", :type => :boolean, :default => false
     def block(user, *users)
-      users = fetch_users(users.unshift(user), options) do |users|
+      users, number = fetch_users(users.unshift(user), options) do |users|
         client.unblock(users)
       end
-      number = users.length
       say "@#{@rcfile.active_profile[0]} unblocked #{number} #{number == 1 ? 'user' : 'users'}."
       say
       say "Run `#{File.basename($0)} block #{users.map{|user| "@#{user.screen_name}"}.join(' ')}` to block."

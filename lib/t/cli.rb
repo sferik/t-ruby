@@ -115,10 +115,9 @@ module T
     desc "block USER [USER...]", "Block users."
     method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     def block(user, *users)
-      users = fetch_users(users.unshift(user), options) do |users|
+      users, number = fetch_users(users.unshift(user), options) do |users|
         client.block(users)
       end
-      number = users.length
       say "@#{@rcfile.active_profile[0]} blocked #{number} #{number == 1 ? 'user' : 'users'}."
       say
       say "Run `#{File.basename($0)} delete block #{users.map{|user| "@#{user.screen_name}"}.join(' ')}` to unblock."
@@ -330,10 +329,9 @@ module T
     desc "follow USER [USER...]", "Allows you to start following users."
     method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     def follow(user, *users)
-      users = fetch_users(users.unshift(user), options) do |users|
+      users, number = fetch_users(users.unshift(user), options) do |users|
         client.follow(users)
       end
-      number = users.length
       say "@#{@rcfile.active_profile[0]} is now following #{number} more #{number == 1 ? 'user' : 'users'}."
       say
       say "Run `#{File.basename($0)} unfollow #{users.map{|user| "@#{user.screen_name}"}.join(' ')}` to stop."
@@ -560,18 +558,9 @@ module T
     desc "report_spam USER [USER...]", "Report users for spam."
     method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     def report_spam(user, *users)
-      users.unshift(user)
-      require 't/core_ext/string'
-      if options['id']
-        users.map!(&:to_i)
-      else
-        users.map!(&:strip_ats)
-      end
-      require 'retryable'
-      users = retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
+      users, number = fetch_users(users.unshift(user), options) do |users|
         client.report_spam(users)
       end
-      number = users.length
       say "@#{@rcfile.active_profile[0]} reported #{number} #{number == 1 ? 'user' : 'users'}."
     end
     map %w(report reportspam spam) => :report_spam
@@ -753,10 +742,9 @@ module T
     desc "unfollow USER [USER...]", "Allows you to stop following users."
     method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     def unfollow(user, *users)
-      users = fetch_users(users.unshift(user), options) do |users|
+      users, number = fetch_users(users.unshift(user), options) do |users|
         client.unfollow(users)
       end
-      number = users.length
       say "@#{@rcfile.active_profile[0]} is no longer following #{number} #{number == 1 ? 'user' : 'users'}."
       say
       say "Run `#{File.basename($0)} follow #{users.map{|user| "@#{user.screen_name}"}.join(' ')}` to follow again."

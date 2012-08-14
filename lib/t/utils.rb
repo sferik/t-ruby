@@ -50,9 +50,10 @@ module T
     def fetch_users(users, options, &block)
       format_users!(users, options)
       require 'retryable'
-      retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
+      users = retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
         yield users
       end
+      [users, users.length]
     end
 
     def format_users!(users, options)
@@ -77,7 +78,7 @@ module T
           owner.strip_ats
         end
       end
-      return [owner, list]
+      [owner, list]
     end
 
     def strip_tags(html)

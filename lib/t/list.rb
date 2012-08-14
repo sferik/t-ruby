@@ -27,10 +27,10 @@ module T
     desc "add LIST USER [USER...]", "Add members to a list."
     method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     def add(list, user, *users)
-      fetch_users(users.unshift(user), options) do |users|
+      users, number = fetch_users(users.unshift(user), options) do |users|
         client.list_add_members(list, users)
+        users
       end
-      number = users.length
       say "@#{@rcfile.active_profile[0]} added #{number} #{number == 1 ? 'member' : 'members'} to the list \"#{list}\"."
       say
       if options['id']
@@ -94,10 +94,10 @@ module T
     desc "remove LIST USER [USER...]", "Remove members from a list."
     method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     def remove(list, user, *users)
-      fetch_users(users.unshift(user), options) do |users|
+      users, number = fetch_users(users.unshift(user), options) do |users|
         client.list_remove_members(list, users)
+        users
       end
-      number = users.length
       say "@#{@rcfile.active_profile[0]} removed #{number} #{number == 1 ? 'member' : 'members'} from the list \"#{list}\"."
       say
       if options['id']

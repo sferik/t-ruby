@@ -1,34 +1,36 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
-    <meta charset='utf-8'>
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+    <title>T by sferik</title>
 
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-
-    <title>T by sferik</title>
   </head>
-
   <body>
-    <header>
-      <div class="inner">
-        <h1>T</h1>
-        <h2>A command-line power tool for Twitter.</h2>
-        <a href="https://github.com/sferik/t" class="button"><small>View project on</small>GitHub</a>
-      </div>
-    </header>
+    <div class="wrapper">
+      <header>
+        <h1 class="header">T</h1>
+        <p class="header">A command-line power tool for Twitter.</p>
 
-    <div id="content-wrapper">
-      <div class="inner clearfix">
-        <section id="main-content">
-          <h1><a href="https://github.com/sferik/t/raw/master/icon/t.png"><img src="https://github.com/sferik/t/raw/master/icon/t.png" alt="Application icon"></a></h1>
+        <ul>
+          <li class="download"><a class="buttons" href="https://github.com/sferik/t/zipball/master">Download ZIP</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/sferik/t/tarball/master">Download TAR</a></li>
+          <li><a class="buttons github" href="https://github.com/sferik/t">View On GitHub</a></li>
+        </ul>
+
+        <p class="header">This project is maintained by <a class="header name" href="https://github.com/sferik">sferik</a></p>
+
+
+      </header>
+      <section>
+        <h1><a href="https://github.com/sferik/t/raw/master/icon/t.png"><img src="https://github.com/sferik/t/raw/master/icon/t.png" alt="Application icon"></a></h1>
 
 <h1>Twitter CLI</h1>
 
@@ -62,7 +64,7 @@ offers vastly more commands and capabilities than are available via SMS.</p>
 
 <p><strong>On Windows</strong>, you can install Ruby with <a href="http://rubyinstaller.org/">RubyInstaller</a>.</p>
 
-<p>Once you've verified that Ruby is installed, type:</p>
+<p>Once you've verified that Ruby is installed:</p>
 
 <pre><code>gem install t
 </code></pre>
@@ -188,17 +190,22 @@ example, send a user a direct message only if he already follows you:</p>
 
 <h3>List all your friends, in long format, ordered by number of followers</h3>
 
-<pre><code>t friends -lf
+<pre><code>t friends -l --sort=followers
 </code></pre>
 
 <h3>List all your leaders (people you follow who don't follow you back)</h3>
 
-<pre><code>t leaders -lf
+<pre><code>t leaders -l --sort=followers
 </code></pre>
 
 <h3>Unfollow everyone you follow who doesn't follow you back</h3>
 
 <pre><code>t leaders | xargs t unfollow
+</code></pre>
+
+<h3>Unfollow 10 people who haven't tweeted in the longest time</h3>
+
+<pre><code>t followings -l --sort=tweeted | head -10 | awk '{print $1}' | xargs t unfollow
 </code></pre>
 
 <h3>Twitter roulette: randomly follow someone who follows you (who you don't already follow)</h3>
@@ -264,10 +271,10 @@ example, send a user a direct message only if he already follows you:</p>
 <h2>Features</h2>
 
 <ul>
-<li>Deep search: Instead of using the Twitter Search API, [which only only goes
-back 6-9 days][index], <code>t search</code> fetches up to 3,200 tweets via the REST API
+<li>Deep search: Instead of using the Twitter Search API, <a href="https://dev.twitter.com/docs/using-search">which only only goes
+back 6-9 days</a>, <code>t search</code> fetches up to 3,200 tweets via the REST API
 and then checks each one against a regular expression.</li>
-<li>Multithreaded: Whenever possible, Twitter API requests are made in parallel,
+<li>Multi-threaded: Whenever possible, Twitter API requests are made in parallel,
 resulting in faster performance for bulk operations.</li>
 <li>Designed for Unix: Output is designed to be piped to other Unix utilities,
 like grep, comm, cut, awk, bc, wc, and xargs for advanced text processing.</li>
@@ -388,25 +395,12 @@ of a major release, support for that Ruby version may be dropped.</p>
 
 <p>Copyright (c) 2011 Erik Michaels-Ober. See <a href="https://github.com/sferik/t/blob/master/LICENSE.md">LICENSE</a> for details.
 Application icon by <a href="http://rodolfonovak.com">@nvk</a>.</p>
-        </section>
-
-        <aside id="sidebar">
-          <a href="https://github.com/sferik/t/zipball/master" class="button">
-            <small>Download</small>
-            .zip file
-          </a>
-          <a href="https://github.com/sferik/t/tarball/master" class="button">
-            <small>Download</small>
-            .tar.gz file
-          </a>
-
-          <p class="repo-owner"><a href="https://github.com/sferik/t"></a> is maintained by <a href="https://github.com/sferik">sferik</a>.</p>
-
-          <p>This page was generated by <a href="pages.github.com">GitHub Pages</a> using the Architect theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.</p>
-        </aside>
-      </div>
+      </section>
+      <footer>
+        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
     </div>
-
-  
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+		
   </body>
 </html>

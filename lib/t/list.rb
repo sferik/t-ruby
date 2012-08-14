@@ -27,15 +27,7 @@ module T
     desc "add LIST USER [USER...]", "Add members to a list."
     method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     def add(list, user, *users)
-      users.unshift(user)
-      require 't/core_ext/string'
-      if options['id']
-        users.map!(&:to_i)
-      else
-        users.map!(&:strip_ats)
-      end
-      require 'retryable'
-      retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
+      fetch_users(users.unshift(user), options) do |users|
         client.list_add_members(list, users)
       end
       number = users.length
@@ -124,15 +116,7 @@ module T
     desc "remove LIST USER [USER...]", "Remove members from a list."
     method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     def remove(list, user, *users)
-      users.unshift(user)
-      require 't/core_ext/string'
-      if options['id']
-        users.map!(&:to_i)
-      else
-        users.map!(&:strip_ats)
-      end
-      require 'retryable'
-      retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
+      fetch_users(users.unshift(user), options) do |users|
         client.list_remove_members(list, users)
       end
       number = users.length

@@ -118,7 +118,7 @@ module T
       users, number = fetch_users(users.unshift(user), options) do |users|
         client.block(users)
       end
-      say "@#{@rcfile.active_profile[0]} blocked #{number} #{number == 1 ? 'user' : 'users'}."
+      say "@#{@rcfile.active_profile[0]} blocked #{pluralize(number, 'user')}."
       say
       say "Run `#{File.basename($0)} delete block #{users.map{|user| "@#{user.screen_name}"}.join(' ')}` to unblock."
     end
@@ -297,7 +297,7 @@ module T
         client.favorite(status_ids)
       end
       number = favorites.length
-      say "@#{@rcfile.active_profile[0]} favorited #{number} #{number == 1 ? 'tweet' : 'tweets'}."
+      say "@#{@rcfile.active_profile[0]} favorited #{pluralize(number, 'tweet')}."
       say
       say "Run `#{File.basename($0)} delete favorite #{status_ids.join(' ')}` to unfavorite."
     end
@@ -332,7 +332,7 @@ module T
       users, number = fetch_users(users.unshift(user), options) do |users|
         client.follow(users)
       end
-      say "@#{@rcfile.active_profile[0]} is now following #{number} more #{number == 1 ? 'user' : 'users'}."
+      say "@#{@rcfile.active_profile[0]} is now following #{pluralize(number, 'more user')}."
       say
       say "Run `#{File.basename($0)} unfollow #{users.map{|user| "@#{user.screen_name}"}.join(' ')}` to stop."
     end
@@ -561,7 +561,7 @@ module T
       users, number = fetch_users(users.unshift(user), options) do |users|
         client.report_spam(users)
       end
-      say "@#{@rcfile.active_profile[0]} reported #{number} #{number == 1 ? 'user' : 'users'}."
+      say "@#{@rcfile.active_profile[0]} reported #{pluralize(number, 'user')}."
     end
     map %w(report reportspam spam) => :report_spam
 
@@ -574,7 +574,7 @@ module T
         client.retweet(status_ids, :trim_user => true)
       end
       number = retweets.length
-      say "@#{@rcfile.active_profile[0]} retweeted #{number} #{number == 1 ? 'tweet' : 'tweets'}."
+      say "@#{@rcfile.active_profile[0]} retweeted #{pluralize(number, 'tweet')}."
       say
       say "Run `#{File.basename($0)} delete status #{retweets.map(&:id).join(' ')}` to undo."
     end
@@ -745,7 +745,7 @@ module T
       users, number = fetch_users(users.unshift(user), options) do |users|
         client.unfollow(users)
       end
-      say "@#{@rcfile.active_profile[0]} is no longer following #{number} #{number == 1 ? 'user' : 'users'}."
+      say "@#{@rcfile.active_profile[0]} is no longer following #{pluralize(number, 'user')}."
       say
       say "Run `#{File.basename($0)} follow #{users.map{|user| "@#{user.screen_name}"}.join(' ')}` to follow again."
     end

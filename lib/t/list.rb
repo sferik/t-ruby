@@ -31,7 +31,7 @@ module T
         client.list_add_members(list, users)
         users
       end
-      say "@#{@rcfile.active_profile[0]} added #{number} #{number == 1 ? 'member' : 'members'} to the list \"#{list}\"."
+      say "@#{@rcfile.active_profile[0]} added #{pluralize(number, 'member')} to the list \"#{list}\"."
       say
       if options['id']
         say "Run `#{File.basename($0)} list remove --id #{list} #{users.join(' ')}` to undo."
@@ -98,7 +98,7 @@ module T
         client.list_remove_members(list, users)
         users
       end
-      say "@#{@rcfile.active_profile[0]} removed #{number} #{number == 1 ? 'member' : 'members'} from the list \"#{list}\"."
+      say "@#{@rcfile.active_profile[0]} removed #{pluralize(number, 'member')} from the list \"#{list}\"."
       say
       if options['id']
         say "Run `#{File.basename($0)} list add --id #{list} #{users.join(' ')}` to undo."

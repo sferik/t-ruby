@@ -23,7 +23,7 @@ module T
       users, number = fetch_users(users.unshift(user), options) do |users|
         client.unblock(users)
       end
-      say "@#{@rcfile.active_profile[0]} unblocked #{number} #{number == 1 ? 'user' : 'users'}."
+      say "@#{@rcfile.active_profile[0]} unblocked #{pluralize(number, 'user')}."
       say
       say "Run `#{File.basename($0)} block #{users.map{|user| "@#{user.screen_name}"}.join(' ')}` to block."
     end

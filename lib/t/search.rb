@@ -129,14 +129,30 @@ module T
     end
     map %w(replies) => :mentions
 
-    desc "retweets QUERY", "Returns Tweets you've retweeted that match the specified query."
+    desc "retweets [USER] QUERY", "Returns Tweets you've retweeted that match the specified query."
     method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
+    method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
     method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
-    def retweets(query)
+    def retweets(*args)
       opts = {:count => MAX_NUM_RESULTS}
-      statuses = collect_with_max_id do |max_id|
-        opts[:max_id] = max_id unless max_id.nil?
-        client.retweeted_by_me(opts)
+      query = args.pop
+      user = args.pop
+      if user
+        require 't/core_ext/string'
+        user = if options['id']
+          user.to_i
+        else
+          user.strip_ats
+        end
+        statuses = collect_with_max_id do |max_id|
+          opts[:max_id] = max_id unless max_id.nil?
+          client.retweeted_by_user(user, opts)
+        end
+      else
+        statuses = collect_with_max_id do |max_id|
+          opts[:max_id] = max_id unless max_id.nil?
+          client.retweeted_by_me(opts)
+        end
       end
       statuses = statuses.select do |status|
         /#{query}/i.match(status.full_text)

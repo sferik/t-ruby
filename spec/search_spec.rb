@@ -545,6 +545,34 @@ ID                  Posted at     Screen name  Text
           should have_been_made.times(3)
       end
     end
+    context "with a user passed" do
+      before do
+        stub_get("/1/statuses/retweeted_by_user.json").
+          with(:query => {:count => "200", :screen_name => "sferik"}).
+          to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1/statuses/retweeted_by_user.json").
+          with(:query => {:count => "200", :max_id => "194546264212385792", :screen_name => "sferik"}).
+          to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should request the correct resource" do
+        @search.retweets("sferik", "twitter")
+        a_get("/1/statuses/retweeted_by_user.json").
+          with(:query => {:count => "200", :screen_name => "sferik"}).
+          should have_been_made
+        a_get("/1/statuses/retweeted_by_user.json").
+          with(:query => {:count => "200", :max_id => "194546264212385792", :screen_name => "sferik"}).
+          should have_been_made
+      end
+      it "should have the correct output" do
+        @search.retweets("sferik", "twitter")
+        $stdout.string.should == <<-eos
+\e[1m\e[33m   @bartt\e[0m
+   @noahlt @gaarf Yup, now owning @twitter -> FB from FE to daemons. Lot’s of 
+   fun. Expect improvements in the weeks to come.
+
+        eos
+      end
+    end
   end
 
   describe "#timeline" do

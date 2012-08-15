@@ -24,7 +24,19 @@ describe T::Set do
     end
     it "should have the correct output" do
       @set.active("testcli", "abc123")
-      $stdout.string.chomp.should == "Active account has been updated."
+      $stdout.string.chomp.should == "Active account has been updated to testcli."
+    end
+    it "should accept an account name without a consumer key" do
+      @set.active("testcli")
+      $stdout.string.chomp.should == "Active account has been updated to testcli."
+    end
+    it "should be case insensitive" do
+      @set.active("TestCLI")
+      $stdout.string.chomp.should == "Active account has been updated to testcli."
+    end
+    it "should find unambiguous partial matches" do
+      @set.active("TEST")
+      $stdout.string.chomp.should == "Active account has been updated to testcli."
     end
   end
 

@@ -12,13 +12,18 @@ module T
     end
 
     def [](username)
-      profiles[username]
+      profiles[username.downcase] || profiles[find(username)] || raise("Account #{username} not found.#{" Did you mean '#{find(username, 3)}'?" if find(username, 3)}")
     end
 
     def []=(username, profile)
+      username.downcase!
       profiles[username] ||= {}
       profiles[username].merge!(profile)
       write
+    end
+
+    def find(username, comparison_length=99)
+      profiles.keys.detect{|key| key.match(Regexp.new(username.downcase[0..comparison_length], "i"))}
     end
 
     def configuration

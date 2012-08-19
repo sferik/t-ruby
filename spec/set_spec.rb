@@ -20,11 +20,29 @@ describe T::Set do
 
   describe "#active" do
     before do
-      @set.options = @set.options.merge("profile" => fixture_path + "/.trc")
+      @set.options = @set.options.merge("profile" => fixture_path + "/.trc_set")
     end
     it "should have the correct output" do
       @set.active("testcli", "abc123")
-      $stdout.string.chomp.should == "Active account has been updated."
+      $stdout.string.chomp.should == "Active account has been updated to testcli."
+    end
+    it "should accept an account name without a consumer key" do
+      @set.active("testcli")
+      $stdout.string.chomp.should == "Active account has been updated to testcli."
+    end
+    it "should be case insensitive" do
+      @set.active("TestCLI", "abc123")
+      $stdout.string.chomp.should == "Active account has been updated to testcli."
+    end
+    it "should raise an error if username is ambiguous" do
+      lambda do
+        @set.active("test", "abc123")
+      end.should raise_error(ArgumentError, /Username test is ambiguous/)
+    end
+    it "should raise an error if the username is not found" do
+      lambda do
+        @set.active("clitest")
+      end.should raise_error(ArgumentError, /Username clitest is not found/)
     end
   end
 

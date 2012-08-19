@@ -12,7 +12,24 @@ module T
     end
 
     def [](username)
-      profiles[username]
+      profiles[find(username)]
+    end
+
+    def find(username)
+      possibilities = Array(find_case_insensitive_match(username) || find_case_insensitive_possibilities(username))
+      if possibilities.size == 1
+        possibilities.first
+      else
+        raise ArgumentError, "Username #{username} is #{possibilities.size < 1 ? 'not found.' : 'ambiguous, matching ' + possibilities.join(', ')}"
+      end
+    end
+
+    def find_case_insensitive_match(username)
+      profiles.keys.detect { |u| username.downcase == u.downcase }
+    end
+
+    def find_case_insensitive_possibilities(username)
+      profiles.keys.select { |u| username.downcase == u.downcase[0, username.length] }
     end
 
     def []=(username, profile)

@@ -13,9 +13,8 @@ describe T::CLI do
     Timecop.return
   end
 
-  before do
-    rcfile = RCFile.instance
-    rcfile.path = fixture_path + "/.trc"
+  before :each do
+    T::RCFile.instance.path = fixture_path + "/.trc"
     @cli = T::CLI.new
     @old_stderr = $stderr
     $stderr = StringIO.new
@@ -23,7 +22,8 @@ describe T::CLI do
     $stdout = StringIO.new
   end
 
-  after do
+  after :each do
+    T::RCFile.instance.reset
     $stderr = @old_stderr
     $stdout = @old_stdout
   end
@@ -43,7 +43,7 @@ testcli
 
   describe "#authorize" do
     before do
-      @cli.options = @cli.options.merge("profile" => project_path + "/tmp/trc", "consumer-key" => "abc123", "consumer-secret" => "asdfasd223sd2", "prompt" => true, "display-url" => true)
+      @cli.options = @cli.options.merge("profile" => project_path + "/tmp/authorize", "display-url" => true)
       stub_post("/oauth/request_token").
         to_return(:body => fixture("request_token"))
       stub_post("/oauth/access_token").
@@ -52,9 +52,15 @@ testcli
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
+      $stdout.should_receive(:print)
+      $stdin.should_receive(:gets).and_return("\n")
+      $stdout.should_receive(:print).with("Enter your consumer key: ")
+      $stdin.should_receive(:gets).and_return("abc123")
+      $stdout.should_receive(:print).with("Enter your consumer secret: ")
+      $stdin.should_receive(:gets).and_return("asdfasd223sd2")
       $stdout.should_receive(:print).with("Press [Enter] to open the Twitter app authorization page. ")
       $stdin.should_receive(:gets).and_return("\n")
-      $stdout.should_receive(:print).with("Paste in the supplied PIN: ")
+      $stdout.should_receive(:print).with("Enter the supplied PIN: ")
       $stdin.should_receive(:gets).and_return("1234567890")
       @cli.authorize
       a_post("/oauth/request_token").
@@ -66,9 +72,15 @@ testcli
     end
     it "should not raise error" do
       lambda do
+        $stdout.should_receive(:print)
+        $stdin.should_receive(:gets).and_return("\n")
+        $stdout.should_receive(:print).with("Enter your consumer key: ")
+        $stdin.should_receive(:gets).and_return("abc123")
+        $stdout.should_receive(:print).with("Enter your consumer secret: ")
+        $stdin.should_receive(:gets).and_return("asdfasd223sd2")
         $stdout.should_receive(:print).with("Press [Enter] to open the Twitter app authorization page. ")
         $stdin.should_receive(:gets).and_return("\n")
-        $stdout.should_receive(:print).with("Paste in the supplied PIN: ")
+        $stdout.should_receive(:print).with("Enter the supplied PIN: ")
         $stdin.should_receive(:gets).and_return("1234567890")
         @cli.authorize
       end.should_not raise_error
@@ -506,7 +518,7 @@ ID          Posted at     Screen name  Text
     end
     it "should have the correct output" do
       @cli.groupies
-      $stdout.string.rstrip.should == "pengwynn  sferik"
+      $stdout.string.chomp.should == "pengwynn  sferik"
     end
     context "--csv" do
       before do
@@ -515,46 +527,10 @@ ID          Posted at     Screen name  Text
       it "should output in CSV format" do
         @cli.groupies
         $stdout.string.should == <<-eos
-ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
+ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
+14100886,2008-03-08 16:34:22 +0000,2012-07-07 20:33:19 +0000,6940,192,358,3427,5457,pengwynn,Wynn Netherland ⚡
+7505382,2007-07-16 12:59:01 +0000,2012-07-08 18:29:20 +0000,7890,3755,118,212,2262,sferik,Erik Michaels-Ober
         eos
-      end
-    end
-    context "--favorites" do
-      before do
-        @cli.options = @cli.options.merge("favorites" => true)
-      end
-      it "should sort by number of favorites" do
-        @cli.groupies
-        $stdout.string.rstrip.should == "pengwynn  sferik"
-      end
-    end
-    context "--followers" do
-      before do
-        @cli.options = @cli.options.merge("followers" => true)
-      end
-      it "should sort by number of followers" do
-        @cli.groupies
-        $stdout.string.rstrip.should == "sferik    pengwynn"
-      end
-    end
-    context "--friends" do
-      before do
-        @cli.options = @cli.options.merge("friends" => true)
-      end
-      it "should sort by number of friends" do
-        @cli.groupies
-        $stdout.string.rstrip.should == "sferik    pengwynn"
-      end
-    end
-    context "--listed" do
-      before do
-        @cli.options = @cli.options.merge("listed" => true)
-      end
-      it "should sort by number of list memberships" do
-        @cli.groupies
-        $stdout.string.rstrip.should == "sferik    pengwynn"
       end
     end
     context "--long" do
@@ -564,19 +540,10 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
       it "should output in long format" do
         @cli.groupies
         $stdout.string.should == <<-eos
-ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
+ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
+14100886  Mar  8  2008  Jul  7 12:33       6940        192     358       3427...
+ 7505382  Jul 16  2007  Jul  8 10:29       7890       3755     118        212...
         eos
-      end
-    end
-    context "--posted" do
-      before do
-        @cli.options = @cli.options.merge("posted" => true)
-      end
-      it "should sort by the time when Twitter acount was created" do
-        @cli.groupies
-        $stdout.string.rstrip.should == "sferik    pengwynn"
       end
     end
     context "--reverse" do
@@ -585,16 +552,70 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
       end
       it "should reverse the order of the sort" do
         @cli.groupies
-        $stdout.string.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.should == "sferik    pengwynn"
       end
     end
-    context "--tweets" do
+    context "--sort=favorites" do
       before do
-        @cli.options = @cli.options.merge("tweets" => true)
+        @cli.options = @cli.options.merge("sort" => "favorites")
+      end
+      it "should sort by number of favorites" do
+        @cli.groupies
+        $stdout.string.chomp.should == "pengwynn  sferik"
+      end
+    end
+    context "--sort=followers" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "followers")
+      end
+      it "should sort by number of followers" do
+        @cli.groupies
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--sort=friends" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "friends")
+      end
+      it "should sort by number of friends" do
+        @cli.groupies
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--sort=listed" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "listed")
+      end
+      it "should sort by number of list memberships" do
+        @cli.groupies
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--sort=since" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "since")
+      end
+      it "should sort by the time when Twitter acount was created" do
+        @cli.groupies
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--sort=tweets" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "tweets")
       end
       it "should sort by number of Tweets" do
         @cli.groupies
-        $stdout.string.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.should == "pengwynn  sferik"
+      end
+    end
+    context "--sort=tweeted" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "tweeted")
+      end
+      it "should sort by the time of the last Tweet" do
+        @cli.groupies
+        $stdout.string.chomp.should == "pengwynn  sferik"
       end
     end
     context "--unsorted" do
@@ -603,7 +624,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
       end
       it "should not be sorted" do
         @cli.groupies
-        $stdout.string.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.should == "pengwynn  sferik"
       end
     end
     context "with a user passed" do
@@ -701,7 +722,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
     end
     it "should have the correct output" do
       @cli.does_contain("presidents")
-      $stdout.string.chomp.should == "Yes, @testcli/presidents contains @testcli."
+      $stdout.string.chomp.should == "Yes, presidents contains @testcli."
     end
     context "--id" do
       before do
@@ -726,7 +747,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
     context "with an owner passed" do
       it "should have the correct output" do
         @cli.does_contain("testcli/presidents", "testcli")
-        $stdout.string.chomp.should == "Yes, @testcli/presidents contains @testcli."
+        $stdout.string.chomp.should == "Yes, presidents contains @testcli."
       end
       context "--id" do
         before do
@@ -735,16 +756,16 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
             with(:query => {:user_id => "7505382"}).
             to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
           stub_get("/1/lists/members/show.json").
-            with(:query => {:owner_screen_name => "sferik", :screen_name => "sferik", :slug => "presidents"}).
+            with(:query => {:owner_id => "7505382", :screen_name => "sferik", :slug => "presidents"}).
             to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         end
         it "should request the correct resource" do
           @cli.does_contain("7505382/presidents", "7505382")
           a_get("/1/users/show.json").
             with(:query => {:user_id => "7505382"}).
-            should have_been_made.times(2)
+            should have_been_made
           a_get("/1/lists/members/show.json").
-            with(:query => {:owner_screen_name => "sferik", :screen_name => "sferik", :slug => "presidents"}).
+            with(:query => {:owner_id => "7505382", :screen_name => "sferik", :slug => "presidents"}).
             should have_been_made
         end
       end
@@ -752,7 +773,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
     context "with a user passed" do
       it "should have the correct output" do
         @cli.does_contain("presidents", "testcli")
-        $stdout.string.chomp.should == "Yes, @testcli/presidents contains @testcli."
+        $stdout.string.chomp.should == "Yes, presidents contains @testcli."
       end
     end
     context "false" do
@@ -1127,46 +1148,81 @@ ID                  Posted at     Screen name    Text
       @cli.options = @cli.options.merge("profile" => fixture_path + "/.trc")
     end
     context "one user" do
-      it "should request the correct resource" do
+      before do
+        stub_get("/1/friends/ids.json").
+          with(:query => {:cursor => "-1"}).
+          to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1/users/lookup.json").
+          with(:query => {:screen_name => "sferik,pengwynn"}).
+          to_return(:body => fixture("users.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         stub_post("/1/friendships/create.json").
-          with(:body => {:screen_name => "sferik"}).
+          with(:body => {:user_id => "14100886"}).
           to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        @cli.follow("sferik")
+      end
+      it "should request the correct resource" do
+        @cli.follow("sferik", "pengwynn")
+        a_get("/1/friends/ids.json").
+          with(:query => {:cursor => "-1"}).
+          should have_been_made
+        a_get("/1/users/lookup.json").
+          with(:query => {:screen_name => "sferik,pengwynn"}).
+          should have_been_made
         a_post("/1/friendships/create.json").
-          with(:body => {:screen_name => "sferik"}).
+          with(:body => {:user_id => "14100886"}).
           should have_been_made
       end
       it "should have the correct output" do
-        stub_post("/1/friendships/create.json").
-          with(:body => {:screen_name => "sferik"}).
-          to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        @cli.follow("sferik")
+        @cli.follow("sferik", "pengwynn")
         $stdout.string.should =~ /^@testcli is now following 1 more user\.$/
       end
       context "--id" do
         before do
           @cli.options = @cli.options.merge("id" => true)
+          stub_get("/1/friends/ids.json").
+            with(:query => {:cursor => "-1"}).
+            to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1/users/lookup.json").
+            with(:query => {:user_id => "7505382,14100886"}).
+            to_return(:body => fixture("users.json"), :headers => {:content_type => "application/json; charset=utf-8"})
           stub_post("/1/friendships/create.json").
-            with(:body => {:user_id => "7505382"}).
+            with(:body => {:user_id => "14100886"}).
             to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         end
         it "should request the correct resource" do
-          @cli.follow("7505382")
+          @cli.follow("7505382", "14100886")
+          a_get("/1/friends/ids.json").
+            with(:query => {:cursor => "-1"}).
+            should have_been_made
+          a_get("/1/users/lookup.json").
+            with(:query => {:user_id => "7505382,14100886"}).
+            should have_been_made
           a_post("/1/friendships/create.json").
-            with(:body => {:user_id => "7505382"}).
+            with(:body => {:user_id => "14100886"}).
             should have_been_made
         end
       end
       context "Twitter is down" do
         it "should retry 3 times and then raise an error" do
+          stub_get("/1/friends/ids.json").
+            with(:query => {:cursor => "-1"}).
+            to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1/users/lookup.json").
+            with(:query => {:screen_name => "sferik,pengwynn"}).
+            to_return(:body => fixture("users.json"), :headers => {:content_type => "application/json; charset=utf-8"})
           stub_post("/1/friendships/create.json").
-            with(:body => {:screen_name => "sferik"}).
+            with(:body => {:user_id => "14100886"}).
             to_return(:status => 502)
           lambda do
-            @cli.follow("sferik")
+            @cli.follow("sferik", "pengwynn")
           end.should raise_error("Twitter is down or being upgraded.")
+          a_get("/1/friends/ids.json").
+            with(:query => {:cursor => "-1"}).
+            should have_been_made.times(3)
+          a_get("/1/users/lookup.json").
+            with(:query => {:screen_name => "sferik,pengwynn"}).
+            should have_been_made.times(3)
           a_post("/1/friendships/create.json").
-            with(:body => {:screen_name => "sferik"}).
+            with(:body => {:user_id => "14100886"}).
             should have_been_made.times(3)
         end
       end
@@ -1193,7 +1249,7 @@ ID                  Posted at     Screen name    Text
     end
     it "should have the correct output" do
       @cli.followings
-      $stdout.string.rstrip.should == "pengwynn  sferik"
+      $stdout.string.chomp.should == "pengwynn  sferik"
     end
     context "--csv" do
       before do
@@ -1202,46 +1258,10 @@ ID                  Posted at     Screen name    Text
       it "should output in CSV format" do
         @cli.followings
         $stdout.string.should == <<-eos
-ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
+ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
+14100886,2008-03-08 16:34:22 +0000,2012-07-07 20:33:19 +0000,6940,192,358,3427,5457,pengwynn,Wynn Netherland ⚡
+7505382,2007-07-16 12:59:01 +0000,2012-07-08 18:29:20 +0000,7890,3755,118,212,2262,sferik,Erik Michaels-Ober
         eos
-      end
-    end
-    context "--favorites" do
-      before do
-        @cli.options = @cli.options.merge("favorites" => true)
-      end
-      it "should sort by number of favorites" do
-        @cli.followings
-        $stdout.string.rstrip.should == "pengwynn  sferik"
-      end
-    end
-    context "--followers" do
-      before do
-        @cli.options = @cli.options.merge("followers" => true)
-      end
-      it "should sort by number of followers" do
-        @cli.followings
-        $stdout.string.rstrip.should == "sferik    pengwynn"
-      end
-    end
-    context "--friends" do
-      before do
-        @cli.options = @cli.options.merge("friends" => true)
-      end
-      it "should sort by number of friends" do
-        @cli.followings
-        $stdout.string.rstrip.should == "sferik    pengwynn"
-      end
-    end
-    context "--listed" do
-      before do
-        @cli.options = @cli.options.merge("listed" => true)
-      end
-      it "should sort by number of list memberships" do
-        @cli.followings
-        $stdout.string.rstrip.should == "sferik    pengwynn"
       end
     end
     context "--long" do
@@ -1251,19 +1271,10 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
       it "should output in long format" do
         @cli.followings
         $stdout.string.should == <<-eos
-ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
+ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
+14100886  Mar  8  2008  Jul  7 12:33       6940        192     358       3427...
+ 7505382  Jul 16  2007  Jul  8 10:29       7890       3755     118        212...
         eos
-      end
-    end
-    context "--posted" do
-      before do
-        @cli.options = @cli.options.merge("posted" => true)
-      end
-      it "should sort by the time when Twitter acount was created" do
-        @cli.followings
-        $stdout.string.rstrip.should == "sferik    pengwynn"
       end
     end
     context "--reverse" do
@@ -1272,16 +1283,70 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
       end
       it "should reverse the order of the sort" do
         @cli.followings
-        $stdout.string.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.should == "sferik    pengwynn"
       end
     end
-    context "--tweets" do
+    context "--sort=favorites" do
       before do
-        @cli.options = @cli.options.merge("tweets" => true)
+        @cli.options = @cli.options.merge("sort" => "favorites")
+      end
+      it "should sort by number of favorites" do
+        @cli.followings
+        $stdout.string.chomp.should == "pengwynn  sferik"
+      end
+    end
+    context "--sort=followers" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "followers")
+      end
+      it "should sort by number of followers" do
+        @cli.followings
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--sort=friends" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "friends")
+      end
+      it "should sort by number of friends" do
+        @cli.followings
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--sort=listed" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "listed")
+      end
+      it "should sort by number of list memberships" do
+        @cli.followings
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--sort=since" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "since")
+      end
+      it "should sort by the time when Twitter acount was created" do
+        @cli.followings
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--sort=tweets" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "tweets")
       end
       it "should sort by number of Tweets" do
         @cli.followings
-        $stdout.string.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.should == "pengwynn  sferik"
+      end
+    end
+    context "--sort=tweeted" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "tweeted")
+      end
+      it "should sort by the time of the last Tweet" do
+        @cli.followings
+        $stdout.string.chomp.should == "pengwynn  sferik"
       end
     end
     context "--unsorted" do
@@ -1290,7 +1355,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
       end
       it "should not be sorted" do
         @cli.followings
-        $stdout.string.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.should == "pengwynn  sferik"
       end
     end
     context "with a user passed" do
@@ -1348,7 +1413,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
     end
     it "should have the correct output" do
       @cli.followers
-      $stdout.string.rstrip.should == "pengwynn  sferik"
+      $stdout.string.chomp.should == "pengwynn  sferik"
     end
     context "--csv" do
       before do
@@ -1357,46 +1422,10 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
       it "should output in CSV format" do
         @cli.followers
         $stdout.string.should == <<-eos
-ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
+ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
+14100886,2008-03-08 16:34:22 +0000,2012-07-07 20:33:19 +0000,6940,192,358,3427,5457,pengwynn,Wynn Netherland ⚡
+7505382,2007-07-16 12:59:01 +0000,2012-07-08 18:29:20 +0000,7890,3755,118,212,2262,sferik,Erik Michaels-Ober
         eos
-      end
-    end
-    context "--favorites" do
-      before do
-        @cli.options = @cli.options.merge("favorites" => true)
-      end
-      it "should sort by number of favorites" do
-        @cli.followers
-        $stdout.string.rstrip.should == "pengwynn  sferik"
-      end
-    end
-    context "--followers" do
-      before do
-        @cli.options = @cli.options.merge("followers" => true)
-      end
-      it "should sort by number of followers" do
-        @cli.followers
-        $stdout.string.rstrip.should == "sferik    pengwynn"
-      end
-    end
-    context "--friends" do
-      before do
-        @cli.options = @cli.options.merge("friends" => true)
-      end
-      it "should sort by number of friends" do
-        @cli.followers
-        $stdout.string.rstrip.should == "sferik    pengwynn"
-      end
-    end
-    context "--listed" do
-      before do
-        @cli.options = @cli.options.merge("listed" => true)
-      end
-      it "should sort by number of list memberships" do
-        @cli.followers
-        $stdout.string.rstrip.should == "sferik    pengwynn"
       end
     end
     context "--long" do
@@ -1406,19 +1435,10 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
       it "should output in long format" do
         @cli.followers
         $stdout.string.should == <<-eos
-ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
+ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
+14100886  Mar  8  2008  Jul  7 12:33       6940        192     358       3427...
+ 7505382  Jul 16  2007  Jul  8 10:29       7890       3755     118        212...
         eos
-      end
-    end
-    context "--posted" do
-      before do
-        @cli.options = @cli.options.merge("posted" => true)
-      end
-      it "should sort by the time when Twitter acount was created" do
-        @cli.followers
-        $stdout.string.rstrip.should == "sferik    pengwynn"
       end
     end
     context "--reverse" do
@@ -1427,16 +1447,70 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
       end
       it "should reverse the order of the sort" do
         @cli.followers
-        $stdout.string.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.should == "sferik    pengwynn"
       end
     end
-    context "--tweets" do
+    context "--sort=favorites" do
       before do
-        @cli.options = @cli.options.merge("tweets" => true)
+        @cli.options = @cli.options.merge("sort" => "favorites")
+      end
+      it "should sort by number of favorites" do
+        @cli.followers
+        $stdout.string.chomp.should == "pengwynn  sferik"
+      end
+    end
+    context "--sort=followers" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "followers")
+      end
+      it "should sort by number of followers" do
+        @cli.followers
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--sort=friends" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "friends")
+      end
+      it "should sort by number of friends" do
+        @cli.followers
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--sort=listed" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "listed")
+      end
+      it "should sort by number of list memberships" do
+        @cli.followers
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--sort=since" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "since")
+      end
+      it "should sort by the time when Twitter acount was created" do
+        @cli.followers
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--sort=tweets" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "tweets")
       end
       it "should sort by number of Tweets" do
         @cli.followers
-        $stdout.string.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.should == "pengwynn  sferik"
+      end
+    end
+    context "--sort=tweeted" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "tweeted")
+      end
+      it "should sort by the time of the last Tweet" do
+        @cli.followers
+        $stdout.string.chomp.should == "pengwynn  sferik"
       end
     end
     context "--unsorted" do
@@ -1445,7 +1519,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
       end
       it "should not be sorted" do
         @cli.followers
-        $stdout.string.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.should == "pengwynn  sferik"
       end
     end
     context "with a user passed" do
@@ -1512,7 +1586,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
     end
     it "should have the correct output" do
       @cli.friends
-      $stdout.string.rstrip.should == "pengwynn  sferik"
+      $stdout.string.chomp.should == "pengwynn  sferik"
     end
     context "--csv" do
       before do
@@ -1521,46 +1595,10 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
       it "should output in CSV format" do
         @cli.friends
         $stdout.string.should == <<-eos
-ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
+ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
+14100886,2008-03-08 16:34:22 +0000,2012-07-07 20:33:19 +0000,6940,192,358,3427,5457,pengwynn,Wynn Netherland ⚡
+7505382,2007-07-16 12:59:01 +0000,2012-07-08 18:29:20 +0000,7890,3755,118,212,2262,sferik,Erik Michaels-Ober
         eos
-      end
-    end
-    context "--favorites" do
-      before do
-        @cli.options = @cli.options.merge("favorites" => true)
-      end
-      it "should sort by number of favorites" do
-        @cli.friends
-        $stdout.string.rstrip.should == "pengwynn  sferik"
-      end
-    end
-    context "--followers" do
-      before do
-        @cli.options = @cli.options.merge("followers" => true)
-      end
-      it "should sort by number of followers" do
-        @cli.friends
-        $stdout.string.rstrip.should == "sferik    pengwynn"
-      end
-    end
-    context "--friends" do
-      before do
-        @cli.options = @cli.options.merge("friends" => true)
-      end
-      it "should sort by number of friends" do
-        @cli.friends
-        $stdout.string.rstrip.should == "sferik    pengwynn"
-      end
-    end
-    context "--listed" do
-      before do
-        @cli.options = @cli.options.merge("listed" => true)
-      end
-      it "should sort by number of list memberships" do
-        @cli.friends
-        $stdout.string.rstrip.should == "sferik    pengwynn"
       end
     end
     context "--long" do
@@ -1570,19 +1608,10 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
       it "should output in long format" do
         @cli.friends
         $stdout.string.should == <<-eos
-ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
+ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
+14100886  Mar  8  2008  Jul  7 12:33       6940        192     358       3427...
+ 7505382  Jul 16  2007  Jul  8 10:29       7890       3755     118        212...
         eos
-      end
-    end
-    context "--posted" do
-      before do
-        @cli.options = @cli.options.merge("posted" => true)
-      end
-      it "should sort by the time when Twitter acount was created" do
-        @cli.friends
-        $stdout.string.rstrip.should == "sferik    pengwynn"
       end
     end
     context "--reverse" do
@@ -1591,16 +1620,70 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
       end
       it "should reverse the order of the sort" do
         @cli.friends
-        $stdout.string.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.should == "sferik    pengwynn"
       end
     end
-    context "--tweets" do
+    context "--sort=favorites" do
       before do
-        @cli.options = @cli.options.merge("tweets" => true)
+        @cli.options = @cli.options.merge("sort" => "favorites")
+      end
+      it "should sort by number of favorites" do
+        @cli.friends
+        $stdout.string.chomp.should == "pengwynn  sferik"
+      end
+    end
+    context "--sort=followers" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "followers")
+      end
+      it "should sort by number of followers" do
+        @cli.friends
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--sort=friends" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "friends")
+      end
+      it "should sort by number of friends" do
+        @cli.friends
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--sort=listed" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "listed")
+      end
+      it "should sort by number of list memberships" do
+        @cli.friends
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--sort=since" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "since")
+      end
+      it "should sort by the time when Twitter acount was created" do
+        @cli.friends
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--sort=tweets" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "tweets")
       end
       it "should sort by number of Tweets" do
         @cli.friends
-        $stdout.string.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.should == "pengwynn  sferik"
+      end
+    end
+    context "--sort=tweeted" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "tweeted")
+      end
+      it "should sort by the time of the last Tweet" do
+        @cli.friends
+        $stdout.string.chomp.should == "pengwynn  sferik"
       end
     end
     context "--unsorted" do
@@ -1609,7 +1692,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
       end
       it "should not be sorted" do
         @cli.friends
-        $stdout.string.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.should == "pengwynn  sferik"
       end
     end
     context "with a user passed" do
@@ -1685,7 +1768,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
     end
     it "should have the correct output" do
       @cli.leaders
-      $stdout.string.rstrip.should == "pengwynn  sferik"
+      $stdout.string.chomp.should == "pengwynn  sferik"
     end
     context "--csv" do
       before do
@@ -1694,46 +1777,10 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
       it "should output in CSV format" do
         @cli.leaders
         $stdout.string.should == <<-eos
-ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
+ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
+14100886,2008-03-08 16:34:22 +0000,2012-07-07 20:33:19 +0000,6940,192,358,3427,5457,pengwynn,Wynn Netherland ⚡
+7505382,2007-07-16 12:59:01 +0000,2012-07-08 18:29:20 +0000,7890,3755,118,212,2262,sferik,Erik Michaels-Ober
         eos
-      end
-    end
-    context "--favorites" do
-      before do
-        @cli.options = @cli.options.merge("favorites" => true)
-      end
-      it "should sort by number of favorites" do
-        @cli.leaders
-        $stdout.string.rstrip.should == "pengwynn  sferik"
-      end
-    end
-    context "--followers" do
-      before do
-        @cli.options = @cli.options.merge("followers" => true)
-      end
-      it "should sort by number of followers" do
-        @cli.leaders
-        $stdout.string.rstrip.should == "sferik    pengwynn"
-      end
-    end
-    context "--friends" do
-      before do
-        @cli.options = @cli.options.merge("friends" => true)
-      end
-      it "should sort by number of friends" do
-        @cli.leaders
-        $stdout.string.rstrip.should == "sferik    pengwynn"
-      end
-    end
-    context "--listed" do
-      before do
-        @cli.options = @cli.options.merge("listed" => true)
-      end
-      it "should sort by number of list memberships" do
-        @cli.leaders
-        $stdout.string.rstrip.should == "sferik    pengwynn"
       end
     end
     context "--long" do
@@ -1743,19 +1790,10 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
       it "should output in long format" do
         @cli.leaders
         $stdout.string.should == <<-eos
-ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
-        eos
-      end
-    end
-    context "--posted" do
-      before do
-        @cli.options = @cli.options.merge("posted" => true)
-      end
-      it "should sort by the time when Twitter acount was created" do
-        @cli.leaders
-        $stdout.string.rstrip.should == "sferik    pengwynn"
+ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
+14100886  Mar  8  2008  Jul  7 12:33       6940        192     358       3427...
+ 7505382  Jul 16  2007  Jul  8 10:29       7890       3755     118        212...
+         eos
       end
     end
     context "--reverse" do
@@ -1764,16 +1802,70 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
       end
       it "should reverse the order of the sort" do
         @cli.leaders
-        $stdout.string.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.should == "sferik    pengwynn"
       end
     end
-    context "--tweets" do
+    context "--sort=favorites" do
       before do
-        @cli.options = @cli.options.merge("tweets" => true)
+        @cli.options = @cli.options.merge("sort" => "favorites")
+      end
+      it "should sort by number of favorites" do
+        @cli.leaders
+        $stdout.string.chomp.should == "pengwynn  sferik"
+      end
+    end
+    context "--sort=followers" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "followers")
+      end
+      it "should sort by number of followers" do
+        @cli.leaders
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--sort=friends" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "friends")
+      end
+      it "should sort by number of friends" do
+        @cli.leaders
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--sort=listed" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "listed")
+      end
+      it "should sort by number of list memberships" do
+        @cli.leaders
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--sort=since" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "since")
+      end
+      it "should sort by the time when Twitter acount was created" do
+        @cli.leaders
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--sort=tweets" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "tweets")
       end
       it "should sort by number of Tweets" do
         @cli.leaders
-        $stdout.string.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.should == "pengwynn  sferik"
+      end
+    end
+    context "--sort=tweeted" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "tweeted")
+      end
+      it "should sort by the time of the last Tweet" do
+        @cli.leaders
+        $stdout.string.chomp.should == "pengwynn  sferik"
       end
     end
     context "--unsorted" do
@@ -1782,7 +1874,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
       end
       it "should not be sorted" do
         @cli.leaders
-        $stdout.string.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.should == "pengwynn  sferik"
       end
     end
     context "with a user passed" do
@@ -1846,7 +1938,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
     end
     it "should have the correct output" do
       @cli.lists
-      $stdout.string.rstrip.should == "@sferik/code-for-america  @sferik/presidents"
+      $stdout.string.chomp.should == "@sferik/code-for-america  @sferik/presidents"
     end
     context "--csv" do
       before do
@@ -1874,49 +1966,49 @@ ID        Created at    Screen name  Slug              Members  Subscribers  ...
         eos
       end
     end
-    context "--members" do
-      before do
-        @cli.options = @cli.options.merge("members" => true)
-      end
-      it "should sort by the time when Twitter acount was created" do
-        @cli.lists
-        $stdout.string.rstrip.should == "@sferik/presidents        @sferik/code-for-america"
-      end
-    end
-    context "--mode" do
-      before do
-        @cli.options = @cli.options.merge("mode" => true)
-      end
-      it "should sort by the time when Twitter acount was created" do
-        @cli.lists
-        $stdout.string.rstrip.should == "@sferik/code-for-america  @sferik/presidents"
-      end
-    end
-    context "--posted" do
-      before do
-        @cli.options = @cli.options.merge("posted" => true)
-      end
-      it "should sort by the time when Twitter acount was created" do
-        @cli.lists
-        $stdout.string.rstrip.should == "@sferik/presidents        @sferik/code-for-america"
-      end
-    end
     context "--reverse" do
       before do
         @cli.options = @cli.options.merge("reverse" => true)
       end
       it "should reverse the order of the sort" do
         @cli.lists
-        $stdout.string.rstrip.should == "@sferik/presidents        @sferik/code-for-america"
+        $stdout.string.chomp.should == "@sferik/presidents        @sferik/code-for-america"
       end
     end
-    context "--subscribers" do
+    context "--sort=members" do
       before do
-        @cli.options = @cli.options.merge("subscribers" => true)
+        @cli.options = @cli.options.merge("sort" => "members")
       end
       it "should sort by the time when Twitter acount was created" do
         @cli.lists
-        $stdout.string.rstrip.should == "@sferik/presidents        @sferik/code-for-america"
+        $stdout.string.chomp.should == "@sferik/presidents        @sferik/code-for-america"
+      end
+    end
+    context "--sort=mode" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "mode")
+      end
+      it "should sort by the time when Twitter acount was created" do
+        @cli.lists
+        $stdout.string.chomp.should == "@sferik/code-for-america  @sferik/presidents"
+      end
+    end
+    context "--sort=posted" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "posted")
+      end
+      it "should sort by the time when Twitter acount was created" do
+        @cli.lists
+        $stdout.string.chomp.should == "@sferik/presidents        @sferik/code-for-america"
+      end
+    end
+    context "--sort=subscribers" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "subscribers")
+      end
+      it "should sort by the time when Twitter acount was created" do
+        @cli.lists
+        $stdout.string.chomp.should == "@sferik/presidents        @sferik/code-for-america"
       end
     end
     context "--unsorted" do
@@ -1925,7 +2017,7 @@ ID        Created at    Screen name  Slug              Members  Subscribers  ...
       end
       it "should not be sorted" do
         @cli.lists
-        $stdout.string.rstrip.should == "@sferik/code-for-america  @sferik/presidents"
+        $stdout.string.chomp.should == "@sferik/code-for-america  @sferik/presidents"
       end
     end
     context "with a user passed" do
@@ -2654,101 +2746,101 @@ ID,Text,Screen name,Posted at,Location,Retweets,Source,URL
     end
     context "with no street address" do
       before do
-        stub_get("/1/statuses/show/55709764298092545.json").
+        stub_get("/1/statuses/show/55709764298092550.json").
           with(:query => {:include_my_retweet => "false"}).
           to_return(:body => fixture("status_no_street_address.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should have the correct output" do
-        @cli.status("55709764298092545")
+        @cli.status("55709764298092550")
         $stdout.string.should == <<-eos
-ID           55709764298092545
+ID           55709764298092550
 Text         The problem with your code is that it's doing exactly what you told it to do.
 Screen name  @sferik
 Posted at    Apr  6  2011 (8 months ago)
 Location     Blowfish Sushi To Die For, San Francisco, California, United States
 Retweets     320
 Source       Twitter for iPhone
-URL          https://twitter.com/sferik/status/55709764298092545
+URL          https://twitter.com/sferik/status/55709764298092550
         eos
       end
     end
     context "with no locality" do
       before do
-        stub_get("/1/statuses/show/55709764298092545.json").
+        stub_get("/1/statuses/show/55709764298092549.json").
           with(:query => {:include_my_retweet => "false"}).
           to_return(:body => fixture("status_no_locality.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should have the correct output" do
-        @cli.status("55709764298092545")
+        @cli.status("55709764298092549")
         $stdout.string.should == <<-eos
-ID           55709764298092545
+ID           55709764298092549
 Text         The problem with your code is that it's doing exactly what you told it to do.
 Screen name  @sferik
 Posted at    Apr  6  2011 (8 months ago)
 Location     Blowfish Sushi To Die For, San Francisco, California, United States
 Retweets     320
 Source       Twitter for iPhone
-URL          https://twitter.com/sferik/status/55709764298092545
+URL          https://twitter.com/sferik/status/55709764298092549
         eos
       end
     end
     context "with no attributes" do
       before do
-        stub_get("/1/statuses/show/55709764298092545.json").
+        stub_get("/1/statuses/show/55709764298092546.json").
           with(:query => {:include_my_retweet => "false"}).
           to_return(:body => fixture("status_no_attributes.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should have the correct output" do
-        @cli.status("55709764298092545")
+        @cli.status("55709764298092546")
         $stdout.string.should == <<-eos
-ID           55709764298092545
+ID           55709764298092546
 Text         The problem with your code is that it's doing exactly what you told it to do.
 Screen name  @sferik
 Posted at    Apr  6  2011 (8 months ago)
 Location     Blowfish Sushi To Die For, San Francisco, United States
 Retweets     320
 Source       Twitter for iPhone
-URL          https://twitter.com/sferik/status/55709764298092545
+URL          https://twitter.com/sferik/status/55709764298092546
         eos
       end
     end
     context "with no country" do
       before do
-        stub_get("/1/statuses/show/55709764298092545.json").
+        stub_get("/1/statuses/show/55709764298092547.json").
           with(:query => {:include_my_retweet => "false"}).
           to_return(:body => fixture("status_no_country.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should have the correct output" do
-        @cli.status("55709764298092545")
+        @cli.status("55709764298092547")
         $stdout.string.should == <<-eos
-ID           55709764298092545
+ID           55709764298092547
 Text         The problem with your code is that it's doing exactly what you told it to do.
 Screen name  @sferik
 Posted at    Apr  6  2011 (8 months ago)
 Location     Blowfish Sushi To Die For, San Francisco
 Retweets     320
 Source       Twitter for iPhone
-URL          https://twitter.com/sferik/status/55709764298092545
+URL          https://twitter.com/sferik/status/55709764298092547
         eos
       end
     end
     context "with no full name" do
       before do
-        stub_get("/1/statuses/show/55709764298092545.json").
+        stub_get("/1/statuses/show/55709764298092548.json").
           with(:query => {:include_my_retweet => "false"}).
           to_return(:body => fixture("status_no_full_name.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should have the correct output" do
-        @cli.status("55709764298092545")
+        @cli.status("55709764298092548")
         $stdout.string.should == <<-eos
-ID           55709764298092545
+ID           55709764298092548
 Text         The problem with your code is that it's doing exactly what you told it to do.
 Screen name  @sferik
 Posted at    Apr  6  2011 (8 months ago)
 Location     Blowfish Sushi To Die For
 Retweets     320
 Source       Twitter for iPhone
-URL          https://twitter.com/sferik/status/55709764298092545
+URL          https://twitter.com/sferik/status/55709764298092548
         eos
       end
     end
@@ -2772,7 +2864,7 @@ URL          https://twitter.com/sferik/status/55709764298092545
     end
     it "should have the correct output" do
       @cli.suggest
-      $stdout.string.rstrip.should == "antpires     jtrupiano    maccman      mlroach      stuntmann82"
+      $stdout.string.chomp.should == "antpires     jtrupiano    maccman      mlroach      stuntmann82"
     end
     context "--csv" do
       before do
@@ -2781,49 +2873,13 @@ URL          https://twitter.com/sferik/status/55709764298092545
       it "should output in CSV format" do
         @cli.suggest
         $stdout.string.should == <<-eos
-ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
-40514587,2009-05-16 18:24:33 +0000,183,2,2,198,158,antpires,AntonioPires
-14736332,2008-05-11 19:46:06 +0000,3850,117,99,545,802,jtrupiano,John Trupiano
-2006261,2007-03-23 12:36:14 +0000,4497,9,171,967,2028,maccman,Alex MacCaw
-14451152,2008-04-20 12:05:38 +0000,6251,10,20,403,299,mlroach,Matt Laroche
-16052754,2008-08-30 08:22:57 +0000,24,0,1,5,42,stuntmann82,stuntmann82
+ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
+40514587,2009-05-16 18:24:33 +0000,2011-06-13 16:27:31 +0000,183,2,2,198,158,antpires,AntonioPires
+14736332,2008-05-11 19:46:06 +0000,2011-08-20 03:27:22 +0000,3850,117,99,545,802,jtrupiano,John Trupiano
+2006261,2007-03-23 12:36:14 +0000,2011-08-21 23:54:01 +0000,4497,9,171,967,2028,maccman,Alex MacCaw
+14451152,2008-04-20 12:05:38 +0000,2011-08-21 20:59:41 +0000,6251,10,20,403,299,mlroach,Matt Laroche
+16052754,2008-08-30 08:22:57 +0000,2009-11-25 06:20:05 +0000,24,0,1,5,42,stuntmann82,stuntmann82
         eos
-      end
-    end
-    context "--favorites" do
-      before do
-        @cli.options = @cli.options.merge("favorites" => true)
-      end
-      it "should sort by number of favorites" do
-        @cli.suggest
-        $stdout.string.rstrip.should == "stuntmann82  antpires     maccman      mlroach      jtrupiano"
-      end
-    end
-    context "--followers" do
-      before do
-        @cli.options = @cli.options.merge("followers" => true)
-      end
-      it "should sort by number of followers" do
-        @cli.suggest
-        $stdout.string.rstrip.should == "stuntmann82  antpires     mlroach      jtrupiano    maccman"
-      end
-    end
-    context "--friends" do
-      before do
-        @cli.options = @cli.options.merge("friends" => true)
-      end
-      it "should sort by number of friends" do
-        @cli.suggest
-        $stdout.string.rstrip.should == "stuntmann82  antpires     mlroach      jtrupiano    maccman"
-      end
-    end
-    context "--listed" do
-      before do
-        @cli.options = @cli.options.merge("listed" => true)
-      end
-      it "should sort by number of list memberships" do
-        @cli.suggest
-        $stdout.string.rstrip.should == "stuntmann82  antpires     mlroach      jtrupiano    maccman"
       end
     end
     context "--long" do
@@ -2833,12 +2889,12 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
       it "should output in long format" do
         @cli.suggest
         $stdout.string.should == <<-eos
-ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
-40514587  May 16  2009     183          2       2        198        158  @ant...
-14736332  May 11  2008    3850        117      99        545        802  @jtr...
- 2006261  Mar 23  2007    4497          9     171        967       2028  @mac...
-14451152  Apr 20  2008    6251         10      20        403        299  @mlr...
-16052754  Aug 30  2008      24          0       1          5         42  @stu...
+ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
+40514587  May 16  2009  Jun 13 08:27        183          2       2        198...
+14736332  May 11  2008  Aug 19 19:27       3850        117      99        545...
+ 2006261  Mar 23  2007  Aug 21 15:54       4497          9     171        967...
+14451152  Apr 20  2008  Aug 21 12:59       6251         10      20        403...
+16052754  Aug 30  2008  Nov 24  2009         24          0       1          5...
         eos
       end
     end
@@ -2856,31 +2912,76 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
           should have_been_made
       end
     end
-    context "--posted" do
-      before do
-        @cli.options = @cli.options.merge("posted" => true)
-      end
-      it "should sort by the time when Twitter acount was created" do
-        @cli.suggest
-        $stdout.string.rstrip.should == "maccman      mlroach      jtrupiano    stuntmann82  antpires"
-      end
-    end
     context "--reverse" do
       before do
         @cli.options = @cli.options.merge("reverse" => true)
       end
       it "should reverse the order of the sort" do
         @cli.suggest
-        $stdout.string.rstrip.should == "stuntmann82  mlroach      maccman      jtrupiano    antpires"
+        $stdout.string.chomp.should == "stuntmann82  mlroach      maccman      jtrupiano    antpires"
       end
     end
-    context "--tweets" do
+    context "--sort=favorites" do
       before do
-        @cli.options = @cli.options.merge("tweets" => true)
+        @cli.options = @cli.options.merge("sort" => "favorites")
+      end
+      it "should sort by number of favorites" do
+        @cli.suggest
+        $stdout.string.chomp.should == "stuntmann82  antpires     maccman      mlroach      jtrupiano"
+      end
+    end
+    context "--sort=followers" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "followers")
+      end
+      it "should sort by number of followers" do
+        @cli.suggest
+        $stdout.string.chomp.should == "stuntmann82  antpires     mlroach      jtrupiano    maccman"
+      end
+    end
+    context "--sort=friends" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "friends")
+      end
+      it "should sort by number of friends" do
+        @cli.suggest
+        $stdout.string.chomp.should == "stuntmann82  antpires     mlroach      jtrupiano    maccman"
+      end
+    end
+    context "--sort=listed" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "listed")
+      end
+      it "should sort by number of list memberships" do
+        @cli.suggest
+        $stdout.string.chomp.should == "stuntmann82  antpires     mlroach      jtrupiano    maccman"
+      end
+    end
+    context "--sort=since" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "since")
+      end
+      it "should sort by the time when Twitter acount was created" do
+        @cli.suggest
+        $stdout.string.chomp.should == "maccman      mlroach      jtrupiano    stuntmann82  antpires"
+      end
+    end
+    context "--sort=tweets" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "tweets")
       end
       it "should sort by number of Tweets" do
         @cli.suggest
-        $stdout.string.rstrip.should == "stuntmann82  antpires     jtrupiano    maccman      mlroach"
+        $stdout.string.chomp.should == "stuntmann82  antpires     jtrupiano    maccman      mlroach"
+      end
+    end
+    context "--sort=tweeted" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "tweeted")
+      end
+      it "should sort by the time of the last Tweet" do
+        @cli.suggest
+        $stdout.string.chomp.should == "stuntmann82  antpires     jtrupiano    mlroach      maccman"
       end
     end
     context "--unsorted" do
@@ -2889,7 +2990,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
       end
       it "should not be sorted" do
         @cli.suggest
-        $stdout.string.rstrip.should == "jtrupiano    mlroach      antpires     maccman      stuntmann82"
+        $stdout.string.chomp.should == "jtrupiano    mlroach      antpires     maccman      stuntmann82"
       end
     end
     context "with a user passed" do
@@ -2901,7 +3002,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
       end
       it "should have the correct output" do
         @cli.suggest("sferik")
-        $stdout.string.rstrip.should == "antpires     jtrupiano    maccman      mlroach      stuntmann82"
+        $stdout.string.chomp.should == "antpires     jtrupiano    maccman      mlroach      stuntmann82"
       end
       context "--id" do
         before do
@@ -3221,7 +3322,7 @@ ID                  Posted at     Screen name    Text
     end
     it "should have the correct output" do
       @cli.trends
-      $stdout.string.rstrip.should == "#sevenwordsaftersex  Walkman              Allen Iverson"
+      $stdout.string.chomp.should == "#sevenwordsaftersex  Walkman              Allen Iverson"
     end
     context "--exclude-hashtags" do
       before do
@@ -3238,7 +3339,7 @@ ID                  Posted at     Screen name    Text
       end
       it "should have the correct output" do
         @cli.trends
-        $stdout.string.rstrip.should == "#sevenwordsaftersex  Walkman              Allen Iverson"
+        $stdout.string.chomp.should == "#sevenwordsaftersex  Walkman              Allen Iverson"
       end
     end
     context "with a WOEID passed" do
@@ -3253,7 +3354,7 @@ ID                  Posted at     Screen name    Text
       end
       it "should have the correct output" do
         @cli.trends("2487956")
-        $stdout.string.rstrip.should == "#sevenwordsaftersex  Walkman              Allen Iverson"
+        $stdout.string.chomp.should == "#sevenwordsaftersex  Walkman              Allen Iverson"
       end
     end
   end
@@ -3270,7 +3371,7 @@ ID                  Posted at     Screen name    Text
     end
     it "should have the correct output" do
       @cli.trend_locations
-      $stdout.string.rstrip.should == "Boston         New York       San Francisco  United States  Worldwide"
+      $stdout.string.chomp.should == "Boston         New York       San Francisco  United States  Worldwide"
     end
     context "--csv" do
       before do
@@ -3278,7 +3379,7 @@ ID                  Posted at     Screen name    Text
       end
       it "should output in CSV format" do
         @cli.trend_locations
-        $stdout.string.rstrip.should == <<-eos.rstrip
+        $stdout.string.chomp.should == <<-eos.chomp
 WOEID,Parent ID,Type,Name,Country
 2367105,,Town,Boston,United States
 2459115,,Town,New York,United States
@@ -3294,13 +3395,13 @@ WOEID,Parent ID,Type,Name,Country
       end
       it "should output in long format" do
         @cli.trend_locations
-        $stdout.string.rstrip.should == <<-eos.rstrip
+        $stdout.string.chomp.should == <<-eos.chomp
 WOEID     Parent ID  Type       Name           Country
  2367105             Town       Boston         United States
  2459115             Town       New York       United States
  2487956             Town       San Francisco  United States
 23424977             Country    United States  United States
-       1             Supername  Worldwide
+       1             Supername  Worldwide      
         eos
       end
     end
@@ -3310,7 +3411,7 @@ WOEID     Parent ID  Type       Name           Country
       end
       it "should reverse the order of the sort" do
         @cli.trend_locations
-        $stdout.string.rstrip.should == "Worldwide      United States  San Francisco  New York       Boston"
+        $stdout.string.chomp.should == "Worldwide      United States  San Francisco  New York       Boston"
       end
     end
     context "--unsorted" do
@@ -3319,7 +3420,7 @@ WOEID     Parent ID  Type       Name           Country
       end
       it "should not be sorted" do
         @cli.trend_locations
-        $stdout.string.rstrip.should == "Boston         Worldwide      New York       United States  San Francisco"
+        $stdout.string.chomp.should == "Boston         Worldwide      New York       United States  San Francisco"
       end
     end
   end
@@ -3416,7 +3517,7 @@ WOEID     Parent ID  Type       Name           Country
     end
     it "should have the correct output" do
       @cli.users("sferik", "pengwynn")
-      $stdout.string.rstrip.should == "pengwynn  sferik"
+      $stdout.string.chomp.should == "pengwynn  sferik"
     end
     context "--csv" do
       before do
@@ -3425,37 +3526,59 @@ WOEID     Parent ID  Type       Name           Country
       it "should output in CSV format" do
         @cli.users("sferik", "pengwynn")
         $stdout.string.should == <<-eos
-ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
-14100886,2008-03-08 16:34:22 +0000,3913,32,185,1871,2767,pengwynn,Wynn Netherland
-7505382,2007-07-16 12:59:01 +0000,2962,727,29,88,898,sferik,Erik Michaels-Ober
+ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
+14100886,2008-03-08 16:34:22 +0000,2012-07-07 20:33:19 +0000,6940,192,358,3427,5457,pengwynn,Wynn Netherland ⚡
+7505382,2007-07-16 12:59:01 +0000,2012-07-08 18:29:20 +0000,7890,3755,118,212,2262,sferik,Erik Michaels-Ober
         eos
       end
     end
-    context "--favorites" do
+    context "--long" do
       before do
-        @cli.options = @cli.options.merge("favorites" => true)
+        @cli.options = @cli.options.merge("long" => true)
+      end
+      it "should output in long format" do
+        @cli.users("sferik", "pengwynn")
+        $stdout.string.should == <<-eos
+ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
+14100886  Mar  8  2008  Jul  7 12:33       6940        192     358       3427...
+ 7505382  Jul 16  2007  Jul  8 10:29       7890       3755     118        212...
+        eos
+      end
+    end
+    context "--reverse" do
+      before do
+        @cli.options = @cli.options.merge("reverse" => true)
+      end
+      it "should reverse the order of the sort" do
+        @cli.users("sferik", "pengwynn")
+        $stdout.string.chomp.should == "sferik    pengwynn"
+      end
+    end
+    context "--sort=favorites" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "favorites")
       end
       it "should sort by number of favorites" do
         @cli.users("sferik", "pengwynn")
-        $stdout.string.rstrip.should == "pengwynn  sferik"
+        $stdout.string.chomp.should == "pengwynn  sferik"
       end
     end
-    context "--followers" do
+    context "--sort=followers" do
       before do
-        @cli.options = @cli.options.merge("followers" => true)
+        @cli.options = @cli.options.merge("sort" => "followers")
       end
       it "should sort by number of followers" do
         @cli.users("sferik", "pengwynn")
-        $stdout.string.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.should == "sferik    pengwynn"
       end
     end
-    context "--friends" do
+    context "--sort=friends" do
       before do
-        @cli.options = @cli.options.merge("friends" => true)
+        @cli.options = @cli.options.merge("sort" => "friends")
       end
       it "should sort by number of friends" do
         @cli.users("sferik", "pengwynn")
-        $stdout.string.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.should == "sferik    pengwynn"
       end
     end
     context "--id" do
@@ -3472,53 +3595,40 @@ ID,Since,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
           should have_been_made
       end
     end
-    context "--listed" do
+    context "--sort=listed" do
       before do
-        @cli.options = @cli.options.merge("listed" => true)
+        @cli.options = @cli.options.merge("sort" => "listed")
       end
       it "should sort by number of list memberships" do
         @cli.users("sferik", "pengwynn")
-        $stdout.string.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.should == "sferik    pengwynn"
       end
     end
-    context "--long" do
+    context "--sort=since" do
       before do
-        @cli.options = @cli.options.merge("long" => true)
-      end
-      it "should output in long format" do
-        @cli.users("sferik", "pengwynn")
-        $stdout.string.should == <<-eos
-ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
-14100886  Mar  8  2008    3913         32     185       1871       2767  @pen...
- 7505382  Jul 16  2007    2962        727      29         88        898  @sfe...
-        eos
-      end
-    end
-    context "--posted" do
-      before do
-        @cli.options = @cli.options.merge("posted" => true)
+        @cli.options = @cli.options.merge("sort" => "since")
       end
       it "should sort by the time when Twitter acount was created" do
         @cli.users("sferik", "pengwynn")
-        $stdout.string.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.should == "sferik    pengwynn"
       end
     end
-    context "--reverse" do
+    context "--sort=tweets" do
       before do
-        @cli.options = @cli.options.merge("reverse" => true)
-      end
-      it "should reverse the order of the sort" do
-        @cli.users("sferik", "pengwynn")
-        $stdout.string.rstrip.should == "sferik    pengwynn"
-      end
-    end
-    context "--tweets" do
-      before do
-        @cli.options = @cli.options.merge("tweets" => true)
+        @cli.options = @cli.options.merge("sort" => "tweets")
       end
       it "should sort by number of Tweets" do
         @cli.users("sferik", "pengwynn")
-        $stdout.string.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.should == "pengwynn  sferik"
+      end
+    end
+    context "--sort=tweeted" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "tweeted")
+      end
+      it "should sort by the time of the last Tweet" do
+        @cli.users("sferik", "pengwynn")
+        $stdout.string.chomp.should == "pengwynn  sferik"
       end
     end
     context "--unsorted" do
@@ -3527,7 +3637,7 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
       end
       it "should not be sorted" do
         @cli.users("sferik", "pengwynn")
-        $stdout.string.rstrip.should == "sferik    pengwynn"
+        $stdout.string.chomp.should == "pengwynn  sferik"
       end
     end
   end
@@ -3556,16 +3666,16 @@ ID        Since         Tweets  Favorites  Listed  Following  Followers  Scre...
       $stdout.string.should == <<-eos
 ID           7505382
 Name         Erik Michaels-Ober
-Bio          A mind forever voyaging through strange seas of thought, alone.
+Bio          Vagabond.
 Location     San Francisco
 Status       Not following
-Last update  RT @tenderlove: [ANN] sqlite3-ruby => sqlite3 (10 months ago)
+Last update  @goldman You're near my home town! Say hi to Woodstock for me. (7 months ago)
 Since        Jul 16  2007 (4 years ago)
-Tweets       3,479
-Favorites    1,040
-Listed       41
-Following    197
-Followers    1,048
+Tweets       7,890
+Favorites    3,755
+Listed       118
+Following    212
+Followers    2,262
 URL          https://github.com/sferik
       eos
     end
@@ -3577,7 +3687,7 @@ URL          https://github.com/sferik
         @cli.whois("sferik")
         $stdout.string.should == <<-eos
 ID,Verified,Name,Screen name,Bio,Location,Following,Last update,Lasted updated at,Since,Tweets,Favorites,Listed,Following,Followers,URL
-7505382,false,Erik Michaels-Ober,sferik,"A mind forever voyaging through strange seas of thought, alone.",San Francisco,false,RT @tenderlove: [ANN] sqlite3-ruby => sqlite3,2011-01-16 21:38:25 +0000,2007-07-16 12:59:01 +0000,3479,1040,41,197,1048,https://github.com/sferik
+7505382,false,Erik Michaels-Ober,sferik,Vagabond.,San Francisco,false,@goldman You're near my home town! Say hi to Woodstock for me.,2012-07-08 18:29:20 +0000,2007-07-16 12:59:01 +0000,7890,3755,118,212,2262,https://github.com/sferik
         eos
       end
     end

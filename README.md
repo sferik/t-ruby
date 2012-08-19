@@ -2,7 +2,10 @@
 
 [icon]: https://github.com/sferik/t/raw/master/icon/t.png
 
-# Twitter CLI [![Build Status](https://secure.travis-ci.org/sferik/t.png?branch=master)][travis] [![Dependency Status](https://gemnasium.com/sferik/t.png?travis)][gemnasium] [![Click here to make a donation to T](http://www.pledgie.com/campaigns/17330.png)][pledgie]
+# Twitter CLI
+[![Build Status](https://secure.travis-ci.org/sferik/t.png?branch=master)][travis]
+[![Dependency Status](https://gemnasium.com/sferik/t.png?travis)][gemnasium]
+[![Click here to make a donation to T](http://www.pledgie.com/campaigns/17330.png)][pledgie]
 
 ### A command-line power tool for Twitter.
 
@@ -15,28 +18,53 @@ offers vastly more commands and capabilities than are available via SMS.
 [sms]: https://support.twitter.com/articles/14020-twitter-sms-command
 
 ## Installation
-    gem install t # Requires Ruby :)
+
+First, make sure you have Ruby installed.
+
+**On a Mac**, open `/Applications/Utilities/Terminal.app` and type:
+
+    ruby -v
+
+If the output looks something like this, you're in good shape:
+
+    ruby 1.9.3p194 (2012-04-20 revision 35410) [x86_64-darwin12.0.0]
+
+If the output looks more like this, you need to [install Ruby][ruby]:
+
+    ruby: command not found
+
+**On Windows**, you can install Ruby with [RubyInstaller][].
+
+Once you've verified that Ruby is installed:
+
+    gem install t
+
+[ruby]: http://www.ruby-lang.org/en/downloads/
+[rubyinstaller]: http://rubyinstaller.org/
 
 ## Configuration
 
-Twitter requires OAuth for most of its functionality, so you'll need to
-register a new application at <http://dev.twitter.com/apps/new>. Once you
-create your application, make sure to set your application's Access Level to
-"Read, Write and Access direct messages", otherwise you may receive an error
-that looks something like this:
+Twitter requires OAuth for most of its functionality, so you'll need a
+registered Twitter application. If you've never registered a Twitter
+application before, it's easy! Just sign-in using your Twitter account and the
+fill out the short form at <http://dev.twitter.com/apps/new>. If you've
+previously registered a Twitter application, it should be listed at
+<http://dev.twitter.com/apps>. Once you've registered an application, make sure
+to set your application's Access Level to "Read, Write and Access direct
+messages", otherwise you'll receive an error that looks like this:
 
     Read-only application cannot POST
 
-Once you've successfully registered your application, you'll be given a
-consumer key and secret, which you can use to authorize your Twitter account.
+Now, you're ready to authorize a Twitter account with your application. To
+proceed, type the following command at the prompt and follow the instructions:
 
-    t authorize -c YOUR_CONSUMER_KEY -s YOUR_CONSUMER_SECRET
+    t authorize
 
-This command directs you to a URL where you can sign-in to Twitter and then
-enter the returned PIN back into the terminal. If you type the PIN correctly,
-you should now be authorized to use `t` as that user. To authorize multiple
-accounts, simply repeat the last step, signing into Twitter as a different
-user.
+This command will direct you to a URL where you can sign-in to Twitter,
+authorize the application, and then enter the returned PIN back into the
+terminal. If you type the PIN correctly, you should now be authorized to use
+`t` as that user. To authorize multiple accounts, simply repeat the last step,
+signing into Twitter as a different user.
 
 You can see a list of all the accounts you've authorized by typing the command:
 
@@ -108,13 +136,16 @@ example, send a user a direct message only if he already follows you:
     t lists -l
 
 ### List all your friends, in long format, ordered by number of followers
-    t friends -lf
+    t friends -l --sort=followers
 
 ### List all your leaders (people you follow who don't follow you back)
-    t leaders -lf
+    t leaders -l --sort=followers
 
 ### Unfollow everyone you follow who doesn't follow you back
     t leaders | xargs t unfollow
+
+### Unfollow 10 people who haven't tweeted in the longest time
+    t followings -l --sort=tweeted | head -10 | awk '{print $1}' | xargs t unfollow
 
 ### Twitter roulette: randomly follow someone who follows you (who you don't already follow)
     t groupies | shuf | head -1 | xargs t follow
@@ -154,12 +185,12 @@ example, send a user a direct message only if he already follows you:
 
 ## Features
 * Deep search: Instead of using the Twitter Search API, [which only only goes
-  back 6-9 days][index], `t search` fetches up to 3,200 tweets via the REST API
+  back 6-9 days][search], `t search` fetches up to 3,200 tweets via the REST API
   and then checks each one against a regular expression.
-* Multithreaded: Whenever possible, Twitter API requests are made in parallel,
+* Multi-threaded: Whenever possible, Twitter API requests are made in parallel,
   resulting in faster performance for bulk operations.
 * Designed for Unix: Output is designed to be piped to other Unix utilities,
-  like grep, cut, awk, bc, wc, and xargs for advanced text processing.
+  like grep, comm, cut, awk, bc, wc, and xargs for advanced text processing.
 * Generate spreadsheets: Convert the output of any command to CSV format simply
   by adding the `--csv` flag.
 * 95% C0 Code Coverage: Well tested, with a 2.5:1 test-to-code ratio.

@@ -3,9 +3,8 @@ require 'helper'
 
 describe T::Delete do
 
-  before do
-    rcfile = RCFile.instance
-    rcfile.path = fixture_path + "/.trc"
+  before :each do
+    T::RCFile.instance.path = fixture_path + "/.trc"
     @delete = T::Delete.new
     @old_stderr = $stderr
     $stderr = StringIO.new
@@ -13,7 +12,8 @@ describe T::Delete do
     $stdout = StringIO.new
   end
 
-  after do
+  after :each do
+    T::RCFile.instance.reset
     $stderr = @old_stderr
     $stdout = @old_stdout
   end

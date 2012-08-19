@@ -1,10 +1,8 @@
 require 'thor'
+require 't/printable'
+require 't/rcfile'
 
 module T
-  autoload :CLI, 't/cli'
-  autoload :Printable, 't/printable'
-  autoload :RCFile, 't/rcfile'
-  autoload :Search, 't/search'
   class Stream < Thor
     include T::Printable
 
@@ -16,8 +14,8 @@ module T
     ]
 
     def initialize(*)
+      @rcfile = T::RCFile.instance
       super
-      @rcfile = RCFile.instance
     end
 
     desc "all", "Stream a random sample of all Tweets (Control-C to stop)"
@@ -67,6 +65,7 @@ module T
     def search(keyword, *keywords)
       keywords.unshift(keyword)
       require 'tweetstream'
+      require 't/search'
       client.on_inited do
         search = T::Search.new
         search.options = search.options.merge(options)
@@ -94,6 +93,7 @@ module T
     method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     def timeline
       require 'tweetstream'
+      require 't/cli'
       client.on_inited do
         cli = T::CLI.new
         cli.options = cli.options.merge(options)

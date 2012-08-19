@@ -2,7 +2,6 @@
 require File.expand_path("../lib/t/version", __FILE__)
 
 Gem::Specification.new do |gem|
-  gem.add_dependency 'activesupport', ['>= 2.3.11', '< 4']
   gem.add_dependency 'launchy', '~> 2.0'
   gem.add_dependency 'fastercsv', '~> 1.5'
   gem.add_dependency 'geokit', '~> 1.6'
@@ -10,10 +9,9 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'json', '~> 1.6'
   gem.add_dependency 'oauth', '~> 0.4'
   gem.add_dependency 'retryable', '~> 1.2'
-  gem.add_dependency 'thor', ['>= 0.15.2', '< 2']
-  gem.add_dependency 'tweetstream', '~> 1.1'
-  gem.add_dependency 'twitter', '~> 2.4'
-  gem.add_dependency 'twitter-text', '~> 1.4'
+  gem.add_dependency 'thor', ['>= 0.16', '< 2']
+  gem.add_dependency 'tweetstream', '~> 2.0'
+  gem.add_dependency 'twitter', '~> 3.4'
   gem.add_development_dependency 'pry'
   gem.add_development_dependency 'rake'
   gem.add_development_dependency 'rspec'

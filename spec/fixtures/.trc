@@ -11,3 +11,10 @@ profiles:
       token: 428004849-cebdct6bwobn
       username: testcli
       consumer_secret: asdfasd223sd2
+  testcli1:
+    abc123:
+      consumer_key: abc123
+      secret: epzrjvxtumoc
+      token: 428004849-cebdct6bwobn
+      username: testcli
+      consumer_secret: asdfasd223sd2

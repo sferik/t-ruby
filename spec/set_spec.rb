@@ -27,16 +27,22 @@ describe T::Set do
       $stdout.string.chomp.should == "Active account has been updated to testcli."
     end
     it "should accept an account name without a consumer key" do
-      @set.active("testcli", "abc123")
+      @set.active("testcli")
       $stdout.string.chomp.should == "Active account has been updated to testcli."
     end
     it "should be case insensitive" do
       @set.active("TestCLI", "abc123")
       $stdout.string.chomp.should == "Active account has been updated to testcli."
     end
-    it "should find matching accounts" do
-      @set.active("test", "abc123")
-      $stdout.string.chomp.should == "Active account has been updated to testcli."
+    it "should raise an error if username is ambiguous" do
+      lambda do
+        @set.active("test", "abc123")
+      end.should raise_error(ArgumentError, /Username test is ambiguous/)
+    end
+    it "should raise an error if the username is not found" do
+      lambda do
+        @set.active("clitest")
+      end.should raise_error(ArgumentError, /Username clitest is not found/)
     end
   end
 

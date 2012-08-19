@@ -20,7 +20,7 @@ describe T::Set do
 
   describe "#active" do
     before do
-      @set.options = @set.options.merge("profile" => fixture_path + "/.trc")
+      @set.options = @set.options.merge("profile" => fixture_path + "/.trc_set")
     end
     it "should have the correct output" do
       @set.active("testcli", "abc123")

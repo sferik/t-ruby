@@ -753,10 +753,15 @@ module T
 
     desc "update MESSAGE", "Post a Tweet."
     method_option "location", :aliases => "-l", :type => :boolean, :default => false
+    method_option "file", :aliases => "-f", :type => :string, :desc => "The path to an image to attach to your tweet."
     def update(message)
       opts = {:trim_user => true}
       opts.merge!(:lat => location.lat, :long => location.lng) if options['location']
-      status = client.update(message, opts)
+      status = if options['file']
+        client.update_with_media(message, File.new(File.expand_path(options['file'])), opts)
+      else
+        client.update(message, opts)
+      end
       say "Tweet posted by @#{@rcfile.active_profile[0]}."
       say
       say "Run `#{File.basename($0)} delete status #{status.id}` to delete."

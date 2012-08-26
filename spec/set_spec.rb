@@ -122,6 +122,40 @@ describe T::Set do
     end
   end
 
+  describe "#profile_background_image" do
+    before do
+      @set.options = @set.options.merge("profile" => fixture_path + "/.trc")
+      stub_post("/1/account/update_profile_background_image.json").
+        to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+    end
+    it "should request the correct resource" do
+      @set.profile_background_image(fixture_path + "/we_concept_bg2.png")
+      a_post("/1/account/update_profile_background_image.json").
+        should have_been_made
+    end
+    it "should have the correct output" do
+      @set.profile_background_image(fixture_path + "/we_concept_bg2.png")
+      $stdout.string.chomp.should == "@testcli's background image has been updated."
+    end
+  end
+
+  describe "#profile_image" do
+    before do
+      @set.options = @set.options.merge("profile" => fixture_path + "/.trc")
+      stub_post("/1/account/update_profile_image.json").
+        to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+    end
+    it "should request the correct resource" do
+      @set.profile_image(fixture_path + "/me.jpg")
+      a_post("/1/account/update_profile_image.json").
+        should have_been_made
+    end
+    it "should have the correct output" do
+      @set.profile_image(fixture_path + "/me.jpg")
+      $stdout.string.chomp.should == "@testcli's image has been updated."
+    end
+  end
+
   describe "#url" do
     before do
       @set.options = @set.options.merge("profile" => fixture_path + "/.trc")

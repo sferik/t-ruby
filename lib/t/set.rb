@@ -48,6 +48,21 @@ module T
       say "@#{@rcfile.active_profile[0]}'s name has been updated."
     end
 
+    desc "profile_background_image FILE", "Sets the background image on your Twitter profile."
+    method_option "tile", :aliases => "-t", :type => :boolean, :default => false, :desc => "Whether or not to tile the background image."
+    def profile_background_image(file)
+      client.update_profile_background_image(File.new(File.expand_path(file)), :tile => options['tile'], :skip_status => true)
+      say "@#{@rcfile.active_profile[0]}'s background image has been updated."
+    end
+    map %w(background background_image) => :profile_background_image
+
+    desc "profile_image FILE", "Sets the image on your Twitter profile."
+    def profile_image(file)
+      client.update_profile_image(File.new(File.expand_path(file)))
+      say "@#{@rcfile.active_profile[0]}'s image has been updated."
+    end
+    map %w(avatar image) => :profile_image
+
     desc "url URL", "Sets the URL field on your profile."
     def url(url)
       client.update_profile(:url => url)

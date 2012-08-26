@@ -3511,6 +3511,22 @@ WOEID     Parent ID  Type       Name           Country
       @cli.update("Testing")
       $stdout.string.split("\n").first.should == "Tweet posted by @testcli."
     end
+    context "with file" do
+      before do
+        @cli.options = @cli.options.merge("file" => fixture_path + "/long.png")
+        stub_post("/1/statuses/update_with_media.json", "https://upload.twitter.com").
+          to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should request the correct resource" do
+        @cli.update("Testing")
+        a_post("/1/statuses/update_with_media.json", "https://upload.twitter.com").
+          should have_been_made
+      end
+      it "should have the correct output" do
+        @cli.update("Testing")
+        $stdout.string.split("\n").first.should == "Tweet posted by @testcli."
+      end
+    end
   end
 
   describe "#users" do

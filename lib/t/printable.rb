@@ -124,6 +124,18 @@ module T
       say
     end
 
+    def print_message_and_status_id(from_user, message, status_id)
+      if STDOUT.tty? && !options['no-color']
+        say("   @#{from_user} ", [:bold, :yellow])
+        say("#{status_id}", [:yellow])
+      else
+        say("   @#{from_user} #{status_id}")
+      end
+      require 'htmlentities'
+      print_wrapped(HTMLEntities.new.decode(message), :indent => 3)
+      say
+    end
+
     def print_statuses(statuses)
       statuses.reverse! if options['reverse']
       if options['csv']
@@ -139,6 +151,10 @@ module T
         end
         format = options['format'] || STATUS_HEADINGS.size.times.map{"%s"}
         print_table_with_headings(array, STATUS_HEADINGS, format)
+      elsif options['status']
+        statuses.each do |status|
+          print_message_and_status_id(status.user.screen_name, status.full_text, status.id)
+        end
       else
         statuses.each do |status|
           print_message(status.user.screen_name, status.full_text)

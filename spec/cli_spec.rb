@@ -2357,7 +2357,7 @@ Hourly limit,Remaining hits,Reset time
       stub_request(:get, "http://checkip.dyndns.org/").
         to_return(:body => fixture("checkip.html"), :headers => {:content_type => "text/html"})
       stub_request(:get, "http://www.geoplugin.net/xml.gp?ip=50.131.22.169").
-        to_return(:body => fixture("xml.gp"), :headers => {:content_type => "application/xml"})
+        to_return(:body => fixture("geoplugin.xml"), :headers => {:content_type => "application/xml"})
     end
     it "should request the correct resource" do
       @cli.reply("55709764298092545", "Testing")
@@ -3495,7 +3495,7 @@ WOEID     Parent ID  Type       Name           Country
       stub_request(:get, "http://checkip.dyndns.org/").
         to_return(:body => fixture("checkip.html"), :headers => {:content_type => "text/html"})
       stub_request(:get, "http://www.geoplugin.net/xml.gp?ip=50.131.22.169").
-        to_return(:body => fixture("xml.gp"), :headers => {:content_type => "application/xml"})
+        to_return(:body => fixture("geoplugin.xml"), :headers => {:content_type => "application/xml"})
     end
     it "should request the correct resource" do
       @cli.update("Testing")

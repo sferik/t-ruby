@@ -2705,6 +2705,16 @@ ID                  Posted at     Screen name    Text
       $stdout.string.chomp.size.should == 140
       $stdout.string.chomp.should == "----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|"
     end
+    context "with indentation" do
+      before do
+        @cli.options = @cli.options.merge("indent" => 2)
+      end
+      it "should have the correct output" do
+        @cli.ruler
+        $stdout.string.chomp.size.should == 142
+        $stdout.string.chomp.should == "  ----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|"
+      end
+    end
   end
 
   describe "#status" do

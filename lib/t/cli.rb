@@ -608,8 +608,9 @@ module T
     map %w(rts) => :retweets
 
     desc "ruler", "Prints a 140-character ruler"
+    method_option "indent", :aliases => "-i", :type => :numeric, :default => 0, :desc => "The number of space to print before the ruler."
     def ruler
-      say "----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|"
+      say "#{' ' * options['indent'].to_i}----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|"
     end
 
     desc "status STATUS_ID", "Retrieves detailed information about a Tweet."

@@ -716,10 +716,22 @@ module T
     method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     method_option "reverse", :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
+    method_option "sort", :aliases => "-s", :type => :string, :enum => %w(country name parent type woeid), :default => "name", :desc => "Specify the order of the results.", :banner => "ORDER"
     method_option "unsorted", :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
     def trend_locations
       places = client.trend_locations
-      places = places.sort_by{|places| places.name.downcase} unless options['unsorted']
+      places = case options['sort']
+      when 'country'
+        places.sort_by{|places| places.country.downcase}
+      when 'parent'
+        places.sort_by{|places| places.parent_id.to_i}
+      when 'type'
+        places.sort_by{|places| places.place_type.downcase}
+      when 'woeid'
+        places.sort_by{|places| places.woeid.to_i}
+      else
+        places.sort_by{|places| places.name.downcase}
+      end unless options['unsorted']
       places.reverse! if options['reverse']
       if options['csv']
         require 'csv'

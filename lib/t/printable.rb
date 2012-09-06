@@ -149,17 +149,17 @@ module T
     def print_users(users)
       users = case options['sort']
       when 'favorites'
-        users.sort_by{|user| user.favourites_count}
+        users.sort_by{|user| user.favourites_count.to_i}
       when 'followers'
-        users.sort_by{|user| user.followers_count}
+        users.sort_by{|user| user.followers_count.to_i}
       when 'friends'
-        users.sort_by{|user| user.friends_count}
+        users.sort_by{|user| user.friends_count.to_i}
       when 'listed'
-        users.sort_by{|user| user.listed_count}
+        users.sort_by{|user| user.listed_count.to_i}
       when 'since'
         users.sort_by{|user| user.created_at}
       when 'tweets'
-        users.sort_by{|user| user.statuses_count}
+        users.sort_by{|user| user.statuses_count.to_i}
       when 'tweeted'
         users.sort_by{|user| user.status.created_at rescue Time.at(0)}
       else

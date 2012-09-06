@@ -3424,6 +3424,42 @@ WOEID     Parent ID  Type       Name           Country
         $stdout.string.chomp.should == "Worldwide      United States  San Francisco  New York       Boston"
       end
     end
+    context "--sort=country" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "country")
+      end
+      it "should sort by number of favorites" do
+        @cli.trend_locations
+        $stdout.string.chomp.should == "Worldwide      New York       Boston         United States  San Francisco"
+      end
+    end
+    context "--sort=parent" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "parent")
+      end
+      it "should sort by number of favorites" do
+        @cli.trend_locations
+        $stdout.string.chomp.should == "Boston         Worldwide      New York       United States  San Francisco"
+      end
+    end
+    context "--sort=type" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "type")
+      end
+      it "should sort by number of favorites" do
+        @cli.trend_locations
+        $stdout.string.chomp.should == "United States  Worldwide      New York       Boston         San Francisco"
+      end
+    end
+    context "--sort=woeid" do
+      before do
+        @cli.options = @cli.options.merge("sort" => "woeid")
+      end
+      it "should sort by number of favorites" do
+        @cli.trend_locations
+        $stdout.string.chomp.should == "Worldwide      Boston         New York       San Francisco  United States"
+      end
+    end
     context "--unsorted" do
       before do
         @cli.options = @cli.options.merge("unsorted" => true)

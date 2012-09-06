@@ -712,7 +712,7 @@ module T
       print_attribute(trends, :name)
     end
 
-    desc "trends_locations", "Returns the locations for which Twitter has trending topic information."
+    desc "trend_locations", "Returns the locations for which Twitter has trending topic information."
     method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     method_option "reverse", :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."

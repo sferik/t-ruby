@@ -29,28 +29,28 @@ module T
     method_option "number", :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS
     def all(query)
       rpp = options['number'] || DEFAULT_NUM_RESULTS
-      statuses = collect_with_rpp(rpp) do |opts|
+      tweets = collect_with_rpp(rpp) do |opts|
         client.search(query, opts).results
       end
-      statuses.reverse! if options['reverse']
+      tweets.reverse! if options['reverse']
       require 'htmlentities'
       if options['csv']
         require 'csv'
         require 'fastercsv' unless Array.new.respond_to?(:to_csv)
-        say STATUS_HEADINGS.to_csv unless statuses.empty?
-        statuses.each do |status|
-          say [status.id, csv_formatted_time(status), status.from_user, HTMLEntities.new.decode(status.full_text)].to_csv
+        say STATUS_HEADINGS.to_csv unless tweets.empty?
+        tweets.each do |tweet|
+          say [tweet.id, csv_formatted_time(tweet), tweet.from_user, HTMLEntities.new.decode(tweet.full_text)].to_csv
         end
       elsif options['long']
-        array = statuses.map do |status|
-          [status.id, ls_formatted_time(status), "@#{status.from_user}", HTMLEntities.new.decode(status.full_text).gsub(/\n+/, ' ')]
+        array = tweets.map do |tweet|
+          [tweet.id, ls_formatted_time(tweet), "@#{tweet.from_user}", HTMLEntities.new.decode(tweet.full_text).gsub(/\n+/, ' ')]
         end
         format = options['format'] || STATUS_HEADINGS.size.times.map{"%s"}
         print_table_with_headings(array, STATUS_HEADINGS, format)
       else
-        say unless statuses.empty?
-        statuses.each do |status|
-          print_message(status.from_user, status.full_text)
+        say unless tweets.empty?
+        tweets.each do |tweet|
+          print_message(tweet.from_user, tweet.full_text)
         end
       end
     end
@@ -70,20 +70,20 @@ module T
         else
           user.strip_ats
         end
-        statuses = collect_with_max_id do |max_id|
+        tweets = collect_with_max_id do |max_id|
           opts[:max_id] = max_id unless max_id.nil?
           client.favorites(user, opts)
         end
       else
-        statuses = collect_with_max_id do |max_id|
+        tweets = collect_with_max_id do |max_id|
           opts[:max_id] = max_id unless max_id.nil?
           client.favorites(opts)
         end
       end
-      statuses = statuses.select do |status|
-        /#{query}/i.match(status.full_text)
+      tweets = tweets.select do |tweet|
+        /#{query}/i.match(tweet.full_text)
       end
-      print_statuses(statuses)
+      print_tweets(tweets)
     end
     map %w(faves) => :favorites
 
@@ -94,14 +94,14 @@ module T
     def list(list, query)
       owner, list = extract_owner(list, options)
       opts = {:count => MAX_NUM_RESULTS}
-      statuses = collect_with_max_id do |max_id|
+      tweets = collect_with_max_id do |max_id|
         opts[:max_id] = max_id unless max_id.nil?
         client.list_timeline(owner, list, opts)
       end
-      statuses = statuses.select do |status|
-        /#{query}/i.match(status.full_text)
+      tweets = tweets.select do |tweet|
+        /#{query}/i.match(tweet.full_text)
       end
-      print_statuses(statuses)
+      print_tweets(tweets)
     end
 
     desc "mentions QUERY", "Returns Tweets mentioning you that match the specified query."
@@ -109,14 +109,14 @@ module T
     method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     def mentions(query)
       opts = {:count => MAX_NUM_RESULTS}
-      statuses = collect_with_max_id do |max_id|
+      tweets = collect_with_max_id do |max_id|
         opts[:max_id] = max_id unless max_id.nil?
         client.mentions(opts)
       end
-      statuses = statuses.select do |status|
-        /#{query}/i.match(status.full_text)
+      tweets = tweets.select do |tweet|
+        /#{query}/i.match(tweet.full_text)
       end
-      print_statuses(statuses)
+      print_tweets(tweets)
     end
     map %w(replies) => :mentions
 
@@ -135,20 +135,20 @@ module T
         else
           user.strip_ats
         end
-        statuses = collect_with_max_id do |max_id|
+        tweets = collect_with_max_id do |max_id|
           opts[:max_id] = max_id unless max_id.nil?
           client.retweeted_by_user(user, opts)
         end
       else
-        statuses = collect_with_max_id do |max_id|
+        tweets = collect_with_max_id do |max_id|
           opts[:max_id] = max_id unless max_id.nil?
           client.retweeted_by_me(opts)
         end
       end
-      statuses = statuses.select do |status|
-        /#{query}/i.match(status.full_text)
+      tweets = tweets.select do |tweet|
+        /#{query}/i.match(tweet.full_text)
       end
-      print_statuses(statuses)
+      print_tweets(tweets)
     end
     map %w(rts) => :retweets
 
@@ -167,20 +167,20 @@ module T
         else
           user.strip_ats
         end
-        statuses = collect_with_max_id do |max_id|
+        tweets = collect_with_max_id do |max_id|
           opts[:max_id] = max_id unless max_id.nil?
           client.user_timeline(user, opts)
         end
       else
-        statuses = collect_with_max_id do |max_id|
+        tweets = collect_with_max_id do |max_id|
           opts[:max_id] = max_id unless max_id.nil?
           client.home_timeline(opts)
         end
       end
-      statuses = statuses.select do |status|
-        /#{query}/i.match(status.full_text)
+      tweets = tweets.select do |tweet|
+        /#{query}/i.match(tweet.full_text)
       end
-      print_statuses(statuses)
+      print_tweets(tweets)
     end
     map %w(tl) => :timeline
 

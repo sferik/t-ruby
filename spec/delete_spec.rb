@@ -255,7 +255,7 @@ describe T::Delete do
         $stdout.should_receive(:print).with("Are you sure you want to permanently delete @sferik's status: \"The problem with your code is that it's doing exactly what you told it to do.\"? [y/N] ")
         $stdin.should_receive(:gets).and_return("yes")
         @delete.status("26755176471724032")
-        $stdout.string.chomp.should == "@testcli deleted the status: \"The problem with your code is that it's doing exactly what you told it to do.\""
+        $stdout.string.chomp.should == "@testcli deleted the Tweet: \"The problem with your code is that it's doing exactly what you told it to do.\""
       end
     end
     context "no" do
@@ -278,7 +278,7 @@ describe T::Delete do
       end
       it "should have the correct output" do
         @delete.status("26755176471724032")
-        $stdout.string.chomp.should == "@testcli deleted the status: \"The problem with your code is that it's doing exactly what you told it to do.\""
+        $stdout.string.chomp.should == "@testcli deleted the Tweet: \"The problem with your code is that it's doing exactly what you told it to do.\""
       end
     end
   end

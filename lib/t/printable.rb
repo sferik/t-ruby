@@ -11,9 +11,9 @@ module T
       [list.id, ls_formatted_time(list), "@#{list.user.screen_name}", list.slug, list.member_count, list.subscriber_count, list.mode, list.description]
     end
 
-    def build_long_status(status)
+    def build_long_tweet(tweet)
       require 'htmlentities'
-      [status.id, ls_formatted_time(status), "@#{status.from_user}", HTMLEntities.new.decode(status.full_text).gsub(/\n+/, ' ')]
+      [tweet.id, ls_formatted_time(tweet), "@#{tweet.from_user}", HTMLEntities.new.decode(tweet.full_text).gsub(/\n+/, ' ')]
     end
 
     def build_long_user(user)
@@ -42,11 +42,11 @@ module T
       say [list.id, csv_formatted_time(list), list.user.screen_name, list.slug, list.member_count, list.subscriber_count, list.mode, list.description].to_csv
     end
 
-    def print_csv_status(status)
+    def print_csv_tweet(tweet)
       require 'csv'
       require 'fastercsv' unless Array.new.respond_to?(:to_csv)
       require 'htmlentities'
-      say [status.id, csv_formatted_time(status), status.from_user, HTMLEntities.new.decode(status.full_text)].to_csv
+      say [tweet.id, csv_formatted_time(tweet), tweet.from_user, HTMLEntities.new.decode(tweet.full_text)].to_csv
     end
 
     def print_csv_user(user)
@@ -124,24 +124,24 @@ module T
       say
     end
 
-    def print_statuses(statuses)
-      statuses.reverse! if options['reverse']
+    def print_tweets(tweets)
+      tweets.reverse! if options['reverse']
       if options['csv']
         require 'csv'
         require 'fastercsv' unless Array.new.respond_to?(:to_csv)
-        say STATUS_HEADINGS.to_csv unless statuses.empty?
-        statuses.each do |status|
-          print_csv_status(status)
+        say STATUS_HEADINGS.to_csv unless tweets.empty?
+        tweets.each do |tweet|
+          print_csv_tweet(tweet)
         end
       elsif options['long']
-        array = statuses.map do |status|
-          build_long_status(status)
+        array = tweets.map do |tweet|
+          build_long_tweet(tweet)
         end
         format = options['format'] || STATUS_HEADINGS.size.times.map{"%s"}
         print_table_with_headings(array, STATUS_HEADINGS, format)
       else
-        statuses.each do |status|
-          print_message(status.user.screen_name, status.full_text)
+        tweets.each do |tweet|
+          print_message(tweet.user.screen_name, tweet.full_text)
         end
       end
     end

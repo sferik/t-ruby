@@ -319,10 +319,10 @@ module T
         end
       end
       count = options['number'] || DEFAULT_NUM_RESULTS
-      statuses = collect_with_count(count) do |opts|
+      tweets = collect_with_count(count) do |opts|
         client.favorites(user, opts)
       end
-      print_statuses(statuses)
+      print_tweets(tweets)
     end
     map %w(faves favourites) => :favorites
 
@@ -491,10 +491,10 @@ module T
     method_option "reverse", :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     def mentions
       count = options['number'] || DEFAULT_NUM_RESULTS
-      statuses = collect_with_count(count) do |opts|
+      tweets = collect_with_count(count) do |opts|
         client.mentions(opts)
       end
-      print_statuses(statuses)
+      print_tweets(tweets)
     end
     map %w(replies) => :mentions
 
@@ -588,7 +588,7 @@ module T
     method_option "reverse", :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     def retweets(user=nil)
       count = options['number'] || DEFAULT_NUM_RESULTS
-      statuses = if user
+      tweets = if user
         require 't/core_ext/string'
         user = if options['id']
           user.to_i
@@ -603,7 +603,7 @@ module T
           client.retweeted_by_me(opts)
         end
       end
-      print_statuses(statuses)
+      print_tweets(tweets)
     end
     map %w(rts) => :retweets
 
@@ -691,15 +691,15 @@ module T
         else
           user.strip_ats
         end
-        statuses = collect_with_count(count) do |opts|
+        tweets = collect_with_count(count) do |opts|
           client.user_timeline(user, opts)
         end
       else
-        statuses = collect_with_count(count) do |opts|
+        tweets = collect_with_count(count) do |opts|
           client.home_timeline(opts)
         end
       end
-      print_statuses(statuses)
+      print_tweets(tweets)
     end
     map %w(tl) => :timeline
 

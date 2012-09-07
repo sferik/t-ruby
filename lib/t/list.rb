@@ -116,10 +116,10 @@ module T
     def timeline(list)
       owner, list = extract_owner(list, options)
       per_page = options['number'] || DEFAULT_NUM_RESULTS
-      statuses = collect_with_per_page(per_page) do |opts|
+      tweets = collect_with_per_page(per_page) do |opts|
         client.list_timeline(owner, list, opts)
       end
-      print_statuses(statuses)
+      print_tweets(tweets)
     end
     map %w(tl) => :timeline
 

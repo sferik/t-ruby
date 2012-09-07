@@ -58,8 +58,8 @@ module T
       require 't/core_ext/string'
       status_ids.map!(&:to_i)
       if options['force']
-        statuses = client.unfavorite(status_ids)
-        statuses.each do |status|
+        tweets = client.unfavorite(status_ids)
+        tweets.each do |status|
           say "@#{@rcfile.active_profile[0]} unfavorited @#{status.from_user}'s status: \"#{status.full_text}\""
         end
       else
@@ -96,16 +96,16 @@ module T
       require 't/core_ext/string'
       status_ids.map!(&:to_i)
       if options['force']
-        statuses = client.status_destroy(status_ids, :trim_user => true)
-        statuses.each do |status|
-          say "@#{@rcfile.active_profile[0]} deleted the status: \"#{status.full_text}\""
+        tweets = client.status_destroy(status_ids, :trim_user => true)
+        tweets.each do |status|
+          say "@#{@rcfile.active_profile[0]} deleted the Tweet: \"#{status.full_text}\""
         end
       else
         status_ids.each do |status_id|
           status = client.status(status_id, :include_my_retweet => false, :trim_user => true)
           return unless yes? "Are you sure you want to permanently delete @#{status.from_user}'s status: \"#{status.full_text}\"? [y/N]"
           client.status_destroy(status_id, :trim_user => true)
-          say "@#{@rcfile.active_profile[0]} deleted the status: \"#{status.full_text}\""
+          say "@#{@rcfile.active_profile[0]} deleted the Tweet: \"#{status.full_text}\""
         end
       end
     end

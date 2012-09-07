@@ -35,16 +35,16 @@ module T
           print_table([headings])
         end
       end
-      client.on_timeline_status do |status|
+      client.on_timeline_status do |tweet|
         if options['csv']
-          print_csv_status(status)
+          print_csv_tweet(tweet)
         elsif options['long']
-          array = build_long_status(status).each_with_index.map do |element, index|
+          array = build_long_tweet(tweet).each_with_index.map do |element, index|
             STATUS_HEADINGS_FORMATTING[index] % element
           end
           print_table([array], :truncate => STDOUT.tty?)
         else
-          print_message(status.user.screen_name, status.text)
+          print_message(tweet.user.screen_name, tweet.text)
         end
       end
       client.sample
@@ -53,8 +53,8 @@ module T
     desc "matrix", "Unfortunately, no one can be told what the Matrix is. You have to see it for yourself."
     def matrix
       require 'tweetstream'
-      client.on_timeline_status do |status|
-        say(status.full_text.gsub("\n", ''), [:bold, :green, :on_black])
+      client.on_timeline_status do |tweet|
+        say(tweet.full_text.gsub("\n", ''), [:bold, :green, :on_black])
       end
       client.sample
     end
@@ -73,16 +73,16 @@ module T
         search.options = search.options.merge(:format => STATUS_HEADINGS_FORMATTING)
         search.all(keywords.join(' OR '))
       end
-      client.on_timeline_status do |status|
+      client.on_timeline_status do |tweet|
         if options['csv']
-          print_csv_status(status)
+          print_csv_tweet(tweet)
         elsif options['long']
-          array = build_long_status(status).each_with_index.map do |element, index|
+          array = build_long_tweet(tweet).each_with_index.map do |element, index|
             STATUS_HEADINGS_FORMATTING[index] % element
           end
           print_table([array], :truncate => STDOUT.tty?)
         else
-          print_message(status.user.screen_name, status.text)
+          print_message(tweet.user.screen_name, tweet.text)
         end
       end
       client.track(keywords)
@@ -101,16 +101,16 @@ module T
         cli.options = cli.options.merge(:format => STATUS_HEADINGS_FORMATTING)
         cli.timeline
       end
-      client.on_timeline_status do |status|
+      client.on_timeline_status do |tweet|
         if options['csv']
-          print_csv_status(status)
+          print_csv_tweet(tweet)
         elsif options['long']
-          array = build_long_status(status).each_with_index.map do |element, index|
+          array = build_long_tweet(tweet).each_with_index.map do |element, index|
             STATUS_HEADINGS_FORMATTING[index] % element
           end
           print_table([array], :truncate => STDOUT.tty?)
         else
-          print_message(status.user.screen_name, status.text)
+          print_message(tweet.user.screen_name, tweet.text)
         end
       end
       client.userstream
@@ -135,16 +135,16 @@ module T
           print_table([headings])
         end
       end
-      client.on_timeline_status do |status|
+      client.on_timeline_status do |tweet|
         if options['csv']
-          print_csv_status(status)
+          print_csv_tweet(tweet)
         elsif options['long']
-          array = build_long_status(status).each_with_index.map do |element, index|
+          array = build_long_tweet(tweet).each_with_index.map do |element, index|
             STATUS_HEADINGS_FORMATTING[index] % element
           end
           print_table([array], :truncate => STDOUT.tty?)
         else
-          print_message(status.user.screen_name, status.text)
+          print_message(tweet.user.screen_name, tweet.text)
         end
       end
       client.follow(user_ids)

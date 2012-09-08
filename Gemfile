@@ -8,4 +8,6 @@ platforms :mri do
   gem 'ruby-prof'
 end
 
+gem 'twitter', :github => 'sferik/twitter'
+
 gemspec

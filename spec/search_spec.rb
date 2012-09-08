@@ -30,13 +30,13 @@ describe T::Search do
 
   describe "#all" do
     before do
-      stub_request(:get, "https://search.twitter.com/search.json").
+      stub_get("/1.1/search/tweets.json").
         with(:query => {:q => "twitter", :rpp => "20"}).
         to_return(:body => fixture("search.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @search.all("twitter")
-      a_request(:get, "https://search.twitter.com/search.json").
+      a_get("/1.1/search/tweets.json").
         with(:query => {:q => "twitter", :rpp => "20"}).
         should have_been_made
     end
@@ -187,17 +187,17 @@ ID                  Posted at     Screen name       Text
     end
     context "--number" do
       before do
-        stub_request(:get, "https://search.twitter.com/search.json").
+        stub_get("/1.1/search/tweets.json").
           with(:query => {:q => "twitter", :rpp => "1"}).
           to_return(:body => fixture("search.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_request(:get, "https://search.twitter.com/search.json").
+        stub_get("/1.1/search/tweets.json").
           with(:query => {:q => "twitter", :rpp => "200"}).
           to_return(:body => fixture("search.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_request(:get, "https://search.twitter.com/search.json").
+        stub_get("/1.1/search/tweets.json").
           with(:query => {:q => "twitter", :rpp => "200", :max_id => "194521261307727871"}).
           to_return(:body => fixture("search.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         (5..185).step(20).to_a.reverse.each do |count|
-          stub_request(:get, "https://search.twitter.com/search.json").
+          stub_get("/1.1/search/tweets.json").
             with(:query => {:q => "twitter", :rpp => count, :max_id => "194521261307727871"}).
             to_return(:body => fixture("search.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         end
@@ -205,21 +205,21 @@ ID                  Posted at     Screen name       Text
       it "should limit the number of results to 1" do
         @search.options = @search.options.merge("number" => 1)
         @search.all("twitter")
-        a_request(:get, "https://search.twitter.com/search.json").
+        a_get("/1.1/search/tweets.json").
           with(:query => {:q => "twitter", :rpp => "1"}).
           should have_been_made
       end
       it "should limit the number of results to 345" do
         @search.options = @search.options.merge("number" => 345)
         @search.all("twitter")
-        a_request(:get, "https://search.twitter.com/search.json").
+        a_get("/1.1/search/tweets.json").
           with(:query => {:q => "twitter", :rpp => "200"}).
           should have_been_made
-        a_request(:get, "https://search.twitter.com/search.json").
+        a_get("/1.1/search/tweets.json").
           with(:query => {:q => "twitter", :rpp => "200", :max_id => "194521261307727871"}).
           should have_been_made.times(7)
         (5..185).step(20).to_a.reverse.each do |count|
-          a_request(:get, "https://search.twitter.com/search.json").
+          a_get("/1.1/search/tweets.json").
             with(:query => {:q => "twitter", :rpp => count, :max_id => "194521261307727871"}).
             should have_been_made
         end
@@ -229,28 +229,31 @@ ID                  Posted at     Screen name       Text
 
   describe "#favorites" do
     before do
-      stub_get("/1/favorites.json").
+      stub_get("/1.1/favorites/list.json").
         with(:query => {:count => "200"}).
         to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_get("/1/favorites.json").
-        with(:query => {:count => "200", :max_id => "194546264212385792"}).
+      stub_get("/1.1/favorites/list.json").
+        with(:query => {:count => "200", :max_id => "244099460672679937"}).
         to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @search.favorites("twitter")
-      a_get("/1/favorites.json").
+      a_get("/1.1/favorites/list.json").
         with(:query => {:count => "200"}).
         should have_been_made
-      a_get("/1/favorites.json").
-        with(:query => {:count => "200", :max_id => "194546264212385792"}).
+      a_get("/1.1/favorites/list.json").
+        with(:query => {:count => "200", :max_id => "244099460672679937"}).
         should have_been_made
     end
     it "should have the correct output" do
       @search.favorites("twitter")
       $stdout.string.should == <<-eos
-\e[1m\e[33m   @bartt\e[0m
-   @noahlt @gaarf Yup, now owning @twitter -> FB from FE to daemons. Lot’s of 
-   fun. Expect improvements in the weeks to come.
+\e[1m\e[33m   @sferik\e[0m
+   @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem 
+   to be missing "1.1" from the URL.
+
+\e[1m\e[33m   @sferik\e[0m
+   @episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
 
       eos
     end
@@ -262,7 +265,8 @@ ID                  Posted at     Screen name       Text
         @search.favorites("twitter")
         $stdout.string.should == <<-eos
 ID,Posted at,Screen name,Text
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -> FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
+244102209942458368,2012-09-07 15:57:56 +0000,sferik,"@episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem to be missing ""1.1"" from the URL."
+244100411563339777,2012-09-07 15:50:47 +0000,sferik,@episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
         eos
       end
     end
@@ -274,47 +278,51 @@ ID,Posted at,Screen name,Text
         @search.favorites("twitter")
         $stdout.string.should == <<-eos
 ID                  Posted at     Screen name  Text
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
+244102209942458368  Sep  7 07:57  @sferik      @episod @twitterapi now https:...
+244100411563339777  Sep  7 07:50  @sferik      @episod @twitterapi Did you ca...
         eos
       end
     end
     context "Twitter is down" do
       it "should retry 3 times and then raise an error" do
-        stub_get("/1/favorites.json").
+        stub_get("/1.1/favorites/list.json").
           with(:query => {:count => "200"}).
           to_return(:status => 502)
         lambda do
           @search.favorites("twitter")
         end.should raise_error("Twitter is down or being upgraded.")
-        a_get("/1/favorites.json").
+        a_get("/1.1/favorites/list.json").
           with(:query => {:count => "200"}).
           should have_been_made.times(3)
       end
     end
     context "with a user passed" do
       before do
-        stub_get("/1/favorites/sferik.json").
-          with(:query => {:count => "200"}).
+        stub_get("/1.1/favorites/list.json").
+          with(:query => {:count => "200", :screen_name => "sferik"}).
           to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1/favorites/sferik.json").
-          with(:query => {:count => "200", :max_id => "194546264212385792"}).
+        stub_get("/1.1/favorites/list.json").
+          with(:query => {:count => "200", :max_id => "244099460672679937", :screen_name => "sferik"}).
           to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should request the correct resource" do
         @search.favorites("sferik", "twitter")
-        a_get("/1/favorites/sferik.json").
-          with(:query => {:count => "200"}).
+        a_get("/1.1/favorites/list.json").
+          with(:query => {:count => "200", :screen_name => "sferik"}).
           should have_been_made
-        a_get("/1/favorites/sferik.json").
-          with(:query => {:count => "200", :max_id => "194546264212385792"}).
+        a_get("/1.1/favorites/list.json").
+          with(:query => {:count => "200", :max_id => "244099460672679937", :screen_name => "sferik"}).
           should have_been_made
       end
       it "should have the correct output" do
         @search.favorites("sferik", "twitter")
         $stdout.string.should == <<-eos
-\e[1m\e[33m   @bartt\e[0m
-   @noahlt @gaarf Yup, now owning @twitter -> FB from FE to daemons. Lot’s of 
-   fun. Expect improvements in the weeks to come.
+\e[1m\e[33m   @sferik\e[0m
+   @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem 
+   to be missing "1.1" from the URL.
+
+\e[1m\e[33m   @sferik\e[0m
+   @episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
 
         eos
       end
@@ -323,28 +331,31 @@ ID                  Posted at     Screen name  Text
 
   describe "#mentions" do
     before do
-      stub_get("/1/statuses/mentions.json").
+      stub_get("/1.1/statuses/mentions_timeline.json").
         with(:query => {:count => "200"}).
         to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_get("/1/statuses/mentions.json").
-        with(:query => {:count => "200", :max_id => "194546264212385792"}).
+      stub_get("/1.1/statuses/mentions_timeline.json").
+        with(:query => {:count => "200", :max_id => "244099460672679937"}).
         to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @search.mentions("twitter")
-      a_get("/1/statuses/mentions.json").
+      a_get("/1.1/statuses/mentions_timeline.json").
         with(:query => {:count => "200"}).
         should have_been_made
-      a_get("/1/statuses/mentions.json").
-        with(:query => {:count => "200", :max_id => "194546264212385792"}).
+      a_get("/1.1/statuses/mentions_timeline.json").
+        with(:query => {:count => "200", :max_id => "244099460672679937"}).
         should have_been_made
     end
     it "should have the correct output" do
       @search.mentions("twitter")
       $stdout.string.should == <<-eos
-\e[1m\e[33m   @bartt\e[0m
-   @noahlt @gaarf Yup, now owning @twitter -> FB from FE to daemons. Lot’s of 
-   fun. Expect improvements in the weeks to come.
+\e[1m\e[33m   @sferik\e[0m
+   @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem 
+   to be missing "1.1" from the URL.
+
+\e[1m\e[33m   @sferik\e[0m
+   @episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
 
       eos
     end
@@ -356,7 +367,8 @@ ID                  Posted at     Screen name  Text
         @search.mentions("twitter")
         $stdout.string.should == <<-eos
 ID,Posted at,Screen name,Text
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -> FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
+244102209942458368,2012-09-07 15:57:56 +0000,sferik,"@episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem to be missing ""1.1"" from the URL."
+244100411563339777,2012-09-07 15:50:47 +0000,sferik,@episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
         eos
       end
     end
@@ -368,19 +380,20 @@ ID,Posted at,Screen name,Text
         @search.mentions("twitter")
         $stdout.string.should == <<-eos
 ID                  Posted at     Screen name  Text
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
+244102209942458368  Sep  7 07:57  @sferik      @episod @twitterapi now https:...
+244100411563339777  Sep  7 07:50  @sferik      @episod @twitterapi Did you ca...
         eos
       end
     end
     context "Twitter is down" do
       it "should retry 3 times and then raise an error" do
-        stub_get("/1/statuses/mentions.json").
+        stub_get("/1.1/statuses/mentions_timeline.json").
           with(:query => {:count => "200"}).
           to_return(:status => 502)
         lambda do
           @search.mentions("twitter")
         end.should raise_error("Twitter is down or being upgraded.")
-        a_get("/1/statuses/mentions.json").
+        a_get("/1.1/statuses/mentions_timeline.json").
           with(:query => {:count => "200"}).
           should have_been_made.times(3)
       end
@@ -389,28 +402,31 @@ ID                  Posted at     Screen name  Text
 
   describe "#list" do
     before do
-      stub_get("/1/lists/statuses.json").
+      stub_get("/1.1/lists/statuses.json").
         with(:query => {:count => "200", :owner_screen_name => "testcli", :slug => "presidents"}).
         to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_get("/1/lists/statuses.json").
-        with(:query => {:count => "200", :max_id => "194546264212385792", :owner_screen_name => "testcli", :slug => "presidents"}).
+      stub_get("/1.1/lists/statuses.json").
+        with(:query => {:count => "200", :max_id => "244099460672679937", :owner_screen_name => "testcli", :slug => "presidents"}).
         to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @search.list("presidents", "twitter")
-      a_get("/1/lists/statuses.json").
+      a_get("/1.1/lists/statuses.json").
         with(:query => {:count => "200", :owner_screen_name => "testcli", :slug => "presidents"}).
         should have_been_made
-      a_get("/1/lists/statuses.json").
-        with(:query => {:count => "200", :max_id => "194546264212385792", :owner_screen_name => "testcli", :slug => "presidents"}).
+      a_get("/1.1/lists/statuses.json").
+        with(:query => {:count => "200", :max_id => "244099460672679937", :owner_screen_name => "testcli", :slug => "presidents"}).
         should have_been_made
     end
     it "should have the correct output" do
       @search.list("presidents", "twitter")
       $stdout.string.should == <<-eos
-\e[1m\e[33m   @bartt\e[0m
-   @noahlt @gaarf Yup, now owning @twitter -> FB from FE to daemons. Lot’s of 
-   fun. Expect improvements in the weeks to come.
+\e[1m\e[33m   @sferik\e[0m
+   @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem 
+   to be missing "1.1" from the URL.
+
+\e[1m\e[33m   @sferik\e[0m
+   @episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
 
       eos
     end
@@ -422,7 +438,8 @@ ID                  Posted at     Screen name  Text
         @search.list("presidents", "twitter")
         $stdout.string.should == <<-eos
 ID,Posted at,Screen name,Text
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -> FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
+244102209942458368,2012-09-07 15:57:56 +0000,sferik,"@episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem to be missing ""1.1"" from the URL."
+244100411563339777,2012-09-07 15:50:47 +0000,sferik,@episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
         eos
       end
     end
@@ -434,47 +451,48 @@ ID,Posted at,Screen name,Text
         @search.list("presidents", "twitter")
         $stdout.string.should == <<-eos
 ID                  Posted at     Screen name  Text
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
+244102209942458368  Sep  7 07:57  @sferik      @episod @twitterapi now https:...
+244100411563339777  Sep  7 07:50  @sferik      @episod @twitterapi Did you ca...
         eos
       end
     end
     context "with a user passed" do
       it "should request the correct resource" do
         @search.list("testcli/presidents", "twitter")
-        a_get("/1/lists/statuses.json").
+        a_get("/1.1/lists/statuses.json").
           with(:query => {:count => "200", :owner_screen_name => "testcli", :slug => "presidents"}).
           should have_been_made
       end
       context "--id" do
         before do
           @search.options = @search.options.merge("id" => true)
-          stub_get("/1/lists/statuses.json").
+          stub_get("/1.1/lists/statuses.json").
             with(:query => {:count => "200", :owner_id => "7505382", :slug => "presidents"}).
             to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-          stub_get("/1/lists/statuses.json").
-            with(:query => {:count => "200", :max_id => "194546264212385792", :owner_id => "7505382", :slug => "presidents"}).
+          stub_get("/1.1/lists/statuses.json").
+            with(:query => {:count => "200", :max_id => "244099460672679937", :owner_id => "7505382", :slug => "presidents"}).
             to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         end
         it "should request the correct resource" do
           @search.list("7505382/presidents", "twitter")
-          a_get("/1/lists/statuses.json").
+          a_get("/1.1/lists/statuses.json").
             with(:query => {:count => "200", :owner_id => "7505382", :slug => "presidents"}).
             should have_been_made
-          a_get("/1/lists/statuses.json").
-            with(:query => {:count => "200", :max_id => "194546264212385792", :owner_id => "7505382", :slug => "presidents"}).
+          a_get("/1.1/lists/statuses.json").
+            with(:query => {:count => "200", :max_id => "244099460672679937", :owner_id => "7505382", :slug => "presidents"}).
             should have_been_made
         end
       end
     end
     context "Twitter is down" do
       it "should retry 3 times and then raise an error" do
-        stub_get("/1/lists/statuses.json").
+        stub_get("/1.1/lists/statuses.json").
           with(:query => {:count => "200", :owner_screen_name => "testcli", :slug => "presidents"}).
           to_return(:status => 502)
         lambda do
           @search.list("presidents", "twitter")
         end.should raise_error("Twitter is down or being upgraded.")
-        a_get("/1/lists/statuses.json").
+        a_get("/1.1/lists/statuses.json").
           with(:query => {:count => "200", :owner_screen_name => "testcli", :slug => "presidents"}).
           should have_been_made.times(3)
       end
@@ -483,28 +501,27 @@ ID                  Posted at     Screen name  Text
 
   describe "#retweets" do
     before do
-      stub_get("/1/statuses/retweeted_by_me.json").
-        with(:query => {:count => "200"}).
+      stub_get("/1.1/statuses/user_timeline.json").
+        with(:query => {:count => "200", :include_rts => "true"}).
         to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_get("/1/statuses/retweeted_by_me.json").
-        with(:query => {:count => "200", :max_id => "194546264212385792"}).
+      stub_get("/1.1/statuses/user_timeline.json").
+        with(:query => {:count => "200", :include_rts => "true", :max_id => "244102729860009983"}).
         to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
-      @search.retweets("twitter")
-      a_get("/1/statuses/retweeted_by_me.json").
-        with(:query => {:count => "200"}).
+      @search.retweets("mosaic")
+      a_get("/1.1/statuses/user_timeline.json").
+        with(:query => {:count => "200", :include_rts => "true"}).
         should have_been_made
-      a_get("/1/statuses/retweeted_by_me.json").
-        with(:query => {:count => "200", :max_id => "194546264212385792"}).
-        should have_been_made
+      a_get("/1.1/statuses/user_timeline.json").
+        with(:query => {:count => "200", :include_rts => "true", :max_id => "244102729860009983"}).
+        should have_been_made.times(2)
     end
     it "should have the correct output" do
-      @search.retweets("twitter")
+      @search.retweets("mosaic")
       $stdout.string.should == <<-eos
-\e[1m\e[33m   @bartt\e[0m
-   @noahlt @gaarf Yup, now owning @twitter -> FB from FE to daemons. Lot’s of 
-   fun. Expect improvements in the weeks to come.
+\e[1m\e[33m   @calebelston\e[0m
+   RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
 
       eos
     end
@@ -513,10 +530,10 @@ ID                  Posted at     Screen name  Text
         @search.options = @search.options.merge("csv" => true)
       end
       it "should output in CSV format" do
-        @search.retweets("twitter")
+        @search.retweets("mosaic")
         $stdout.string.should == <<-eos
 ID,Posted at,Screen name,Text
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -> FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
+244108728834592770,2012-09-07 16:23:50 +0000,calebelston,RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
         eos
       end
     end
@@ -525,50 +542,49 @@ ID,Posted at,Screen name,Text
         @search.options = @search.options.merge("long" => true)
       end
       it "should output in long format" do
-        @search.retweets("twitter")
+        @search.retweets("mosaic")
         $stdout.string.should == <<-eos
-ID                  Posted at     Screen name  Text
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
+ID                  Posted at     Screen name   Text
+244108728834592770  Sep  7 08:23  @calebelston  RT @olivercameron: Mosaic loo...
         eos
       end
     end
     context "Twitter is down" do
       it "should retry 3 times and then raise an error" do
-        stub_get("/1/statuses/retweeted_by_me.json").
-          with(:query => {:count => "200"}).
+        stub_get("/1.1/statuses/user_timeline.json").
+          with(:query => {:count => "200", :include_rts => "true"}).
           to_return(:status => 502)
         lambda do
-          @search.retweets("twitter")
+          @search.retweets("mosaic")
         end.should raise_error("Twitter is down or being upgraded.")
-        a_get("/1/statuses/retweeted_by_me.json").
-          with(:query => {:count => "200"}).
+        a_get("/1.1/statuses/user_timeline.json").
+          with(:query => {:count => "200", :include_rts => "true"}).
           should have_been_made.times(3)
       end
     end
     context "with a user passed" do
       before do
-        stub_get("/1/statuses/retweeted_by_user.json").
-          with(:query => {:count => "200", :screen_name => "sferik"}).
+        stub_get("/1.1/statuses/user_timeline.json").
+          with(:query => {:count => "200", :include_rts => "true", :screen_name => "sferik"}).
           to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1/statuses/retweeted_by_user.json").
-          with(:query => {:count => "200", :max_id => "194546264212385792", :screen_name => "sferik"}).
+        stub_get("/1.1/statuses/user_timeline.json").
+          with(:query => {:count => "200", :include_rts => "true", :screen_name => "sferik", :max_id => "244102729860009983"}).
           to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should request the correct resource" do
-        @search.retweets("sferik", "twitter")
-        a_get("/1/statuses/retweeted_by_user.json").
-          with(:query => {:count => "200", :screen_name => "sferik"}).
+        @search.retweets("sferik", "mosaic")
+        a_get("/1.1/statuses/user_timeline.json").
+          with(:query => {:count => "200", :include_rts => "true", :screen_name => "sferik"}).
           should have_been_made
-        a_get("/1/statuses/retweeted_by_user.json").
-          with(:query => {:count => "200", :max_id => "194546264212385792", :screen_name => "sferik"}).
-          should have_been_made
+        a_get("/1.1/statuses/user_timeline.json").
+          with(:query => {:count => "200", :include_rts => "true", :screen_name => "sferik", :max_id => "244102729860009983"}).
+          should have_been_made.times(2)
       end
       it "should have the correct output" do
-        @search.retweets("sferik", "twitter")
+        @search.retweets("sferik", "mosaic")
         $stdout.string.should == <<-eos
-\e[1m\e[33m   @bartt\e[0m
-   @noahlt @gaarf Yup, now owning @twitter -> FB from FE to daemons. Lot’s of 
-   fun. Expect improvements in the weeks to come.
+\e[1m\e[33m   @calebelston\e[0m
+   RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
 
         eos
       end
@@ -577,28 +593,31 @@ ID                  Posted at     Screen name  Text
 
   describe "#timeline" do
     before do
-      stub_get("/1/statuses/home_timeline.json").
+      stub_get("/1.1/statuses/home_timeline.json").
         with(:query => {:count => "200"}).
         to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_get("/1/statuses/home_timeline.json").
-        with(:query => {:count => "200", :max_id => "194546264212385792"}).
+      stub_get("/1.1/statuses/home_timeline.json").
+        with(:query => {:count => "200", :max_id => "244099460672679937"}).
         to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @search.timeline("twitter")
-      a_get("/1/statuses/home_timeline.json").
+      a_get("/1.1/statuses/home_timeline.json").
         with(:query => {:count => "200"}).
         should have_been_made
-      a_get("/1/statuses/home_timeline.json").
-        with(:query => {:count => "200", :max_id => "194546264212385792"}).
+      a_get("/1.1/statuses/home_timeline.json").
+        with(:query => {:count => "200", :max_id => "244099460672679937"}).
         should have_been_made
     end
     it "should have the correct output" do
       @search.timeline("twitter")
       $stdout.string.should == <<-eos
-\e[1m\e[33m   @bartt\e[0m
-   @noahlt @gaarf Yup, now owning @twitter -> FB from FE to daemons. Lot’s of 
-   fun. Expect improvements in the weeks to come.
+\e[1m\e[33m   @sferik\e[0m
+   @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem 
+   to be missing "1.1" from the URL.
+
+\e[1m\e[33m   @sferik\e[0m
+   @episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
 
       eos
     end
@@ -610,7 +629,8 @@ ID                  Posted at     Screen name  Text
         @search.timeline("twitter")
         $stdout.string.should == <<-eos
 ID,Posted at,Screen name,Text
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -> FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
+244102209942458368,2012-09-07 15:57:56 +0000,sferik,"@episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem to be missing ""1.1"" from the URL."
+244100411563339777,2012-09-07 15:50:47 +0000,sferik,@episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
         eos
       end
     end
@@ -622,47 +642,51 @@ ID,Posted at,Screen name,Text
         @search.timeline("twitter")
         $stdout.string.should == <<-eos
 ID                  Posted at     Screen name  Text
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
+244102209942458368  Sep  7 07:57  @sferik      @episod @twitterapi now https:...
+244100411563339777  Sep  7 07:50  @sferik      @episod @twitterapi Did you ca...
         eos
       end
     end
     context "Twitter is down" do
       it "should retry 3 times and then raise an error" do
-        stub_get("/1/statuses/home_timeline.json").
+        stub_get("/1.1/statuses/home_timeline.json").
           with(:query => {:count => "200"}).
           to_return(:status => 502)
         lambda do
           @search.timeline("twitter")
         end.should raise_error("Twitter is down or being upgraded.")
-        a_get("/1/statuses/home_timeline.json").
+        a_get("/1.1/statuses/home_timeline.json").
           with(:query => {:count => "200"}).
           should have_been_made.times(3)
       end
     end
     context "with a user passed" do
       before do
-        stub_get("/1/statuses/user_timeline.json").
+        stub_get("/1.1/statuses/user_timeline.json").
           with(:query => {:count => "200", :screen_name => "sferik"}).
           to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1/statuses/user_timeline.json").
-          with(:query => {:count => "200", :max_id => "194546264212385792", :screen_name => "sferik"}).
+        stub_get("/1.1/statuses/user_timeline.json").
+          with(:query => {:count => "200", :max_id => "244099460672679937", :screen_name => "sferik"}).
           to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should request the correct resource" do
         @search.timeline("sferik", "twitter")
-        a_get("/1/statuses/user_timeline.json").
+        a_get("/1.1/statuses/user_timeline.json").
           with(:query => {:count => "200", :screen_name => "sferik"}).
           should have_been_made
-        a_get("/1/statuses/user_timeline.json").
-          with(:query => {:count => "200", :max_id => "194546264212385792", :screen_name => "sferik"}).
+        a_get("/1.1/statuses/user_timeline.json").
+          with(:query => {:count => "200", :max_id => "244099460672679937", :screen_name => "sferik"}).
           should have_been_made
       end
       it "should have the correct output" do
         @search.timeline("sferik", "twitter")
         $stdout.string.should == <<-eos
-\e[1m\e[33m   @bartt\e[0m
-   @noahlt @gaarf Yup, now owning @twitter -> FB from FE to daemons. Lot’s of 
-   fun. Expect improvements in the weeks to come.
+\e[1m\e[33m   @sferik\e[0m
+   @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem 
+   to be missing "1.1" from the URL.
+
+\e[1m\e[33m   @sferik\e[0m
+   @episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
 
         eos
       end
@@ -674,27 +698,28 @@ ID                  Posted at     Screen name  Text
           @search.timeline("sferik", "twitter")
           $stdout.string.should == <<-eos
 ID,Posted at,Screen name,Text
-194546727670390784,2011-04-23 22:02:09 +0000,bartt,"@noahlt @gaarf Yup, now owning @twitter -> FB from FE to daemons. Lot’s of fun. Expect improvements in the weeks to come."
+244102209942458368,2012-09-07 15:57:56 +0000,sferik,"@episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem to be missing ""1.1"" from the URL."
+244100411563339777,2012-09-07 15:50:47 +0000,sferik,@episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
           eos
         end
       end
       context "--id" do
         before do
           @search.options = @search.options.merge("id" => true)
-          stub_get("/1/statuses/user_timeline.json").
+          stub_get("/1.1/statuses/user_timeline.json").
             with(:query => {:count => "200", :user_id => "7505382"}).
             to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-          stub_get("/1/statuses/user_timeline.json").
-            with(:query => {:count => "200", :max_id => "194546264212385792", :user_id => "7505382"}).
+          stub_get("/1.1/statuses/user_timeline.json").
+            with(:query => {:count => "200", :max_id => "244099460672679937", :user_id => "7505382"}).
             to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         end
         it "should request the correct resource" do
           @search.timeline("7505382", "twitter")
-          a_get("/1/statuses/user_timeline.json").
+          a_get("/1.1/statuses/user_timeline.json").
             with(:query => {:count => "200", :user_id => "7505382"}).
             should have_been_made
-          a_get("/1/statuses/user_timeline.json").
-            with(:query => {:count => "200", :max_id => "194546264212385792", :user_id => "7505382"}).
+          a_get("/1.1/statuses/user_timeline.json").
+            with(:query => {:count => "200", :max_id => "244099460672679937", :user_id => "7505382"}).
             should have_been_made
         end
       end
@@ -706,19 +731,20 @@ ID,Posted at,Screen name,Text
           @search.timeline("sferik", "twitter")
           $stdout.string.should == <<-eos
 ID                  Posted at     Screen name  Text
-194546727670390784  Apr 23  2011  @bartt       @noahlt @gaarf Yup, now owning...
+244102209942458368  Sep  7 07:57  @sferik      @episod @twitterapi now https:...
+244100411563339777  Sep  7 07:50  @sferik      @episod @twitterapi Did you ca...
           eos
         end
       end
       context "Twitter is down" do
         it "should retry 3 times and then raise an error" do
-          stub_get("/1/statuses/user_timeline.json").
+          stub_get("/1.1/statuses/user_timeline.json").
             with(:query => {:screen_name => "sferik", :count => "200"}).
             to_return(:status => 502)
           lambda do
             @search.timeline("sferik", "twitter")
           end.should raise_error("Twitter is down or being upgraded.")
-          a_get("/1/statuses/user_timeline.json").
+          a_get("/1.1/statuses/user_timeline.json").
             with(:query => {:screen_name => "sferik", :count => "200"}).
             should have_been_made.times(3)
         end
@@ -728,20 +754,20 @@ ID                  Posted at     Screen name  Text
 
   describe "#users" do
     before do
-      stub_get("/1/users/search.json").
+      stub_get("/1.1/users/search.json").
         with(:query => {:page => "1", :q => "Erik"}).
         to_return(:body => fixture("users.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_get("/1/users/search.json").
+      stub_get("/1.1/users/search.json").
         with(:query => {:page => "2", :q => "Erik"}).
         to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @search.users("Erik")
       1.upto(50).each do |page|
-        a_get("/1/users/search.json").
+        a_get("/1.1/users/search.json").
           with(:query => {:page => "1", :q => "Erik"}).
           should have_been_made
-        a_get("/1/users/search.json").
+        a_get("/1.1/users/search.json").
           with(:query => {:page => "2", :q => "Erik"}).
           should have_been_made
       end
@@ -859,13 +885,13 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
     end
     context "Twitter is down" do
       it "should retry 3 times and then raise an error" do
-        stub_get("/1/users/search.json").
+        stub_get("/1.1/users/search.json").
           with(:query => {:page => "2", :q => "Erik", }).
           to_return(:status => 502)
         lambda do
           @search.users("Erik")
         end.should raise_error("Twitter is down or being upgraded.")
-        a_get("/1/users/search.json").
+        a_get("/1.1/users/search.json").
           with(:query => {:page => "2", :q => "Erik", }).
           should have_been_made.times(3)
       end

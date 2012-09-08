@@ -49,13 +49,13 @@ describe T::Set do
   describe "#bio" do
     before do
       @set.options = @set.options.merge("profile" => fixture_path + "/.trc")
-      stub_post("/1/account/update_profile.json").
+      stub_post("/1.1/account/update_profile.json").
         with(:body => {:description => "Vagabond."}).
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @set.bio("Vagabond.")
-      a_post("/1/account/update_profile.json").
+      a_post("/1.1/account/update_profile.json").
         with(:body => {:description => "Vagabond."}).
         should have_been_made
     end
@@ -68,13 +68,13 @@ describe T::Set do
   describe "#language" do
     before do
       @set.options = @set.options.merge("profile" => fixture_path + "/.trc")
-      stub_post("/1/account/settings.json").
+      stub_post("/1.1/account/settings.json").
         with(:body => {:lang => "en"}).
         to_return(:body => fixture("settings.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @set.language("en")
-      a_post("/1/account/settings.json").
+      a_post("/1.1/account/settings.json").
         with(:body => {:lang => "en"}).
         should have_been_made
     end
@@ -87,13 +87,13 @@ describe T::Set do
   describe "#location" do
     before do
       @set.options = @set.options.merge("profile" => fixture_path + "/.trc")
-      stub_post("/1/account/update_profile.json").
+      stub_post("/1.1/account/update_profile.json").
         with(:body => {:location => "San Francisco"}).
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @set.location("San Francisco")
-      a_post("/1/account/update_profile.json").
+      a_post("/1.1/account/update_profile.json").
         with(:body => {:location => "San Francisco"}).
         should have_been_made
     end
@@ -106,13 +106,13 @@ describe T::Set do
   describe "#name" do
     before do
       @set.options = @set.options.merge("profile" => fixture_path + "/.trc")
-      stub_post("/1/account/update_profile.json").
+      stub_post("/1.1/account/update_profile.json").
         with(:body => {:name => "Erik Michaels-Ober"}).
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @set.name("Erik Michaels-Ober")
-      a_post("/1/account/update_profile.json").
+      a_post("/1.1/account/update_profile.json").
         with(:body => {:name => "Erik Michaels-Ober"}).
         should have_been_made
     end
@@ -125,12 +125,12 @@ describe T::Set do
   describe "#profile_background_image" do
     before do
       @set.options = @set.options.merge("profile" => fixture_path + "/.trc")
-      stub_post("/1/account/update_profile_background_image.json").
+      stub_post("/1.1/account/update_profile_background_image.json").
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @set.profile_background_image(fixture_path + "/we_concept_bg2.png")
-      a_post("/1/account/update_profile_background_image.json").
+      a_post("/1.1/account/update_profile_background_image.json").
         should have_been_made
     end
     it "should have the correct output" do
@@ -142,12 +142,12 @@ describe T::Set do
   describe "#profile_image" do
     before do
       @set.options = @set.options.merge("profile" => fixture_path + "/.trc")
-      stub_post("/1/account/update_profile_image.json").
+      stub_post("/1.1/account/update_profile_image.json").
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @set.profile_image(fixture_path + "/me.jpg")
-      a_post("/1/account/update_profile_image.json").
+      a_post("/1.1/account/update_profile_image.json").
         should have_been_made
     end
     it "should have the correct output" do
@@ -159,13 +159,13 @@ describe T::Set do
   describe "#url" do
     before do
       @set.options = @set.options.merge("profile" => fixture_path + "/.trc")
-      stub_post("/1/account/update_profile.json").
+      stub_post("/1.1/account/update_profile.json").
         with(:body => {:url => "https://github.com/sferik"}).
         to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @set.url("https://github.com/sferik")
-      a_post("/1/account/update_profile.json").
+      a_post("/1.1/account/update_profile.json").
         with(:body => {:url => "https://github.com/sferik"}).
         should have_been_made
     end

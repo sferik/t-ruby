@@ -11,6 +11,7 @@ require 't'
 require 'rspec'
 require 'timecop'
 require 'webmock/rspec'
+require 'json'
 
 def a_delete(path, endpoint='https://api.twitter.com')
   a_request(:delete, endpoint + path)
@@ -54,4 +55,8 @@ end
 
 def fixture(file)
   File.new(fixture_path + '/' + file)
+end
+
+def status_from_fixture(file)
+  Twitter::Status.new(JSON.parse(fixture(file).read, :symbolize_names => true))
 end

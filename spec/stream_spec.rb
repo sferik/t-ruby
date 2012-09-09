@@ -7,6 +7,7 @@ describe T::Stream do
     klass.stub(:options).and_return({})
     klass
   }
+
   before :all do
     @status = status_from_fixture("status.json")
   end
@@ -18,6 +19,9 @@ describe T::Stream do
 
     @stream = T::Stream.new
     @stream.stub(:client) { @tweetstream_client }
+    @stream.stub(:say).and_return
+
+    STDOUT.stub(:tty?).and_return(true)
   end
 
 
@@ -25,7 +29,6 @@ describe T::Stream do
     context '--csv' do
       before :each do
         @stream.options = @stream.options.merge("csv" => true)
-        @stream.stub(:say).and_return
       end
 
       it 'outputs headings when the stream initializes' do
@@ -54,7 +57,6 @@ describe T::Stream do
       it 'outputs headings when the stream initializes' do
         @tweetstream_client.stub(:on_inited).and_yield
         @tweetstream_client.stub(:on_timeline_status).and_return
-        STDOUT.stub(:tty?).and_return(true)
 
         @stream.should_receive(:print_table).with(any_args)
         @stream.all
@@ -101,7 +103,6 @@ describe T::Stream do
 
     it 'invokes TweetStream::Client.sample' do
       @tweetstream_client.should_receive(:sample)
-      @stream.stub(:say).and_return
       @stream.matrix
     end
   end
@@ -115,7 +116,6 @@ describe T::Stream do
     context '--csv' do
       before :each do
         @stream.options = @stream.options.merge("csv" => true)
-        @stream.stub(:say).and_return
       end
 
       it "outputs in CSV format" do
@@ -154,7 +154,6 @@ describe T::Stream do
     end
 
     it 'performs a REST search when the stream initializes' do
-      @stream.stub(:say).and_return
       @tweetstream_client.stub(:on_timeline_status).and_return
       @tweetstream_client.stub(:on_inited).and_yield
 
@@ -165,7 +164,6 @@ describe T::Stream do
     end
 
     it 'invokes TweetStream::Client#track' do
-      @stream.stub(:say).and_return
       @tweetstream_client.stub(:on_timeline_status).and_return
 
       @tweetstream_client.should_receive(:track).with(['t gem'])
@@ -182,7 +180,6 @@ describe T::Stream do
     context '--csv' do
       before :each do
         @stream.options = @stream.options.merge("csv" => true)
-        @stream.stub(:say).and_return
       end
 
       it "outputs in CSV format" do
@@ -221,7 +218,6 @@ describe T::Stream do
     end
 
     it 'performs a REST search when the stream initializes' do
-      @stream.stub(:say).and_return
       @tweetstream_client.stub(:on_timeline_status).and_return
       @tweetstream_client.stub(:on_inited).and_yield
 
@@ -232,7 +228,6 @@ describe T::Stream do
     end
 
     it 'invokes TweetStream::Client#userstream' do
-      @stream.stub(:say).and_return
       @tweetstream_client.stub(:on_timeline_status).and_return
 
       @tweetstream_client.should_receive(:userstream)
@@ -249,7 +244,6 @@ describe T::Stream do
     context '--csv' do
       before :each do
         @stream.options = @stream.options.merge("csv" => true)
-        @stream.stub(:say).and_return
       end
 
       it 'outputs headings when the stream initializes' do
@@ -276,7 +270,6 @@ describe T::Stream do
       it 'outputs headings when the stream initializes' do
         @tweetstream_client.stub(:on_inited).and_yield
         @tweetstream_client.stub(:on_timeline_status).and_return
-        STDOUT.stub(:tty?).and_return(true)
 
         @stream.should_receive(:print_table).with(any_args)
         @stream.users('123')
@@ -305,7 +298,6 @@ describe T::Stream do
     end
 
     it 'invokes TweetStream::Client#follow' do
-      @stream.stub(:say).and_return
       @tweetstream_client.stub(:on_timeline_status).and_return
 
       @tweetstream_client.should_receive(:follow).with([123, 456, 789])

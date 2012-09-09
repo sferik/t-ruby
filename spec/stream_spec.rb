@@ -44,7 +44,7 @@ describe T::Stream do
         @tweetstream_client.stub(:on_timeline_status).
           and_yield(@status)
 
-        @stream.should_receive(:print_csv_status).with(any_args)
+        @stream.should_receive(:print_csv_tweet).with(any_args)
         @stream.all
       end
     end
@@ -121,7 +121,7 @@ describe T::Stream do
       it "outputs in CSV format" do
         @tweetstream_client.stub(:on_inited).and_return
 
-        @stream.should_receive(:print_csv_status).with(any_args)
+        @stream.should_receive(:print_csv_tweet).with(any_args)
         @stream.search('t gem')
       end
     end
@@ -185,7 +185,7 @@ describe T::Stream do
       it "outputs in CSV format" do
         @tweetstream_client.stub(:on_inited).and_return
 
-        @stream.should_receive(:print_csv_status).with(any_args)
+        @stream.should_receive(:print_csv_tweet).with(any_args)
         @stream.timeline
       end
     end
@@ -257,7 +257,7 @@ describe T::Stream do
       it "outputs in CSV format" do
         @tweetstream_client.stub(:on_inited).and_return
 
-        @stream.should_receive(:print_csv_status).with(any_args)
+        @stream.should_receive(:print_csv_tweet).with(any_args)
         @stream.users('123')
       end
     end

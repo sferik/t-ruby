@@ -44,7 +44,7 @@ Once you've verified that Ruby is installed:
 
 ## Configuration
 
-Twitter requires OAuth for most of its functionality, so you'll need a
+Twitter API v1.1 requires OAuth for all of its functionality, so you'll need a
 registered Twitter application. If you've never registered a Twitter
 application before, it's easy! Just sign-in using your Twitter account and the
 fill out the short form at <http://dev.twitter.com/apps/new>. If you've

@@ -3600,12 +3600,12 @@ WOEID     Parent ID  Type       Name           Country
     context "with file" do
       before do
         @cli.options = @cli.options.merge("file" => fixture_path + "/long.png")
-        stub_post("/1.1/statuses/update_with_media.json", "https://upload.twitter.com").
+        stub_post("/1.1/statuses/update_with_media.json").
           to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should request the correct resource" do
         @cli.update("Testing")
-        a_post("/1.1/statuses/update_with_media.json", "https://upload.twitter.com").
+        a_post("/1.1/statuses/update_with_media.json").
           should have_been_made
       end
       it "should have the correct output" do

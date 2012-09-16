@@ -516,25 +516,6 @@ module T
       end
     end
 
-    desc "rate_limit", "Returns information related to Twitter API rate limiting."
-    method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
-    def rate_limit
-      rate_limit_status = client.rate_limit_status
-      if options['csv']
-        require 'csv'
-        require 'fastercsv' unless Array.new.respond_to?(:to_csv)
-        say ["Hourly limit", "Remaining hits", "Reset time"].to_csv
-        say [rate_limit_status.hourly_limit, rate_limit_status.remaining_hits, csv_formatted_time(rate_limit_status, :reset_time)].to_csv
-      else
-        array = []
-        array << ["Hourly limit", number_with_delimiter(rate_limit_status.hourly_limit)]
-        array << ["Remaining hits", number_with_delimiter(rate_limit_status.remaining_hits)]
-        array << ["Reset time", "#{ls_formatted_time(rate_limit_status, :reset_time)} (#{time_from_now_in_words(rate_limit_status.reset_time)} from now)"]
-        print_table(array)
-      end
-    end
-    map %w(ratelimit rl) => :rate_limit
-
     desc "reply STATUS_ID MESSAGE", "Post your Tweet as a reply directed at another person."
     method_option "all", :aliases => "-a", :type => "boolean", :default => false, :desc => "Reply to all users mentioned in the Tweet."
     method_option "location", :aliases => "-l", :type => :boolean, :default => false

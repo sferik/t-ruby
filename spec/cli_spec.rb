@@ -2335,38 +2335,6 @@ ID                  Posted at     Screen name       Text
     end
   end
 
-  describe "#rate_limit" do
-    before do
-      stub_get("/1.1/application/rate_limit_status.json").
-        to_return(:body => fixture("rate_limit_status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-    end
-    it "should request the correct resource" do
-      @cli.rate_limit
-      a_get("/1.1/application/rate_limit_status.json").
-        should have_been_made
-    end
-    it "should have the correct output" do
-      @cli.rate_limit
-      $stdout.string.should == <<-eos
-Hourly limit    20,000
-Remaining hits  19,993
-Reset time      Oct 26  2010 (a year from now)
-      eos
-    end
-    context "--csv" do
-      before do
-        @cli.options = @cli.options.merge("csv" => true)
-      end
-      it "should have the correct output" do
-        @cli.rate_limit
-        $stdout.string.should == <<-eos
-Hourly limit,Remaining hits,Reset time
-20000,19993,2010-10-26 12:43:08 +0000
-        eos
-      end
-    end
-  end
-
   describe "#reply" do
     before do
       @cli.options = @cli.options.merge("profile" => fixture_path + "/.trc", "location" => true)

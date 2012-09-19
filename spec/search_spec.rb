@@ -33,89 +33,120 @@ describe T::Search do
       stub_get("/1.1/search/tweets.json").
         with(:query => {:q => "twitter", :rpp => "20"}).
         to_return(:body => fixture("search.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/search/tweets.json").
+        with(:query => {:q => "twitter", :max_id => "246666260270702591", :rpp => "16"}).
+        to_return(:body => fixture("search.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/search/tweets.json").
+        with(:query => {:q => "twitter", :max_id => "246666260270702591", :rpp => "12"}).
+        to_return(:body => fixture("search.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/search/tweets.json").
+        with(:query => {:q => "twitter", :max_id => "246666260270702591", :rpp => "8"}).
+        to_return(:body => fixture("search.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/search/tweets.json").
+        with(:query => {:q => "twitter", :max_id => "246666260270702591", :rpp => "4"}).
+        to_return(:body => fixture("search.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @search.all("twitter")
       a_get("/1.1/search/tweets.json").
         with(:query => {:q => "twitter", :rpp => "20"}).
         should have_been_made
+      a_get("/1.1/search/tweets.json").
+        with(:query => {:q => "twitter", :max_id => "246666260270702591", :rpp => "16"}).
+        should have_been_made
+      a_get("/1.1/search/tweets.json").
+        with(:query => {:q => "twitter", :max_id => "246666260270702591", :rpp => "12"}).
+        should have_been_made
+      a_get("/1.1/search/tweets.json").
+        with(:query => {:q => "twitter", :max_id => "246666260270702591", :rpp => "8"}).
+        should have_been_made
+      a_get("/1.1/search/tweets.json").
+        with(:query => {:q => "twitter", :max_id => "246666260270702591", :rpp => "4"}).
+        should have_been_made
     end
     it "should have the correct output" do
       @search.all("twitter")
       $stdout.string.should == <<-eos
 
-\e[1m\e[33m   @Somedude\e[0m
-   Gotta get right with twitter
+\e[1m\e[33m   @richrad\e[0m
+   Bubble Mailer #freebandnames
 
-\e[1m\e[33m   @TestMan\e[0m
-   Twitter to Facebook test
+\e[1m\e[33m   @dswordsNshields\e[0m
+   Hair of the Frog
 
-\e[1m\e[33m   @Jena_Jones\e[0m
-   test my new twitter..... :)
+   (seriously, think about it)
 
-\e[1m\e[33m   @misterpic\e[0m
-   Wallah there should be a test before you can get a twitter account some 
-   people are so dumb... better
+   #freebandnames
 
-\e[1m\e[33m   @RRabbit\e[0m
-   Twitter is kinda fun... Kinda!
+\e[1m\e[33m   @thedunniebobos\e[0m
+   Wussies and pussies #goddylan #freebandnames
 
-\e[1m\e[33m   @JessRoveel\e[0m
-   Pondre lo mas importante de Hamlet en Twitter para recordarlo mejor :D
+\e[1m\e[33m   @StrongPROGress\e[0m
+   #FreeBandNames Asterisks and Thunderstorms
 
-\e[1m\e[33m   @lauravgeest\e[0m
-   Twitter doet het al 7 uur niet meer
+\e[1m\e[33m   @richrad\e[0m
+   Bubble Mailer #freebandnames
 
-\e[1m\e[33m   @Jenny_Bearx333\e[0m
-   I keep thinking that twitter is @instagram , and therefore double tap all the 
-   pics I like... #NotWorking
+\e[1m\e[33m   @dswordsNshields\e[0m
+   Hair of the Frog
 
-\e[1m\e[33m   @misspoxtonX\e[0m
-   RT @jordantaylorhi: twitter friends > twats at school
+   (seriously, think about it)
 
-\e[1m\e[33m   @PatrickBrickman\e[0m
-   RT @zeus30hightower: Too all Bama fans and followers my cousin mark Barron 
-   doesn't have a twitter so please disregard any tweets from that user
+   #freebandnames
 
-\e[1m\e[33m   @KolonelX\e[0m
-   Ik refresh twitter op me telefoon terwijl ik tweetdeck voor me open heb staan
+\e[1m\e[33m   @thedunniebobos\e[0m
+   Wussies and pussies #goddylan #freebandnames
 
-\e[1m\e[33m   @VLGPRLG5\e[0m
-   @mikeyway and you too RT @NimcyGD: @gerardway Get your ass back to twitter, 
-   okay? :3
+\e[1m\e[33m   @StrongPROGress\e[0m
+   #FreeBandNames Asterisks and Thunderstorms
 
-\e[1m\e[33m   @xRhiBabyx\e[0m
-   Trying to persuade the boyf to get on twitter and failing. Help? @holly_haime 
-   @Ckwarburton @samwarburton_ @chrishaime @rowloboy
+\e[1m\e[33m   @richrad\e[0m
+   Bubble Mailer #freebandnames
 
-\e[1m\e[33m   @juliotrv\e[0m
-   RT @lookinglassbr: Lançamentos outono-inverno 2012...CONFIRA em 
-   http://t.co/YAk8OXp7 http://t.co/fmmrVrbG
+\e[1m\e[33m   @dswordsNshields\e[0m
+   Hair of the Frog
 
-\e[1m\e[33m   @shanleyaustin27\e[0m
-   RT @caaammmmi: @shanleyaustin27 .....and this hahahahaa http://t.co/wzCMx6ZU
+   (seriously, think about it)
 
-\e[1m\e[33m   @Dame_Valuta\e[0m
-   RT @Paiser10: Great @chelseafc training at Nou Camp! #cfc 
-   http://t.co/k00TnRyR
+   #freebandnames
 
-\e[1m\e[33m   @miss_indyiah\e[0m
-   smh, @IndianaHustle done turned into a twitter addict..fuck goin on lol ?
+\e[1m\e[33m   @thedunniebobos\e[0m
+   Wussies and pussies #goddylan #freebandnames
 
-\e[1m\e[33m   @CAROLINEWOLLER\e[0m
-   RT @Mark_Ingram28: To all Bama fans and followers, please unfollow and pay no 
-   attention to any user posing to be Mark Barron. My bro doesn't have a 
-   twitter!
+\e[1m\e[33m   @StrongPROGress\e[0m
+   #FreeBandNames Asterisks and Thunderstorms
 
-\e[1m\e[33m   @shelbytrenchdww\e[0m
-   RT @The90sLife: Admit it, we all have a cabinet that looks like this. 
-   http://t.co/gQEkQw5G
+\e[1m\e[33m   @richrad\e[0m
+   Bubble Mailer #freebandnames
 
-\e[1m\e[33m   @kabos84\e[0m
-   RT @JF_q8: بالله عليكم ،، مو عيب !!!
+\e[1m\e[33m   @dswordsNshields\e[0m
+   Hair of the Frog
 
+   (seriously, think about it)
 
-   .. http://t.co/e29GV7Ow
+   #freebandnames
+
+\e[1m\e[33m   @thedunniebobos\e[0m
+   Wussies and pussies #goddylan #freebandnames
+
+\e[1m\e[33m   @StrongPROGress\e[0m
+   #FreeBandNames Asterisks and Thunderstorms
+
+\e[1m\e[33m   @richrad\e[0m
+   Bubble Mailer #freebandnames
+
+\e[1m\e[33m   @dswordsNshields\e[0m
+   Hair of the Frog
+
+   (seriously, think about it)
+
+   #freebandnames
+
+\e[1m\e[33m   @thedunniebobos\e[0m
+   Wussies and pussies #goddylan #freebandnames
+
+\e[1m\e[33m   @StrongPROGress\e[0m
+   #FreeBandNames Asterisks and Thunderstorms
 
       eos
     end
@@ -127,30 +158,46 @@ describe T::Search do
         @search.all("twitter")
         $stdout.string.should == <<-eos
 ID,Posted at,Screen name,Text
-194521323202624150,2011-04-23 20:20:57 +0000,Somedude,Gotta get right with twitter
-194526951936212623,2011-04-23 20:20:57 +0000,TestMan,Twitter to Facebook test
-194521346690562622,2011-04-23 20:20:57 +0000,Jena_Jones,test my new twitter..... :)
-194521262134160820,2011-04-23 20:20:57 +0000,misterpic,Wallah there should be a test before you can get a twitter account some people are so dumb... better
-194521016652621340,2011-04-23 20:20:57 +0000,RRabbit,Twitter is kinda fun... Kinda!
-194521262415032320,2011-04-23 20:20:57 +0000,JessRoveel,Pondre lo mas importante de Hamlet en Twitter para recordarlo mejor :D
-194521262326951936,2011-04-23 20:20:57 +0000,lauravgeest,Twitter doet het al 7 uur niet meer
-194521262234669056,2011-04-23 20:20:57 +0000,Jenny_Bearx333,"I keep thinking that twitter is @instagram , and therefore double tap all the pics I like... #NotWorking"
-194521262138204160,2011-04-23 20:20:57 +0000,misspoxtonX,RT @jordantaylorhi: twitter friends > twats at school
-194521262134001665,2011-04-23 20:20:57 +0000,PatrickBrickman,RT @zeus30hightower: Too all Bama fans and followers my cousin mark Barron doesn't have a twitter so please disregard any tweets from that user
-194521262129811456,2011-04-23 20:20:57 +0000,KolonelX,Ik refresh twitter op me telefoon terwijl ik tweetdeck voor me open heb staan
-194521261852995586,2011-04-23 20:20:57 +0000,VLGPRLG5,"@mikeyway and you too RT @NimcyGD: @gerardway Get your ass back to twitter, okay? :3"
-194521261756530689,2011-04-23 20:20:57 +0000,xRhiBabyx,Trying to persuade the boyf to get on twitter and failing. Help? @holly_haime @Ckwarburton @samwarburton_ @chrishaime @rowloboy
-194521261630697473,2011-04-23 20:20:57 +0000,juliotrv,RT @lookinglassbr: Lançamentos outono-inverno 2012...CONFIRA em http://t.co/YAk8OXp7 http://t.co/fmmrVrbG
-194521261571964928,2011-04-23 20:20:57 +0000,shanleyaustin27,RT @caaammmmi: @shanleyaustin27 .....and this hahahahaa http://t.co/wzCMx6ZU
-194521261563580416,2011-04-23 20:20:57 +0000,Dame_Valuta,RT @Paiser10: Great @chelseafc training at Nou Camp! #cfc http://t.co/k00TnRyR
-194521261488095232,2011-04-23 20:20:57 +0000,miss_indyiah,"smh, @IndianaHustle done turned into a twitter addict..fuck goin on lol ?"
-194521261370650625,2011-04-23 20:20:57 +0000,CAROLINEWOLLER,"RT @Mark_Ingram28: To all Bama fans and followers, please unfollow and pay no attention to any user posing to be Mark Barron. My bro doesn't have a twitter!"
-194521261370642432,2011-04-23 20:20:57 +0000,shelbytrenchdww,"RT @The90sLife: Admit it, we all have a cabinet that looks like this. http://t.co/gQEkQw5G"
-194521261307727872,2011-04-23 20:20:57 +0000,kabos84,"RT @JF_q8: بالله  عليكم ،، مو عيب !!!
+247827742178021376,2012-09-17 22:41:52 +0000,richrad,Bubble Mailer #freebandnames
+247811706061979648,2012-09-17 21:38:09 +0000,dswordsNshields,"Hair of the Frog 
 
+(seriously, think about it) 
 
+#freebandnames"
+246825473785606145,2012-09-15 04:19:13 +0000,thedunniebobos,Wussies and pussies #goddylan #freebandnames
+246666260270702592,2012-09-14 17:46:33 +0000,StrongPROGress,#FreeBandNames Asterisks and Thunderstorms
+247827742178021376,2012-09-17 22:41:52 +0000,richrad,Bubble Mailer #freebandnames
+247811706061979648,2012-09-17 21:38:09 +0000,dswordsNshields,"Hair of the Frog 
 
-.. http://t.co/e29GV7Ow"
+(seriously, think about it) 
+
+#freebandnames"
+246825473785606145,2012-09-15 04:19:13 +0000,thedunniebobos,Wussies and pussies #goddylan #freebandnames
+246666260270702592,2012-09-14 17:46:33 +0000,StrongPROGress,#FreeBandNames Asterisks and Thunderstorms
+247827742178021376,2012-09-17 22:41:52 +0000,richrad,Bubble Mailer #freebandnames
+247811706061979648,2012-09-17 21:38:09 +0000,dswordsNshields,"Hair of the Frog 
+
+(seriously, think about it) 
+
+#freebandnames"
+246825473785606145,2012-09-15 04:19:13 +0000,thedunniebobos,Wussies and pussies #goddylan #freebandnames
+246666260270702592,2012-09-14 17:46:33 +0000,StrongPROGress,#FreeBandNames Asterisks and Thunderstorms
+247827742178021376,2012-09-17 22:41:52 +0000,richrad,Bubble Mailer #freebandnames
+247811706061979648,2012-09-17 21:38:09 +0000,dswordsNshields,"Hair of the Frog 
+
+(seriously, think about it) 
+
+#freebandnames"
+246825473785606145,2012-09-15 04:19:13 +0000,thedunniebobos,Wussies and pussies #goddylan #freebandnames
+246666260270702592,2012-09-14 17:46:33 +0000,StrongPROGress,#FreeBandNames Asterisks and Thunderstorms
+247827742178021376,2012-09-17 22:41:52 +0000,richrad,Bubble Mailer #freebandnames
+247811706061979648,2012-09-17 21:38:09 +0000,dswordsNshields,"Hair of the Frog 
+
+(seriously, think about it) 
+
+#freebandnames"
+246825473785606145,2012-09-15 04:19:13 +0000,thedunniebobos,Wussies and pussies #goddylan #freebandnames
+246666260270702592,2012-09-14 17:46:33 +0000,StrongPROGress,#FreeBandNames Asterisks and Thunderstorms
         eos
       end
     end
@@ -162,26 +209,26 @@ ID,Posted at,Screen name,Text
         @search.all("twitter")
         $stdout.string.should == <<-eos
 ID                  Posted at     Screen name       Text
-194521323202624150  Apr 23  2011  @Somedude         Gotta get right with twitter
-194526951936212623  Apr 23  2011  @TestMan          Twitter to Facebook test
-194521346690562622  Apr 23  2011  @Jena_Jones       test my new twitter..... :)
-194521262134160820  Apr 23  2011  @misterpic        Wallah there should be a ...
-194521016652621340  Apr 23  2011  @RRabbit          Twitter is kinda fun... K...
-194521262415032320  Apr 23  2011  @JessRoveel       Pondre lo mas importante ...
-194521262326951936  Apr 23  2011  @lauravgeest      Twitter doet het al 7 uur...
-194521262234669056  Apr 23  2011  @Jenny_Bearx333   I keep thinking that twit...
-194521262138204160  Apr 23  2011  @misspoxtonX      RT @jordantaylorhi: twitt...
-194521262134001665  Apr 23  2011  @PatrickBrickman  RT @zeus30hightower: Too ...
-194521262129811456  Apr 23  2011  @KolonelX         Ik refresh twitter op me ...
-194521261852995586  Apr 23  2011  @VLGPRLG5         @mikeyway and you too RT ...
-194521261756530689  Apr 23  2011  @xRhiBabyx        Trying to persuade the bo...
-194521261630697473  Apr 23  2011  @juliotrv         RT @lookinglassbr: Lançam...
-194521261571964928  Apr 23  2011  @shanleyaustin27  RT @caaammmmi: @shanleyau...
-194521261563580416  Apr 23  2011  @Dame_Valuta      RT @Paiser10: Great @chel...
-194521261488095232  Apr 23  2011  @miss_indyiah     smh, @IndianaHustle done ...
-194521261370650625  Apr 23  2011  @CAROLINEWOLLER   RT @Mark_Ingram28: To all...
-194521261370642432  Apr 23  2011  @shelbytrenchdww  RT @The90sLife: Admit it,...
-194521261307727872  Apr 23  2011  @kabos84          RT @JF_q8: بالله  عليكم ،...
+247827742178021376  Sep 17 14:41  @richrad          Bubble Mailer #freebandnames
+247811706061979648  Sep 17 13:38  @dswordsNshields  Hair of the Frog  (seriou...
+246825473785606145  Sep 14 20:19  @thedunniebobos   Wussies and pussies #godd...
+246666260270702592  Sep 14 09:46  @StrongPROGress   #FreeBandNames Asterisks ...
+247827742178021376  Sep 17 14:41  @richrad          Bubble Mailer #freebandnames
+247811706061979648  Sep 17 13:38  @dswordsNshields  Hair of the Frog  (seriou...
+246825473785606145  Sep 14 20:19  @thedunniebobos   Wussies and pussies #godd...
+246666260270702592  Sep 14 09:46  @StrongPROGress   #FreeBandNames Asterisks ...
+247827742178021376  Sep 17 14:41  @richrad          Bubble Mailer #freebandnames
+247811706061979648  Sep 17 13:38  @dswordsNshields  Hair of the Frog  (seriou...
+246825473785606145  Sep 14 20:19  @thedunniebobos   Wussies and pussies #godd...
+246666260270702592  Sep 14 09:46  @StrongPROGress   #FreeBandNames Asterisks ...
+247827742178021376  Sep 17 14:41  @richrad          Bubble Mailer #freebandnames
+247811706061979648  Sep 17 13:38  @dswordsNshields  Hair of the Frog  (seriou...
+246825473785606145  Sep 14 20:19  @thedunniebobos   Wussies and pussies #godd...
+246666260270702592  Sep 14 09:46  @StrongPROGress   #FreeBandNames Asterisks ...
+247827742178021376  Sep 17 14:41  @richrad          Bubble Mailer #freebandnames
+247811706061979648  Sep 17 13:38  @dswordsNshields  Hair of the Frog  (seriou...
+246825473785606145  Sep 14 20:19  @thedunniebobos   Wussies and pussies #godd...
+246666260270702592  Sep 14 09:46  @StrongPROGress   #FreeBandNames Asterisks ...
         eos
       end
     end
@@ -194,11 +241,11 @@ ID                  Posted at     Screen name       Text
           with(:query => {:q => "twitter", :rpp => "200"}).
           to_return(:body => fixture("search.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         stub_get("/1.1/search/tweets.json").
-          with(:query => {:q => "twitter", :rpp => "200", :max_id => "194521261307727871"}).
+          with(:query => {:q => "twitter", :rpp => "200", :max_id => "246666260270702591"}).
           to_return(:body => fixture("search.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        (5..185).step(20).to_a.reverse.each do |count|
+        (1..197).step(4).to_a.each do |count|
           stub_get("/1.1/search/tweets.json").
-            with(:query => {:q => "twitter", :rpp => count, :max_id => "194521261307727871"}).
+            with(:query => {:q => "twitter", :rpp => count, :max_id => "246666260270702591"}).
             to_return(:body => fixture("search.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         end
       end
@@ -216,11 +263,11 @@ ID                  Posted at     Screen name       Text
           with(:query => {:q => "twitter", :rpp => "200"}).
           should have_been_made
         a_get("/1.1/search/tweets.json").
-          with(:query => {:q => "twitter", :rpp => "200", :max_id => "194521261307727871"}).
-          should have_been_made.times(7)
-        (5..185).step(20).to_a.reverse.each do |count|
+          with(:query => {:q => "twitter", :rpp => "200", :max_id => "246666260270702591"}).
+          should have_been_made.times(36)
+        (1..197).step(4).to_a.each do |count|
           a_get("/1.1/search/tweets.json").
-            with(:query => {:q => "twitter", :rpp => count, :max_id => "194521261307727871"}).
+            with(:query => {:q => "twitter", :rpp => count, :max_id => "246666260270702591"}).
             should have_been_made
         end
       end

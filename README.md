@@ -181,7 +181,7 @@ example, send a user a direct message only if he already follows you:
     t search timeline "query"
 
 ### Search Tweets in another user's timeline that match a specified query
-    t search user @sferik "query"
+    t search timeline @sferik "query"
 
 ## Features
 * Deep search: Instead of using the Twitter Search API, [which only only goes

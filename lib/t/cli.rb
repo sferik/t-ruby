@@ -465,16 +465,16 @@ module T
     method_option "sort", :aliases => "-s", :type => :string, :enum => %w(members mode posted slug subscribers), :default => "slug", :desc => "Specify the order of the results.", :banner => "ORDER"
     method_option "unsorted", :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
     def lists(user=nil)
-      if user
+      lists = if user
         require 't/core_ext/string'
         user = if options['id']
           user.to_i
         else
           user.strip_ats
         end
-      end
-      lists = collect_with_cursor do |cursor|
-        client.lists(user, :cursor => cursor)
+        client.lists(user)
+      else
+        client.lists
       end
       print_lists(lists)
     end

@@ -1942,18 +1942,16 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
   describe "#lists" do
     before do
       stub_get("/1.1/lists/list.json").
-        with(:query => {:cursor => "-1"}).
         to_return(:body => fixture("lists.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @cli.lists
       a_get("/1.1/lists/list.json").
-        with(:query => {:cursor => "-1"}).
         should have_been_made
     end
     it "should have the correct output" do
       @cli.lists
-      $stdout.string.chomp.should == "@sferik/code-for-america  @sferik/presidents"
+      $stdout.string.chomp.should == "@pengwynn/rubyists  @twitter/team       @sferik/test"
     end
     context "--csv" do
       before do
@@ -1963,8 +1961,9 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
         @cli.lists
         $stdout.string.should == <<-eos
 ID,Created at,Screen name,Slug,Members,Subscribers,Mode,Description
-21718825,2010-09-14 21:46:56 +0000,sferik,code-for-america,26,5,public,Code for America
-8863586,2010-03-15 12:10:13 +0000,sferik,presidents,2,1,public,Presidents of the United States of America
+1129440,2009-10-30 14:39:25 +0000,pengwynn,rubyists,499,39,public,""
+574,2009-09-23 01:18:01 +0000,twitter,team,1199,78078,public,""
+73546689,2012-07-08 22:19:05 +0000,sferik,test,2,0,private,""
         eos
       end
     end
@@ -1975,9 +1974,10 @@ ID,Created at,Screen name,Slug,Members,Subscribers,Mode,Description
       it "should output in long format" do
         @cli.lists
         $stdout.string.should == <<-eos
-ID        Created at    Screen name  Slug              Members  Subscribers  ...
-21718825  Sep 14  2010  @sferik      code-for-america       26            5  ...
- 8863586  Mar 15  2010  @sferik      presidents              2            1  ...
+ID        Created at    Screen name  Slug      Members  Subscribers  Mode    ...
+ 1129440  Oct 30  2009  @pengwynn    rubyists      499           39  public   
+     574  Sep 22  2009  @twitter     team         1199        78078  public   
+73546689  Jul  8 14:19  @sferik      test            2            0  private  
         eos
       end
     end
@@ -1987,7 +1987,7 @@ ID        Created at    Screen name  Slug              Members  Subscribers  ...
       end
       it "should reverse the order of the sort" do
         @cli.lists
-        $stdout.string.chomp.should == "@sferik/presidents        @sferik/code-for-america"
+        $stdout.string.chomp.should == "@sferik/test        @twitter/team       @pengwynn/rubyists"
       end
     end
     context "--sort=members" do
@@ -1996,7 +1996,7 @@ ID        Created at    Screen name  Slug              Members  Subscribers  ...
       end
       it "should sort by the time when Twitter acount was created" do
         @cli.lists
-        $stdout.string.chomp.should == "@sferik/presidents        @sferik/code-for-america"
+        $stdout.string.chomp.should == "@sferik/test        @pengwynn/rubyists  @twitter/team"
       end
     end
     context "--sort=mode" do
@@ -2005,7 +2005,7 @@ ID        Created at    Screen name  Slug              Members  Subscribers  ...
       end
       it "should sort by the time when Twitter acount was created" do
         @cli.lists
-        $stdout.string.chomp.should == "@sferik/code-for-america  @sferik/presidents"
+        $stdout.string.chomp.should == "@sferik/test        @twitter/team       @pengwynn/rubyists"
       end
     end
     context "--sort=posted" do
@@ -2014,7 +2014,7 @@ ID        Created at    Screen name  Slug              Members  Subscribers  ...
       end
       it "should sort by the time when Twitter acount was created" do
         @cli.lists
-        $stdout.string.chomp.should == "@sferik/presidents        @sferik/code-for-america"
+        $stdout.string.chomp.should == "@twitter/team       @pengwynn/rubyists  @sferik/test"
       end
     end
     context "--sort=subscribers" do
@@ -2023,7 +2023,7 @@ ID        Created at    Screen name  Slug              Members  Subscribers  ...
       end
       it "should sort by the time when Twitter acount was created" do
         @cli.lists
-        $stdout.string.chomp.should == "@sferik/presidents        @sferik/code-for-america"
+        $stdout.string.chomp.should == "@sferik/test        @pengwynn/rubyists  @twitter/team"
       end
     end
     context "--unsorted" do
@@ -2032,32 +2032,32 @@ ID        Created at    Screen name  Slug              Members  Subscribers  ...
       end
       it "should not be sorted" do
         @cli.lists
-        $stdout.string.chomp.should == "@sferik/code-for-america  @sferik/presidents"
+        $stdout.string.chomp.should == "@pengwynn/rubyists  @twitter/team       @sferik/test"
       end
     end
     context "with a user passed" do
       before do
         stub_get("/1.1/lists/list.json").
-          with(:query => {:cursor => "-1", :screen_name => "sferik"}).
+          with(:query => {:screen_name => "sferik"}).
           to_return(:body => fixture("lists.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should request the correct resource" do
         @cli.lists("sferik")
         a_get("/1.1/lists/list.json").
-          with(:query => {:cursor => "-1", :screen_name => "sferik"}).
+          with(:query => {:screen_name => "sferik"}).
           should have_been_made
       end
       context "--id" do
         before do
           @cli.options = @cli.options.merge("id" => true)
           stub_get("/1.1/lists/list.json").
-            with(:query => {:cursor => "-1", :user_id => "7505382"}).
+            with(:query => {:user_id => "7505382"}).
             to_return(:body => fixture("lists.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         end
         it "should request the correct resource" do
           @cli.lists("7505382")
           a_get("/1.1/lists/list.json").
-            with(:query => {:cursor => "-1", :user_id => "7505382"}).
+            with(:query => {:user_id => "7505382"}).
             should have_been_made
         end
       end

@@ -102,7 +102,7 @@ testcli
     end
     it "should have the correct output" do
       @cli.block("sferik")
-      $stdout.string.should =~ /^@testcli blocked 1 user/
+      $stdout.string.should match /^@testcli blocked 1 user/
     end
     context "--id" do
       before do
@@ -900,7 +900,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
     end
     it "should have the correct output" do
       @cli.favorite("26755176471724032")
-      $stdout.string.should =~ /^@testcli favorited 1 tweet.$/
+      $stdout.string.should match /^@testcli favorited 1 tweet.$/
     end
   end
 
@@ -1188,7 +1188,7 @@ ID                  Posted at     Screen name       Text
       end
       it "should have the correct output" do
         @cli.follow("sferik", "pengwynn")
-        $stdout.string.should =~ /^@testcli is now following 1 more user\.$/
+        $stdout.string.should match /^@testcli is now following 1 more user\.$/
       end
       context "--id" do
         before do
@@ -2405,7 +2405,7 @@ ID                  Posted at     Screen name       Text
     end
     it "should have the correct output" do
       @cli.report_spam("sferik")
-      $stdout.string.should =~ /^@testcli reported 1 user/
+      $stdout.string.should match /^@testcli reported 1 user/
     end
     context "--id" do
       before do
@@ -2436,7 +2436,7 @@ ID                  Posted at     Screen name       Text
     end
     it "should have the correct output" do
       @cli.retweet("26755176471724032")
-      $stdout.string.should =~ /^@testcli retweeted 1 tweet.$/
+      $stdout.string.should match /^@testcli retweeted 1 tweet.$/
     end
   end
 
@@ -3333,7 +3333,7 @@ WOEID     Parent ID  Type       Name           Country
           with(:body => {:screen_name => "sferik"}).
           to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         @cli.unfollow("sferik")
-        $stdout.string.should =~ /^@testcli is no longer following 1 user\.$/
+        $stdout.string.should match /^@testcli is no longer following 1 user\.$/
       end
       context "--id" do
         before do

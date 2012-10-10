@@ -77,7 +77,7 @@ describe T::Delete do
         $stdout.should_receive(:print).with("Are you sure you want to permanently delete the direct message to @pengwynn: \"Creating a fixture for the Twitter gem\"? [y/N] ")
         $stdin.should_receive(:gets).and_return("yes")
         @delete.dm("1773478249")
-        $stdout.string.chomp.should == "@testcli deleted the direct message sent to @pengwynn: \"Creating a fixture for the Twitter gem\""
+        $stdout.string.chomp.should eq "@testcli deleted the direct message sent to @pengwynn: \"Creating a fixture for the Twitter gem\""
       end
     end
     context "no" do
@@ -100,7 +100,7 @@ describe T::Delete do
       end
       it "should have the correct output" do
         @delete.dm("1773478249")
-        $stdout.string.chomp.should == "@testcli deleted the direct message sent to @pengwynn: \"Creating a fixture for the Twitter gem\""
+        $stdout.string.chomp.should eq "@testcli deleted the direct message sent to @pengwynn: \"Creating a fixture for the Twitter gem\""
       end
     end
   end
@@ -186,7 +186,7 @@ describe T::Delete do
         $stdout.should_receive(:print).with("Are you sure you want to permanently delete the list \"presidents\"? [y/N] ")
         $stdin.should_receive(:gets).and_return("yes")
         @delete.list("presidents")
-        $stdout.string.chomp.should == "@testcli deleted the list \"presidents\"."
+        $stdout.string.chomp.should eq "@testcli deleted the list \"presidents\"."
       end
     end
     context "no" do
@@ -211,7 +211,7 @@ describe T::Delete do
       end
       it "should have the correct output" do
         @delete.list("presidents")
-        $stdout.string.chomp.should == "@testcli deleted the list \"presidents\"."
+        $stdout.string.chomp.should eq "@testcli deleted the list \"presidents\"."
       end
     end
     context "--id" do
@@ -263,7 +263,7 @@ describe T::Delete do
         $stdout.should_receive(:print).with("Are you sure you want to permanently delete @sferik's status: \"The problem with your code is that it's doing exactly what you told it to do.\"? [y/N] ")
         $stdin.should_receive(:gets).and_return("yes")
         @delete.status("26755176471724032")
-        $stdout.string.chomp.should == "@testcli deleted the Tweet: \"The problem with your code is that it's doing exactly what you told it to do.\""
+        $stdout.string.chomp.should eq "@testcli deleted the Tweet: \"The problem with your code is that it's doing exactly what you told it to do.\""
       end
     end
     context "no" do
@@ -286,7 +286,7 @@ describe T::Delete do
       end
       it "should have the correct output" do
         @delete.status("26755176471724032")
-        $stdout.string.chomp.should == "@testcli deleted the Tweet: \"The problem with your code is that it's doing exactly what you told it to do.\""
+        $stdout.string.chomp.should eq "@testcli deleted the Tweet: \"The problem with your code is that it's doing exactly what you told it to do.\""
       end
     end
   end

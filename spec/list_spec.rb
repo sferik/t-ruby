@@ -47,7 +47,7 @@ describe T::List do
     end
     it "should have the correct output" do
       @list.add("presidents", "BarackObama")
-      $stdout.string.split("\n").first.should == "@testcli added 1 member to the list \"presidents\"."
+      $stdout.string.split("\n").first.should eq "@testcli added 1 member to the list \"presidents\"."
     end
     context "--id" do
       before do
@@ -95,7 +95,7 @@ describe T::List do
     end
     it "should have the correct output" do
       @list.create("presidents")
-      $stdout.string.chomp.should == "@testcli created the list \"presidents\"."
+      $stdout.string.chomp.should eq "@testcli created the list \"presidents\"."
     end
   end
 
@@ -114,7 +114,7 @@ describe T::List do
     end
     it "should have the correct output" do
       @list.information("presidents")
-      $stdout.string.should == <<-eos
+      $stdout.string.should eq <<-eos
 ID           8863586
 Description  Presidents of the United States of America
 Slug         presidents
@@ -155,7 +155,7 @@ URL          https://twitter.com/sferik/presidents
       end
       it "should have the correct output" do
         @list.information("presidents")
-        $stdout.string.should == <<-eos
+        $stdout.string.should eq <<-eos
 ID,Description,Slug,Screen name,Created at,Members,Subscribers,Following,Mode,URL
 8863586,Presidents of the United States of America,presidents,sferik,2010-03-15 12:10:13 +0000,2,1,false,public,https://twitter.com/sferik/presidents
         eos
@@ -177,7 +177,7 @@ ID,Description,Slug,Screen name,Created at,Members,Subscribers,Following,Mode,UR
     end
     it "should have the correct output" do
       @list.members("presidents")
-      $stdout.string.chomp.should == "pengwynn  sferik"
+      $stdout.string.chomp.should eq "pengwynn  sferik"
     end
     context "--csv" do
       before do
@@ -185,7 +185,7 @@ ID,Description,Slug,Screen name,Created at,Members,Subscribers,Following,Mode,UR
       end
       it "should output in CSV format" do
         @list.members("presidents")
-        $stdout.string.should == <<-eos
+        $stdout.string.should eq <<-eos
 ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
 14100886,2008-03-08 16:34:22 +0000,2012-07-07 20:33:19 +0000,6940,192,358,3427,5457,pengwynn,Wynn Netherland ⚡
 7505382,2007-07-16 12:59:01 +0000,2012-07-08 18:29:20 +0000,7890,3755,118,212,2262,sferik,Erik Michaels-Ober
@@ -198,7 +198,7 @@ ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name
       end
       it "should output in long format" do
         @list.members("presidents")
-        $stdout.string.should == <<-eos
+        $stdout.string.should eq <<-eos
 ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
 14100886  Mar  8  2008  Jul  7 12:33       6940        192     358       3427...
  7505382  Jul 16  2007  Jul  8 10:29       7890       3755     118        212...
@@ -211,7 +211,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should reverse the order of the sort" do
         @list.members("presidents")
-        $stdout.string.chomp.should == "sferik    pengwynn"
+        $stdout.string.chomp.should eq "sferik    pengwynn"
       end
     end
     context "--sort=favorites" do
@@ -220,7 +220,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by number of favorites" do
         @list.members("presidents")
-        $stdout.string.chomp.should == "pengwynn  sferik"
+        $stdout.string.chomp.should eq "pengwynn  sferik"
       end
     end
     context "--sort=followers" do
@@ -229,7 +229,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by number of followers" do
         @list.members("presidents")
-        $stdout.string.chomp.should == "sferik    pengwynn"
+        $stdout.string.chomp.should eq "sferik    pengwynn"
       end
     end
     context "--sort=friends" do
@@ -238,7 +238,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by number of friends" do
         @list.members("presidents")
-        $stdout.string.chomp.should == "sferik    pengwynn"
+        $stdout.string.chomp.should eq "sferik    pengwynn"
       end
     end
     context "--sort=listed" do
@@ -247,7 +247,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by number of list memberships" do
         @list.members("presidents")
-        $stdout.string.chomp.should == "sferik    pengwynn"
+        $stdout.string.chomp.should eq "sferik    pengwynn"
       end
     end
     context "--sort=since" do
@@ -256,7 +256,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by the time wshen Twitter account was created" do
         @list.members("presidents")
-        $stdout.string.chomp.should == "sferik    pengwynn"
+        $stdout.string.chomp.should eq "sferik    pengwynn"
       end
     end
     context "--sort=tweets" do
@@ -265,7 +265,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by number of Tweets" do
         @list.members("presidents")
-        $stdout.string.chomp.should == "pengwynn  sferik"
+        $stdout.string.chomp.should eq "pengwynn  sferik"
       end
     end
     context "--sort=tweeted" do
@@ -274,7 +274,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by the time of the last Tweet" do
         @list.members("presidents")
-        $stdout.string.chomp.should == "pengwynn  sferik"
+        $stdout.string.chomp.should eq "pengwynn  sferik"
       end
     end
     context "--unsorted" do
@@ -283,7 +283,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should not be sorted" do
         @list.members("presidents")
-        $stdout.string.chomp.should == "sferik    pengwynn"
+        $stdout.string.chomp.should eq "sferik    pengwynn"
       end
     end
     context "with a user passed" do
@@ -332,7 +332,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
         with(:body => {:screen_name => "BarackObama", :slug => "presidents", :owner_screen_name => "sferik"}).
         to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       @list.remove("presidents", "BarackObama")
-      $stdout.string.split("\n").first.should == "@testcli removed 1 member from the list \"presidents\"."
+      $stdout.string.split("\n").first.should eq "@testcli removed 1 member from the list \"presidents\"."
     end
     context "--id" do
       before do
@@ -379,7 +379,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
     end
     it "should have the correct output" do
       @list.timeline("presidents")
-      $stdout.string.should == <<-eos
+      $stdout.string.should eq <<-eos
 \e[1m\e[33m   @mutgoff\e[0m
    Happy Birthday @imdane. Watch out for those @rally pranksters!
 
@@ -463,7 +463,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should output in long format" do
         @list.timeline("presidents")
-        $stdout.string.should == <<-eos
+        $stdout.string.should eq <<-eos
 ID,Posted at,Screen name,Text
 244111636544225280,2012-09-07 16:35:24 +0000,mutgoff,Happy Birthday @imdane. Watch out for those @rally pranksters!
 244111183165157376,2012-09-07 16:33:36 +0000,ironicsans,"If you like good real-life stories, check out @NarrativelyNY's just-launched site http://t.co/wiUL07jE (and also visit http://t.co/ZoyQxqWA)"
@@ -494,7 +494,7 @@ ID,Posted at,Screen name,Text
       end
       it "should output in long format" do
         @list.timeline("presidents")
-        $stdout.string.should == <<-eos
+        $stdout.string.should eq <<-eos
 ID                  Posted at     Screen name       Text
 244111636544225280  Sep  7 08:35  @mutgoff          Happy Birthday @imdane. W...
 244111183165157376  Sep  7 08:33  @ironicsans       If you like good real-lif...
@@ -524,7 +524,7 @@ ID                  Posted at     Screen name       Text
         end
         it "should reverse the order of the sort" do
           @list.timeline("presidents")
-          $stdout.string.should == <<-eos
+          $stdout.string.should eq <<-eos
 ID                  Posted at     Screen name       Text
 244099460672679938  Sep  7 07:47  @dwiskus          Gentlemen, you can't figh...
 244100411563339777  Sep  7 07:50  @sferik           @episod @twitterapi Did y...

@@ -24,15 +24,15 @@ describe T::Set do
     end
     it "should have the correct output" do
       @set.active("testcli", "abc123")
-      $stdout.string.chomp.should == "Active account has been updated to testcli."
+      $stdout.string.chomp.should eq "Active account has been updated to testcli."
     end
     it "should accept an account name without a consumer key" do
       @set.active("testcli")
-      $stdout.string.chomp.should == "Active account has been updated to testcli."
+      $stdout.string.chomp.should eq "Active account has been updated to testcli."
     end
     it "should be case insensitive" do
       @set.active("TestCLI", "abc123")
-      $stdout.string.chomp.should == "Active account has been updated to testcli."
+      $stdout.string.chomp.should eq "Active account has been updated to testcli."
     end
     it "should raise an error if username is ambiguous" do
       lambda do
@@ -61,7 +61,7 @@ describe T::Set do
     end
     it "should have the correct output" do
       @set.bio("Vagabond.")
-      $stdout.string.chomp.should == "@testcli's bio has been updated."
+      $stdout.string.chomp.should eq "@testcli's bio has been updated."
     end
   end
 
@@ -80,7 +80,7 @@ describe T::Set do
     end
     it "should have the correct output" do
       @set.language("en")
-      $stdout.string.chomp.should == "@testcli's language has been updated."
+      $stdout.string.chomp.should eq "@testcli's language has been updated."
     end
   end
 
@@ -99,7 +99,7 @@ describe T::Set do
     end
     it "should have the correct output" do
       @set.location("San Francisco")
-      $stdout.string.chomp.should == "@testcli's location has been updated."
+      $stdout.string.chomp.should eq "@testcli's location has been updated."
     end
   end
 
@@ -118,7 +118,7 @@ describe T::Set do
     end
     it "should have the correct output" do
       @set.name("Erik Michaels-Ober")
-      $stdout.string.chomp.should == "@testcli's name has been updated."
+      $stdout.string.chomp.should eq "@testcli's name has been updated."
     end
   end
 
@@ -135,7 +135,7 @@ describe T::Set do
     end
     it "should have the correct output" do
       @set.profile_background_image(fixture_path + "/we_concept_bg2.png")
-      $stdout.string.chomp.should == "@testcli's background image has been updated."
+      $stdout.string.chomp.should eq "@testcli's background image has been updated."
     end
   end
 
@@ -152,7 +152,7 @@ describe T::Set do
     end
     it "should have the correct output" do
       @set.profile_image(fixture_path + "/me.jpg")
-      $stdout.string.chomp.should == "@testcli's image has been updated."
+      $stdout.string.chomp.should eq "@testcli's image has been updated."
     end
   end
 
@@ -171,7 +171,7 @@ describe T::Set do
     end
     it "should have the correct output" do
       @set.url("https://github.com/sferik")
-      $stdout.string.chomp.should == "@testcli's URL has been updated."
+      $stdout.string.chomp.should eq "@testcli's URL has been updated."
     end
   end
 

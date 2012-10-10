@@ -66,7 +66,7 @@ describe T::Search do
     end
     it "should have the correct output" do
       @search.all("twitter")
-      $stdout.string.should == <<-eos
+      $stdout.string.should eq <<-eos
 
 \e[1m\e[33m   @richrad\e[0m
    Bubble Mailer #freebandnames
@@ -156,7 +156,7 @@ describe T::Search do
       end
       it "should output in CSV format" do
         @search.all("twitter")
-        $stdout.string.should == <<-eos
+        $stdout.string.should eq <<-eos
 ID,Posted at,Screen name,Text
 247827742178021376,2012-09-17 22:41:52 +0000,richrad,Bubble Mailer #freebandnames
 247811706061979648,2012-09-17 21:38:09 +0000,dswordsNshields,"Hair of the Frog 
@@ -207,7 +207,7 @@ ID,Posted at,Screen name,Text
       end
       it "should output in long format" do
         @search.all("twitter")
-        $stdout.string.should == <<-eos
+        $stdout.string.should eq <<-eos
 ID                  Posted at     Screen name       Text
 247827742178021376  Sep 17 14:41  @richrad          Bubble Mailer #freebandnames
 247811706061979648  Sep 17 13:38  @dswordsNshields  Hair of the Frog  (seriou...
@@ -294,7 +294,7 @@ ID                  Posted at     Screen name       Text
     end
     it "should have the correct output" do
       @search.favorites("twitter")
-      $stdout.string.should == <<-eos
+      $stdout.string.should eq <<-eos
 \e[1m\e[33m   @sferik\e[0m
    @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem 
    to be missing "1.1" from the URL.
@@ -310,7 +310,7 @@ ID                  Posted at     Screen name       Text
       end
       it "should output in CSV format" do
         @search.favorites("twitter")
-        $stdout.string.should == <<-eos
+        $stdout.string.should eq <<-eos
 ID,Posted at,Screen name,Text
 244102209942458368,2012-09-07 15:57:56 +0000,sferik,"@episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem to be missing ""1.1"" from the URL."
 244100411563339777,2012-09-07 15:50:47 +0000,sferik,@episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
@@ -323,7 +323,7 @@ ID,Posted at,Screen name,Text
       end
       it "should output in long format" do
         @search.favorites("twitter")
-        $stdout.string.should == <<-eos
+        $stdout.string.should eq <<-eos
 ID                  Posted at     Screen name  Text
 244102209942458368  Sep  7 07:57  @sferik      @episod @twitterapi now https:...
 244100411563339777  Sep  7 07:50  @sferik      @episod @twitterapi Did you ca...
@@ -363,7 +363,7 @@ ID                  Posted at     Screen name  Text
       end
       it "should have the correct output" do
         @search.favorites("sferik", "twitter")
-        $stdout.string.should == <<-eos
+        $stdout.string.should eq <<-eos
 \e[1m\e[33m   @sferik\e[0m
    @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem 
    to be missing "1.1" from the URL.
@@ -396,7 +396,7 @@ ID                  Posted at     Screen name  Text
     end
     it "should have the correct output" do
       @search.mentions("twitter")
-      $stdout.string.should == <<-eos
+      $stdout.string.should eq <<-eos
 \e[1m\e[33m   @sferik\e[0m
    @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem 
    to be missing "1.1" from the URL.
@@ -412,7 +412,7 @@ ID                  Posted at     Screen name  Text
       end
       it "should output in CSV format" do
         @search.mentions("twitter")
-        $stdout.string.should == <<-eos
+        $stdout.string.should eq <<-eos
 ID,Posted at,Screen name,Text
 244102209942458368,2012-09-07 15:57:56 +0000,sferik,"@episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem to be missing ""1.1"" from the URL."
 244100411563339777,2012-09-07 15:50:47 +0000,sferik,@episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
@@ -425,7 +425,7 @@ ID,Posted at,Screen name,Text
       end
       it "should output in long format" do
         @search.mentions("twitter")
-        $stdout.string.should == <<-eos
+        $stdout.string.should eq <<-eos
 ID                  Posted at     Screen name  Text
 244102209942458368  Sep  7 07:57  @sferik      @episod @twitterapi now https:...
 244100411563339777  Sep  7 07:50  @sferik      @episod @twitterapi Did you ca...
@@ -467,7 +467,7 @@ ID                  Posted at     Screen name  Text
     end
     it "should have the correct output" do
       @search.list("presidents", "twitter")
-      $stdout.string.should == <<-eos
+      $stdout.string.should eq <<-eos
 \e[1m\e[33m   @sferik\e[0m
    @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem 
    to be missing "1.1" from the URL.
@@ -483,7 +483,7 @@ ID                  Posted at     Screen name  Text
       end
       it "should output in CSV format" do
         @search.list("presidents", "twitter")
-        $stdout.string.should == <<-eos
+        $stdout.string.should eq <<-eos
 ID,Posted at,Screen name,Text
 244102209942458368,2012-09-07 15:57:56 +0000,sferik,"@episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem to be missing ""1.1"" from the URL."
 244100411563339777,2012-09-07 15:50:47 +0000,sferik,@episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
@@ -496,7 +496,7 @@ ID,Posted at,Screen name,Text
       end
       it "should output in long format" do
         @search.list("presidents", "twitter")
-        $stdout.string.should == <<-eos
+        $stdout.string.should eq <<-eos
 ID                  Posted at     Screen name  Text
 244102209942458368  Sep  7 07:57  @sferik      @episod @twitterapi now https:...
 244100411563339777  Sep  7 07:50  @sferik      @episod @twitterapi Did you ca...
@@ -566,7 +566,7 @@ ID                  Posted at     Screen name  Text
     end
     it "should have the correct output" do
       @search.retweets("mosaic")
-      $stdout.string.should == <<-eos
+      $stdout.string.should eq <<-eos
 \e[1m\e[33m   @calebelston\e[0m
    RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
 
@@ -578,7 +578,7 @@ ID                  Posted at     Screen name  Text
       end
       it "should output in CSV format" do
         @search.retweets("mosaic")
-        $stdout.string.should == <<-eos
+        $stdout.string.should eq <<-eos
 ID,Posted at,Screen name,Text
 244108728834592770,2012-09-07 16:23:50 +0000,calebelston,RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
         eos
@@ -590,7 +590,7 @@ ID,Posted at,Screen name,Text
       end
       it "should output in long format" do
         @search.retweets("mosaic")
-        $stdout.string.should == <<-eos
+        $stdout.string.should eq <<-eos
 ID                  Posted at     Screen name   Text
 244108728834592770  Sep  7 08:23  @calebelston  RT @olivercameron: Mosaic loo...
         eos
@@ -629,7 +629,7 @@ ID                  Posted at     Screen name   Text
       end
       it "should have the correct output" do
         @search.retweets("sferik", "mosaic")
-        $stdout.string.should == <<-eos
+        $stdout.string.should eq <<-eos
 \e[1m\e[33m   @calebelston\e[0m
    RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
 
@@ -658,7 +658,7 @@ ID                  Posted at     Screen name   Text
     end
     it "should have the correct output" do
       @search.timeline("twitter")
-      $stdout.string.should == <<-eos
+      $stdout.string.should eq <<-eos
 \e[1m\e[33m   @sferik\e[0m
    @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem 
    to be missing "1.1" from the URL.
@@ -674,7 +674,7 @@ ID                  Posted at     Screen name   Text
       end
       it "should output in CSV format" do
         @search.timeline("twitter")
-        $stdout.string.should == <<-eos
+        $stdout.string.should eq <<-eos
 ID,Posted at,Screen name,Text
 244102209942458368,2012-09-07 15:57:56 +0000,sferik,"@episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem to be missing ""1.1"" from the URL."
 244100411563339777,2012-09-07 15:50:47 +0000,sferik,@episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
@@ -687,7 +687,7 @@ ID,Posted at,Screen name,Text
       end
       it "should output in long format" do
         @search.timeline("twitter")
-        $stdout.string.should == <<-eos
+        $stdout.string.should eq <<-eos
 ID                  Posted at     Screen name  Text
 244102209942458368  Sep  7 07:57  @sferik      @episod @twitterapi now https:...
 244100411563339777  Sep  7 07:50  @sferik      @episod @twitterapi Did you ca...
@@ -727,7 +727,7 @@ ID                  Posted at     Screen name  Text
       end
       it "should have the correct output" do
         @search.timeline("sferik", "twitter")
-        $stdout.string.should == <<-eos
+        $stdout.string.should eq <<-eos
 \e[1m\e[33m   @sferik\e[0m
    @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem 
    to be missing "1.1" from the URL.
@@ -743,7 +743,7 @@ ID                  Posted at     Screen name  Text
         end
         it "should output in CSV format" do
           @search.timeline("sferik", "twitter")
-          $stdout.string.should == <<-eos
+          $stdout.string.should eq <<-eos
 ID,Posted at,Screen name,Text
 244102209942458368,2012-09-07 15:57:56 +0000,sferik,"@episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem to be missing ""1.1"" from the URL."
 244100411563339777,2012-09-07 15:50:47 +0000,sferik,@episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
@@ -776,7 +776,7 @@ ID,Posted at,Screen name,Text
         end
         it "should output in long format" do
           @search.timeline("sferik", "twitter")
-          $stdout.string.should == <<-eos
+          $stdout.string.should eq <<-eos
 ID                  Posted at     Screen name  Text
 244102209942458368  Sep  7 07:57  @sferik      @episod @twitterapi now https:...
 244100411563339777  Sep  7 07:50  @sferik      @episod @twitterapi Did you ca...
@@ -821,7 +821,7 @@ ID                  Posted at     Screen name  Text
     end
     it "should have the correct output" do
       @search.users("Erik")
-      $stdout.string.chomp.should == "pengwynn  sferik"
+      $stdout.string.chomp.should eq "pengwynn  sferik"
     end
     context "--csv" do
       before do
@@ -829,7 +829,7 @@ ID                  Posted at     Screen name  Text
       end
       it "should output in CSV format" do
         @search.users("Erik")
-        $stdout.string.should == <<-eos
+        $stdout.string.should eq <<-eos
 ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
 14100886,2008-03-08 16:34:22 +0000,2012-07-07 20:33:19 +0000,6940,192,358,3427,5457,pengwynn,Wynn Netherland ⚡
 7505382,2007-07-16 12:59:01 +0000,2012-07-08 18:29:20 +0000,7890,3755,118,212,2262,sferik,Erik Michaels-Ober
@@ -842,7 +842,7 @@ ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name
       end
       it "should output in long format" do
         @search.users("Erik")
-        $stdout.string.should == <<-eos
+        $stdout.string.should eq <<-eos
 ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
 14100886  Mar  8  2008  Jul  7 12:33       6940        192     358       3427...
  7505382  Jul 16  2007  Jul  8 10:29       7890       3755     118        212...
@@ -855,7 +855,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should reverse the order of the sort" do
         @search.users("Erik")
-        $stdout.string.chomp.should == "sferik    pengwynn"
+        $stdout.string.chomp.should eq "sferik    pengwynn"
       end
     end
     context "--sort=favorites" do
@@ -864,7 +864,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by number of favorites" do
         @search.users("Erik")
-        $stdout.string.chomp.should == "pengwynn  sferik"
+        $stdout.string.chomp.should eq "pengwynn  sferik"
       end
     end
     context "--sort=followers" do
@@ -873,7 +873,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by number of followers" do
         @search.users("Erik")
-        $stdout.string.chomp.should == "sferik    pengwynn"
+        $stdout.string.chomp.should eq "sferik    pengwynn"
       end
     end
     context "--sort=friends" do
@@ -882,7 +882,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by number of friends" do
         @search.users("Erik")
-        $stdout.string.chomp.should == "sferik    pengwynn"
+        $stdout.string.chomp.should eq "sferik    pengwynn"
       end
     end
     context "--sort=listed" do
@@ -891,7 +891,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by number of list memberships" do
         @search.users("Erik")
-        $stdout.string.chomp.should == "sferik    pengwynn"
+        $stdout.string.chomp.should eq "sferik    pengwynn"
       end
     end
     context "--sort=since" do
@@ -900,7 +900,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by the time wshen Twitter account was created" do
         @search.users("Erik")
-        $stdout.string.chomp.should == "sferik    pengwynn"
+        $stdout.string.chomp.should eq "sferik    pengwynn"
       end
     end
     context "--sort=tweets" do
@@ -909,7 +909,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by number of Tweets" do
         @search.users("Erik")
-        $stdout.string.chomp.should == "pengwynn  sferik"
+        $stdout.string.chomp.should eq "pengwynn  sferik"
       end
     end
     context "--sort=tweeted" do
@@ -918,7 +918,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by the time of the last Tweet" do
         @search.users("Erik")
-        $stdout.string.chomp.should == "pengwynn  sferik"
+        $stdout.string.chomp.should eq "pengwynn  sferik"
       end
     end
     context "--unsorted" do
@@ -927,7 +927,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should not be sorted" do
         @search.users("Erik")
-        $stdout.string.chomp.should == "pengwynn  sferik"
+        $stdout.string.chomp.should eq "pengwynn  sferik"
       end
     end
     context "Twitter is down" do

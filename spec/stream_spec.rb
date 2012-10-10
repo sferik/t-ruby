@@ -25,13 +25,13 @@ describe T::Stream do
   end
 
 
-	describe '#all' do
-    context '--csv' do
+	describe "#all" do
+    context "--csv" do
       before :each do
         @stream.options = @stream.options.merge("csv" => true)
       end
 
-      it 'outputs headings when the stream initializes' do
+      it "outputs headings when the stream initializes" do
         @tweetstream_client.stub(:on_timeline_status).and_return
         @tweetstream_client.stub(:on_inited).and_yield
 
@@ -49,12 +49,12 @@ describe T::Stream do
       end
     end
 
-    context '--long' do
+    context "--long" do
       before :each do
         @stream.options = @stream.options.merge("long" => true)
       end
 
-      it 'outputs headings when the stream initializes' do
+      it "outputs headings when the stream initializes" do
         @tweetstream_client.stub(:on_inited).and_yield
         @tweetstream_client.stub(:on_timeline_status).and_return
 
@@ -72,48 +72,48 @@ describe T::Stream do
       end
     end
 
-    context 'normal usage' do
+    context "normal usage" do
       before :each do
         @tweetstream_client.stub(:on_timeline_status).
           and_yield(@status)
       end
 
-      it 'prints the tweet status' do
+      it "prints the tweet status" do
         @stream.should_receive(:print_message)
         @stream.all
       end
     end
 
-    it 'invokes TweetStream::Client#sample' do
+    it "invokes TweetStream::Client#sample" do
       @tweetstream_client.should_receive(:sample)
       @stream.all
     end
 	end
 
-  describe '#matrix' do
+  describe "#matrix" do
     before :each do
       @tweetstream_client.stub(:on_timeline_status).
         and_yield(@status)
     end
 
-    it 'outputs the tweet status' do
+    it "outputs the tweet status" do
       @stream.should_receive(:say).with(any_args)
       @stream.matrix
     end
 
-    it 'invokes TweetStream::Client.sample' do
+    it "invokes TweetStream::Client.sample" do
       @tweetstream_client.should_receive(:sample)
       @stream.matrix
     end
   end
 
-  describe '#search' do
+  describe "#search" do
     before :each do
       @tweetstream_client.stub(:on_timeline_status).
         and_yield(@status)
     end
 
-    context '--csv' do
+    context "--csv" do
       before :each do
         @stream.options = @stream.options.merge("csv" => true)
       end
@@ -126,7 +126,7 @@ describe T::Stream do
       end
     end
 
-    context '--long' do
+    context "--long" do
       before :each do
         @stream.options = @stream.options.merge("long" => true)
       end
@@ -141,19 +141,19 @@ describe T::Stream do
       end
     end
 
-    context 'normal usage' do
+    context "normal usage" do
       before :each do
         @tweetstream_client.stub(:on_timeline_status).
           and_yield(@status)
       end
 
-      it 'prints the tweet status' do
+      it "prints the tweet status" do
         @stream.should_receive(:print_message)
         @stream.search('t gem')
       end
     end
 
-    it 'performs a REST search when the stream initializes' do
+    it "performs a REST search when the stream initializes" do
       @tweetstream_client.stub(:on_timeline_status).and_return
       @tweetstream_client.stub(:on_inited).and_yield
 
@@ -163,7 +163,7 @@ describe T::Stream do
       @stream.search('t', 'gem')
     end
 
-    it 'invokes TweetStream::Client#track' do
+    it "invokes TweetStream::Client#track" do
       @tweetstream_client.stub(:on_timeline_status).and_return
 
       @tweetstream_client.should_receive(:track).with(['t gem'])
@@ -171,13 +171,13 @@ describe T::Stream do
     end
   end
 
-  describe '#timeline' do
+  describe "#timeline" do
     before :each do
       @tweetstream_client.stub(:on_timeline_status).
         and_yield(@status)
     end
 
-    context '--csv' do
+    context "--csv" do
       before :each do
         @stream.options = @stream.options.merge("csv" => true)
       end
@@ -190,7 +190,7 @@ describe T::Stream do
       end
     end
 
-    context '--long' do
+    context "--long" do
       before :each do
         @stream.options = @stream.options.merge("long" => true)
       end
@@ -205,19 +205,19 @@ describe T::Stream do
       end
     end
 
-    context 'normal usage' do
+    context "normal usage" do
       before :each do
         @tweetstream_client.stub(:on_timeline_status).
           and_yield(@status)
       end
 
-      it 'prints the tweet status' do
+      it "prints the tweet status" do
         @stream.should_receive(:print_message)
         @stream.timeline
       end
     end
 
-    it 'performs a REST search when the stream initializes' do
+    it "performs a REST search when the stream initializes" do
       @tweetstream_client.stub(:on_timeline_status).and_return
       @tweetstream_client.stub(:on_inited).and_yield
 
@@ -227,7 +227,7 @@ describe T::Stream do
       @stream.timeline
     end
 
-    it 'invokes TweetStream::Client#userstream' do
+    it "invokes TweetStream::Client#userstream" do
       @tweetstream_client.stub(:on_timeline_status).and_return
 
       @tweetstream_client.should_receive(:userstream)
@@ -235,18 +235,18 @@ describe T::Stream do
     end
   end
 
-  describe '#users' do
+  describe "#users" do
     before :each do
       @tweetstream_client.stub(:on_timeline_status).
         and_yield(@status)
     end
 
-    context '--csv' do
+    context "--csv" do
       before :each do
         @stream.options = @stream.options.merge("csv" => true)
       end
 
-      it 'outputs headings when the stream initializes' do
+      it "outputs headings when the stream initializes" do
         @tweetstream_client.stub(:on_timeline_status).and_return
         @tweetstream_client.stub(:on_inited).and_yield
 
@@ -262,12 +262,12 @@ describe T::Stream do
       end
     end
 
-    context '--long' do
+    context "--long" do
       before :each do
         @stream.options = @stream.options.merge("long" => true)
       end
 
-      it 'outputs headings when the stream initializes' do
+      it "outputs headings when the stream initializes" do
         @tweetstream_client.stub(:on_inited).and_yield
         @tweetstream_client.stub(:on_timeline_status).and_return
 
@@ -285,19 +285,19 @@ describe T::Stream do
       end
     end
 
-    context 'normal usage' do
+    context "normal usage" do
       before :each do
         @tweetstream_client.stub(:on_timeline_status).
           and_yield(@status)
       end
 
-      it 'prints the tweet status' do
+      it "prints the tweet status" do
         @stream.should_receive(:print_message)
         @stream.users('123')
       end
     end
 
-    it 'invokes TweetStream::Client#follow' do
+    it "invokes TweetStream::Client#follow" do
       @tweetstream_client.stub(:on_timeline_status).and_return
 
       @tweetstream_client.should_receive(:follow).with([123, 456, 789])

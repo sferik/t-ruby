@@ -13,6 +13,12 @@ require 'timecop'
 require 'webmock/rspec'
 require 'json'
 
+RSpec.configure do |config|
+  config.expect_with :rspec do |c|
+    c.syntax = :expect
+  end
+end
+
 def a_delete(path, endpoint='https://api.twitter.com')
   a_request(:delete, endpoint + path)
 end

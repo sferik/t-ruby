@@ -34,7 +34,7 @@ describe T::CLI do
     end
     it "should have the correct output" do
       @cli.accounts
-      $stdout.string.should eq <<-eos
+      expect($stdout.string).to eq <<-eos
 testcli
   abc123 (active)
       eos
@@ -44,12 +44,9 @@ testcli
   describe "#authorize" do
     before do
       @cli.options = @cli.options.merge("profile" => project_path + "/tmp/authorize", "display-url" => true)
-      stub_post("/oauth/request_token").
-        to_return(:body => fixture("request_token"))
-      stub_post("/oauth/access_token").
-        to_return(:body => fixture("access_token"))
-      stub_get("/1/account/verify_credentials.json").
-        to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_post("/oauth/request_token").to_return(:body => fixture("request_token"))
+      stub_post("/oauth/access_token").to_return(:body => fixture("access_token"))
+      stub_get("/1/account/verify_credentials.json").to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       $stdout.should_receive(:print)
@@ -63,15 +60,12 @@ testcli
       $stdout.should_receive(:print).with("Enter the supplied PIN: ")
       $stdin.should_receive(:gets).and_return("1234567890")
       @cli.authorize
-      a_post("/oauth/request_token").
-        should have_been_made
-      a_post("/oauth/access_token").
-        should have_been_made
-      a_get("/1/account/verify_credentials.json").
-        should have_been_made
+      expect(a_post("/oauth/request_token")).to have_been_made
+      expect(a_post("/oauth/access_token")).to have_been_made
+      expect(a_get("/1/account/verify_credentials.json")).to have_been_made
     end
     it "should not raise error" do
-      lambda do
+      expect do
         $stdout.should_receive(:print)
         $stdin.should_receive(:gets).and_return("\n")
         $stdout.should_receive(:print).with("Enter your consumer key: ")
@@ -83,61 +77,47 @@ testcli
         $stdout.should_receive(:print).with("Enter the supplied PIN: ")
         $stdin.should_receive(:gets).and_return("1234567890")
         @cli.authorize
-      end.should_not raise_error
+      end.not_to raise_error
     end
   end
 
   describe "#block" do
     before do
       @cli.options = @cli.options.merge("profile" => fixture_path + "/.trc")
-      stub_post("/1.1/blocks/create.json").
-        with(:body => {:screen_name => "sferik"}).
-        to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_post("/1.1/blocks/create.json").with(:body => {:screen_name => "sferik"}).to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @cli.block("sferik")
-      a_post("/1.1/blocks/create.json").
-        with(:body => {:screen_name => "sferik"}).
-        should have_been_made
+      expect(a_post("/1.1/blocks/create.json").with(:body => {:screen_name => "sferik"})).to have_been_made
     end
     it "should have the correct output" do
       @cli.block("sferik")
-      $stdout.string.should match /^@testcli blocked 1 user/
+      expect($stdout.string).to match /^@testcli blocked 1 user/
     end
     context "--id" do
       before do
         @cli.options = @cli.options.merge("id" => true)
-        stub_post("/1.1/blocks/create.json").
-          with(:body => {:user_id => "7505382"}).
-          to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_post("/1.1/blocks/create.json").with(:body => {:user_id => "7505382"}).to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should request the correct resource" do
         @cli.block("7505382")
-        a_post("/1.1/blocks/create.json").
-          with(:body => {:user_id => "7505382"}).
-          should have_been_made
+        expect(a_post("/1.1/blocks/create.json").with(:body => {:user_id => "7505382"})).to have_been_made
       end
     end
   end
 
   describe "#direct_messages" do
     before do
-      stub_get("/1.1/direct_messages.json").
-        with(:query => {:count => "20"}).
-        to_return(:body => fixture("direct_messages.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_get("/1.1/direct_messages.json").
-        with(:query => {:count => "10", "max_id"=>"1624782205"}).
-        to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/direct_messages.json").with(:query => {:count => "20"}).to_return(:body => fixture("direct_messages.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/direct_messages.json").with(:query => {:count => "10", "max_id"=>"1624782205"}).to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @cli.direct_messages
-      a_get("/1.1/direct_messages.json").
-        with(:query => {:count => "20"}).
-        should have_been_made
+      expect(a_get("/1.1/direct_messages.json").with(:query => {:count => "20"})).to have_been_made
     end
     it "should have the correct output" do
       @cli.direct_messages
-      $stdout.string.should eq <<-eos
+      expect($stdout.string).to eq <<-eos
 \e[1m\e[33m   @sferik\e[0m
    Sounds good. Meeting Tuesday is fine.
 
@@ -182,7 +162,7 @@ testcli
       end
       it "should output in CSV format" do
         @cli.direct_messages
-        $stdout.string.should eq <<-eos
+        expect($stdout.string).to eq <<-eos
 ID,Posted at,Screen name,Text
 1773478249,2010-10-17 20:48:55 +0000,sferik,Sounds good. Meeting Tuesday is fine.
 1762960771,2010-10-14 21:43:30 +0000,sferik,That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does that work for you?
@@ -203,7 +183,7 @@ ID,Posted at,Screen name,Text
       end
       it "should output in long format" do
         @cli.direct_messages
-        $stdout.string.should eq <<-eos
+        expect($stdout.string).to eq <<-eos
 ID          Posted at     Screen name  Text
 1773478249  Oct 17  2010  @sferik      Sounds good. Meeting Tuesday is fine.
 1762960771  Oct 14  2010  @sferik      That's great news! Let's plan to chat ...
@@ -220,41 +200,25 @@ ID          Posted at     Screen name  Text
     end
     context "--number" do
       before do
-        stub_get("/1.1/direct_messages.json").
-          with(:query => {:count => "1"}).
-          to_return(:body => fixture("direct_messages.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/direct_messages.json").
-          with(:query => {:count => "200"}).
-          to_return(:body => fixture("direct_messages.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/direct_messages.json").
-          with(:query => {:count => "200", :max_id => "1624782205"}).
-          to_return(:body => fixture("direct_messages.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/direct_messages.json").with(:query => {:count => "1"}).to_return(:body => fixture("direct_messages.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/direct_messages.json").with(:query => {:count => "200"}).to_return(:body => fixture("direct_messages.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/direct_messages.json").with(:query => {:count => "200", :max_id => "1624782205"}).to_return(:body => fixture("direct_messages.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         (5..195).step(10).to_a.reverse.each do |count|
-          stub_get("/1.1/direct_messages.json").
-            with(:query => {:count => count, :max_id => "1624782205"}).
-            to_return(:body => fixture("direct_messages.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1.1/direct_messages.json").with(:query => {:count => count, :max_id => "1624782205"}).to_return(:body => fixture("direct_messages.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         end
       end
       it "should limit the number of results to 1" do
         @cli.options = @cli.options.merge("number" => 1)
         @cli.direct_messages
-        a_get("/1.1/direct_messages.json").
-          with(:query => {:count => "1"}).
-          should have_been_made
+        expect(a_get("/1.1/direct_messages.json").with(:query => {:count => "1"})).to have_been_made
       end
       it "should limit the number of results to 345" do
         @cli.options = @cli.options.merge("number" => 345)
         @cli.direct_messages
-        a_get("/1.1/direct_messages.json").
-          with(:query => {:count => "200"}).
-          should have_been_made
-        a_get("/1.1/direct_messages.json").
-          with(:query => {:count => "200", :max_id => "1624782205"}).
-          should have_been_made.times(14)
+        expect(a_get("/1.1/direct_messages.json").with(:query => {:count => "200"})).to have_been_made
+        expect(a_get("/1.1/direct_messages.json").with(:query => {:count => "200", :max_id => "1624782205"})).to have_been_made.times(14)
         (5..195).step(10).to_a.reverse.each do |count|
-          a_get("/1.1/direct_messages.json").
-            with(:query => {:count => count, :max_id => "1624782205"}).
-            should have_been_made
+          expect(a_get("/1.1/direct_messages.json").with(:query => {:count => count, :max_id => "1624782205"})).to have_been_made
         end
       end
     end
@@ -264,7 +228,7 @@ ID          Posted at     Screen name  Text
       end
       it "should reverse the order of the sort" do
         @cli.direct_messages
-        $stdout.string.should eq <<-eos
+        expect($stdout.string).to eq <<-eos
 \e[1m\e[33m   @sferik\e[0m
    I'm trying to debug the issue you were having with the Bundler Gemfile.lock 
    shortref. What version of Ruby and RubyGems are you running?
@@ -308,22 +272,16 @@ ID          Posted at     Screen name  Text
 
   describe "#direct_messages_sent" do
     before do
-      stub_get("/1.1/direct_messages/sent.json").
-        with(:query => {:count => "20"}).
-        to_return(:body => fixture("direct_messages.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_get("/1.1/direct_messages/sent.json").
-        with(:query => {:count => "10", "max_id"=>"1624782205"}).
-        to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/direct_messages/sent.json").with(:query => {:count => "20"}).to_return(:body => fixture("direct_messages.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/direct_messages/sent.json").with(:query => {:count => "10", "max_id"=>"1624782205"}).to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @cli.direct_messages_sent
-      a_get("/1.1/direct_messages/sent.json").
-        with(:query => {:count => "20"}).
-        should have_been_made
+      expect(a_get("/1.1/direct_messages/sent.json").with(:query => {:count => "20"})).to have_been_made
     end
     it "should have the correct output" do
       @cli.direct_messages_sent
-      $stdout.string.should eq <<-eos
+      expect($stdout.string).to eq <<-eos
 \e[1m\e[33m   @hurrycane\e[0m
    Sounds good. Meeting Tuesday is fine.
 
@@ -368,7 +326,7 @@ ID          Posted at     Screen name  Text
       end
       it "should output in CSV format" do
         @cli.direct_messages_sent
-        $stdout.string.should eq <<-eos
+        expect($stdout.string).to eq <<-eos
 ID,Posted at,Screen name,Text
 1773478249,2010-10-17 20:48:55 +0000,hurrycane,Sounds good. Meeting Tuesday is fine.
 1762960771,2010-10-14 21:43:30 +0000,hurrycane,That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does that work for you?
@@ -389,7 +347,7 @@ ID,Posted at,Screen name,Text
       end
       it "should output in long format" do
         @cli.direct_messages_sent
-        $stdout.string.should eq <<-eos
+        expect($stdout.string).to eq <<-eos
 ID          Posted at     Screen name  Text
 1773478249  Oct 17  2010  @hurrycane   Sounds good. Meeting Tuesday is fine.
 1762960771  Oct 14  2010  @hurrycane   That's great news! Let's plan to chat ...
@@ -406,41 +364,25 @@ ID          Posted at     Screen name  Text
     end
     context "--number" do
       before do
-        stub_get("/1.1/direct_messages/sent.json").
-          with(:query => {:count => "1"}).
-          to_return(:body => fixture("direct_messages.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/direct_messages/sent.json").
-          with(:query => {:count => "200"}).
-          to_return(:body => fixture("direct_messages.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/direct_messages/sent.json").
-          with(:query => {:count => "200", :max_id => "1624782205"}).
-          to_return(:body => fixture("direct_messages.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/direct_messages/sent.json").with(:query => {:count => "1"}).to_return(:body => fixture("direct_messages.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/direct_messages/sent.json").with(:query => {:count => "200"}).to_return(:body => fixture("direct_messages.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/direct_messages/sent.json").with(:query => {:count => "200", :max_id => "1624782205"}).to_return(:body => fixture("direct_messages.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         (5..195).step(10).to_a.reverse.each do |count|
-          stub_get("/1.1/direct_messages/sent.json").
-            with(:query => {:count => count, :max_id => "1624782205"}).
-            to_return(:body => fixture("direct_messages.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1.1/direct_messages/sent.json").with(:query => {:count => count, :max_id => "1624782205"}).to_return(:body => fixture("direct_messages.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         end
       end
       it "should limit the number of results 1" do
         @cli.options = @cli.options.merge("number" => 1)
         @cli.direct_messages_sent
-        a_get("/1.1/direct_messages/sent.json").
-          with(:query => {:count => "1"}).
-          should have_been_made
+        expect(a_get("/1.1/direct_messages/sent.json").with(:query => {:count => "1"})).to have_been_made
       end
       it "should limit the number of results to 345" do
         @cli.options = @cli.options.merge("number" => 345)
         @cli.direct_messages_sent
-        a_get("/1.1/direct_messages/sent.json").
-          with(:query => {:count => "200"}).
-          should have_been_made
-        a_get("/1.1/direct_messages/sent.json").
-          with(:query => {:count => "200", :max_id => "1624782205"}).
-          should have_been_made.times(14)
+        expect(a_get("/1.1/direct_messages/sent.json").with(:query => {:count => "200"})).to have_been_made
+        expect(a_get("/1.1/direct_messages/sent.json").with(:query => {:count => "200", :max_id => "1624782205"})).to have_been_made.times(14)
         (5..195).step(10).to_a.reverse.each do |count|
-          a_get("/1.1/direct_messages/sent.json").
-            with(:query => {:count => count, :max_id => "1624782205"}).
-            should have_been_made
+          expect(a_get("/1.1/direct_messages/sent.json").with(:query => {:count => count, :max_id => "1624782205"})).to have_been_made
         end
       end
     end
@@ -450,7 +392,7 @@ ID          Posted at     Screen name  Text
       end
       it "should reverse the order of the sort" do
         @cli.direct_messages_sent
-        $stdout.string.should eq <<-eos
+        expect($stdout.string).to eq <<-eos
 \e[1m\e[33m   @hurrycane\e[0m
    I'm trying to debug the issue you were having with the Bundler Gemfile.lock 
    shortref. What version of Ruby and RubyGems are you running?
@@ -494,31 +436,19 @@ ID          Posted at     Screen name  Text
 
   describe "#groupies" do
     before do
-      stub_get("/1.1/followers/ids.json").
-        with(:query => {:cursor => "-1"}).
-        to_return(:body => fixture("followers_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_get("/1.1/friends/ids.json").
-        with(:query => {:cursor => "-1"}).
-        to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_post("/1.1/users/lookup.json").
-        with(:body => {:user_id => "213747670,428004849"}).
-        to_return(:body => fixture("users.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/followers/ids.json").with(:query => {:cursor => "-1"}).to_return(:body => fixture("followers_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1"}).to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_post("/1.1/users/lookup.json").with(:body => {:user_id => "213747670,428004849"}).to_return(:body => fixture("users.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @cli.groupies
-      a_get("/1.1/followers/ids.json").
-        with(:query => {:cursor => "-1"}).
-        should have_been_made
-      a_get("/1.1/friends/ids.json").
-        with(:query => {:cursor => "-1"}).
-        should have_been_made
-      a_post("/1.1/users/lookup.json").
-        with(:body => {:user_id => "213747670,428004849"}).
-        should have_been_made
+      expect(a_get("/1.1/followers/ids.json").with(:query => {:cursor => "-1"})).to have_been_made
+      expect(a_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1"})).to have_been_made
+      expect(a_post("/1.1/users/lookup.json").with(:body => {:user_id => "213747670,428004849"})).to have_been_made
     end
     it "should have the correct output" do
       @cli.groupies
-      $stdout.string.chomp.should eq "pengwynn  sferik"
+      expect($stdout.string.chomp).to eq "pengwynn  sferik"
     end
     context "--csv" do
       before do
@@ -526,7 +456,7 @@ ID          Posted at     Screen name  Text
       end
       it "should output in CSV format" do
         @cli.groupies
-        $stdout.string.should eq <<-eos
+        expect($stdout.string).to eq <<-eos
 ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
 14100886,2008-03-08 16:34:22 +0000,2012-07-07 20:33:19 +0000,6940,192,358,3427,5457,pengwynn,Wynn Netherland ⚡
 7505382,2007-07-16 12:59:01 +0000,2012-07-08 18:29:20 +0000,7890,3755,118,212,2262,sferik,Erik Michaels-Ober
@@ -539,7 +469,7 @@ ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name
       end
       it "should output in long format" do
         @cli.groupies
-        $stdout.string.should eq <<-eos
+        expect($stdout.string).to eq <<-eos
 ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
 14100886  Mar  8  2008  Jul  7 12:33       6940        192     358       3427...
  7505382  Jul 16  2007  Jul  8 10:29       7890       3755     118        212...
@@ -552,7 +482,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should reverse the order of the sort" do
         @cli.groupies
-        $stdout.string.chomp.should eq "sferik    pengwynn"
+        expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
     end
     context "--sort=favorites" do
@@ -561,7 +491,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by number of favorites" do
         @cli.groupies
-        $stdout.string.chomp.should eq "pengwynn  sferik"
+        expect($stdout.string.chomp).to eq "pengwynn  sferik"
       end
     end
     context "--sort=followers" do
@@ -570,7 +500,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by number of followers" do
         @cli.groupies
-        $stdout.string.chomp.should eq "sferik    pengwynn"
+        expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
     end
     context "--sort=friends" do
@@ -579,7 +509,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by number of friends" do
         @cli.groupies
-        $stdout.string.chomp.should eq "sferik    pengwynn"
+        expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
     end
     context "--sort=listed" do
@@ -588,7 +518,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by number of list memberships" do
         @cli.groupies
-        $stdout.string.chomp.should eq "sferik    pengwynn"
+        expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
     end
     context "--sort=since" do
@@ -597,7 +527,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by the time when Twitter acount was created" do
         @cli.groupies
-        $stdout.string.chomp.should eq "sferik    pengwynn"
+        expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
     end
     context "--sort=tweets" do
@@ -606,7 +536,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by number of Tweets" do
         @cli.groupies
-        $stdout.string.chomp.should eq "pengwynn  sferik"
+        expect($stdout.string.chomp).to eq "pengwynn  sferik"
       end
     end
     context "--sort=tweeted" do
@@ -615,7 +545,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by the time of the last Tweet" do
         @cli.groupies
-        $stdout.string.chomp.should eq "pengwynn  sferik"
+        expect($stdout.string.chomp).to eq "pengwynn  sferik"
       end
     end
     context "--unsorted" do
@@ -624,51 +554,31 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should not be sorted" do
         @cli.groupies
-        $stdout.string.chomp.should eq "pengwynn  sferik"
+        expect($stdout.string.chomp).to eq "pengwynn  sferik"
       end
     end
     context "with a user passed" do
       before do
-        stub_get("/1.1/followers/ids.json").
-          with(:query => {:cursor => "-1", :screen_name => "sferik"}).
-          to_return(:body => fixture("followers_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/friends/ids.json").
-          with(:query => {:cursor => "-1", :screen_name => "sferik"}).
-          to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/followers/ids.json").with(:query => {:cursor => "-1", :screen_name => "sferik"}).to_return(:body => fixture("followers_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1", :screen_name => "sferik"}).to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should request the correct resource" do
         @cli.groupies("sferik")
-        a_get("/1.1/followers/ids.json").
-          with(:query => {:cursor => "-1", :screen_name => "sferik"}).
-          should have_been_made
-        a_get("/1.1/friends/ids.json").
-          with(:query => {:cursor => "-1", :screen_name => "sferik"}).
-          should have_been_made
-        a_post("/1.1/users/lookup.json").
-          with(:body => {:user_id => "213747670,428004849"}).
-          should have_been_made
+        expect(a_get("/1.1/followers/ids.json").with(:query => {:cursor => "-1", :screen_name => "sferik"})).to have_been_made
+        expect(a_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1", :screen_name => "sferik"})).to have_been_made
+        expect(a_post("/1.1/users/lookup.json").with(:body => {:user_id => "213747670,428004849"})).to have_been_made
       end
       context "--id" do
         before do
           @cli.options = @cli.options.merge("id" => true)
-          stub_get("/1.1/followers/ids.json").
-            with(:query => {:cursor => "-1", :user_id => "7505382"}).
-            to_return(:body => fixture("followers_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-          stub_get("/1.1/friends/ids.json").
-            with(:query => {:cursor => "-1", :user_id => "7505382"}).
-            to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1.1/followers/ids.json").with(:query => {:cursor => "-1", :user_id => "7505382"}).to_return(:body => fixture("followers_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1", :user_id => "7505382"}).to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         end
         it "should request the correct resource" do
           @cli.groupies("7505382")
-          a_get("/1.1/followers/ids.json").
-            with(:query => {:cursor => "-1", :user_id => "7505382"}).
-            should have_been_made
-          a_get("/1.1/friends/ids.json").
-            with(:query => {:cursor => "-1", :user_id => "7505382"}).
-            should have_been_made
-          a_post("/1.1/users/lookup.json").
-            with(:body => {:user_id => "213747670,428004849"}).
-            should have_been_made
+          expect(a_get("/1.1/followers/ids.json").with(:query => {:cursor => "-1", :user_id => "7505382"})).to have_been_made
+          expect(a_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1", :user_id => "7505382"})).to have_been_made
+          expect(a_post("/1.1/users/lookup.json").with(:body => {:user_id => "213747670,428004849"})).to have_been_made
         end
       end
     end
@@ -677,32 +587,24 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
   describe "#dm" do
     before do
       @cli.options = @cli.options.merge("profile" => fixture_path + "/.trc")
-      stub_post("/1.1/direct_messages/new.json").
-        with(:body => {:screen_name => "pengwynn", :text => "Creating a fixture for the Twitter gem"}).
-        to_return(:body => fixture("direct_message.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_post("/1.1/direct_messages/new.json").with(:body => {:screen_name => "pengwynn", :text => "Creating a fixture for the Twitter gem"}).to_return(:body => fixture("direct_message.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @cli.dm("pengwynn", "Creating a fixture for the Twitter gem")
-      a_post("/1.1/direct_messages/new.json").
-        with(:body => {:screen_name => "pengwynn", :text => "Creating a fixture for the Twitter gem"}).
-        should have_been_made
+      expect(a_post("/1.1/direct_messages/new.json").with(:body => {:screen_name => "pengwynn", :text => "Creating a fixture for the Twitter gem"})).to have_been_made
     end
     it "should have the correct output" do
       @cli.dm("pengwynn", "Creating a fixture for the Twitter gem")
-      $stdout.string.chomp.should eq "Direct Message sent from @testcli to @pengwynn."
+      expect($stdout.string.chomp).to eq "Direct Message sent from @testcli to @pengwynn."
     end
     context "--id" do
       before do
         @cli.options = @cli.options.merge("id" => true)
-        stub_post("/1.1/direct_messages/new.json").
-          with(:body => {:user_id => "14100886", :text => "Creating a fixture for the Twitter gem"}).
-          to_return(:body => fixture("direct_message.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_post("/1.1/direct_messages/new.json").with(:body => {:user_id => "14100886", :text => "Creating a fixture for the Twitter gem"}).to_return(:body => fixture("direct_message.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should request the correct resource" do
         @cli.dm("14100886", "Creating a fixture for the Twitter gem")
-        a_post("/1.1/direct_messages/new.json").
-          with(:body => {:user_id => "14100886", :text => "Creating a fixture for the Twitter gem"}).
-          should have_been_made
+        expect(a_post("/1.1/direct_messages/new.json").with(:body => {:user_id => "14100886", :text => "Creating a fixture for the Twitter gem"})).to have_been_made
       end
     end
   end
@@ -710,85 +612,61 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
   describe "#does_contain" do
     before do
       @cli.options = @cli.options.merge("profile" => fixture_path + "/.trc")
-      stub_get("/1.1/lists/members/show.json").
-        with(:query => {:owner_screen_name => "testcli", :screen_name => "testcli", :slug => "presidents"}).
-        to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/lists/members/show.json").with(:query => {:owner_screen_name => "testcli", :screen_name => "testcli", :slug => "presidents"}).to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @cli.does_contain("presidents")
-      a_get("/1.1/lists/members/show.json").
-        with(:query => {:owner_screen_name => "testcli", :screen_name => "testcli", :slug => "presidents"}).
-        should have_been_made
+      expect(a_get("/1.1/lists/members/show.json").with(:query => {:owner_screen_name => "testcli", :screen_name => "testcli", :slug => "presidents"})).to have_been_made
     end
     it "should have the correct output" do
       @cli.does_contain("presidents")
-      $stdout.string.chomp.should eq "Yes, presidents contains @testcli."
+      expect($stdout.string.chomp).to eq "Yes, presidents contains @testcli."
     end
     context "--id" do
       before do
         @cli.options = @cli.options.merge("id" => true)
-        stub_get("/1.1/users/show.json").
-          with(:query => {:user_id => "7505382"}).
-          to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/lists/members/show.json").
-          with(:query => {:owner_screen_name => "testcli", :screen_name => "sferik", :slug => "presidents"}).
-          to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/users/show.json").with(:query => {:user_id => "7505382"}).to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/lists/members/show.json").with(:query => {:owner_screen_name => "testcli", :screen_name => "sferik", :slug => "presidents"}).to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should request the correct resource" do
         @cli.does_contain("presidents", "7505382")
-        a_get("/1.1/users/show.json").
-          with(:query => {:user_id => "7505382"}).
-          should have_been_made
-        a_get("/1.1/lists/members/show.json").
-          with(:query => {:owner_screen_name => "testcli", :screen_name => "sferik", :slug => "presidents"}).
-          should have_been_made
+        expect(a_get("/1.1/users/show.json").with(:query => {:user_id => "7505382"})).to have_been_made
+        expect(a_get("/1.1/lists/members/show.json").with(:query => {:owner_screen_name => "testcli", :screen_name => "sferik", :slug => "presidents"})).to have_been_made
       end
     end
     context "with an owner passed" do
       it "should have the correct output" do
         @cli.does_contain("testcli/presidents", "testcli")
-        $stdout.string.chomp.should eq "Yes, presidents contains @testcli."
+        expect($stdout.string.chomp).to eq "Yes, presidents contains @testcli."
       end
       context "--id" do
         before do
           @cli.options = @cli.options.merge("id" => true)
-          stub_get("/1.1/users/show.json").
-            with(:query => {:user_id => "7505382"}).
-            to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-          stub_get("/1.1/lists/members/show.json").
-            with(:query => {:owner_id => "7505382", :screen_name => "sferik", :slug => "presidents"}).
-            to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1.1/users/show.json").with(:query => {:user_id => "7505382"}).to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1.1/lists/members/show.json").with(:query => {:owner_id => "7505382", :screen_name => "sferik", :slug => "presidents"}).to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         end
         it "should request the correct resource" do
           @cli.does_contain("7505382/presidents", "7505382")
-          a_get("/1.1/users/show.json").
-            with(:query => {:user_id => "7505382"}).
-            should have_been_made
-          a_get("/1.1/lists/members/show.json").
-            with(:query => {:owner_id => "7505382", :screen_name => "sferik", :slug => "presidents"}).
-            should have_been_made
+          expect(a_get("/1.1/users/show.json").with(:query => {:user_id => "7505382"})).to have_been_made
+          expect(a_get("/1.1/lists/members/show.json").with(:query => {:owner_id => "7505382", :screen_name => "sferik", :slug => "presidents"})).to have_been_made
         end
       end
     end
     context "with a user passed" do
       it "should have the correct output" do
         @cli.does_contain("presidents", "testcli")
-        $stdout.string.chomp.should eq "Yes, presidents contains @testcli."
+        expect($stdout.string.chomp).to eq "Yes, presidents contains @testcli."
       end
     end
     context "false" do
       before do
-        stub_get("/1.1/lists/members/show.json").
-          with(:query => {:owner_screen_name => "testcli", :screen_name => "testcli", :slug => "presidents"}).
-          to_return(:body => fixture("not_found.json"), :status => 404, :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/lists/members/show.json").with(:query => {:owner_screen_name => "testcli", :screen_name => "testcli", :slug => "presidents"}).to_return(:body => fixture("not_found.json"), :status => 404, :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should exit" do
-        lambda do
+        expect do
           @cli.does_contain("presidents")
-        end.should raise_error(SystemExit)
-        a_get("/1.1/lists/members/show.json").
-          with(:query => {:owner_screen_name => "testcli", :screen_name => "testcli", :slug => "presidents"}).
-          should have_been_made
+        end.to raise_error(SystemExit)
+        expect(a_get("/1.1/lists/members/show.json").with(:query => {:owner_screen_name => "testcli", :screen_name => "testcli", :slug => "presidents"})).to have_been_made
       end
     end
   end
@@ -796,91 +674,61 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
   describe "#does_follow" do
     before do
       @cli.options = @cli.options.merge("profile" => fixture_path + "/.trc")
-      stub_get("/1.1/friendships/show.json").
-        with(:query => {:source_screen_name => "ev", :target_screen_name => "testcli"}).
-        to_return(:body => fixture("following.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/friendships/show.json").with(:query => {:source_screen_name => "ev", :target_screen_name => "testcli"}).to_return(:body => fixture("following.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @cli.does_follow("ev")
-      a_get("/1.1/friendships/show.json").
-        with(:query => {:source_screen_name => "ev", :target_screen_name => "testcli"}).
-        should have_been_made
+      expect(a_get("/1.1/friendships/show.json").with(:query => {:source_screen_name => "ev", :target_screen_name => "testcli"})).to have_been_made
     end
     it "should have the correct output" do
       @cli.does_follow("ev")
-      $stdout.string.chomp.should eq "Yes, @ev follows @testcli."
+      expect($stdout.string.chomp).to eq "Yes, @ev follows @testcli."
     end
     context "--id" do
       before do
         @cli.options = @cli.options.merge("id" => true)
-        stub_get("/1.1/users/show.json").
-          with(:query => {:user_id => "20"}).
-          to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/friendships/show.json").
-          with(:query => {:source_screen_name => "sferik", :target_screen_name => "testcli"}).
-          to_return(:body => fixture("following.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/users/show.json").with(:query => {:user_id => "20"}).to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/friendships/show.json").with(:query => {:source_screen_name => "sferik", :target_screen_name => "testcli"}).to_return(:body => fixture("following.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should request the correct resource" do
         @cli.does_follow("20")
-        a_get("/1.1/users/show.json").
-          with(:query => {:user_id => "20"}).
-          should have_been_made
-        a_get("/1.1/friendships/show.json").
-          with(:query => {:source_screen_name => "sferik", :target_screen_name => "testcli"}).
-          should have_been_made
+        expect(a_get("/1.1/users/show.json").with(:query => {:user_id => "20"})).to have_been_made
+        expect(a_get("/1.1/friendships/show.json").with(:query => {:source_screen_name => "sferik", :target_screen_name => "testcli"})).to have_been_made
       end
     end
     context "with a user passed" do
       before do
         @cli.options = @cli.options.merge("id" => true)
-        stub_get("/1.1/users/show.json").
-          with(:query => {:user_id => "0"}).
-          to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/friendships/show.json").
-          with(:query => {:source_screen_name => "sferik", :target_screen_name => "sferik"}).
-          to_return(:body => fixture("following.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/users/show.json").with(:query => {:user_id => "0"}).to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/friendships/show.json").with(:query => {:source_screen_name => "sferik", :target_screen_name => "sferik"}).to_return(:body => fixture("following.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should have the correct output" do
         @cli.does_follow("ev", "testcli")
-        $stdout.string.chomp.should eq "Yes, @sferik follows @sferik."
+        expect($stdout.string.chomp).to eq "Yes, @sferik follows @sferik."
       end
       context "--id" do
         before do
           @cli.options = @cli.options.merge("id" => true)
-          stub_get("/1.1/users/show.json").
-            with(:query => {:user_id => "20"}).
-            to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-          stub_get("/1.1/users/show.json").
-            with(:query => {:user_id => "428004849"}).
-            to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1.1/users/show.json").with(:query => {:user_id => "20"}).to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1.1/users/show.json").with(:query => {:user_id => "428004849"}).to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         end
         it "should request the correct resource" do
           @cli.does_follow("20", "428004849")
-          a_get("/1.1/users/show.json").
-            with(:query => {:user_id => "20"}).
-            should have_been_made
-          a_get("/1.1/users/show.json").
-            with(:query => {:user_id => "428004849"}).
-            should have_been_made
-          a_get("/1.1/friendships/show.json").
-            with(:query => {:source_screen_name => "sferik", :target_screen_name => "sferik"}).
-            should have_been_made
+          expect(a_get("/1.1/users/show.json").with(:query => {:user_id => "20"})).to have_been_made
+          expect(a_get("/1.1/users/show.json").with(:query => {:user_id => "428004849"})).to have_been_made
+          expect(a_get("/1.1/friendships/show.json").with(:query => {:source_screen_name => "sferik", :target_screen_name => "sferik"})).to have_been_made
         end
       end
     end
     context "false" do
       before do
-        stub_get("/1.1/friendships/show.json").
-          with(:query => {:source_screen_name => "ev", :target_screen_name => "testcli"}).
-          to_return(:body => fixture("not_following.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/friendships/show.json").with(:query => {:source_screen_name => "ev", :target_screen_name => "testcli"}).to_return(:body => fixture("not_following.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should exit" do
-        lambda do
+        expect do
           @cli.does_follow("ev")
-        end.should raise_error(SystemExit)
-        a_get("/1.1/friendships/show.json").
-          with(:query => {:source_screen_name => "ev", :target_screen_name => "testcli"}).
-          should have_been_made
+        end.to raise_error(SystemExit)
+        expect(a_get("/1.1/friendships/show.json").with(:query => {:source_screen_name => "ev", :target_screen_name => "testcli"})).to have_been_made
       end
     end
   end
@@ -888,37 +736,29 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
   describe "#favorite" do
     before do
       @cli.options = @cli.options.merge("profile" => fixture_path + "/.trc")
-      stub_post("/1.1/favorites/create.json").
-        with(:body => {:id => "26755176471724032"}).
-        to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_post("/1.1/favorites/create.json").with(:body => {:id => "26755176471724032"}).to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @cli.favorite("26755176471724032")
-      a_post("/1.1/favorites/create.json").
-        with(:body => {:id => "26755176471724032"}).
-        should have_been_made
+      expect(a_post("/1.1/favorites/create.json").with(:body => {:id => "26755176471724032"})).to have_been_made
     end
     it "should have the correct output" do
       @cli.favorite("26755176471724032")
-      $stdout.string.should match /^@testcli favorited 1 tweet.$/
+      expect($stdout.string).to match /^@testcli favorited 1 tweet.$/
     end
   end
 
   describe "#favorites" do
     before do
-      stub_get("/1.1/favorites/list.json").
-        with(:query => {:count => "20"}).
-        to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/favorites/list.json").with(:query => {:count => "20"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @cli.favorites
-      a_get("/1.1/favorites/list.json").
-        with(:query => {:count => "20"}).
-        should have_been_made
+      expect(a_get("/1.1/favorites/list.json").with(:query => {:count => "20"})).to have_been_made
     end
     it "should have the correct output" do
       @cli.favorites
-      $stdout.string.should eq <<-eos
+      expect($stdout.string).to eq <<-eos
 \e[1m\e[33m   @mutgoff\e[0m
    Happy Birthday @imdane. Watch out for those @rally pranksters!
 
@@ -1002,7 +842,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should output in CSV format" do
         @cli.favorites
-        $stdout.string.should eq <<-eos
+        expect($stdout.string).to eq <<-eos
 ID,Posted at,Screen name,Text
 244111636544225280,2012-09-07 16:35:24 +0000,mutgoff,Happy Birthday @imdane. Watch out for those @rally pranksters!
 244111183165157376,2012-09-07 16:33:36 +0000,ironicsans,"If you like good real-life stories, check out @NarrativelyNY's just-launched site http://t.co/wiUL07jE (and also visit http://t.co/ZoyQxqWA)"
@@ -1033,7 +873,7 @@ ID,Posted at,Screen name,Text
       end
       it "should output in long format" do
         @cli.favorites
-        $stdout.string.should eq <<-eos
+        expect($stdout.string).to eq <<-eos
 ID                  Posted at     Screen name       Text
 244111636544225280  Sep  7 08:35  @mutgoff          Happy Birthday @imdane. W...
 244111183165157376  Sep  7 08:33  @ironicsans       If you like good real-lif...
@@ -1063,7 +903,7 @@ ID                  Posted at     Screen name       Text
         end
         it "should reverse the order of the sort" do
           @cli.favorites
-          $stdout.string.should eq <<-eos
+          expect($stdout.string).to eq <<-eos
 ID                  Posted at     Screen name       Text
 244099460672679938  Sep  7 07:47  @dwiskus          Gentlemen, you can't figh...
 244100411563339777  Sep  7 07:50  @sferik           @episod @twitterapi Did y...
@@ -1091,68 +931,44 @@ ID                  Posted at     Screen name       Text
     end
     context "--number" do
       before do
-        stub_get("/1.1/favorites/list.json").
-          with(:query => {:count => "1"}).
-          to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/favorites/list.json").
-          with(:query => {:count => "200"}).
-          to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/favorites/list.json").
-          with(:query => {:count => "200", :max_id => "244099460672679937"}).
-          to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/favorites/list.json").with(:query => {:count => "1"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/favorites/list.json").with(:query => {:count => "200"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/favorites/list.json").with(:query => {:count => "200", :max_id => "244099460672679937"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         (5..185).step(20).to_a.reverse.each do |count|
-          stub_get("/1.1/favorites/list.json").
-            with(:query => {:count => count, :max_id => "244099460672679937"}).
-            to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1.1/favorites/list.json").with(:query => {:count => count, :max_id => "244099460672679937"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         end
       end
       it "should limit the number of results to 1" do
         @cli.options = @cli.options.merge("number" => 1)
         @cli.favorites
-        a_get("/1.1/favorites/list.json").
-          with(:query => {:count => "1"}).
-          should have_been_made
+        expect(a_get("/1.1/favorites/list.json").with(:query => {:count => "1"})).to have_been_made
       end
       it "should limit the number of results to 345" do
         @cli.options = @cli.options.merge("number" => 345)
         @cli.favorites
-        a_get("/1.1/favorites/list.json").
-          with(:query => {:count => "200"}).
-          should have_been_made
-        a_get("/1.1/favorites/list.json").
-          with(:query => {:count => "200", :max_id => "244099460672679937"}).
-          should have_been_made.times(7)
+        expect(a_get("/1.1/favorites/list.json").with(:query => {:count => "200"})).to have_been_made
+        expect(a_get("/1.1/favorites/list.json").with(:query => {:count => "200", :max_id => "244099460672679937"})).to have_been_made.times(7)
         (5..185).step(20).to_a.reverse.each do |count|
-          a_get("/1.1/favorites/list.json").
-            with(:query => {:count => count, :max_id => "244099460672679937"}).
-            should have_been_made
+          expect(a_get("/1.1/favorites/list.json").with(:query => {:count => count, :max_id => "244099460672679937"})).to have_been_made
         end
       end
     end
     context "with a user passed" do
       before do
-        stub_get("/1.1/favorites/list.json").
-          with(:query => {:count => "20", :screen_name => "sferik"}).
-          to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/favorites/list.json").with(:query => {:count => "20", :screen_name => "sferik"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should request the correct resource" do
         @cli.favorites("sferik")
-        a_get("/1.1/favorites/list.json").
-          with(:query => {:count => "20", :screen_name => "sferik"}).
-          should have_been_made
+        expect(a_get("/1.1/favorites/list.json").with(:query => {:count => "20", :screen_name => "sferik"})).to have_been_made
       end
       context "--id" do
         before do
           @cli.options = @cli.options.merge("id" => true)
-          stub_get("/1.1/favorites/list.json").
-            with(:query => {:user_id => "7505382", :count => "20"}).
-            to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1.1/favorites/list.json").with(:query => {:user_id => "7505382", :count => "20"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         end
         it "should request the correct resource" do
           @cli.favorites("7505382")
-          a_get("/1.1/favorites/list.json").
-            with(:query => {:user_id => "7505382", :count => "20"}).
-            should have_been_made
+          expect(a_get("/1.1/favorites/list.json").with(:query => {:user_id => "7505382", :count => "20"})).to have_been_made
         end
       end
     end
@@ -1164,81 +980,45 @@ ID                  Posted at     Screen name       Text
     end
     context "one user" do
       before do
-        stub_get("/1.1/friends/ids.json").
-          with(:query => {:cursor => "-1"}).
-          to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_post("/1.1/users/lookup.json").
-          with(:body => {:screen_name => "sferik,pengwynn"}).
-          to_return(:body => fixture("users.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_post("/1.1/friendships/create.json").
-          with(:body => {:user_id => "14100886"}).
-          to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1"}).to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_post("/1.1/users/lookup.json").with(:body => {:screen_name => "sferik,pengwynn"}).to_return(:body => fixture("users.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_post("/1.1/friendships/create.json").with(:body => {:user_id => "14100886"}).to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should request the correct resource" do
         @cli.follow("sferik", "pengwynn")
-        a_get("/1.1/friends/ids.json").
-          with(:query => {:cursor => "-1"}).
-          should have_been_made
-        a_post("/1.1/users/lookup.json").
-          with(:body => {:screen_name => "sferik,pengwynn"}).
-          should have_been_made
-        a_post("/1.1/friendships/create.json").
-          with(:body => {:user_id => "14100886"}).
-          should have_been_made
+        expect(a_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1"})).to have_been_made
+        expect(a_post("/1.1/users/lookup.json").with(:body => {:screen_name => "sferik,pengwynn"})).to have_been_made
+        expect(a_post("/1.1/friendships/create.json").with(:body => {:user_id => "14100886"})).to have_been_made
       end
       it "should have the correct output" do
         @cli.follow("sferik", "pengwynn")
-        $stdout.string.should match /^@testcli is now following 1 more user\.$/
+        expect($stdout.string).to match /^@testcli is now following 1 more user\.$/
       end
       context "--id" do
         before do
           @cli.options = @cli.options.merge("id" => true)
-          stub_get("/1.1/friends/ids.json").
-            with(:query => {:cursor => "-1"}).
-            to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-          stub_post("/1.1/users/lookup.json").
-            with(:body => {:user_id => "7505382,14100886"}).
-            to_return(:body => fixture("users.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-          stub_post("/1.1/friendships/create.json").
-            with(:body => {:user_id => "14100886"}).
-            to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1"}).to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_post("/1.1/users/lookup.json").with(:body => {:user_id => "7505382,14100886"}).to_return(:body => fixture("users.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_post("/1.1/friendships/create.json").with(:body => {:user_id => "14100886"}).to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         end
         it "should request the correct resource" do
           @cli.follow("7505382", "14100886")
-          a_get("/1.1/friends/ids.json").
-            with(:query => {:cursor => "-1"}).
-            should have_been_made
-          a_post("/1.1/users/lookup.json").
-            with(:body => {:user_id => "7505382,14100886"}).
-            should have_been_made
-          a_post("/1.1/friendships/create.json").
-            with(:body => {:user_id => "14100886"}).
-            should have_been_made
+          expect(a_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1"})).to have_been_made
+          expect(a_post("/1.1/users/lookup.json").with(:body => {:user_id => "7505382,14100886"})).to have_been_made
+          expect(a_post("/1.1/friendships/create.json").with(:body => {:user_id => "14100886"})).to have_been_made
         end
       end
       context "Twitter is down" do
         it "should retry 3 times and then raise an error" do
-          stub_get("/1.1/friends/ids.json").
-            with(:query => {:cursor => "-1"}).
-            to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-          stub_post("/1.1/users/lookup.json").
-            with(:body => {:screen_name => "sferik,pengwynn"}).
-            to_return(:body => fixture("users.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-          stub_post("/1.1/friendships/create.json").
-            with(:body => {:user_id => "14100886"}).
-            to_return(:status => 502)
-          lambda do
+          stub_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1"}).to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_post("/1.1/users/lookup.json").with(:body => {:screen_name => "sferik,pengwynn"}).to_return(:body => fixture("users.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_post("/1.1/friendships/create.json").with(:body => {:user_id => "14100886"}).to_return(:status => 502)
+          expect do
             @cli.follow("sferik", "pengwynn")
-          end.should raise_error("Twitter is down or being upgraded.")
-          a_get("/1.1/friends/ids.json").
-            with(:query => {:cursor => "-1"}).
-            should have_been_made.times(3)
-          a_post("/1.1/users/lookup.json").
-            with(:body => {:screen_name => "sferik,pengwynn"}).
-            should have_been_made.times(3)
-          a_post("/1.1/friendships/create.json").
-            with(:body => {:user_id => "14100886"}).
-            should have_been_made.times(3)
+          end.to raise_error("Twitter is down or being upgraded.")
+          expect(a_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1"})).to have_been_made.times(3)
+          expect(a_post("/1.1/users/lookup.json").with(:body => {:screen_name => "sferik,pengwynn"})).to have_been_made.times(3)
+          expect(a_post("/1.1/friendships/create.json").with(:body => {:user_id => "14100886"})).to have_been_made.times(3)
         end
       end
     end
@@ -1246,25 +1026,17 @@ ID                  Posted at     Screen name       Text
 
   describe "#followings" do
     before do
-      stub_get("/1.1/friends/ids.json").
-        with(:query => {:cursor => "-1"}).
-        to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_post("/1.1/users/lookup.json").
-        with(:body => {:user_id => "7505382"}).
-        to_return(:body => fixture("users.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1"}).to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_post("/1.1/users/lookup.json").with(:body => {:user_id => "7505382"}).to_return(:body => fixture("users.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @cli.followings
-      a_get("/1.1/friends/ids.json").
-        with(:query => {:cursor => "-1"}).
-        should have_been_made
-      a_post("/1.1/users/lookup.json").
-        with(:body => {:user_id => "7505382"}).
-        should have_been_made
+      expect(a_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1"})).to have_been_made
+      expect(a_post("/1.1/users/lookup.json").with(:body => {:user_id => "7505382"})).to have_been_made
     end
     it "should have the correct output" do
       @cli.followings
-      $stdout.string.chomp.should eq "pengwynn  sferik"
+      expect($stdout.string.chomp).to eq "pengwynn  sferik"
     end
     context "--csv" do
       before do
@@ -1272,7 +1044,7 @@ ID                  Posted at     Screen name       Text
       end
       it "should output in CSV format" do
         @cli.followings
-        $stdout.string.should eq <<-eos
+        expect($stdout.string).to eq <<-eos
 ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
 14100886,2008-03-08 16:34:22 +0000,2012-07-07 20:33:19 +0000,6940,192,358,3427,5457,pengwynn,Wynn Netherland ⚡
 7505382,2007-07-16 12:59:01 +0000,2012-07-08 18:29:20 +0000,7890,3755,118,212,2262,sferik,Erik Michaels-Ober
@@ -1285,7 +1057,7 @@ ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name
       end
       it "should output in long format" do
         @cli.followings
-        $stdout.string.should eq <<-eos
+        expect($stdout.string).to eq <<-eos
 ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
 14100886  Mar  8  2008  Jul  7 12:33       6940        192     358       3427...
  7505382  Jul 16  2007  Jul  8 10:29       7890       3755     118        212...
@@ -1298,7 +1070,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should reverse the order of the sort" do
         @cli.followings
-        $stdout.string.chomp.should eq "sferik    pengwynn"
+        expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
     end
     context "--sort=favorites" do
@@ -1307,7 +1079,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by number of favorites" do
         @cli.followings
-        $stdout.string.chomp.should eq "pengwynn  sferik"
+        expect($stdout.string.chomp).to eq "pengwynn  sferik"
       end
     end
     context "--sort=followers" do
@@ -1316,7 +1088,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by number of followers" do
         @cli.followings
-        $stdout.string.chomp.should eq "sferik    pengwynn"
+        expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
     end
     context "--sort=friends" do
@@ -1325,7 +1097,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by number of friends" do
         @cli.followings
-        $stdout.string.chomp.should eq "sferik    pengwynn"
+        expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
     end
     context "--sort=listed" do
@@ -1334,7 +1106,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by number of list memberships" do
         @cli.followings
-        $stdout.string.chomp.should eq "sferik    pengwynn"
+        expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
     end
     context "--sort=since" do
@@ -1343,7 +1115,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by the time when Twitter acount was created" do
         @cli.followings
-        $stdout.string.chomp.should eq "sferik    pengwynn"
+        expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
     end
     context "--sort=tweets" do
@@ -1352,7 +1124,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by number of Tweets" do
         @cli.followings
-        $stdout.string.chomp.should eq "pengwynn  sferik"
+        expect($stdout.string.chomp).to eq "pengwynn  sferik"
       end
     end
     context "--sort=tweeted" do
@@ -1361,7 +1133,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by the time of the last Tweet" do
         @cli.followings
-        $stdout.string.chomp.should eq "pengwynn  sferik"
+        expect($stdout.string.chomp).to eq "pengwynn  sferik"
       end
     end
     context "--unsorted" do
@@ -1370,65 +1142,45 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should not be sorted" do
         @cli.followings
-        $stdout.string.chomp.should eq "pengwynn  sferik"
+        expect($stdout.string.chomp).to eq "pengwynn  sferik"
       end
     end
     context "with a user passed" do
       before do
-        stub_get("/1.1/friends/ids.json").
-          with(:query => {:cursor => "-1", :screen_name => "sferik"}).
-          to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1", :screen_name => "sferik"}).to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should request the correct resource" do
         @cli.followings("sferik")
-        a_get("/1.1/friends/ids.json").
-          with(:query => {:cursor => "-1", :screen_name => "sferik"}).
-          should have_been_made
-        a_post("/1.1/users/lookup.json").
-          with(:body => {:user_id => "7505382"}).
-          should have_been_made
+        expect(a_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1", :screen_name => "sferik"})).to have_been_made
+        expect(a_post("/1.1/users/lookup.json").with(:body => {:user_id => "7505382"})).to have_been_made
       end
     end
     context "--id" do
       before do
         @cli.options = @cli.options.merge("id" => true)
-        stub_get("/1.1/friends/ids.json").
-          with(:query => {:cursor => "-1", :user_id => "7505382"}).
-          to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1", :user_id => "7505382"}).to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should request the correct resource" do
         @cli.followings("7505382")
-        a_get("/1.1/friends/ids.json").
-          with(:query => {:cursor => "-1", :user_id => "7505382"}).
-          should have_been_made
-        a_post("/1.1/users/lookup.json").
-          with(:body => {:user_id => "7505382"}).
-          should have_been_made
+        expect(a_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1", :user_id => "7505382"})).to have_been_made
+        expect(a_post("/1.1/users/lookup.json").with(:body => {:user_id => "7505382"})).to have_been_made
       end
     end
   end
 
   describe "#followers" do
     before do
-      stub_get("/1.1/followers/ids.json").
-        with(:query => {:cursor => "-1"}).
-        to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_post("/1.1/users/lookup.json").
-        with(:body => {:user_id => "7505382"}).
-        to_return(:body => fixture("users.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/followers/ids.json").with(:query => {:cursor => "-1"}).to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_post("/1.1/users/lookup.json").with(:body => {:user_id => "7505382"}).to_return(:body => fixture("users.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @cli.followers
-      a_get("/1.1/followers/ids.json").
-        with(:query => {:cursor => "-1"}).
-        should have_been_made
-      a_post("/1.1/users/lookup.json").
-        with(:body => {:user_id => "7505382"}).
-        should have_been_made
+      expect(a_get("/1.1/followers/ids.json").with(:query => {:cursor => "-1"})).to have_been_made
+      expect(a_post("/1.1/users/lookup.json").with(:body => {:user_id => "7505382"})).to have_been_made
     end
     it "should have the correct output" do
       @cli.followers
-      $stdout.string.chomp.should eq "pengwynn  sferik"
+      expect($stdout.string.chomp).to eq "pengwynn  sferik"
     end
     context "--csv" do
       before do
@@ -1436,7 +1188,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should output in CSV format" do
         @cli.followers
-        $stdout.string.should eq <<-eos
+        expect($stdout.string).to eq <<-eos
 ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
 14100886,2008-03-08 16:34:22 +0000,2012-07-07 20:33:19 +0000,6940,192,358,3427,5457,pengwynn,Wynn Netherland ⚡
 7505382,2007-07-16 12:59:01 +0000,2012-07-08 18:29:20 +0000,7890,3755,118,212,2262,sferik,Erik Michaels-Ober
@@ -1449,7 +1201,7 @@ ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name
       end
       it "should output in long format" do
         @cli.followers
-        $stdout.string.should eq <<-eos
+        expect($stdout.string).to eq <<-eos
 ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
 14100886  Mar  8  2008  Jul  7 12:33       6940        192     358       3427...
  7505382  Jul 16  2007  Jul  8 10:29       7890       3755     118        212...
@@ -1462,7 +1214,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should reverse the order of the sort" do
         @cli.followers
-        $stdout.string.chomp.should eq "sferik    pengwynn"
+        expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
     end
     context "--sort=favorites" do
@@ -1471,7 +1223,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by number of favorites" do
         @cli.followers
-        $stdout.string.chomp.should eq "pengwynn  sferik"
+        expect($stdout.string.chomp).to eq "pengwynn  sferik"
       end
     end
     context "--sort=followers" do
@@ -1480,7 +1232,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by number of followers" do
         @cli.followers
-        $stdout.string.chomp.should eq "sferik    pengwynn"
+        expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
     end
     context "--sort=friends" do
@@ -1489,7 +1241,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by number of friends" do
         @cli.followers
-        $stdout.string.chomp.should eq "sferik    pengwynn"
+        expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
     end
     context "--sort=listed" do
@@ -1498,7 +1250,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by number of list memberships" do
         @cli.followers
-        $stdout.string.chomp.should eq "sferik    pengwynn"
+        expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
     end
     context "--sort=since" do
@@ -1507,7 +1259,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by the time when Twitter acount was created" do
         @cli.followers
-        $stdout.string.chomp.should eq "sferik    pengwynn"
+        expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
     end
     context "--sort=tweets" do
@@ -1516,7 +1268,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by number of Tweets" do
         @cli.followers
-        $stdout.string.chomp.should eq "pengwynn  sferik"
+        expect($stdout.string.chomp).to eq "pengwynn  sferik"
       end
     end
     context "--sort=tweeted" do
@@ -1525,7 +1277,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by the time of the last Tweet" do
         @cli.followers
-        $stdout.string.chomp.should eq "pengwynn  sferik"
+        expect($stdout.string.chomp).to eq "pengwynn  sferik"
       end
     end
     context "--unsorted" do
@@ -1534,42 +1286,28 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should not be sorted" do
         @cli.followers
-        $stdout.string.chomp.should eq "pengwynn  sferik"
+        expect($stdout.string.chomp).to eq "pengwynn  sferik"
       end
     end
     context "with a user passed" do
       before do
-        stub_get("/1.1/followers/ids.json").
-          with(:query => {:cursor => "-1", :screen_name => "sferik"}).
-          to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_post("/1.1/users/lookup.json").
-          with(:body => {:user_id => "213747670,428004849"}).
-          to_return(:body => fixture("users.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/followers/ids.json").with(:query => {:cursor => "-1", :screen_name => "sferik"}).to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_post("/1.1/users/lookup.json").with(:body => {:user_id => "213747670,428004849"}).to_return(:body => fixture("users.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should request the correct resource" do
         @cli.followers("sferik")
-        a_get("/1.1/followers/ids.json").
-          with(:query => {:cursor => "-1", :screen_name => "sferik"}).
-          should have_been_made
-        a_post("/1.1/users/lookup.json").
-          with(:body => {:user_id => "7505382"}).
-          should have_been_made
+        expect(a_get("/1.1/followers/ids.json").with(:query => {:cursor => "-1", :screen_name => "sferik"})).to have_been_made
+        expect(a_post("/1.1/users/lookup.json").with(:body => {:user_id => "7505382"})).to have_been_made
       end
       context "--id" do
         before do
           @cli.options = @cli.options.merge("id" => true)
-          stub_get("/1.1/followers/ids.json").
-            with(:query => {:cursor => "-1", :user_id => "7505382"}).
-            to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1.1/followers/ids.json").with(:query => {:cursor => "-1", :user_id => "7505382"}).to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         end
         it "should request the correct resource" do
           @cli.followers("7505382")
-          a_get("/1.1/followers/ids.json").
-            with(:query => {:cursor => "-1", :user_id => "7505382"}).
-            should have_been_made
-          a_post("/1.1/users/lookup.json").
-            with(:body => {:user_id => "7505382"}).
-            should have_been_made
+          expect(a_get("/1.1/followers/ids.json").with(:query => {:cursor => "-1", :user_id => "7505382"})).to have_been_made
+          expect(a_post("/1.1/users/lookup.json").with(:body => {:user_id => "7505382"})).to have_been_made
         end
       end
     end
@@ -1577,31 +1315,19 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
 
   describe "#friends" do
     before do
-      stub_get("/1.1/friends/ids.json").
-        with(:query => {:cursor => "-1"}).
-        to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_get("/1.1/followers/ids.json").
-        with(:query => {:cursor => "-1"}).
-        to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_post("/1.1/users/lookup.json").
-        with(:body => {:user_id => "7505382"}).
-        to_return(:body => fixture("users.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1"}).to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/followers/ids.json").with(:query => {:cursor => "-1"}).to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_post("/1.1/users/lookup.json").with(:body => {:user_id => "7505382"}).to_return(:body => fixture("users.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @cli.friends
-      a_get("/1.1/friends/ids.json").
-        with(:query => {:cursor => "-1"}).
-        should have_been_made
-      a_get("/1.1/followers/ids.json").
-        with(:query => {:cursor => "-1"}).
-        should have_been_made
-      a_post("/1.1/users/lookup.json").
-        with(:body => {:user_id => "7505382"}).
-        should have_been_made
+      expect(a_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1"})).to have_been_made
+      expect(a_get("/1.1/followers/ids.json").with(:query => {:cursor => "-1"})).to have_been_made
+      expect(a_post("/1.1/users/lookup.json").with(:body => {:user_id => "7505382"})).to have_been_made
     end
     it "should have the correct output" do
       @cli.friends
-      $stdout.string.chomp.should eq "pengwynn  sferik"
+      expect($stdout.string.chomp).to eq "pengwynn  sferik"
     end
     context "--csv" do
       before do
@@ -1609,7 +1335,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should output in CSV format" do
         @cli.friends
-        $stdout.string.should eq <<-eos
+        expect($stdout.string).to eq <<-eos
 ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
 14100886,2008-03-08 16:34:22 +0000,2012-07-07 20:33:19 +0000,6940,192,358,3427,5457,pengwynn,Wynn Netherland ⚡
 7505382,2007-07-16 12:59:01 +0000,2012-07-08 18:29:20 +0000,7890,3755,118,212,2262,sferik,Erik Michaels-Ober
@@ -1622,7 +1348,7 @@ ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name
       end
       it "should output in long format" do
         @cli.friends
-        $stdout.string.should eq <<-eos
+        expect($stdout.string).to eq <<-eos
 ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
 14100886  Mar  8  2008  Jul  7 12:33       6940        192     358       3427...
  7505382  Jul 16  2007  Jul  8 10:29       7890       3755     118        212...
@@ -1635,7 +1361,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should reverse the order of the sort" do
         @cli.friends
-        $stdout.string.chomp.should eq "sferik    pengwynn"
+        expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
     end
     context "--sort=favorites" do
@@ -1644,7 +1370,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by number of favorites" do
         @cli.friends
-        $stdout.string.chomp.should eq "pengwynn  sferik"
+        expect($stdout.string.chomp).to eq "pengwynn  sferik"
       end
     end
     context "--sort=followers" do
@@ -1653,7 +1379,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by number of followers" do
         @cli.friends
-        $stdout.string.chomp.should eq "sferik    pengwynn"
+        expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
     end
     context "--sort=friends" do
@@ -1662,7 +1388,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by number of friends" do
         @cli.friends
-        $stdout.string.chomp.should eq "sferik    pengwynn"
+        expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
     end
     context "--sort=listed" do
@@ -1671,7 +1397,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by number of list memberships" do
         @cli.friends
-        $stdout.string.chomp.should eq "sferik    pengwynn"
+        expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
     end
     context "--sort=since" do
@@ -1680,7 +1406,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by the time when Twitter acount was created" do
         @cli.friends
-        $stdout.string.chomp.should eq "sferik    pengwynn"
+        expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
     end
     context "--sort=tweets" do
@@ -1689,7 +1415,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by number of Tweets" do
         @cli.friends
-        $stdout.string.chomp.should eq "pengwynn  sferik"
+        expect($stdout.string.chomp).to eq "pengwynn  sferik"
       end
     end
     context "--sort=tweeted" do
@@ -1698,7 +1424,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by the time of the last Tweet" do
         @cli.friends
-        $stdout.string.chomp.should eq "pengwynn  sferik"
+        expect($stdout.string.chomp).to eq "pengwynn  sferik"
       end
     end
     context "--unsorted" do
@@ -1707,51 +1433,31 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should not be sorted" do
         @cli.friends
-        $stdout.string.chomp.should eq "pengwynn  sferik"
+        expect($stdout.string.chomp).to eq "pengwynn  sferik"
       end
     end
     context "with a user passed" do
       before do
-        stub_get("/1.1/friends/ids.json").
-          with(:query => {:cursor => "-1", :screen_name => "sferik"}).
-          to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/followers/ids.json").
-          with(:query => {:cursor => "-1", :screen_name => "sferik"}).
-          to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1", :screen_name => "sferik"}).to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/followers/ids.json").with(:query => {:cursor => "-1", :screen_name => "sferik"}).to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should request the correct resource" do
         @cli.friends("sferik")
-        a_get("/1.1/friends/ids.json").
-          with(:query => {:cursor => "-1", :screen_name => "sferik"}).
-          should have_been_made
-        a_get("/1.1/followers/ids.json").
-          with(:query => {:cursor => "-1", :screen_name => "sferik"}).
-          should have_been_made
-        a_post("/1.1/users/lookup.json").
-          with(:body => {:user_id => "7505382"}).
-          should have_been_made
+        expect(a_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1", :screen_name => "sferik"})).to have_been_made
+        expect(a_get("/1.1/followers/ids.json").with(:query => {:cursor => "-1", :screen_name => "sferik"})).to have_been_made
+        expect(a_post("/1.1/users/lookup.json").with(:body => {:user_id => "7505382"})).to have_been_made
       end
       context "--id" do
         before do
           @cli.options = @cli.options.merge("id" => true)
-          stub_get("/1.1/friends/ids.json").
-            with(:query => {:cursor => "-1", :user_id => "7505382"}).
-            to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-          stub_get("/1.1/followers/ids.json").
-            with(:query => {:cursor => "-1", :user_id => "7505382"}).
-            to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1", :user_id => "7505382"}).to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1.1/followers/ids.json").with(:query => {:cursor => "-1", :user_id => "7505382"}).to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         end
         it "should request the correct resource" do
           @cli.friends("7505382")
-          a_get("/1.1/friends/ids.json").
-            with(:query => {:cursor => "-1", :user_id => "7505382"}).
-            should have_been_made
-          a_get("/1.1/followers/ids.json").
-            with(:query => {:cursor => "-1", :user_id => "7505382"}).
-            should have_been_made
-          a_post("/1.1/users/lookup.json").
-            with(:body => {:user_id => "7505382"}).
-            should have_been_made
+          expect(a_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1", :user_id => "7505382"})).to have_been_made
+          expect(a_get("/1.1/followers/ids.json").with(:query => {:cursor => "-1", :user_id => "7505382"})).to have_been_made
+          expect(a_post("/1.1/users/lookup.json").with(:body => {:user_id => "7505382"})).to have_been_made
         end
       end
     end
@@ -1759,31 +1465,19 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
 
   describe "#leaders" do
     before do
-      stub_get("/1.1/friends/ids.json").
-        with(:query => {:cursor => "-1"}).
-        to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_get("/1.1/followers/ids.json").
-        with(:query => {:cursor => "-1"}).
-        to_return(:body => fixture("followers_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_post("/1.1/users/lookup.json").
-        with(:body => {:user_id => "7505382"}).
-        to_return(:body => fixture("users.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1"}).to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/followers/ids.json").with(:query => {:cursor => "-1"}).to_return(:body => fixture("followers_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_post("/1.1/users/lookup.json").with(:body => {:user_id => "7505382"}).to_return(:body => fixture("users.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @cli.leaders
-      a_get("/1.1/friends/ids.json").
-        with(:query => {:cursor => "-1"}).
-        should have_been_made
-      a_get("/1.1/followers/ids.json").
-        with(:query => {:cursor => "-1"}).
-        should have_been_made
-      a_post("/1.1/users/lookup.json").
-        with(:body => {:user_id => "7505382"}).
-        should have_been_made
+      expect(a_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1"})).to have_been_made
+      expect(a_get("/1.1/followers/ids.json").with(:query => {:cursor => "-1"})).to have_been_made
+      expect(a_post("/1.1/users/lookup.json").with(:body => {:user_id => "7505382"})).to have_been_made
     end
     it "should have the correct output" do
       @cli.leaders
-      $stdout.string.chomp.should eq "pengwynn  sferik"
+      expect($stdout.string.chomp).to eq "pengwynn  sferik"
     end
     context "--csv" do
       before do
@@ -1791,7 +1485,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should output in CSV format" do
         @cli.leaders
-        $stdout.string.should eq <<-eos
+        expect($stdout.string).to eq <<-eos
 ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
 14100886,2008-03-08 16:34:22 +0000,2012-07-07 20:33:19 +0000,6940,192,358,3427,5457,pengwynn,Wynn Netherland ⚡
 7505382,2007-07-16 12:59:01 +0000,2012-07-08 18:29:20 +0000,7890,3755,118,212,2262,sferik,Erik Michaels-Ober
@@ -1804,7 +1498,7 @@ ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name
       end
       it "should output in long format" do
         @cli.leaders
-        $stdout.string.should eq <<-eos
+        expect($stdout.string).to eq <<-eos
 ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
 14100886  Mar  8  2008  Jul  7 12:33       6940        192     358       3427...
  7505382  Jul 16  2007  Jul  8 10:29       7890       3755     118        212...
@@ -1817,7 +1511,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should reverse the order of the sort" do
         @cli.leaders
-        $stdout.string.chomp.should eq "sferik    pengwynn"
+        expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
     end
     context "--sort=favorites" do
@@ -1826,7 +1520,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by number of favorites" do
         @cli.leaders
-        $stdout.string.chomp.should eq "pengwynn  sferik"
+        expect($stdout.string.chomp).to eq "pengwynn  sferik"
       end
     end
     context "--sort=followers" do
@@ -1835,7 +1529,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by number of followers" do
         @cli.leaders
-        $stdout.string.chomp.should eq "sferik    pengwynn"
+        expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
     end
     context "--sort=friends" do
@@ -1844,7 +1538,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by number of friends" do
         @cli.leaders
-        $stdout.string.chomp.should eq "sferik    pengwynn"
+        expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
     end
     context "--sort=listed" do
@@ -1853,7 +1547,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by number of list memberships" do
         @cli.leaders
-        $stdout.string.chomp.should eq "sferik    pengwynn"
+        expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
     end
     context "--sort=since" do
@@ -1862,7 +1556,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by the time when Twitter acount was created" do
         @cli.leaders
-        $stdout.string.chomp.should eq "sferik    pengwynn"
+        expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
     end
     context "--sort=tweets" do
@@ -1871,7 +1565,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by number of Tweets" do
         @cli.leaders
-        $stdout.string.chomp.should eq "pengwynn  sferik"
+        expect($stdout.string.chomp).to eq "pengwynn  sferik"
       end
     end
     context "--sort=tweeted" do
@@ -1880,7 +1574,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by the time of the last Tweet" do
         @cli.leaders
-        $stdout.string.chomp.should eq "pengwynn  sferik"
+        expect($stdout.string.chomp).to eq "pengwynn  sferik"
       end
     end
     context "--unsorted" do
@@ -1889,51 +1583,31 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should not be sorted" do
         @cli.leaders
-        $stdout.string.chomp.should eq "pengwynn  sferik"
+        expect($stdout.string.chomp).to eq "pengwynn  sferik"
       end
     end
     context "with a user passed" do
       before do
-        stub_get("/1.1/friends/ids.json").
-          with(:query => {:cursor => "-1", :screen_name => "sferik"}).
-          to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/followers/ids.json").
-          with(:query => {:cursor => "-1", :screen_name => "sferik"}).
-          to_return(:body => fixture("followers_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1", :screen_name => "sferik"}).to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/followers/ids.json").with(:query => {:cursor => "-1", :screen_name => "sferik"}).to_return(:body => fixture("followers_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should request the correct resource" do
         @cli.leaders("sferik")
-        a_get("/1.1/friends/ids.json").
-          with(:query => {:cursor => "-1", :screen_name => "sferik"}).
-          should have_been_made
-        a_get("/1.1/followers/ids.json").
-          with(:query => {:cursor => "-1", :screen_name => "sferik"}).
-          should have_been_made
-        a_post("/1.1/users/lookup.json").
-          with(:body => {:user_id => "7505382"}).
-          should have_been_made
+        expect(a_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1", :screen_name => "sferik"})).to have_been_made
+        expect(a_get("/1.1/followers/ids.json").with(:query => {:cursor => "-1", :screen_name => "sferik"})).to have_been_made
+        expect(a_post("/1.1/users/lookup.json").with(:body => {:user_id => "7505382"})).to have_been_made
       end
       context "--id" do
         before do
           @cli.options = @cli.options.merge("id" => true)
-          stub_get("/1.1/friends/ids.json").
-            with(:query => {:cursor => "-1", :user_id => "7505382"}).
-            to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-          stub_get("/1.1/followers/ids.json").
-            with(:query => {:cursor => "-1", :user_id => "7505382"}).
-            to_return(:body => fixture("followers_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1", :user_id => "7505382"}).to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1.1/followers/ids.json").with(:query => {:cursor => "-1", :user_id => "7505382"}).to_return(:body => fixture("followers_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         end
         it "should request the correct resource" do
           @cli.leaders("7505382")
-          a_get("/1.1/friends/ids.json").
-            with(:query => {:cursor => "-1", :user_id => "7505382"}).
-            should have_been_made
-          a_get("/1.1/followers/ids.json").
-            with(:query => {:cursor => "-1", :user_id => "7505382"}).
-            should have_been_made
-          a_post("/1.1/users/lookup.json").
-            with(:body => {:user_id => "7505382"}).
-            should have_been_made
+          expect(a_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1", :user_id => "7505382"})).to have_been_made
+          expect(a_get("/1.1/followers/ids.json").with(:query => {:cursor => "-1", :user_id => "7505382"})).to have_been_made
+          expect(a_post("/1.1/users/lookup.json").with(:body => {:user_id => "7505382"})).to have_been_made
         end
       end
     end
@@ -1941,17 +1615,15 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
 
   describe "#lists" do
     before do
-      stub_get("/1.1/lists/list.json").
-        to_return(:body => fixture("lists.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/lists/list.json").to_return(:body => fixture("lists.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @cli.lists
-      a_get("/1.1/lists/list.json").
-        should have_been_made
+      expect(a_get("/1.1/lists/list.json")).to have_been_made
     end
     it "should have the correct output" do
       @cli.lists
-      $stdout.string.chomp.should eq "@pengwynn/rubyists  @twitter/team       @sferik/test"
+      expect($stdout.string.chomp).to eq "@pengwynn/rubyists  @twitter/team       @sferik/test"
     end
     context "--csv" do
       before do
@@ -1959,7 +1631,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should output in CSV format" do
         @cli.lists
-        $stdout.string.should eq <<-eos
+        expect($stdout.string).to eq <<-eos
 ID,Created at,Screen name,Slug,Members,Subscribers,Mode,Description
 1129440,2009-10-30 14:39:25 +0000,pengwynn,rubyists,499,39,public,""
 574,2009-09-23 01:18:01 +0000,twitter,team,1199,78078,public,""
@@ -1973,7 +1645,7 @@ ID,Created at,Screen name,Slug,Members,Subscribers,Mode,Description
       end
       it "should output in long format" do
         @cli.lists
-        $stdout.string.should eq <<-eos
+        expect($stdout.string).to eq <<-eos
 ID        Created at    Screen name  Slug      Members  Subscribers  Mode    ...
  1129440  Oct 30  2009  @pengwynn    rubyists      499           39  public   
      574  Sep 22  2009  @twitter     team         1199        78078  public   
@@ -1987,7 +1659,7 @@ ID        Created at    Screen name  Slug      Members  Subscribers  Mode    ...
       end
       it "should reverse the order of the sort" do
         @cli.lists
-        $stdout.string.chomp.should eq "@sferik/test        @twitter/team       @pengwynn/rubyists"
+        expect($stdout.string.chomp).to eq "@sferik/test        @twitter/team       @pengwynn/rubyists"
       end
     end
     context "--sort=members" do
@@ -1996,7 +1668,7 @@ ID        Created at    Screen name  Slug      Members  Subscribers  Mode    ...
       end
       it "should sort by the time when Twitter acount was created" do
         @cli.lists
-        $stdout.string.chomp.should eq "@sferik/test        @pengwynn/rubyists  @twitter/team"
+        expect($stdout.string.chomp).to eq "@sferik/test        @pengwynn/rubyists  @twitter/team"
       end
     end
     context "--sort=mode" do
@@ -2005,7 +1677,7 @@ ID        Created at    Screen name  Slug      Members  Subscribers  Mode    ...
       end
       it "should sort by the time when Twitter acount was created" do
         @cli.lists
-        $stdout.string.chomp.should eq "@sferik/test        @twitter/team       @pengwynn/rubyists"
+        expect($stdout.string.chomp).to eq "@sferik/test        @twitter/team       @pengwynn/rubyists"
       end
     end
     context "--sort=posted" do
@@ -2014,7 +1686,7 @@ ID        Created at    Screen name  Slug      Members  Subscribers  Mode    ...
       end
       it "should sort by the time when Twitter acount was created" do
         @cli.lists
-        $stdout.string.chomp.should eq "@twitter/team       @pengwynn/rubyists  @sferik/test"
+        expect($stdout.string.chomp).to eq "@twitter/team       @pengwynn/rubyists  @sferik/test"
       end
     end
     context "--sort=subscribers" do
@@ -2023,7 +1695,7 @@ ID        Created at    Screen name  Slug      Members  Subscribers  Mode    ...
       end
       it "should sort by the time when Twitter acount was created" do
         @cli.lists
-        $stdout.string.chomp.should eq "@sferik/test        @pengwynn/rubyists  @twitter/team"
+        expect($stdout.string.chomp).to eq "@sferik/test        @pengwynn/rubyists  @twitter/team"
       end
     end
     context "--unsorted" do
@@ -2032,33 +1704,25 @@ ID        Created at    Screen name  Slug      Members  Subscribers  Mode    ...
       end
       it "should not be sorted" do
         @cli.lists
-        $stdout.string.chomp.should eq "@pengwynn/rubyists  @twitter/team       @sferik/test"
+        expect($stdout.string.chomp).to eq "@pengwynn/rubyists  @twitter/team       @sferik/test"
       end
     end
     context "with a user passed" do
       before do
-        stub_get("/1.1/lists/list.json").
-          with(:query => {:screen_name => "sferik"}).
-          to_return(:body => fixture("lists.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/lists/list.json").with(:query => {:screen_name => "sferik"}).to_return(:body => fixture("lists.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should request the correct resource" do
         @cli.lists("sferik")
-        a_get("/1.1/lists/list.json").
-          with(:query => {:screen_name => "sferik"}).
-          should have_been_made
+        expect(a_get("/1.1/lists/list.json").with(:query => {:screen_name => "sferik"})).to have_been_made
       end
       context "--id" do
         before do
           @cli.options = @cli.options.merge("id" => true)
-          stub_get("/1.1/lists/list.json").
-            with(:query => {:user_id => "7505382"}).
-            to_return(:body => fixture("lists.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1.1/lists/list.json").with(:query => {:user_id => "7505382"}).to_return(:body => fixture("lists.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         end
         it "should request the correct resource" do
           @cli.lists("7505382")
-          a_get("/1.1/lists/list.json").
-            with(:query => {:user_id => "7505382"}).
-            should have_been_made
+          expect(a_get("/1.1/lists/list.json").with(:query => {:user_id => "7505382"})).to have_been_made
         end
       end
     end
@@ -2066,19 +1730,15 @@ ID        Created at    Screen name  Slug      Members  Subscribers  Mode    ...
 
   describe "#mentions" do
     before do
-      stub_get("/1.1/statuses/mentions_timeline.json").
-        with(:query => {:count => "20"}).
-        to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => "20"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @cli.mentions
-      a_get("/1.1/statuses/mentions_timeline.json").
-        with(:query => {:count => "20"}).
-        should have_been_made
+      expect(a_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => "20"})).to have_been_made
     end
     it "should have the correct output" do
       @cli.mentions
-      $stdout.string.should eq <<-eos
+      expect($stdout.string).to eq <<-eos
 \e[1m\e[33m   @mutgoff\e[0m
    Happy Birthday @imdane. Watch out for those @rally pranksters!
 
@@ -2162,7 +1822,7 @@ ID        Created at    Screen name  Slug      Members  Subscribers  Mode    ...
       end
       it "should output in CSV format" do
         @cli.mentions
-        $stdout.string.should eq <<-eos
+        expect($stdout.string).to eq <<-eos
 ID,Posted at,Screen name,Text
 244111636544225280,2012-09-07 16:35:24 +0000,mutgoff,Happy Birthday @imdane. Watch out for those @rally pranksters!
 244111183165157376,2012-09-07 16:33:36 +0000,ironicsans,"If you like good real-life stories, check out @NarrativelyNY's just-launched site http://t.co/wiUL07jE (and also visit http://t.co/ZoyQxqWA)"
@@ -2193,7 +1853,7 @@ ID,Posted at,Screen name,Text
       end
       it "should output in long format" do
         @cli.mentions
-        $stdout.string.should eq <<-eos
+        expect($stdout.string).to eq <<-eos
 ID                  Posted at     Screen name       Text
 244111636544225280  Sep  7 08:35  @mutgoff          Happy Birthday @imdane. W...
 244111183165157376  Sep  7 08:33  @ironicsans       If you like good real-lif...
@@ -2223,7 +1883,7 @@ ID                  Posted at     Screen name       Text
         end
         it "should reverse the order of the sort" do
           @cli.mentions
-          $stdout.string.should eq <<-eos
+          expect($stdout.string).to eq <<-eos
 ID                  Posted at     Screen name       Text
 244099460672679938  Sep  7 07:47  @dwiskus          Gentlemen, you can't figh...
 244100411563339777  Sep  7 07:50  @sferik           @episod @twitterapi Did y...
@@ -2251,41 +1911,25 @@ ID                  Posted at     Screen name       Text
     end
     context "--number" do
       before do
-        stub_get("/1.1/statuses/mentions_timeline.json").
-          with(:query => {:count => "1"}).
-          to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/statuses/mentions_timeline.json").
-          with(:query => {:count => "200"}).
-          to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/statuses/mentions_timeline.json").
-          with(:query => {:count => "200", :max_id => "244099460672679937"}).
-          to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => "1"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => "200"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => "200", :max_id => "244099460672679937"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         (5..185).step(20).to_a.reverse.each do |count|
-          stub_get("/1.1/statuses/mentions_timeline.json").
-            with(:query => {:count => count, :max_id => "244099460672679937"}).
-            to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => count, :max_id => "244099460672679937"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         end
       end
       it "should limit the number of results to 1" do
         @cli.options = @cli.options.merge("number" => 1)
         @cli.mentions
-        a_get("/1.1/statuses/mentions_timeline.json").
-          with(:query => {:count => "1"}).
-          should have_been_made
+        expect(a_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => "1"})).to have_been_made
       end
       it "should limit the number of results to 345" do
         @cli.options = @cli.options.merge("number" => 345)
         @cli.mentions
-        a_get("/1.1/statuses/mentions_timeline.json").
-          with(:query => {:count => "200"}).
-          should have_been_made
-        a_get("/1.1/statuses/mentions_timeline.json").
-          with(:query => {:count => "200", :max_id => "244099460672679937"}).
-          should have_been_made.times(7)
+        expect(a_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => "200"})).to have_been_made
+        expect(a_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => "200", :max_id => "244099460672679937"})).to have_been_made.times(7)
         (5..185).step(20).to_a.reverse.each do |count|
-          a_get("/1.1/statuses/mentions_timeline.json").
-            with(:query => {:count => count, :max_id => "244099460672679937"}).
-            should have_been_made
+          expect(a_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => count, :max_id => "244099460672679937"})).to have_been_made
         end
       end
     end
@@ -2296,41 +1940,33 @@ ID                  Posted at     Screen name       Text
       @cli.options = @cli.options.merge("display-url" => true)
     end
     it "should have the correct output" do
-      lambda do
+      expect do
         @cli.open("sferik")
-      end.should_not raise_error
+      end.not_to raise_error
     end
     context "--id" do
       before do
         @cli.options = @cli.options.merge("id" => true)
-        stub_get("/1.1/users/show.json").
-          with(:query => {:user_id => "420"}).
-          to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/users/show.json").with(:query => {:user_id => "420"}).to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should request the correct resource" do
         @cli.open("420")
-        a_get("/1.1/users/show.json").
-          with(:query => {:user_id => "420"}).
-          should have_been_made
+        expect(a_get("/1.1/users/show.json").with(:query => {:user_id => "420"})).to have_been_made
       end
     end
     context "--status" do
       before do
         @cli.options = @cli.options.merge("status" => true)
-        stub_get("/1.1/statuses/show/55709764298092545.json").
-          with(:query => {:include_my_retweet => "false"}).
-          to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/statuses/show/55709764298092545.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should request the correct resource" do
         @cli.open("55709764298092545")
-        a_get("/1.1/statuses/show/55709764298092545.json").
-          with(:query => {:include_my_retweet => "false"}).
-          should have_been_made
+        expect(a_get("/1.1/statuses/show/55709764298092545.json").with(:query => {:include_my_retweet => "false"})).to have_been_made
       end
       it "should have the correct output" do
-        lambda do
+        expect do
           @cli.open("55709764298092545")
-        end.should_not raise_error
+        end.not_to raise_error
       end
     end
   end
@@ -2338,33 +1974,21 @@ ID                  Posted at     Screen name       Text
   describe "#reply" do
     before do
       @cli.options = @cli.options.merge("profile" => fixture_path + "/.trc", "location" => true)
-      stub_get("/1.1/statuses/show/55709764298092545.json").
-        with(:query => {:include_my_retweet => "false"}).
-        to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_post("/1.1/statuses/update.json").
-        with(:body => {:in_reply_to_status_id => "55709764298092545", :status => "@sferik Testing", :lat => "37.76969909668", :long => "-122.39330291748", :trim_user => "true"}).
-        to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_request(:get, "http://checkip.dyndns.org/").
-        to_return(:body => fixture("checkip.html"), :headers => {:content_type => "text/html"})
-      stub_request(:get, "http://www.geoplugin.net/xml.gp?ip=50.131.22.169").
-        to_return(:body => fixture("geoplugin.xml"), :headers => {:content_type => "application/xml"})
+      stub_get("/1.1/statuses/show/55709764298092545.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_post("/1.1/statuses/update.json").with(:body => {:in_reply_to_status_id => "55709764298092545", :status => "@sferik Testing", :lat => "37.76969909668", :long => "-122.39330291748", :trim_user => "true"}).to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_request(:get, "http://checkip.dyndns.org/").to_return(:body => fixture("checkip.html"), :headers => {:content_type => "text/html"})
+      stub_request(:get, "http://www.geoplugin.net/xml.gp?ip=50.131.22.169").to_return(:body => fixture("geoplugin.xml"), :headers => {:content_type => "application/xml"})
     end
     it "should request the correct resource" do
       @cli.reply("55709764298092545", "Testing")
-      a_get("/1.1/statuses/show/55709764298092545.json").
-        with(:query => {:include_my_retweet => "false"}).
-        should have_been_made
-      a_post("/1.1/statuses/update.json").
-        with(:body => {:in_reply_to_status_id => "55709764298092545", :status => "@sferik Testing", :lat => "37.76969909668", :long => "-122.39330291748", :trim_user => "true"}).
-        should have_been_made
-      a_request(:get, "http://checkip.dyndns.org/").
-        should have_been_made
-      a_request(:get, "http://www.geoplugin.net/xml.gp?ip=50.131.22.169").
-        should have_been_made
+      expect(a_get("/1.1/statuses/show/55709764298092545.json").with(:query => {:include_my_retweet => "false"})).to have_been_made
+      expect(a_post("/1.1/statuses/update.json").with(:body => {:in_reply_to_status_id => "55709764298092545", :status => "@sferik Testing", :lat => "37.76969909668", :long => "-122.39330291748", :trim_user => "true"})).to have_been_made
+      expect(a_request(:get, "http://checkip.dyndns.org/")).to have_been_made
+      expect(a_request(:get, "http://www.geoplugin.net/xml.gp?ip=50.131.22.169")).to have_been_made
     end
     it "should have the correct output" do
       @cli.reply("55709764298092545", "Testing")
-      $stdout.string.split("\n").first.should eq "Reply posted by @testcli to @sferik."
+      expect($stdout.string.split("\n").first).to eq "Reply posted by @testcli to @sferik."
     end
     context "--all" do
       before do
@@ -2372,20 +1996,14 @@ ID                  Posted at     Screen name       Text
       end
       it "should request the correct resource" do
         @cli.reply("55709764298092545", "Testing")
-        a_get("/1.1/statuses/show/55709764298092545.json").
-          with(:query => {:include_my_retweet => "false"}).
-          should have_been_made
-        a_post("/1.1/statuses/update.json").
-          with(:body => {:in_reply_to_status_id => "55709764298092545", :status => "@sferik Testing", :lat => "37.76969909668", :long => "-122.39330291748", :trim_user => "true"}).
-          should have_been_made
-        a_request(:get, "http://checkip.dyndns.org/").
-          should have_been_made
-        a_request(:get, "http://www.geoplugin.net/xml.gp?ip=50.131.22.169").
-          should have_been_made
+        expect(a_get("/1.1/statuses/show/55709764298092545.json").with(:query => {:include_my_retweet => "false"})).to have_been_made
+        expect(a_post("/1.1/statuses/update.json").with(:body => {:in_reply_to_status_id => "55709764298092545", :status => "@sferik Testing", :lat => "37.76969909668", :long => "-122.39330291748", :trim_user => "true"})).to have_been_made
+        expect(a_request(:get, "http://checkip.dyndns.org/")).to have_been_made
+        expect(a_request(:get, "http://www.geoplugin.net/xml.gp?ip=50.131.22.169")).to have_been_made
       end
       it "should have the correct output" do
         @cli.reply("55709764298092545", "Testing")
-        $stdout.string.split("\n").first.should eq "Reply posted by @testcli to @sferik."
+        expect($stdout.string.split("\n").first).to eq "Reply posted by @testcli to @sferik."
       end
     end
   end
@@ -2393,32 +2011,24 @@ ID                  Posted at     Screen name       Text
   describe "#report_spam" do
     before do
       @cli.options = @cli.options.merge("profile" => fixture_path + "/.trc")
-      stub_post("/1.1/report_spam.json").
-        with(:body => {:screen_name => "sferik"}).
-        to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_post("/1.1/report_spam.json").with(:body => {:screen_name => "sferik"}).to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @cli.report_spam("sferik")
-      a_post("/1.1/report_spam.json").
-        with(:body => {:screen_name => "sferik"}).
-        should have_been_made
+      expect(a_post("/1.1/report_spam.json").with(:body => {:screen_name => "sferik"})).to have_been_made
     end
     it "should have the correct output" do
       @cli.report_spam("sferik")
-      $stdout.string.should match /^@testcli reported 1 user/
+      expect($stdout.string).to match /^@testcli reported 1 user/
     end
     context "--id" do
       before do
         @cli.options = @cli.options.merge("id" => true)
-        stub_post("/1.1/report_spam.json").
-          with(:body => {:user_id => "7505382"}).
-          to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_post("/1.1/report_spam.json").with(:body => {:user_id => "7505382"}).to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should request the correct resource" do
         @cli.report_spam("7505382")
-        a_post("/1.1/report_spam.json").
-          with(:body => {:user_id => "7505382"}).
-          should have_been_made
+        expect(a_post("/1.1/report_spam.json").with(:body => {:user_id => "7505382"})).to have_been_made
       end
     end
   end
@@ -2426,42 +2036,32 @@ ID                  Posted at     Screen name       Text
   describe "#retweet" do
     before do
       @cli.options = @cli.options.merge("profile" => fixture_path + "/.trc")
-      stub_post("/1.1/statuses/retweet/26755176471724032.json").
-        to_return(:body => fixture("retweet.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_post("/1.1/statuses/retweet/26755176471724032.json").to_return(:body => fixture("retweet.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @cli.retweet("26755176471724032")
-      a_post("/1.1/statuses/retweet/26755176471724032.json").
-        should have_been_made
+      expect(a_post("/1.1/statuses/retweet/26755176471724032.json")).to have_been_made
     end
     it "should have the correct output" do
       @cli.retweet("26755176471724032")
-      $stdout.string.should match /^@testcli retweeted 1 tweet.$/
+      expect($stdout.string).to match /^@testcli retweeted 1 tweet.$/
     end
   end
 
   describe "#retweets" do
     before do
-      stub_get("/1.1/statuses/user_timeline.json").
-        with(:query => {:count => "200", :include_rts => "true"}).
-        to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_get("/1.1/statuses/user_timeline.json").
-        with(:query => {:count => "200", :include_rts => "true", :max_id => "244102729860009983"}).
-        to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true", :max_id => "244102729860009983"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     context "without arguments" do
       it "should request the correct resource" do
         @cli.retweets
-        a_get("/1.1/statuses/user_timeline.json").
-          with(:query => {:count => "200", :include_rts => "true"}).
-          should have_been_made
-        a_get("/1.1/statuses/user_timeline.json").
-          with(:query => {:count => "200", :include_rts => "true", :max_id => "244102729860009983"}).
-          should have_been_made.times(3)
+        expect(a_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true"})).to have_been_made
+        expect(a_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true", :max_id => "244102729860009983"})).to have_been_made.times(3)
       end
       it "should have the correct output" do
         @cli.retweets
-        $stdout.string.should eq <<-eos
+        expect($stdout.string).to eq <<-eos
 \e[1m\e[33m   @calebelston\e[0m
    RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
 
@@ -2551,7 +2151,7 @@ ID                  Posted at     Screen name       Text
       end
       it "should output in CSV format" do
         @cli.retweets
-        $stdout.string.should eq <<-eos
+        expect($stdout.string).to eq <<-eos
 ID,Posted at,Screen name,Text
 244108728834592770,2012-09-07 16:23:50 +0000,calebelston,RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
 244107823733174272,2012-09-07 16:20:15 +0000,codeforamerica,"RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat, Sep 8 http://t.co/Sk5BM7U3  We'll see y'all there! #rhok @codeforamerica @TheaClay"
@@ -2582,7 +2182,7 @@ ID,Posted at,Screen name,Text
       end
       it "should output in long format" do
         @cli.retweets
-        $stdout.string.should eq <<-eos
+        expect($stdout.string).to eq <<-eos
 ID                  Posted at     Screen name      Text
 244108728834592770  Sep  7 08:23  @calebelston     RT @olivercameron: Mosaic ...
 244107823733174272  Sep  7 08:20  @codeforamerica  RT @randomhacks: Going to ...
@@ -2612,7 +2212,7 @@ ID                  Posted at     Screen name      Text
         end
         it "should reverse the order of the sort" do
           @cli.retweets
-          $stdout.string.should eq <<-eos
+          expect($stdout.string).to eq <<-eos
 ID                  Posted at     Screen name      Text
 244107823733174272  Sep  7 08:20  @codeforamerica  RT @randomhacks: Going to ...
 244108728834592770  Sep  7 08:23  @calebelston     RT @olivercameron: Mosaic ...
@@ -2640,67 +2240,41 @@ ID                  Posted at     Screen name      Text
     end
     context "--number" do
       before do
-        stub_get("/1.1/statuses/user_timeline.json").
-          with(:query => {:count => "200", :include_rts => "true"}).
-          to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/statuses/user_timeline.json").
-          with(:query => {:count => "200", :include_rts => "true", :max_id => "244107823733174271"}).
-          to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true", :max_id => "244107823733174271"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should limit the number of results to 1" do
         @cli.options = @cli.options.merge("number" => 1)
         @cli.retweets
-        a_get("/1.1/statuses/user_timeline.json").
-          with(:query => {:count => "200", :include_rts => "true"}).
-          should have_been_made
+        expect(a_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true"})).to have_been_made
       end
       it "should limit the number of results to 345" do
         @cli.options = @cli.options.merge("number" => 345)
         @cli.retweets
-        a_get("/1.1/statuses/user_timeline.json").
-          with(:query => {:count => "200", :include_rts => "true"}).
-          should have_been_made
-        a_get("/1.1/statuses/user_timeline.json").
-          with(:query => {:count => "200", :include_rts => "true", :max_id => "244107823733174271"}).
-          should have_been_made
+        expect(a_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true"})).to have_been_made
+        expect(a_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true", :max_id => "244107823733174271"})).to have_been_made
       end
     end
     context "with a user passed" do
       before do
-        stub_get("/1.1/statuses/user_timeline.json").
-          with(:query => {:count => "200", :include_rts => "true", :screen_name => "sferik"}).
-          to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/statuses/user_timeline.json").
-          with(:query => {:count => "200", :include_rts => "true", :screen_name => "sferik", :max_id => "244102729860009983"}).
-          to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true", :screen_name => "sferik"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true", :screen_name => "sferik", :max_id => "244102729860009983"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should request the correct resource" do
         @cli.retweets("sferik")
-        a_get("/1.1/statuses/user_timeline.json").
-          with(:query => {:count => "200", :include_rts => "true", :screen_name => "sferik"}).
-          should have_been_made
-        a_get("/1.1/statuses/user_timeline.json").
-          with(:query => {:count => "200", :include_rts => "true", :screen_name => "sferik", :max_id => "244102729860009983"}).
-          should have_been_made.times(3)
+        expect(a_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true", :screen_name => "sferik"})).to have_been_made
+        expect(a_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true", :screen_name => "sferik", :max_id => "244102729860009983"})).to have_been_made.times(3)
       end
       context "--id" do
         before do
           @cli.options = @cli.options.merge("id" => true)
-          stub_get("/1.1/statuses/user_timeline.json").
-            with(:query => {:count => "200", :include_rts => "true", :user_id => "7505382"}).
-            to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-          stub_get("/1.1/statuses/user_timeline.json").
-            with(:query => {:count => "200", :include_rts => "true", :user_id => "7505382", :max_id => "244102729860009983"}).
-            to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true", :user_id => "7505382"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true", :user_id => "7505382", :max_id => "244102729860009983"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         end
         it "should request the correct resource" do
           @cli.retweets("7505382")
-          a_get("/1.1/statuses/user_timeline.json").
-            with(:query => {:count => "200", :include_rts => "true", :user_id => "7505382"}).
-            should have_been_made
-          a_get("/1.1/statuses/user_timeline.json").
-            with(:query => {:count => "200", :include_rts => "true", :user_id => "7505382", :max_id => "244102729860009983"}).
-            should have_been_made.times(3)
+          expect(a_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true", :user_id => "7505382"})).to have_been_made
+          expect(a_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true", :user_id => "7505382", :max_id => "244102729860009983"})).to have_been_made.times(3)
         end
       end
     end
@@ -2709,8 +2283,8 @@ ID                  Posted at     Screen name      Text
   describe "#ruler" do
     it "should have the correct output" do
       @cli.ruler
-      $stdout.string.chomp.size.should eq 140
-      $stdout.string.chomp.should eq "----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|"
+      expect($stdout.string.chomp.size).to eq 140
+      expect($stdout.string.chomp).to eq "----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|"
     end
     context "with indentation" do
       before do
@@ -2718,27 +2292,23 @@ ID                  Posted at     Screen name      Text
       end
       it "should have the correct output" do
         @cli.ruler
-        $stdout.string.chomp.size.should eq 142
-        $stdout.string.chomp.should eq "  ----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|"
+        expect($stdout.string.chomp.size).to eq 142
+        expect($stdout.string.chomp).to eq "  ----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|"
       end
     end
   end
 
   describe "#status" do
     before do
-      stub_get("/1.1/statuses/show/55709764298092545.json").
-        with(:query => {:include_my_retweet => "false"}).
-        to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/statuses/show/55709764298092545.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @cli.status("55709764298092545")
-      a_get("/1.1/statuses/show/55709764298092545.json").
-        with(:query => {:include_my_retweet => "false"}).
-        should have_been_made
+      expect(a_get("/1.1/statuses/show/55709764298092545.json").with(:query => {:include_my_retweet => "false"})).to have_been_made
     end
     it "should have the correct output" do
       @cli.status("55709764298092545")
-      $stdout.string.should eq <<-eos
+      expect($stdout.string).to eq <<-eos
 ID           55709764298092545
 Text         The problem with your code is that it's doing exactly what you told it to do.
 Screen name  @sferik
@@ -2755,7 +2325,7 @@ URL          https://twitter.com/sferik/status/55709764298092545
       end
       it "should have the correct output" do
         @cli.status("55709764298092545")
-        $stdout.string.should eq <<-eos
+        expect($stdout.string).to eq <<-eos
 ID,Text,Screen name,Posted at,Location,Retweets,Source,URL
 55709764298092545,The problem with your code is that it's doing exactly what you told it to do.,sferik,2011-04-06 19:13:37 +0000,"Blowfish Sushi To Die For, 2170 Bryant St, San Francisco, California, United States",320,Twitter for iPhone,https://twitter.com/sferik/status/55709764298092545
         eos
@@ -2763,13 +2333,11 @@ ID,Text,Screen name,Posted at,Location,Retweets,Source,URL
     end
     context "with no street address" do
       before do
-        stub_get("/1.1/statuses/show/55709764298092550.json").
-          with(:query => {:include_my_retweet => "false"}).
-          to_return(:body => fixture("status_no_street_address.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/statuses/show/55709764298092550.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status_no_street_address.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should have the correct output" do
         @cli.status("55709764298092550")
-        $stdout.string.should eq <<-eos
+        expect($stdout.string).to eq <<-eos
 ID           55709764298092550
 Text         The problem with your code is that it's doing exactly what you told it to do.
 Screen name  @sferik
@@ -2783,13 +2351,11 @@ URL          https://twitter.com/sferik/status/55709764298092550
     end
     context "with no locality" do
       before do
-        stub_get("/1.1/statuses/show/55709764298092549.json").
-          with(:query => {:include_my_retweet => "false"}).
-          to_return(:body => fixture("status_no_locality.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/statuses/show/55709764298092549.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status_no_locality.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should have the correct output" do
         @cli.status("55709764298092549")
-        $stdout.string.should eq <<-eos
+        expect($stdout.string).to eq <<-eos
 ID           55709764298092549
 Text         The problem with your code is that it's doing exactly what you told it to do.
 Screen name  @sferik
@@ -2803,13 +2369,11 @@ URL          https://twitter.com/sferik/status/55709764298092549
     end
     context "with no attributes" do
       before do
-        stub_get("/1.1/statuses/show/55709764298092546.json").
-          with(:query => {:include_my_retweet => "false"}).
-          to_return(:body => fixture("status_no_attributes.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/statuses/show/55709764298092546.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status_no_attributes.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should have the correct output" do
         @cli.status("55709764298092546")
-        $stdout.string.should eq <<-eos
+        expect($stdout.string).to eq <<-eos
 ID           55709764298092546
 Text         The problem with your code is that it's doing exactly what you told it to do.
 Screen name  @sferik
@@ -2823,13 +2387,11 @@ URL          https://twitter.com/sferik/status/55709764298092546
     end
     context "with no country" do
       before do
-        stub_get("/1.1/statuses/show/55709764298092547.json").
-          with(:query => {:include_my_retweet => "false"}).
-          to_return(:body => fixture("status_no_country.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/statuses/show/55709764298092547.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status_no_country.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should have the correct output" do
         @cli.status("55709764298092547")
-        $stdout.string.should eq <<-eos
+        expect($stdout.string).to eq <<-eos
 ID           55709764298092547
 Text         The problem with your code is that it's doing exactly what you told it to do.
 Screen name  @sferik
@@ -2843,13 +2405,11 @@ URL          https://twitter.com/sferik/status/55709764298092547
     end
     context "with no full name" do
       before do
-        stub_get("/1.1/statuses/show/55709764298092548.json").
-          with(:query => {:include_my_retweet => "false"}).
-          to_return(:body => fixture("status_no_full_name.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/statuses/show/55709764298092548.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status_no_full_name.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should have the correct output" do
         @cli.status("55709764298092548")
-        $stdout.string.should eq <<-eos
+        expect($stdout.string).to eq <<-eos
 ID           55709764298092548
 Text         The problem with your code is that it's doing exactly what you told it to do.
 Screen name  @sferik
@@ -2865,20 +2425,16 @@ URL          https://twitter.com/sferik/status/55709764298092548
 
   describe "#timeline" do
     before do
-      stub_get("/1.1/statuses/home_timeline.json").
-        with(:query => {:count => "20"}).
-        to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "20"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     context "without user" do
       it "should request the correct resource" do
         @cli.timeline
-        a_get("/1.1/statuses/home_timeline.json").
-          with(:query => {:count => "20"}).
-          should have_been_made
+        expect(a_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "20"})).to have_been_made
       end
       it "should have the correct output" do
         @cli.timeline
-        $stdout.string.should eq <<-eos
+        expect($stdout.string).to eq <<-eos
 \e[1m\e[33m   @mutgoff\e[0m
    Happy Birthday @imdane. Watch out for those @rally pranksters!
 
@@ -2963,7 +2519,7 @@ URL          https://twitter.com/sferik/status/55709764298092548
       end
       it "should output in CSV format" do
         @cli.timeline
-        $stdout.string.should eq <<-eos
+        expect($stdout.string).to eq <<-eos
 ID,Posted at,Screen name,Text
 244111636544225280,2012-09-07 16:35:24 +0000,mutgoff,Happy Birthday @imdane. Watch out for those @rally pranksters!
 244111183165157376,2012-09-07 16:33:36 +0000,ironicsans,"If you like good real-life stories, check out @NarrativelyNY's just-launched site http://t.co/wiUL07jE (and also visit http://t.co/ZoyQxqWA)"
@@ -2994,7 +2550,7 @@ ID,Posted at,Screen name,Text
       end
       it "should output in long format" do
         @cli.timeline
-        $stdout.string.should eq <<-eos
+        expect($stdout.string).to eq <<-eos
 ID                  Posted at     Screen name       Text
 244111636544225280  Sep  7 08:35  @mutgoff          Happy Birthday @imdane. W...
 244111183165157376  Sep  7 08:33  @ironicsans       If you like good real-lif...
@@ -3024,7 +2580,7 @@ ID                  Posted at     Screen name       Text
         end
         it "should reverse the order of the sort" do
           @cli.timeline
-          $stdout.string.should eq <<-eos
+          expect($stdout.string).to eq <<-eos
 ID                  Posted at     Screen name       Text
 244099460672679938  Sep  7 07:47  @dwiskus          Gentlemen, you can't figh...
 244100411563339777  Sep  7 07:50  @sferik           @episod @twitterapi Did y...
@@ -3052,107 +2608,67 @@ ID                  Posted at     Screen name       Text
     end
     context "--number" do
       before do
-        stub_get("/1.1/statuses/home_timeline.json").
-          with(:query => {:count => "1"}).
-          to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/statuses/home_timeline.json").
-          with(:query => {:count => "200"}).
-          to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/statuses/home_timeline.json").
-          with(:query => {:count => "200", :max_id => "244099460672679937"}).
-          to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "1"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200", :max_id => "244099460672679937"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         (5..185).step(20).to_a.reverse.each do |count|
-          stub_get("/1.1/statuses/home_timeline.json").
-            with(:query => {:count => count, :max_id => "244099460672679937"}).
-            to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => count, :max_id => "244099460672679937"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         end
       end
       it "should limit the number of results to 1" do
         @cli.options = @cli.options.merge("number" => 1)
         @cli.timeline
-        a_get("/1.1/statuses/home_timeline.json").
-          with(:query => {:count => "1"}).
-          should have_been_made
+        expect(a_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "1"})).to have_been_made
       end
       it "should limit the number of results to 345" do
         @cli.options = @cli.options.merge("number" => 345)
         @cli.timeline
-        a_get("/1.1/statuses/home_timeline.json").
-          with(:query => {:count => "200"}).
-          should have_been_made
-        a_get("/1.1/statuses/home_timeline.json").
-          with(:query => {:count => "200", :max_id => "244099460672679937"}).
-          should have_been_made.times(7)
+        expect(a_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200"})).to have_been_made
+        expect(a_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200", :max_id => "244099460672679937"})).to have_been_made.times(7)
         (5..185).step(20).to_a.reverse.each do |count|
-          a_get("/1.1/statuses/home_timeline.json").
-            with(:query => {:count => count, :max_id => "244099460672679937"}).
-            should have_been_made
+          expect(a_get("/1.1/statuses/home_timeline.json").with(:query => {:count => count, :max_id => "244099460672679937"})).to have_been_made
         end
       end
     end
     context "with a user passed" do
       before do
-        stub_get("/1.1/statuses/user_timeline.json").
-          with(:query => {:count => "20", :screen_name => "sferik"}).
-          to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "20", :screen_name => "sferik"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should request the correct resource" do
         @cli.timeline("sferik")
-        a_get("/1.1/statuses/user_timeline.json").
-          with(:query => {:count => "20", :screen_name => "sferik"}).
-          should have_been_made
+        expect(a_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "20", :screen_name => "sferik"})).to have_been_made
       end
       context "--id" do
         before do
           @cli.options = @cli.options.merge("id" => true)
-          stub_get("/1.1/statuses/user_timeline.json").
-            with(:query => {:count => "20", :user_id => "7505382"}).
-            to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "20", :user_id => "7505382"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         end
         it "should request the correct resource" do
           @cli.timeline("7505382")
-          a_get("/1.1/statuses/user_timeline.json").
-            with(:query => {:count => "20", :user_id => "7505382"}).
-            should have_been_made
+          expect(a_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "20", :user_id => "7505382"})).to have_been_made
         end
       end
       context "--number" do
         before do
-          stub_get("/1.1/statuses/user_timeline.json").
-            with(:query => {:count => "1", :screen_name => "sferik"}).
-            to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-          stub_get("/1.1/statuses/user_timeline.json").
-            with(:query => {:count => "200", :screen_name => "sferik"}).
-            to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-          stub_get("/1.1/statuses/user_timeline.json").
-            with(:query => {:count => "200", :screen_name => "sferik", :max_id => "244099460672679937"}).
-            to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "1", :screen_name => "sferik"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :screen_name => "sferik"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :screen_name => "sferik", :max_id => "244099460672679937"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
           (5..185).step(20).to_a.reverse.each do |count|
-            stub_get("/1.1/statuses/user_timeline.json").
-              with(:query => {:count => count, :screen_name => "sferik", :max_id => "244099460672679937"}).
-              to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+            stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => count, :screen_name => "sferik", :max_id => "244099460672679937"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
           end
         end
         it "should limit the number of results to 1" do
           @cli.options = @cli.options.merge("number" => 1)
           @cli.timeline("sferik")
-          a_get("/1.1/statuses/user_timeline.json").
-            with(:query => {:count => "1", :screen_name => "sferik"}).
-            should have_been_made
+          expect(a_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "1", :screen_name => "sferik"})).to have_been_made
         end
         it "should limit the number of results to 345" do
           @cli.options = @cli.options.merge("number" => 345)
           @cli.timeline("sferik")
-          a_get("/1.1/statuses/user_timeline.json").
-            with(:query => {:count => "200", :screen_name => "sferik"}).
-            should have_been_made
-          a_get("/1.1/statuses/user_timeline.json").
-            with(:query => {:count => "200", :screen_name => "sferik", :max_id => "244099460672679937"}).
-            should have_been_made.times(7)
+          expect(a_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :screen_name => "sferik"})).to have_been_made
+          expect(a_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :screen_name => "sferik", :max_id => "244099460672679937"})).to have_been_made.times(7)
           (5..185).step(20).to_a.reverse.each do |count|
-            a_get("/1.1/statuses/user_timeline.json").
-              with(:query => {:count => count, :screen_name => "sferik", :max_id => "244099460672679937"}).
-              should have_been_made
+            expect(a_get("/1.1/statuses/user_timeline.json").with(:query => {:count => count, :screen_name => "sferik", :max_id => "244099460672679937"})).to have_been_made
           end
         end
       end
@@ -3161,70 +2677,56 @@ ID                  Posted at     Screen name       Text
 
   describe "#trends" do
     before do
-      stub_get("/1.1/trends/place.json").
-        with(:query => {:id => "1"}).
-        to_return(:body => fixture("trends.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/trends/place.json").with(:query => {:id => "1"}).to_return(:body => fixture("trends.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @cli.trends
-      a_get("/1.1/trends/place.json").
-        with(:query => {:id => "1"}).
-        should have_been_made
+      expect(a_get("/1.1/trends/place.json").with(:query => {:id => "1"})).to have_been_made
     end
     it "should have the correct output" do
       @cli.trends
-      $stdout.string.chomp.should eq "#sevenwordsaftersex  Walkman              Allen Iverson"
+      expect($stdout.string.chomp).to eq "#sevenwordsaftersex  Walkman              Allen Iverson"
     end
     context "--exclude-hashtags" do
       before do
         @cli.options = @cli.options.merge("exclude-hashtags" => true)
-        stub_get("/1.1/trends/place.json").
-          with(:query => {:id => "1", :exclude => "hashtags"}).
-          to_return(:body => fixture("trends.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/trends/place.json").with(:query => {:id => "1", :exclude => "hashtags"}).to_return(:body => fixture("trends.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should request the correct resource" do
         @cli.trends
-        a_get("/1.1/trends/place.json").
-          with(:query => {:id => "1", :exclude => "hashtags"}).
-          should have_been_made
+        expect(a_get("/1.1/trends/place.json").with(:query => {:id => "1", :exclude => "hashtags"})).to have_been_made
       end
       it "should have the correct output" do
         @cli.trends
-        $stdout.string.chomp.should eq "#sevenwordsaftersex  Walkman              Allen Iverson"
+        expect($stdout.string.chomp).to eq "#sevenwordsaftersex  Walkman              Allen Iverson"
       end
     end
     context "with a WOEID passed" do
       before do
-        stub_get("/1.1/trends/place.json").
-          with(:query => {:id => "2487956"}).
-          to_return(:body => fixture("trends.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/trends/place.json").with(:query => {:id => "2487956"}).to_return(:body => fixture("trends.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should request the correct resource" do
         @cli.trends("2487956")
-        a_get("/1.1/trends/place.json").
-          with(:query => {:id => "2487956"}).
-          should have_been_made
+        expect(a_get("/1.1/trends/place.json").with(:query => {:id => "2487956"})).to have_been_made
       end
       it "should have the correct output" do
         @cli.trends("2487956")
-        $stdout.string.chomp.should eq "#sevenwordsaftersex  Walkman              Allen Iverson"
+        expect($stdout.string.chomp).to eq "#sevenwordsaftersex  Walkman              Allen Iverson"
       end
     end
   end
 
   describe "#trend_locations" do
     before do
-      stub_get("/1.1/trends/available.json").
-        to_return(:body => fixture("locations.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/trends/available.json").to_return(:body => fixture("locations.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @cli.trend_locations
-      a_get("/1.1/trends/available.json").
-        should have_been_made
+      expect(a_get("/1.1/trends/available.json")).to have_been_made
     end
     it "should have the correct output" do
       @cli.trend_locations
-      $stdout.string.chomp.should eq "Boston         New York       San Francisco  United States  Worldwide"
+      expect($stdout.string.chomp).to eq "Boston         New York       San Francisco  United States  Worldwide"
     end
     context "--csv" do
       before do
@@ -3232,7 +2734,7 @@ ID                  Posted at     Screen name       Text
       end
       it "should output in CSV format" do
         @cli.trend_locations
-        $stdout.string.chomp.should eq <<-eos.chomp
+        expect($stdout.string.chomp).to eq <<-eos.chomp
 WOEID,Parent ID,Type,Name,Country
 2367105,,Town,Boston,United States
 2459115,,Town,New York,United States
@@ -3248,7 +2750,7 @@ WOEID,Parent ID,Type,Name,Country
       end
       it "should output in long format" do
         @cli.trend_locations
-        $stdout.string.chomp.should eq <<-eos.chomp
+        expect($stdout.string.chomp).to eq <<-eos.chomp
 WOEID     Parent ID  Type       Name           Country
  2367105             Town       Boston         United States
  2459115             Town       New York       United States
@@ -3264,7 +2766,7 @@ WOEID     Parent ID  Type       Name           Country
       end
       it "should reverse the order of the sort" do
         @cli.trend_locations
-        $stdout.string.chomp.should eq "Worldwide      United States  San Francisco  New York       Boston"
+        expect($stdout.string.chomp).to eq "Worldwide      United States  San Francisco  New York       Boston"
       end
     end
     context "--sort=country" do
@@ -3273,7 +2775,7 @@ WOEID     Parent ID  Type       Name           Country
       end
       it "should sort by number of favorites" do
         @cli.trend_locations
-        $stdout.string.chomp.should eq "Worldwide      New York       Boston         United States  San Francisco"
+        expect($stdout.string.chomp).to eq "Worldwide      New York       Boston         United States  San Francisco"
       end
     end
     context "--sort=parent" do
@@ -3282,7 +2784,7 @@ WOEID     Parent ID  Type       Name           Country
       end
       it "should sort by number of favorites" do
         @cli.trend_locations
-        $stdout.string.chomp.should eq "Boston         Worldwide      New York       United States  San Francisco"
+        expect($stdout.string.chomp).to eq "Boston         Worldwide      New York       United States  San Francisco"
       end
     end
     context "--sort=type" do
@@ -3291,7 +2793,7 @@ WOEID     Parent ID  Type       Name           Country
       end
       it "should sort by number of favorites" do
         @cli.trend_locations
-        $stdout.string.chomp.should eq "United States  Worldwide      New York       Boston         San Francisco"
+        expect($stdout.string.chomp).to eq "United States  Worldwide      New York       Boston         San Francisco"
       end
     end
     context "--sort=woeid" do
@@ -3300,7 +2802,7 @@ WOEID     Parent ID  Type       Name           Country
       end
       it "should sort by number of favorites" do
         @cli.trend_locations
-        $stdout.string.chomp.should eq "Worldwide      Boston         New York       San Francisco  United States"
+        expect($stdout.string.chomp).to eq "Worldwide      Boston         New York       San Francisco  United States"
       end
     end
     context "--unsorted" do
@@ -3309,7 +2811,7 @@ WOEID     Parent ID  Type       Name           Country
       end
       it "should not be sorted" do
         @cli.trend_locations
-        $stdout.string.chomp.should eq "Boston         Worldwide      New York       United States  San Francisco"
+        expect($stdout.string.chomp).to eq "Boston         Worldwide      New York       United States  San Francisco"
       end
     end
   end
@@ -3320,46 +2822,32 @@ WOEID     Parent ID  Type       Name           Country
     end
     context "one user" do
       it "should request the correct resource" do
-        stub_post("/1.1/friendships/destroy.json").
-          with(:body => {:screen_name => "sferik"}).
-          to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_post("/1.1/friendships/destroy.json").with(:body => {:screen_name => "sferik"}).to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         @cli.unfollow("sferik")
-        a_post("/1.1/friendships/destroy.json").
-          with(:body => {:screen_name => "sferik"}).
-          should have_been_made
+        expect(a_post("/1.1/friendships/destroy.json").with(:body => {:screen_name => "sferik"})).to have_been_made
       end
       it "should have the correct output" do
-        stub_post("/1.1/friendships/destroy.json").
-          with(:body => {:screen_name => "sferik"}).
-          to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_post("/1.1/friendships/destroy.json").with(:body => {:screen_name => "sferik"}).to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         @cli.unfollow("sferik")
-        $stdout.string.should match /^@testcli is no longer following 1 user\.$/
+        expect($stdout.string).to match /^@testcli is no longer following 1 user\.$/
       end
       context "--id" do
         before do
           @cli.options = @cli.options.merge("id" => true)
-          stub_post("/1.1/friendships/destroy.json").
-            with(:body => {:user_id => "7505382"}).
-            to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_post("/1.1/friendships/destroy.json").with(:body => {:user_id => "7505382"}).to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         end
         it "should request the correct resource" do
           @cli.unfollow("7505382")
-          a_post("/1.1/friendships/destroy.json").
-            with(:body => {:user_id => "7505382"}).
-            should have_been_made
+          expect(a_post("/1.1/friendships/destroy.json").with(:body => {:user_id => "7505382"})).to have_been_made
         end
       end
       context "Twitter is down" do
         it "should retry 3 times and then raise an error" do
-          stub_post("/1.1/friendships/destroy.json").
-            with(:body => {:screen_name => "sferik"}).
-            to_return(:status => 502)
-          lambda do
+          stub_post("/1.1/friendships/destroy.json").with(:body => {:screen_name => "sferik"}).to_return(:status => 502)
+          expect do
             @cli.unfollow("sferik")
-          end.should raise_error("Twitter is down or being upgraded.")
-          a_post("/1.1/friendships/destroy.json").
-            with(:body => {:screen_name => "sferik"}).
-            should have_been_made.times(3)
+          end.to raise_error("Twitter is down or being upgraded.")
+          expect(a_post("/1.1/friendships/destroy.json").with(:body => {:screen_name => "sferik"})).to have_been_made.times(3)
         end
       end
     end
@@ -3368,61 +2856,47 @@ WOEID     Parent ID  Type       Name           Country
   describe "#update" do
     before do
       @cli.options = @cli.options.merge("profile" => fixture_path + "/.trc", "location" => true)
-      stub_post("/1.1/statuses/update.json").
-        with(:body => {:status => "Testing", :lat => "37.76969909668", :long => "-122.39330291748", :trim_user => "true"}).
-        to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_request(:get, "http://checkip.dyndns.org/").
-        to_return(:body => fixture("checkip.html"), :headers => {:content_type => "text/html"})
-      stub_request(:get, "http://www.geoplugin.net/xml.gp?ip=50.131.22.169").
-        to_return(:body => fixture("geoplugin.xml"), :headers => {:content_type => "application/xml"})
+      stub_post("/1.1/statuses/update.json").with(:body => {:status => "Testing", :lat => "37.76969909668", :long => "-122.39330291748", :trim_user => "true"}).to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_request(:get, "http://checkip.dyndns.org/").to_return(:body => fixture("checkip.html"), :headers => {:content_type => "text/html"})
+      stub_request(:get, "http://www.geoplugin.net/xml.gp?ip=50.131.22.169").to_return(:body => fixture("geoplugin.xml"), :headers => {:content_type => "application/xml"})
     end
     it "should request the correct resource" do
       @cli.update("Testing")
-      a_post("/1.1/statuses/update.json").
-        with(:body => {:status => "Testing", :lat => "37.76969909668", :long => "-122.39330291748", :trim_user => "true"}).
-        should have_been_made
-      a_request(:get, "http://checkip.dyndns.org/").
-        should have_been_made
-      a_request(:get, "http://www.geoplugin.net/xml.gp?ip=50.131.22.169").
-        should have_been_made
+      expect(a_post("/1.1/statuses/update.json").with(:body => {:status => "Testing", :lat => "37.76969909668", :long => "-122.39330291748", :trim_user => "true"})).to have_been_made
+      expect(a_request(:get, "http://checkip.dyndns.org/")).to have_been_made
+      expect(a_request(:get, "http://www.geoplugin.net/xml.gp?ip=50.131.22.169")).to have_been_made
     end
     it "should have the correct output" do
       @cli.update("Testing")
-      $stdout.string.split("\n").first.should eq "Tweet posted by @testcli."
+      expect($stdout.string.split("\n").first).to eq "Tweet posted by @testcli."
     end
     context "with file" do
       before do
         @cli.options = @cli.options.merge("file" => fixture_path + "/long.png")
-        stub_post("/1.1/statuses/update_with_media.json").
-          to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_post("/1.1/statuses/update_with_media.json").to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should request the correct resource" do
         @cli.update("Testing")
-        a_post("/1.1/statuses/update_with_media.json").
-          should have_been_made
+        expect(a_post("/1.1/statuses/update_with_media.json")).to have_been_made
       end
       it "should have the correct output" do
         @cli.update("Testing")
-        $stdout.string.split("\n").first.should eq "Tweet posted by @testcli."
+        expect($stdout.string.split("\n").first).to eq "Tweet posted by @testcli."
       end
     end
   end
 
   describe "#users" do
     before do
-      stub_post("/1.1/users/lookup.json").
-        with(:body => {:screen_name => "sferik,pengwynn"}).
-        to_return(:body => fixture("users.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_post("/1.1/users/lookup.json").with(:body => {:screen_name => "sferik,pengwynn"}).to_return(:body => fixture("users.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @cli.users("sferik", "pengwynn")
-      a_post("/1.1/users/lookup.json").
-        with(:body => {:screen_name => "sferik,pengwynn"}).
-        should have_been_made
+      expect(a_post("/1.1/users/lookup.json").with(:body => {:screen_name => "sferik,pengwynn"})).to have_been_made
     end
     it "should have the correct output" do
       @cli.users("sferik", "pengwynn")
-      $stdout.string.chomp.should eq "pengwynn  sferik"
+      expect($stdout.string.chomp).to eq "pengwynn  sferik"
     end
     context "--csv" do
       before do
@@ -3430,7 +2904,7 @@ WOEID     Parent ID  Type       Name           Country
       end
       it "should output in CSV format" do
         @cli.users("sferik", "pengwynn")
-        $stdout.string.should eq <<-eos
+        expect($stdout.string).to eq <<-eos
 ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
 14100886,2008-03-08 16:34:22 +0000,2012-07-07 20:33:19 +0000,6940,192,358,3427,5457,pengwynn,Wynn Netherland ⚡
 7505382,2007-07-16 12:59:01 +0000,2012-07-08 18:29:20 +0000,7890,3755,118,212,2262,sferik,Erik Michaels-Ober
@@ -3443,7 +2917,7 @@ ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name
       end
       it "should output in long format" do
         @cli.users("sferik", "pengwynn")
-        $stdout.string.should eq <<-eos
+        expect($stdout.string).to eq <<-eos
 ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
 14100886  Mar  8  2008  Jul  7 12:33       6940        192     358       3427...
  7505382  Jul 16  2007  Jul  8 10:29       7890       3755     118        212...
@@ -3456,7 +2930,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should reverse the order of the sort" do
         @cli.users("sferik", "pengwynn")
-        $stdout.string.chomp.should eq "sferik    pengwynn"
+        expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
     end
     context "--sort=favorites" do
@@ -3465,7 +2939,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by number of favorites" do
         @cli.users("sferik", "pengwynn")
-        $stdout.string.chomp.should eq "pengwynn  sferik"
+        expect($stdout.string.chomp).to eq "pengwynn  sferik"
       end
     end
     context "--sort=followers" do
@@ -3474,7 +2948,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by number of followers" do
         @cli.users("sferik", "pengwynn")
-        $stdout.string.chomp.should eq "sferik    pengwynn"
+        expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
     end
     context "--sort=friends" do
@@ -3483,21 +2957,17 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by number of friends" do
         @cli.users("sferik", "pengwynn")
-        $stdout.string.chomp.should eq "sferik    pengwynn"
+        expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
     end
     context "--id" do
       before do
         @cli.options = @cli.options.merge("id" => true)
-        stub_post("/1.1/users/lookup.json").
-          with(:body => {:user_id => "7505382,14100886"}).
-          to_return(:body => fixture("users.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_post("/1.1/users/lookup.json").with(:body => {:user_id => "7505382,14100886"}).to_return(:body => fixture("users.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should request the correct resource" do
         @cli.users("7505382", "14100886")
-        a_post("/1.1/users/lookup.json").
-          with(:body => {:user_id => "7505382,14100886"}).
-          should have_been_made
+        expect(a_post("/1.1/users/lookup.json").with(:body => {:user_id => "7505382,14100886"})).to have_been_made
       end
     end
     context "--sort=listed" do
@@ -3506,7 +2976,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by number of list memberships" do
         @cli.users("sferik", "pengwynn")
-        $stdout.string.chomp.should eq "sferik    pengwynn"
+        expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
     end
     context "--sort=since" do
@@ -3515,7 +2985,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by the time when Twitter acount was created" do
         @cli.users("sferik", "pengwynn")
-        $stdout.string.chomp.should eq "sferik    pengwynn"
+        expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
     end
     context "--sort=tweets" do
@@ -3524,7 +2994,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by number of Tweets" do
         @cli.users("sferik", "pengwynn")
-        $stdout.string.chomp.should eq "pengwynn  sferik"
+        expect($stdout.string.chomp).to eq "pengwynn  sferik"
       end
     end
     context "--sort=tweeted" do
@@ -3533,7 +3003,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by the time of the last Tweet" do
         @cli.users("sferik", "pengwynn")
-        $stdout.string.chomp.should eq "pengwynn  sferik"
+        expect($stdout.string.chomp).to eq "pengwynn  sferik"
       end
     end
     context "--unsorted" do
@@ -3542,7 +3012,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should not be sorted" do
         @cli.users("sferik", "pengwynn")
-        $stdout.string.chomp.should eq "pengwynn  sferik"
+        expect($stdout.string.chomp).to eq "pengwynn  sferik"
       end
     end
   end
@@ -3550,25 +3020,21 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
   describe "#version" do
     it "should have the correct output" do
       @cli.version
-      $stdout.string.chomp.should eq T::Version.to_s
+      expect($stdout.string.chomp).to eq T::Version.to_s
     end
   end
 
   describe "#whois" do
     before do
-      stub_get("/1.1/users/show.json").
-        with(:query => {:screen_name => "sferik"}).
-        to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/users/show.json").with(:query => {:screen_name => "sferik"}).to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @cli.whois("sferik")
-      a_get("/1.1/users/show.json").
-        with(:query => {:screen_name => "sferik"}).
-        should have_been_made
+      expect(a_get("/1.1/users/show.json").with(:query => {:screen_name => "sferik"})).to have_been_made
     end
     it "should have the correct output" do
       @cli.whois("sferik")
-      $stdout.string.should eq <<-eos
+      expect($stdout.string).to eq <<-eos
 ID           7505382
 Name         Erik Michaels-Ober
 Bio          Vagabond.
@@ -3590,7 +3056,7 @@ URL          https://github.com/sferik
       end
       it "should have the correct output" do
         @cli.whois("sferik")
-        $stdout.string.should eq <<-eos
+        expect($stdout.string).to eq <<-eos
 ID,Verified,Name,Screen name,Bio,Location,Following,Last update,Lasted updated at,Since,Tweets,Favorites,Listed,Following,Followers,URL
 7505382,false,Erik Michaels-Ober,sferik,Vagabond.,San Francisco,false,@goldman You're near my home town! Say hi to Woodstock for me.,2012-07-08 18:29:20 +0000,2007-07-16 12:59:01 +0000,7890,3755,118,212,2262,https://github.com/sferik
         eos
@@ -3599,15 +3065,11 @@ ID,Verified,Name,Screen name,Bio,Location,Following,Last update,Lasted updated a
     context "--id" do
       before do
         @cli.options = @cli.options.merge("id" => true)
-        stub_get("/1.1/users/show.json").
-          with(:query => {:user_id => "7505382"}).
-          to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/users/show.json").with(:query => {:user_id => "7505382"}).to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should request the correct resource" do
         @cli.whois("7505382")
-        a_get("/1.1/users/show.json").
-          with(:query => {:user_id => "7505382"}).
-          should have_been_made
+        expect(a_get("/1.1/users/show.json").with(:query => {:user_id => "7505382"})).to have_been_made
       end
     end
   end

@@ -24,154 +24,130 @@ describe T::Set do
     end
     it "should have the correct output" do
       @set.active("testcli", "abc123")
-      $stdout.string.chomp.should eq "Active account has been updated to testcli."
+      expect($stdout.string.chomp).to eq "Active account has been updated to testcli."
     end
     it "should accept an account name without a consumer key" do
       @set.active("testcli")
-      $stdout.string.chomp.should eq "Active account has been updated to testcli."
+      expect($stdout.string.chomp).to eq "Active account has been updated to testcli."
     end
     it "should be case insensitive" do
       @set.active("TestCLI", "abc123")
-      $stdout.string.chomp.should eq "Active account has been updated to testcli."
+      expect($stdout.string.chomp).to eq "Active account has been updated to testcli."
     end
     it "should raise an error if username is ambiguous" do
-      lambda do
+      expect do
         @set.active("test", "abc123")
-      end.should raise_error(ArgumentError, /Username test is ambiguous/)
+      end.to raise_error(ArgumentError, /Username test is ambiguous/)
     end
     it "should raise an error if the username is not found" do
-      lambda do
+      expect do
         @set.active("clitest")
-      end.should raise_error(ArgumentError, /Username clitest is not found/)
+      end.to raise_error(ArgumentError, /Username clitest is not found/)
     end
   end
 
   describe "#bio" do
     before do
       @set.options = @set.options.merge("profile" => fixture_path + "/.trc")
-      stub_post("/1.1/account/update_profile.json").
-        with(:body => {:description => "Vagabond."}).
-        to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_post("/1.1/account/update_profile.json").with(:body => {:description => "Vagabond."}).to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @set.bio("Vagabond.")
-      a_post("/1.1/account/update_profile.json").
-        with(:body => {:description => "Vagabond."}).
-        should have_been_made
+      expect(a_post("/1.1/account/update_profile.json").with(:body => {:description => "Vagabond."})).to have_been_made
     end
     it "should have the correct output" do
       @set.bio("Vagabond.")
-      $stdout.string.chomp.should eq "@testcli's bio has been updated."
+      expect($stdout.string.chomp).to eq "@testcli's bio has been updated."
     end
   end
 
   describe "#language" do
     before do
       @set.options = @set.options.merge("profile" => fixture_path + "/.trc")
-      stub_post("/1.1/account/settings.json").
-        with(:body => {:lang => "en"}).
-        to_return(:body => fixture("settings.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_post("/1.1/account/settings.json").with(:body => {:lang => "en"}).to_return(:body => fixture("settings.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @set.language("en")
-      a_post("/1.1/account/settings.json").
-        with(:body => {:lang => "en"}).
-        should have_been_made
+      expect(a_post("/1.1/account/settings.json").with(:body => {:lang => "en"})).to have_been_made
     end
     it "should have the correct output" do
       @set.language("en")
-      $stdout.string.chomp.should eq "@testcli's language has been updated."
+      expect($stdout.string.chomp).to eq "@testcli's language has been updated."
     end
   end
 
   describe "#location" do
     before do
       @set.options = @set.options.merge("profile" => fixture_path + "/.trc")
-      stub_post("/1.1/account/update_profile.json").
-        with(:body => {:location => "San Francisco"}).
-        to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_post("/1.1/account/update_profile.json").with(:body => {:location => "San Francisco"}).to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @set.location("San Francisco")
-      a_post("/1.1/account/update_profile.json").
-        with(:body => {:location => "San Francisco"}).
-        should have_been_made
+      expect(a_post("/1.1/account/update_profile.json").with(:body => {:location => "San Francisco"})).to have_been_made
     end
     it "should have the correct output" do
       @set.location("San Francisco")
-      $stdout.string.chomp.should eq "@testcli's location has been updated."
+      expect($stdout.string.chomp).to eq "@testcli's location has been updated."
     end
   end
 
   describe "#name" do
     before do
       @set.options = @set.options.merge("profile" => fixture_path + "/.trc")
-      stub_post("/1.1/account/update_profile.json").
-        with(:body => {:name => "Erik Michaels-Ober"}).
-        to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_post("/1.1/account/update_profile.json").with(:body => {:name => "Erik Michaels-Ober"}).to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @set.name("Erik Michaels-Ober")
-      a_post("/1.1/account/update_profile.json").
-        with(:body => {:name => "Erik Michaels-Ober"}).
-        should have_been_made
+      expect(a_post("/1.1/account/update_profile.json").with(:body => {:name => "Erik Michaels-Ober"})).to have_been_made
     end
     it "should have the correct output" do
       @set.name("Erik Michaels-Ober")
-      $stdout.string.chomp.should eq "@testcli's name has been updated."
+      expect($stdout.string.chomp).to eq "@testcli's name has been updated."
     end
   end
 
   describe "#profile_background_image" do
     before do
       @set.options = @set.options.merge("profile" => fixture_path + "/.trc")
-      stub_post("/1.1/account/update_profile_background_image.json").
-        to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_post("/1.1/account/update_profile_background_image.json").to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @set.profile_background_image(fixture_path + "/we_concept_bg2.png")
-      a_post("/1.1/account/update_profile_background_image.json").
-        should have_been_made
+      expect(a_post("/1.1/account/update_profile_background_image.json")).to have_been_made
     end
     it "should have the correct output" do
       @set.profile_background_image(fixture_path + "/we_concept_bg2.png")
-      $stdout.string.chomp.should eq "@testcli's background image has been updated."
+      expect($stdout.string.chomp).to eq "@testcli's background image has been updated."
     end
   end
 
   describe "#profile_image" do
     before do
       @set.options = @set.options.merge("profile" => fixture_path + "/.trc")
-      stub_post("/1.1/account/update_profile_image.json").
-        to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_post("/1.1/account/update_profile_image.json").to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @set.profile_image(fixture_path + "/me.jpg")
-      a_post("/1.1/account/update_profile_image.json").
-        should have_been_made
+      expect(a_post("/1.1/account/update_profile_image.json")).to have_been_made
     end
     it "should have the correct output" do
       @set.profile_image(fixture_path + "/me.jpg")
-      $stdout.string.chomp.should eq "@testcli's image has been updated."
+      expect($stdout.string.chomp).to eq "@testcli's image has been updated."
     end
   end
 
   describe "#url" do
     before do
       @set.options = @set.options.merge("profile" => fixture_path + "/.trc")
-      stub_post("/1.1/account/update_profile.json").
-        with(:body => {:url => "https://github.com/sferik"}).
-        to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_post("/1.1/account/update_profile.json").with(:body => {:url => "https://github.com/sferik"}).to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @set.url("https://github.com/sferik")
-      a_post("/1.1/account/update_profile.json").
-        with(:body => {:url => "https://github.com/sferik"}).
-        should have_been_made
+      expect(a_post("/1.1/account/update_profile.json").with(:body => {:url => "https://github.com/sferik"})).to have_been_made
     end
     it "should have the correct output" do
       @set.url("https://github.com/sferik")
-      $stdout.string.chomp.should eq "@testcli's URL has been updated."
+      expect($stdout.string.chomp).to eq "@testcli's URL has been updated."
     end
   end
 

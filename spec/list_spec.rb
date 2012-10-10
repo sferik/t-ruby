@@ -31,51 +31,36 @@ describe T::List do
   describe "#add" do
     before do
       @list.options = @list.options.merge("profile" => fixture_path + "/.trc")
-      stub_get("/1.1/account/verify_credentials.json").
-        to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_post("/1.1/lists/members/create_all.json").
-        with(:body => {:screen_name => "BarackObama", :slug => "presidents", :owner_screen_name => "sferik"}).
-        to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/account/verify_credentials.json").to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_post("/1.1/lists/members/create_all.json").with(:body => {:screen_name => "BarackObama", :slug => "presidents", :owner_screen_name => "sferik"}).to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @list.add("presidents", "BarackObama")
-      a_get("/1.1/account/verify_credentials.json").
-        should have_been_made
-      a_post("/1.1/lists/members/create_all.json").
-        with(:body => {:screen_name => "BarackObama", :slug => "presidents", :owner_screen_name => "sferik"}).
-        should have_been_made
+      expect(a_get("/1.1/account/verify_credentials.json")).to have_been_made
+      expect(a_post("/1.1/lists/members/create_all.json").with(:body => {:screen_name => "BarackObama", :slug => "presidents", :owner_screen_name => "sferik"})).to have_been_made
     end
     it "should have the correct output" do
       @list.add("presidents", "BarackObama")
-      $stdout.string.split("\n").first.should eq "@testcli added 1 member to the list \"presidents\"."
+      expect($stdout.string.split("\n").first).to eq "@testcli added 1 member to the list \"presidents\"."
     end
     context "--id" do
       before do
         @list.options = @list.options.merge("id" => true)
-        stub_post("/1.1/lists/members/create_all.json").
-          with(:body => {:user_id => "7505382", :slug => "presidents", :owner_screen_name => "sferik"}).
-          to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_post("/1.1/lists/members/create_all.json").with(:body => {:user_id => "7505382", :slug => "presidents", :owner_screen_name => "sferik"}).to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should request the correct resource" do
         @list.add("presidents", "7505382")
-        a_get("/1.1/account/verify_credentials.json").
-          should have_been_made
-        a_post("/1.1/lists/members/create_all.json").
-          with(:body => {:user_id => "7505382", :slug => "presidents", :owner_screen_name => "sferik"}).
-          should have_been_made
+        expect(a_get("/1.1/account/verify_credentials.json")).to have_been_made
+        expect(a_post("/1.1/lists/members/create_all.json").with(:body => {:user_id => "7505382", :slug => "presidents", :owner_screen_name => "sferik"})).to have_been_made
       end
     end
     context "Twitter is down" do
       it "should retry 3 times and then raise an error" do
-        stub_post("/1.1/lists/members/create_all.json").
-          with(:body => {:screen_name => "BarackObama", :slug => "presidents", :owner_screen_name => "sferik"}).
-          to_return(:status => 502)
-        lambda do
+        stub_post("/1.1/lists/members/create_all.json").with(:body => {:screen_name => "BarackObama", :slug => "presidents", :owner_screen_name => "sferik"}).to_return(:status => 502)
+        expect do
           @list.add("presidents", "BarackObama")
-        end.should raise_error("Twitter is down or being upgraded.")
-        a_post("/1.1/lists/members/create_all.json").
-          with(:body => {:screen_name => "BarackObama", :slug => "presidents", :owner_screen_name => "sferik"}).
-          should have_been_made.times(3)
+        end.to raise_error("Twitter is down or being upgraded.")
+        expect(a_post("/1.1/lists/members/create_all.json").with(:body => {:screen_name => "BarackObama", :slug => "presidents", :owner_screen_name => "sferik"})).to have_been_made.times(3)
       end
     end
   end
@@ -83,38 +68,30 @@ describe T::List do
   describe "#create" do
     before do
       @list.options = @list.options.merge("profile" => fixture_path + "/.trc")
-      stub_post("/1.1/lists/create.json").
-        with(:body => {:name => "presidents"}).
-        to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_post("/1.1/lists/create.json").with(:body => {:name => "presidents"}).to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @list.create("presidents")
-      a_post("/1.1/lists/create.json").
-        with(:body => {:name => "presidents"}).
-        should have_been_made
+      expect(a_post("/1.1/lists/create.json").with(:body => {:name => "presidents"})).to have_been_made
     end
     it "should have the correct output" do
       @list.create("presidents")
-      $stdout.string.chomp.should eq "@testcli created the list \"presidents\"."
+      expect($stdout.string.chomp).to eq "@testcli created the list \"presidents\"."
     end
   end
 
   describe "#information" do
     before do
       @list.options = @list.options.merge("profile" => fixture_path + "/.trc")
-      stub_get("/1.1/lists/show.json").
-        with(:query => {:owner_screen_name => "testcli", :slug => "presidents"}).
-        to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/lists/show.json").with(:query => {:owner_screen_name => "testcli", :slug => "presidents"}).to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @list.information("presidents")
-      a_get("/1.1/lists/show.json").
-        with(:query => {:owner_screen_name => "testcli", :slug => "presidents"}).
-        should have_been_made
+      expect(a_get("/1.1/lists/show.json").with(:query => {:owner_screen_name => "testcli", :slug => "presidents"})).to have_been_made
     end
     it "should have the correct output" do
       @list.information("presidents")
-      $stdout.string.should eq <<-eos
+      expect($stdout.string).to eq <<-eos
 ID           8863586
 Description  Presidents of the United States of America
 Slug         presidents
@@ -130,22 +107,16 @@ URL          https://twitter.com/sferik/presidents
     context "with a user passed" do
       it "should request the correct resource" do
         @list.information("testcli/presidents")
-        a_get("/1.1/lists/show.json").
-          with(:query => {:owner_screen_name => "testcli", :slug => "presidents"}).
-          should have_been_made
+        expect(a_get("/1.1/lists/show.json").with(:query => {:owner_screen_name => "testcli", :slug => "presidents"})).to have_been_made
       end
       context "--id" do
         before do
           @list.options = @list.options.merge("id" => true)
-          stub_get("/1.1/lists/show.json").
-            with(:query => {:owner_id => "7505382", :slug => "presidents"}).
-            to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1.1/lists/show.json").with(:query => {:owner_id => "7505382", :slug => "presidents"}).to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         end
         it "should request the correct resource" do
           @list.information("7505382/presidents")
-          a_get("/1.1/lists/show.json").
-            with(:query => {:owner_id => "7505382", :slug => "presidents"}).
-            should have_been_made
+          expect(a_get("/1.1/lists/show.json").with(:query => {:owner_id => "7505382", :slug => "presidents"})).to have_been_made
         end
       end
     end
@@ -155,7 +126,7 @@ URL          https://twitter.com/sferik/presidents
       end
       it "should have the correct output" do
         @list.information("presidents")
-        $stdout.string.should eq <<-eos
+        expect($stdout.string).to eq <<-eos
 ID,Description,Slug,Screen name,Created at,Members,Subscribers,Following,Mode,URL
 8863586,Presidents of the United States of America,presidents,sferik,2010-03-15 12:10:13 +0000,2,1,false,public,https://twitter.com/sferik/presidents
         eos
@@ -165,19 +136,15 @@ ID,Description,Slug,Screen name,Created at,Members,Subscribers,Following,Mode,UR
 
   describe "#members" do
     before do
-      stub_get("/1.1/lists/members.json").
-        with(:query => {:cursor => "-1", :owner_screen_name => "testcli", :skip_status => "true", :slug => "presidents"}).
-        to_return(:body => fixture("users_list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/lists/members.json").with(:query => {:cursor => "-1", :owner_screen_name => "testcli", :skip_status => "true", :slug => "presidents"}).to_return(:body => fixture("users_list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @list.members("presidents")
-      a_get("/1.1/lists/members.json").
-        with(:query => {:cursor => "-1", :owner_screen_name => "testcli", :skip_status => "true", :slug => "presidents"}).
-        should have_been_made
+      expect(a_get("/1.1/lists/members.json").with(:query => {:cursor => "-1", :owner_screen_name => "testcli", :skip_status => "true", :slug => "presidents"})).to have_been_made
     end
     it "should have the correct output" do
       @list.members("presidents")
-      $stdout.string.chomp.should eq "pengwynn  sferik"
+      expect($stdout.string.chomp).to eq "pengwynn  sferik"
     end
     context "--csv" do
       before do
@@ -185,7 +152,7 @@ ID,Description,Slug,Screen name,Created at,Members,Subscribers,Following,Mode,UR
       end
       it "should output in CSV format" do
         @list.members("presidents")
-        $stdout.string.should eq <<-eos
+        expect($stdout.string).to eq <<-eos
 ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
 14100886,2008-03-08 16:34:22 +0000,2012-07-07 20:33:19 +0000,6940,192,358,3427,5457,pengwynn,Wynn Netherland ⚡
 7505382,2007-07-16 12:59:01 +0000,2012-07-08 18:29:20 +0000,7890,3755,118,212,2262,sferik,Erik Michaels-Ober
@@ -198,7 +165,7 @@ ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name
       end
       it "should output in long format" do
         @list.members("presidents")
-        $stdout.string.should eq <<-eos
+        expect($stdout.string).to eq <<-eos
 ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
 14100886  Mar  8  2008  Jul  7 12:33       6940        192     358       3427...
  7505382  Jul 16  2007  Jul  8 10:29       7890       3755     118        212...
@@ -211,7 +178,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should reverse the order of the sort" do
         @list.members("presidents")
-        $stdout.string.chomp.should eq "sferik    pengwynn"
+        expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
     end
     context "--sort=favorites" do
@@ -220,7 +187,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by number of favorites" do
         @list.members("presidents")
-        $stdout.string.chomp.should eq "pengwynn  sferik"
+        expect($stdout.string.chomp).to eq "pengwynn  sferik"
       end
     end
     context "--sort=followers" do
@@ -229,7 +196,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by number of followers" do
         @list.members("presidents")
-        $stdout.string.chomp.should eq "sferik    pengwynn"
+        expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
     end
     context "--sort=friends" do
@@ -238,7 +205,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by number of friends" do
         @list.members("presidents")
-        $stdout.string.chomp.should eq "sferik    pengwynn"
+        expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
     end
     context "--sort=listed" do
@@ -247,7 +214,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by number of list memberships" do
         @list.members("presidents")
-        $stdout.string.chomp.should eq "sferik    pengwynn"
+        expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
     end
     context "--sort=since" do
@@ -256,7 +223,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by the time wshen Twitter account was created" do
         @list.members("presidents")
-        $stdout.string.chomp.should eq "sferik    pengwynn"
+        expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
     end
     context "--sort=tweets" do
@@ -265,7 +232,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by number of Tweets" do
         @list.members("presidents")
-        $stdout.string.chomp.should eq "pengwynn  sferik"
+        expect($stdout.string.chomp).to eq "pengwynn  sferik"
       end
     end
     context "--sort=tweeted" do
@@ -274,7 +241,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should sort by the time of the last Tweet" do
         @list.members("presidents")
-        $stdout.string.chomp.should eq "pengwynn  sferik"
+        expect($stdout.string.chomp).to eq "pengwynn  sferik"
       end
     end
     context "--unsorted" do
@@ -283,28 +250,22 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should not be sorted" do
         @list.members("presidents")
-        $stdout.string.chomp.should eq "sferik    pengwynn"
+        expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
     end
     context "with a user passed" do
       it "should request the correct resource" do
         @list.members("testcli/presidents")
-        a_get("/1.1/lists/members.json").
-          with(:query => {:cursor => "-1", :owner_screen_name => "testcli", :skip_status => "true", :slug => "presidents"}).
-          should have_been_made
+        expect(a_get("/1.1/lists/members.json").with(:query => {:cursor => "-1", :owner_screen_name => "testcli", :skip_status => "true", :slug => "presidents"})).to have_been_made
       end
       context "--id" do
         before do
           @list.options = @list.options.merge("id" => true)
-          stub_get("/1.1/lists/members.json").
-            with(:query => {:cursor => "-1", :owner_id => "7505382", :skip_status => "true", :slug => "presidents"}).
-            to_return(:body => fixture("users_list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1.1/lists/members.json").with(:query => {:cursor => "-1", :owner_id => "7505382", :skip_status => "true", :slug => "presidents"}).to_return(:body => fixture("users_list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         end
         it "should request the correct resource" do
           @list.members("7505382/presidents")
-          a_get("/1.1/lists/members.json").
-            with(:query => {:cursor => "-1", :owner_id => "7505382", :skip_status => "true", :slug => "presidents"}).
-            should have_been_made
+          expect(a_get("/1.1/lists/members.json").with(:query => {:cursor => "-1", :owner_id => "7505382", :skip_status => "true", :slug => "presidents"})).to have_been_made
         end
       end
     end
@@ -313,73 +274,52 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
   describe "#remove" do
     before do
       @list.options = @list.options.merge("profile" => fixture_path + "/.trc")
-      stub_get("/1.1/account/verify_credentials.json").
-        to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/account/verify_credentials.json").to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
-      stub_post("/1.1/lists/members/destroy_all.json").
-        with(:body => {:screen_name => "BarackObama", :slug => "presidents", :owner_screen_name => "sferik"}).
-        to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_post("/1.1/lists/members/destroy_all.json").with(:body => {:screen_name => "BarackObama", :slug => "presidents", :owner_screen_name => "sferik"}).to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       @list.remove("presidents", "BarackObama")
-      a_get("/1.1/account/verify_credentials.json").
-        should have_been_made
-      a_post("/1.1/lists/members/destroy_all.json").
-        with(:body => {:screen_name => "BarackObama", :slug => "presidents", :owner_screen_name => "sferik"}).
-        should have_been_made
+      expect(a_get("/1.1/account/verify_credentials.json")).to have_been_made
+      expect(a_post("/1.1/lists/members/destroy_all.json").with(:body => {:screen_name => "BarackObama", :slug => "presidents", :owner_screen_name => "sferik"})).to have_been_made
     end
     it "should have the correct output" do
-      stub_post("/1.1/lists/members/destroy_all.json").
-        with(:body => {:screen_name => "BarackObama", :slug => "presidents", :owner_screen_name => "sferik"}).
-        to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_post("/1.1/lists/members/destroy_all.json").with(:body => {:screen_name => "BarackObama", :slug => "presidents", :owner_screen_name => "sferik"}).to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       @list.remove("presidents", "BarackObama")
-      $stdout.string.split("\n").first.should eq "@testcli removed 1 member from the list \"presidents\"."
+      expect($stdout.string.split("\n").first).to eq "@testcli removed 1 member from the list \"presidents\"."
     end
     context "--id" do
       before do
         @list.options = @list.options.merge("id" => true)
-        stub_post("/1.1/lists/members/destroy_all.json").
-          with(:body => {:user_id => "7505382", :slug => "presidents", :owner_screen_name => "sferik"}).
-          to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_post("/1.1/lists/members/destroy_all.json").with(:body => {:user_id => "7505382", :slug => "presidents", :owner_screen_name => "sferik"}).to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should request the correct resource" do
         @list.remove("presidents", "7505382")
-        a_get("/1.1/account/verify_credentials.json").
-          should have_been_made
-        a_post("/1.1/lists/members/destroy_all.json").
-          with(:body => {:user_id => "7505382", :slug => "presidents", :owner_screen_name => "sferik"}).
-          should have_been_made
+        expect(a_get("/1.1/account/verify_credentials.json")).to have_been_made
+        expect(a_post("/1.1/lists/members/destroy_all.json").with(:body => {:user_id => "7505382", :slug => "presidents", :owner_screen_name => "sferik"})).to have_been_made
       end
     end
     context "Twitter is down" do
       it "should retry 3 times and then raise an error" do
-        stub_post("/1.1/lists/members/destroy_all.json").
-          with(:body => {:screen_name => "BarackObama", :slug => "presidents", :owner_screen_name => "sferik"}).
-          to_return(:status => 502)
-        lambda do
+        stub_post("/1.1/lists/members/destroy_all.json").with(:body => {:screen_name => "BarackObama", :slug => "presidents", :owner_screen_name => "sferik"}).to_return(:status => 502)
+        expect do
           @list.remove("presidents", "BarackObama")
-        end.should raise_error("Twitter is down or being upgraded.")
-        a_post("/1.1/lists/members/destroy_all.json").
-          with(:body => {:screen_name => "BarackObama", :slug => "presidents", :owner_screen_name => "sferik"}).
-          should have_been_made.times(3)
+        end.to raise_error("Twitter is down or being upgraded.")
+        expect(a_post("/1.1/lists/members/destroy_all.json").with(:body => {:screen_name => "BarackObama", :slug => "presidents", :owner_screen_name => "sferik"})).to have_been_made.times(3)
       end
     end
   end
 
   describe "#timeline" do
     before do
-      stub_get("/1.1/lists/statuses.json").
-        with(:query => {:owner_screen_name => "testcli", :per_page => "20", :slug => "presidents"}).
-        to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/lists/statuses.json").with(:query => {:owner_screen_name => "testcli", :per_page => "20", :slug => "presidents"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @list.timeline("presidents")
-      a_get("/1.1/lists/statuses.json").
-        with(:query => {:owner_screen_name => "testcli", :per_page => "20", :slug => "presidents"}).
-        should have_been_made
+      expect(a_get("/1.1/lists/statuses.json").with(:query => {:owner_screen_name => "testcli", :per_page => "20", :slug => "presidents"})).to have_been_made
     end
     it "should have the correct output" do
       @list.timeline("presidents")
-      $stdout.string.should eq <<-eos
+      expect($stdout.string).to eq <<-eos
 \e[1m\e[33m   @mutgoff\e[0m
    Happy Birthday @imdane. Watch out for those @rally pranksters!
 
@@ -463,7 +403,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
       it "should output in long format" do
         @list.timeline("presidents")
-        $stdout.string.should eq <<-eos
+        expect($stdout.string).to eq <<-eos
 ID,Posted at,Screen name,Text
 244111636544225280,2012-09-07 16:35:24 +0000,mutgoff,Happy Birthday @imdane. Watch out for those @rally pranksters!
 244111183165157376,2012-09-07 16:33:36 +0000,ironicsans,"If you like good real-life stories, check out @NarrativelyNY's just-launched site http://t.co/wiUL07jE (and also visit http://t.co/ZoyQxqWA)"
@@ -494,7 +434,7 @@ ID,Posted at,Screen name,Text
       end
       it "should output in long format" do
         @list.timeline("presidents")
-        $stdout.string.should eq <<-eos
+        expect($stdout.string).to eq <<-eos
 ID                  Posted at     Screen name       Text
 244111636544225280  Sep  7 08:35  @mutgoff          Happy Birthday @imdane. W...
 244111183165157376  Sep  7 08:33  @ironicsans       If you like good real-lif...
@@ -524,7 +464,7 @@ ID                  Posted at     Screen name       Text
         end
         it "should reverse the order of the sort" do
           @list.timeline("presidents")
-          $stdout.string.should eq <<-eos
+          expect($stdout.string).to eq <<-eos
 ID                  Posted at     Screen name       Text
 244099460672679938  Sep  7 07:47  @dwiskus          Gentlemen, you can't figh...
 244100411563339777  Sep  7 07:50  @sferik           @episod @twitterapi Did y...
@@ -552,63 +492,41 @@ ID                  Posted at     Screen name       Text
     end
     context "--number" do
       before do
-        stub_get("/1.1/lists/statuses.json").
-          with(:query => {:owner_screen_name => "testcli", :per_page => "1", :slug => "presidents"}).
-          to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/lists/statuses.json").
-          with(:query => {:owner_screen_name => "testcli", :per_page => "200", :slug => "presidents"}).
-          to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/lists/statuses.json").
-          with(:query => {:owner_screen_name => "testcli", :per_page => "200", :max_id => "244099460672679937", :slug => "presidents"}).
-          to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/lists/statuses.json").with(:query => {:owner_screen_name => "testcli", :per_page => "1", :slug => "presidents"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/lists/statuses.json").with(:query => {:owner_screen_name => "testcli", :per_page => "200", :slug => "presidents"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/lists/statuses.json").with(:query => {:owner_screen_name => "testcli", :per_page => "200", :max_id => "244099460672679937", :slug => "presidents"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         (5..185).step(20).to_a.reverse.each do |count|
-          stub_get("/1.1/lists/statuses.json").
-            with(:query => {:owner_screen_name => "testcli", :per_page => count, :max_id => "244099460672679937", :slug => "presidents"}).
-            to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1.1/lists/statuses.json").with(:query => {:owner_screen_name => "testcli", :per_page => count, :max_id => "244099460672679937", :slug => "presidents"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         end
       end
       it "should limit the number of results to 1" do
         @list.options = @list.options.merge("number" => 1)
         @list.timeline("presidents")
-        a_get("/1.1/lists/statuses.json").
-          with(:query => {:owner_screen_name => "testcli", :per_page => "1", :slug => "presidents"}).
-          should have_been_made
+        expect(a_get("/1.1/lists/statuses.json").with(:query => {:owner_screen_name => "testcli", :per_page => "1", :slug => "presidents"})).to have_been_made
       end
       it "should limit the number of results to 345" do
         @list.options = @list.options.merge("number" => 345)
         @list.timeline("presidents")
-        a_get("/1.1/lists/statuses.json").
-          with(:query => {:owner_screen_name => "testcli", :per_page => "200", :slug => "presidents"}).
-          should have_been_made
-        a_get("/1.1/lists/statuses.json").
-          with(:query => {:owner_screen_name => "testcli", :per_page => "200", :max_id => "244099460672679937", :slug => "presidents"}).
-          should have_been_made.times(7)
+        expect(a_get("/1.1/lists/statuses.json").with(:query => {:owner_screen_name => "testcli", :per_page => "200", :slug => "presidents"})).to have_been_made
+        expect(a_get("/1.1/lists/statuses.json").with(:query => {:owner_screen_name => "testcli", :per_page => "200", :max_id => "244099460672679937", :slug => "presidents"})).to have_been_made.times(7)
         (5..185).step(20).to_a.reverse.each do |count|
-          a_get("/1.1/lists/statuses.json").
-            with(:query => {:owner_screen_name => "testcli", :per_page => count, :max_id => "244099460672679937", :slug => "presidents"}).
-            should have_been_made
+          expect(a_get("/1.1/lists/statuses.json").with(:query => {:owner_screen_name => "testcli", :per_page => count, :max_id => "244099460672679937", :slug => "presidents"})).to have_been_made
         end
       end
     end
     context "with a user passed" do
       it "should request the correct resource" do
         @list.timeline("testcli/presidents")
-        a_get("/1.1/lists/statuses.json").
-          with(:query => {:owner_screen_name => "testcli", :per_page => "20", :slug => "presidents"}).
-          should have_been_made
+        expect(a_get("/1.1/lists/statuses.json").with(:query => {:owner_screen_name => "testcli", :per_page => "20", :slug => "presidents"})).to have_been_made
       end
       context "--id" do
         before do
           @list.options = @list.options.merge("id" => true)
-          stub_get("/1.1/lists/statuses.json").
-            with(:query => {:owner_id => "7505382", :per_page => "20", :slug => "presidents"}).
-            to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1.1/lists/statuses.json").with(:query => {:owner_id => "7505382", :per_page => "20", :slug => "presidents"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         end
         it "should request the correct resource" do
           @list.timeline("7505382/presidents")
-          a_get("/1.1/lists/statuses.json").
-            with(:query => {:owner_id => "7505382", :per_page => "20", :slug => "presidents"}).
-            should have_been_made
+          expect(a_get("/1.1/lists/statuses.json").with(:query => {:owner_id => "7505382", :per_page => "20", :slug => "presidents"})).to have_been_made
         end
       end
     end

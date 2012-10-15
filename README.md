@@ -5,7 +5,7 @@
 # Twitter CLI
 [![Build Status](https://secure.travis-ci.org/sferik/t.png?branch=master)][travis]
 [![Dependency Status](https://gemnasium.com/sferik/t.png?travis)][gemnasium]
-[![Click here to make a donation to T](http://www.pledgie.com/campaigns/17330.png)][pledgie]
+[![Pledgie](http://www.pledgie.com/campaigns/17330.png)][pledgie]
 
 ### A command-line power tool for Twitter.
 

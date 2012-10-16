@@ -1,42 +1,43 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
+    <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>T by sferik</title>
-
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <script src="javascripts/scale.fix.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+    <title>T by sferik</title>
   </head>
+
   <body>
-    <div class="wrapper">
-      <header>
-        <h1 class="header">T</h1>
-        <p class="header">A command-line power tool for Twitter.</p>
+    <div id="container">
+      <div class="inner">
 
-        <ul>
-          <li class="download"><a class="buttons" href="https://github.com/sferik/t/zipball/master">Download ZIP</a></li>
-          <li class="download"><a class="buttons" href="https://github.com/sferik/t/tarball/master">Download TAR</a></li>
-          <li><a class="buttons github" href="https://github.com/sferik/t">View On GitHub</a></li>
-        </ul>
+        <header>
+          <h1>T</h1>
+          <h2>A command-line power tool for Twitter.</h2>
+        </header>
 
-        <p class="header">This project is maintained by <a class="header name" href="https://github.com/sferik">sferik</a></p>
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/sferik/t/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/sferik/t/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/sferik/t" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
 
+        <hr>
 
-      </header>
-      <section>
-        <h1><a href="https://github.com/sferik/t/raw/master/icon/t.png"><img src="https://github.com/sferik/t/raw/master/icon/t.png" alt="Application icon"></a></h1>
+        <section id="main_content">
+          <h1><a href="https://github.com/sferik/t/raw/master/icon/t.png"><img src="https://github.com/sferik/t/raw/master/icon/t.png" alt="Application icon"></a></h1>
 
 <h1>Twitter CLI</h1>
 
 <p><a href="http://travis-ci.org/sferik/t"><img src="https://secure.travis-ci.org/sferik/t.png?branch=master" alt="Build Status"></a>
 <a href="https://gemnasium.com/sferik/t"><img src="https://gemnasium.com/sferik/t.png?travis" alt="Dependency Status"></a>
-<a href="http://www.pledgie.com/campaigns/17330"><img src="http://www.pledgie.com/campaigns/17330.png" alt="Click here to make a donation to T"></a></p>
+<a href="http://www.pledgie.com/campaigns/17330"><img src="http://www.pledgie.com/campaigns/17330.png" alt="Pledgie"></a></p>
 
 <h3>A command-line power tool for Twitter.</h3>
 
@@ -327,49 +328,7 @@ the original code.</p>
 
 <p><img src="https://github.com/sferik/t/raw/master/screenshots/history.png" alt="History"></p>
 
-<h2>Contributing</h2>
-
-<p>In the spirit of <a href="http://www.fsf.org/licensing/essays/free-sw.html">free software</a>, <strong>everyone</strong> is encouraged to help
-improve this project.</p>
-
-<p>Here are some ways <em>you</em> can contribute:</p>
-
-<ul>
-<li>by using alpha, beta, and prerelease versions</li>
-<li>by reporting bugs</li>
-<li>by suggesting new features</li>
-<li>by writing or editing documentation</li>
-<li>by writing specifications</li>
-<li>by writing code (<strong>no patch is too small</strong>: fix typos, add comments, clean up
-inconsistent whitespace)</li>
-<li>by refactoring code</li>
-<li>by fixing <a href="https://github.com/sferik/t/issues">issues</a>
-</li>
-<li>by reviewing patches</li>
-<li><a href="http://www.pledgie.com/campaigns/17330">financially</a></li>
-</ul><h2>Submitting an Issue</h2>
-
-<p>We use the <a href="https://github.com/sferik/t/issues">GitHub issue tracker</a> to track bugs and features. Before
-submitting a bug report or feature request, check to make sure it hasn't
-already been submitted. When submitting a bug report, please include a <a href="https://gist.github.com/">Gist</a>
-that includes a stack trace and any details that may be necessary to reproduce
-the bug, including your gem version, Ruby version, and operating system.
-Ideally, a bug report should include a pull request with failing specs.</p>
-
-<h2>Submitting a Pull Request</h2>
-
-<ol>
-<li><a href="http://help.github.com/fork-a-repo/">Fork the repository.</a></li>
-<li><a href="http://learn.github.com/p/branching.html">Create a topic branch.</a></li>
-<li>Add specs for your unimplemented feature or bug fix.</li>
-<li>Run <code>bundle exec rake spec</code>. If your specs pass, return to step 3.</li>
-<li>Implement your feature or bug fix.</li>
-<li>Run <code>bundle exec rake spec</code>. If your specs fail, return to step 5.</li>
-<li>Run <code>open coverage/index.html</code>. If your changes are not completely covered
-by your tests, return to step 3.</li>
-<li>Add, commit, and push your changes.</li>
-<li><a href="http://help.github.com/send-pull-requests/">Submit a pull request.</a></li>
-</ol><h2>Supported Ruby Versions</h2>
+<h2>Supported Ruby Versions</h2>
 
 <p>This library aims to support and is <a href="http://travis-ci.org/sferik/t">tested against</a> the following Ruby
 implementations:</p>
@@ -395,12 +354,15 @@ of a major release, support for that Ruby version may be dropped.</p>
 
 <p>Copyright (c) 2011 Erik Michaels-Ober. See <a href="https://github.com/sferik/t/blob/master/LICENSE.md">LICENSE</a> for details.
 Application icon by <a href="http://rodolfonovak.com">@nvk</a>.</p>
-      </section>
-      <footer>
-        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
-      </footer>
+        </section>
+
+        <footer>
+          T is maintained by <a href="https://github.com/sferik">sferik</a><br>
+          This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+        
+      </div>
     </div>
-    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
-		
   </body>
 </html>

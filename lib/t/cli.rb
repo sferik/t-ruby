@@ -97,7 +97,7 @@ module T
       Launchy.open(url, :dry_run => options['display-url'])
       pin = ask "Enter the supplied PIN:"
       access_token = request_token.get_access_token(:oauth_verifier => pin.chomp)
-      oauth_response = access_token.get('/1/account/verify_credentials.json')
+      oauth_response = access_token.get('/1.1/account/verify_credentials.json?include_entities=false&skip_status=true')
       screen_name = oauth_response.body.match(/"screen_name"\s*:\s*"(.*?)"/).captures.first
       @rcfile[screen_name] = {
         key => {

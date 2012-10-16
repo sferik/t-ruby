@@ -46,7 +46,7 @@ testcli
       @cli.options = @cli.options.merge("profile" => project_path + "/tmp/authorize", "display-url" => true)
       stub_post("/oauth/request_token").to_return(:body => fixture("request_token"))
       stub_post("/oauth/access_token").to_return(:body => fixture("access_token"))
-      stub_get("/1/account/verify_credentials.json").to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/account/verify_credentials.json").with(:query => {:include_entities => "false", :skip_status => "true"}).to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       $stdout.should_receive(:print)
@@ -62,7 +62,7 @@ testcli
       @cli.authorize
       expect(a_post("/oauth/request_token")).to have_been_made
       expect(a_post("/oauth/access_token")).to have_been_made
-      expect(a_get("/1/account/verify_credentials.json")).to have_been_made
+      expect(a_get("/1.1/account/verify_credentials.json").with(:query => {:include_entities => "false", :skip_status => "true"})).to have_been_made
     end
     it "should not raise error" do
       expect do

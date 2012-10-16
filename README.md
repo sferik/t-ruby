@@ -7,7 +7,7 @@
 [![Dependency Status](https://gemnasium.com/sferik/t.png?travis)][gemnasium]
 [![Pledgie](http://www.pledgie.com/campaigns/17330.png)][pledgie]
 
-### A command-line power tool for Twitter.
+#### A command-line power tool for Twitter.
 
 The CLI takes syntactic cues from the [Twitter SMS commands][sms], however it
 offers vastly more commands and capabilities than are available via SMS.
@@ -97,7 +97,7 @@ TASK` to get help for a specific command.
 
     t help
 
-### Update your status
+#### Update your status
     t update "I'm tweeting from the command line. Isn't that special?"
 
 **Note**: If your tweet includes special characters (e.g. `!`), make sure to
@@ -105,16 +105,16 @@ wrap it in single quotes instead of double quotes, so those characters are not
 interpreted by your shell. (However, if you use single quotes, your Tweet
 obviously can't contain any apostrophes.)
 
-### Retrieve detailed information about a Twitter user
+#### Retrieve detailed information about a Twitter user
     t whois @sferik
 
-### Retrieve stats for multiple users
+#### Retrieve stats for multiple users
     t users -l @sferik @gem
 
-### Follow users
+#### Follow users
     t follow @sferik @gem
 
-### Check whether one user follows another
+#### Check whether one user follows another
     t does_follow @ev @sferik
 
 **Note**: If the first user does not follow the second, `t` will exit with a
@@ -123,64 +123,64 @@ example, send a user a direct message only if he already follows you:
 
     t does_follow @ev && t dm @ev "What's up, bro?"
 
-### Create a list for everyone you're following
+#### Create a list for everyone you're following
     t list create following-`date "+%Y-%m-%d"`
 
-### Add everyone you're following to that list (up to 500 users)
+#### Add everyone you're following to that list (up to 500 users)
     t followings | xargs t list add following-`date "+%Y-%m-%d"`
 
-### List all the members of a list, in long format
+#### List all the members of a list, in long format
     t list members -l following-`date "+%Y-%m-%d"`
 
-### List all your lists, in long format
+#### List all your lists, in long format
     t lists -l
 
-### List all your friends, in long format, ordered by number of followers
+#### List all your friends, in long format, ordered by number of followers
     t friends -l --sort=followers
 
-### List all your leaders (people you follow who don't follow you back)
+#### List all your leaders (people you follow who don't follow you back)
     t leaders -l --sort=followers
 
-### Unfollow everyone you follow who doesn't follow you back
+#### Unfollow everyone you follow who doesn't follow you back
     t leaders | xargs t unfollow
 
-### Unfollow 10 people who haven't tweeted in the longest time
+#### Unfollow 10 people who haven't tweeted in the longest time
     t followings -l --sort=tweeted | head -10 | awk '{print $1}' | xargs t unfollow
 
-### Twitter roulette: randomly follow someone who follows you (who you don't already follow)
+#### Twitter roulette: randomly follow someone who follows you (who you don't already follow)
     t groupies | shuf | head -1 | xargs t follow
 
-### Favorite the last 10 tweets that mention you
+#### Favorite the last 10 tweets that mention you
     t mentions -n 10 -l | awk '{print $1}' | xargs t favorite
 
-### Output the last 200 tweets in your timeline to a CSV file
+#### Output the last 200 tweets in your timeline to a CSV file
     t timeline -n 200 --csv > timeline.csv
 
-### Start streaming your timeline (Control-C to stop)
+#### Start streaming your timeline (Control-C to stop)
     t stream timeline
 
-### Count the number of employees who work for Twitter
+#### Count the number of employees who work for Twitter
     t list members twitter team | wc -l
 
-### Search Twitter for the 20 most recent Tweets that match a specified query
+#### Search Twitter for the 20 most recent Tweets that match a specified query
     t search all "query"
 
-### Download the latest Linux kernel via BitTorrent (possibly NSFW, depending where you work)
+#### Download the latest Linux kernel via BitTorrent (possibly NSFW, depending where you work)
     t search all "lang:en filter:links linux torrent" -n 1 | grep -o "http://t.co/[0-9A-Za-z]*" | xargs open
 
-### Search Tweets you've favorited that match a specified query
+#### Search Tweets you've favorited that match a specified query
     t search favorites "query"
 
-### Search Tweets mentioning you that match a specified query
+#### Search Tweets mentioning you that match a specified query
     t search mentions "query"
 
-### Search Tweets you've retweeted that match a specified query
+#### Search Tweets you've retweeted that match a specified query
     t search retweets "query"
 
-### Search Tweets in your timeline that match a specified query
+#### Search Tweets in your timeline that match a specified query
     t search timeline "query"
 
-### Search Tweets in another user's timeline that match a specified query
+#### Search Tweets in another user's timeline that match a specified query
     t search timeline @sferik "query"
 
 ## Features

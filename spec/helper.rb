@@ -11,7 +11,7 @@ require 't'
 require 'rspec'
 require 'timecop'
 require 'webmock/rspec'
-require 'json'
+require 'multi_json'
 
 RSpec.configure do |config|
   config.expect_with :rspec do |c|
@@ -64,5 +64,5 @@ def fixture(file)
 end
 
 def status_from_fixture(file)
-  Twitter::Status.new(JSON.parse(fixture(file).read, :symbolize_names => true))
+  Twitter::Status.new(MultiJson.load(fixture(file).read, :symbolize_keys => true))
 end

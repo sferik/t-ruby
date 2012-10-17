@@ -6,8 +6,8 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'fastercsv', '~> 1.5'
   gem.add_dependency 'geokit', '~> 1.6'
   gem.add_dependency 'htmlentities', '~> 4.3'
-  gem.add_dependency 'json', '~> 1.6'
   gem.add_dependency 'oauth', '~> 0.4'
+  gem.add_dependency 'oj', '~> 1.4'
   gem.add_dependency 'retryable', '~> 1.2'
   gem.add_dependency 'thor', ['>= 0.16', '< 2']
   gem.add_dependency 'tweetstream', '~> 2.3'

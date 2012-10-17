@@ -2301,10 +2301,12 @@ ID                  Posted at     Screen name      Text
   describe "#status" do
     before do
       stub_get("/1.1/statuses/show/55709764298092545.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/i/statuses/55709764298092545/activity/summary.json").to_return(:body => fixture("activity_summary.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
-    it "should request the correct resource" do
+    it "should request the correct resources" do
       @cli.status("55709764298092545")
       expect(a_get("/1.1/statuses/show/55709764298092545.json").with(:query => {:include_my_retweet => "false"})).to have_been_made
+      expect(a_get("/i/statuses/55709764298092545/activity/summary.json")).to have_been_made
     end
     it "should have the correct output" do
       @cli.status("55709764298092545")
@@ -2315,6 +2317,8 @@ Screen name  @sferik
 Posted at    Apr  6  2011 (8 months ago)
 Location     Blowfish Sushi To Die For, 2170 Bryant St, San Francisco, California, United States
 Retweets     320
+Favorites    2
+Replies      1
 Source       Twitter for iPhone
 URL          https://twitter.com/sferik/status/55709764298092545
       eos
@@ -2326,17 +2330,17 @@ URL          https://twitter.com/sferik/status/55709764298092545
       it "should have the correct output" do
         @cli.status("55709764298092545")
         expect($stdout.string).to eq <<-eos
-ID,Text,Screen name,Posted at,Location,Retweets,Source,URL
-55709764298092545,The problem with your code is that it's doing exactly what you told it to do.,sferik,2011-04-06 19:13:37 +0000,"Blowfish Sushi To Die For, 2170 Bryant St, San Francisco, California, United States",320,Twitter for iPhone,https://twitter.com/sferik/status/55709764298092545
+ID,Text,Screen name,Posted at,Location,Retweets,Favorites,Replies,Source,URL
+55709764298092545,The problem with your code is that it's doing exactly what you told it to do.,sferik,2011-04-06 19:13:37 +0000,"Blowfish Sushi To Die For, 2170 Bryant St, San Francisco, California, United States",320,2,1,Twitter for iPhone,https://twitter.com/sferik/status/55709764298092545
         eos
       end
     end
     context "with no street address" do
       before do
-        stub_get("/1.1/statuses/show/55709764298092550.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status_no_street_address.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/statuses/show/55709764298092545.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status_no_street_address.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should have the correct output" do
-        @cli.status("55709764298092550")
+        @cli.status("55709764298092545")
         expect($stdout.string).to eq <<-eos
 ID           55709764298092550
 Text         The problem with your code is that it's doing exactly what you told it to do.
@@ -2344,6 +2348,8 @@ Screen name  @sferik
 Posted at    Apr  6  2011 (8 months ago)
 Location     Blowfish Sushi To Die For, San Francisco, California, United States
 Retweets     320
+Favorites    2
+Replies      1
 Source       Twitter for iPhone
 URL          https://twitter.com/sferik/status/55709764298092550
         eos
@@ -2351,10 +2357,10 @@ URL          https://twitter.com/sferik/status/55709764298092550
     end
     context "with no locality" do
       before do
-        stub_get("/1.1/statuses/show/55709764298092549.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status_no_locality.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/statuses/show/55709764298092545.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status_no_locality.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should have the correct output" do
-        @cli.status("55709764298092549")
+        @cli.status("55709764298092545")
         expect($stdout.string).to eq <<-eos
 ID           55709764298092549
 Text         The problem with your code is that it's doing exactly what you told it to do.
@@ -2362,6 +2368,8 @@ Screen name  @sferik
 Posted at    Apr  6  2011 (8 months ago)
 Location     Blowfish Sushi To Die For, San Francisco, California, United States
 Retweets     320
+Favorites    2
+Replies      1
 Source       Twitter for iPhone
 URL          https://twitter.com/sferik/status/55709764298092549
         eos
@@ -2369,10 +2377,10 @@ URL          https://twitter.com/sferik/status/55709764298092549
     end
     context "with no attributes" do
       before do
-        stub_get("/1.1/statuses/show/55709764298092546.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status_no_attributes.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/statuses/show/55709764298092545.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status_no_attributes.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should have the correct output" do
-        @cli.status("55709764298092546")
+        @cli.status("55709764298092545")
         expect($stdout.string).to eq <<-eos
 ID           55709764298092546
 Text         The problem with your code is that it's doing exactly what you told it to do.
@@ -2380,6 +2388,8 @@ Screen name  @sferik
 Posted at    Apr  6  2011 (8 months ago)
 Location     Blowfish Sushi To Die For, San Francisco, United States
 Retweets     320
+Favorites    2
+Replies      1
 Source       Twitter for iPhone
 URL          https://twitter.com/sferik/status/55709764298092546
         eos
@@ -2387,10 +2397,10 @@ URL          https://twitter.com/sferik/status/55709764298092546
     end
     context "with no country" do
       before do
-        stub_get("/1.1/statuses/show/55709764298092547.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status_no_country.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/statuses/show/55709764298092545.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status_no_country.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should have the correct output" do
-        @cli.status("55709764298092547")
+        @cli.status("55709764298092545")
         expect($stdout.string).to eq <<-eos
 ID           55709764298092547
 Text         The problem with your code is that it's doing exactly what you told it to do.
@@ -2398,6 +2408,8 @@ Screen name  @sferik
 Posted at    Apr  6  2011 (8 months ago)
 Location     Blowfish Sushi To Die For, San Francisco
 Retweets     320
+Favorites    2
+Replies      1
 Source       Twitter for iPhone
 URL          https://twitter.com/sferik/status/55709764298092547
         eos
@@ -2405,10 +2417,10 @@ URL          https://twitter.com/sferik/status/55709764298092547
     end
     context "with no full name" do
       before do
-        stub_get("/1.1/statuses/show/55709764298092548.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status_no_full_name.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/statuses/show/55709764298092545.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status_no_full_name.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should have the correct output" do
-        @cli.status("55709764298092548")
+        @cli.status("55709764298092545")
         expect($stdout.string).to eq <<-eos
 ID           55709764298092548
 Text         The problem with your code is that it's doing exactly what you told it to do.
@@ -2416,6 +2428,8 @@ Screen name  @sferik
 Posted at    Apr  6  2011 (8 months ago)
 Location     Blowfish Sushi To Die For
 Retweets     320
+Favorites    2
+Replies      1
 Source       Twitter for iPhone
 URL          https://twitter.com/sferik/status/55709764298092548
         eos

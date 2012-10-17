@@ -598,6 +598,7 @@ module T
     method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     def status(status_id)
       status = client.status(status_id.to_i, :include_my_retweet => false)
+      status_activity = client.status_activity(status_id.to_i)
       location = if status.place
         if status.place.name && status.place.attributes && status.place.attributes[:street_address] && status.place.attributes[:locality] && status.place.attributes[:region] && status.place.country
           [status.place.name, status.place.attributes[:street_address], status.place.attributes[:locality], status.place.attributes[:region], status.place.country].join(", ")
@@ -619,8 +620,8 @@ module T
       if options['csv']
         require 'csv'
         require 'fastercsv' unless Array.new.respond_to?(:to_csv)
-        say ["ID", "Text", "Screen name", "Posted at", "Location", "Retweets", "Source", "URL"].to_csv
-        say [status.id, HTMLEntities.new.decode(status.full_text), status.from_user, csv_formatted_time(status), location, status.retweet_count, strip_tags(status.source), "https://twitter.com/#{status.from_user}/status/#{status.id}"].to_csv
+        say ["ID", "Text", "Screen name", "Posted at", "Location", "Retweets", "Favorites", "Replies", "Source", "URL"].to_csv
+        say [status.id, HTMLEntities.new.decode(status.full_text), status.from_user, csv_formatted_time(status), location, status.retweet_count, status_activity.favoriters_count, status_activity.repliers_count, strip_tags(status.source), "https://twitter.com/#{status.from_user}/status/#{status.id}"].to_csv
       else
         array = []
         array << ["ID", status.id.to_s]
@@ -629,6 +630,8 @@ module T
         array << ["Posted at", "#{ls_formatted_time(status)} (#{time_ago_in_words(status.created_at)} ago)"]
         array << ["Location", location] unless location.nil?
         array << ["Retweets", number_with_delimiter(status.retweet_count)]
+        array << ["Favorites", number_with_delimiter(status_activity.favoriters_count)]
+        array << ["Replies", number_with_delimiter(status_activity.repliers_count)]
         array << ["Source", strip_tags(status.source)]
         array << ["URL", "https://twitter.com/#{status.from_user}/status/#{status.id}"]
         print_table(array)

@@ -6,6 +6,7 @@
 [![Build Status](https://secure.travis-ci.org/sferik/t.png?branch=master)][travis]
 [![Dependency Status](https://gemnasium.com/sferik/t.png?travis)][gemnasium]
 [![Pledgie](http://www.pledgie.com/campaigns/17330.png)][pledgie]
+[![Flattr](http://api.flattr.com/button/flattr-badge-large.png)][flattr]
 
 #### A command-line power tool for Twitter.
 
@@ -15,6 +16,7 @@ offers vastly more commands and capabilities than are available via SMS.
 [travis]: http://travis-ci.org/sferik/t
 [gemnasium]: https://gemnasium.com/sferik/t
 [pledgie]: http://www.pledgie.com/campaigns/17330
+[flattr]: http://flattr.com/thing/815001/sferikt-on-GitHub
 [sms]: https://support.twitter.com/articles/14020-twitter-sms-command
 
 ## Installation

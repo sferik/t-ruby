@@ -1,7 +1,7 @@
 module T
   module Printable
     LIST_HEADINGS = ["ID", "Created at", "Screen name", "Slug", "Members", "Subscribers", "Mode", "Description"]
-    STATUS_HEADINGS = ["ID", "Posted at", "Screen name", "Text"]
+    TWEET_HEADINGS = ["ID", "Posted at", "Screen name", "Text"]
     USER_HEADINGS = ["ID", "Since", "Last tweeted at", "Tweets", "Favorites", "Listed", "Following", "Followers", "Screen name", "Name"]
     MONTH_IN_SECONDS = 2592000
 
@@ -129,7 +129,7 @@ module T
       if options['csv']
         require 'csv'
         require 'fastercsv' unless Array.new.respond_to?(:to_csv)
-        say STATUS_HEADINGS.to_csv unless tweets.empty?
+        say TWEET_HEADINGS.to_csv unless tweets.empty?
         tweets.each do |tweet|
           print_csv_tweet(tweet)
         end
@@ -137,8 +137,8 @@ module T
         array = tweets.map do |tweet|
           build_long_tweet(tweet)
         end
-        format = options['format'] || STATUS_HEADINGS.size.times.map{"%s"}
-        print_table_with_headings(array, STATUS_HEADINGS, format)
+        format = options['format'] || TWEET_HEADINGS.size.times.map{"%s"}
+        print_table_with_headings(array, TWEET_HEADINGS, format)
       else
         tweets.each do |tweet|
           print_message(tweet.user.screen_name, tweet.full_text)

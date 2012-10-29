@@ -6,7 +6,7 @@ module T
   class Stream < Thor
     include T::Printable
 
-    STATUS_HEADINGS_FORMATTING = [
+    TWEET_HEADINGS_FORMATTING = [
       "%-18s",  # Add padding to maximum length of a Tweet ID
       "%-12s",  # Add padding to length of a timestamp formatted with ls_formatted_time
       "%-20s",  # Add padding to maximum length of a Twitter screen name
@@ -27,10 +27,10 @@ module T
         if options['csv']
           require 'csv'
           require 'fastercsv' unless Array.new.respond_to?(:to_csv)
-          say STATUS_HEADINGS.to_csv
+          say TWEET_HEADINGS.to_csv
         elsif options['long'] && STDOUT.tty?
-          headings = STATUS_HEADINGS.size.times.map do |index|
-            STATUS_HEADINGS_FORMATTING[index] % STATUS_HEADINGS[index]
+          headings = TWEET_HEADINGS.size.times.map do |index|
+            TWEET_HEADINGS_FORMATTING[index] % TWEET_HEADINGS[index]
           end
           print_table([headings])
         end
@@ -40,7 +40,7 @@ module T
           print_csv_tweet(tweet)
         elsif options['long']
           array = build_long_tweet(tweet).each_with_index.map do |element, index|
-            STATUS_HEADINGS_FORMATTING[index] % element
+            TWEET_HEADINGS_FORMATTING[index] % element
           end
           print_table([array], :truncate => STDOUT.tty?)
         else
@@ -70,7 +70,7 @@ module T
         search = T::Search.new
         search.options = search.options.merge(options)
         search.options = search.options.merge(:reverse => true)
-        search.options = search.options.merge(:format => STATUS_HEADINGS_FORMATTING)
+        search.options = search.options.merge(:format => TWEET_HEADINGS_FORMATTING)
         search.all(keywords.join(' OR '))
       end
       client.on_timeline_status do |tweet|
@@ -78,7 +78,7 @@ module T
           print_csv_tweet(tweet)
         elsif options['long']
           array = build_long_tweet(tweet).each_with_index.map do |element, index|
-            STATUS_HEADINGS_FORMATTING[index] % element
+            TWEET_HEADINGS_FORMATTING[index] % element
           end
           print_table([array], :truncate => STDOUT.tty?)
         else
@@ -98,7 +98,7 @@ module T
         cli = T::CLI.new
         cli.options = cli.options.merge(options)
         cli.options = cli.options.merge(:reverse => true)
-        cli.options = cli.options.merge(:format => STATUS_HEADINGS_FORMATTING)
+        cli.options = cli.options.merge(:format => TWEET_HEADINGS_FORMATTING)
         cli.timeline
       end
       client.on_timeline_status do |tweet|
@@ -106,7 +106,7 @@ module T
           print_csv_tweet(tweet)
         elsif options['long']
           array = build_long_tweet(tweet).each_with_index.map do |element, index|
-            STATUS_HEADINGS_FORMATTING[index] % element
+            TWEET_HEADINGS_FORMATTING[index] % element
           end
           print_table([array], :truncate => STDOUT.tty?)
         else
@@ -127,10 +127,10 @@ module T
         if options['csv']
           require 'csv'
           require 'fastercsv' unless Array.new.respond_to?(:to_csv)
-          say STATUS_HEADINGS.to_csv
+          say TWEET_HEADINGS.to_csv
         elsif options['long'] && STDOUT.tty?
-          headings = STATUS_HEADINGS.size.times.map do |index|
-            STATUS_HEADINGS_FORMATTING[index] % STATUS_HEADINGS[index]
+          headings = TWEET_HEADINGS.size.times.map do |index|
+            TWEET_HEADINGS_FORMATTING[index] % TWEET_HEADINGS[index]
           end
           print_table([headings])
         end
@@ -140,7 +140,7 @@ module T
           print_csv_tweet(tweet)
         elsif options['long']
           array = build_long_tweet(tweet).each_with_index.map do |element, index|
-            STATUS_HEADINGS_FORMATTING[index] % element
+            TWEET_HEADINGS_FORMATTING[index] % element
           end
           print_table([array], :truncate => STDOUT.tty?)
         else

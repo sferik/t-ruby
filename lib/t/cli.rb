@@ -288,7 +288,7 @@ module T
     end
     map %w(df doesfollow) => :does_follow
 
-    desc "favorite STATUS_ID [STATUS_ID...]", "Marks Tweets as favorites."
+    desc "favorite TWEET_ID [TWEET_ID...]", "Marks Tweets as favorites."
     def favorite(status_id, *status_ids)
       status_ids.unshift(status_id)
       status_ids.map!(&:to_i)
@@ -516,7 +516,7 @@ module T
       end
     end
 
-    desc "reply STATUS_ID MESSAGE", "Post your Tweet as a reply directed at another person."
+    desc "reply TWEET_ID MESSAGE", "Post your Tweet as a reply directed at another person."
     method_option "all", :aliases => "-a", :type => "boolean", :default => false, :desc => "Reply to all users mentioned in the Tweet."
     method_option "location", :aliases => "-l", :type => :boolean, :default => false
     def reply(status_id, message)
@@ -546,7 +546,7 @@ module T
     end
     map %w(report reportspam spam) => :report_spam
 
-    desc "retweet STATUS_ID [STATUS_ID...]", "Sends Tweets to your followers."
+    desc "retweet TWEET_ID [TWEET_ID...]", "Sends Tweets to your followers."
     def retweet(status_id, *status_ids)
       status_ids.unshift(status_id)
       status_ids.map!(&:to_i)
@@ -594,7 +594,7 @@ module T
       say "#{' ' * options['indent'].to_i}----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|"
     end
 
-    desc "status STATUS_ID", "Retrieves detailed information about a Tweet."
+    desc "status TWEET_ID", "Retrieves detailed information about a Tweet."
     method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     def status(status_id)
       status = client.status(status_id.to_i, :include_my_retweet => false)

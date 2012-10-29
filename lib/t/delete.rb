@@ -51,7 +51,7 @@ module T
     end
     map %w(d m) => :dm
 
-    desc "favorite STATUS_ID [STATUS_ID...]", "Delete favorites."
+    desc "favorite TWEET_ID [TWEET_ID...]", "Delete favorites."
     method_option "force", :aliases => "-f", :type => :boolean, :default => false
     def favorite(status_id, *status_ids)
       status_ids.unshift(status_id)
@@ -89,7 +89,7 @@ module T
       say "@#{@rcfile.active_profile[0]} deleted the list \"#{list.name}\"."
     end
 
-    desc "status STATUS_ID [STATUS_ID...]", "Delete Tweets."
+    desc "status TWEET_ID [TWEET_ID...]", "Delete Tweets."
     method_option "force", :aliases => "-f", :type => :boolean, :default => false
     def status(status_id, *status_ids)
       status_ids.unshift(status_id)

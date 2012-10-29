@@ -37,7 +37,7 @@ module T
       if options['csv']
         require 'csv'
         require 'fastercsv' unless Array.new.respond_to?(:to_csv)
-        say STATUS_HEADINGS.to_csv unless tweets.empty?
+        say TWEET_HEADINGS.to_csv unless tweets.empty?
         tweets.each do |tweet|
           say [tweet.id, csv_formatted_time(tweet), tweet.from_user, HTMLEntities.new.decode(tweet.full_text)].to_csv
         end
@@ -45,8 +45,8 @@ module T
         array = tweets.map do |tweet|
           [tweet.id, ls_formatted_time(tweet), "@#{tweet.from_user}", HTMLEntities.new.decode(tweet.full_text).gsub(/\n+/, ' ')]
         end
-        format = options['format'] || STATUS_HEADINGS.size.times.map{"%s"}
-        print_table_with_headings(array, STATUS_HEADINGS, format)
+        format = options['format'] || TWEET_HEADINGS.size.times.map{"%s"}
+        print_table_with_headings(array, TWEET_HEADINGS, format)
       else
         say unless tweets.empty?
         tweets.each do |tweet|

@@ -31,18 +31,22 @@ describe T::Search do
   describe "#all" do
     before do
       stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :rpp => "20"}).to_return(:body => fixture("search.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :max_id => "246666260270702591", :rpp => "16"}).to_return(:body => fixture("search.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :max_id => "246666260270702591", :rpp => "12"}).to_return(:body => fixture("search.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :max_id => "246666260270702591", :rpp => "17"}).to_return(:body => fixture("search.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :max_id => "246666260270702591", :rpp => "14"}).to_return(:body => fixture("search.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :max_id => "246666260270702591", :rpp => "11"}).to_return(:body => fixture("search.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :max_id => "246666260270702591", :rpp => "8"}).to_return(:body => fixture("search.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :max_id => "246666260270702591", :rpp => "4"}).to_return(:body => fixture("search.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :max_id => "246666260270702591", :rpp => "5"}).to_return(:body => fixture("search.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :max_id => "246666260270702591", :rpp => "2"}).to_return(:body => fixture("search.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @search.all("twitter")
       expect(a_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :rpp => "20"})).to have_been_made
-      expect(a_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :max_id => "246666260270702591", :rpp => "16"})).to have_been_made
-      expect(a_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :max_id => "246666260270702591", :rpp => "12"})).to have_been_made
+      expect(a_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :max_id => "246666260270702591", :rpp => "17"})).to have_been_made
+      expect(a_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :max_id => "246666260270702591", :rpp => "14"})).to have_been_made
+      expect(a_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :max_id => "246666260270702591", :rpp => "11"})).to have_been_made
       expect(a_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :max_id => "246666260270702591", :rpp => "8"})).to have_been_made
-      expect(a_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :max_id => "246666260270702591", :rpp => "4"})).to have_been_made
+      expect(a_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :max_id => "246666260270702591", :rpp => "5"})).to have_been_made
+      expect(a_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :max_id => "246666260270702591", :rpp => "2"})).to have_been_made
     end
     it "should have the correct output" do
       @search.all("twitter")
@@ -58,8 +62,18 @@ describe T::Search do
 
    #freebandnames
 
-\e[1m\e[33m   @thedunniebobos\e[0m
-   Wussies and pussies #goddylan #freebandnames
+\e[1m\e[33m   @StrongPROGress\e[0m
+   #FreeBandNames Asterisks and Thunderstorms
+
+\e[1m\e[33m   @richrad\e[0m
+   Bubble Mailer #freebandnames
+
+\e[1m\e[33m   @dswordsNshields\e[0m
+   Hair of the Frog
+
+   (seriously, think about it)
+
+   #freebandnames
 
 \e[1m\e[33m   @StrongPROGress\e[0m
    #FreeBandNames Asterisks and Thunderstorms
@@ -74,8 +88,18 @@ describe T::Search do
 
    #freebandnames
 
-\e[1m\e[33m   @thedunniebobos\e[0m
-   Wussies and pussies #goddylan #freebandnames
+\e[1m\e[33m   @StrongPROGress\e[0m
+   #FreeBandNames Asterisks and Thunderstorms
+
+\e[1m\e[33m   @richrad\e[0m
+   Bubble Mailer #freebandnames
+
+\e[1m\e[33m   @dswordsNshields\e[0m
+   Hair of the Frog
+
+   (seriously, think about it)
+
+   #freebandnames
 
 \e[1m\e[33m   @StrongPROGress\e[0m
    #FreeBandNames Asterisks and Thunderstorms
@@ -90,9 +114,6 @@ describe T::Search do
 
    #freebandnames
 
-\e[1m\e[33m   @thedunniebobos\e[0m
-   Wussies and pussies #goddylan #freebandnames
-
 \e[1m\e[33m   @StrongPROGress\e[0m
    #FreeBandNames Asterisks and Thunderstorms
 
@@ -106,9 +127,6 @@ describe T::Search do
 
    #freebandnames
 
-\e[1m\e[33m   @thedunniebobos\e[0m
-   Wussies and pussies #goddylan #freebandnames
-
 \e[1m\e[33m   @StrongPROGress\e[0m
    #FreeBandNames Asterisks and Thunderstorms
 
@@ -121,9 +139,6 @@ describe T::Search do
    (seriously, think about it)
 
    #freebandnames
-
-\e[1m\e[33m   @thedunniebobos\e[0m
-   Wussies and pussies #goddylan #freebandnames
 
 \e[1m\e[33m   @StrongPROGress\e[0m
    #FreeBandNames Asterisks and Thunderstorms
@@ -144,7 +159,6 @@ ID,Posted at,Screen name,Text
 (seriously, think about it) 
 
 #freebandnames"
-246825473785606145,2012-09-15 04:19:13 +0000,thedunniebobos,Wussies and pussies #goddylan #freebandnames
 246666260270702592,2012-09-14 17:46:33 +0000,StrongPROGress,#FreeBandNames Asterisks and Thunderstorms
 247827742178021376,2012-09-17 22:41:52 +0000,richrad,Bubble Mailer #freebandnames
 247811706061979648,2012-09-17 21:38:09 +0000,dswordsNshields,"Hair of the Frog 
@@ -152,7 +166,6 @@ ID,Posted at,Screen name,Text
 (seriously, think about it) 
 
 #freebandnames"
-246825473785606145,2012-09-15 04:19:13 +0000,thedunniebobos,Wussies and pussies #goddylan #freebandnames
 246666260270702592,2012-09-14 17:46:33 +0000,StrongPROGress,#FreeBandNames Asterisks and Thunderstorms
 247827742178021376,2012-09-17 22:41:52 +0000,richrad,Bubble Mailer #freebandnames
 247811706061979648,2012-09-17 21:38:09 +0000,dswordsNshields,"Hair of the Frog 
@@ -160,7 +173,6 @@ ID,Posted at,Screen name,Text
 (seriously, think about it) 
 
 #freebandnames"
-246825473785606145,2012-09-15 04:19:13 +0000,thedunniebobos,Wussies and pussies #goddylan #freebandnames
 246666260270702592,2012-09-14 17:46:33 +0000,StrongPROGress,#FreeBandNames Asterisks and Thunderstorms
 247827742178021376,2012-09-17 22:41:52 +0000,richrad,Bubble Mailer #freebandnames
 247811706061979648,2012-09-17 21:38:09 +0000,dswordsNshields,"Hair of the Frog 
@@ -168,7 +180,6 @@ ID,Posted at,Screen name,Text
 (seriously, think about it) 
 
 #freebandnames"
-246825473785606145,2012-09-15 04:19:13 +0000,thedunniebobos,Wussies and pussies #goddylan #freebandnames
 246666260270702592,2012-09-14 17:46:33 +0000,StrongPROGress,#FreeBandNames Asterisks and Thunderstorms
 247827742178021376,2012-09-17 22:41:52 +0000,richrad,Bubble Mailer #freebandnames
 247811706061979648,2012-09-17 21:38:09 +0000,dswordsNshields,"Hair of the Frog 
@@ -176,7 +187,20 @@ ID,Posted at,Screen name,Text
 (seriously, think about it) 
 
 #freebandnames"
-246825473785606145,2012-09-15 04:19:13 +0000,thedunniebobos,Wussies and pussies #goddylan #freebandnames
+246666260270702592,2012-09-14 17:46:33 +0000,StrongPROGress,#FreeBandNames Asterisks and Thunderstorms
+247827742178021376,2012-09-17 22:41:52 +0000,richrad,Bubble Mailer #freebandnames
+247811706061979648,2012-09-17 21:38:09 +0000,dswordsNshields,"Hair of the Frog 
+
+(seriously, think about it) 
+
+#freebandnames"
+246666260270702592,2012-09-14 17:46:33 +0000,StrongPROGress,#FreeBandNames Asterisks and Thunderstorms
+247827742178021376,2012-09-17 22:41:52 +0000,richrad,Bubble Mailer #freebandnames
+247811706061979648,2012-09-17 21:38:09 +0000,dswordsNshields,"Hair of the Frog 
+
+(seriously, think about it) 
+
+#freebandnames"
 246666260270702592,2012-09-14 17:46:33 +0000,StrongPROGress,#FreeBandNames Asterisks and Thunderstorms
         eos
       end
@@ -191,23 +215,24 @@ ID,Posted at,Screen name,Text
 ID                  Posted at     Screen name       Text
 247827742178021376  Sep 17 14:41  @richrad          Bubble Mailer #freebandnames
 247811706061979648  Sep 17 13:38  @dswordsNshields  Hair of the Frog  (seriou...
-246825473785606145  Sep 14 20:19  @thedunniebobos   Wussies and pussies #godd...
 246666260270702592  Sep 14 09:46  @StrongPROGress   #FreeBandNames Asterisks ...
 247827742178021376  Sep 17 14:41  @richrad          Bubble Mailer #freebandnames
 247811706061979648  Sep 17 13:38  @dswordsNshields  Hair of the Frog  (seriou...
-246825473785606145  Sep 14 20:19  @thedunniebobos   Wussies and pussies #godd...
 246666260270702592  Sep 14 09:46  @StrongPROGress   #FreeBandNames Asterisks ...
 247827742178021376  Sep 17 14:41  @richrad          Bubble Mailer #freebandnames
 247811706061979648  Sep 17 13:38  @dswordsNshields  Hair of the Frog  (seriou...
-246825473785606145  Sep 14 20:19  @thedunniebobos   Wussies and pussies #godd...
 246666260270702592  Sep 14 09:46  @StrongPROGress   #FreeBandNames Asterisks ...
 247827742178021376  Sep 17 14:41  @richrad          Bubble Mailer #freebandnames
 247811706061979648  Sep 17 13:38  @dswordsNshields  Hair of the Frog  (seriou...
-246825473785606145  Sep 14 20:19  @thedunniebobos   Wussies and pussies #godd...
 246666260270702592  Sep 14 09:46  @StrongPROGress   #FreeBandNames Asterisks ...
 247827742178021376  Sep 17 14:41  @richrad          Bubble Mailer #freebandnames
 247811706061979648  Sep 17 13:38  @dswordsNshields  Hair of the Frog  (seriou...
-246825473785606145  Sep 14 20:19  @thedunniebobos   Wussies and pussies #godd...
+246666260270702592  Sep 14 09:46  @StrongPROGress   #FreeBandNames Asterisks ...
+247827742178021376  Sep 17 14:41  @richrad          Bubble Mailer #freebandnames
+247811706061979648  Sep 17 13:38  @dswordsNshields  Hair of the Frog  (seriou...
+246666260270702592  Sep 14 09:46  @StrongPROGress   #FreeBandNames Asterisks ...
+247827742178021376  Sep 17 14:41  @richrad          Bubble Mailer #freebandnames
+247811706061979648  Sep 17 13:38  @dswordsNshields  Hair of the Frog  (seriou...
 246666260270702592  Sep 14 09:46  @StrongPROGress   #FreeBandNames Asterisks ...
         eos
       end
@@ -217,7 +242,7 @@ ID                  Posted at     Screen name       Text
         stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :rpp => "1"}).to_return(:body => fixture("search.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :rpp => "200"}).to_return(:body => fixture("search.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :rpp => "200", :max_id => "246666260270702591"}).to_return(:body => fixture("search.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        (1..197).step(4).to_a.each do |count|
+        (3..198).step(3).to_a.each do |count|
           stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :rpp => count, :max_id => "246666260270702591"}).to_return(:body => fixture("search.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         end
       end
@@ -230,8 +255,8 @@ ID                  Posted at     Screen name       Text
         @search.options = @search.options.merge("number" => 345)
         @search.all("twitter")
         expect(a_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :rpp => "200"})).to have_been_made
-        expect(a_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :rpp => "200", :max_id => "246666260270702591"})).to have_been_made.times(36)
-        (1..197).step(4).to_a.each do |count|
+        expect(a_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :rpp => "200", :max_id => "246666260270702591"})).to have_been_made.times(48)
+        (3..198).step(3).to_a.each do |count|
           expect(a_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :rpp => count, :max_id => "246666260270702591"})).to have_been_made
         end
       end

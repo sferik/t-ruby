@@ -17,7 +17,7 @@ module T
     end
 
     desc "block USER [USER...]", "Unblock users."
-    method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
+    method_option "id", :aliases => "-i", :type => :boolean, :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     method_option "force", :aliases => "-f", :type => :boolean, :default => false
     def block(user, *users)
       users, number = fetch_users(users.unshift(user), options) do |users|
@@ -75,7 +75,7 @@ module T
 
     desc "list LIST", "Delete a list."
     method_option "force", :aliases => "-f", :type => :boolean, :default => false
-    method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify list via ID instead of slug."
+    method_option "id", :aliases => "-i", :type => :boolean, :default => false, :desc => "Specify list via ID instead of slug."
     def list(list)
       if options['id']
         require 't/core_ext/string'

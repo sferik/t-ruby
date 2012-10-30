@@ -342,6 +342,30 @@ ID                  Posted at     Screen name  Text
 
         eos
       end
+      context "--id" do
+        before do
+          @search.options = @search.options.merge("id" => true)
+          stub_get("/1.1/favorites/list.json").with(:query => {:count => "200", :user_id => "7505382"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1.1/favorites/list.json").with(:query => {:count => "200", :max_id => "244099460672679937", :user_id => "7505382"}).to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        end
+        it "should request the correct resource" do
+          @search.favorites("7505382", "twitter")
+          expect(a_get("/1.1/favorites/list.json").with(:query => {:count => "200", :user_id => "7505382"})).to have_been_made
+          expect(a_get("/1.1/favorites/list.json").with(:query => {:count => "200", :max_id => "244099460672679937", :user_id => "7505382"})).to have_been_made
+        end
+        it "should have the correct output" do
+          @search.favorites("7505382", "twitter")
+          expect($stdout.string).to eq <<-eos
+\e[1m\e[33m   @sferik\e[0m
+   @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem 
+   to be missing "1.1" from the URL.
+
+\e[1m\e[33m   @sferik\e[0m
+   @episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
+
+          eos
+        end
+      end
     end
   end
 
@@ -549,6 +573,26 @@ ID                  Posted at     Screen name   Text
    RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
 
         eos
+      end
+      context "--id" do
+        before do
+          @search.options = @search.options.merge("id" => true)
+          stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true", :user_id => "7505382"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true", :user_id => "7505382", :max_id => "244102729860009983"}).to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        end
+        it "should request the correct resource" do
+          @search.retweets("7505382", "mosaic")
+          expect(a_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true", :user_id => "7505382"})).to have_been_made
+          expect(a_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true", :user_id => "7505382", :max_id => "244102729860009983"})).to have_been_made.times(2)
+        end
+        it "should have the correct output" do
+          @search.retweets("7505382", "mosaic")
+          expect($stdout.string).to eq <<-eos
+\e[1m\e[33m   @calebelston\e[0m
+   RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
+
+          eos
+        end
       end
     end
   end

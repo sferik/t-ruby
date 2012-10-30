@@ -57,7 +57,7 @@ module T
 
     desc "favorites [USER] QUERY", "Returns Tweets you've favorited that match the specified query."
     method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
-    method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
+    method_option "id", :aliases => "-i", :type => :boolean, :default => false, :desc => "Specify user via ID instead of screen name."
     method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     def favorites(*args)
       opts = {:count => MAX_NUM_RESULTS}
@@ -89,7 +89,7 @@ module T
 
     desc "list [USER/]LIST QUERY", "Returns Tweets on a list that match specified query."
     method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
-    method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
+    method_option "id", :aliases => "-i", :type => :boolean, :default => false, :desc => "Specify user via ID instead of screen name."
     method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     def list(list, query)
       owner, list = extract_owner(list, options)
@@ -122,7 +122,7 @@ module T
 
     desc "retweets [USER] QUERY", "Returns Tweets you've retweeted that match the specified query."
     method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
-    method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
+    method_option "id", :aliases => "-i", :type => :boolean, :default => false, :desc => "Specify user via ID instead of screen name."
     method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     def retweets(*args)
       opts = {:count => MAX_NUM_RESULTS}
@@ -155,7 +155,7 @@ module T
     desc "timeline [USER] QUERY", "Returns Tweets in your timeline that match the specified query."
     method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     method_option "exclude", :aliases => "-e", :type => :string, :enum => %w(replies retweets), :desc => "Exclude certain types of Tweets from the results.", :banner => "TYPE"
-    method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
+    method_option "id", :aliases => "-i", :type => :boolean, :default => false, :desc => "Specify user via ID instead of screen name."
     method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     def timeline(*args)
       opts = {:count => MAX_NUM_RESULTS}

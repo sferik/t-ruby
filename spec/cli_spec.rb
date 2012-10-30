@@ -2558,6 +2558,26 @@ ID,Posted at,Screen name,Text
         eos
       end
     end
+    context "--exclude=replies" do
+      before do
+        @cli.options = @cli.options.merge("exclude" => "replies")
+        stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "20", :exclude_replies => "true"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should exclude replies" do
+        @cli.timeline
+        expect(a_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "20", :exclude_replies => "true"})).to have_been_made
+      end
+    end
+    context "--exclude=retweets" do
+      before do
+        @cli.options = @cli.options.merge("exclude" => "retweets")
+        stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "20", :include_rts => "false"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should exclude retweets" do
+        @cli.timeline
+        expect(a_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "20", :include_rts => "false"})).to have_been_made
+      end
+    end
     context "--long" do
       before do
         @cli.options = @cli.options.merge("long" => true)

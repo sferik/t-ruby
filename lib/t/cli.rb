@@ -640,12 +640,21 @@ module T
 
     desc "timeline [USER]", "Returns the #{DEFAULT_NUM_RESULTS} most recent Tweets posted by a user."
     method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
+    method_option "exclude", :aliases => "-e", :type => :string, :enum => %w(replies retweets), :desc => "Exclude certain types of Tweets from the results.", :banner => "TYPE"
     method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
     method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     method_option "number", :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => "Limit the number of results."
     method_option "reverse", :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     def timeline(user=nil)
       count = options['number'] || DEFAULT_NUM_RESULTS
+      exclude_opts = case options['exclude']
+      when 'replies'
+        {:exclude_replies => true}
+      when 'retweets'
+        {:include_rts => false}
+      else
+        {}
+      end
       if user
         require 't/core_ext/string'
         user = if options['id']
@@ -654,11 +663,11 @@ module T
           user.strip_ats
         end
         tweets = collect_with_count(count) do |opts|
-          client.user_timeline(user, opts)
+          client.user_timeline(user, opts.merge(exclude_opts))
         end
       else
         tweets = collect_with_count(count) do |opts|
-          client.home_timeline(opts)
+          client.home_timeline(opts.merge(exclude_opts))
         end
       end
       print_tweets(tweets)

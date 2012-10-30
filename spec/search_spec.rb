@@ -588,6 +588,30 @@ ID,Posted at,Screen name,Text
         eos
       end
     end
+    context "--exclude=replies" do
+      before do
+        @search.options = @search.options.merge("exclude" => "replies")
+        stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200", :exclude_replies => "true"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200", :exclude_replies => "true", :max_id => "244099460672679937"}).to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should exclude replies" do
+        @search.timeline
+        expect(a_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200", :exclude_replies => "true"})).to have_been_made
+        expect(a_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200", :exclude_replies => "true", :max_id => "244099460672679937"})).to have_been_made
+      end
+    end
+    context "--exclude=retweets" do
+      before do
+        @search.options = @search.options.merge("exclude" => "retweets")
+        stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200", :include_rts => "false"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200", :include_rts => "false", :max_id => "244099460672679937"}).to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should exclude retweets" do
+        @search.timeline
+        expect(a_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200", :include_rts => "false"})).to have_been_made
+        expect(a_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200", :include_rts => "false", :max_id => "244099460672679937"})).to have_been_made
+      end
+    end
     context "--long" do
       before do
         @search.options = @search.options.merge("long" => true)

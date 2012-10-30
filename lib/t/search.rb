@@ -154,12 +154,21 @@ module T
 
     desc "timeline [USER] QUERY", "Returns Tweets in your timeline that match the specified query."
     method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
+    method_option "exclude", :aliases => "-e", :type => :string, :enum => %w(replies retweets), :desc => "Exclude certain types of Tweets from the results.", :banner => "TYPE"
     method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify user via ID instead of screen name."
     method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     def timeline(*args)
       opts = {:count => MAX_NUM_RESULTS}
       query = args.pop
       user = args.pop
+      exclude_opts = case options['exclude']
+      when 'replies'
+        {:exclude_replies => true}
+      when 'retweets'
+        {:include_rts => false}
+      else
+        {}
+      end
       if user
         require 't/core_ext/string'
         user = if options['id']
@@ -169,12 +178,12 @@ module T
         end
         tweets = collect_with_max_id do |max_id|
           opts[:max_id] = max_id unless max_id.nil?
-          client.user_timeline(user, opts)
+          client.user_timeline(user, opts.merge(exclude_opts))
         end
       else
         tweets = collect_with_max_id do |max_id|
           opts[:max_id] = max_id unless max_id.nil?
-          client.home_timeline(opts)
+          client.home_timeline(opts.merge(exclude_opts))
         end
       end
       tweets = tweets.select do |tweet|

@@ -79,6 +79,45 @@ testcli
         @cli.authorize
       end.not_to raise_error
     end
+    context "empty RC file" do
+      before do
+        @cli.options = @cli.options.merge("profile" => project_path + "/tmp/empty", "display-url" => true)
+      end
+      after do
+        File.delete(project_path + "/tmp/empty")
+      end
+      it "should request the correct resource" do
+        $stdout.should_receive(:print)
+        $stdin.should_receive(:gets).and_return("\n")
+        $stdout.should_receive(:print).with("Enter your consumer key: ")
+        $stdin.should_receive(:gets).and_return("abc123")
+        $stdout.should_receive(:print).with("Enter your consumer secret: ")
+        $stdin.should_receive(:gets).and_return("asdfasd223sd2")
+        $stdout.should_receive(:print).with("Press [Enter] to open the Twitter app authorization page. ")
+        $stdin.should_receive(:gets).and_return("\n")
+        $stdout.should_receive(:print).with("Enter the supplied PIN: ")
+        $stdin.should_receive(:gets).and_return("1234567890")
+        @cli.authorize
+        expect(a_post("/oauth/request_token")).to have_been_made
+        expect(a_post("/oauth/access_token")).to have_been_made
+        expect(a_get("/1.1/account/verify_credentials.json").with(:query => {:include_entities => "false", :skip_status => "true"})).to have_been_made
+      end
+      it "should not raise error" do
+        expect do
+          $stdout.should_receive(:print)
+          $stdin.should_receive(:gets).and_return("\n")
+          $stdout.should_receive(:print).with("Enter your consumer key: ")
+          $stdin.should_receive(:gets).and_return("abc123")
+          $stdout.should_receive(:print).with("Enter your consumer secret: ")
+          $stdin.should_receive(:gets).and_return("asdfasd223sd2")
+          $stdout.should_receive(:print).with("Press [Enter] to open the Twitter app authorization page. ")
+          $stdin.should_receive(:gets).and_return("\n")
+          $stdout.should_receive(:print).with("Enter the supplied PIN: ")
+          $stdin.should_receive(:gets).and_return("1234567890")
+          @cli.authorize
+        end.not_to raise_error
+      end
+    end
   end
 
   describe "#block" do
@@ -698,7 +737,6 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
     end
     context "with a user passed" do
       before do
-        @cli.options = @cli.options.merge("id" => true)
         stub_get("/1.1/users/show.json").with(:query => {:user_id => "0"}).to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         stub_get("/1.1/friendships/show.json").with(:query => {:source_screen_name => "sferik", :target_screen_name => "sferik"}).to_return(:body => fixture("following.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end

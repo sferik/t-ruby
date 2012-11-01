@@ -22,18 +22,16 @@ module T
     include T::Requestable
     include T::Utils
 
-    DEFAULT_HOST = 'api.twitter.com'
-    DEFAULT_PROTOCOL = 'https'
     DEFAULT_NUM_RESULTS = 20
     DIRECT_MESSAGE_HEADINGS = ["ID", "Posted at", "Screen name", "Text"]
     TREND_HEADINGS = ["WOEID", "Parent ID", "Type", "Name", "Country"]
 
     check_unknown_options!
 
-    option "host", :aliases => "-H", :type => :string, :default => DEFAULT_HOST, :desc => "Twitter API server"
-    option "no-color", :aliases => "-N", :type => :boolean, :desc => "Disable colorization in output"
-    option "no-ssl", :aliases => "-U", :type => :boolean, :default => false, :desc => "Disable SSL"
-    option "profile", :aliases => "-P", :type => :string, :default => File.join(File.expand_path("~"), T::RCFile::FILE_NAME), :desc => "Path to RC file", :banner => "FILE"
+    class_option "host", :aliases => "-H", :type => :string, :default => T::Requestable::DEFAULT_HOST, :desc => "Twitter API server"
+    class_option "no-color", :aliases => "-N", :type => :boolean, :desc => "Disable colorization in output"
+    class_option "no-ssl", :aliases => "-U", :type => :boolean, :default => false, :desc => "Disable SSL"
+    class_option "profile", :aliases => "-P", :type => :string, :default => File.join(File.expand_path("~"), T::RCFile::FILE_NAME), :desc => "Path to RC file", :banner => "FILE"
 
     def initialize(*)
       @rcfile = T::RCFile.instance

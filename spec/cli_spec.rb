@@ -734,27 +734,39 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
         expect(a_get("/1.1/users/show.json").with(:query => {:user_id => "20"})).to have_been_made
         expect(a_get("/1.1/friendships/show.json").with(:query => {:source_screen_name => "sferik", :target_screen_name => "testcli"})).to have_been_made
       end
+      it "should have the correct output" do
+        @cli.does_follow("20")
+        expect($stdout.string.chomp).to eq "Yes, @sferik follows @testcli."
+      end
     end
     context "with a user passed" do
       before do
-        stub_get("/1.1/users/show.json").with(:query => {:user_id => "0"}).to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/friendships/show.json").with(:query => {:source_screen_name => "sferik", :target_screen_name => "sferik"}).to_return(:body => fixture("following.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/friendships/show.json").with(:query => {:source_screen_name => "ev", :target_screen_name => "sferik"}).to_return(:body => fixture("following.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should request the correct resource" do
+        @cli.does_follow("ev", "sferik")
+        expect(a_get("/1.1/friendships/show.json").with(:query => {:source_screen_name => "ev", :target_screen_name => "sferik"})).to have_been_made
       end
       it "should have the correct output" do
-        @cli.does_follow("ev", "testcli")
-        expect($stdout.string.chomp).to eq "Yes, @sferik follows @sferik."
+        @cli.does_follow("ev", "sferik")
+        expect($stdout.string.chomp).to eq "Yes, @ev follows @sferik."
       end
       context "--id" do
         before do
           @cli.options = @cli.options.merge("id" => true)
           stub_get("/1.1/users/show.json").with(:query => {:user_id => "20"}).to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
           stub_get("/1.1/users/show.json").with(:query => {:user_id => "428004849"}).to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1.1/friendships/show.json").with(:query => {:source_screen_name => "sferik", :target_screen_name => "sferik"}).to_return(:body => fixture("following.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         end
         it "should request the correct resource" do
           @cli.does_follow("20", "428004849")
           expect(a_get("/1.1/users/show.json").with(:query => {:user_id => "20"})).to have_been_made
           expect(a_get("/1.1/users/show.json").with(:query => {:user_id => "428004849"})).to have_been_made
           expect(a_get("/1.1/friendships/show.json").with(:query => {:source_screen_name => "sferik", :target_screen_name => "sferik"})).to have_been_made
+        end
+        it "should have the correct output" do
+          @cli.does_follow("20", "428004849")
+          expect($stdout.string.chomp).to eq "Yes, @sferik follows @sferik."
         end
       end
     end

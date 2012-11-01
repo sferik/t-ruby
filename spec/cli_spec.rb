@@ -2024,36 +2024,37 @@ ID                   Posted at     Screen name       Text
   describe "#reply" do
     before do
       @cli.options = @cli.options.merge("profile" => fixture_path + "/.trc", "location" => true)
-      stub_get("/1.1/statuses/show/55709764298092545.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_post("/1.1/statuses/update.json").with(:body => {:in_reply_to_status_id => "55709764298092545", :status => "@sferik Testing", :lat => "37.76969909668", :long => "-122.39330291748", :trim_user => "true"}).to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/statuses/show/263813522369159169.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status_with_mention.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_post("/1.1/statuses/update.json").with(:body => {:in_reply_to_status_id => "263813522369159169", :status => "@joshfrench Testing", :lat => "37.76969909668", :long => "-122.39330291748", :trim_user => "true"}).to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       stub_request(:get, "http://checkip.dyndns.org/").to_return(:body => fixture("checkip.html"), :headers => {:content_type => "text/html"})
       stub_request(:get, "http://www.geoplugin.net/xml.gp?ip=50.131.22.169").to_return(:body => fixture("geoplugin.xml"), :headers => {:content_type => "application/xml"})
     end
     it "should request the correct resource" do
-      @cli.reply("55709764298092545", "Testing")
-      expect(a_get("/1.1/statuses/show/55709764298092545.json").with(:query => {:include_my_retweet => "false"})).to have_been_made
-      expect(a_post("/1.1/statuses/update.json").with(:body => {:in_reply_to_status_id => "55709764298092545", :status => "@sferik Testing", :lat => "37.76969909668", :long => "-122.39330291748", :trim_user => "true"})).to have_been_made
+      @cli.reply("263813522369159169", "Testing")
+      expect(a_get("/1.1/statuses/show/263813522369159169.json").with(:query => {:include_my_retweet => "false"})).to have_been_made
+      expect(a_post("/1.1/statuses/update.json").with(:body => {:in_reply_to_status_id => "263813522369159169", :status => "@joshfrench Testing", :lat => "37.76969909668", :long => "-122.39330291748", :trim_user => "true"})).to have_been_made
       expect(a_request(:get, "http://checkip.dyndns.org/")).to have_been_made
       expect(a_request(:get, "http://www.geoplugin.net/xml.gp?ip=50.131.22.169")).to have_been_made
     end
     it "should have the correct output" do
-      @cli.reply("55709764298092545", "Testing")
-      expect($stdout.string.split("\n").first).to eq "Reply posted by @testcli to @sferik."
+      @cli.reply("263813522369159169", "Testing")
+      expect($stdout.string.split("\n").first).to eq "Reply posted by @testcli to @joshfrench."
     end
     context "--all" do
       before do
         @cli.options = @cli.options.merge("all" => true)
+        stub_post("/1.1/statuses/update.json").with(:body => {:in_reply_to_status_id => "263813522369159169", :status => "@joshfrench @sferik Testing", :lat => "37.76969909668", :long => "-122.39330291748", :trim_user => "true"}).to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should request the correct resource" do
-        @cli.reply("55709764298092545", "Testing")
-        expect(a_get("/1.1/statuses/show/55709764298092545.json").with(:query => {:include_my_retweet => "false"})).to have_been_made
-        expect(a_post("/1.1/statuses/update.json").with(:body => {:in_reply_to_status_id => "55709764298092545", :status => "@sferik Testing", :lat => "37.76969909668", :long => "-122.39330291748", :trim_user => "true"})).to have_been_made
+        @cli.reply("263813522369159169", "Testing")
+        expect(a_get("/1.1/statuses/show/263813522369159169.json").with(:query => {:include_my_retweet => "false"})).to have_been_made
+        expect(a_post("/1.1/statuses/update.json").with(:body => {:in_reply_to_status_id => "263813522369159169", :status => "@joshfrench @sferik Testing", :lat => "37.76969909668", :long => "-122.39330291748", :trim_user => "true"})).to have_been_made
         expect(a_request(:get, "http://checkip.dyndns.org/")).to have_been_made
         expect(a_request(:get, "http://www.geoplugin.net/xml.gp?ip=50.131.22.169")).to have_been_made
       end
       it "should have the correct output" do
-        @cli.reply("55709764298092545", "Testing")
-        expect($stdout.string.split("\n").first).to eq "Reply posted by @testcli to @sferik."
+        @cli.reply("263813522369159169", "Testing")
+        expect($stdout.string.split("\n").first).to eq "Reply posted by @testcli to @joshfrench @sferik."
       end
     end
   end
@@ -2488,7 +2489,7 @@ URL          https://twitter.com/sferik/status/55709764298092548
     context "with no place" do
       before do
         stub_get("/1.1/statuses/show/55709764298092545.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status_no_place.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_request(:get, "http://maps.google.com/maps/geo").with(:query => {:key => "REPLACE_WITH_YOUR_GOOGLE_KEY", :ll => "37.75963095,-122.410067", :oe => "utf-8", :output => "xml"}).to_return(:body => fixture("geo.kml"), :headers => {:content_type => "text/xml; charset=UTF-8"})
+        stub_request(:get, "http://maps.google.com/maps/geo").with(:query => hash_including({:key => "REPLACE_WITH_YOUR_GOOGLE_KEY", :oe => "utf-8", :output => "xml"})).to_return(:body => fixture("geo.kml"), :headers => {:content_type => "text/xml; charset=UTF-8"})
       end
       it "should have the correct output" do
         @cli.status("55709764298092545")
@@ -2508,7 +2509,7 @@ URL          https://twitter.com/sferik/status/55709764298092551
       context "with no city" do
         before do
           stub_get("/1.1/statuses/show/55709764298092545.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status_no_place.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-          stub_request(:get, "http://maps.google.com/maps/geo").with(:query => {:key => "REPLACE_WITH_YOUR_GOOGLE_KEY", :ll => "37.75963095,-122.410067", :oe => "utf-8", :output => "xml"}).to_return(:body => fixture("geo_no_city.kml"), :headers => {:content_type => "text/xml; charset=UTF-8"})
+          stub_request(:get, "http://maps.google.com/maps/geo").with(:query => hash_including({:key => "REPLACE_WITH_YOUR_GOOGLE_KEY", :oe => "utf-8", :output => "xml"})).to_return(:body => fixture("geo_no_city.kml"), :headers => {:content_type => "text/xml; charset=UTF-8"})
         end
         it "should have the correct output" do
           @cli.status("55709764298092545")
@@ -2529,7 +2530,7 @@ URL          https://twitter.com/sferik/status/55709764298092551
       context "with no state" do
         before do
           stub_get("/1.1/statuses/show/55709764298092545.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status_no_place.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-          stub_request(:get, "http://maps.google.com/maps/geo").with(:query => {:key => "REPLACE_WITH_YOUR_GOOGLE_KEY", :ll => "37.75963095,-122.410067", :oe => "utf-8", :output => "xml"}).to_return(:body => fixture("geo_no_state.kml"), :headers => {:content_type => "text/xml; charset=UTF-8"})
+          stub_request(:get, "http://maps.google.com/maps/geo").with(:query => hash_including({:key => "REPLACE_WITH_YOUR_GOOGLE_KEY", :oe => "utf-8", :output => "xml"})).to_return(:body => fixture("geo_no_state.kml"), :headers => {:content_type => "text/xml; charset=UTF-8"})
         end
         it "should have the correct output" do
           @cli.status("55709764298092545")

@@ -2485,6 +2485,69 @@ URL          https://twitter.com/sferik/status/55709764298092548
         eos
       end
     end
+    context "with no place" do
+      before do
+        stub_get("/1.1/statuses/show/55709764298092545.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status_no_place.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_request(:get, "http://maps.google.com/maps/geo").with(:query => {:key => "REPLACE_WITH_YOUR_GOOGLE_KEY", :ll => "37.75963095,-122.410067", :oe => "utf-8", :output => "xml"}).to_return(:body => fixture("geo.kml"), :headers => {:content_type => "text/xml; charset=UTF-8"})
+      end
+      it "should have the correct output" do
+        @cli.status("55709764298092545")
+        expect($stdout.string).to eq <<-eos
+ID           55709764298092551
+Text         The problem with your code is that it's doing exactly what you told it to do.
+Screen name  @sferik
+Posted at    Apr  6  2011 (8 months ago)
+Location     San Francisco, CA, USA
+Retweets     320
+Favorites    2
+Replies      1
+Source       Twitter for iPhone
+URL          https://twitter.com/sferik/status/55709764298092551
+        eos
+      end
+      context "with no city" do
+        before do
+          stub_get("/1.1/statuses/show/55709764298092545.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status_no_place.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_request(:get, "http://maps.google.com/maps/geo").with(:query => {:key => "REPLACE_WITH_YOUR_GOOGLE_KEY", :ll => "37.75963095,-122.410067", :oe => "utf-8", :output => "xml"}).to_return(:body => fixture("geo_no_city.kml"), :headers => {:content_type => "text/xml; charset=UTF-8"})
+        end
+        it "should have the correct output" do
+          @cli.status("55709764298092545")
+          expect($stdout.string).to eq <<-eos
+ID           55709764298092551
+Text         The problem with your code is that it's doing exactly what you told it to do.
+Screen name  @sferik
+Posted at    Apr  6  2011 (8 months ago)
+Location     CA, USA
+Retweets     320
+Favorites    2
+Replies      1
+Source       Twitter for iPhone
+URL          https://twitter.com/sferik/status/55709764298092551
+          eos
+        end
+      end
+      context "with no state" do
+        before do
+          stub_get("/1.1/statuses/show/55709764298092545.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status_no_place.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_request(:get, "http://maps.google.com/maps/geo").with(:query => {:key => "REPLACE_WITH_YOUR_GOOGLE_KEY", :ll => "37.75963095,-122.410067", :oe => "utf-8", :output => "xml"}).to_return(:body => fixture("geo_no_state.kml"), :headers => {:content_type => "text/xml; charset=UTF-8"})
+        end
+        it "should have the correct output" do
+          @cli.status("55709764298092545")
+          expect($stdout.string).to eq <<-eos
+ID           55709764298092551
+Text         The problem with your code is that it's doing exactly what you told it to do.
+Screen name  @sferik
+Posted at    Apr  6  2011 (8 months ago)
+Location     USA
+Retweets     320
+Favorites    2
+Replies      1
+Source       Twitter for iPhone
+URL          https://twitter.com/sferik/status/55709764298092551
+          eos
+        end
+      end
+    end
   end
 
   describe "#timeline" do

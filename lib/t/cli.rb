@@ -1,4 +1,5 @@
 # encoding: utf-8
+require 'forwardable'
 require 'oauth'
 require 'thor'
 require 'twitter'
@@ -15,6 +16,7 @@ require 't/utils'
 
 module T
   class CLI < Thor
+    extend Forwardable
     include T::Collectable
     include T::Printable
     include T::Requestable
@@ -480,9 +482,7 @@ module T
     end
 
     desc "matrix", "Unfortunately, no one can be told what the Matrix is. You have to see it for yourself."
-    def matrix
-      T::Stream.new.matrix
-    end
+    def_delegator :"T::Stream.new", :matrix
 
     desc "mentions", "Returns the #{DEFAULT_NUM_RESULTS} most recent Tweets mentioning you."
     method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."

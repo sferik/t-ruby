@@ -261,6 +261,24 @@ ID                  Posted at     Screen name       Text
         end
       end
     end
+    context "--decode_urls" do
+      before(:each) do
+        stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :rpp => 20}).to_return(:body => fixture("search_with_identities.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :rpp => 5, :max_id => 264784855672442882}).to_return(:body => fixture("search_with_identities.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :include_entities => 1, :rpp => 20}).to_return(:body => fixture("search_with_identities.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :include_entities => 1, :rpp => 5, :max_id => 264784855672442882}).to_return(:body => fixture("search_with_identities.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should not decode urls without given the explicit option" do
+        @search.all("twitter")
+        expect($stdout.string).to include("http://t.co/fwZfnEaA")
+      end
+      it "should decode the urls correctly" do
+        @search.options = @search.options.merge("decode_urls" => true)
+        @search.all("twitter")
+        expect($stdout.string).to include("http://semver.org")
+      end
+    end
+
   end
 
   describe "#favorites" do

@@ -95,6 +95,12 @@ module T
       "#{count || 0} " + ((count == 1 || count =~ /^1(\.0+)?$/) ? singular : (plural || "#{singular}s"))
     end
 
+    def decode_full_text(tweet, decode_full_urls = false)
+      text = HTMLEntities.new.decode(tweet.full_text)
+      text = decode_urls(text, tweet.urls) if decode_full_urls
+      text
+    end
+
     def decode_urls(full_text, url_entities)
       return full_text if url_entities.nil?
 

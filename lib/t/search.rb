@@ -46,18 +46,18 @@ module T
         require 'fastercsv' unless Array.new.respond_to?(:to_csv)
         say TWEET_HEADINGS.to_csv unless tweets.empty?
         tweets.each do |tweet|
-          say [tweet.id, csv_formatted_time(tweet), tweet.from_user, HTMLEntities.new.decode(tweet.full_text)].to_csv
+          say [tweet.id, csv_formatted_time(tweet), tweet.from_user, decode_full_text(tweet)].to_csv
         end
       elsif options['long']
         array = tweets.map do |tweet|
-          [tweet.id, ls_formatted_time(tweet), "@#{tweet.from_user}", HTMLEntities.new.decode(decode_urls(tweet.full_text, options['decode_urls'] ? tweet.urls : nil)).gsub(/\n+/, ' ')]
+          [tweet.id, ls_formatted_time(tweet), "@#{tweet.from_user}", decode_full_text(tweet, options['decode_urls']).gsub(/\n+/, ' ')]
         end
         format = options['format'] || TWEET_HEADINGS.size.times.map{"%s"}
         print_table_with_headings(array, TWEET_HEADINGS, format)
       else
         say unless tweets.empty?
         tweets.each do |tweet|
-          print_message(tweet.from_user, decode_urls(tweet.full_text, options['decode_urls'] ? tweet.urls : nil))
+          print_message(tweet.from_user, decode_full_text(tweet, options['decode_urls']))
         end
       end
     end

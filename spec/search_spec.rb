@@ -341,7 +341,6 @@ ID                  Posted at     Screen name  Text
       it "should decode the urls correctly" do
         @search.options = @search.options.merge("decode_urls" => true)
         @search.favorites("twitter")
-        puts $stdout.string
         expect($stdout.string).to include("https://twitter.com/sferik/status/243988000076337152")
       end
     end
@@ -449,6 +448,21 @@ ID                  Posted at     Screen name  Text
 244102209942458368  Sep  7 07:57  @sferik      @episod @twitterapi now https:...
 244100411563339777  Sep  7 07:50  @sferik      @episod @twitterapi Did you ca...
         eos
+      end
+    end
+    context "--decode_urls" do
+      before(:each) do
+        stub_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => "200", :include_entities => 1}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => "200", :include_entities => 1, :max_id => "244099460672679937"}).to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should not decode urls without given the explicit option" do
+        @search.mentions("twitter")
+        expect($stdout.string).to include("https://t.co/I17jUTu2")
+      end
+      it "should decode the urls correctly" do
+        @search.options = @search.options.merge("decode_urls" => true)
+        @search.mentions("twitter")
+        expect($stdout.string).to include("https://twitter.com/sferik/status/243988000076337152")
       end
     end
     context "Twitter is down" do

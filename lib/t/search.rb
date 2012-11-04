@@ -116,8 +116,10 @@ module T
     desc "mentions QUERY", "Returns Tweets mentioning you that match the specified query."
     method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
+    method_option "decode_urls", :aliases => "-d", :type => :boolean, :default => false, :desc => "Decodes t.co URLs into their original form."
     def mentions(query)
       opts = {:count => MAX_NUM_RESULTS}
+      opts[:include_entities] = 1 if options['decode_urls']
       tweets = collect_with_max_id do |max_id|
         opts[:max_id] = max_id unless max_id.nil?
         client.mentions(opts)

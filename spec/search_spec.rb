@@ -524,6 +524,21 @@ ID                  Posted at     Screen name  Text
         eos
       end
     end
+    context "--decode_urls" do
+      before(:each) do
+        stub_get("/1.1/lists/statuses.json").with(:query => {:count => "200", :include_entities => 1, :owner_screen_name => "testcli", :slug => "presidents"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/lists/statuses.json").with(:query => {:count => "200", :include_entities => 1, :max_id => "244099460672679937", :owner_screen_name => "testcli", :slug => "presidents"}).to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should not decode urls without given the explicit option" do
+        @search.list("presidents", "twitter")
+        expect($stdout.string).to include("https://t.co/I17jUTu2")
+      end
+      it "should decode the urls correctly" do
+        @search.options = @search.options.merge("decode_urls" => true)
+        @search.list("presidents", "twitter")
+        expect($stdout.string).to include("https://dev.twitter.com/docs/api/post/direct_messages/destroy")
+      end
+    end
     context "with a user passed" do
       it "should request the correct resource" do
         @search.list("testcli/presidents", "twitter")

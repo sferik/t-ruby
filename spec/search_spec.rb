@@ -263,10 +263,10 @@ ID                  Posted at     Screen name       Text
     end
     context "--decode_urls" do
       before(:each) do
-        stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :rpp => 20}).to_return(:body => fixture("search_with_identities.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :rpp => 5, :max_id => 264784855672442882}).to_return(:body => fixture("search_with_identities.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :include_entities => 1, :rpp => 20}).to_return(:body => fixture("search_with_identities.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :include_entities => 1, :rpp => 5, :max_id => 264784855672442882}).to_return(:body => fixture("search_with_identities.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :rpp => 20}).to_return(:body => fixture("search_with_entities.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :rpp => 5, :max_id => 264784855672442882}).to_return(:body => fixture("search_with_entities.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :include_entities => 1, :rpp => 20}).to_return(:body => fixture("search_with_entities.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :include_entities => 1, :rpp => 5, :max_id => 264784855672442882}).to_return(:body => fixture("search_with_entities.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should not decode urls without given the explicit option" do
         @search.all("twitter")

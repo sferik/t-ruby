@@ -329,6 +329,22 @@ ID                  Posted at     Screen name  Text
         eos
       end
     end
+    context "--decode_urls" do
+      before(:each) do
+        stub_get("/1.1/favorites/list.json").with(:query => {:count => "200", :include_entities => 1}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/favorites/list.json").with(:query => {:count => "200", :include_entities => 1, :max_id => "244099460672679937"}).to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should not decode urls without given the explicit option" do
+        @search.favorites("twitter")
+        expect($stdout.string).to include("https://t.co/I17jUTu2")
+      end
+      it "should decode the urls correctly" do
+        @search.options = @search.options.merge("decode_urls" => true)
+        @search.favorites("twitter")
+        puts $stdout.string
+        expect($stdout.string).to include("https://twitter.com/sferik/status/243988000076337152")
+      end
+    end
     context "Twitter is down" do
       it "should retry 3 times and then raise an error" do
         stub_get("/1.1/favorites/list.json").with(:query => {:count => "200"}).to_return(:status => 502)

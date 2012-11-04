@@ -595,6 +595,17 @@ ID                  Posted at     Screen name   Text
         eos
       end
     end
+    context "--decode_urls" do
+      it "should not decode urls without given the explicit option" do
+        @search.retweets("mosaic")
+        expect($stdout.string).to include("http://t.co/A8013C9k")
+      end
+      it "should decode the urls correctly" do
+        @search.options = @search.options.merge("decode_urls" => true)
+        @search.retweets("mosaic")
+        expect($stdout.string).to include("http://heymosaic.com/i/1Z8ssK")
+      end
+    end
     context "Twitter is down" do
       it "should retry 3 times and then raise an error" do
         stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true"}).to_return(:status => 502)

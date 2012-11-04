@@ -135,10 +135,12 @@ module T
     method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     method_option "id", :aliases => "-i", :type => :boolean, :default => false, :desc => "Specify user via ID instead of screen name."
     method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
+    method_option "decode_urls", :aliases => "-d", :type => :boolean, :default => false, :desc => "Decodes t.co URLs into their original form."
     def retweets(*args)
       opts = {:count => MAX_NUM_RESULTS}
       query = args.pop
       user = args.pop
+      opts[:include_entities] = 1 if options['decode_urls']
       if user
         require 't/core_ext/string'
         user = if options['id']

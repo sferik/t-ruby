@@ -13,7 +13,7 @@ module T
 
     def build_long_tweet(tweet)
       require 'htmlentities'
-      [tweet.id, ls_formatted_time(tweet), "@#{tweet.from_user}", HTMLEntities.new.decode(tweet.full_text).gsub(/\n+/, ' ')]
+      [tweet.id, ls_formatted_time(tweet), "@#{tweet.from_user}", decode_full_text(tweet, options['decode_urls']).gsub(/\n+/, ' ')]
     end
 
     def build_long_user(user)
@@ -46,7 +46,7 @@ module T
       require 'csv'
       require 'fastercsv' unless Array.new.respond_to?(:to_csv)
       require 'htmlentities'
-      say [tweet.id, csv_formatted_time(tweet), tweet.from_user, HTMLEntities.new.decode(tweet.full_text)].to_csv
+      say [tweet.id, csv_formatted_time(tweet), tweet.from_user, decode_full_text(tweet)].to_csv
     end
 
     def print_csv_user(user)
@@ -141,7 +141,7 @@ module T
         print_table_with_headings(array, TWEET_HEADINGS, format)
       else
         tweets.each do |tweet|
-          print_message(tweet.user.screen_name, tweet.full_text)
+          print_message(tweet.user.screen_name, decode_urls(tweet.full_text, options['decode_urls'] ? tweet.urls : nil))
         end
       end
     end

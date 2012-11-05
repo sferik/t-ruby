@@ -5,6 +5,7 @@ require 't/rcfile'
 module T
   class Stream < Thor
     include T::Printable
+    include T::Utils
 
     TWEET_HEADINGS_FORMATTING = [
       "%-18s",  # Add padding to maximum length of a Tweet ID

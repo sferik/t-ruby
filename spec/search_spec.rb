@@ -261,6 +261,24 @@ ID                  Posted at     Screen name       Text
         end
       end
     end
+    context "--decode_urls" do
+      before(:each) do
+        stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :rpp => 20}).to_return(:body => fixture("search_with_entities.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :rpp => 5, :max_id => 264784855672442882}).to_return(:body => fixture("search_with_entities.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :include_entities => 1, :rpp => 20}).to_return(:body => fixture("search_with_entities.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :include_entities => 1, :rpp => 5, :max_id => 264784855672442882}).to_return(:body => fixture("search_with_entities.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should not decode urls without given the explicit option" do
+        @search.all("twitter")
+        expect($stdout.string).to include("http://t.co/fwZfnEaA")
+      end
+      it "should decode the urls correctly" do
+        @search.options = @search.options.merge("decode_urls" => true)
+        @search.all("twitter")
+        expect($stdout.string).to include("http://semver.org")
+      end
+    end
+
   end
 
   describe "#favorites" do
@@ -309,6 +327,21 @@ ID                  Posted at     Screen name  Text
 244102209942458368  Sep  7 07:57  @sferik      @episod @twitterapi now https:...
 244100411563339777  Sep  7 07:50  @sferik      @episod @twitterapi Did you ca...
         eos
+      end
+    end
+    context "--decode_urls" do
+      before(:each) do
+        stub_get("/1.1/favorites/list.json").with(:query => {:count => "200", :include_entities => 1}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/favorites/list.json").with(:query => {:count => "200", :include_entities => 1, :max_id => "244099460672679937"}).to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should not decode urls without given the explicit option" do
+        @search.favorites("twitter")
+        expect($stdout.string).to include("https://t.co/I17jUTu2")
+      end
+      it "should decode the urls correctly" do
+        @search.options = @search.options.merge("decode_urls" => true)
+        @search.favorites("twitter")
+        expect($stdout.string).to include("https://twitter.com/sferik/status/243988000076337152")
       end
     end
     context "Twitter is down" do
@@ -417,6 +450,21 @@ ID                  Posted at     Screen name  Text
         eos
       end
     end
+    context "--decode_urls" do
+      before(:each) do
+        stub_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => "200", :include_entities => 1}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => "200", :include_entities => 1, :max_id => "244099460672679937"}).to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should not decode urls without given the explicit option" do
+        @search.mentions("twitter")
+        expect($stdout.string).to include("https://t.co/I17jUTu2")
+      end
+      it "should decode the urls correctly" do
+        @search.options = @search.options.merge("decode_urls" => true)
+        @search.mentions("twitter")
+        expect($stdout.string).to include("https://twitter.com/sferik/status/243988000076337152")
+      end
+    end
     context "Twitter is down" do
       it "should retry 3 times and then raise an error" do
         stub_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => "200"}).to_return(:status => 502)
@@ -474,6 +522,21 @@ ID                  Posted at     Screen name  Text
 244102209942458368  Sep  7 07:57  @sferik      @episod @twitterapi now https:...
 244100411563339777  Sep  7 07:50  @sferik      @episod @twitterapi Did you ca...
         eos
+      end
+    end
+    context "--decode_urls" do
+      before(:each) do
+        stub_get("/1.1/lists/statuses.json").with(:query => {:count => "200", :include_entities => 1, :owner_screen_name => "testcli", :slug => "presidents"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/lists/statuses.json").with(:query => {:count => "200", :include_entities => 1, :max_id => "244099460672679937", :owner_screen_name => "testcli", :slug => "presidents"}).to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should not decode urls without given the explicit option" do
+        @search.list("presidents", "twitter")
+        expect($stdout.string).to include("https://t.co/I17jUTu2")
+      end
+      it "should decode the urls correctly" do
+        @search.options = @search.options.merge("decode_urls" => true)
+        @search.list("presidents", "twitter")
+        expect($stdout.string).to include("https://dev.twitter.com/docs/api/post/direct_messages/destroy")
       end
     end
     context "with a user passed" do
@@ -545,6 +608,21 @@ ID,Posted at,Screen name,Text
 ID                  Posted at     Screen name   Text
 244108728834592770  Sep  7 08:23  @calebelston  RT @olivercameron: Mosaic loo...
         eos
+      end
+    end
+    context "--decode_urls" do
+      before(:each) do
+        stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_entities => 1, :include_rts => "true"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_entities => 1, :include_rts => "true", :max_id => "244102729860009983"}).to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should not decode urls without given the explicit option" do
+        @search.retweets("mosaic")
+        expect($stdout.string).to include("http://t.co/A8013C9k")
+      end
+      it "should decode the urls correctly" do
+        @search.options = @search.options.merge("decode_urls" => true)
+        @search.retweets("mosaic")
+        expect($stdout.string).to include("http://heymosaic.com/i/1Z8ssK")
       end
     end
     context "Twitter is down" do
@@ -667,6 +745,21 @@ ID                  Posted at     Screen name  Text
 244102209942458368  Sep  7 07:57  @sferik      @episod @twitterapi now https:...
 244100411563339777  Sep  7 07:50  @sferik      @episod @twitterapi Did you ca...
         eos
+      end
+    end
+    context "--decode_urls" do
+      before(:each) do
+        stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200", :include_entities => 1}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200", :max_id => "244099460672679937", :include_entities => 1}).to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "should not decode urls without given the explicit option" do
+        @search.timeline("twitter")
+        expect($stdout.string).to include("https://t.co/I17jUTu2")
+      end
+      it "should decode the urls correctly" do
+        @search.options = @search.options.merge("decode_urls" => true)
+        @search.timeline("twitter")
+        expect($stdout.string).to include("https://dev.twitter.com/docs/api/post/direct_messages/destroy")
       end
     end
     context "Twitter is down" do

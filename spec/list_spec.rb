@@ -493,25 +493,19 @@ ID                   Posted at     Screen name       Text
     context "--number" do
       before do
         stub_get("/1.1/lists/statuses.json").with(:query => {:owner_screen_name => "testcli", :per_page => "1", :slug => "presidents"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/lists/statuses.json").with(:query => {:owner_screen_name => "testcli", :per_page => "200", :slug => "presidents"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/lists/statuses.json").with(:query => {:owner_screen_name => "testcli", :per_page => "200", :max_id => "244099460672679937", :slug => "presidents"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        (5..185).step(20).to_a.reverse.each do |count|
-          stub_get("/1.1/lists/statuses.json").with(:query => {:owner_screen_name => "testcli", :per_page => count, :max_id => "244099460672679937", :slug => "presidents"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        end
+        stub_get("/1.1/lists/statuses.json").with(:query => {:owner_screen_name => "testcli", :per_page => "200", :slug => "presidents"}).to_return(:body => fixture("200_statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/lists/statuses.json").with(:query => {:owner_screen_name => "testcli", :per_page => "1", :max_id => "265500541700956160", :slug => "presidents"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should limit the number of results to 1" do
         @list.options = @list.options.merge("number" => 1)
         @list.timeline("presidents")
         expect(a_get("/1.1/lists/statuses.json").with(:query => {:owner_screen_name => "testcli", :per_page => "1", :slug => "presidents"})).to have_been_made
       end
-      it "should limit the number of results to 345" do
-        @list.options = @list.options.merge("number" => 345)
+      it "should limit the number of results to 201" do
+        @list.options = @list.options.merge("number" => 201)
         @list.timeline("presidents")
         expect(a_get("/1.1/lists/statuses.json").with(:query => {:owner_screen_name => "testcli", :per_page => "200", :slug => "presidents"})).to have_been_made
-        expect(a_get("/1.1/lists/statuses.json").with(:query => {:owner_screen_name => "testcli", :per_page => "200", :max_id => "244099460672679937", :slug => "presidents"})).to have_been_made.times(7)
-        (5..185).step(20).to_a.reverse.each do |count|
-          expect(a_get("/1.1/lists/statuses.json").with(:query => {:owner_screen_name => "testcli", :per_page => count, :max_id => "244099460672679937", :slug => "presidents"})).to have_been_made
-        end
+        expect(a_get("/1.1/lists/statuses.json").with(:query => {:owner_screen_name => "testcli", :per_page => "1", :max_id => "265500541700956160", :slug => "presidents"})).to have_been_made
       end
     end
     context "with a user passed" do

@@ -148,7 +148,7 @@ testcli
   describe "#direct_messages" do
     before do
       stub_get("/1.1/direct_messages.json").with(:query => {:count => "20"}).to_return(:body => fixture("direct_messages.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_get("/1.1/direct_messages.json").with(:query => {:count => "10", "max_id"=>"1624782205"}).to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/direct_messages.json").with(:query => {:count => "10", "max_id" => "1624782205"}).to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @cli.direct_messages
@@ -240,25 +240,19 @@ ID          Posted at     Screen name  Text
     context "--number" do
       before do
         stub_get("/1.1/direct_messages.json").with(:query => {:count => "1"}).to_return(:body => fixture("direct_messages.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/direct_messages.json").with(:query => {:count => "200"}).to_return(:body => fixture("direct_messages.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/direct_messages.json").with(:query => {:count => "200", :max_id => "1624782205"}).to_return(:body => fixture("direct_messages.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        (5..195).step(10).to_a.reverse.each do |count|
-          stub_get("/1.1/direct_messages.json").with(:query => {:count => count, :max_id => "1624782205"}).to_return(:body => fixture("direct_messages.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        end
+        stub_get("/1.1/direct_messages.json").with(:query => {:count => "200"}).to_return(:body => fixture("200_direct_messages.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/direct_messages.json").with(:query => {:count => "1", :max_id => "235851563443306495"}).to_return(:body => fixture("direct_messages.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should limit the number of results to 1" do
         @cli.options = @cli.options.merge("number" => 1)
         @cli.direct_messages
         expect(a_get("/1.1/direct_messages.json").with(:query => {:count => "1"})).to have_been_made
       end
-      it "should limit the number of results to 345" do
-        @cli.options = @cli.options.merge("number" => 345)
+      it "should limit the number of results to 201" do
+        @cli.options = @cli.options.merge("number" => 201)
         @cli.direct_messages
         expect(a_get("/1.1/direct_messages.json").with(:query => {:count => "200"})).to have_been_made
-        expect(a_get("/1.1/direct_messages.json").with(:query => {:count => "200", :max_id => "1624782205"})).to have_been_made.times(14)
-        (5..195).step(10).to_a.reverse.each do |count|
-          expect(a_get("/1.1/direct_messages.json").with(:query => {:count => count, :max_id => "1624782205"})).to have_been_made
-        end
+        expect(a_get("/1.1/direct_messages.json").with(:query => {:count => "1", :max_id => "235851563443306495"})).to have_been_made
       end
     end
     context "--reverse" do
@@ -312,7 +306,7 @@ ID          Posted at     Screen name  Text
   describe "#direct_messages_sent" do
     before do
       stub_get("/1.1/direct_messages/sent.json").with(:query => {:count => "20"}).to_return(:body => fixture("direct_messages.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_get("/1.1/direct_messages/sent.json").with(:query => {:count => "10", "max_id"=>"1624782205"}).to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/direct_messages/sent.json").with(:query => {:count => "10", "max_id" => "1624782205"}).to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "should request the correct resource" do
       @cli.direct_messages_sent
@@ -404,25 +398,19 @@ ID          Posted at     Screen name  Text
     context "--number" do
       before do
         stub_get("/1.1/direct_messages/sent.json").with(:query => {:count => "1"}).to_return(:body => fixture("direct_messages.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/direct_messages/sent.json").with(:query => {:count => "200"}).to_return(:body => fixture("direct_messages.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/direct_messages/sent.json").with(:query => {:count => "200", :max_id => "1624782205"}).to_return(:body => fixture("direct_messages.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        (5..195).step(10).to_a.reverse.each do |count|
-          stub_get("/1.1/direct_messages/sent.json").with(:query => {:count => count, :max_id => "1624782205"}).to_return(:body => fixture("direct_messages.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        end
+        stub_get("/1.1/direct_messages/sent.json").with(:query => {:count => "200"}).to_return(:body => fixture("200_direct_messages.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/direct_messages/sent.json").with(:query => {:count => "1", :max_id => "235851563443306495"}).to_return(:body => fixture("direct_messages.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should limit the number of results 1" do
         @cli.options = @cli.options.merge("number" => 1)
         @cli.direct_messages_sent
         expect(a_get("/1.1/direct_messages/sent.json").with(:query => {:count => "1"})).to have_been_made
       end
-      it "should limit the number of results to 345" do
-        @cli.options = @cli.options.merge("number" => 345)
+      it "should limit the number of results to 201" do
+        @cli.options = @cli.options.merge("number" => 201)
         @cli.direct_messages_sent
         expect(a_get("/1.1/direct_messages/sent.json").with(:query => {:count => "200"})).to have_been_made
-        expect(a_get("/1.1/direct_messages/sent.json").with(:query => {:count => "200", :max_id => "1624782205"})).to have_been_made.times(14)
-        (5..195).step(10).to_a.reverse.each do |count|
-          expect(a_get("/1.1/direct_messages/sent.json").with(:query => {:count => count, :max_id => "1624782205"})).to have_been_made
-        end
+        expect(a_get("/1.1/direct_messages/sent.json").with(:query => {:count => "1", :max_id => "235851563443306495"})).to have_been_made
       end
     end
     context "--reverse" do
@@ -982,25 +970,19 @@ ID                   Posted at     Screen name       Text
     context "--number" do
       before do
         stub_get("/1.1/favorites/list.json").with(:query => {:count => "1"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/favorites/list.json").with(:query => {:count => "200"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/favorites/list.json").with(:query => {:count => "200", :max_id => "244099460672679937"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        (5..185).step(20).to_a.reverse.each do |count|
-          stub_get("/1.1/favorites/list.json").with(:query => {:count => count, :max_id => "244099460672679937"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        end
+        stub_get("/1.1/favorites/list.json").with(:query => {:count => "200"}).to_return(:body => fixture("200_statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/favorites/list.json").with(:query => {:count => "1", :max_id => "265500541700956160"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should limit the number of results to 1" do
         @cli.options = @cli.options.merge("number" => 1)
         @cli.favorites
         expect(a_get("/1.1/favorites/list.json").with(:query => {:count => "1"})).to have_been_made
       end
-      it "should limit the number of results to 345" do
-        @cli.options = @cli.options.merge("number" => 345)
+      it "should limit the number of results to 201" do
+        @cli.options = @cli.options.merge("number" => 201)
         @cli.favorites
         expect(a_get("/1.1/favorites/list.json").with(:query => {:count => "200"})).to have_been_made
-        expect(a_get("/1.1/favorites/list.json").with(:query => {:count => "200", :max_id => "244099460672679937"})).to have_been_made.times(7)
-        (5..185).step(20).to_a.reverse.each do |count|
-          expect(a_get("/1.1/favorites/list.json").with(:query => {:count => count, :max_id => "244099460672679937"})).to have_been_made
-        end
+        expect(a_get("/1.1/favorites/list.json").with(:query => {:count => "1", :max_id => "265500541700956160"})).to have_been_made
       end
     end
     context "with a user passed" do
@@ -1962,25 +1944,19 @@ ID                   Posted at     Screen name       Text
     context "--number" do
       before do
         stub_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => "1"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => "200"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => "200", :max_id => "244099460672679937"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        (5..185).step(20).to_a.reverse.each do |count|
-          stub_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => count, :max_id => "244099460672679937"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        end
+        stub_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => "200"}).to_return(:body => fixture("200_statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => "1", :max_id => "265500541700956160"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should limit the number of results to 1" do
         @cli.options = @cli.options.merge("number" => 1)
         @cli.mentions
         expect(a_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => "1"})).to have_been_made
       end
-      it "should limit the number of results to 345" do
-        @cli.options = @cli.options.merge("number" => 345)
+      it "should limit the number of results to 201" do
+        @cli.options = @cli.options.merge("number" => 201)
         @cli.mentions
         expect(a_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => "200"})).to have_been_made
-        expect(a_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => "200", :max_id => "244099460672679937"})).to have_been_made.times(7)
-        (5..185).step(20).to_a.reverse.each do |count|
-          expect(a_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => count, :max_id => "244099460672679937"})).to have_been_made
-        end
+        expect(a_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => "1", :max_id => "265500541700956160"})).to have_been_made
       end
     end
   end
@@ -2299,8 +2275,8 @@ ID                  Posted at     Screen name      Text
         @cli.retweets
         expect(a_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true"})).to have_been_made
       end
-      it "should limit the number of results to 345" do
-        @cli.options = @cli.options.merge("number" => 345)
+      it "should limit the number of results to 201" do
+        @cli.options = @cli.options.merge("number" => 201)
         @cli.retweets
         expect(a_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true"})).to have_been_made
         expect(a_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true", :max_id => "244107823733174271"})).to have_been_made
@@ -2757,25 +2733,19 @@ ID                   Posted at     Screen name       Text
     context "--number" do
       before do
         stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "1"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200", :max_id => "244099460672679937"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        (5..185).step(20).to_a.reverse.each do |count|
-          stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => count, :max_id => "244099460672679937"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        end
+        stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200"}).to_return(:body => fixture("200_statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "1", :max_id => "265500541700956160"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "should limit the number of results to 1" do
         @cli.options = @cli.options.merge("number" => 1)
         @cli.timeline
         expect(a_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "1"})).to have_been_made
       end
-      it "should limit the number of results to 345" do
-        @cli.options = @cli.options.merge("number" => 345)
+      it "should limit the number of results to 201" do
+        @cli.options = @cli.options.merge("number" => 201)
         @cli.timeline
         expect(a_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200"})).to have_been_made
-        expect(a_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200", :max_id => "244099460672679937"})).to have_been_made.times(7)
-        (5..185).step(20).to_a.reverse.each do |count|
-          expect(a_get("/1.1/statuses/home_timeline.json").with(:query => {:count => count, :max_id => "244099460672679937"})).to have_been_made
-        end
+        expect(a_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "1", :max_id => "265500541700956160"})).to have_been_made
       end
     end
     context "with a user passed" do
@@ -2799,25 +2769,19 @@ ID                   Posted at     Screen name       Text
       context "--number" do
         before do
           stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "1", :screen_name => "sferik"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-          stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :screen_name => "sferik"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-          stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :screen_name => "sferik", :max_id => "244099460672679937"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-          (5..185).step(20).to_a.reverse.each do |count|
-            stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => count, :screen_name => "sferik", :max_id => "244099460672679937"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-          end
+          stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :screen_name => "sferik"}).to_return(:body => fixture("200_statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "1", :screen_name => "sferik", :max_id => "265500541700956160"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         end
         it "should limit the number of results to 1" do
           @cli.options = @cli.options.merge("number" => 1)
           @cli.timeline("sferik")
           expect(a_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "1", :screen_name => "sferik"})).to have_been_made
         end
-        it "should limit the number of results to 345" do
-          @cli.options = @cli.options.merge("number" => 345)
+        it "should limit the number of results to 201" do
+          @cli.options = @cli.options.merge("number" => 201)
           @cli.timeline("sferik")
           expect(a_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :screen_name => "sferik"})).to have_been_made
-          expect(a_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :screen_name => "sferik", :max_id => "244099460672679937"})).to have_been_made.times(7)
-          (5..185).step(20).to_a.reverse.each do |count|
-            expect(a_get("/1.1/statuses/user_timeline.json").with(:query => {:count => count, :screen_name => "sferik", :max_id => "244099460672679937"})).to have_been_made
-          end
+          expect(a_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "1", :screen_name => "sferik", :max_id => "265500541700956160"})).to have_been_made
         end
       end
     end

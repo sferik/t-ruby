@@ -683,12 +683,12 @@ ID                  Posted at     Screen name       Text
       end
       it "should not decode urls without given the explicit option" do
         @search.all("twitter")
-        expect($stdout.string).to include("http://t.co/fwZfnEaA")
+        expect($stdout.string).to include "http://t.co/fwZfnEaA"
       end
       it "should decode the urls correctly" do
         @search.options = @search.options.merge("decode_urls" => true)
         @search.all("twitter")
-        expect($stdout.string).to include("http://semver.org")
+        expect($stdout.string).to include "http://semver.org"
       end
     end
 
@@ -749,12 +749,12 @@ ID                  Posted at     Screen name  Text
       end
       it "should not decode urls without given the explicit option" do
         @search.favorites("twitter")
-        expect($stdout.string).to include("https://t.co/I17jUTu2")
+        expect($stdout.string).to include "https://t.co/I17jUTu2"
       end
       it "should decode the urls correctly" do
         @search.options = @search.options.merge("decode_urls" => true)
         @search.favorites("twitter")
-        expect($stdout.string).to include("https://twitter.com/sferik/status/243988000076337152")
+        expect($stdout.string).to include "https://twitter.com/sferik/status/243988000076337152"
       end
     end
     context "Twitter is down" do
@@ -870,12 +870,12 @@ ID                  Posted at     Screen name  Text
       end
       it "should not decode urls without given the explicit option" do
         @search.mentions("twitter")
-        expect($stdout.string).to include("https://t.co/I17jUTu2")
+        expect($stdout.string).to include "https://t.co/I17jUTu2"
       end
       it "should decode the urls correctly" do
         @search.options = @search.options.merge("decode_urls" => true)
         @search.mentions("twitter")
-        expect($stdout.string).to include("https://twitter.com/sferik/status/243988000076337152")
+        expect($stdout.string).to include "https://twitter.com/sferik/status/243988000076337152"
       end
     end
     context "Twitter is down" do
@@ -944,12 +944,12 @@ ID                  Posted at     Screen name  Text
       end
       it "should not decode urls without given the explicit option" do
         @search.list("presidents", "twitter")
-        expect($stdout.string).to include("https://t.co/I17jUTu2")
+        expect($stdout.string).to include "https://t.co/I17jUTu2"
       end
       it "should decode the urls correctly" do
         @search.options = @search.options.merge("decode_urls" => true)
         @search.list("presidents", "twitter")
-        expect($stdout.string).to include("https://dev.twitter.com/docs/api/post/direct_messages/destroy")
+        expect($stdout.string).to include "https://dev.twitter.com/docs/api/post/direct_messages/destroy"
       end
     end
     context "with a user passed" do
@@ -1030,12 +1030,12 @@ ID                  Posted at     Screen name   Text
       end
       it "should not decode urls without given the explicit option" do
         @search.retweets("mosaic")
-        expect($stdout.string).to include("http://t.co/A8013C9k")
+        expect($stdout.string).to include "http://t.co/A8013C9k"
       end
       it "should decode the urls correctly" do
         @search.options = @search.options.merge("decode_urls" => true)
         @search.retweets("mosaic")
-        expect($stdout.string).to include("http://heymosaic.com/i/1Z8ssK")
+        expect($stdout.string).to include "http://heymosaic.com/i/1Z8ssK"
       end
     end
     context "Twitter is down" do
@@ -1167,12 +1167,12 @@ ID                  Posted at     Screen name  Text
       end
       it "should not decode urls without given the explicit option" do
         @search.timeline("twitter")
-        expect($stdout.string).to include("https://t.co/I17jUTu2")
+        expect($stdout.string).to include "https://t.co/I17jUTu2"
       end
       it "should decode the urls correctly" do
         @search.options = @search.options.merge("decode_urls" => true)
         @search.timeline("twitter")
-        expect($stdout.string).to include("https://dev.twitter.com/docs/api/post/direct_messages/destroy")
+        expect($stdout.string).to include "https://dev.twitter.com/docs/api/post/direct_messages/destroy"
       end
     end
     context "Twitter is down" do

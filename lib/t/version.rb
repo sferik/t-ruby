@@ -8,7 +8,7 @@ module T
 
     # @return [Integer]
     def self.minor
-      4
+      5
     end
 
     # @return [Integer]

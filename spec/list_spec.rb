@@ -311,11 +311,11 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
 
   describe "#timeline" do
     before do
-      stub_get("/1.1/lists/statuses.json").with(:query => {:owner_screen_name => "testcli", :per_page => "20", :slug => "presidents"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/lists/statuses.json").with(:query => {:owner_screen_name => "testcli", :count => "20", :slug => "presidents"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "requests the correct resource" do
       @list.timeline("presidents")
-      expect(a_get("/1.1/lists/statuses.json").with(:query => {:owner_screen_name => "testcli", :per_page => "20", :slug => "presidents"})).to have_been_made
+      expect(a_get("/1.1/lists/statuses.json").with(:query => {:owner_screen_name => "testcli", :count => "20", :slug => "presidents"})).to have_been_made
     end
     it "has the correct output" do
       @list.timeline("presidents")
@@ -492,35 +492,35 @@ ID                   Posted at     Screen name       Text
     end
     context "--number" do
       before do
-        stub_get("/1.1/lists/statuses.json").with(:query => {:owner_screen_name => "testcli", :per_page => "1", :slug => "presidents"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/lists/statuses.json").with(:query => {:owner_screen_name => "testcli", :per_page => "200", :slug => "presidents"}).to_return(:body => fixture("200_statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/lists/statuses.json").with(:query => {:owner_screen_name => "testcli", :per_page => "1", :max_id => "265500541700956160", :slug => "presidents"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/lists/statuses.json").with(:query => {:owner_screen_name => "testcli", :count => "1", :slug => "presidents"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/lists/statuses.json").with(:query => {:owner_screen_name => "testcli", :count => "200", :slug => "presidents"}).to_return(:body => fixture("200_statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/lists/statuses.json").with(:query => {:owner_screen_name => "testcli", :count => "1", :max_id => "265500541700956160", :slug => "presidents"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "limits the number of results to 1" do
         @list.options = @list.options.merge("number" => 1)
         @list.timeline("presidents")
-        expect(a_get("/1.1/lists/statuses.json").with(:query => {:owner_screen_name => "testcli", :per_page => "1", :slug => "presidents"})).to have_been_made
+        expect(a_get("/1.1/lists/statuses.json").with(:query => {:owner_screen_name => "testcli", :count => "1", :slug => "presidents"})).to have_been_made
       end
       it "limits the number of results to 201" do
         @list.options = @list.options.merge("number" => 201)
         @list.timeline("presidents")
-        expect(a_get("/1.1/lists/statuses.json").with(:query => {:owner_screen_name => "testcli", :per_page => "200", :slug => "presidents"})).to have_been_made
-        expect(a_get("/1.1/lists/statuses.json").with(:query => {:owner_screen_name => "testcli", :per_page => "1", :max_id => "265500541700956160", :slug => "presidents"})).to have_been_made
+        expect(a_get("/1.1/lists/statuses.json").with(:query => {:owner_screen_name => "testcli", :count => "200", :slug => "presidents"})).to have_been_made
+        expect(a_get("/1.1/lists/statuses.json").with(:query => {:owner_screen_name => "testcli", :count => "1", :max_id => "265500541700956160", :slug => "presidents"})).to have_been_made
       end
     end
     context "with a user passed" do
       it "requests the correct resource" do
         @list.timeline("testcli/presidents")
-        expect(a_get("/1.1/lists/statuses.json").with(:query => {:owner_screen_name => "testcli", :per_page => "20", :slug => "presidents"})).to have_been_made
+        expect(a_get("/1.1/lists/statuses.json").with(:query => {:owner_screen_name => "testcli", :count => "20", :slug => "presidents"})).to have_been_made
       end
       context "--id" do
         before do
           @list.options = @list.options.merge("id" => true)
-          stub_get("/1.1/lists/statuses.json").with(:query => {:owner_id => "7505382", :per_page => "20", :slug => "presidents"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1.1/lists/statuses.json").with(:query => {:owner_id => "7505382", :count => "20", :slug => "presidents"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         end
         it "requests the correct resource" do
           @list.timeline("7505382/presidents")
-          expect(a_get("/1.1/lists/statuses.json").with(:query => {:owner_id => "7505382", :per_page => "20", :slug => "presidents"})).to have_been_made
+          expect(a_get("/1.1/lists/statuses.json").with(:query => {:owner_id => "7505382", :count => "20", :slug => "presidents"})).to have_been_made
         end
       end
     end

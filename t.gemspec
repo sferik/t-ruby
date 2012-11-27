@@ -13,6 +13,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'tweetstream', '~> 2.3'
   spec.add_dependency 'twitter', '~> 4.2'
   spec.add_development_dependency 'pry'
+  spec.add_development_dependency 'pry-nav'
   spec.add_development_dependency 'rake'
   spec.add_development_dependency 'rspec'
   spec.add_development_dependency 'simplecov'

@@ -24,7 +24,6 @@ describe T::Stream do
     STDOUT.stub(:tty?).and_return(true)
   end
 
-
 	describe "#all" do
     context "--csv" do
       before :each do
@@ -88,7 +87,7 @@ describe T::Stream do
       @tweetstream_client.should_receive(:sample)
       @stream.all
     end
-	end
+  end
 
   describe "#matrix" do
     before :each do

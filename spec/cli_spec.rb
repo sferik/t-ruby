@@ -2038,11 +2038,11 @@ ID                   Posted at     Screen name       Text
   describe "#report_spam" do
     before do
       @cli.options = @cli.options.merge("profile" => fixture_path + "/.trc")
-      stub_post("/1.1/report_spam.json").with(:body => {:screen_name => "sferik"}).to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_post("/1.1/users/report_spam.json").with(:body => {:screen_name => "sferik"}).to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "requests the correct resource" do
       @cli.report_spam("sferik")
-      expect(a_post("/1.1/report_spam.json").with(:body => {:screen_name => "sferik"})).to have_been_made
+      expect(a_post("/1.1/users/report_spam.json").with(:body => {:screen_name => "sferik"})).to have_been_made
     end
     it "has the correct output" do
       @cli.report_spam("sferik")
@@ -2051,11 +2051,11 @@ ID                   Posted at     Screen name       Text
     context "--id" do
       before do
         @cli.options = @cli.options.merge("id" => true)
-        stub_post("/1.1/report_spam.json").with(:body => {:user_id => "7505382"}).to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_post("/1.1/users/report_spam.json").with(:body => {:user_id => "7505382"}).to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "requests the correct resource" do
         @cli.report_spam("7505382")
-        expect(a_post("/1.1/report_spam.json").with(:body => {:user_id => "7505382"})).to have_been_made
+        expect(a_post("/1.1/users/report_spam.json").with(:body => {:user_id => "7505382"})).to have_been_made
       end
     end
   end

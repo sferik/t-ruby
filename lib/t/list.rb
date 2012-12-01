@@ -120,8 +120,8 @@ module T
     method_option "reverse", :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     def timeline(list)
       owner, list = extract_owner(list, options)
-      per_page = options['number'] || DEFAULT_NUM_RESULTS
-      tweets = collect_with_per_page(per_page) do |opts|
+      count = options['number'] || DEFAULT_NUM_RESULTS
+      tweets = collect_with_count(count) do |opts|
         client.list_timeline(owner, list, opts)
       end
       print_tweets(tweets)

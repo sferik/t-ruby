@@ -34,8 +34,8 @@ module T
     method_option "decode_urls", :aliases => "-d", :type => :boolean, :default => false, :desc => "Decodes t.co URLs into their original form."
     method_option "number", :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS
     def all(query)
-      rpp = options['number'] || DEFAULT_NUM_RESULTS
-      tweets = collect_with_rpp(rpp) do |opts|
+      count = options['number'] || DEFAULT_NUM_RESULTS
+      tweets = collect_with_count(count) do |opts|
         opts[:include_entities] = 1 if options['decode_urls']
         client.search(query, opts).results
       end

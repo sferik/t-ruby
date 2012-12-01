@@ -31,11 +31,11 @@ describe T::Search do
   describe "#all" do
     before do
       @search.options = @search.options.merge("color" => "always")
-      stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :rpp => "20"}).to_return(:body => fixture("search.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :count => "20"}).to_return(:body => fixture("search.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "requests the correct resource" do
       @search.all("twitter")
-      expect(a_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :rpp => "20"})).to have_been_made
+      expect(a_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :count => "20"})).to have_been_made
     end
     it "has the correct output" do
       @search.all("twitter")
@@ -657,30 +657,30 @@ ID                  Posted at     Screen name       Text
     end
     context "--number" do
       before do
-        stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :rpp => "1"}).to_return(:body => fixture("search.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :rpp => "200"}).to_return(:body => fixture("search.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :rpp => "103", :max_id => "267024711169503231"}).to_return(:body => fixture("search.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :rpp => "5", :max_id => "267024711169503231"}).to_return(:body => fixture("search.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :count => "1"}).to_return(:body => fixture("search.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :count => "200"}).to_return(:body => fixture("search.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :count => "103", :max_id => "267024711169503231"}).to_return(:body => fixture("search.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :count => "5", :max_id => "267024711169503231"}).to_return(:body => fixture("search.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "limits the number of results to 1" do
         @search.options = @search.options.merge("number" => 1)
         results = @search.all("twitter")
-        expect(a_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :rpp => "1"})).to have_been_made
+        expect(a_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :count => "1"})).to have_been_made
       end
       it "limits the number of results to 201" do
         @search.options = @search.options.merge("number" => 201)
         @search.all("twitter")
-        expect(a_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :rpp => "200"})).to have_been_made
-        expect(a_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :rpp => "103", :max_id => "267024711169503231"})).to have_been_made
-        expect(a_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :rpp => "5", :max_id => "267024711169503231"})).to have_been_made
+        expect(a_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :count => "200"})).to have_been_made
+        expect(a_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :count => "103", :max_id => "267024711169503231"})).to have_been_made
+        expect(a_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :count => "5", :max_id => "267024711169503231"})).to have_been_made
       end
     end
     context "--decode_urls" do
       before(:each) do
-        stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :rpp => 20}).to_return(:body => fixture("search_with_entities.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :rpp => 5, :max_id => 264784855672442882}).to_return(:body => fixture("search_with_entities.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :include_entities => 1, :rpp => 20}).to_return(:body => fixture("search_with_entities.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :include_entities => 1, :rpp => 5, :max_id => 264784855672442882}).to_return(:body => fixture("search_with_entities.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :count => 20}).to_return(:body => fixture("search_with_entities.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :count => 5, :max_id => 264784855672442882}).to_return(:body => fixture("search_with_entities.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :include_entities => 1, :count => 20}).to_return(:body => fixture("search_with_entities.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :include_entities => 1, :count => 5, :max_id => 264784855672442882}).to_return(:body => fixture("search_with_entities.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "does not decode urls without given the explicit option" do
         @search.all("twitter")

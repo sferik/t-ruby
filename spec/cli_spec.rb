@@ -14,8 +14,9 @@ describe T::CLI do
   end
 
   before :each do
-    T::RCFile.instance.path = fixture_path + "/.trc"
     @cli = T::CLI.new
+    @cli.rcfile.stub(:active_profile => ["testcli", "abc123"])
+    @cli.rcfile.stub(:profiles => {"testcli" => {"abc123" => {}}})
     @old_stderr = $stderr
     $stderr = StringIO.new
     @old_stdout = $stdout
@@ -23,15 +24,11 @@ describe T::CLI do
   end
 
   after :each do
-    T::RCFile.instance.reset
     $stderr = @old_stderr
     $stdout = @old_stdout
   end
 
   describe "#account" do
-    before do
-      @cli.options = @cli.options.merge("profile" => fixture_path + "/.trc")
-    end
     it "has the correct output" do
       @cli.accounts
       expect($stdout.string).to eq <<-eos
@@ -81,7 +78,10 @@ testcli
     end
     context "empty RC file" do
       before do
-        @cli.options = @cli.options.merge("profile" => project_path + "/tmp/empty", "display-url" => true)
+        @rcfile = T::RCFile.instance
+        @rcfile.path = project_path + "/tmp/empty"
+        @cli.stub(:rcfile).and_return(@rcfile)
+        @cli.options = @cli.options.merge("display-url" => true)
       end
       after do
         File.delete(project_path + "/tmp/empty")
@@ -122,7 +122,6 @@ testcli
 
   describe "#block" do
     before do
-      @cli.options = @cli.options.merge("profile" => fixture_path + "/.trc")
       stub_post("/1.1/blocks/create.json").with(:body => {:screen_name => "sferik"}).to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "requests the correct resource" do
@@ -613,7 +612,6 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
 
   describe "#dm" do
     before do
-      @cli.options = @cli.options.merge("profile" => fixture_path + "/.trc")
       stub_post("/1.1/direct_messages/new.json").with(:body => {:screen_name => "pengwynn", :text => "Creating a fixture for the Twitter gem"}).to_return(:body => fixture("direct_message.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "requests the correct resource" do
@@ -638,7 +636,6 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
 
   describe "#does_contain" do
     before do
-      @cli.options = @cli.options.merge("profile" => fixture_path + "/.trc")
       stub_get("/1.1/lists/members/show.json").with(:query => {:owner_screen_name => "testcli", :screen_name => "testcli", :slug => "presidents"}).to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "requests the correct resource" do
@@ -700,7 +697,6 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
 
   describe "#does_follow" do
     before do
-      @cli.options = @cli.options.merge("profile" => fixture_path + "/.trc")
       stub_get("/1.1/friendships/show.json").with(:query => {:source_screen_name => "ev", :target_screen_name => "testcli"}).to_return(:body => fixture("following.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "requests the correct resource" do
@@ -773,7 +769,6 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
 
   describe "#favorite" do
     before do
-      @cli.options = @cli.options.merge("profile" => fixture_path + "/.trc")
       stub_post("/1.1/favorites/create.json").with(:body => {:id => "26755176471724032"}).to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "requests the correct resource" do
@@ -1007,9 +1002,6 @@ ID                   Posted at     Screen name       Text
   end
 
   describe "#follow" do
-    before do
-      @cli.options = @cli.options.merge("profile" => fixture_path + "/.trc")
-    end
     context "one user" do
       before do
         stub_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1"}).to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
@@ -2037,7 +2029,6 @@ ID                   Posted at     Screen name       Text
 
   describe "#report_spam" do
     before do
-      @cli.options = @cli.options.merge("profile" => fixture_path + "/.trc")
       stub_post("/1.1/users/report_spam.json").with(:body => {:screen_name => "sferik"}).to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "requests the correct resource" do
@@ -2062,7 +2053,6 @@ ID                   Posted at     Screen name       Text
 
   describe "#retweet" do
     before do
-      @cli.options = @cli.options.merge("profile" => fixture_path + "/.trc")
       stub_post("/1.1/statuses/retweet/26755176471724032.json").to_return(:body => fixture("retweet.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "requests the correct resource" do
@@ -2929,9 +2919,6 @@ WOEID     Parent ID  Type       Name           Country
   end
 
   describe "#unfollow" do
-    before do
-      @cli.options = @cli.options.merge("profile" => fixture_path + "/.trc")
-    end
     context "one user" do
       it "requests the correct resource" do
         stub_post("/1.1/friendships/destroy.json").with(:body => {:screen_name => "sferik"}).to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})

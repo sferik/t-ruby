@@ -14,6 +14,8 @@ module T
       "%s",     # Last element does not need special formatting
     ]
 
+    attr_reader :rcfile
+
     check_unknown_options!
 
     class_option "host", :aliases => "-H", :type => :string, :default => T::Requestable::DEFAULT_HOST, :desc => "Twitter API server"
@@ -162,12 +164,11 @@ module T
 
     def client
       return @client if @client
-      @rcfile.path = options['profile'] if options['profile']
       @client = TweetStream::Client.new(
-        :consumer_key => @rcfile.active_consumer_key,
-        :consumer_secret => @rcfile.active_consumer_secret,
-        :oauth_token => @rcfile.active_token,
-        :oauth_token_secret => @rcfile.active_secret
+        :consumer_key => rcfile.active_consumer_key,
+        :consumer_secret => rcfile.active_consumer_secret,
+        :oauth_token => rcfile.active_token,
+        :oauth_token_secret => rcfile.active_secret
       )
     end
 

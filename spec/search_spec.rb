@@ -14,8 +14,9 @@ describe T::Search do
   end
 
   before :each do
-    T::RCFile.instance.path = fixture_path + "/.trc"
     @search = T::Search.new
+    @search.rcfile.stub(:active_profile => ["testcli", "abc123"])
+    @search.rcfile.stub(:profiles => {"testcli" => {"abc123" => {}}})
     @old_stderr = $stderr
     $stderr = StringIO.new
     @old_stdout = $stdout
@@ -23,7 +24,6 @@ describe T::Search do
   end
 
   after :each do
-    T::RCFile.instance.reset
     $stderr = @old_stderr
     $stdout = @old_stdout
   end

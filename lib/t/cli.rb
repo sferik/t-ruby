@@ -26,6 +26,8 @@ module T
     DIRECT_MESSAGE_HEADINGS = ["ID", "Posted at", "Screen name", "Text"]
     TREND_HEADINGS = ["WOEID", "Parent ID", "Type", "Name", "Country"]
 
+    attr_reader :rcfile
+
     check_unknown_options!
 
     class_option "host", :aliases => "-H", :type => :string, :default => T::Requestable::DEFAULT_HOST, :desc => "Twitter API server"
@@ -36,15 +38,15 @@ module T
     def initialize(*)
       @rcfile = T::RCFile.instance
       super
+      @rcfile.path = options['profile']
     end
 
     desc "accounts", "List accounts"
     def accounts
-      @rcfile.path = options['profile'] if options['profile']
-      @rcfile.profiles.each do |profile|
+      rcfile.profiles.each do |profile|
         say profile[0]
         profile[1].keys.each do |key|
-          say "  #{key}#{@rcfile.active_profile[0] == profile[0] && @rcfile.active_profile[1] == key ? " (active)" : nil}"
+          say "  #{key}#{rcfile.active_profile[0] == profile[0] && rcfile.active_profile[1] == key ? " (active)" : nil}"
         end
       end
     end
@@ -52,8 +54,7 @@ module T
     desc "authorize", "Allows an application to request user authorization"
     method_option "display-url", :aliases => "-d", :type => :boolean, :default => false, :desc => "Display the authorization URL instead of attempting to open it."
     def authorize
-      @rcfile.path = options['profile'] if options['profile']
-      if @rcfile.empty?
+      if rcfile.empty?
         say "Welcome! Before you can use t, you'll first need to register an"
         say "application with Twitter. Just follow the steps below:"
         say "  1. Sign in to the Twitter Developer site and click"
@@ -99,7 +100,7 @@ module T
       access_token = request_token.get_access_token(:oauth_verifier => pin.chomp)
       oauth_response = access_token.get('/1.1/account/verify_credentials.json?include_entities=false&skip_status=true')
       screen_name = oauth_response.body.match(/"screen_name"\s*:\s*"(.*?)"/).captures.first
-      @rcfile[screen_name] = {
+      rcfile[screen_name] = {
         key => {
           'username' => screen_name,
           'consumer_key' => key,
@@ -108,7 +109,7 @@ module T
           'secret' => access_token.secret,
         }
       }
-      @rcfile.active_profile = {'username' => screen_name, 'consumer_key' => key}
+      rcfile.active_profile = {'username' => screen_name, 'consumer_key' => key}
       say "Authorization successful."
     end
 
@@ -118,7 +119,7 @@ module T
       users, number = fetch_users(users.unshift(user), options) do |users|
         client.block(users)
       end
-      say "@#{@rcfile.active_profile[0]} blocked #{pluralize(number, 'user')}."
+      say "@#{rcfile.active_profile[0]} blocked #{pluralize(number, 'user')}."
       say
       say "Run `#{File.basename($0)} delete block #{users.map{|user| "@#{user.screen_name}"}.join(' ')}` to unblock."
     end
@@ -234,7 +235,7 @@ module T
         user.strip_ats
       end
       direct_message = client.direct_message_create(user, message)
-      say "Direct Message sent from @#{@rcfile.active_profile[0]} to @#{direct_message.recipient.screen_name}."
+      say "Direct Message sent from @#{rcfile.active_profile[0]} to @#{direct_message.recipient.screen_name}."
     end
     map %w(d m) => :dm
 
@@ -243,7 +244,7 @@ module T
     def does_contain(list, user=nil)
       owner, list = extract_owner(list, options)
       if user.nil?
-        user = @rcfile.active_profile[0]
+        user = rcfile.active_profile[0]
       else
         require 't/core_ext/string'
         user = if options['id']
@@ -271,7 +272,7 @@ module T
         user1.strip_ats
       end
       if user2.nil?
-        user2 = @rcfile.active_profile[0]
+        user2 = rcfile.active_profile[0]
       else
         user2 = if options['id']
           client.user(user2.to_i).screen_name
@@ -297,7 +298,7 @@ module T
         client.favorite(status_ids)
       end
       number = favorites.length
-      say "@#{@rcfile.active_profile[0]} favorited #{pluralize(number, 'tweet')}."
+      say "@#{rcfile.active_profile[0]} favorited #{pluralize(number, 'tweet')}."
       say
       say "Run `#{File.basename($0)} delete favorite #{status_ids.join(' ')}` to unfavorite."
     end
@@ -332,7 +333,7 @@ module T
       users, number = fetch_users(users.unshift(user), options) do |users|
         client.follow(users)
       end
-      say "@#{@rcfile.active_profile[0]} is now following #{pluralize(number, 'more user')}."
+      say "@#{rcfile.active_profile[0]} is now following #{pluralize(number, 'more user')}."
       say
       say "Run `#{File.basename($0)} unfollow #{users.map{|user| "@#{user.screen_name}"}.join(' ')}` to stop."
     end
@@ -529,7 +530,7 @@ module T
       opts = {:in_reply_to_status_id => status.id, :trim_user => true}
       opts.merge!(:lat => location.lat, :long => location.lng) if options['location']
       reply = client.update("#{users.join(' ')} #{message}", opts)
-      say "Reply posted by @#{@rcfile.active_profile[0]} to #{users.join(' ')}."
+      say "Reply posted by @#{rcfile.active_profile[0]} to #{users.join(' ')}."
       say
       say "Run `#{File.basename($0)} delete status #{reply.id}` to delete."
     end
@@ -540,7 +541,7 @@ module T
       users, number = fetch_users(users.unshift(user), options) do |users|
         client.report_spam(users)
       end
-      say "@#{@rcfile.active_profile[0]} reported #{pluralize(number, 'user')}."
+      say "@#{rcfile.active_profile[0]} reported #{pluralize(number, 'user')}."
     end
     map %w(report reportspam spam) => :report_spam
 
@@ -553,7 +554,7 @@ module T
         client.retweet(status_ids, :trim_user => true)
       end
       number = retweets.length
-      say "@#{@rcfile.active_profile[0]} retweeted #{pluralize(number, 'tweet')}."
+      say "@#{rcfile.active_profile[0]} retweeted #{pluralize(number, 'tweet')}."
       say
       say "Run `#{File.basename($0)} delete status #{retweets.map{|tweet| tweet.retweeted_status.id}.join(' ')}` to undo."
     end
@@ -727,7 +728,7 @@ module T
       users, number = fetch_users(users.unshift(user), options) do |users|
         client.unfollow(users)
       end
-      say "@#{@rcfile.active_profile[0]} is no longer following #{pluralize(number, 'user')}."
+      say "@#{rcfile.active_profile[0]} is no longer following #{pluralize(number, 'user')}."
       say
       say "Run `#{File.basename($0)} follow #{users.map{|user| "@#{user.screen_name}"}.join(' ')}` to follow again."
     end
@@ -743,7 +744,7 @@ module T
       else
         client.update(message, opts)
       end
-      say "Tweet posted by @#{@rcfile.active_profile[0]}."
+      say "Tweet posted by @#{rcfile.active_profile[0]}."
       say
       say "Run `#{File.basename($0)} delete status #{status.id}` to delete."
     end

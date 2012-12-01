@@ -4,8 +4,9 @@ require 'helper'
 describe T::Set do
 
   before :each do
-    T::RCFile.instance.path = fixture_path + "/.trc"
     @set = T::Set.new
+    @set.rcfile.stub(:active_profile => ["testcli", "abc123"])
+    @set.rcfile.stub(:profiles => {"testcli" => {"abc123" => {}}})
     @old_stderr = $stderr
     $stderr = StringIO.new
     @old_stdout = $stdout
@@ -13,14 +14,13 @@ describe T::Set do
   end
 
   after :each do
-    T::RCFile.instance.reset
     $stderr = @old_stderr
     $stdout = @old_stdout
   end
 
   describe "#active" do
     before do
-      @set.options = @set.options.merge("profile" => fixture_path + "/.trc_set")
+      @set.rcfile.stub(:profiles => {"testcli" => {"abc123" => {}}, "testcli1" => {"abc123" => {}}})
     end
     it "has the correct output" do
       @set.active("testcli", "abc123")

@@ -16,6 +16,8 @@ module T
     DEFAULT_NUM_RESULTS = 20
     MAX_NUM_RESULTS = 200
 
+    attr_reader :rcfile
+
     check_unknown_options!
 
     class_option "host", :aliases => "-H", :type => :string, :default => T::Requestable::DEFAULT_HOST, :desc => "Twitter API server"

@@ -14,8 +14,9 @@ describe T::List do
   end
 
   before :each do
-    T::RCFile.instance.path = fixture_path + "/.trc"
     @list = T::List.new
+    @list.rcfile.stub(:active_profile => ["testcli", "abc123"])
+    @list.rcfile.stub(:profiles => {"testcli" => {"abc123" => {}}})
     @old_stderr = $stderr
     $stderr = StringIO.new
     @old_stdout = $stdout
@@ -23,14 +24,12 @@ describe T::List do
   end
 
   after :each do
-    T::RCFile.instance.reset
     $stderr = @old_stderr
     $stdout = @old_stdout
   end
 
   describe "#add" do
     before do
-      @list.options = @list.options.merge("profile" => fixture_path + "/.trc")
       stub_get("/1.1/account/verify_credentials.json").to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       stub_post("/1.1/lists/members/create_all.json").with(:body => {:screen_name => "BarackObama", :slug => "presidents", :owner_screen_name => "sferik"}).to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
@@ -67,7 +66,6 @@ describe T::List do
 
   describe "#create" do
     before do
-      @list.options = @list.options.merge("profile" => fixture_path + "/.trc")
       stub_post("/1.1/lists/create.json").with(:body => {:name => "presidents"}).to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "requests the correct resource" do
@@ -82,7 +80,6 @@ describe T::List do
 
   describe "#information" do
     before do
-      @list.options = @list.options.merge("profile" => fixture_path + "/.trc")
       stub_get("/1.1/lists/show.json").with(:query => {:owner_screen_name => "testcli", :slug => "presidents"}).to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "requests the correct resource" do
@@ -273,7 +270,6 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
 
   describe "#remove" do
     before do
-      @list.options = @list.options.merge("profile" => fixture_path + "/.trc")
       stub_get("/1.1/account/verify_credentials.json").to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "requests the correct resource" do

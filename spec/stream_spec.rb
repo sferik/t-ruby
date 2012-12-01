@@ -13,14 +13,12 @@ describe T::Stream do
   end
 
   before :each do
-    T::RCFile.instance.path = fixture_path + "/.trc"
-
     @tweetstream_client = stub('TweetStream::Client').as_null_object
-
     @stream = T::Stream.new
+    @stream.rcfile.stub(:active_profile => ["testcli", "abc123"])
+    @stream.rcfile.stub(:profiles => {"testcli" => {"abc123" => {}}})
     @stream.stub(:client) { @tweetstream_client }
     @stream.stub(:say).and_return
-
     STDOUT.stub(:tty?).and_return(true)
   end
 

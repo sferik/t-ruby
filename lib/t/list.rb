@@ -17,6 +17,8 @@ module T
     MAX_USERS_PER_LIST = 500
     MAX_USERS_PER_REQUEST = 100
 
+    attr_reader :rcfile
+
     check_unknown_options!
 
     class_option "host", :aliases => "-H", :type => :string, :default => T::Requestable::DEFAULT_HOST, :desc => "Twitter API server"
@@ -32,11 +34,12 @@ module T
     desc "add LIST USER [USER...]", "Add members to a list."
     method_option "id", :aliases => "-i", :type => :boolean, :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     def add(list, user, *users)
+      rcfile.path = options['profile']
       users, number = fetch_users(users.unshift(user), options) do |users|
         client.list_add_members(list, users)
         users
       end
-      say "@#{@rcfile.active_profile[0]} added #{pluralize(number, 'member')} to the list \"#{list}\"."
+      say "@#{rcfile.active_profile[0]} added #{pluralize(number, 'member')} to the list \"#{list}\"."
       say
       if options['id']
         say "Run `#{File.basename($0)} list remove --id #{list} #{users.join(' ')}` to undo."
@@ -48,10 +51,11 @@ module T
     desc "create LIST [DESCRIPTION]", "Create a new list."
     method_option "private", :aliases => "-p", :type => :boolean
     def create(list, description=nil)
+      rcfile.path = options['profile']
       opts = description ? {:description => description} : {}
       opts.merge!(:mode => 'private') if options['private']
       client.list_create(list, opts)
-      say "@#{@rcfile.active_profile[0]} created the list \"#{list}\"."
+      say "@#{rcfile.active_profile[0]} created the list \"#{list}\"."
     end
 
     desc "information [USER/]LIST", "Retrieves detailed information about a Twitter list."
@@ -99,11 +103,12 @@ module T
     desc "remove LIST USER [USER...]", "Remove members from a list."
     method_option "id", :aliases => "-i", :type => :boolean, :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     def remove(list, user, *users)
+      rcfile.path = options['profile']
       users, number = fetch_users(users.unshift(user), options) do |users|
         client.list_remove_members(list, users)
         users
       end
-      say "@#{@rcfile.active_profile[0]} removed #{pluralize(number, 'member')} from the list \"#{list}\"."
+      say "@#{rcfile.active_profile[0]} removed #{pluralize(number, 'member')} from the list \"#{list}\"."
       say
       if options['id']
         say "Run `#{File.basename($0)} list add --id #{list} #{users.join(' ')}` to undo."

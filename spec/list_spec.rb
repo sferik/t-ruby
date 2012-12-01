@@ -311,6 +311,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
 
   describe "#timeline" do
     before do
+      @list.options = @list.options.merge("color" => "always")
       stub_get("/1.1/lists/statuses.json").with(:query => {:owner_screen_name => "testcli", :per_page => "20", :slug => "presidents"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "requests the correct resource" do

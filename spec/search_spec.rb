@@ -16,6 +16,7 @@ describe T::Search do
   before :each do
     T::RCFile.instance.path = fixture_path + "/.trc"
     @search = T::Search.new
+    @search.options = @search.options.merge("color" => "always")
     @old_stderr = $stderr
     $stderr = StringIO.new
     @old_stdout = $stdout
@@ -30,7 +31,6 @@ describe T::Search do
 
   describe "#all" do
     before do
-      @search.options = @search.options.merge("color" => "always")
       stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :count => "20"}).to_return(:body => fixture("search.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "requests the correct resource" do
@@ -697,7 +697,6 @@ ID                  Posted at     Screen name       Text
 
   describe "#favorites" do
     before do
-      @search.options = @search.options.merge("color" => "always")
       stub_get("/1.1/favorites/list.json").with(:query => {:count => "200"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       stub_get("/1.1/favorites/list.json").with(:query => {:count => "200", :max_id => "244099460672679937"}).to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
@@ -819,7 +818,6 @@ ID                  Posted at     Screen name  Text
 
   describe "#mentions" do
     before do
-      @search.options = @search.options.merge("color" => "always")
       stub_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => "200"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       stub_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => "200", :max_id => "244099460672679937"}).to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
@@ -894,7 +892,6 @@ ID                  Posted at     Screen name  Text
 
   describe "#list" do
     before do
-      @search.options = @search.options.merge("color" => "always")
       stub_get("/1.1/lists/statuses.json").with(:query => {:count => "200", :owner_screen_name => "testcli", :slug => "presidents"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       stub_get("/1.1/lists/statuses.json").with(:query => {:count => "200", :max_id => "244099460672679937", :owner_screen_name => "testcli", :slug => "presidents"}).to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
@@ -987,7 +984,6 @@ ID                  Posted at     Screen name  Text
 
   describe "#retweets" do
     before do
-      @search.options = @search.options.merge("color" => "always")
       stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true", :max_id => "244102729860009983"}).to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
@@ -1095,7 +1091,6 @@ ID                  Posted at     Screen name   Text
 
   describe "#timeline" do
     before do
-      @search.options = @search.options.merge("color" => "always")
       stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200", :max_id => "244099460672679937"}).to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end

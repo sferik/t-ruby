@@ -117,7 +117,7 @@ module T
       if options['color'] == 'always'
         say("   @#{from_user}", [:bold, :yellow])
       elsif options['color'] == 'auto'
-        if STDOUT.tty?
+        if $stdout.tty?
           say("   @#{from_user}", [:bold, :yellow])
         else
           say("   @#{from_user}")

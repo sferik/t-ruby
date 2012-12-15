@@ -13,11 +13,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'tweetstream', '~> 2.3'
   spec.add_dependency 'twitter', '~> 4.4'
   spec.add_development_dependency 'pry'
-  spec.add_development_dependency 'rake'
-  spec.add_development_dependency 'rspec'
+  spec.add_development_dependency 'pry-debugger'
   spec.add_development_dependency 'simplecov'
-  spec.add_development_dependency 'timecop'
-  spec.add_development_dependency 'webmock'
   spec.author = "Erik Michaels-Ober"
   spec.bindir = 'bin'
   spec.description = %q{A command-line power tool for Twitter.}

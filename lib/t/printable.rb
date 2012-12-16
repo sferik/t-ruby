@@ -2,7 +2,7 @@ module T
   module Printable
     LIST_HEADINGS = ["ID", "Created at", "Screen name", "Slug", "Members", "Subscribers", "Mode", "Description"]
     TWEET_HEADINGS = ["ID", "Posted at", "Screen name", "Text"]
-    USER_HEADINGS = ["ID", "Since", "Last tweeted at", "Tweets", "Favorites", "Listed", "Following", "Followers", "Screen name", "Name"]
+    USER_HEADINGS = ["ID", "Since", "Last tweeted at", "Tweets", "Favorites", "Listed", "Following", "Followers", "Screen name", "Name", "Verified", "Bio", "Status", "Location", "URL"]
     MONTH_IN_SECONDS = 2592000
 
   private
@@ -12,12 +12,11 @@ module T
     end
 
     def build_long_tweet(tweet)
-      require 'htmlentities'
       [tweet.id, ls_formatted_time(tweet), "@#{tweet.from_user}", decode_full_text(tweet, options['decode_urls']).gsub(/\n+/, ' ')]
     end
 
     def build_long_user(user)
-      [user.id, ls_formatted_time(user), ls_formatted_time(user.status), user.statuses_count, user.favourites_count, user.listed_count, user.friends_count, user.followers_count, "@#{user.screen_name}", user.name]
+      [user.id, ls_formatted_time(user), ls_formatted_time(user.status), user.statuses_count, user.favourites_count, user.listed_count, user.friends_count, user.followers_count, "@#{user.screen_name}", user.name, user.verified? ? "Yes" : "No", decode_full_text(user.status, options['decode_urls']).gsub(/\n+/, ' '), user.location, user.url]
     end
 
     def csv_formatted_time(object, key=:created_at)
@@ -52,7 +51,7 @@ module T
     def print_csv_user(user)
       require 'csv'
       require 'fastercsv' unless Array.new.respond_to?(:to_csv)
-      say [user.id, csv_formatted_time(user), csv_formatted_time(user.status), user.statuses_count, user.favourites_count, user.listed_count, user.friends_count, user.followers_count, user.screen_name, user.name].to_csv
+      say [user.id, csv_formatted_time(user), csv_formatted_time(user.status), user.statuses_count, user.favourites_count, user.listed_count, user.friends_count, user.followers_count, user.screen_name, user.name, user.verified?, user.description, user.status.text, user.location, user.url].to_csv
     end
 
     def print_lists(lists)

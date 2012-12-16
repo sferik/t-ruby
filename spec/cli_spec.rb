@@ -484,9 +484,9 @@ ID          Posted at     Screen name  Text
       it "outputs in CSV format" do
         @cli.groupies
         expect($stdout.string).to eq <<-eos
-ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
-14100886,2008-03-08 16:34:22 +0000,2012-07-07 20:33:19 +0000,6940,192,358,3427,5457,pengwynn,Wynn Netherland ⚡
-7505382,2007-07-16 12:59:01 +0000,2012-07-08 18:29:20 +0000,7890,3755,118,212,2262,sferik,Erik Michaels-Ober
+ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name,Verified,Bio,Status,Location,URL
+14100886,2008-03-08 16:34:22 +0000,2012-07-07 20:33:19 +0000,6940,192,358,3427,5457,pengwynn,Wynn Netherland ⚡,false,"Christian, husband, father, GitHubber, Co-host of @thechangelog, Co-author of Sass, Compass, #CSS book  http://wynn.fm/sass-meap",@akosmasoftware Sass book! @hcatlin @nex3 are the brains behind Sass. :-),"Denton, TX",http://wynnnetherland.com
+7505382,2007-07-16 12:59:01 +0000,2012-07-08 18:29:20 +0000,7890,3755,118,212,2262,sferik,Erik Michaels-Ober,false,Vagabond.,@goldman You're near my home town! Say hi to Woodstock for me.,San Francisco,https://github.com/sferik
         eos
       end
     end
@@ -1077,9 +1077,9 @@ ID                   Posted at     Screen name       Text
       it "outputs in CSV format" do
         @cli.followings
         expect($stdout.string).to eq <<-eos
-ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
-14100886,2008-03-08 16:34:22 +0000,2012-07-07 20:33:19 +0000,6940,192,358,3427,5457,pengwynn,Wynn Netherland ⚡
-7505382,2007-07-16 12:59:01 +0000,2012-07-08 18:29:20 +0000,7890,3755,118,212,2262,sferik,Erik Michaels-Ober
+ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name,Verified,Bio,Status,Location,URL
+14100886,2008-03-08 16:34:22 +0000,2012-07-07 20:33:19 +0000,6940,192,358,3427,5457,pengwynn,Wynn Netherland ⚡,false,"Christian, husband, father, GitHubber, Co-host of @thechangelog, Co-author of Sass, Compass, #CSS book  http://wynn.fm/sass-meap",@akosmasoftware Sass book! @hcatlin @nex3 are the brains behind Sass. :-),"Denton, TX",http://wynnnetherland.com
+7505382,2007-07-16 12:59:01 +0000,2012-07-08 18:29:20 +0000,7890,3755,118,212,2262,sferik,Erik Michaels-Ober,false,Vagabond.,@goldman You're near my home town! Say hi to Woodstock for me.,San Francisco,https://github.com/sferik
         eos
       end
     end
@@ -1221,9 +1221,9 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       it "outputs in CSV format" do
         @cli.followers
         expect($stdout.string).to eq <<-eos
-ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
-14100886,2008-03-08 16:34:22 +0000,2012-07-07 20:33:19 +0000,6940,192,358,3427,5457,pengwynn,Wynn Netherland ⚡
-7505382,2007-07-16 12:59:01 +0000,2012-07-08 18:29:20 +0000,7890,3755,118,212,2262,sferik,Erik Michaels-Ober
+ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name,Verified,Bio,Status,Location,URL
+14100886,2008-03-08 16:34:22 +0000,2012-07-07 20:33:19 +0000,6940,192,358,3427,5457,pengwynn,Wynn Netherland ⚡,false,"Christian, husband, father, GitHubber, Co-host of @thechangelog, Co-author of Sass, Compass, #CSS book  http://wynn.fm/sass-meap",@akosmasoftware Sass book! @hcatlin @nex3 are the brains behind Sass. :-),"Denton, TX",http://wynnnetherland.com
+7505382,2007-07-16 12:59:01 +0000,2012-07-08 18:29:20 +0000,7890,3755,118,212,2262,sferik,Erik Michaels-Ober,false,Vagabond.,@goldman You're near my home town! Say hi to Woodstock for me.,San Francisco,https://github.com/sferik
         eos
       end
     end
@@ -1368,9 +1368,9 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       it "outputs in CSV format" do
         @cli.friends
         expect($stdout.string).to eq <<-eos
-ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
-14100886,2008-03-08 16:34:22 +0000,2012-07-07 20:33:19 +0000,6940,192,358,3427,5457,pengwynn,Wynn Netherland ⚡
-7505382,2007-07-16 12:59:01 +0000,2012-07-08 18:29:20 +0000,7890,3755,118,212,2262,sferik,Erik Michaels-Ober
+ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name,Verified,Bio,Status,Location,URL
+14100886,2008-03-08 16:34:22 +0000,2012-07-07 20:33:19 +0000,6940,192,358,3427,5457,pengwynn,Wynn Netherland ⚡,false,"Christian, husband, father, GitHubber, Co-host of @thechangelog, Co-author of Sass, Compass, #CSS book  http://wynn.fm/sass-meap",@akosmasoftware Sass book! @hcatlin @nex3 are the brains behind Sass. :-),"Denton, TX",http://wynnnetherland.com
+7505382,2007-07-16 12:59:01 +0000,2012-07-08 18:29:20 +0000,7890,3755,118,212,2262,sferik,Erik Michaels-Ober,false,Vagabond.,@goldman You're near my home town! Say hi to Woodstock for me.,San Francisco,https://github.com/sferik
         eos
       end
     end
@@ -1518,9 +1518,9 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       it "outputs in CSV format" do
         @cli.leaders
         expect($stdout.string).to eq <<-eos
-ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
-14100886,2008-03-08 16:34:22 +0000,2012-07-07 20:33:19 +0000,6940,192,358,3427,5457,pengwynn,Wynn Netherland ⚡
-7505382,2007-07-16 12:59:01 +0000,2012-07-08 18:29:20 +0000,7890,3755,118,212,2262,sferik,Erik Michaels-Ober
+ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name,Verified,Bio,Status,Location,URL
+14100886,2008-03-08 16:34:22 +0000,2012-07-07 20:33:19 +0000,6940,192,358,3427,5457,pengwynn,Wynn Netherland ⚡,false,"Christian, husband, father, GitHubber, Co-host of @thechangelog, Co-author of Sass, Compass, #CSS book  http://wynn.fm/sass-meap",@akosmasoftware Sass book! @hcatlin @nex3 are the brains behind Sass. :-),"Denton, TX",http://wynnnetherland.com
+7505382,2007-07-16 12:59:01 +0000,2012-07-08 18:29:20 +0000,7890,3755,118,212,2262,sferik,Erik Michaels-Ober,false,Vagabond.,@goldman You're near my home town! Say hi to Woodstock for me.,San Francisco,https://github.com/sferik
         eos
       end
     end
@@ -2342,12 +2342,11 @@ ID           55709764298092545
 Text         The problem with your code is that it's doing exactly what you told it to do.
 Screen name  @sferik
 Posted at    Apr  6  2011 (8 months ago)
-Location     Blowfish Sushi To Die For, 2170 Bryant St, San Francisco, California, United States
 Retweets     320
 Favorites    2
 Replies      1
 Source       Twitter for iPhone
-URL          https://twitter.com/sferik/status/55709764298092545
+Location     Blowfish Sushi To Die For, 2170 Bryant St, San Francisco, California, United States
       eos
     end
     context "--csv" do
@@ -2357,8 +2356,8 @@ URL          https://twitter.com/sferik/status/55709764298092545
       it "has the correct output" do
         @cli.status("55709764298092545")
         expect($stdout.string).to eq <<-eos
-ID,Text,Screen name,Posted at,Location,Retweets,Favorites,Replies,Source,URL
-55709764298092545,The problem with your code is that it's doing exactly what you told it to do.,sferik,2011-04-06 19:13:37 +0000,"Blowfish Sushi To Die For, 2170 Bryant St, San Francisco, California, United States",320,2,1,Twitter for iPhone,https://twitter.com/sferik/status/55709764298092545
+ID,Posted at,Screen name,Text,Retweets,Favorites,Replies,Source,Location
+55709764298092545,2011-04-06 19:13:37 +0000,sferik,The problem with your code is that it's doing exactly what you told it to do.,320,2,1,Twitter for iPhone,"Blowfish Sushi To Die For, 2170 Bryant St, San Francisco, California, United States"
         eos
       end
     end
@@ -2373,12 +2372,11 @@ ID           55709764298092550
 Text         The problem with your code is that it's doing exactly what you told it to do.
 Screen name  @sferik
 Posted at    Apr  6  2011 (8 months ago)
-Location     Blowfish Sushi To Die For, San Francisco, California, United States
 Retweets     320
 Favorites    2
 Replies      1
 Source       Twitter for iPhone
-URL          https://twitter.com/sferik/status/55709764298092550
+Location     Blowfish Sushi To Die For, San Francisco, California, United States
         eos
       end
     end
@@ -2393,12 +2391,11 @@ ID           55709764298092549
 Text         The problem with your code is that it's doing exactly what you told it to do.
 Screen name  @sferik
 Posted at    Apr  6  2011 (8 months ago)
-Location     Blowfish Sushi To Die For, San Francisco, California, United States
 Retweets     320
 Favorites    2
 Replies      1
 Source       Twitter for iPhone
-URL          https://twitter.com/sferik/status/55709764298092549
+Location     Blowfish Sushi To Die For, San Francisco, California, United States
         eos
       end
     end
@@ -2413,12 +2410,11 @@ ID           55709764298092546
 Text         The problem with your code is that it's doing exactly what you told it to do.
 Screen name  @sferik
 Posted at    Apr  6  2011 (8 months ago)
-Location     Blowfish Sushi To Die For, San Francisco, United States
 Retweets     320
 Favorites    2
 Replies      1
 Source       Twitter for iPhone
-URL          https://twitter.com/sferik/status/55709764298092546
+Location     Blowfish Sushi To Die For, San Francisco, United States
         eos
       end
     end
@@ -2433,12 +2429,11 @@ ID           55709764298092547
 Text         The problem with your code is that it's doing exactly what you told it to do.
 Screen name  @sferik
 Posted at    Apr  6  2011 (8 months ago)
-Location     Blowfish Sushi To Die For, San Francisco
 Retweets     320
 Favorites    2
 Replies      1
 Source       Twitter for iPhone
-URL          https://twitter.com/sferik/status/55709764298092547
+Location     Blowfish Sushi To Die For, San Francisco
         eos
       end
     end
@@ -2453,12 +2448,11 @@ ID           55709764298092548
 Text         The problem with your code is that it's doing exactly what you told it to do.
 Screen name  @sferik
 Posted at    Apr  6  2011 (8 months ago)
-Location     Blowfish Sushi To Die For
 Retweets     320
 Favorites    2
 Replies      1
 Source       Twitter for iPhone
-URL          https://twitter.com/sferik/status/55709764298092548
+Location     Blowfish Sushi To Die For
         eos
       end
     end
@@ -2474,12 +2468,11 @@ ID           55709764298092551
 Text         The problem with your code is that it's doing exactly what you told it to do.
 Screen name  @sferik
 Posted at    Apr  6  2011 (8 months ago)
-Location     San Francisco, CA, USA
 Retweets     320
 Favorites    2
 Replies      1
 Source       Twitter for iPhone
-URL          https://twitter.com/sferik/status/55709764298092551
+Location     San Francisco, CA, USA
         eos
       end
       context "with no city" do
@@ -2494,12 +2487,11 @@ ID           55709764298092551
 Text         The problem with your code is that it's doing exactly what you told it to do.
 Screen name  @sferik
 Posted at    Apr  6  2011 (8 months ago)
-Location     CA, USA
 Retweets     320
 Favorites    2
 Replies      1
 Source       Twitter for iPhone
-URL          https://twitter.com/sferik/status/55709764298092551
+Location     CA, USA
           eos
         end
       end
@@ -2515,14 +2507,25 @@ ID           55709764298092551
 Text         The problem with your code is that it's doing exactly what you told it to do.
 Screen name  @sferik
 Posted at    Apr  6  2011 (8 months ago)
-Location     USA
 Retweets     320
 Favorites    2
 Replies      1
 Source       Twitter for iPhone
-URL          https://twitter.com/sferik/status/55709764298092551
+Location     USA
           eos
         end
+      end
+    end
+    context "--long" do
+      before do
+        @cli.options = @cli.options.merge("long" => true)
+      end
+      it "outputs in long format" do
+        @cli.status("55709764298092545")
+        expect($stdout.string).to eq <<-eos
+ID                 Posted at     Screen name  Text                           ...
+55709764298092545  Apr  6  2011  @sferik      The problem with your code is t...
+        eos
       end
     end
   end
@@ -3017,9 +3020,9 @@ WOEID     Parent ID  Type       Name           Country
       it "outputs in CSV format" do
         @cli.users("sferik", "pengwynn")
         expect($stdout.string).to eq <<-eos
-ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name
-14100886,2008-03-08 16:34:22 +0000,2012-07-07 20:33:19 +0000,6940,192,358,3427,5457,pengwynn,Wynn Netherland ⚡
-7505382,2007-07-16 12:59:01 +0000,2012-07-08 18:29:20 +0000,7890,3755,118,212,2262,sferik,Erik Michaels-Ober
+ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name,Verified,Bio,Status,Location,URL
+14100886,2008-03-08 16:34:22 +0000,2012-07-07 20:33:19 +0000,6940,192,358,3427,5457,pengwynn,Wynn Netherland ⚡,false,"Christian, husband, father, GitHubber, Co-host of @thechangelog, Co-author of Sass, Compass, #CSS book  http://wynn.fm/sass-meap",@akosmasoftware Sass book! @hcatlin @nex3 are the brains behind Sass. :-),"Denton, TX",http://wynnnetherland.com
+7505382,2007-07-16 12:59:01 +0000,2012-07-08 18:29:20 +0000,7890,3755,118,212,2262,sferik,Erik Michaels-Ober,false,Vagabond.,@goldman You're near my home town! Say hi to Woodstock for me.,San Francisco,https://github.com/sferik
         eos
       end
     end
@@ -3148,17 +3151,17 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       @cli.whois("sferik")
       expect($stdout.string).to eq <<-eos
 ID           7505382
-Name         Erik Michaels-Ober
-Bio          Vagabond.
-Location     San Francisco
-Status       Not following
-Last update  @goldman You're near my home town! Say hi to Woodstock for me. (7 months ago)
 Since        Jul 16  2007 (4 years ago)
+Last update  @goldman You're near my home town! Say hi to Woodstock for me. (7 months ago)
+Screen name  @sferik
+Name         Erik Michaels-Ober
 Tweets       7,890
 Favorites    3,755
 Listed       118
 Following    212
 Followers    2,262
+Bio          Vagabond.
+Location     San Francisco
 URL          https://github.com/sferik
       eos
     end
@@ -3169,8 +3172,8 @@ URL          https://github.com/sferik
       it "has the correct output" do
         @cli.whois("sferik")
         expect($stdout.string).to eq <<-eos
-ID,Verified,Name,Screen name,Bio,Location,Following,Last update,Lasted updated at,Since,Tweets,Favorites,Listed,Following,Followers,URL
-7505382,false,Erik Michaels-Ober,sferik,Vagabond.,San Francisco,false,@goldman You're near my home town! Say hi to Woodstock for me.,2012-07-08 18:29:20 +0000,2007-07-16 12:59:01 +0000,7890,3755,118,212,2262,https://github.com/sferik
+ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name,Verified,Bio,Status,Location,URL
+7505382,2007-07-16 12:59:01 +0000,2012-07-08 18:29:20 +0000,7890,3755,118,212,2262,sferik,Erik Michaels-Ober,false,Vagabond.,@goldman You're near my home town! Say hi to Woodstock for me.,San Francisco,https://github.com/sferik
         eos
       end
     end
@@ -3182,6 +3185,18 @@ ID,Verified,Name,Screen name,Bio,Location,Following,Last update,Lasted updated a
       it "requests the correct resource" do
         @cli.whois("7505382")
         expect(a_get("/1.1/users/show.json").with(:query => {:user_id => "7505382"})).to have_been_made
+      end
+    end
+    context "--long" do
+      before do
+        @cli.options = @cli.options.merge("long" => true)
+      end
+      it "outputs in long format" do
+        @cli.whois("sferik")
+        expect($stdout.string).to eq <<-eos
+ID       Since         Last tweeted at  Tweets  Favorites  Listed  Following ...
+7505382  Jul 16  2007  Jul  8 10:29       7890       3755     118        212 ...
+        eos
       end
     end
   end

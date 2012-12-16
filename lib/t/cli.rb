@@ -594,6 +594,7 @@ module T
 
     desc "status TWEET_ID", "Retrieves detailed information about a Tweet."
     method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
+    method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     def status(status_id)
       status = client.status(status_id.to_i, :include_my_retweet => false)
       status_activity = client.status_activity(status_id.to_i)
@@ -614,24 +615,27 @@ module T
       elsif status.geo
         reverse_geocode(status.geo)
       end
-      require 'htmlentities'
+      status_headings = ["ID", "Posted at", "Screen name", "Text", "Retweets", "Favorites", "Replies", "Source", "Location"]
       if options['csv']
         require 'csv'
         require 'fastercsv' unless Array.new.respond_to?(:to_csv)
-        say ["ID", "Text", "Screen name", "Posted at", "Location", "Retweets", "Favorites", "Replies", "Source", "URL"].to_csv
-        say [status.id, HTMLEntities.new.decode(status.full_text), status.from_user, csv_formatted_time(status), location, status.retweet_count, status_activity.favoriters_count, status_activity.repliers_count, strip_tags(status.source), "https://twitter.com/#{status.from_user}/status/#{status.id}"].to_csv
+        say status_headings.to_csv
+        say [status.id, csv_formatted_time(status), status.from_user, decode_full_text(status), status.retweet_count, status_activity.favoriters_count, status_activity.repliers_count, strip_tags(status.source), location].to_csv
+      elsif options['long']
+        array = [status.id, ls_formatted_time(status), "@#{status.from_user}", decode_full_text(status).gsub(/\n+/, ' '), status.retweet_count, status_activity.favoriters_count, status_activity.repliers_count, strip_tags(status.source), location]
+        format = options['format'] || status_headings.size.times.map{"%s"}
+        print_table_with_headings([array], status_headings, format)
       else
         array = []
         array << ["ID", status.id.to_s]
-        array << ["Text", HTMLEntities.new.decode(status.full_text).gsub(/\n+/, ' ')]
+        array << ["Text", decode_full_text(status).gsub(/\n+/, ' ')]
         array << ["Screen name", "@#{status.from_user}"]
         array << ["Posted at", "#{ls_formatted_time(status)} (#{time_ago_in_words(status.created_at)} ago)"]
-        array << ["Location", location] unless location.nil?
         array << ["Retweets", number_with_delimiter(status.retweet_count)]
         array << ["Favorites", number_with_delimiter(status_activity.favoriters_count)]
         array << ["Replies", number_with_delimiter(status_activity.repliers_count)]
         array << ["Source", strip_tags(status.source)]
-        array << ["URL", "https://twitter.com/#{status.from_user}/status/#{status.id}"]
+        array << ["Location", location] unless location.nil?
         print_table(array)
       end
     end
@@ -779,6 +783,7 @@ module T
     desc "whois USER", "Retrieves profile information for the user."
     method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     method_option "id", :aliases => "-i", :type => :boolean, :default => false, :desc => "Specify user via ID instead of screen name."
+    method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     def whois(user)
       require 't/core_ext/string'
       user = if options['id']
@@ -788,25 +793,22 @@ module T
       end
       user = client.user(user)
       require 'htmlentities'
-      if options['csv']
-        require 'csv'
-        require 'fastercsv' unless Array.new.respond_to?(:to_csv)
-        say ["ID", "Verified", "Name", "Screen name", "Bio", "Location", "Following", "Last update", "Lasted updated at", "Since", "Tweets", "Favorites", "Listed", "Following", "Followers", "URL"].to_csv
-        say [user.id, user.verified?, user.name, user.screen_name, user.description, user.location, user.following?, HTMLEntities.new.decode(user.status.text), csv_formatted_time(user.status), csv_formatted_time(user), user.statuses_count, user.favourites_count, user.listed_count, user.friends_count, user.followers_count, user.url].to_csv
+      if options['csv'] || options['long']
+        print_users([user])
       else
         array = []
         array << ["ID", user.id.to_s]
-        array << [user.verified ? "Name (Verified)" : "Name", user.name] unless user.name.nil?
-        array << ["Bio", user.description.gsub(/\n+/, ' ')] unless user.description.nil?
-        array << ["Location", user.location] unless user.location.nil?
-        array << ["Status", user.following ? "Following" : "Not following"]
-        array << ["Last update", "#{HTMLEntities.new.decode(user.status.text).gsub(/\n+/, ' ')} (#{time_ago_in_words(user.status.created_at)} ago)"] unless user.status.nil?
         array << ["Since", "#{ls_formatted_time(user)} (#{time_ago_in_words(user.created_at)} ago)"]
+        array << ["Last update", "#{decode_full_text(user.status).gsub(/\n+/, ' ')} (#{time_ago_in_words(user.status.created_at)} ago)"] unless user.status.nil?
+        array << ["Screen name", "@#{user.screen_name}"]
+        array << [user.verified ? "Name (Verified)" : "Name", user.name] unless user.name.nil?
         array << ["Tweets", number_with_delimiter(user.statuses_count)]
         array << ["Favorites", number_with_delimiter(user.favourites_count)]
         array << ["Listed", number_with_delimiter(user.listed_count)]
         array << ["Following", number_with_delimiter(user.friends_count)]
         array << ["Followers", number_with_delimiter(user.followers_count)]
+        array << ["Bio", user.description.gsub(/\n+/, ' ')] unless user.description.nil?
+        array << ["Location", user.location] unless user.location.nil?
         array << ["URL", user.url] unless user.url.nil?
         print_table(array)
       end

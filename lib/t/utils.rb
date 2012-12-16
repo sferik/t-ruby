@@ -96,6 +96,7 @@ module T
     end
 
     def decode_full_text(tweet, decode_full_urls = false)
+      require 'htmlentities'
       text = HTMLEntities.new.decode(tweet.full_text)
       text = decode_urls(text, tweet.urls) if decode_full_urls
       text

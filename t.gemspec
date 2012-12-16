@@ -31,5 +31,5 @@ Gem::Specification.new do |spec|
   spec.required_rubygems_version = Gem::Requirement.new(">= 1.3.6")
   spec.summary = %q{CLI for Twitter}
   spec.test_files = Dir.glob("spec/**/*")
-  spec.version = T::Version.to_s
+  spec.version = T::Version
 end

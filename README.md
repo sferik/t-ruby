@@ -246,7 +246,7 @@ used by `t`:
 If you're running [Zsh][zsh], you can source the [bundled completion file][completion]
 to get shell completion for `t` commands, subcommands, and flags.
 
-Don't run Zsh? Why not [contribute][contribute] completion support for your favorite
+Don't run Zsh? Why not [contribute][] completion support for your favorite
 shell?
 
 ## History

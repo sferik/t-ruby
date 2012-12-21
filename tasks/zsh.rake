@@ -5,15 +5,24 @@ namespace :completion do
 
     Bundler.require(:default)
 
-    template_path = File.expand_path(File.join('etc', 't-completion.zsh'))
-    File.open(template_path, 'w') { |f| f.write zsh_completion }
+    output_path = 'etc/t-completion.zsh'
+    file_path = File.expand_path(output_path)
+    puts "Compiling zsh completion to #{output_path}"
+    File.open(file_path, 'w') { |f| f.write zsh_completion }
+
+    git_status = %x[git status -s]
+    if !!git_status[%r{M #{output_path}}]
+      cmd = "git add #{output_path} && git commit -m 'Updating Zsh completion'"
+      result = system cmd
+      fail "Could not commit changes" unless result
+    end
   end
 end
 
 def zsh_completion
 %Q(#compdef t
 
-# Completion for Zsh. Source from somewhere in your $fpath
+# Completion for Zsh. Source from somewhere in your $fpath.
 
 _t (){
   local -a t_general_options

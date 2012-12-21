@@ -5,10 +5,10 @@
 _t (){
   local -a t_general_options
 
-  t_general_options=("(-H --host)"{-H,--host=HOST}"[Twitter API server]"
+  t_general_options=("(-H --host)"{-H,--host=}"[Twitter API server]:URL:_urls"
     "(-N --no-color)"{-N,--no-color}"[Disable colorization in output]"
     "(-U --no-ssl)"{-U,--no-ssl}"[Disable SSL]"
-    "(-P --profile)"{-P,--profile=FILE}"[Path to RC file]"
+    "(-P --profile)"{-P,--profile=}"[Path to RC file]:file:_files"
     $nul_arg
   )
 

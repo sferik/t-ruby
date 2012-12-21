@@ -1,6 +1,6 @@
 #compdef t
 
-# Completion for Zsh. Source from somewhere in your $fpath
+# Completion for Zsh. Source from somewhere in your $fpath.
 
 _t (){
   local -a t_general_options

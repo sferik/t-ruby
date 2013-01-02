@@ -1,8 +1,8 @@
 module T
   module Printable
-    LIST_HEADINGS = ["ID", "Created at", "Screen name", "Slug", "Members", "Subscribers", "Mode", "Description"]
-    TWEET_HEADINGS = ["ID", "Posted at", "Screen name", "Text"]
-    USER_HEADINGS = ["ID", "Since", "Last tweeted at", "Tweets", "Favorites", "Listed", "Following", "Followers", "Screen name", "Name", "Verified", "Bio", "Status", "Location", "URL"]
+    LIST_HEADINGS = ["Id", "Created at", "Screen name", "Slug", "Members", "Subscribers", "Mode", "Description"]
+    TWEET_HEADINGS = ["Id", "Posted at", "Screen name", "Text"]
+    USER_HEADINGS = ["Id", "Since", "Last tweeted at", "Tweets", "Favorites", "Listed", "Following", "Followers", "Screen name", "Name", "Verified", "Bio", "Status", "Location", "URL"]
     MONTH_IN_SECONDS = 2592000
 
   private

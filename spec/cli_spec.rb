@@ -202,7 +202,7 @@ testcli
       it "outputs in CSV format" do
         @cli.direct_messages
         expect($stdout.string).to eq <<-eos
-ID,Posted at,Screen name,Text
+Id,Posted at,Screen name,Text
 1773478249,2010-10-17 20:48:55 +0000,sferik,Sounds good. Meeting Tuesday is fine.
 1762960771,2010-10-14 21:43:30 +0000,sferik,That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does that work for you?
 1711812216,2010-10-01 15:07:12 +0000,sferik,I asked Yehuda about the stipend. I believe it has already been sent. Glad you're feeling better.
@@ -223,7 +223,7 @@ ID,Posted at,Screen name,Text
       it "outputs in long format" do
         @cli.direct_messages
         expect($stdout.string).to eq <<-eos
-ID          Posted at     Screen name  Text
+Id          Posted at     Screen name  Text
 1773478249  Oct 17  2010  @sferik      Sounds good. Meeting Tuesday is fine.
 1762960771  Oct 14  2010  @sferik      That's great news! Let's plan to chat ...
 1711812216  Oct  1  2010  @sferik      I asked Yehuda about the stipend. I be...
@@ -360,7 +360,7 @@ ID          Posted at     Screen name  Text
       it "outputs in CSV format" do
         @cli.direct_messages_sent
         expect($stdout.string).to eq <<-eos
-ID,Posted at,Screen name,Text
+Id,Posted at,Screen name,Text
 1773478249,2010-10-17 20:48:55 +0000,hurrycane,Sounds good. Meeting Tuesday is fine.
 1762960771,2010-10-14 21:43:30 +0000,hurrycane,That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does that work for you?
 1711812216,2010-10-01 15:07:12 +0000,hurrycane,I asked Yehuda about the stipend. I believe it has already been sent. Glad you're feeling better.
@@ -381,7 +381,7 @@ ID,Posted at,Screen name,Text
       it "outputs in long format" do
         @cli.direct_messages_sent
         expect($stdout.string).to eq <<-eos
-ID          Posted at     Screen name  Text
+Id          Posted at     Screen name  Text
 1773478249  Oct 17  2010  @hurrycane   Sounds good. Meeting Tuesday is fine.
 1762960771  Oct 14  2010  @hurrycane   That's great news! Let's plan to chat ...
 1711812216  Oct  1  2010  @hurrycane   I asked Yehuda about the stipend. I be...
@@ -484,7 +484,7 @@ ID          Posted at     Screen name  Text
       it "outputs in CSV format" do
         @cli.groupies
         expect($stdout.string).to eq <<-eos
-ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name,Verified,Bio,Status,Location,URL
+Id,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name,Verified,Bio,Status,Location,URL
 14100886,2008-03-08 16:34:22 +0000,2012-07-07 20:33:19 +0000,6940,192,358,3427,5457,pengwynn,Wynn Netherland ⚡,false,"Christian, husband, father, GitHubber, Co-host of @thechangelog, Co-author of Sass, Compass, #CSS book  http://wynn.fm/sass-meap",@akosmasoftware Sass book! @hcatlin @nex3 are the brains behind Sass. :-),"Denton, TX",http://wynnnetherland.com
 7505382,2007-07-16 12:59:01 +0000,2012-07-08 18:29:20 +0000,7890,3755,118,212,2262,sferik,Erik Michaels-Ober,false,Vagabond.,@goldman You're near my home town! Say hi to Woodstock for me.,San Francisco,https://github.com/sferik
         eos
@@ -497,7 +497,7 @@ ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name
       it "outputs in long format" do
         @cli.groupies
         expect($stdout.string).to eq <<-eos
-ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
+Id        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
 14100886  Mar  8  2008  Jul  7 12:33       6940        192     358       3427...
  7505382  Jul 16  2007  Jul  8 10:29       7890       3755     118        212...
         eos
@@ -881,7 +881,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       it "outputs in CSV format" do
         @cli.favorites
         expect($stdout.string).to eq <<-eos
-ID,Posted at,Screen name,Text
+Id,Posted at,Screen name,Text
 4611686018427387904,2012-09-07 16:35:24 +0000,mutgoff,Happy Birthday @imdane. Watch out for those @rally pranksters!
 244111183165157376,2012-09-07 16:33:36 +0000,ironicsans,"If you like good real-life stories, check out @NarrativelyNY's just-launched site http://t.co/wiUL07jE (and also visit http://t.co/ZoyQxqWA)"
 244110336414859264,2012-09-07 16:30:14 +0000,pat_shaughnessy,"Something else to vote for: ""New Rails workshops to bring more women into the Boston software scene"" http://t.co/eNBuckHc /cc @bostonrb"
@@ -912,7 +912,7 @@ ID,Posted at,Screen name,Text
       it "outputs in long format" do
         @cli.favorites
         expect($stdout.string).to eq <<-eos
-ID                   Posted at     Screen name       Text
+Id                   Posted at     Screen name       Text
 4611686018427387904  Sep  7 08:35  @mutgoff          Happy Birthday @imdane. ...
  244111183165157376  Sep  7 08:33  @ironicsans       If you like good real-li...
  244110336414859264  Sep  7 08:30  @pat_shaughnessy  Something else to vote f...
@@ -942,7 +942,7 @@ ID                   Posted at     Screen name       Text
         it "reverses the order of the sort" do
           @cli.favorites
           expect($stdout.string).to eq <<-eos
-ID                   Posted at     Screen name       Text
+Id                   Posted at     Screen name       Text
  244099460672679938  Sep  7 07:47  @dwiskus          Gentlemen, you can't fig...
  244100411563339777  Sep  7 07:50  @sferik           @episod @twitterapi Did ...
  244102209942458368  Sep  7 07:57  @sferik           @episod @twitterapi now ...
@@ -1077,7 +1077,7 @@ ID                   Posted at     Screen name       Text
       it "outputs in CSV format" do
         @cli.followings
         expect($stdout.string).to eq <<-eos
-ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name,Verified,Bio,Status,Location,URL
+Id,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name,Verified,Bio,Status,Location,URL
 14100886,2008-03-08 16:34:22 +0000,2012-07-07 20:33:19 +0000,6940,192,358,3427,5457,pengwynn,Wynn Netherland ⚡,false,"Christian, husband, father, GitHubber, Co-host of @thechangelog, Co-author of Sass, Compass, #CSS book  http://wynn.fm/sass-meap",@akosmasoftware Sass book! @hcatlin @nex3 are the brains behind Sass. :-),"Denton, TX",http://wynnnetherland.com
 7505382,2007-07-16 12:59:01 +0000,2012-07-08 18:29:20 +0000,7890,3755,118,212,2262,sferik,Erik Michaels-Ober,false,Vagabond.,@goldman You're near my home town! Say hi to Woodstock for me.,San Francisco,https://github.com/sferik
         eos
@@ -1090,7 +1090,7 @@ ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name
       it "outputs in long format" do
         @cli.followings
         expect($stdout.string).to eq <<-eos
-ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
+Id        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
 14100886  Mar  8  2008  Jul  7 12:33       6940        192     358       3427...
  7505382  Jul 16  2007  Jul  8 10:29       7890       3755     118        212...
         eos
@@ -1221,7 +1221,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       it "outputs in CSV format" do
         @cli.followers
         expect($stdout.string).to eq <<-eos
-ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name,Verified,Bio,Status,Location,URL
+Id,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name,Verified,Bio,Status,Location,URL
 14100886,2008-03-08 16:34:22 +0000,2012-07-07 20:33:19 +0000,6940,192,358,3427,5457,pengwynn,Wynn Netherland ⚡,false,"Christian, husband, father, GitHubber, Co-host of @thechangelog, Co-author of Sass, Compass, #CSS book  http://wynn.fm/sass-meap",@akosmasoftware Sass book! @hcatlin @nex3 are the brains behind Sass. :-),"Denton, TX",http://wynnnetherland.com
 7505382,2007-07-16 12:59:01 +0000,2012-07-08 18:29:20 +0000,7890,3755,118,212,2262,sferik,Erik Michaels-Ober,false,Vagabond.,@goldman You're near my home town! Say hi to Woodstock for me.,San Francisco,https://github.com/sferik
         eos
@@ -1234,7 +1234,7 @@ ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name
       it "outputs in long format" do
         @cli.followers
         expect($stdout.string).to eq <<-eos
-ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
+Id        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
 14100886  Mar  8  2008  Jul  7 12:33       6940        192     358       3427...
  7505382  Jul 16  2007  Jul  8 10:29       7890       3755     118        212...
         eos
@@ -1368,7 +1368,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       it "outputs in CSV format" do
         @cli.friends
         expect($stdout.string).to eq <<-eos
-ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name,Verified,Bio,Status,Location,URL
+Id,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name,Verified,Bio,Status,Location,URL
 14100886,2008-03-08 16:34:22 +0000,2012-07-07 20:33:19 +0000,6940,192,358,3427,5457,pengwynn,Wynn Netherland ⚡,false,"Christian, husband, father, GitHubber, Co-host of @thechangelog, Co-author of Sass, Compass, #CSS book  http://wynn.fm/sass-meap",@akosmasoftware Sass book! @hcatlin @nex3 are the brains behind Sass. :-),"Denton, TX",http://wynnnetherland.com
 7505382,2007-07-16 12:59:01 +0000,2012-07-08 18:29:20 +0000,7890,3755,118,212,2262,sferik,Erik Michaels-Ober,false,Vagabond.,@goldman You're near my home town! Say hi to Woodstock for me.,San Francisco,https://github.com/sferik
         eos
@@ -1381,7 +1381,7 @@ ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name
       it "outputs in long format" do
         @cli.friends
         expect($stdout.string).to eq <<-eos
-ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
+Id        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
 14100886  Mar  8  2008  Jul  7 12:33       6940        192     358       3427...
  7505382  Jul 16  2007  Jul  8 10:29       7890       3755     118        212...
         eos
@@ -1518,7 +1518,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       it "outputs in CSV format" do
         @cli.leaders
         expect($stdout.string).to eq <<-eos
-ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name,Verified,Bio,Status,Location,URL
+Id,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name,Verified,Bio,Status,Location,URL
 14100886,2008-03-08 16:34:22 +0000,2012-07-07 20:33:19 +0000,6940,192,358,3427,5457,pengwynn,Wynn Netherland ⚡,false,"Christian, husband, father, GitHubber, Co-host of @thechangelog, Co-author of Sass, Compass, #CSS book  http://wynn.fm/sass-meap",@akosmasoftware Sass book! @hcatlin @nex3 are the brains behind Sass. :-),"Denton, TX",http://wynnnetherland.com
 7505382,2007-07-16 12:59:01 +0000,2012-07-08 18:29:20 +0000,7890,3755,118,212,2262,sferik,Erik Michaels-Ober,false,Vagabond.,@goldman You're near my home town! Say hi to Woodstock for me.,San Francisco,https://github.com/sferik
         eos
@@ -1531,7 +1531,7 @@ ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name
       it "outputs in long format" do
         @cli.leaders
         expect($stdout.string).to eq <<-eos
-ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
+Id        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
 14100886  Mar  8  2008  Jul  7 12:33       6940        192     358       3427...
  7505382  Jul 16  2007  Jul  8 10:29       7890       3755     118        212...
          eos
@@ -1664,7 +1664,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       it "outputs in CSV format" do
         @cli.lists
         expect($stdout.string).to eq <<-eos
-ID,Created at,Screen name,Slug,Members,Subscribers,Mode,Description
+Id,Created at,Screen name,Slug,Members,Subscribers,Mode,Description
 1129440,2009-10-30 14:39:25 +0000,pengwynn,rubyists,499,39,public,""
 574,2009-09-23 01:18:01 +0000,twitter,team,1199,78078,public,""
 73546689,2012-07-08 22:19:05 +0000,sferik,test,2,0,private,""
@@ -1678,7 +1678,7 @@ ID,Created at,Screen name,Slug,Members,Subscribers,Mode,Description
       it "outputs in long format" do
         @cli.lists
         expect($stdout.string).to eq <<-eos
-ID        Created at    Screen name  Slug      Members  Subscribers  Mode    ...
+Id        Created at    Screen name  Slug      Members  Subscribers  Mode    ...
  1129440  Oct 30  2009  @pengwynn    rubyists      499           39  public   
      574  Sep 22  2009  @twitter     team         1199        78078  public   
 73546689  Jul  8 14:19  @sferik      test            2            0  private  
@@ -1855,7 +1855,7 @@ ID        Created at    Screen name  Slug      Members  Subscribers  Mode    ...
       it "outputs in CSV format" do
         @cli.mentions
         expect($stdout.string).to eq <<-eos
-ID,Posted at,Screen name,Text
+Id,Posted at,Screen name,Text
 4611686018427387904,2012-09-07 16:35:24 +0000,mutgoff,Happy Birthday @imdane. Watch out for those @rally pranksters!
 244111183165157376,2012-09-07 16:33:36 +0000,ironicsans,"If you like good real-life stories, check out @NarrativelyNY's just-launched site http://t.co/wiUL07jE (and also visit http://t.co/ZoyQxqWA)"
 244110336414859264,2012-09-07 16:30:14 +0000,pat_shaughnessy,"Something else to vote for: ""New Rails workshops to bring more women into the Boston software scene"" http://t.co/eNBuckHc /cc @bostonrb"
@@ -1886,7 +1886,7 @@ ID,Posted at,Screen name,Text
       it "outputs in long format" do
         @cli.mentions
         expect($stdout.string).to eq <<-eos
-ID                   Posted at     Screen name       Text
+Id                   Posted at     Screen name       Text
 4611686018427387904  Sep  7 08:35  @mutgoff          Happy Birthday @imdane. ...
  244111183165157376  Sep  7 08:33  @ironicsans       If you like good real-li...
  244110336414859264  Sep  7 08:30  @pat_shaughnessy  Something else to vote f...
@@ -1916,7 +1916,7 @@ ID                   Posted at     Screen name       Text
         it "reverses the order of the sort" do
           @cli.mentions
           expect($stdout.string).to eq <<-eos
-ID                   Posted at     Screen name       Text
+Id                   Posted at     Screen name       Text
  244099460672679938  Sep  7 07:47  @dwiskus          Gentlemen, you can't fig...
  244100411563339777  Sep  7 07:50  @sferik           @episod @twitterapi Did ...
  244102209942458368  Sep  7 07:57  @sferik           @episod @twitterapi now ...
@@ -2179,7 +2179,7 @@ ID                   Posted at     Screen name       Text
       it "outputs in CSV format" do
         @cli.retweets
         expect($stdout.string).to eq <<-eos
-ID,Posted at,Screen name,Text
+Id,Posted at,Screen name,Text
 244108728834592770,2012-09-07 16:23:50 +0000,calebelston,RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
 244107823733174272,2012-09-07 16:20:15 +0000,codeforamerica,"RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat, Sep 8 http://t.co/Sk5BM7U3  We'll see y'all there! #rhok @codeforamerica @TheaClay"
 244107236262170624,2012-09-07 16:17:55 +0000,fbjork,"RT @jondot: Just published: ""Pragmatic Concurrency With #Ruby"" http://t.co/kGEykswZ   /cc @JRuby @headius"
@@ -2210,7 +2210,7 @@ ID,Posted at,Screen name,Text
       it "outputs in long format" do
         @cli.retweets
         expect($stdout.string).to eq <<-eos
-ID                  Posted at     Screen name      Text
+Id                  Posted at     Screen name      Text
 244108728834592770  Sep  7 08:23  @calebelston     RT @olivercameron: Mosaic ...
 244107823733174272  Sep  7 08:20  @codeforamerica  RT @randomhacks: Going to ...
 244107236262170624  Sep  7 08:17  @fbjork          RT @jondot: Just published...
@@ -2240,7 +2240,7 @@ ID                  Posted at     Screen name      Text
         it "reverses the order of the sort" do
           @cli.retweets
           expect($stdout.string).to eq <<-eos
-ID                  Posted at     Screen name      Text
+Id                  Posted at     Screen name      Text
 244107823733174272  Sep  7 08:20  @codeforamerica  RT @randomhacks: Going to ...
 244108728834592770  Sep  7 08:23  @calebelston     RT @olivercameron: Mosaic ...
 244102729860009984  Sep  7 08:00  @dhh             RT @ggreenwald: Democrats ...
@@ -2338,7 +2338,7 @@ ID                  Posted at     Screen name      Text
     it "has the correct output" do
       @cli.status("55709764298092545")
       expect($stdout.string).to eq <<-eos
-ID           55709764298092545
+Id           55709764298092545
 Text         The problem with your code is that it's doing exactly what you told it to do.
 Screen name  @sferik
 Posted at    Apr  6  2011 (8 months ago)
@@ -2356,7 +2356,7 @@ Location     Blowfish Sushi To Die For, 2170 Bryant St, San Francisco, Californi
       it "has the correct output" do
         @cli.status("55709764298092545")
         expect($stdout.string).to eq <<-eos
-ID,Posted at,Screen name,Text,Retweets,Favorites,Replies,Source,Location
+Id,Posted at,Screen name,Text,Retweets,Favorites,Replies,Source,Location
 55709764298092545,2011-04-06 19:13:37 +0000,sferik,The problem with your code is that it's doing exactly what you told it to do.,320,2,1,Twitter for iPhone,"Blowfish Sushi To Die For, 2170 Bryant St, San Francisco, California, United States"
         eos
       end
@@ -2368,7 +2368,7 @@ ID,Posted at,Screen name,Text,Retweets,Favorites,Replies,Source,Location
       it "has the correct output" do
         @cli.status("55709764298092545")
         expect($stdout.string).to eq <<-eos
-ID           55709764298092550
+Id           55709764298092550
 Text         The problem with your code is that it's doing exactly what you told it to do.
 Screen name  @sferik
 Posted at    Apr  6  2011 (8 months ago)
@@ -2387,7 +2387,7 @@ Location     Blowfish Sushi To Die For, San Francisco, California, United States
       it "has the correct output" do
         @cli.status("55709764298092545")
         expect($stdout.string).to eq <<-eos
-ID           55709764298092549
+Id           55709764298092549
 Text         The problem with your code is that it's doing exactly what you told it to do.
 Screen name  @sferik
 Posted at    Apr  6  2011 (8 months ago)
@@ -2406,7 +2406,7 @@ Location     Blowfish Sushi To Die For, San Francisco, California, United States
       it "has the correct output" do
         @cli.status("55709764298092545")
         expect($stdout.string).to eq <<-eos
-ID           55709764298092546
+Id           55709764298092546
 Text         The problem with your code is that it's doing exactly what you told it to do.
 Screen name  @sferik
 Posted at    Apr  6  2011 (8 months ago)
@@ -2425,7 +2425,7 @@ Location     Blowfish Sushi To Die For, San Francisco, United States
       it "has the correct output" do
         @cli.status("55709764298092545")
         expect($stdout.string).to eq <<-eos
-ID           55709764298092547
+Id           55709764298092547
 Text         The problem with your code is that it's doing exactly what you told it to do.
 Screen name  @sferik
 Posted at    Apr  6  2011 (8 months ago)
@@ -2444,7 +2444,7 @@ Location     Blowfish Sushi To Die For, San Francisco
       it "has the correct output" do
         @cli.status("55709764298092545")
         expect($stdout.string).to eq <<-eos
-ID           55709764298092548
+Id           55709764298092548
 Text         The problem with your code is that it's doing exactly what you told it to do.
 Screen name  @sferik
 Posted at    Apr  6  2011 (8 months ago)
@@ -2464,7 +2464,7 @@ Location     Blowfish Sushi To Die For
       it "has the correct output" do
         @cli.status("55709764298092545")
         expect($stdout.string).to eq <<-eos
-ID           55709764298092551
+Id           55709764298092551
 Text         The problem with your code is that it's doing exactly what you told it to do.
 Screen name  @sferik
 Posted at    Apr  6  2011 (8 months ago)
@@ -2483,7 +2483,7 @@ Location     San Francisco, CA, USA
         it "has the correct output" do
           @cli.status("55709764298092545")
           expect($stdout.string).to eq <<-eos
-ID           55709764298092551
+Id           55709764298092551
 Text         The problem with your code is that it's doing exactly what you told it to do.
 Screen name  @sferik
 Posted at    Apr  6  2011 (8 months ago)
@@ -2503,7 +2503,7 @@ Location     CA, USA
         it "has the correct output" do
           @cli.status("55709764298092545")
           expect($stdout.string).to eq <<-eos
-ID           55709764298092551
+Id           55709764298092551
 Text         The problem with your code is that it's doing exactly what you told it to do.
 Screen name  @sferik
 Posted at    Apr  6  2011 (8 months ago)
@@ -2523,7 +2523,7 @@ Location     USA
       it "outputs in long format" do
         @cli.status("55709764298092545")
         expect($stdout.string).to eq <<-eos
-ID                 Posted at     Screen name  Text                           ...
+Id                 Posted at     Screen name  Text                           ...
 55709764298092545  Apr  6  2011  @sferik      The problem with your code is t...
         eos
       end
@@ -2627,7 +2627,7 @@ ID                 Posted at     Screen name  Text                           ...
       it "outputs in CSV format" do
         @cli.timeline
         expect($stdout.string).to eq <<-eos
-ID,Posted at,Screen name,Text
+Id,Posted at,Screen name,Text
 4611686018427387904,2012-09-07 16:35:24 +0000,mutgoff,Happy Birthday @imdane. Watch out for those @rally pranksters!
 244111183165157376,2012-09-07 16:33:36 +0000,ironicsans,"If you like good real-life stories, check out @NarrativelyNY's just-launched site http://t.co/wiUL07jE (and also visit http://t.co/ZoyQxqWA)"
 244110336414859264,2012-09-07 16:30:14 +0000,pat_shaughnessy,"Something else to vote for: ""New Rails workshops to bring more women into the Boston software scene"" http://t.co/eNBuckHc /cc @bostonrb"
@@ -2678,7 +2678,7 @@ ID,Posted at,Screen name,Text
       it "outputs in long format" do
         @cli.timeline
         expect($stdout.string).to eq <<-eos
-ID                   Posted at     Screen name       Text
+Id                   Posted at     Screen name       Text
 4611686018427387904  Sep  7 08:35  @mutgoff          Happy Birthday @imdane. ...
  244111183165157376  Sep  7 08:33  @ironicsans       If you like good real-li...
  244110336414859264  Sep  7 08:30  @pat_shaughnessy  Something else to vote f...
@@ -2708,7 +2708,7 @@ ID                   Posted at     Screen name       Text
         it "reverses the order of the sort" do
           @cli.timeline
           expect($stdout.string).to eq <<-eos
-ID                   Posted at     Screen name       Text
+Id                   Posted at     Screen name       Text
  244099460672679938  Sep  7 07:47  @dwiskus          Gentlemen, you can't fig...
  244100411563339777  Sep  7 07:50  @sferik           @episod @twitterapi Did ...
  244102209942458368  Sep  7 07:57  @sferik           @episod @twitterapi now ...
@@ -2816,7 +2816,7 @@ ID                   Posted at     Screen name       Text
         expect($stdout.string.chomp).to eq "#sevenwordsaftersex  Walkman              Allen Iverson"
       end
     end
-    context "with a WOEID passed" do
+    context "with a WOEId passed" do
       before do
         stub_get("/1.1/trends/place.json").with(:query => {:id => "2487956"}).to_return(:body => fixture("trends.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
@@ -3020,7 +3020,7 @@ WOEID     Parent ID  Type       Name           Country
       it "outputs in CSV format" do
         @cli.users("sferik", "pengwynn")
         expect($stdout.string).to eq <<-eos
-ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name,Verified,Bio,Status,Location,URL
+Id,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name,Verified,Bio,Status,Location,URL
 14100886,2008-03-08 16:34:22 +0000,2012-07-07 20:33:19 +0000,6940,192,358,3427,5457,pengwynn,Wynn Netherland ⚡,false,"Christian, husband, father, GitHubber, Co-host of @thechangelog, Co-author of Sass, Compass, #CSS book  http://wynn.fm/sass-meap",@akosmasoftware Sass book! @hcatlin @nex3 are the brains behind Sass. :-),"Denton, TX",http://wynnnetherland.com
 7505382,2007-07-16 12:59:01 +0000,2012-07-08 18:29:20 +0000,7890,3755,118,212,2262,sferik,Erik Michaels-Ober,false,Vagabond.,@goldman You're near my home town! Say hi to Woodstock for me.,San Francisco,https://github.com/sferik
         eos
@@ -3033,7 +3033,7 @@ ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name
       it "outputs in long format" do
         @cli.users("sferik", "pengwynn")
         expect($stdout.string).to eq <<-eos
-ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
+Id        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
 14100886  Mar  8  2008  Jul  7 12:33       6940        192     358       3427...
  7505382  Jul 16  2007  Jul  8 10:29       7890       3755     118        212...
         eos
@@ -3150,7 +3150,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
     it "has the correct output" do
       @cli.whois("sferik")
       expect($stdout.string).to eq <<-eos
-ID           7505382
+Id           7505382
 Since        Jul 16  2007 (4 years ago)
 Last update  @goldman You're near my home town! Say hi to Woodstock for me. (7 months ago)
 Screen name  @sferik
@@ -3172,7 +3172,7 @@ URL          https://github.com/sferik
       it "has the correct output" do
         @cli.whois("sferik")
         expect($stdout.string).to eq <<-eos
-ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name,Verified,Bio,Status,Location,URL
+Id,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name,Verified,Bio,Status,Location,URL
 7505382,2007-07-16 12:59:01 +0000,2012-07-08 18:29:20 +0000,7890,3755,118,212,2262,sferik,Erik Michaels-Ober,false,Vagabond.,@goldman You're near my home town! Say hi to Woodstock for me.,San Francisco,https://github.com/sferik
         eos
       end
@@ -3194,7 +3194,7 @@ ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name
       it "outputs in long format" do
         @cli.whois("sferik")
         expect($stdout.string).to eq <<-eos
-ID       Since         Last tweeted at  Tweets  Favorites  Listed  Following ...
+Id       Since         Last tweeted at  Tweets  Favorites  Listed  Following ...
 7505382  Jul 16  2007  Jul  8 10:29       7890       3755     118        212 ...
         eos
       end

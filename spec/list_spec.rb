@@ -92,7 +92,7 @@ describe T::List do
     it "has the correct output" do
       @list.information("presidents")
       expect($stdout.string).to eq <<-eos
-ID           8863586
+Id           8863586
 Description  Presidents of the United States of America
 Slug         presidents
 Screen name  @sferik
@@ -127,7 +127,7 @@ URL          https://twitter.com/sferik/presidents
       it "has the correct output" do
         @list.information("presidents")
         expect($stdout.string).to eq <<-eos
-ID,Description,Slug,Screen name,Created at,Members,Subscribers,Following,Mode,URL
+Id,Description,Slug,Screen name,Created at,Members,Subscribers,Following,Mode,URL
 8863586,Presidents of the United States of America,presidents,sferik,2010-03-15 12:10:13 +0000,2,1,false,public,https://twitter.com/sferik/presidents
         eos
       end
@@ -153,7 +153,7 @@ ID,Description,Slug,Screen name,Created at,Members,Subscribers,Following,Mode,UR
       it "outputs in CSV format" do
         @list.members("presidents")
         expect($stdout.string).to eq <<-eos
-ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name,Verified,Bio,Status,Location,URL
+Id,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name,Verified,Bio,Status,Location,URL
 14100886,2008-03-08 16:34:22 +0000,2012-07-07 20:33:19 +0000,6940,192,358,3427,5457,pengwynn,Wynn Netherland ⚡,false,"Christian, husband, father, GitHubber, Co-host of @thechangelog, Co-author of Sass, Compass, #CSS book  http://wynn.fm/sass-meap",@akosmasoftware Sass book! @hcatlin @nex3 are the brains behind Sass. :-),"Denton, TX",http://wynnnetherland.com
 7505382,2007-07-16 12:59:01 +0000,2012-07-08 18:29:20 +0000,7890,3755,118,212,2262,sferik,Erik Michaels-Ober,false,Vagabond.,@goldman You're near my home town! Say hi to Woodstock for me.,San Francisco,https://github.com/sferik
         eos
@@ -166,7 +166,7 @@ ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name
       it "outputs in long format" do
         @list.members("presidents")
         expect($stdout.string).to eq <<-eos
-ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
+Id        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
 14100886  Mar  8  2008  Jul  7 12:33       6940        192     358       3427...
  7505382  Jul 16  2007  Jul  8 10:29       7890       3755     118        212...
         eos
@@ -404,7 +404,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       it "outputs in long format" do
         @list.timeline("presidents")
         expect($stdout.string).to eq <<-eos
-ID,Posted at,Screen name,Text
+Id,Posted at,Screen name,Text
 4611686018427387904,2012-09-07 16:35:24 +0000,mutgoff,Happy Birthday @imdane. Watch out for those @rally pranksters!
 244111183165157376,2012-09-07 16:33:36 +0000,ironicsans,"If you like good real-life stories, check out @NarrativelyNY's just-launched site http://t.co/wiUL07jE (and also visit http://t.co/ZoyQxqWA)"
 244110336414859264,2012-09-07 16:30:14 +0000,pat_shaughnessy,"Something else to vote for: ""New Rails workshops to bring more women into the Boston software scene"" http://t.co/eNBuckHc /cc @bostonrb"
@@ -435,7 +435,7 @@ ID,Posted at,Screen name,Text
       it "outputs in long format" do
         @list.timeline("presidents")
         expect($stdout.string).to eq <<-eos
-ID                   Posted at     Screen name       Text
+Id                   Posted at     Screen name       Text
 4611686018427387904  Sep  7 08:35  @mutgoff          Happy Birthday @imdane. ...
  244111183165157376  Sep  7 08:33  @ironicsans       If you like good real-li...
  244110336414859264  Sep  7 08:30  @pat_shaughnessy  Something else to vote f...
@@ -465,7 +465,7 @@ ID                   Posted at     Screen name       Text
         it "reverses the order of the sort" do
           @list.timeline("presidents")
           expect($stdout.string).to eq <<-eos
-ID                   Posted at     Screen name       Text
+Id                   Posted at     Screen name       Text
  244099460672679938  Sep  7 07:47  @dwiskus          Gentlemen, you can't fig...
  244100411563339777  Sep  7 07:50  @sferik           @episod @twitterapi Did ...
  244102209942458368  Sep  7 07:57  @sferik           @episod @twitterapi now ...

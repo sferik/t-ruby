@@ -433,7 +433,7 @@ describe T::Search do
       it "outputs in CSV format" do
         @search.all("twitter")
         expect($stdout.string).to eq <<-eos
-ID,Posted at,Screen name,Text
+Id,Posted at,Screen name,Text
 267024754278539266,2012-11-09 22:03:57 +0000,saintsday998,"Murray Energy Corp. Obama Reelection, Announces Layoffs http://t.co/D1OPtKnw via @HuffPostBiz MAYBE  his workers can do something for him ?"
 267024753326448640,2012-11-09 22:03:56 +0000,thlyons,Obama Administration Extends Deadline For State Exchanges - Kaiser Health News http://t.co/dyaM4jF1
 267024753292869634,2012-11-09 22:03:56 +0000,justmaryse,Fox News accidentally insults the intelligence of every Mitt Romney voter in the country. http://t.co/sQbt16RF via @HappyPlace #awkward
@@ -552,7 +552,7 @@ http://t.co/erdKx6HD"
       it "outputs in long format" do
         @search.all("twitter")
         expect($stdout.string).to eq <<-eos
-ID                  Posted at     Screen name       Text
+Id                  Posted at     Screen name       Text
 267024754278539266  Nov  9 14:03  @saintsday998     Murray Energy Corp. Obama...
 267024753326448640  Nov  9 14:03  @thlyons          Obama Administration Exte...
 267024753292869634  Nov  9 14:03  @justmaryse       Fox News accidentally ins...
@@ -723,7 +723,7 @@ ID                  Posted at     Screen name       Text
       it "outputs in CSV format" do
         @search.favorites("twitter")
         expect($stdout.string).to eq <<-eos
-ID,Posted at,Screen name,Text
+Id,Posted at,Screen name,Text
 244102209942458368,2012-09-07 15:57:56 +0000,sferik,"@episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem to be missing ""1.1"" from the URL."
 244100411563339777,2012-09-07 15:50:47 +0000,sferik,@episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
         eos
@@ -736,7 +736,7 @@ ID,Posted at,Screen name,Text
       it "outputs in long format" do
         @search.favorites("twitter")
         expect($stdout.string).to eq <<-eos
-ID                  Posted at     Screen name  Text
+Id                  Posted at     Screen name  Text
 244102209942458368  Sep  7 07:57  @sferik      @episod @twitterapi now https:...
 244100411563339777  Sep  7 07:50  @sferik      @episod @twitterapi Did you ca...
         eos
@@ -844,7 +844,7 @@ ID                  Posted at     Screen name  Text
       it "outputs in CSV format" do
         @search.mentions("twitter")
         expect($stdout.string).to eq <<-eos
-ID,Posted at,Screen name,Text
+Id,Posted at,Screen name,Text
 244102209942458368,2012-09-07 15:57:56 +0000,sferik,"@episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem to be missing ""1.1"" from the URL."
 244100411563339777,2012-09-07 15:50:47 +0000,sferik,@episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
         eos
@@ -857,7 +857,7 @@ ID,Posted at,Screen name,Text
       it "outputs in long format" do
         @search.mentions("twitter")
         expect($stdout.string).to eq <<-eos
-ID                  Posted at     Screen name  Text
+Id                  Posted at     Screen name  Text
 244102209942458368  Sep  7 07:57  @sferik      @episod @twitterapi now https:...
 244100411563339777  Sep  7 07:50  @sferik      @episod @twitterapi Did you ca...
         eos
@@ -918,7 +918,7 @@ ID                  Posted at     Screen name  Text
       it "outputs in CSV format" do
         @search.list("presidents", "twitter")
         expect($stdout.string).to eq <<-eos
-ID,Posted at,Screen name,Text
+Id,Posted at,Screen name,Text
 244102209942458368,2012-09-07 15:57:56 +0000,sferik,"@episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem to be missing ""1.1"" from the URL."
 244100411563339777,2012-09-07 15:50:47 +0000,sferik,@episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
         eos
@@ -931,7 +931,7 @@ ID,Posted at,Screen name,Text
       it "outputs in long format" do
         @search.list("presidents", "twitter")
         expect($stdout.string).to eq <<-eos
-ID                  Posted at     Screen name  Text
+Id                  Posted at     Screen name  Text
 244102209942458368  Sep  7 07:57  @sferik      @episod @twitterapi now https:...
 244100411563339777  Sep  7 07:50  @sferik      @episod @twitterapi Did you ca...
         eos
@@ -1006,7 +1006,7 @@ ID                  Posted at     Screen name  Text
       it "outputs in CSV format" do
         @search.retweets("mosaic")
         expect($stdout.string).to eq <<-eos
-ID,Posted at,Screen name,Text
+Id,Posted at,Screen name,Text
 244108728834592770,2012-09-07 16:23:50 +0000,calebelston,RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
         eos
       end
@@ -1018,7 +1018,7 @@ ID,Posted at,Screen name,Text
       it "outputs in long format" do
         @search.retweets("mosaic")
         expect($stdout.string).to eq <<-eos
-ID                  Posted at     Screen name   Text
+Id                  Posted at     Screen name   Text
 244108728834592770  Sep  7 08:23  @calebelston  RT @olivercameron: Mosaic loo...
         eos
       end
@@ -1117,7 +1117,7 @@ ID                  Posted at     Screen name   Text
       it "outputs in CSV format" do
         @search.timeline("twitter")
         expect($stdout.string).to eq <<-eos
-ID,Posted at,Screen name,Text
+Id,Posted at,Screen name,Text
 244102209942458368,2012-09-07 15:57:56 +0000,sferik,"@episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem to be missing ""1.1"" from the URL."
 244100411563339777,2012-09-07 15:50:47 +0000,sferik,@episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
         eos
@@ -1154,7 +1154,7 @@ ID,Posted at,Screen name,Text
       it "outputs in long format" do
         @search.timeline("twitter")
         expect($stdout.string).to eq <<-eos
-ID                  Posted at     Screen name  Text
+Id                  Posted at     Screen name  Text
 244102209942458368  Sep  7 07:57  @sferik      @episod @twitterapi now https:...
 244100411563339777  Sep  7 07:50  @sferik      @episod @twitterapi Did you ca...
         eos
@@ -1213,7 +1213,7 @@ ID                  Posted at     Screen name  Text
         it "outputs in CSV format" do
           @search.timeline("sferik", "twitter")
           expect($stdout.string).to eq <<-eos
-ID,Posted at,Screen name,Text
+Id,Posted at,Screen name,Text
 244102209942458368,2012-09-07 15:57:56 +0000,sferik,"@episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem to be missing ""1.1"" from the URL."
 244100411563339777,2012-09-07 15:50:47 +0000,sferik,@episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
           eos
@@ -1238,7 +1238,7 @@ ID,Posted at,Screen name,Text
         it "outputs in long format" do
           @search.timeline("sferik", "twitter")
           expect($stdout.string).to eq <<-eos
-ID                  Posted at     Screen name  Text
+Id                  Posted at     Screen name  Text
 244102209942458368  Sep  7 07:57  @sferik      @episod @twitterapi now https:...
 244100411563339777  Sep  7 07:50  @sferik      @episod @twitterapi Did you ca...
           eos
@@ -1279,7 +1279,7 @@ ID                  Posted at     Screen name  Text
       it "outputs in CSV format" do
         @search.users("Erik")
         expect($stdout.string).to eq <<-eos
-ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name,Verified,Bio,Status,Location,URL
+Id,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name,Verified,Bio,Status,Location,URL
 14100886,2008-03-08 16:34:22 +0000,2012-07-07 20:33:19 +0000,6940,192,358,3427,5457,pengwynn,Wynn Netherland ⚡,false,"Christian, husband, father, GitHubber, Co-host of @thechangelog, Co-author of Sass, Compass, #CSS book  http://wynn.fm/sass-meap",@akosmasoftware Sass book! @hcatlin @nex3 are the brains behind Sass. :-),"Denton, TX",http://wynnnetherland.com
 7505382,2007-07-16 12:59:01 +0000,2012-07-08 18:29:20 +0000,7890,3755,118,212,2262,sferik,Erik Michaels-Ober,false,Vagabond.,@goldman You're near my home town! Say hi to Woodstock for me.,San Francisco,https://github.com/sferik
         eos
@@ -1292,7 +1292,7 @@ ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name
       it "outputs in long format" do
         @search.users("Erik")
         expect($stdout.string).to eq <<-eos
-ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
+Id        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
 14100886  Mar  8  2008  Jul  7 12:33       6940        192     358       3427...
  7505382  Jul 16  2007  Jul  8 10:29       7890       3755     118        212...
         eos

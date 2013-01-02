@@ -62,11 +62,11 @@ module T
       if options['csv']
         require 'csv'
         require 'fastercsv' unless Array.new.respond_to?(:to_csv)
-        say ["ID", "Description", "Slug", "Screen name", "Created at", "Members", "Subscribers", "Following", "Mode", "URL"].to_csv
+        say ["Id", "Description", "Slug", "Screen name", "Created at", "Members", "Subscribers", "Following", "Mode", "URL"].to_csv
         say [list.id, list.description, list.slug, list.user.screen_name, csv_formatted_time(list), list.member_count, list.subscriber_count, list.following?, list.mode, "https://twitter.com#{list.uri}"].to_csv
       else
         array = []
-        array << ["ID", list.id.to_s]
+        array << ["Id", list.id.to_s]
         array << ["Description", list.description] unless list.description.nil?
         array << ["Slug", list.slug]
         array << ["Screen name", "@#{list.user.screen_name}"]

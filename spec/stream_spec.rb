@@ -34,7 +34,7 @@ describe T::Stream do
         @tweetstream_client.stub(:on_timeline_status).and_return
         @tweetstream_client.stub(:on_inited).and_yield
 
-        @stream.should_receive(:say).with("ID,Posted at,Screen name,Text\n")
+        @stream.should_receive(:say).with("Id,Posted at,Screen name,Text\n")
         @stream.all
       end
 
@@ -249,7 +249,7 @@ describe T::Stream do
         @tweetstream_client.stub(:on_timeline_status).and_return
         @tweetstream_client.stub(:on_inited).and_yield
 
-        @stream.should_receive(:say).with("ID,Posted at,Screen name,Text\n")
+        @stream.should_receive(:say).with("Id,Posted at,Screen name,Text\n")
         @stream.users('123')
       end
 

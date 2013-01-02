@@ -23,7 +23,7 @@ module T
     include T::Utils
 
     DEFAULT_NUM_RESULTS = 20
-    DIRECT_MESSAGE_HEADINGS = ["ID", "Posted at", "Screen name", "Text"]
+    DIRECT_MESSAGE_HEADINGS = ["Id", "Posted at", "Screen name", "Text"]
     TREND_HEADINGS = ["WOEID", "Parent ID", "Type", "Name", "Country"]
 
     check_unknown_options!
@@ -615,7 +615,7 @@ module T
       elsif status.geo
         reverse_geocode(status.geo)
       end
-      status_headings = ["ID", "Posted at", "Screen name", "Text", "Retweets", "Favorites", "Replies", "Source", "Location"]
+      status_headings = ["Id", "Posted at", "Screen name", "Text", "Retweets", "Favorites", "Replies", "Source", "Location"]
       if options['csv']
         require 'csv'
         require 'fastercsv' unless Array.new.respond_to?(:to_csv)
@@ -627,7 +627,7 @@ module T
         print_table_with_headings([array], status_headings, format)
       else
         array = []
-        array << ["ID", status.id.to_s]
+        array << ["Id", status.id.to_s]
         array << ["Text", decode_full_text(status).gsub(/\n+/, ' ')]
         array << ["Screen name", "@#{status.from_user}"]
         array << ["Posted at", "#{ls_formatted_time(status)} (#{time_ago_in_words(status.created_at)} ago)"]
@@ -797,7 +797,7 @@ module T
         print_users([user])
       else
         array = []
-        array << ["ID", user.id.to_s]
+        array << ["Id", user.id.to_s]
         array << ["Since", "#{ls_formatted_time(user)} (#{time_ago_in_words(user.created_at)} ago)"]
         array << ["Last update", "#{decode_full_text(user.status).gsub(/\n+/, ' ')} (#{time_ago_in_words(user.status.created_at)} ago)"] unless user.status.nil?
         array << ["Screen name", "@#{user.screen_name}"]

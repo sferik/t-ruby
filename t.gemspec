@@ -13,7 +13,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'tweetstream', '~> 2.3'
   spec.add_dependency 'twitter', '~> 4.4'
   spec.add_development_dependency 'pry'
-  spec.add_development_dependency 'pry-debugger'
   spec.add_development_dependency 'simplecov'
   spec.author = "Erik Michaels-Ober"
   spec.bindir = 'bin'

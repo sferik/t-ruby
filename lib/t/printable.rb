@@ -1,8 +1,8 @@
 module T
   module Printable
     LIST_HEADINGS = ["ID", "Created at", "Screen name", "Slug", "Members", "Subscribers", "Mode", "Description"]
-    STATUS_HEADINGS = ["ID", "Posted at", "Screen name", "Text"]
-    USER_HEADINGS = ["ID", "Since", "Last tweeted at", "Tweets", "Favorites", "Listed", "Following", "Followers", "Screen name", "Name"]
+    TWEET_HEADINGS = ["ID", "Posted at", "Screen name", "Text"]
+    USER_HEADINGS = ["ID", "Since", "Last tweeted at", "Tweets", "Favorites", "Listed", "Following", "Followers", "Screen name", "Name", "Verified", "Bio", "Status", "Location", "URL"]
     MONTH_IN_SECONDS = 2592000
 
   private
@@ -11,13 +11,12 @@ module T
       [list.id, ls_formatted_time(list), "@#{list.user.screen_name}", list.slug, list.member_count, list.subscriber_count, list.mode, list.description]
     end
 
-    def build_long_status(status)
-      require 'htmlentities'
-      [status.id, ls_formatted_time(status), "@#{status.from_user}", HTMLEntities.new.decode(status.full_text).gsub(/\n+/, ' ')]
+    def build_long_tweet(tweet)
+      [tweet.id, ls_formatted_time(tweet), "@#{tweet.from_user}", decode_full_text(tweet, options['decode_urls']).gsub(/\n+/, ' ')]
     end
 
     def build_long_user(user)
-      [user.id, ls_formatted_time(user), ls_formatted_time(user.status), user.statuses_count, user.favourites_count, user.listed_count, user.friends_count, user.followers_count, "@#{user.screen_name}", user.name]
+      [user.id, ls_formatted_time(user), ls_formatted_time(user.status), user.statuses_count, user.favourites_count, user.listed_count, user.friends_count, user.followers_count, "@#{user.screen_name}", user.name, user.verified? ? "Yes" : "No", decode_full_text(user.status, options['decode_urls']).gsub(/\n+/, ' '), user.location, user.url]
     end
 
     def csv_formatted_time(object, key=:created_at)
@@ -42,17 +41,17 @@ module T
       say [list.id, csv_formatted_time(list), list.user.screen_name, list.slug, list.member_count, list.subscriber_count, list.mode, list.description].to_csv
     end
 
-    def print_csv_status(status)
+    def print_csv_tweet(tweet)
       require 'csv'
       require 'fastercsv' unless Array.new.respond_to?(:to_csv)
       require 'htmlentities'
-      say [status.id, csv_formatted_time(status), status.from_user, HTMLEntities.new.decode(status.full_text)].to_csv
+      say [tweet.id, csv_formatted_time(tweet), tweet.from_user, decode_full_text(tweet)].to_csv
     end
 
     def print_csv_user(user)
       require 'csv'
       require 'fastercsv' unless Array.new.respond_to?(:to_csv)
-      say [user.id, csv_formatted_time(user), csv_formatted_time(user.status), user.statuses_count, user.favourites_count, user.listed_count, user.friends_count, user.followers_count, user.screen_name, user.name].to_csv
+      say [user.id, csv_formatted_time(user), csv_formatted_time(user.status), user.statuses_count, user.favourites_count, user.listed_count, user.friends_count, user.followers_count, user.screen_name, user.name, user.verified?, user.description, user.status.text, user.location, user.url].to_csv
     end
 
     def print_lists(lists)
@@ -125,24 +124,24 @@ module T
       say
     end
 
-    def print_statuses(statuses)
-      statuses.reverse! if options['reverse']
+    def print_tweets(tweets)
+      tweets.reverse! if options['reverse']
       if options['csv']
         require 'csv'
         require 'fastercsv' unless Array.new.respond_to?(:to_csv)
-        say STATUS_HEADINGS.to_csv unless statuses.empty?
-        statuses.each do |status|
-          print_csv_status(status)
+        say TWEET_HEADINGS.to_csv unless tweets.empty?
+        tweets.each do |tweet|
+          print_csv_tweet(tweet)
         end
       elsif options['long']
-        array = statuses.map do |status|
-          build_long_status(status)
+        array = tweets.map do |tweet|
+          build_long_tweet(tweet)
         end
-        format = options['format'] || STATUS_HEADINGS.size.times.map{"%s"}
-        print_table_with_headings(array, STATUS_HEADINGS, format)
+        format = options['format'] || TWEET_HEADINGS.size.times.map{"%s"}
+        print_table_with_headings(array, TWEET_HEADINGS, format)
       else
-        statuses.each do |status|
-          print_message(status.user.screen_name, status.full_text)
+        tweets.each do |tweet|
+          print_message(tweet.user.screen_name, decode_urls(tweet.full_text, options['decode_urls'] ? tweet.urls : nil))
         end
       end
     end
@@ -150,17 +149,17 @@ module T
     def print_users(users)
       users = case options['sort']
       when 'favorites'
-        users.sort_by{|user| user.favourites_count}
+        users.sort_by{|user| user.favourites_count.to_i}
       when 'followers'
-        users.sort_by{|user| user.followers_count}
+        users.sort_by{|user| user.followers_count.to_i}
       when 'friends'
-        users.sort_by{|user| user.friends_count}
+        users.sort_by{|user| user.friends_count.to_i}
       when 'listed'
-        users.sort_by{|user| user.listed_count}
+        users.sort_by{|user| user.listed_count.to_i}
       when 'since'
         users.sort_by{|user| user.created_at}
       when 'tweets'
-        users.sort_by{|user| user.statuses_count}
+        users.sort_by{|user| user.statuses_count.to_i}
       when 'tweeted'
         users.sort_by{|user| user.status.created_at rescue Time.at(0)}
       else

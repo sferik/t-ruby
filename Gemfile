@@ -1,11 +1,16 @@
 source 'https://rubygems.org'
 
-platforms :jruby do
-  gem 'jruby-openssl', '~> 0.7'
+gem 'rake'
+gem 'jruby-openssl', :platforms => :jruby
+
+group :development do
+  gem 'pry-debugger', :platforms => :mri
 end
 
-platforms :mri do
-  gem 'ruby-prof'
+group :test do
+  gem 'rspec'
+  gem 'timecop'
+  gem 'webmock'
 end
 
 gemspec

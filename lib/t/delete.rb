@@ -11,13 +11,18 @@ module T
 
     check_unknown_options!
 
+    class_option "host", :aliases => "-H", :type => :string, :default => T::Requestable::DEFAULT_HOST, :desc => "Twitter API server"
+    class_option "no-color", :aliases => "-N", :type => :boolean, :desc => "Disable colorization in output"
+    class_option "no-ssl", :aliases => "-U", :type => :boolean, :default => false, :desc => "Disable SSL"
+    class_option "profile", :aliases => "-P", :type => :string, :default => File.join(File.expand_path("~"), T::RCFile::FILE_NAME), :desc => "Path to RC file", :banner => "FILE"
+
     def initialize(*)
       @rcfile = T::RCFile.instance
       super
     end
 
     desc "block USER [USER...]", "Unblock users."
-    method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
+    method_option "id", :aliases => "-i", :type => :boolean, :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     method_option "force", :aliases => "-f", :type => :boolean, :default => false
     def block(user, *users)
       users, number = fetch_users(users.unshift(user), options) do |users|
@@ -51,15 +56,15 @@ module T
     end
     map %w(d m) => :dm
 
-    desc "favorite STATUS_ID [STATUS_ID...]", "Delete favorites."
+    desc "favorite TWEET_ID [TWEET_ID...]", "Delete favorites."
     method_option "force", :aliases => "-f", :type => :boolean, :default => false
     def favorite(status_id, *status_ids)
       status_ids.unshift(status_id)
       require 't/core_ext/string'
       status_ids.map!(&:to_i)
       if options['force']
-        statuses = client.unfavorite(status_ids)
-        statuses.each do |status|
+        tweets = client.unfavorite(status_ids)
+        tweets.each do |status|
           say "@#{@rcfile.active_profile[0]} unfavorited @#{status.from_user}'s status: \"#{status.full_text}\""
         end
       else
@@ -75,7 +80,7 @@ module T
 
     desc "list LIST", "Delete a list."
     method_option "force", :aliases => "-f", :type => :boolean, :default => false
-    method_option "id", :aliases => "-i", :type => "boolean", :default => false, :desc => "Specify list via ID instead of slug."
+    method_option "id", :aliases => "-i", :type => :boolean, :default => false, :desc => "Specify list via ID instead of slug."
     def list(list)
       if options['id']
         require 't/core_ext/string'
@@ -89,23 +94,23 @@ module T
       say "@#{@rcfile.active_profile[0]} deleted the list \"#{list.name}\"."
     end
 
-    desc "status STATUS_ID [STATUS_ID...]", "Delete Tweets."
+    desc "status TWEET_ID [TWEET_ID...]", "Delete Tweets."
     method_option "force", :aliases => "-f", :type => :boolean, :default => false
     def status(status_id, *status_ids)
       status_ids.unshift(status_id)
       require 't/core_ext/string'
       status_ids.map!(&:to_i)
       if options['force']
-        statuses = client.status_destroy(status_ids, :trim_user => true)
-        statuses.each do |status|
-          say "@#{@rcfile.active_profile[0]} deleted the status: \"#{status.full_text}\""
+        tweets = client.status_destroy(status_ids, :trim_user => true)
+        tweets.each do |status|
+          say "@#{@rcfile.active_profile[0]} deleted the Tweet: \"#{status.full_text}\""
         end
       else
         status_ids.each do |status_id|
           status = client.status(status_id, :include_my_retweet => false, :trim_user => true)
           return unless yes? "Are you sure you want to permanently delete @#{status.from_user}'s status: \"#{status.full_text}\"? [y/N]"
           client.status_destroy(status_id, :trim_user => true)
-          say "@#{@rcfile.active_profile[0]} deleted the status: \"#{status.full_text}\""
+          say "@#{@rcfile.active_profile[0]} deleted the Tweet: \"#{status.full_text}\""
         end
       end
     end

@@ -5,13 +5,21 @@ require 't/rcfile'
 module T
   class Stream < Thor
     include T::Printable
+    include T::Utils
 
-    STATUS_HEADINGS_FORMATTING = [
+    TWEET_HEADINGS_FORMATTING = [
       "%-18s",  # Add padding to maximum length of a Tweet ID
       "%-12s",  # Add padding to length of a timestamp formatted with ls_formatted_time
       "%-20s",  # Add padding to maximum length of a Twitter screen name
       "%s",     # Last element does not need special formatting
     ]
+
+    check_unknown_options!
+
+    class_option "host", :aliases => "-H", :type => :string, :default => T::Requestable::DEFAULT_HOST, :desc => "Twitter API server"
+    class_option "no-color", :aliases => "-N", :type => :boolean, :desc => "Disable colorization in output"
+    class_option "no-ssl", :aliases => "-U", :type => :boolean, :default => false, :desc => "Disable SSL"
+    class_option "profile", :aliases => "-P", :type => :string, :default => File.join(File.expand_path("~"), T::RCFile::FILE_NAME), :desc => "Path to RC file", :banner => "FILE"
 
     def initialize(*)
       @rcfile = T::RCFile.instance
@@ -27,24 +35,24 @@ module T
         if options['csv']
           require 'csv'
           require 'fastercsv' unless Array.new.respond_to?(:to_csv)
-          say STATUS_HEADINGS.to_csv
+          say TWEET_HEADINGS.to_csv
         elsif options['long'] && STDOUT.tty?
-          headings = STATUS_HEADINGS.size.times.map do |index|
-            STATUS_HEADINGS_FORMATTING[index] % STATUS_HEADINGS[index]
+          headings = TWEET_HEADINGS.size.times.map do |index|
+            TWEET_HEADINGS_FORMATTING[index] % TWEET_HEADINGS[index]
           end
           print_table([headings])
         end
       end
-      client.on_timeline_status do |status|
+      client.on_timeline_status do |tweet|
         if options['csv']
-          print_csv_status(status)
+          print_csv_tweet(tweet)
         elsif options['long']
-          array = build_long_status(status).each_with_index.map do |element, index|
-            STATUS_HEADINGS_FORMATTING[index] % element
+          array = build_long_tweet(tweet).each_with_index.map do |element, index|
+            TWEET_HEADINGS_FORMATTING[index] % element
           end
           print_table([array], :truncate => STDOUT.tty?)
         else
-          print_message(status.user.screen_name, status.text)
+          print_message(tweet.user.screen_name, tweet.text)
         end
       end
       client.sample
@@ -53,8 +61,8 @@ module T
     desc "matrix", "Unfortunately, no one can be told what the Matrix is. You have to see it for yourself."
     def matrix
       require 'tweetstream'
-      client.on_timeline_status do |status|
-        say(status.full_text.gsub("\n", ''), [:bold, :green, :on_black])
+      client.on_timeline_status do |tweet|
+        say(tweet.full_text.gsub("\n", ''), [:bold, :green, :on_black])
       end
       client.sample
     end
@@ -70,19 +78,19 @@ module T
         search = T::Search.new
         search.options = search.options.merge(options)
         search.options = search.options.merge(:reverse => true)
-        search.options = search.options.merge(:format => STATUS_HEADINGS_FORMATTING)
+        search.options = search.options.merge(:format => TWEET_HEADINGS_FORMATTING)
         search.all(keywords.join(' OR '))
       end
-      client.on_timeline_status do |status|
+      client.on_timeline_status do |tweet|
         if options['csv']
-          print_csv_status(status)
+          print_csv_tweet(tweet)
         elsif options['long']
-          array = build_long_status(status).each_with_index.map do |element, index|
-            STATUS_HEADINGS_FORMATTING[index] % element
+          array = build_long_tweet(tweet).each_with_index.map do |element, index|
+            TWEET_HEADINGS_FORMATTING[index] % element
           end
           print_table([array], :truncate => STDOUT.tty?)
         else
-          print_message(status.user.screen_name, status.text)
+          print_message(tweet.user.screen_name, tweet.text)
         end
       end
       client.track(keywords)
@@ -98,19 +106,19 @@ module T
         cli = T::CLI.new
         cli.options = cli.options.merge(options)
         cli.options = cli.options.merge(:reverse => true)
-        cli.options = cli.options.merge(:format => STATUS_HEADINGS_FORMATTING)
+        cli.options = cli.options.merge(:format => TWEET_HEADINGS_FORMATTING)
         cli.timeline
       end
-      client.on_timeline_status do |status|
+      client.on_timeline_status do |tweet|
         if options['csv']
-          print_csv_status(status)
+          print_csv_tweet(tweet)
         elsif options['long']
-          array = build_long_status(status).each_with_index.map do |element, index|
-            STATUS_HEADINGS_FORMATTING[index] % element
+          array = build_long_tweet(tweet).each_with_index.map do |element, index|
+            TWEET_HEADINGS_FORMATTING[index] % element
           end
           print_table([array], :truncate => STDOUT.tty?)
         else
-          print_message(status.user.screen_name, status.text)
+          print_message(tweet.user.screen_name, tweet.text)
         end
       end
       client.userstream
@@ -127,24 +135,24 @@ module T
         if options['csv']
           require 'csv'
           require 'fastercsv' unless Array.new.respond_to?(:to_csv)
-          say STATUS_HEADINGS.to_csv
+          say TWEET_HEADINGS.to_csv
         elsif options['long'] && STDOUT.tty?
-          headings = STATUS_HEADINGS.size.times.map do |index|
-            STATUS_HEADINGS_FORMATTING[index] % STATUS_HEADINGS[index]
+          headings = TWEET_HEADINGS.size.times.map do |index|
+            TWEET_HEADINGS_FORMATTING[index] % TWEET_HEADINGS[index]
           end
           print_table([headings])
         end
       end
-      client.on_timeline_status do |status|
+      client.on_timeline_status do |tweet|
         if options['csv']
-          print_csv_status(status)
+          print_csv_tweet(tweet)
         elsif options['long']
-          array = build_long_status(status).each_with_index.map do |element, index|
-            STATUS_HEADINGS_FORMATTING[index] % element
+          array = build_long_tweet(tweet).each_with_index.map do |element, index|
+            TWEET_HEADINGS_FORMATTING[index] % element
           end
           print_table([array], :truncate => STDOUT.tty?)
         else
-          print_message(status.user.screen_name, status.text)
+          print_message(tweet.user.screen_name, tweet.text)
         end
       end
       client.follow(user_ids)

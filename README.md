@@ -5,9 +5,10 @@
 # Twitter CLI
 [![Build Status](https://secure.travis-ci.org/sferik/t.png?branch=master)][travis]
 [![Dependency Status](https://gemnasium.com/sferik/t.png?travis)][gemnasium]
-[![Click here to make a donation to T](http://www.pledgie.com/campaigns/17330.png)][pledgie]
+[![Pledgie](http://www.pledgie.com/campaigns/17330.png)][pledgie]
+[![Flattr](http://api.flattr.com/button/flattr-badge-large.png)][flattr]
 
-### A command-line power tool for Twitter.
+#### A command-line power tool for Twitter.
 
 The CLI takes syntactic cues from the [Twitter SMS commands][sms], however it
 offers vastly more commands and capabilities than are available via SMS.
@@ -15,6 +16,7 @@ offers vastly more commands and capabilities than are available via SMS.
 [travis]: http://travis-ci.org/sferik/t
 [gemnasium]: https://gemnasium.com/sferik/t
 [pledgie]: http://www.pledgie.com/campaigns/17330
+[flattr]: http://flattr.com/thing/815001/sferikt-on-GitHub
 [sms]: https://support.twitter.com/articles/14020-twitter-sms-command
 
 ## Installation
@@ -44,7 +46,7 @@ Once you've verified that Ruby is installed:
 
 ## Configuration
 
-Twitter requires OAuth for most of its functionality, so you'll need a
+Twitter API v1.1 requires OAuth for all of its functionality, so you'll need a
 registered Twitter application. If you've never registered a Twitter
 application before, it's easy! Just sign-in using your Twitter account and the
 fill out the short form at <http://dev.twitter.com/apps/new>. If you've
@@ -97,7 +99,7 @@ TASK` to get help for a specific command.
 
     t help
 
-### Update your status
+#### Update your status
     t update "I'm tweeting from the command line. Isn't that special?"
 
 **Note**: If your tweet includes special characters (e.g. `!`), make sure to
@@ -105,16 +107,16 @@ wrap it in single quotes instead of double quotes, so those characters are not
 interpreted by your shell. (However, if you use single quotes, your Tweet
 obviously can't contain any apostrophes.)
 
-### Retrieve detailed information about a Twitter user
+#### Retrieve detailed information about a Twitter user
     t whois @sferik
 
-### Retrieve stats for multiple users
+#### Retrieve stats for multiple users
     t users -l @sferik @gem
 
-### Follow users
+#### Follow users
     t follow @sferik @gem
 
-### Check whether one user follows another
+#### Check whether one user follows another
     t does_follow @ev @sferik
 
 **Note**: If the first user does not follow the second, `t` will exit with a
@@ -123,65 +125,65 @@ example, send a user a direct message only if he already follows you:
 
     t does_follow @ev && t dm @ev "What's up, bro?"
 
-### Create a list for everyone you're following
+#### Create a list for everyone you're following
     t list create following-`date "+%Y-%m-%d"`
 
-### Add everyone you're following to that list (up to 500 users)
+#### Add everyone you're following to that list (up to 500 users)
     t followings | xargs t list add following-`date "+%Y-%m-%d"`
 
-### List all the members of a list, in long format
+#### List all the members of a list, in long format
     t list members -l following-`date "+%Y-%m-%d"`
 
-### List all your lists, in long format
+#### List all your lists, in long format
     t lists -l
 
-### List all your friends, in long format, ordered by number of followers
+#### List all your friends, in long format, ordered by number of followers
     t friends -l --sort=followers
 
-### List all your leaders (people you follow who don't follow you back)
+#### List all your leaders (people you follow who don't follow you back)
     t leaders -l --sort=followers
 
-### Unfollow everyone you follow who doesn't follow you back
+#### Unfollow everyone you follow who doesn't follow you back
     t leaders | xargs t unfollow
 
-### Unfollow 10 people who haven't tweeted in the longest time
-    t followings -l --sort=tweeted | head -10 | awk '{print $1}' | xargs t unfollow
+#### Unfollow 10 people who haven't tweeted in the longest time
+    t followings -l --sort=tweets | head -10 | awk '{print $1}' | xargs t unfollow
 
-### Twitter roulette: randomly follow someone who follows you (who you don't already follow)
+#### Twitter roulette: randomly follow someone who follows you (who you don't already follow)
     t groupies | shuf | head -1 | xargs t follow
 
-### Favorite the last 10 tweets that mention you
+#### Favorite the last 10 tweets that mention you
     t mentions -n 10 -l | awk '{print $1}' | xargs t favorite
 
-### Output the last 200 tweets in your timeline to a CSV file
+#### Output the last 200 tweets in your timeline to a CSV file
     t timeline -n 200 --csv > timeline.csv
 
-### Start streaming your timeline (Control-C to stop)
+#### Start streaming your timeline (Control-C to stop)
     t stream timeline
 
-### Count the number of employees who work for Twitter
+#### Count the number of employees who work for Twitter
     t list members twitter team | wc -l
 
-### Search Twitter for the 20 most recent Tweets that match a specified query
+#### Search Twitter for the 20 most recent Tweets that match a specified query
     t search all "query"
 
-### Download the latest Linux kernel via BitTorrent (possibly NSFW, depending where you work)
+#### Download the latest Linux kernel via BitTorrent (possibly NSFW, depending where you work)
     t search all "lang:en filter:links linux torrent" -n 1 | grep -o "http://t.co/[0-9A-Za-z]*" | xargs open
 
-### Search Tweets you've favorited that match a specified query
+#### Search Tweets you've favorited that match a specified query
     t search favorites "query"
 
-### Search Tweets mentioning you that match a specified query
+#### Search Tweets mentioning you that match a specified query
     t search mentions "query"
 
-### Search Tweets you've retweeted that match a specified query
+#### Search Tweets you've retweeted that match a specified query
     t search retweets "query"
 
-### Search Tweets in your timeline that match a specified query
+#### Search Tweets in your timeline that match a specified query
     t search timeline "query"
 
-### Search Tweets in another user's timeline that match a specified query
-    t search user @sferik "query"
+#### Search Tweets in another user's timeline that match a specified query
+    t search timeline @sferik "query"
 
 ## Features
 * Deep search: Instead of using the Twitter Search API, [which only only goes
@@ -197,7 +199,7 @@ example, send a user a direct message only if he already follows you:
 
 [search]: https://dev.twitter.com/docs/using-search
 
-# Using T for Backup
+## Using T for Backup
 
 [@jphpsf][jphpsf] wrote a [blog post][blog] explaining how to use `t` to backup
 your Twitter account.
@@ -240,6 +242,13 @@ used by `t`:
 ![Timeline](https://github.com/sferik/t/raw/master/screenshots/timeline.png)
 ![List](https://github.com/sferik/t/raw/master/screenshots/list.png)
 
+## Shell completion
+If you're running [Zsh][zsh], you can source the [bundled completion file][completion]
+to get shell completion for `t` commands, subcommands, and flags.
+
+Don't run Zsh? Why not [contribute][] completion support for your favorite
+shell?
+
 ## History
 The [twitter gem][gem] previously contained a command-line interface, up until
 version 0.5.0, when it was [removed][]. This project is offered as a sucessor
@@ -249,54 +258,6 @@ the original code.
 [gem]: https://rubygems.org/gems/twitter
 [removed]: https://github.com/jnunemaker/twitter/commit/dd2445e3e2c97f38b28a3f32ea902536b3897adf
 ![History](https://github.com/sferik/t/raw/master/screenshots/history.png)
-
-## Contributing
-In the spirit of [free software][free-sw], **everyone** is encouraged to help
-improve this project.
-
-[free-sw]: http://www.fsf.org/licensing/essays/free-sw.html
-
-Here are some ways *you* can contribute:
-
-* by using alpha, beta, and prerelease versions
-* by reporting bugs
-* by suggesting new features
-* by writing or editing documentation
-* by writing specifications
-* by writing code (**no patch is too small**: fix typos, add comments, clean up
-  inconsistent whitespace)
-* by refactoring code
-* by fixing [issues][]
-* by reviewing patches
-* [financially][pledgie]
-
-[issues]: https://github.com/sferik/t/issues
-
-## Submitting an Issue
-We use the [GitHub issue tracker][issues] to track bugs and features. Before
-submitting a bug report or feature request, check to make sure it hasn't
-already been submitted. When submitting a bug report, please include a [Gist][]
-that includes a stack trace and any details that may be necessary to reproduce
-the bug, including your gem version, Ruby version, and operating system.
-Ideally, a bug report should include a pull request with failing specs.
-
-[gist]: https://gist.github.com/
-
-## Submitting a Pull Request
-1. [Fork the repository.][fork]
-2. [Create a topic branch.][branch]
-3. Add specs for your unimplemented feature or bug fix.
-4. Run `bundle exec rake spec`. If your specs pass, return to step 3.
-5. Implement your feature or bug fix.
-6. Run `bundle exec rake spec`. If your specs fail, return to step 5.
-7. Run `open coverage/index.html`. If your changes are not completely covered
-   by your tests, return to step 3.
-8. Add, commit, and push your changes.
-9. [Submit a pull request.][pr]
-
-[fork]: http://help.github.com/fork-a-repo/
-[branch]: http://learn.github.com/p/branching.html
-[pr]: http://help.github.com/send-pull-requests/
 
 ## Supported Ruby Versions
 This library aims to support and is [tested against][travis] the following Ruby
@@ -324,3 +285,6 @@ Copyright (c) 2011 Erik Michaels-Ober. See [LICENSE][] for details.
 Application icon by [@nvk][nvk].
 [license]: https://github.com/sferik/t/blob/master/LICENSE.md
 [nvk]: http://rodolfonovak.com
+[zsh]: http://zsh.org
+[completion]: https://github.com/sferik/t/tree/etc/t-completion.zsh
+[contribute]: https://github.com/sferik/t/blob/master/CONTRIBUTING.md

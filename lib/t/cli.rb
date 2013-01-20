@@ -197,13 +197,15 @@ module T
     method_option "sort", :aliases => "-s", :type => :string, :enum => %w(favorites followers friends listed screen_name since tweets tweeted), :default => "screen_name", :desc => "Specify the order of the results.", :banner => "ORDER"
     method_option "unsorted", :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
     def groupies(user=nil)
-      if user
+      user = if user
         require 't/core_ext/string'
-        user = if options['id']
+        if options['id']
           user.to_i
         else
           user.strip_ats
         end
+      else
+        client.verify_credentials.screen_name
       end
       follower_ids = Thread.new do
         collect_with_cursor do |cursor|
@@ -397,13 +399,15 @@ module T
     method_option "sort", :aliases => "-s", :type => :string, :enum => %w(favorites followers friends listed screen_name since tweets tweeted), :default => "screen_name", :desc => "Specify the order of the results.", :banner => "ORDER"
     method_option "unsorted", :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
     def friends(user=nil)
-      if user
+      user = if user
         require 't/core_ext/string'
-        user = if options['id']
+        if options['id']
           user.to_i
         else
           user.strip_ats
         end
+      else
+        client.verify_credentials.screen_name
       end
       following_ids = Thread.new do
         collect_with_cursor do |cursor|
@@ -431,13 +435,15 @@ module T
     method_option "sort", :aliases => "-s", :type => :string, :enum => %w(favorites followers friends listed screen_name since tweets tweeted), :default => "screen_name", :desc => "Specify the order of the results.", :banner => "ORDER"
     method_option "unsorted", :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
     def leaders(user=nil)
-      if user
+      user = if user
         require 't/core_ext/string'
-        user = if options['id']
+        if options['id']
           user.to_i
         else
           user.strip_ats
         end
+      else
+        client.verify_credentials.screen_name
       end
       following_ids = Thread.new do
         collect_with_cursor do |cursor|

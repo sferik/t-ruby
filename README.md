@@ -3,6 +3,7 @@
 [icon]: https://github.com/sferik/t/raw/master/icon/t.png
 
 # Twitter CLI
+[![Gem Version](https://badge.fury.io/rb/t.png)][gem]
 [![Build Status](https://secure.travis-ci.org/sferik/t.png?branch=master)][travis]
 [![Dependency Status](https://gemnasium.com/sferik/t.png?travis)][gemnasium]
 [![Pledgie](http://www.pledgie.com/campaigns/17330.png)][pledgie]
@@ -13,6 +14,7 @@
 The CLI takes syntactic cues from the [Twitter SMS commands][sms], however it
 offers vastly more commands and capabilities than are available via SMS.
 
+[gem]: https://rubygems.org/gems/t
 [travis]: http://travis-ci.org/sferik/t
 [gemnasium]: https://gemnasium.com/sferik/t
 [pledgie]: http://www.pledgie.com/campaigns/17330

@@ -136,11 +136,11 @@ ID,Description,Slug,Screen name,Created at,Members,Subscribers,Following,Mode,UR
 
   describe "#members" do
     before do
-      stub_get("/1.1/lists/members.json").with(:query => {:cursor => "-1", :owner_screen_name => "testcli", :skip_status => "true", :slug => "presidents"}).to_return(:body => fixture("users_list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/lists/members.json").with(:query => {:cursor => "-1", :owner_screen_name => "testcli", :slug => "presidents"}).to_return(:body => fixture("users_list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "requests the correct resource" do
       @list.members("presidents")
-      expect(a_get("/1.1/lists/members.json").with(:query => {:cursor => "-1", :owner_screen_name => "testcli", :skip_status => "true", :slug => "presidents"})).to have_been_made
+      expect(a_get("/1.1/lists/members.json").with(:query => {:cursor => "-1", :owner_screen_name => "testcli", :slug => "presidents"})).to have_been_made
     end
     it "has the correct output" do
       @list.members("presidents")
@@ -256,16 +256,16 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
     context "with a user passed" do
       it "requests the correct resource" do
         @list.members("testcli/presidents")
-        expect(a_get("/1.1/lists/members.json").with(:query => {:cursor => "-1", :owner_screen_name => "testcli", :skip_status => "true", :slug => "presidents"})).to have_been_made
+        expect(a_get("/1.1/lists/members.json").with(:query => {:cursor => "-1", :owner_screen_name => "testcli", :slug => "presidents"})).to have_been_made
       end
       context "--id" do
         before do
           @list.options = @list.options.merge("id" => true)
-          stub_get("/1.1/lists/members.json").with(:query => {:cursor => "-1", :owner_id => "7505382", :skip_status => "true", :slug => "presidents"}).to_return(:body => fixture("users_list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1.1/lists/members.json").with(:query => {:cursor => "-1", :owner_id => "7505382", :slug => "presidents"}).to_return(:body => fixture("users_list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         end
         it "requests the correct resource" do
           @list.members("7505382/presidents")
-          expect(a_get("/1.1/lists/members.json").with(:query => {:cursor => "-1", :owner_id => "7505382", :skip_status => "true", :slug => "presidents"})).to have_been_made
+          expect(a_get("/1.1/lists/members.json").with(:query => {:cursor => "-1", :owner_id => "7505382", :slug => "presidents"})).to have_been_made
         end
       end
     end

@@ -91,7 +91,7 @@ module T
     def members(list)
       owner, list = extract_owner(list, options)
       users = collect_with_cursor do |cursor|
-        client.list_members(owner, list, :cursor => cursor, :skip_status => true)
+        client.list_members(owner, list, :cursor => cursor)
       end
       print_users(users)
     end

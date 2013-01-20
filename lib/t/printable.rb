@@ -51,7 +51,7 @@ module T
     def print_csv_user(user)
       require 'csv'
       require 'fastercsv' unless Array.new.respond_to?(:to_csv)
-      say [user.id, csv_formatted_time(user), csv_formatted_time(user.status), user.statuses_count, user.favourites_count, user.listed_count, user.friends_count, user.followers_count, user.screen_name, user.name, user.verified?, user.description, user.status.text, user.location, user.url].to_csv
+      say [user.id, csv_formatted_time(user), csv_formatted_time(user.status), user.statuses_count, user.favourites_count, user.listed_count, user.friends_count, user.followers_count, user.screen_name, user.name, user.verified?, user.description, user.status ? user.status.full_text : nil, user.location, user.url].to_csv
     end
 
     def print_lists(lists)

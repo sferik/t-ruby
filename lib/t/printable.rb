@@ -113,8 +113,14 @@ module T
     end
 
     def print_message(from_user, message)
-      if STDOUT.tty? && !options['no-color']
+      if options['color'] == 'always'
         say("   @#{from_user}", [:bold, :yellow])
+      elsif options['color'] == 'auto'
+        if $stdout.tty?
+          say("   @#{from_user}", [:bold, :yellow])
+        else
+          say("   @#{from_user}")
+        end
       else
         say("   @#{from_user}")
       end

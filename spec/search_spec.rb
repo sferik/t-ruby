@@ -16,6 +16,7 @@ describe T::Search do
   before :each do
     T::RCFile.instance.path = fixture_path + "/.trc"
     @search = T::Search.new
+    @search.options = @search.options.merge("color" => "always")
     @old_stderr = $stderr
     $stderr = StringIO.new
     @old_stdout = $stdout

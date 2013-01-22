@@ -282,6 +282,11 @@ implementation, you will be responsible for providing patches in a timely
 fashion. If critical issues for a particular implementation exist at the time
 of a major release, support for that Ruby version may be dropped.
 
+## Troubleshooting
+If you are running t on a remote computer you can use the flag --display-url during authorize process to display the url instead of opening the web browser.
+
+    t authorize --display-url
+
 ## Copyright
 Copyright (c) 2011 Erik Michaels-Ober. See [LICENSE][] for details.
 Application icon by [@nvk][nvk].

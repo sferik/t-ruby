@@ -4,11 +4,13 @@ gem 'rake'
 gem 'jruby-openssl', :platforms => :jruby
 
 group :development do
-  gem 'pry-debugger', :platforms => :mri
+  gem 'pry'
+  gem 'pry-debugger', :platforms => :mri_19
 end
 
 group :test do
-  gem 'rspec'
+  gem 'rspec', '>= 2.11'
+  gem 'simplecov'
   gem 'timecop'
   gem 'webmock'
 end

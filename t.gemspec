@@ -12,14 +12,12 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'thor', ['>= 0.16', '< 2']
   spec.add_dependency 'tweetstream', '~> 2.3'
   spec.add_dependency 'twitter', '~> 4.4'
-  spec.add_development_dependency 'pry'
-  spec.add_development_dependency 'simplecov'
   spec.author = "Erik Michaels-Ober"
   spec.bindir = 'bin'
   spec.description = %q{A command-line power tool for Twitter.}
   spec.email = 'sferik@gmail.com'
   spec.executables = %w(t)
-  spec.files = %w(LICENSE.md README.md Rakefile t.gemspec)
+  spec.files = %w(CONTRIBUTING.md LICENSE.md README.md Rakefile t.gemspec)
   spec.files += Dir.glob("lib/**/*.rb")
   spec.files += Dir.glob("bin/**/*")
   spec.files += Dir.glob("spec/**/*")

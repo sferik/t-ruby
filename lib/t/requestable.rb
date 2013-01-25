@@ -19,7 +19,7 @@ module T
         :consumer_key => @rcfile.active_consumer_key,
         :consumer_secret => @rcfile.active_consumer_secret,
         :oauth_token => @rcfile.active_token,
-        :oauth_token_secret  => @rcfile.active_secret
+        :oauth_token_secret  => @rcfile.active_secret,
       )
     end
 

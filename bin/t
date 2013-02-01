@@ -9,8 +9,9 @@ require 't'
 require 'twitter'
 
 # Output message to $stderr, prefixed with the program name
-def pute(message="")
-  $stderr.puts "#{$0}: #{message}"
+def pute(*args)
+  args.first.insert(0, "#{$0}: ")
+  $stderr.puts(*args)
 end
 
 begin

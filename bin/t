@@ -22,9 +22,12 @@ rescue Interrupt
 rescue OAuth::Unauthorized
   pute "Authorization failed"
   exit 1
+rescue Twitter::Error::TooManyRequests => error
+  pute error.message,
+    "The rate limit for this request will reset in #{error.rate_limit.reset_in} seconds."
+  exit 1
 rescue Twitter::Error::Unauthorized => error
-  pute error.message
-  pute "Run `#{$0} authorize` to authorize."
+  pute error.message, "Run `t authorize` to authorize."
   exit 1
 rescue Twitter::Error => error
   pute error.message

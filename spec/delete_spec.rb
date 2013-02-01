@@ -90,14 +90,14 @@ describe T::Delete do
   describe "#favorite" do
     before do
       @delete.options = @delete.options.merge("profile" => fixture_path + "/.trc")
-      stub_get("/1.1/statuses/show/28439861609.json").with(:query => {:include_my_retweet => "false", :trim_user => "true"}).to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/statuses/show/28439861609.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       stub_post("/1.1/favorites/destroy.json").with(:body => {:id => "28439861609"}).to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "requests the correct resource" do
       $stdout.should_receive(:print).with("Are you sure you want to remove @sferik's status: \"The problem with your code is that it's doing exactly what you told it to do.\" from your favorites? [y/N] ")
       $stdin.should_receive(:gets).and_return("yes")
       @delete.favorite("28439861609")
-      expect(a_get("/1.1/statuses/show/28439861609.json").with(:query => {:include_my_retweet => "false", :trim_user => "true"})).to have_been_made
+      expect(a_get("/1.1/statuses/show/28439861609.json").with(:query => {:include_my_retweet => "false"})).to have_been_made
       expect(a_post("/1.1/favorites/destroy.json").with(:body => {:id => "28439861609"})).to have_been_made
     end
     context "yes" do
@@ -194,14 +194,14 @@ describe T::Delete do
   describe "#status" do
     before do
       @delete.options = @delete.options.merge("profile" => fixture_path + "/.trc")
-      stub_get("/1.1/statuses/show/26755176471724032.json").with(:query => {:include_my_retweet => "false", :trim_user => "true"}).to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/statuses/show/26755176471724032.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       stub_post("/1.1/statuses/destroy/26755176471724032.json").with(:body => {:trim_user => "true"}).to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "requests the correct resource" do
       $stdout.should_receive(:print).with("Are you sure you want to permanently delete @sferik's status: \"The problem with your code is that it's doing exactly what you told it to do.\"? [y/N] ")
       $stdin.should_receive(:gets).and_return("yes")
       @delete.status("26755176471724032")
-      expect(a_get("/1.1/statuses/show/26755176471724032.json").with(:query => {:include_my_retweet => "false", :trim_user => "true"})).to have_been_made
+      expect(a_get("/1.1/statuses/show/26755176471724032.json").with(:query => {:include_my_retweet => "false"})).to have_been_made
       expect(a_post("/1.1/statuses/destroy/26755176471724032.json").with(:body => {:trim_user => "true"})).to have_been_made
     end
     context "yes" do

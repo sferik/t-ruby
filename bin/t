@@ -24,7 +24,8 @@ rescue OAuth::Unauthorized
   exit 1
 rescue Twitter::Error::TooManyRequests => error
   pute error.message,
-    "The rate limit for this request will reset in #{error.rate_limit.reset_in} seconds."
+    "The rate limit for this request will reset in #{error.rate_limit.reset_in} seconds.",
+    "While you wait, consider making a polite request for Twitter to increase the API rate limit at https://dev.twitter.com/discussions/10644"
   exit 1
 rescue Twitter::Error::Unauthorized => error
   pute error.message, "Run `t authorize` to authorize."

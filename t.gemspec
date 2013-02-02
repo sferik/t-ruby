@@ -1,5 +1,7 @@
-# encoding: utf-8
-require File.expand_path("../lib/t/version", __FILE__)
+# coding: utf-8
+lib = File.expand_path('../lib', __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+require 't/version'
 
 Gem::Specification.new do |spec|
   spec.add_dependency 'launchy', '~> 2.0'

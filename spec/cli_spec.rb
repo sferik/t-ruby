@@ -2764,6 +2764,16 @@ ID                   Posted at     Screen name       Text
         expect(a_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "1", :max_id => "265500541700956160"})).to have_been_made
       end
     end
+    context "--since-id" do
+      before do
+        @cli.options = @cli.options.merge("since_id" => 244104558433951744)
+        stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "20", :since_id => "244104558433951744"}).to_return(:body => fixture("statuses.json"))
+      end
+      it "requests the correct resource" do
+        @cli.timeline
+        expect(a_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "20", :since_id => "244104558433951744"})).to have_been_made
+      end
+    end
     context "with a user passed" do
       before do
         stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "20", :screen_name => "sferik"}).to_return(:body => fixture("statuses.json"))
@@ -2798,6 +2808,16 @@ ID                   Posted at     Screen name       Text
           @cli.timeline("sferik")
           expect(a_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :screen_name => "sferik"})).to have_been_made
           expect(a_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "1", :screen_name => "sferik", :max_id => "265500541700956160"})).to have_been_made
+        end
+      end
+      context "--since-id" do
+        before do
+          @cli.options = @cli.options.merge("since_id" => 244104558433951744)
+          stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "20", :screen_name => "sferik", :since_id => "244104558433951744"}).to_return(:body => fixture("statuses.json"))
+        end
+        it "requests the correct resource" do
+          @cli.timeline("sferik")
+          expect(a_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "20", :screen_name => "sferik", :since_id => "244104558433951744"})).to have_been_made
         end
       end
     end

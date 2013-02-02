@@ -653,11 +653,13 @@ module T
     method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     method_option "number", :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => "Limit the number of results."
     method_option "reverse", :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
+    method_option "since_id", :aliases => "-s", :type => :numeric, :desc => "Returns only the results with an ID greater than the specified ID."
     def timeline(user=nil)
       count = options['number'] || DEFAULT_NUM_RESULTS
       opts = {}
       opts[:exclude_replies] = true if options['exclude'] == 'replies'
       opts[:include_rts] = false if options['exclude'] == 'retweets'
+      opts[:since_id] = options['since_id'] if options['since_id']
       if user
         require 't/core_ext/string'
         user = if options['id']

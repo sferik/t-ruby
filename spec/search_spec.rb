@@ -31,7 +31,7 @@ describe T::Search do
 
   describe "#all" do
     before do
-      stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :count => "20"}).to_return(:body => fixture("search.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :count => "20"}).to_return(:body => fixture("search.json"))
     end
     it "requests the correct resource" do
       @search.all("twitter")
@@ -549,8 +549,8 @@ http://t.co/erdKx6HD"
     context "--decode-urls" do
       before(:each) do
         @search.options = @search.options.merge("decode_urls" => true)
-        stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :include_entities => 1, :count => 20}).to_return(:body => fixture("search_with_entities.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :include_entities => 1, :count => 5, :max_id => 264784855672442882}).to_return(:body => fixture("search_with_entities.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :include_entities => 1, :count => 20}).to_return(:body => fixture("search_with_entities.json"))
+        stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :include_entities => 1, :count => 5, :max_id => 264784855672442882}).to_return(:body => fixture("search_with_entities.json"))
       end
       it "requests the correct resource" do
         @search.all("twitter")
@@ -673,10 +673,10 @@ ID                  Posted at     Screen name       Text
     end
     context "--number" do
       before do
-        stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :count => "1"}).to_return(:body => fixture("search.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :count => "200"}).to_return(:body => fixture("search.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :count => "103", :max_id => "267024711169503231"}).to_return(:body => fixture("search.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :count => "5", :max_id => "267024711169503231"}).to_return(:body => fixture("search.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :count => "1"}).to_return(:body => fixture("search.json"))
+        stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :count => "200"}).to_return(:body => fixture("search.json"))
+        stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :count => "103", :max_id => "267024711169503231"}).to_return(:body => fixture("search.json"))
+        stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :count => "5", :max_id => "267024711169503231"}).to_return(:body => fixture("search.json"))
       end
       it "limits the number of results to 1" do
         @search.options = @search.options.merge("number" => 1)
@@ -695,8 +695,8 @@ ID                  Posted at     Screen name       Text
 
   describe "#favorites" do
     before do
-      stub_get("/1.1/favorites/list.json").with(:query => {:count => "200"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_get("/1.1/favorites/list.json").with(:query => {:count => "200", :max_id => "244099460672679937"}).to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/favorites/list.json").with(:query => {:count => "200"}).to_return(:body => fixture("statuses.json"))
+      stub_get("/1.1/favorites/list.json").with(:query => {:count => "200", :max_id => "244099460672679937"}).to_return(:body => fixture("empty_array.json"))
     end
     it "requests the correct resource" do
       @search.favorites("twitter")
@@ -731,8 +731,8 @@ ID,Posted at,Screen name,Text
     context "--decode-urls" do
       before(:each) do
         @search.options = @search.options.merge("decode_urls" => true)
-        stub_get("/1.1/favorites/list.json").with(:query => {:count => "200", :include_entities => 1}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/favorites/list.json").with(:query => {:count => "200", :include_entities => 1, :max_id => "244099460672679937"}).to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/favorites/list.json").with(:query => {:count => "200", :include_entities => 1}).to_return(:body => fixture("statuses.json"))
+        stub_get("/1.1/favorites/list.json").with(:query => {:count => "200", :include_entities => 1, :max_id => "244099460672679937"}).to_return(:body => fixture("empty_array.json"))
       end
       it "requests the correct resource" do
         @search.favorites("twitter")
@@ -768,8 +768,8 @@ ID                  Posted at     Screen name  Text
     end
     context "with a user passed" do
       before do
-        stub_get("/1.1/favorites/list.json").with(:query => {:count => "200", :screen_name => "sferik"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/favorites/list.json").with(:query => {:count => "200", :max_id => "244099460672679937", :screen_name => "sferik"}).to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/favorites/list.json").with(:query => {:count => "200", :screen_name => "sferik"}).to_return(:body => fixture("statuses.json"))
+        stub_get("/1.1/favorites/list.json").with(:query => {:count => "200", :max_id => "244099460672679937", :screen_name => "sferik"}).to_return(:body => fixture("empty_array.json"))
       end
       it "requests the correct resource" do
         @search.favorites("sferik", "twitter")
@@ -791,8 +791,8 @@ ID                  Posted at     Screen name  Text
       context "--id" do
         before do
           @search.options = @search.options.merge("id" => true)
-          stub_get("/1.1/favorites/list.json").with(:query => {:count => "200", :user_id => "7505382"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-          stub_get("/1.1/favorites/list.json").with(:query => {:count => "200", :max_id => "244099460672679937", :user_id => "7505382"}).to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1.1/favorites/list.json").with(:query => {:count => "200", :user_id => "7505382"}).to_return(:body => fixture("statuses.json"))
+          stub_get("/1.1/favorites/list.json").with(:query => {:count => "200", :max_id => "244099460672679937", :user_id => "7505382"}).to_return(:body => fixture("empty_array.json"))
         end
         it "requests the correct resource" do
           @search.favorites("7505382", "twitter")
@@ -817,8 +817,8 @@ ID                  Posted at     Screen name  Text
 
   describe "#mentions" do
     before do
-      stub_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => "200"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => "200", :max_id => "244099460672679937"}).to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => "200"}).to_return(:body => fixture("statuses.json"))
+      stub_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => "200", :max_id => "244099460672679937"}).to_return(:body => fixture("empty_array.json"))
     end
     it "requests the correct resource" do
       @search.mentions("twitter")
@@ -853,8 +853,8 @@ ID,Posted at,Screen name,Text
     context "--decode-urls" do
       before(:each) do
         @search.options = @search.options.merge("decode_urls" => true)
-        stub_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => "200", :include_entities => 1}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => "200", :include_entities => 1, :max_id => "244099460672679937"}).to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => "200", :include_entities => 1}).to_return(:body => fixture("statuses.json"))
+        stub_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => "200", :include_entities => 1, :max_id => "244099460672679937"}).to_return(:body => fixture("empty_array.json"))
       end
       it "requests the correct resource" do
         @search.mentions("twitter")
@@ -892,8 +892,8 @@ ID                  Posted at     Screen name  Text
 
   describe "#list" do
     before do
-      stub_get("/1.1/lists/statuses.json").with(:query => {:count => "200", :owner_screen_name => "testcli", :slug => "presidents"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_get("/1.1/lists/statuses.json").with(:query => {:count => "200", :max_id => "244099460672679937", :owner_screen_name => "testcli", :slug => "presidents"}).to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/lists/statuses.json").with(:query => {:count => "200", :owner_screen_name => "testcli", :slug => "presidents"}).to_return(:body => fixture("statuses.json"))
+      stub_get("/1.1/lists/statuses.json").with(:query => {:count => "200", :max_id => "244099460672679937", :owner_screen_name => "testcli", :slug => "presidents"}).to_return(:body => fixture("empty_array.json"))
     end
     it "requests the correct resource" do
       @search.list("presidents", "twitter")
@@ -928,8 +928,8 @@ ID,Posted at,Screen name,Text
     context "--decode-urls" do
       before(:each) do
         @search.options = @search.options.merge("decode_urls" => true)
-        stub_get("/1.1/lists/statuses.json").with(:query => {:count => "200", :include_entities => 1, :owner_screen_name => "testcli", :slug => "presidents"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/lists/statuses.json").with(:query => {:count => "200", :include_entities => 1, :max_id => "244099460672679937", :owner_screen_name => "testcli", :slug => "presidents"}).to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/lists/statuses.json").with(:query => {:count => "200", :include_entities => 1, :owner_screen_name => "testcli", :slug => "presidents"}).to_return(:body => fixture("statuses.json"))
+        stub_get("/1.1/lists/statuses.json").with(:query => {:count => "200", :include_entities => 1, :max_id => "244099460672679937", :owner_screen_name => "testcli", :slug => "presidents"}).to_return(:body => fixture("empty_array.json"))
       end
       it "requests the correct resource" do
         @search.list("presidents", "twitter")
@@ -962,8 +962,8 @@ ID                  Posted at     Screen name  Text
       context "--id" do
         before do
           @search.options = @search.options.merge("id" => true)
-          stub_get("/1.1/lists/statuses.json").with(:query => {:count => "200", :owner_id => "7505382", :slug => "presidents"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-          stub_get("/1.1/lists/statuses.json").with(:query => {:count => "200", :max_id => "244099460672679937", :owner_id => "7505382", :slug => "presidents"}).to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1.1/lists/statuses.json").with(:query => {:count => "200", :owner_id => "7505382", :slug => "presidents"}).to_return(:body => fixture("statuses.json"))
+          stub_get("/1.1/lists/statuses.json").with(:query => {:count => "200", :max_id => "244099460672679937", :owner_id => "7505382", :slug => "presidents"}).to_return(:body => fixture("empty_array.json"))
         end
         it "requests the correct resource" do
           @search.list("7505382/presidents", "twitter")
@@ -985,8 +985,8 @@ ID                  Posted at     Screen name  Text
 
   describe "#retweets" do
     before do
-      stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true", :max_id => "244102729860009983"}).to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true"}).to_return(:body => fixture("statuses.json"))
+      stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true", :max_id => "244102729860009983"}).to_return(:body => fixture("empty_array.json"))
     end
     it "requests the correct resource" do
       @search.retweets("mosaic")
@@ -1016,8 +1016,8 @@ ID,Posted at,Screen name,Text
     context "--decode-urls" do
       before(:each) do
         @search.options = @search.options.merge("decode_urls" => true)
-        stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_entities => 1, :include_rts => "true"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_entities => 1, :include_rts => "true", :max_id => "244102729860009983"}).to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_entities => 1, :include_rts => "true"}).to_return(:body => fixture("statuses.json"))
+        stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_entities => 1, :include_rts => "true", :max_id => "244102729860009983"}).to_return(:body => fixture("empty_array.json"))
       end
       it "requests the correct resource" do
         @search.retweets("mosaic")
@@ -1052,8 +1052,8 @@ ID                  Posted at     Screen name   Text
     end
     context "with a user passed" do
       before do
-        stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true", :screen_name => "sferik"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true", :screen_name => "sferik", :max_id => "244102729860009983"}).to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true", :screen_name => "sferik"}).to_return(:body => fixture("statuses.json"))
+        stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true", :screen_name => "sferik", :max_id => "244102729860009983"}).to_return(:body => fixture("empty_array.json"))
       end
       it "requests the correct resource" do
         @search.retweets("sferik", "mosaic")
@@ -1071,8 +1071,8 @@ ID                  Posted at     Screen name   Text
       context "--id" do
         before do
           @search.options = @search.options.merge("id" => true)
-          stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true", :user_id => "7505382"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-          stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true", :user_id => "7505382", :max_id => "244102729860009983"}).to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true", :user_id => "7505382"}).to_return(:body => fixture("statuses.json"))
+          stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true", :user_id => "7505382", :max_id => "244102729860009983"}).to_return(:body => fixture("empty_array.json"))
         end
         it "requests the correct resource" do
           @search.retweets("7505382", "mosaic")
@@ -1093,8 +1093,8 @@ ID                  Posted at     Screen name   Text
 
   describe "#timeline" do
     before do
-      stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200", :max_id => "244099460672679937"}).to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200"}).to_return(:body => fixture("statuses.json"))
+      stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200", :max_id => "244099460672679937"}).to_return(:body => fixture("empty_array.json"))
     end
     it "requests the correct resource" do
       @search.timeline("twitter")
@@ -1129,8 +1129,8 @@ ID,Posted at,Screen name,Text
     context "--decode-urls" do
       before(:each) do
         @search.options = @search.options.merge("decode_urls" => true)
-        stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200", :include_entities => 1}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200", :max_id => "244099460672679937", :include_entities => 1}).to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200", :include_entities => 1}).to_return(:body => fixture("statuses.json"))
+        stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200", :max_id => "244099460672679937", :include_entities => 1}).to_return(:body => fixture("empty_array.json"))
       end
       it "requests the correct resource" do
         @search.timeline("twitter")
@@ -1145,8 +1145,8 @@ ID,Posted at,Screen name,Text
     context "--exclude=replies" do
       before do
         @search.options = @search.options.merge("exclude" => "replies")
-        stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200", :exclude_replies => "true"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200", :exclude_replies => "true", :max_id => "244099460672679937"}).to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200", :exclude_replies => "true"}).to_return(:body => fixture("statuses.json"))
+        stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200", :exclude_replies => "true", :max_id => "244099460672679937"}).to_return(:body => fixture("empty_array.json"))
       end
       it "excludes replies" do
         @search.timeline
@@ -1157,8 +1157,8 @@ ID,Posted at,Screen name,Text
     context "--exclude=retweets" do
       before do
         @search.options = @search.options.merge("exclude" => "retweets")
-        stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200", :include_rts => "false"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200", :include_rts => "false", :max_id => "244099460672679937"}).to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200", :include_rts => "false"}).to_return(:body => fixture("statuses.json"))
+        stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200", :include_rts => "false", :max_id => "244099460672679937"}).to_return(:body => fixture("empty_array.json"))
       end
       it "excludes retweets" do
         @search.timeline
@@ -1190,8 +1190,8 @@ ID                  Posted at     Screen name  Text
     end
     context "with a user passed" do
       before do
-        stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :screen_name => "sferik"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :max_id => "244099460672679937", :screen_name => "sferik"}).to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :screen_name => "sferik"}).to_return(:body => fixture("statuses.json"))
+        stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :max_id => "244099460672679937", :screen_name => "sferik"}).to_return(:body => fixture("empty_array.json"))
       end
       it "requests the correct resource" do
         @search.timeline("sferik", "twitter")
@@ -1226,8 +1226,8 @@ ID,Posted at,Screen name,Text
       context "--id" do
         before do
           @search.options = @search.options.merge("id" => true)
-          stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :user_id => "7505382"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-          stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :max_id => "244099460672679937", :user_id => "7505382"}).to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :user_id => "7505382"}).to_return(:body => fixture("statuses.json"))
+          stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :max_id => "244099460672679937", :user_id => "7505382"}).to_return(:body => fixture("empty_array.json"))
         end
         it "requests the correct resource" do
           @search.timeline("7505382", "twitter")
@@ -1262,8 +1262,8 @@ ID                  Posted at     Screen name  Text
 
   describe "#users" do
     before do
-      stub_get("/1.1/users/search.json").with(:query => {:page => "1", :q => "Erik"}).to_return(:body => fixture("users.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_get("/1.1/users/search.json").with(:query => {:page => "2", :q => "Erik"}).to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/users/search.json").with(:query => {:page => "1", :q => "Erik"}).to_return(:body => fixture("users.json"))
+      stub_get("/1.1/users/search.json").with(:query => {:page => "2", :q => "Erik"}).to_return(:body => fixture("empty_array.json"))
     end
     it "requests the correct resource" do
       @search.users("Erik")

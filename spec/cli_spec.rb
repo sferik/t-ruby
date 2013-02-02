@@ -47,7 +47,7 @@ testcli
       @cli.options = @cli.options.merge("profile" => project_path + "/tmp/authorize", "display-url" => true)
       stub_post("/oauth/request_token").to_return(:body => fixture("request_token"))
       stub_post("/oauth/access_token").to_return(:body => fixture("access_token"))
-      stub_get("/1.1/account/verify_credentials.json").with(:query => {:include_entities => "false", :skip_status => "true"}).to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/account/verify_credentials.json").with(:query => {:include_entities => "false", :skip_status => "true"}).to_return(:body => fixture("sferik.json"))
     end
     it "requests the correct resource" do
       $stdout.should_receive(:print)
@@ -124,7 +124,7 @@ testcli
   describe "#block" do
     before do
       @cli.options = @cli.options.merge("profile" => fixture_path + "/.trc")
-      stub_post("/1.1/blocks/create.json").with(:body => {:screen_name => "sferik"}).to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_post("/1.1/blocks/create.json").with(:body => {:screen_name => "sferik"}).to_return(:body => fixture("sferik.json"))
     end
     it "requests the correct resource" do
       @cli.block("sferik")
@@ -137,7 +137,7 @@ testcli
     context "--id" do
       before do
         @cli.options = @cli.options.merge("id" => true)
-        stub_post("/1.1/blocks/create.json").with(:body => {:user_id => "7505382"}).to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_post("/1.1/blocks/create.json").with(:body => {:user_id => "7505382"}).to_return(:body => fixture("sferik.json"))
       end
       it "requests the correct resource" do
         @cli.block("7505382")
@@ -148,8 +148,8 @@ testcli
 
   describe "#direct_messages" do
     before do
-      stub_get("/1.1/direct_messages.json").with(:query => {:count => "20"}).to_return(:body => fixture("direct_messages.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_get("/1.1/direct_messages.json").with(:query => {:count => "10", "max_id" => "1624782205"}).to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/direct_messages.json").with(:query => {:count => "20"}).to_return(:body => fixture("direct_messages.json"))
+      stub_get("/1.1/direct_messages.json").with(:query => {:count => "10", "max_id" => "1624782205"}).to_return(:body => fixture("empty_array.json"))
     end
     it "requests the correct resource" do
       @cli.direct_messages
@@ -240,9 +240,9 @@ ID          Posted at     Screen name  Text
     end
     context "--number" do
       before do
-        stub_get("/1.1/direct_messages.json").with(:query => {:count => "1"}).to_return(:body => fixture("direct_messages.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/direct_messages.json").with(:query => {:count => "200"}).to_return(:body => fixture("200_direct_messages.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/direct_messages.json").with(:query => {:count => "1", :max_id => "235851563443306495"}).to_return(:body => fixture("direct_messages.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/direct_messages.json").with(:query => {:count => "1"}).to_return(:body => fixture("direct_messages.json"))
+        stub_get("/1.1/direct_messages.json").with(:query => {:count => "200"}).to_return(:body => fixture("200_direct_messages.json"))
+        stub_get("/1.1/direct_messages.json").with(:query => {:count => "1", :max_id => "235851563443306495"}).to_return(:body => fixture("direct_messages.json"))
       end
       it "limits the number of results to 1" do
         @cli.options = @cli.options.merge("number" => 1)
@@ -306,8 +306,8 @@ ID          Posted at     Screen name  Text
 
   describe "#direct_messages_sent" do
     before do
-      stub_get("/1.1/direct_messages/sent.json").with(:query => {:count => "20"}).to_return(:body => fixture("direct_messages.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_get("/1.1/direct_messages/sent.json").with(:query => {:count => "10", "max_id" => "1624782205"}).to_return(:body => fixture("empty_array.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/direct_messages/sent.json").with(:query => {:count => "20"}).to_return(:body => fixture("direct_messages.json"))
+      stub_get("/1.1/direct_messages/sent.json").with(:query => {:count => "10", "max_id" => "1624782205"}).to_return(:body => fixture("empty_array.json"))
     end
     it "requests the correct resource" do
       @cli.direct_messages_sent
@@ -398,9 +398,9 @@ ID          Posted at     Screen name  Text
     end
     context "--number" do
       before do
-        stub_get("/1.1/direct_messages/sent.json").with(:query => {:count => "1"}).to_return(:body => fixture("direct_messages.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/direct_messages/sent.json").with(:query => {:count => "200"}).to_return(:body => fixture("200_direct_messages.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/direct_messages/sent.json").with(:query => {:count => "1", :max_id => "235851563443306495"}).to_return(:body => fixture("direct_messages.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/direct_messages/sent.json").with(:query => {:count => "1"}).to_return(:body => fixture("direct_messages.json"))
+        stub_get("/1.1/direct_messages/sent.json").with(:query => {:count => "200"}).to_return(:body => fixture("200_direct_messages.json"))
+        stub_get("/1.1/direct_messages/sent.json").with(:query => {:count => "1", :max_id => "235851563443306495"}).to_return(:body => fixture("direct_messages.json"))
       end
       it "limits the number of results 1" do
         @cli.options = @cli.options.merge("number" => 1)
@@ -464,10 +464,10 @@ ID          Posted at     Screen name  Text
 
   describe "#groupies" do
     before do
-      stub_get("/1.1/account/verify_credentials.json").to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_get("/1.1/followers/ids.json").with(:query => {:cursor => "-1", :screen_name => "sferik"}).to_return(:body => fixture("followers_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1", :screen_name => "sferik"}).to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_post("/1.1/users/lookup.json").with(:body => {:user_id => "213747670,428004849"}).to_return(:body => fixture("users.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/account/verify_credentials.json").to_return(:body => fixture("sferik.json"))
+      stub_get("/1.1/followers/ids.json").with(:query => {:cursor => "-1", :screen_name => "sferik"}).to_return(:body => fixture("followers_ids.json"))
+      stub_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1", :screen_name => "sferik"}).to_return(:body => fixture("friends_ids.json"))
+      stub_post("/1.1/users/lookup.json").with(:body => {:user_id => "213747670,428004849"}).to_return(:body => fixture("users.json"))
     end
     it "requests the correct resource" do
       @cli.groupies
@@ -589,8 +589,8 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
     end
     context "with a user passed" do
       before do
-        stub_get("/1.1/followers/ids.json").with(:query => {:cursor => "-1", :screen_name => "sferik"}).to_return(:body => fixture("followers_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1", :screen_name => "sferik"}).to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/followers/ids.json").with(:query => {:cursor => "-1", :screen_name => "sferik"}).to_return(:body => fixture("followers_ids.json"))
+        stub_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1", :screen_name => "sferik"}).to_return(:body => fixture("friends_ids.json"))
       end
       it "requests the correct resource" do
         @cli.groupies("sferik")
@@ -601,8 +601,8 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       context "--id" do
         before do
           @cli.options = @cli.options.merge("id" => true)
-          stub_get("/1.1/followers/ids.json").with(:query => {:cursor => "-1", :user_id => "7505382"}).to_return(:body => fixture("followers_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-          stub_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1", :user_id => "7505382"}).to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1.1/followers/ids.json").with(:query => {:cursor => "-1", :user_id => "7505382"}).to_return(:body => fixture("followers_ids.json"))
+          stub_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1", :user_id => "7505382"}).to_return(:body => fixture("friends_ids.json"))
         end
         it "requests the correct resource" do
           @cli.groupies("7505382")
@@ -617,7 +617,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
   describe "#dm" do
     before do
       @cli.options = @cli.options.merge("profile" => fixture_path + "/.trc")
-      stub_post("/1.1/direct_messages/new.json").with(:body => {:screen_name => "pengwynn", :text => "Creating a fixture for the Twitter gem"}).to_return(:body => fixture("direct_message.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_post("/1.1/direct_messages/new.json").with(:body => {:screen_name => "pengwynn", :text => "Creating a fixture for the Twitter gem"}).to_return(:body => fixture("direct_message.json"))
     end
     it "requests the correct resource" do
       @cli.dm("pengwynn", "Creating a fixture for the Twitter gem")
@@ -630,7 +630,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
     context "--id" do
       before do
         @cli.options = @cli.options.merge("id" => true)
-        stub_post("/1.1/direct_messages/new.json").with(:body => {:user_id => "14100886", :text => "Creating a fixture for the Twitter gem"}).to_return(:body => fixture("direct_message.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_post("/1.1/direct_messages/new.json").with(:body => {:user_id => "14100886", :text => "Creating a fixture for the Twitter gem"}).to_return(:body => fixture("direct_message.json"))
       end
       it "requests the correct resource" do
         @cli.dm("14100886", "Creating a fixture for the Twitter gem")
@@ -642,7 +642,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
   describe "#does_contain" do
     before do
       @cli.options = @cli.options.merge("profile" => fixture_path + "/.trc")
-      stub_get("/1.1/lists/members/show.json").with(:query => {:owner_screen_name => "testcli", :screen_name => "testcli", :slug => "presidents"}).to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/lists/members/show.json").with(:query => {:owner_screen_name => "testcli", :screen_name => "testcli", :slug => "presidents"}).to_return(:body => fixture("list.json"))
     end
     it "requests the correct resource" do
       @cli.does_contain("presidents")
@@ -655,8 +655,8 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
     context "--id" do
       before do
         @cli.options = @cli.options.merge("id" => true)
-        stub_get("/1.1/users/show.json").with(:query => {:user_id => "7505382"}).to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/lists/members/show.json").with(:query => {:owner_screen_name => "testcli", :screen_name => "sferik", :slug => "presidents"}).to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/users/show.json").with(:query => {:user_id => "7505382"}).to_return(:body => fixture("sferik.json"))
+        stub_get("/1.1/lists/members/show.json").with(:query => {:owner_screen_name => "testcli", :screen_name => "sferik", :slug => "presidents"}).to_return(:body => fixture("list.json"))
       end
       it "requests the correct resource" do
         @cli.does_contain("presidents", "7505382")
@@ -672,8 +672,8 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       context "--id" do
         before do
           @cli.options = @cli.options.merge("id" => true)
-          stub_get("/1.1/users/show.json").with(:query => {:user_id => "7505382"}).to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-          stub_get("/1.1/lists/members/show.json").with(:query => {:owner_id => "7505382", :screen_name => "sferik", :slug => "presidents"}).to_return(:body => fixture("list.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1.1/users/show.json").with(:query => {:user_id => "7505382"}).to_return(:body => fixture("sferik.json"))
+          stub_get("/1.1/lists/members/show.json").with(:query => {:owner_id => "7505382", :screen_name => "sferik", :slug => "presidents"}).to_return(:body => fixture("list.json"))
         end
         it "requests the correct resource" do
           @cli.does_contain("7505382/presidents", "7505382")
@@ -690,7 +690,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
     end
     context "false" do
       before do
-        stub_get("/1.1/lists/members/show.json").with(:query => {:owner_screen_name => "testcli", :screen_name => "testcli", :slug => "presidents"}).to_return(:body => fixture("not_found.json"), :status => 404, :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/lists/members/show.json").with(:query => {:owner_screen_name => "testcli", :screen_name => "testcli", :slug => "presidents"}).to_return(:body => fixture("not_found.json"), :status => 404)
       end
       it "exits" do
         expect do
@@ -704,7 +704,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
   describe "#does_follow" do
     before do
       @cli.options = @cli.options.merge("profile" => fixture_path + "/.trc")
-      stub_get("/1.1/friendships/show.json").with(:query => {:source_screen_name => "ev", :target_screen_name => "testcli"}).to_return(:body => fixture("following.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/friendships/show.json").with(:query => {:source_screen_name => "ev", :target_screen_name => "testcli"}).to_return(:body => fixture("following.json"))
     end
     it "requests the correct resource" do
       @cli.does_follow("ev")
@@ -717,8 +717,8 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
     context "--id" do
       before do
         @cli.options = @cli.options.merge("id" => true)
-        stub_get("/1.1/users/show.json").with(:query => {:user_id => "20"}).to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/friendships/show.json").with(:query => {:source_screen_name => "sferik", :target_screen_name => "testcli"}).to_return(:body => fixture("following.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/users/show.json").with(:query => {:user_id => "20"}).to_return(:body => fixture("sferik.json"))
+        stub_get("/1.1/friendships/show.json").with(:query => {:source_screen_name => "sferik", :target_screen_name => "testcli"}).to_return(:body => fixture("following.json"))
       end
       it "requests the correct resource" do
         @cli.does_follow("20")
@@ -732,7 +732,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
     end
     context "with a user passed" do
       before do
-        stub_get("/1.1/friendships/show.json").with(:query => {:source_screen_name => "ev", :target_screen_name => "sferik"}).to_return(:body => fixture("following.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/friendships/show.json").with(:query => {:source_screen_name => "ev", :target_screen_name => "sferik"}).to_return(:body => fixture("following.json"))
       end
       it "requests the correct resource" do
         @cli.does_follow("ev", "sferik")
@@ -745,9 +745,9 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       context "--id" do
         before do
           @cli.options = @cli.options.merge("id" => true)
-          stub_get("/1.1/users/show.json").with(:query => {:user_id => "20"}).to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-          stub_get("/1.1/users/show.json").with(:query => {:user_id => "428004849"}).to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-          stub_get("/1.1/friendships/show.json").with(:query => {:source_screen_name => "sferik", :target_screen_name => "sferik"}).to_return(:body => fixture("following.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1.1/users/show.json").with(:query => {:user_id => "20"}).to_return(:body => fixture("sferik.json"))
+          stub_get("/1.1/users/show.json").with(:query => {:user_id => "428004849"}).to_return(:body => fixture("sferik.json"))
+          stub_get("/1.1/friendships/show.json").with(:query => {:source_screen_name => "sferik", :target_screen_name => "sferik"}).to_return(:body => fixture("following.json"))
         end
         it "requests the correct resource" do
           @cli.does_follow("20", "428004849")
@@ -763,7 +763,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
     end
     context "false" do
       before do
-        stub_get("/1.1/friendships/show.json").with(:query => {:source_screen_name => "ev", :target_screen_name => "testcli"}).to_return(:body => fixture("not_following.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/friendships/show.json").with(:query => {:source_screen_name => "ev", :target_screen_name => "testcli"}).to_return(:body => fixture("not_following.json"))
       end
       it "exits" do
         expect do
@@ -777,7 +777,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
   describe "#favorite" do
     before do
       @cli.options = @cli.options.merge("profile" => fixture_path + "/.trc")
-      stub_post("/1.1/favorites/create.json").with(:body => {:id => "26755176471724032"}).to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_post("/1.1/favorites/create.json").with(:body => {:id => "26755176471724032"}).to_return(:body => fixture("status.json"))
     end
     it "requests the correct resource" do
       @cli.favorite("26755176471724032")
@@ -791,7 +791,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
 
   describe "#favorites" do
     before do
-      stub_get("/1.1/favorites/list.json").with(:query => {:count => "20"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/favorites/list.json").with(:query => {:count => "20"}).to_return(:body => fixture("statuses.json"))
     end
     it "requests the correct resource" do
       @cli.favorites
@@ -972,9 +972,9 @@ ID                   Posted at     Screen name       Text
     end
     context "--number" do
       before do
-        stub_get("/1.1/favorites/list.json").with(:query => {:count => "1"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/favorites/list.json").with(:query => {:count => "200"}).to_return(:body => fixture("200_statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/favorites/list.json").with(:query => {:count => "1", :max_id => "265500541700956160"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/favorites/list.json").with(:query => {:count => "1"}).to_return(:body => fixture("statuses.json"))
+        stub_get("/1.1/favorites/list.json").with(:query => {:count => "200"}).to_return(:body => fixture("200_statuses.json"))
+        stub_get("/1.1/favorites/list.json").with(:query => {:count => "1", :max_id => "265500541700956160"}).to_return(:body => fixture("statuses.json"))
       end
       it "limits the number of results to 1" do
         @cli.options = @cli.options.merge("number" => 1)
@@ -990,7 +990,7 @@ ID                   Posted at     Screen name       Text
     end
     context "with a user passed" do
       before do
-        stub_get("/1.1/favorites/list.json").with(:query => {:count => "20", :screen_name => "sferik"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/favorites/list.json").with(:query => {:count => "20", :screen_name => "sferik"}).to_return(:body => fixture("statuses.json"))
       end
       it "requests the correct resource" do
         @cli.favorites("sferik")
@@ -999,7 +999,7 @@ ID                   Posted at     Screen name       Text
       context "--id" do
         before do
           @cli.options = @cli.options.merge("id" => true)
-          stub_get("/1.1/favorites/list.json").with(:query => {:user_id => "7505382", :count => "20"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1.1/favorites/list.json").with(:query => {:user_id => "7505382", :count => "20"}).to_return(:body => fixture("statuses.json"))
         end
         it "requests the correct resource" do
           @cli.favorites("7505382")
@@ -1015,10 +1015,10 @@ ID                   Posted at     Screen name       Text
     end
     context "one user" do
       before do
-        stub_get("/1.1/account/verify_credentials.json").to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1", :screen_name => "sferik"}).to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_post("/1.1/users/lookup.json").with(:body => {:screen_name => "sferik,pengwynn"}).to_return(:body => fixture("users.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_post("/1.1/friendships/create.json").with(:body => {:user_id => "14100886"}).to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/account/verify_credentials.json").to_return(:body => fixture("sferik.json"))
+        stub_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1", :screen_name => "sferik"}).to_return(:body => fixture("friends_ids.json"))
+        stub_post("/1.1/users/lookup.json").with(:body => {:screen_name => "sferik,pengwynn"}).to_return(:body => fixture("users.json"))
+        stub_post("/1.1/friendships/create.json").with(:body => {:user_id => "14100886"}).to_return(:body => fixture("sferik.json"))
       end
       it "requests the correct resource" do
         @cli.follow("sferik", "pengwynn")
@@ -1034,9 +1034,9 @@ ID                   Posted at     Screen name       Text
       context "--id" do
         before do
           @cli.options = @cli.options.merge("id" => true)
-          stub_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1", :screen_name => "sferik"}).to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-          stub_post("/1.1/users/lookup.json").with(:body => {:user_id => "7505382,14100886"}).to_return(:body => fixture("users.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-          stub_post("/1.1/friendships/create.json").with(:body => {:user_id => "14100886"}).to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1", :screen_name => "sferik"}).to_return(:body => fixture("friends_ids.json"))
+          stub_post("/1.1/users/lookup.json").with(:body => {:user_id => "7505382,14100886"}).to_return(:body => fixture("users.json"))
+          stub_post("/1.1/friendships/create.json").with(:body => {:user_id => "14100886"}).to_return(:body => fixture("sferik.json"))
         end
         it "requests the correct resource" do
           @cli.follow("7505382", "14100886")
@@ -1047,8 +1047,8 @@ ID                   Posted at     Screen name       Text
       end
       context "Twitter is down" do
         it "retries 3 times and then raise an error" do
-          stub_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1", :screen_name => "sferik"}).to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-          stub_post("/1.1/users/lookup.json").with(:body => {:screen_name => "sferik,pengwynn"}).to_return(:body => fixture("users.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1", :screen_name => "sferik"}).to_return(:body => fixture("friends_ids.json"))
+          stub_post("/1.1/users/lookup.json").with(:body => {:screen_name => "sferik,pengwynn"}).to_return(:body => fixture("users.json"))
           stub_post("/1.1/friendships/create.json").with(:body => {:user_id => "14100886"}).to_return(:status => 502)
           expect do
             @cli.follow("sferik", "pengwynn")
@@ -1063,9 +1063,9 @@ ID                   Posted at     Screen name       Text
 
   describe "#followings" do
     before do
-      stub_get("/1.1/account/verify_credentials.json").to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1", :screen_name => "sferik"}).to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_post("/1.1/users/lookup.json").with(:body => {:user_id => "7505382"}).to_return(:body => fixture("users.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/account/verify_credentials.json").to_return(:body => fixture("sferik.json"))
+      stub_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1", :screen_name => "sferik"}).to_return(:body => fixture("friends_ids.json"))
+      stub_post("/1.1/users/lookup.json").with(:body => {:user_id => "7505382"}).to_return(:body => fixture("users.json"))
     end
     it "requests the correct resource" do
       @cli.followings
@@ -1186,7 +1186,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
     end
     context "with a user passed" do
       before do
-        stub_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1", :screen_name => "sferik"}).to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1", :screen_name => "sferik"}).to_return(:body => fixture("friends_ids.json"))
       end
       it "requests the correct resource" do
         @cli.followings("sferik")
@@ -1197,7 +1197,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
     context "--id" do
       before do
         @cli.options = @cli.options.merge("id" => true)
-        stub_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1", :user_id => "7505382"}).to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1", :user_id => "7505382"}).to_return(:body => fixture("friends_ids.json"))
       end
       it "requests the correct resource" do
         @cli.followings("7505382")
@@ -1209,9 +1209,9 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
 
   describe "#followers" do
     before do
-      stub_get("/1.1/account/verify_credentials.json").to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_get("/1.1/followers/ids.json").with(:query => {:cursor => "-1", :screen_name => "sferik"}).to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_post("/1.1/users/lookup.json").with(:body => {:user_id => "7505382"}).to_return(:body => fixture("users.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/account/verify_credentials.json").to_return(:body => fixture("sferik.json"))
+      stub_get("/1.1/followers/ids.json").with(:query => {:cursor => "-1", :screen_name => "sferik"}).to_return(:body => fixture("friends_ids.json"))
+      stub_post("/1.1/users/lookup.json").with(:body => {:user_id => "7505382"}).to_return(:body => fixture("users.json"))
     end
     it "requests the correct resource" do
       @cli.followers
@@ -1332,8 +1332,8 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
     end
     context "with a user passed" do
       before do
-        stub_get("/1.1/followers/ids.json").with(:query => {:cursor => "-1", :screen_name => "sferik"}).to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_post("/1.1/users/lookup.json").with(:body => {:user_id => "213747670,428004849"}).to_return(:body => fixture("users.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/followers/ids.json").with(:query => {:cursor => "-1", :screen_name => "sferik"}).to_return(:body => fixture("friends_ids.json"))
+        stub_post("/1.1/users/lookup.json").with(:body => {:user_id => "213747670,428004849"}).to_return(:body => fixture("users.json"))
       end
       it "requests the correct resource" do
         @cli.followers("sferik")
@@ -1343,7 +1343,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       context "--id" do
         before do
           @cli.options = @cli.options.merge("id" => true)
-          stub_get("/1.1/followers/ids.json").with(:query => {:cursor => "-1", :user_id => "7505382"}).to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1.1/followers/ids.json").with(:query => {:cursor => "-1", :user_id => "7505382"}).to_return(:body => fixture("friends_ids.json"))
         end
         it "requests the correct resource" do
           @cli.followers("7505382")
@@ -1356,10 +1356,10 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
 
   describe "#friends" do
     before do
-      stub_get("/1.1/account/verify_credentials.json").to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1", :screen_name => "sferik"}).to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_get("/1.1/followers/ids.json").with(:query => {:cursor => "-1", :screen_name => "sferik"}).to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_post("/1.1/users/lookup.json").with(:body => {:user_id => "7505382"}).to_return(:body => fixture("users.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/account/verify_credentials.json").to_return(:body => fixture("sferik.json"))
+      stub_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1", :screen_name => "sferik"}).to_return(:body => fixture("friends_ids.json"))
+      stub_get("/1.1/followers/ids.json").with(:query => {:cursor => "-1", :screen_name => "sferik"}).to_return(:body => fixture("friends_ids.json"))
+      stub_post("/1.1/users/lookup.json").with(:body => {:user_id => "7505382"}).to_return(:body => fixture("users.json"))
     end
     it "requests the correct resource" do
       @cli.friends
@@ -1481,8 +1481,8 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
     end
     context "with a user passed" do
       before do
-        stub_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1", :screen_name => "sferik"}).to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/followers/ids.json").with(:query => {:cursor => "-1", :screen_name => "sferik"}).to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1", :screen_name => "sferik"}).to_return(:body => fixture("friends_ids.json"))
+        stub_get("/1.1/followers/ids.json").with(:query => {:cursor => "-1", :screen_name => "sferik"}).to_return(:body => fixture("friends_ids.json"))
       end
       it "requests the correct resource" do
         @cli.friends("sferik")
@@ -1493,8 +1493,8 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       context "--id" do
         before do
           @cli.options = @cli.options.merge("id" => true)
-          stub_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1", :user_id => "7505382"}).to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-          stub_get("/1.1/followers/ids.json").with(:query => {:cursor => "-1", :user_id => "7505382"}).to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1", :user_id => "7505382"}).to_return(:body => fixture("friends_ids.json"))
+          stub_get("/1.1/followers/ids.json").with(:query => {:cursor => "-1", :user_id => "7505382"}).to_return(:body => fixture("friends_ids.json"))
         end
         it "requests the correct resource" do
           @cli.friends("7505382")
@@ -1508,10 +1508,10 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
 
   describe "#leaders" do
     before do
-      stub_get("/1.1/account/verify_credentials.json").to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1", :screen_name => "sferik"}).to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_get("/1.1/followers/ids.json").with(:query => {:cursor => "-1", :screen_name => "sferik"}).to_return(:body => fixture("followers_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_post("/1.1/users/lookup.json").with(:body => {:user_id => "7505382"}).to_return(:body => fixture("users.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/account/verify_credentials.json").to_return(:body => fixture("sferik.json"))
+      stub_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1", :screen_name => "sferik"}).to_return(:body => fixture("friends_ids.json"))
+      stub_get("/1.1/followers/ids.json").with(:query => {:cursor => "-1", :screen_name => "sferik"}).to_return(:body => fixture("followers_ids.json"))
+      stub_post("/1.1/users/lookup.json").with(:body => {:user_id => "7505382"}).to_return(:body => fixture("users.json"))
     end
     it "requests the correct resource" do
       @cli.leaders
@@ -1633,8 +1633,8 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
     end
     context "with a user passed" do
       before do
-        stub_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1", :screen_name => "sferik"}).to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/followers/ids.json").with(:query => {:cursor => "-1", :screen_name => "sferik"}).to_return(:body => fixture("followers_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1", :screen_name => "sferik"}).to_return(:body => fixture("friends_ids.json"))
+        stub_get("/1.1/followers/ids.json").with(:query => {:cursor => "-1", :screen_name => "sferik"}).to_return(:body => fixture("followers_ids.json"))
       end
       it "requests the correct resource" do
         @cli.leaders("sferik")
@@ -1645,8 +1645,8 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       context "--id" do
         before do
           @cli.options = @cli.options.merge("id" => true)
-          stub_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1", :user_id => "7505382"}).to_return(:body => fixture("friends_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-          stub_get("/1.1/followers/ids.json").with(:query => {:cursor => "-1", :user_id => "7505382"}).to_return(:body => fixture("followers_ids.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1", :user_id => "7505382"}).to_return(:body => fixture("friends_ids.json"))
+          stub_get("/1.1/followers/ids.json").with(:query => {:cursor => "-1", :user_id => "7505382"}).to_return(:body => fixture("followers_ids.json"))
         end
         it "requests the correct resource" do
           @cli.leaders("7505382")
@@ -1660,7 +1660,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
 
   describe "#lists" do
     before do
-      stub_get("/1.1/lists/list.json").to_return(:body => fixture("lists.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/lists/list.json").to_return(:body => fixture("lists.json"))
     end
     it "requests the correct resource" do
       @cli.lists
@@ -1754,7 +1754,7 @@ ID        Created at    Screen name  Slug      Members  Subscribers  Mode    ...
     end
     context "with a user passed" do
       before do
-        stub_get("/1.1/lists/list.json").with(:query => {:screen_name => "sferik"}).to_return(:body => fixture("lists.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/lists/list.json").with(:query => {:screen_name => "sferik"}).to_return(:body => fixture("lists.json"))
       end
       it "requests the correct resource" do
         @cli.lists("sferik")
@@ -1763,7 +1763,7 @@ ID        Created at    Screen name  Slug      Members  Subscribers  Mode    ...
       context "--id" do
         before do
           @cli.options = @cli.options.merge("id" => true)
-          stub_get("/1.1/lists/list.json").with(:query => {:user_id => "7505382"}).to_return(:body => fixture("lists.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1.1/lists/list.json").with(:query => {:user_id => "7505382"}).to_return(:body => fixture("lists.json"))
         end
         it "requests the correct resource" do
           @cli.lists("7505382")
@@ -1775,7 +1775,7 @@ ID        Created at    Screen name  Slug      Members  Subscribers  Mode    ...
 
   describe "#mentions" do
     before do
-      stub_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => "20"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => "20"}).to_return(:body => fixture("statuses.json"))
     end
     it "requests the correct resource" do
       @cli.mentions
@@ -1956,9 +1956,9 @@ ID                   Posted at     Screen name       Text
     end
     context "--number" do
       before do
-        stub_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => "1"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => "200"}).to_return(:body => fixture("200_statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => "1", :max_id => "265500541700956160"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => "1"}).to_return(:body => fixture("statuses.json"))
+        stub_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => "200"}).to_return(:body => fixture("200_statuses.json"))
+        stub_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => "1", :max_id => "265500541700956160"}).to_return(:body => fixture("statuses.json"))
       end
       it "limits the number of results to 1" do
         @cli.options = @cli.options.merge("number" => 1)
@@ -1986,7 +1986,7 @@ ID                   Posted at     Screen name       Text
     context "--id" do
       before do
         @cli.options = @cli.options.merge("id" => true)
-        stub_get("/1.1/users/show.json").with(:query => {:user_id => "420"}).to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/users/show.json").with(:query => {:user_id => "420"}).to_return(:body => fixture("sferik.json"))
       end
       it "requests the correct resource" do
         @cli.open("420")
@@ -1996,7 +1996,7 @@ ID                   Posted at     Screen name       Text
     context "--status" do
       before do
         @cli.options = @cli.options.merge("status" => true)
-        stub_get("/1.1/statuses/show/55709764298092545.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/statuses/show/55709764298092545.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status.json"))
       end
       it "requests the correct resource" do
         @cli.open("55709764298092545")
@@ -2013,8 +2013,8 @@ ID                   Posted at     Screen name       Text
   describe "#reply" do
     before do
       @cli.options = @cli.options.merge("profile" => fixture_path + "/.trc", "location" => true)
-      stub_get("/1.1/statuses/show/263813522369159169.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status_with_mention.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_post("/1.1/statuses/update.json").with(:body => {:in_reply_to_status_id => "263813522369159169", :status => "@joshfrench Testing", :lat => "37.76969909668", :long => "-122.39330291748", :trim_user => "true"}).to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/statuses/show/263813522369159169.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status_with_mention.json"))
+      stub_post("/1.1/statuses/update.json").with(:body => {:in_reply_to_status_id => "263813522369159169", :status => "@joshfrench Testing", :lat => "37.76969909668", :long => "-122.39330291748", :trim_user => "true"}).to_return(:body => fixture("status.json"))
       stub_request(:get, "http://checkip.dyndns.org/").to_return(:body => fixture("checkip.html"), :headers => {:content_type => "text/html"})
       stub_request(:get, "http://www.geoplugin.net/xml.gp?ip=50.131.22.169").to_return(:body => fixture("geoplugin.xml"), :headers => {:content_type => "application/xml"})
     end
@@ -2032,7 +2032,7 @@ ID                   Posted at     Screen name       Text
     context "--all" do
       before do
         @cli.options = @cli.options.merge("all" => true)
-        stub_post("/1.1/statuses/update.json").with(:body => {:in_reply_to_status_id => "263813522369159169", :status => "@joshfrench @sferik Testing", :lat => "37.76969909668", :long => "-122.39330291748", :trim_user => "true"}).to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_post("/1.1/statuses/update.json").with(:body => {:in_reply_to_status_id => "263813522369159169", :status => "@joshfrench @sferik Testing", :lat => "37.76969909668", :long => "-122.39330291748", :trim_user => "true"}).to_return(:body => fixture("status.json"))
       end
       it "requests the correct resource" do
         @cli.reply("263813522369159169", "Testing")
@@ -2051,7 +2051,7 @@ ID                   Posted at     Screen name       Text
   describe "#report_spam" do
     before do
       @cli.options = @cli.options.merge("profile" => fixture_path + "/.trc")
-      stub_post("/1.1/users/report_spam.json").with(:body => {:screen_name => "sferik"}).to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_post("/1.1/users/report_spam.json").with(:body => {:screen_name => "sferik"}).to_return(:body => fixture("sferik.json"))
     end
     it "requests the correct resource" do
       @cli.report_spam("sferik")
@@ -2064,7 +2064,7 @@ ID                   Posted at     Screen name       Text
     context "--id" do
       before do
         @cli.options = @cli.options.merge("id" => true)
-        stub_post("/1.1/users/report_spam.json").with(:body => {:user_id => "7505382"}).to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_post("/1.1/users/report_spam.json").with(:body => {:user_id => "7505382"}).to_return(:body => fixture("sferik.json"))
       end
       it "requests the correct resource" do
         @cli.report_spam("7505382")
@@ -2076,7 +2076,7 @@ ID                   Posted at     Screen name       Text
   describe "#retweet" do
     before do
       @cli.options = @cli.options.merge("profile" => fixture_path + "/.trc")
-      stub_post("/1.1/statuses/retweet/26755176471724032.json").to_return(:body => fixture("retweet.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_post("/1.1/statuses/retweet/26755176471724032.json").to_return(:body => fixture("retweet.json"))
     end
     it "requests the correct resource" do
       @cli.retweet("26755176471724032")
@@ -2090,8 +2090,8 @@ ID                   Posted at     Screen name       Text
 
   describe "#retweets" do
     before do
-      stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true", :max_id => "244102729860009983"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true"}).to_return(:body => fixture("statuses.json"))
+      stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true", :max_id => "244102729860009983"}).to_return(:body => fixture("statuses.json"))
     end
     context "without arguments" do
       it "requests the correct resource" do
@@ -2280,8 +2280,8 @@ ID                  Posted at     Screen name      Text
     end
     context "--number" do
       before do
-        stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true", :max_id => "244107823733174271"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true"}).to_return(:body => fixture("statuses.json"))
+        stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true", :max_id => "244107823733174271"}).to_return(:body => fixture("statuses.json"))
       end
       it "limits the number of results to 1" do
         @cli.options = @cli.options.merge("number" => 1)
@@ -2297,8 +2297,8 @@ ID                  Posted at     Screen name      Text
     end
     context "with a user passed" do
       before do
-        stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true", :screen_name => "sferik"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true", :screen_name => "sferik", :max_id => "244102729860009983"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true", :screen_name => "sferik"}).to_return(:body => fixture("statuses.json"))
+        stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true", :screen_name => "sferik", :max_id => "244102729860009983"}).to_return(:body => fixture("statuses.json"))
       end
       it "requests the correct resource" do
         @cli.retweets("sferik")
@@ -2308,8 +2308,8 @@ ID                  Posted at     Screen name      Text
       context "--id" do
         before do
           @cli.options = @cli.options.merge("id" => true)
-          stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true", :user_id => "7505382"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-          stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true", :user_id => "7505382", :max_id => "244102729860009983"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true", :user_id => "7505382"}).to_return(:body => fixture("statuses.json"))
+          stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true", :user_id => "7505382", :max_id => "244102729860009983"}).to_return(:body => fixture("statuses.json"))
         end
         it "requests the correct resource" do
           @cli.retweets("7505382")
@@ -2340,8 +2340,8 @@ ID                  Posted at     Screen name      Text
 
   describe "#status" do
     before do
-      stub_get("/1.1/statuses/show/55709764298092545.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-      stub_get("/i/statuses/55709764298092545/activity/summary.json").to_return(:body => fixture("activity_summary.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/statuses/show/55709764298092545.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status.json"))
+      stub_get("/i/statuses/55709764298092545/activity/summary.json").to_return(:body => fixture("activity_summary.json"))
     end
     it "requests the correct resources" do
       @cli.status("55709764298092545")
@@ -2376,7 +2376,7 @@ ID,Posted at,Screen name,Text,Retweets,Favorites,Replies,Source,Location
     end
     context "with no street address" do
       before do
-        stub_get("/1.1/statuses/show/55709764298092545.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status_no_street_address.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/statuses/show/55709764298092545.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status_no_street_address.json"))
       end
       it "has the correct output" do
         @cli.status("55709764298092545")
@@ -2395,7 +2395,7 @@ Location     Blowfish Sushi To Die For, San Francisco, California, United States
     end
     context "with no locality" do
       before do
-        stub_get("/1.1/statuses/show/55709764298092545.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status_no_locality.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/statuses/show/55709764298092545.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status_no_locality.json"))
       end
       it "has the correct output" do
         @cli.status("55709764298092545")
@@ -2414,7 +2414,7 @@ Location     Blowfish Sushi To Die For, San Francisco, California, United States
     end
     context "with no attributes" do
       before do
-        stub_get("/1.1/statuses/show/55709764298092545.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status_no_attributes.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/statuses/show/55709764298092545.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status_no_attributes.json"))
       end
       it "has the correct output" do
         @cli.status("55709764298092545")
@@ -2433,7 +2433,7 @@ Location     Blowfish Sushi To Die For, San Francisco, United States
     end
     context "with no country" do
       before do
-        stub_get("/1.1/statuses/show/55709764298092545.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status_no_country.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/statuses/show/55709764298092545.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status_no_country.json"))
       end
       it "has the correct output" do
         @cli.status("55709764298092545")
@@ -2452,7 +2452,7 @@ Location     Blowfish Sushi To Die For, San Francisco
     end
     context "with no full name" do
       before do
-        stub_get("/1.1/statuses/show/55709764298092545.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status_no_full_name.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/statuses/show/55709764298092545.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status_no_full_name.json"))
       end
       it "has the correct output" do
         @cli.status("55709764298092545")
@@ -2471,7 +2471,7 @@ Location     Blowfish Sushi To Die For
     end
     context "with no place" do
       before do
-        stub_get("/1.1/statuses/show/55709764298092545.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status_no_place.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/statuses/show/55709764298092545.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status_no_place.json"))
         stub_request(:get, "http://maps.google.com/maps/geo").with(:query => hash_including({:key => "REPLACE_WITH_YOUR_GOOGLE_KEY", :oe => "utf-8", :output => "xml"})).to_return(:body => fixture("geo.kml"), :headers => {:content_type => "text/xml; charset=UTF-8"})
       end
       it "has the correct output" do
@@ -2490,7 +2490,7 @@ Location     San Francisco, CA, USA
       end
       context "with no city" do
         before do
-          stub_get("/1.1/statuses/show/55709764298092545.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status_no_place.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1.1/statuses/show/55709764298092545.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status_no_place.json"))
           stub_request(:get, "http://maps.google.com/maps/geo").with(:query => hash_including({:key => "REPLACE_WITH_YOUR_GOOGLE_KEY", :oe => "utf-8", :output => "xml"})).to_return(:body => fixture("geo_no_city.kml"), :headers => {:content_type => "text/xml; charset=UTF-8"})
         end
         it "has the correct output" do
@@ -2510,7 +2510,7 @@ Location     CA, USA
       end
       context "with no state" do
         before do
-          stub_get("/1.1/statuses/show/55709764298092545.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status_no_place.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1.1/statuses/show/55709764298092545.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status_no_place.json"))
           stub_request(:get, "http://maps.google.com/maps/geo").with(:query => hash_including({:key => "REPLACE_WITH_YOUR_GOOGLE_KEY", :oe => "utf-8", :output => "xml"})).to_return(:body => fixture("geo_no_state.kml"), :headers => {:content_type => "text/xml; charset=UTF-8"})
         end
         it "has the correct output" do
@@ -2545,7 +2545,7 @@ ID                 Posted at     Screen name  Text                           ...
 
   describe "#timeline" do
     before do
-      stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "20"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "20"}).to_return(:body => fixture("statuses.json"))
     end
     context "without user" do
       it "requests the correct resource" do
@@ -2667,7 +2667,7 @@ ID,Posted at,Screen name,Text
     context "--exclude=replies" do
       before do
         @cli.options = @cli.options.merge("exclude" => "replies")
-        stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "20", :exclude_replies => "true"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "20", :exclude_replies => "true"}).to_return(:body => fixture("statuses.json"))
       end
       it "excludes replies" do
         @cli.timeline
@@ -2677,7 +2677,7 @@ ID,Posted at,Screen name,Text
     context "--exclude=retweets" do
       before do
         @cli.options = @cli.options.merge("exclude" => "retweets")
-        stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "20", :include_rts => "false"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "20", :include_rts => "false"}).to_return(:body => fixture("statuses.json"))
       end
       it "excludes retweets" do
         @cli.timeline
@@ -2748,9 +2748,9 @@ ID                   Posted at     Screen name       Text
     end
     context "--number" do
       before do
-        stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "1"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200"}).to_return(:body => fixture("200_statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-        stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "1", :max_id => "265500541700956160"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "1"}).to_return(:body => fixture("statuses.json"))
+        stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200"}).to_return(:body => fixture("200_statuses.json"))
+        stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "1", :max_id => "265500541700956160"}).to_return(:body => fixture("statuses.json"))
       end
       it "limits the number of results to 1" do
         @cli.options = @cli.options.merge("number" => 1)
@@ -2766,7 +2766,7 @@ ID                   Posted at     Screen name       Text
     end
     context "with a user passed" do
       before do
-        stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "20", :screen_name => "sferik"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "20", :screen_name => "sferik"}).to_return(:body => fixture("statuses.json"))
       end
       it "requests the correct resource" do
         @cli.timeline("sferik")
@@ -2775,7 +2775,7 @@ ID                   Posted at     Screen name       Text
       context "--id" do
         before do
           @cli.options = @cli.options.merge("id" => true)
-          stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "20", :user_id => "7505382"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "20", :user_id => "7505382"}).to_return(:body => fixture("statuses.json"))
         end
         it "requests the correct resource" do
           @cli.timeline("7505382")
@@ -2784,9 +2784,9 @@ ID                   Posted at     Screen name       Text
       end
       context "--number" do
         before do
-          stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "1", :screen_name => "sferik"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-          stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :screen_name => "sferik"}).to_return(:body => fixture("200_statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-          stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "1", :screen_name => "sferik", :max_id => "265500541700956160"}).to_return(:body => fixture("statuses.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "1", :screen_name => "sferik"}).to_return(:body => fixture("statuses.json"))
+          stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :screen_name => "sferik"}).to_return(:body => fixture("200_statuses.json"))
+          stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "1", :screen_name => "sferik", :max_id => "265500541700956160"}).to_return(:body => fixture("statuses.json"))
         end
         it "limits the number of results to 1" do
           @cli.options = @cli.options.merge("number" => 1)
@@ -2805,7 +2805,7 @@ ID                   Posted at     Screen name       Text
 
   describe "#trends" do
     before do
-      stub_get("/1.1/trends/place.json").with(:query => {:id => "1"}).to_return(:body => fixture("trends.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/trends/place.json").with(:query => {:id => "1"}).to_return(:body => fixture("trends.json"))
     end
     it "requests the correct resource" do
       @cli.trends
@@ -2818,7 +2818,7 @@ ID                   Posted at     Screen name       Text
     context "--exclude-hashtags" do
       before do
         @cli.options = @cli.options.merge("exclude-hashtags" => true)
-        stub_get("/1.1/trends/place.json").with(:query => {:id => "1", :exclude => "hashtags"}).to_return(:body => fixture("trends.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/trends/place.json").with(:query => {:id => "1", :exclude => "hashtags"}).to_return(:body => fixture("trends.json"))
       end
       it "requests the correct resource" do
         @cli.trends
@@ -2831,7 +2831,7 @@ ID                   Posted at     Screen name       Text
     end
     context "with a WOEID passed" do
       before do
-        stub_get("/1.1/trends/place.json").with(:query => {:id => "2487956"}).to_return(:body => fixture("trends.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/trends/place.json").with(:query => {:id => "2487956"}).to_return(:body => fixture("trends.json"))
       end
       it "requests the correct resource" do
         @cli.trends("2487956")
@@ -2846,7 +2846,7 @@ ID                   Posted at     Screen name       Text
 
   describe "#trend_locations" do
     before do
-      stub_get("/1.1/trends/available.json").to_return(:body => fixture("locations.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/trends/available.json").to_return(:body => fixture("locations.json"))
     end
     it "requests the correct resource" do
       @cli.trend_locations
@@ -2950,19 +2950,19 @@ WOEID     Parent ID  Type       Name           Country
     end
     context "one user" do
       it "requests the correct resource" do
-        stub_post("/1.1/friendships/destroy.json").with(:body => {:screen_name => "sferik"}).to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_post("/1.1/friendships/destroy.json").with(:body => {:screen_name => "sferik"}).to_return(:body => fixture("sferik.json"))
         @cli.unfollow("sferik")
         expect(a_post("/1.1/friendships/destroy.json").with(:body => {:screen_name => "sferik"})).to have_been_made
       end
       it "has the correct output" do
-        stub_post("/1.1/friendships/destroy.json").with(:body => {:screen_name => "sferik"}).to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_post("/1.1/friendships/destroy.json").with(:body => {:screen_name => "sferik"}).to_return(:body => fixture("sferik.json"))
         @cli.unfollow("sferik")
         expect($stdout.string).to match /^@testcli is no longer following 1 user\.$/
       end
       context "--id" do
         before do
           @cli.options = @cli.options.merge("id" => true)
-          stub_post("/1.1/friendships/destroy.json").with(:body => {:user_id => "7505382"}).to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          stub_post("/1.1/friendships/destroy.json").with(:body => {:user_id => "7505382"}).to_return(:body => fixture("sferik.json"))
         end
         it "requests the correct resource" do
           @cli.unfollow("7505382")
@@ -2984,7 +2984,7 @@ WOEID     Parent ID  Type       Name           Country
   describe "#update" do
     before do
       @cli.options = @cli.options.merge("profile" => fixture_path + "/.trc", "location" => true)
-      stub_post("/1.1/statuses/update.json").with(:body => {:status => "Testing", :lat => "37.76969909668", :long => "-122.39330291748", :trim_user => "true"}).to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_post("/1.1/statuses/update.json").with(:body => {:status => "Testing", :lat => "37.76969909668", :long => "-122.39330291748", :trim_user => "true"}).to_return(:body => fixture("status.json"))
       stub_request(:get, "http://checkip.dyndns.org/").to_return(:body => fixture("checkip.html"), :headers => {:content_type => "text/html"})
       stub_request(:get, "http://www.geoplugin.net/xml.gp?ip=50.131.22.169").to_return(:body => fixture("geoplugin.xml"), :headers => {:content_type => "application/xml"})
     end
@@ -3001,7 +3001,7 @@ WOEID     Parent ID  Type       Name           Country
     context "with file" do
       before do
         @cli.options = @cli.options.merge("file" => fixture_path + "/long.png")
-        stub_post("/1.1/statuses/update_with_media.json").to_return(:body => fixture("status.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_post("/1.1/statuses/update_with_media.json").to_return(:body => fixture("status.json"))
       end
       it "requests the correct resource" do
         @cli.update("Testing")
@@ -3016,7 +3016,7 @@ WOEID     Parent ID  Type       Name           Country
 
   describe "#users" do
     before do
-      stub_post("/1.1/users/lookup.json").with(:body => {:screen_name => "sferik,pengwynn"}).to_return(:body => fixture("users.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_post("/1.1/users/lookup.json").with(:body => {:screen_name => "sferik,pengwynn"}).to_return(:body => fixture("users.json"))
     end
     it "requests the correct resource" do
       @cli.users("sferik", "pengwynn")
@@ -3091,7 +3091,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
     context "--id" do
       before do
         @cli.options = @cli.options.merge("id" => true)
-        stub_post("/1.1/users/lookup.json").with(:body => {:user_id => "7505382,14100886"}).to_return(:body => fixture("users.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_post("/1.1/users/lookup.json").with(:body => {:user_id => "7505382,14100886"}).to_return(:body => fixture("users.json"))
       end
       it "requests the correct resource" do
         @cli.users("7505382", "14100886")
@@ -3154,7 +3154,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
 
   describe "#whois" do
     before do
-      stub_get("/1.1/users/show.json").with(:query => {:screen_name => "sferik"}).to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/users/show.json").with(:query => {:screen_name => "sferik"}).to_return(:body => fixture("sferik.json"))
     end
     it "requests the correct resource" do
       @cli.whois("sferik")
@@ -3193,7 +3193,7 @@ ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name
     context "--id" do
       before do
         @cli.options = @cli.options.merge("id" => true)
-        stub_get("/1.1/users/show.json").with(:query => {:user_id => "7505382"}).to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1.1/users/show.json").with(:query => {:user_id => "7505382"}).to_return(:body => fixture("sferik.json"))
       end
       it "requests the correct resource" do
         @cli.whois("7505382")

@@ -35,9 +35,9 @@ module T
     method_option "number", :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS
     def all(query)
       count = options['number'] || DEFAULT_NUM_RESULTS
-      tweets = collect_with_count(count) do |opts|
-        opts[:include_entities] = 1 if options['decode_urls']
-        client.search(query, opts).results
+      tweets = collect_with_count(count) do |count_opts|
+        count_opts[:include_entities] = 1 if options['decode_urls']
+        client.search(query, count_opts).results
       end
       tweets.reverse! if options['reverse']
       require 'htmlentities'
@@ -169,23 +169,17 @@ module T
 
     desc "timeline [USER] QUERY", "Returns Tweets in your timeline that match the specified query."
     method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
+    method_option "decode_urls", :aliases => "-d", :type => :boolean, :default => false, :desc => "Decodes t.co URLs into their original form."
     method_option "exclude", :aliases => "-e", :type => :string, :enum => %w(replies retweets), :desc => "Exclude certain types of Tweets from the results.", :banner => "TYPE"
     method_option "id", :aliases => "-i", :type => :boolean, :default => false, :desc => "Specify user via ID instead of screen name."
     method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
-    method_option "decode_urls", :aliases => "-d", :type => :boolean, :default => false, :desc => "Decodes t.co URLs into their original form."
     def timeline(*args)
-      opts = {:count => MAX_NUM_RESULTS}
       query = args.pop
       user = args.pop
+      opts = {:count => MAX_NUM_RESULTS}
       opts[:include_entities] = 1 if options['decode_urls']
-      exclude_opts = case options['exclude']
-      when 'replies'
-        {:exclude_replies => true}
-      when 'retweets'
-        {:include_rts => false}
-      else
-        {}
-      end
+      opts[:exclude_replies] = true if options['exclude'] == 'replies'
+      opts[:include_rts] = false if options['exclude'] == 'retweets'
       if user
         require 't/core_ext/string'
         user = if options['id']
@@ -195,12 +189,12 @@ module T
         end
         tweets = collect_with_max_id do |max_id|
           opts[:max_id] = max_id unless max_id.nil?
-          client.user_timeline(user, opts.merge(exclude_opts))
+          client.user_timeline(user, opts)
         end
       else
         tweets = collect_with_max_id do |max_id|
           opts[:max_id] = max_id unless max_id.nil?
-          client.home_timeline(opts.merge(exclude_opts))
+          client.home_timeline(opts)
         end
       end
       tweets = tweets.select do |tweet|

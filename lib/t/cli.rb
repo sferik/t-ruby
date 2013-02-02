@@ -130,8 +130,8 @@ module T
     method_option "reverse", :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     def direct_messages
       count = options['number'] || DEFAULT_NUM_RESULTS
-      direct_messages = collect_with_count(count) do |opts|
-        client.direct_messages(opts)
+      direct_messages = collect_with_count(count) do |count_opts|
+        client.direct_messages(count_opts)
       end
       direct_messages.reverse! if options['reverse']
       require 'htmlentities'
@@ -163,8 +163,8 @@ module T
     method_option "reverse", :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     def direct_messages_sent
       count = options['number'] || DEFAULT_NUM_RESULTS
-      direct_messages = collect_with_count(count) do |opts|
-        client.direct_messages_sent(opts)
+      direct_messages = collect_with_count(count) do |count_opts|
+        client.direct_messages_sent(count_opts)
       end
       direct_messages.reverse! if options['reverse']
       require 'htmlentities'
@@ -321,8 +321,8 @@ module T
         end
       end
       count = options['number'] || DEFAULT_NUM_RESULTS
-      tweets = collect_with_count(count) do |opts|
-        client.favorites(user, opts)
+      tweets = collect_with_count(count) do |count_opts|
+        client.favorites(user, count_opts)
       end
       print_tweets(tweets)
     end
@@ -495,8 +495,8 @@ module T
     method_option "reverse", :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     def mentions
       count = options['number'] || DEFAULT_NUM_RESULTS
-      tweets = collect_with_count(count) do |opts|
-        client.mentions(opts)
+      tweets = collect_with_count(count) do |count_opts|
+        client.mentions(count_opts)
       end
       print_tweets(tweets)
     end
@@ -580,12 +580,12 @@ module T
         else
           user.strip_ats
         end
-        collect_with_count(count) do |opts|
-          client.retweeted_by_user(user, opts)
+        collect_with_count(count) do |count_opts|
+          client.retweeted_by_user(user, count_opts)
         end
       else
-        collect_with_count(count) do |opts|
-          client.retweeted_by_me(opts)
+        collect_with_count(count) do |count_opts|
+          client.retweeted_by_me(count_opts)
         end
       end
       print_tweets(tweets)
@@ -655,14 +655,9 @@ module T
     method_option "reverse", :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     def timeline(user=nil)
       count = options['number'] || DEFAULT_NUM_RESULTS
-      exclude_opts = case options['exclude']
-      when 'replies'
-        {:exclude_replies => true}
-      when 'retweets'
-        {:include_rts => false}
-      else
-        {}
-      end
+      opts = {}
+      opts[:exclude_replies] = true if options['exclude'] == 'replies'
+      opts[:include_rts] = false if options['exclude'] == 'retweets'
       if user
         require 't/core_ext/string'
         user = if options['id']
@@ -670,12 +665,12 @@ module T
         else
           user.strip_ats
         end
-        tweets = collect_with_count(count) do |opts|
-          client.user_timeline(user, opts.merge(exclude_opts))
+        tweets = collect_with_count(count) do |count_opts|
+          client.user_timeline(user, count_opts.merge(opts))
         end
       else
-        tweets = collect_with_count(count) do |opts|
-          client.home_timeline(opts.merge(exclude_opts))
+        tweets = collect_with_count(count) do |count_opts|
+          client.home_timeline(count_opts.merge(opts))
         end
       end
       print_tweets(tweets)

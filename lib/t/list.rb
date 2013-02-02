@@ -121,8 +121,8 @@ module T
     def timeline(list)
       owner, list = extract_owner(list, options)
       count = options['number'] || DEFAULT_NUM_RESULTS
-      tweets = collect_with_count(count) do |opts|
-        client.list_timeline(owner, list, opts)
+      tweets = collect_with_count(count) do |count_opts|
+        client.list_timeline(owner, list, count_opts)
       end
       print_tweets(tweets)
     end

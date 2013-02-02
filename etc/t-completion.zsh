@@ -273,6 +273,7 @@ _t_timeline() {
     "(-l --long)"{-l,--long}"[Output in long format.]" \
     "(-n --number)"{-n,--number}"[Limit the number of results.]" \
     "(-r --reverse)"{-r,--reverse}"[Reverse the order of the sort.]" \
+    "(-s --since_id)"{-s,--since_id}"[Returns only the results with an ID greater than the specified ID.]" \
     $t_general_options && ret=0
 }
 

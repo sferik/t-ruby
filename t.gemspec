@@ -12,6 +12,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'thor', ['>= 0.16', '< 2']
   spec.add_dependency 'tweetstream', '~> 2.3'
   spec.add_dependency 'twitter', '~> 4.4'
+  spec.add_development_dependency 'bundler', '~> 1.0'
   spec.author = "Erik Michaels-Ober"
   spec.bindir = 'bin'
   spec.description = %q{A command-line power tool for Twitter.}

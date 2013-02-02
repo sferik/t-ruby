@@ -9,7 +9,7 @@ module T
 
       # @return [Integer]
       def minor
-        6
+        7
       end
 
       # @return [Integer]

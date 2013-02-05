@@ -293,5 +293,5 @@ Application icon by [@nvk][nvk].
 [license]: https://github.com/sferik/t/blob/master/LICENSE.md
 [nvk]: http://rodolfonovak.com
 [zsh]: http://zsh.org
-[completion]: https://github.com/sferik/t/tree/etc/t-completion.zsh
+[completion]: https://github.com/sferik/t/blob/master/etc/t-completion.zsh
 [contribute]: https://github.com/sferik/t/blob/master/CONTRIBUTING.md

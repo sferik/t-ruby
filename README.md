@@ -1,5 +1,4 @@
 # [![Application icon](https://github.com/sferik/t/raw/master/icon/t.png)][icon]
-
 [icon]: https://github.com/sferik/t/raw/master/icon/t.png
 
 # Twitter CLI
@@ -9,20 +8,19 @@
 [![Pledgie](http://www.pledgie.com/campaigns/17330.png)][pledgie]
 [![Flattr](http://api.flattr.com/button/flattr-badge-large.png)][flattr]
 
-#### A command-line power tool for Twitter.
-
-The CLI takes syntactic cues from the [Twitter SMS commands][sms], however it
-offers vastly more commands and capabilities than are available via SMS.
-
 [gem]: https://rubygems.org/gems/t
 [travis]: http://travis-ci.org/sferik/t
 [gemnasium]: https://gemnasium.com/sferik/t
 [pledgie]: http://www.pledgie.com/campaigns/17330
 [flattr]: http://flattr.com/thing/815001/sferikt-on-GitHub
+
+#### A command-line power tool for Twitter.
+The CLI takes syntactic cues from the [Twitter SMS commands][sms], however it
+offers vastly more commands and capabilities than are available via SMS.
+
 [sms]: https://support.twitter.com/articles/14020-twitter-sms-command
 
 ## Installation
-
 First, make sure you have Ruby installed.
 
 **On a Mac**, open `/Applications/Utilities/Terminal.app` and type:
@@ -31,23 +29,31 @@ First, make sure you have Ruby installed.
 
 If the output looks something like this, you're in good shape:
 
-    ruby 1.9.3p194 (2012-04-20 revision 35410) [x86_64-darwin12.0.0]
+    ruby 1.9.3p385 (2013-02-06 revision 39114) [x86_64-darwin12.2.1]
 
 If the output looks more like this, you need to [install Ruby][ruby]:
+[ruby]: http://www.ruby-lang.org/en/downloads/
 
     ruby: command not found
 
 **On Windows**, you can install Ruby with [RubyInstaller][].
+[rubyinstaller]: http://rubyinstaller.org/
 
 Once you've verified that Ruby is installed:
 
     gem install t
 
-[ruby]: http://www.ruby-lang.org/en/downloads/
-[rubyinstaller]: http://rubyinstaller.org/
+To ensure the code you're installing hasn't been tampered with, it's
+recommended that you verify the signature. To do this, you need to add my
+public key as a trusted certificate (you only need to do this once):
+
+    gem cert --add <(curl -Ls https://gist.github.com/sferik/4701180/raw/public_cert.pem)
+
+Then, install the gem with the high security trust policy:
+
+    gem install t -P HighSecurity
 
 ## Configuration
-
 Twitter API v1.1 requires OAuth for all of its functionality, so you'll need a
 registered Twitter application. If you've never registered a Twitter
 application before, it's easy! Just sign-in using your Twitter account and the
@@ -202,7 +208,6 @@ example, send a user a direct message only if he already follows you:
 [search]: https://dev.twitter.com/docs/using-search
 
 ## Using T for Backup
-
 [@jphpsf][jphpsf] wrote a [blog post][blog] explaining how to use `t` to backup
 your Twitter account.
 
@@ -219,7 +224,6 @@ link it here.
 [email]: mailto:sferik@gmail.com
 
 ## Relationship Terminology
-
 There is some ambiguity in the terminology used to describe relationships on
 Twitter. For example, some people use the term "friends" to mean everyone you
 follow. In `t`, "friends" refers to just the subset of people who follow you

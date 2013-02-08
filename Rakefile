@@ -4,7 +4,7 @@ Bundler::GemHelper.install_tasks
 require 'rspec/core/rake_task'
 RSpec::Core::RakeTask.new(:spec)
 
-import 'tasks/zsh.rake'
+Dir.glob('tasks/*.rake').each { |r| import r }
 
 task :release => 'completion:zsh'
 task :test => :spec

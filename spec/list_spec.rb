@@ -154,7 +154,7 @@ ID,Description,Slug,Screen name,Created at,Members,Subscribers,Following,Mode,UR
         @list.members("presidents")
         expect($stdout.string).to eq <<-eos
 ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name,Verified,Bio,Status,Location,URL
-14100886,2008-03-08 16:34:22 +0000,2012-07-07 20:33:19 +0000,6940,192,358,3427,5457,pengwynn,Wynn Netherland ⚡,false,"Christian, husband, father, GitHubber, Co-host of @thechangelog, Co-author of Sass, Compass, #CSS book  http://wynn.fm/sass-meap",@akosmasoftware Sass book! @hcatlin @nex3 are the brains behind Sass. :-),"Denton, TX",http://wynnnetherland.com
+14100886,2008-03-08 16:34:22 +0000,2012-07-07 20:33:19 +0000,6940,192,358,3427,5457,pengwynn,Wynn Netherland,false,"Christian, husband, father, GitHubber, Co-host of @thechangelog, Co-author of Sass, Compass, #CSS book  http://wynn.fm/sass-meap",@akosmasoftware Sass book! @hcatlin @nex3 are the brains behind Sass. :-),"Denton, TX",http://wynnnetherland.com
 7505382,2007-07-16 12:59:01 +0000,2012-07-08 18:29:20 +0000,7890,3755,118,212,2262,sferik,Erik Michaels-Ober,false,Vagabond.,@goldman You're near my home town! Say hi to Woodstock for me.,San Francisco,https://github.com/sferik
         eos
       end
@@ -355,7 +355,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
    If you are wondering how we computed the split bubbles: http://t.co/BcaqSs5u
 
 \e[1m\e[33m   @FakeDorsey\e[0m
-   “Write drunk. Edit sober.”—Ernest Hemingway
+   "Write drunk. Edit sober."—Ernest Hemingway
 
 \e[1m\e[33m   @al3x\e[0m
    RT @wcmaier: Better banking through better ops: build something new with us 
@@ -439,7 +439,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
    If you are wondering how we computed the split bubbles: http://t.co/BcaqSs5u
 
    @FakeDorsey
-   “Write drunk. Edit sober.”—Ernest Hemingway
+   "Write drunk. Edit sober."—Ernest Hemingway
 
    @al3x
    RT @wcmaier: Better banking through better ops: build something new with us 
@@ -524,7 +524,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
    If you are wondering how we computed the split bubbles: http://t.co/BcaqSs5u
 
    @FakeDorsey
-   “Write drunk. Edit sober.”—Ernest Hemingway
+   "Write drunk. Edit sober."—Ernest Hemingway
 
    @al3x
    RT @wcmaier: Better banking through better ops: build something new with us 
@@ -605,7 +605,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
    If you are wondering how we computed the split bubbles: http://t.co/BcaqSs5u
 
 \e[1m\e[33m   @FakeDorsey\e[0m
-   “Write drunk. Edit sober.”—Ernest Hemingway
+   "Write drunk. Edit sober."—Ernest Hemingway
 
 \e[1m\e[33m   @al3x\e[0m
    RT @wcmaier: Better banking through better ops: build something new with us 
@@ -667,7 +667,7 @@ ID,Posted at,Screen name,Text
 244107823733174272,2012-09-07 16:20:15 +0000,codeforamerica,"RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat, Sep 8 http://t.co/Sk5BM7U3  We'll see y'all there! #rhok @codeforamerica @TheaClay"
 244107236262170624,2012-09-07 16:17:55 +0000,fbjork,"RT @jondot: Just published: ""Pragmatic Concurrency With #Ruby"" http://t.co/kGEykswZ   /cc @JRuby @headius"
 244106476048764928,2012-09-07 16:14:53 +0000,mbostock,If you are wondering how we computed the split bubbles: http://t.co/BcaqSs5u
-244105599351148544,2012-09-07 16:11:24 +0000,FakeDorsey,“Write drunk. Edit sober.”—Ernest Hemingway
+244105599351148544,2012-09-07 16:11:24 +0000,FakeDorsey,"""Write drunk. Edit sober.""—Ernest Hemingway"
 244104558433951744,2012-09-07 16:07:16 +0000,al3x,"RT @wcmaier: Better banking through better ops: build something new with us @Simplify (remote, PDX) http://t.co/8WgzKZH3"
 244104146997870594,2012-09-07 16:05:38 +0000,calebelston,"We just announced Mosaic, what we've been working on since the Yobongo acquisition. My personal post, http://t.co/ELOyIRZU @heymosaic"
 244103057175113729,2012-09-07 16:01:18 +0000,BarackObama,Donate $10 or more --> get your favorite car magnet: http://t.co/NfRhl2s2 #Obama2012
@@ -698,7 +698,7 @@ ID                   Posted at     Screen name       Text
  244107823733174272  Sep  7 08:20  @codeforamerica   RT @randomhacks: Going t...
  244107236262170624  Sep  7 08:17  @fbjork           RT @jondot: Just publish...
  244106476048764928  Sep  7 08:14  @mbostock         If you are wondering how...
- 244105599351148544  Sep  7 08:11  @FakeDorsey       “Write drunk. Edit sober...
+ 244105599351148544  Sep  7 08:11  @FakeDorsey       "Write drunk. Edit sober...
  244104558433951744  Sep  7 08:07  @al3x             RT @wcmaier: Better bank...
  244104146997870594  Sep  7 08:05  @calebelston      We just announced Mosaic...
  244103057175113729  Sep  7 08:01  @BarackObama      Donate $10 or more --> g...
@@ -729,7 +729,7 @@ ID                   Posted at     Screen name       Text
  244103057175113729  Sep  7 08:01  @BarackObama      Donate $10 or more --> g...
  244104146997870594  Sep  7 08:05  @calebelston      We just announced Mosaic...
  244104558433951744  Sep  7 08:07  @al3x             RT @wcmaier: Better bank...
- 244105599351148544  Sep  7 08:11  @FakeDorsey       “Write drunk. Edit sober...
+ 244105599351148544  Sep  7 08:11  @FakeDorsey       "Write drunk. Edit sober...
  244106476048764928  Sep  7 08:14  @mbostock         If you are wondering how...
  244107236262170624  Sep  7 08:17  @fbjork           RT @jondot: Just publish...
  244107823733174272  Sep  7 08:20  @codeforamerica   RT @randomhacks: Going t...

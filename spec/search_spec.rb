@@ -92,11 +92,11 @@ describe T::Search do
    La lettera di Obama sui genitori gay http://t.co/dmFkfbgG
 
 \e[1m\e[33m   @NickLoveSlayer\e[0m
-   RT @NewsMCyrus: Después De que gano Obama las elecciones, empezó a sonar 
+   RT @NewsMCyrus: Despues De que gano Obama las elecciones, empezo a sonar 
    Party In The U.S.A de Miley Cyrus en la casa blanca
 
 \e[1m\e[33m   @Ch_pavon17\e[0m
-   RT @PrincipeWilli: -Hoy me desperté bien electo. -Jajaja, pinche Obama, eres 
+   RT @PrincipeWilli: -Hoy me desperte bien electo. -Jajaja, pinche Obama, eres 
    un desmadre..
 
 \e[1m\e[33m   @weeki1\e[0m
@@ -110,7 +110,7 @@ describe T::Search do
    RT @dwiskus: Obama played OHIO to win 26-24. http://t.co/CEW5XMtc
 
 \e[1m\e[33m   @Moondances_\e[0m
-   RT @_pedropenna: OBAMA teve o tweet mais retweetado da história aí é óbvio 
+   RT @_pedropenna: OBAMA teve o tweet mais retweetado da historia ai e obvio 
    que as fãs do justin vão falar: VAMOS BATER ESSE 
    RECORDDDDDDDDDDDDDDDDDDDDDDDDDDDD
 
@@ -179,8 +179,8 @@ describe T::Search do
    like they just got out of church. Obama's look like they're out on parole.
 
 \e[1m\e[33m   @pabloirossi\e[0m
-   Obama, ante el precipicio fiscal: “Tengo mi bolígrafo listo para firmar” 
-   http://t.co/m5Q6O0lq vía @expansioncom
+   Obama, ante el precipicio fiscal: "Tengo mi boligrafo listo para firmar" 
+   http://t.co/m5Q6O0lq via @expansioncom
 
 \e[1m\e[33m   @mermaid6590\e[0m
    @LeslieMHooper I think Obama and Chris Christie are having an affair! LMAO!!!
@@ -189,7 +189,7 @@ describe T::Search do
    RT @SAMhOes: Lmao #Obama http://t.co/uxLqQ8zq
 
 \e[1m\e[33m   @soso2583\e[0m
-   RT @20Minutes: Pour Obama, les Américains les plus riches doivent payer plus 
+   RT @20Minutes: Pour Obama, les Americains les plus riches doivent payer plus 
    d'impôts http://t.co/PiZXc0Ty
 
 \e[1m\e[33m   @desertkev\e[0m
@@ -211,7 +211,7 @@ describe T::Search do
 
 \e[1m\e[33m   @Evilazio\e[0m
    Obama "decepciona" mercados. Idiotice! Os mercados estão sendo movidos pela 
-   China, que retoma crescimento. Só os ricos estão preocupados.
+   China, que retoma crescimento. So os ricos estão preocupados.
 
 \e[1m\e[33m   @carolynedgar\e[0m
    @GoAngelo let's just speculate that Petraeus was having an affair WITH Obama 
@@ -219,7 +219,7 @@ describe T::Search do
 
 \e[1m\e[33m   @bob_mor\e[0m
    RT @NoticiasCaracol: Obama acepta renuncia del director de la CIA, que deja 
-   el cargo tras reconocer que tuvo relación extramatrimonial 
+   el cargo tras reconocer que tuvo relacion extramatrimonial 
    http://t.co/uU6j0p7q
 
 \e[1m\e[33m   @NotBarack\e[0m
@@ -250,7 +250,7 @@ describe T::Search do
    four years." 2 years Dave, 2 years.
 
 \e[1m\e[33m   @shetrulylovedya\e[0m
-   até o obama e a família dançam o gangnam style...
+   ate o obama e a familia dançam o gangnam style...
 
 \e[1m\e[33m   @r9mcgon\e[0m
    RT @Mike_hugs: Nixon +Kissinger tested the theory that if you bomb a country 
@@ -319,8 +319,8 @@ describe T::Search do
    People who like the snow also voted for Obama.
 
 \e[1m\e[33m   @tbest\e[0m
-   Awesome. “@daringfireball: ‘Obama Played OHIO to Win 26-24’: 
-   http://t.co/D2eP8EKy”
+   Awesome. "@daringfireball: 'Obama Played OHIO to Win 26-24': 
+   http://t.co/D2eP8EKy"
 
 \e[1m\e[33m   @ibtxhis_SaMone\e[0m
    RT @WeirdFact: President Obama was known to be heavy marijuana smoker in his 
@@ -350,13 +350,13 @@ describe T::Search do
    http://t.co/aCMvGeUr
 
 \e[1m\e[33m   @crazyinms\e[0m
-   RT @Clickman8: I’m sure PUTIN, HUGO,CASTRO & AhMADinejad are thrilled over 
+   RT @Clickman8: I'm sure PUTIN, HUGO,CASTRO & AhMADinejad are thrilled over 
    the outcome of the Election! OBAMA fits quite nicely in2 their Circle of 
    Friends
 
 \e[1m\e[33m   @JaeGun_LaoLin\e[0m
    RT @Kennyment: POURQUOI VOUS INVENTEZ DES PAIRINGS COMME ÇA ? LE PIRE QUE 
-   J'AI VU DE TOUTE MA VIE C'ÉTAIT OBATAE. OBAMA/TAEMIN.
+   J'AI VU DE TOUTE MA VIE C'ETAIT OBATAE. OBAMA/TAEMIN.
 
 \e[1m\e[33m   @borealizz\e[0m
    RT @utaustinliberal: Jake Tapper demands Carney release a tick-tock of where 
@@ -368,7 +368,7 @@ describe T::Search do
    "Obama's supporters waiting for their handouts" lmfao I can't.
 
 \e[1m\e[33m   @maxD_ooUt\e[0m
-   “@JennaNanci: My family is fucked because Obama is the president.” Join the 
+   "@JennaNanci: My family is fucked because Obama is the president." Join the 
    club
 
 \e[1m\e[33m   @KacyleneS\e[0m
@@ -380,7 +380,7 @@ describe T::Search do
    fewer rights in our socialist future even if Romney had
 
 \e[1m\e[33m   @MuslimGeezer\e[0m
-   Aung San Suu Kyi initially opposed Obama’s Burma trip http://t.co/rntYv65C
+   Aung San Suu Kyi initially opposed Obama's Burma trip http://t.co/rntYv65C
 
 \e[1m\e[33m   @MDiPasquale1999\e[0m
    @MarciaCM1 @royparrish of course Obama accepted his resignation because he 
@@ -392,12 +392,12 @@ describe T::Search do
    http://t.co/YDHgzwFE
 
 \e[1m\e[33m   @CriticalMassTX\e[0m
-   RT @thinkprogress: The 6 best overreactions to Obama’s win. watch Glenn 
+   RT @thinkprogress: The 6 best overreactions to Obama's win. watch Glenn 
    Beck's rant. spooky shit http://t.co/sZfQkkLd via @ARStrasser #icymi
 
 \e[1m\e[33m   @cobe001001\e[0m
-   RT @whitehouse: President Obama: "I’m committed to solving our fiscal 
-   challenges. But I refuse to accept any approach that isn’t balanced."
+   RT @whitehouse: President Obama: "I'm committed to solving our fiscal 
+   challenges. But I refuse to accept any approach that isn't balanced."
 
 \e[1m\e[33m   @MeganPanatier\e[0m
    City of Obama to invite Obama to Japan - The Tokyo Times http://t.co/1SwafGOM 
@@ -449,13 +449,13 @@ ID,Posted at,Screen name,Text
 267024749979373568,2012-11-09 22:03:56 +0000,OD_Worrell,RT @AP: White House says #Obama will travel to New York on Thursday to view recovery efforts from Superstorm Sandy: http://t.co/MCS6MceM
 267024749622865921,2012-11-09 22:03:56 +0000,LathamChalaGrp,Obama Hangs Tough on the Fiscal Cliff His speech increases the likelihood that negotiations will drag on well into 2013
 267024749501218817,2012-11-09 22:03:56 +0000,sesto09,La lettera di Obama sui genitori gay http://t.co/dmFkfbgG
-267024748779819009,2012-11-09 22:03:55 +0000,NickLoveSlayer,"RT @NewsMCyrus: Después De que gano Obama las elecciones, empezó a sonar Party In The U.S.A de Miley Cyrus en la casa blanca"
-267024748536541185,2012-11-09 22:03:55 +0000,Ch_pavon17,"RT @PrincipeWilli: -Hoy me desperté bien electo.
+267024748779819009,2012-11-09 22:03:55 +0000,NickLoveSlayer,"RT @NewsMCyrus: Despues De que gano Obama las elecciones, empezo a sonar Party In The U.S.A de Miley Cyrus en la casa blanca"
+267024748536541185,2012-11-09 22:03:55 +0000,Ch_pavon17,"RT @PrincipeWilli: -Hoy me desperte bien electo.
 -Jajaja, pinche Obama, eres un desmadre.."
 267024746821058560,2012-11-09 22:03:55 +0000,weeki1,RT @jjauthor: #Navy names newest ship - USS Barack Obama #GoNavy http://t.co/F6PGNTjX
 267024746724605952,2012-11-09 22:03:55 +0000,LugosLove,"Wow, Obama Started Crying While He Was Giving A Speech To His Campaign Staff"
 267024746389061633,2012-11-09 22:03:55 +0000,jbrons,RT @dwiskus: Obama played OHIO to win 26-24. http://t.co/CEW5XMtc
-267024746372268032,2012-11-09 22:03:55 +0000,Moondances_,RT @_pedropenna: OBAMA teve o tweet mais retweetado da história aí é óbvio que as fãs do justin vão falar: VAMOS BATER ESSE RECORDDDDDDDDDDDDDDDDDDDDDDDDDDDD
+267024746372268032,2012-11-09 22:03:55 +0000,Moondances_,RT @_pedropenna: OBAMA teve o tweet mais retweetado da historia ai e obvio que as fãs do justin vão falar: VAMOS BATER ESSE RECORDDDDDDDDDDDDDDDDDDDDDDDDDDDD
 267024745642463233,2012-11-09 22:03:55 +0000,matthew_austin4,"No, I will not shut up. I don't like Obama. I will continue to tweet my mind."
 267024745546014720,2012-11-09 22:03:55 +0000,FreebirdForever,"RT @Bobprintdoc: @vickikellar vicki your overdrawn on your Obama bashing account please insert 16,000,000,000,000 dollars or whatever the national debt is"
 267024744673587201,2012-11-09 22:03:54 +0000,_WHOOPdefckindo,"RT @RiIeyJokess: ME: who you voting for?
@@ -478,18 +478,18 @@ http://t.co/erdKx6HD"
 267024738906431490,2012-11-09 22:03:53 +0000,vcAraceli,RT @jusxy: Obama what's my name? Obama what's my name? OBAMA what's my name? what's my name? .... #OBALIEN what's my name
 267024738575065089,2012-11-09 22:03:53 +0000,notsoslimshadys,RT @harrynstuff: I bet one day stalker sarah stalks her way into the white house she'll just take a picture from Obama's bedroom
 267024738478600192,2012-11-09 22:03:53 +0000,ThinksLogical,RT @dlb703: The difference between Romney and Obama supporters? Romney's look like they just got out of church. Obama's look like they're out on parole.
-267024737937547264,2012-11-09 22:03:53 +0000,pabloirossi,"Obama, ante el precipicio fiscal: &#8220;Tengo mi bolígrafo listo para firmar&#8221; http://t.co/m5Q6O0lq vía @expansioncom"
+267024737937547264,2012-11-09 22:03:53 +0000,pabloirossi,"Obama, ante el precipicio fiscal: ""Tengo mi boligrafo listo para firmar"" http://t.co/m5Q6O0lq via @expansioncom"
 267024737794945024,2012-11-09 22:03:53 +0000,mermaid6590,@LeslieMHooper I think Obama and Chris Christie are having an affair!  LMAO!!!
 267024737706840064,2012-11-09 22:03:53 +0000,n_mariee3,RT @SAMhOes: Lmao #Obama http://t.co/uxLqQ8zq
-267024737354534912,2012-11-09 22:03:53 +0000,soso2583,"RT @20Minutes: Pour Obama, les Américains les plus riches doivent payer plus d'impôts http://t.co/PiZXc0Ty"
+267024737354534912,2012-11-09 22:03:53 +0000,soso2583,"RT @20Minutes: Pour Obama, les Americains les plus riches doivent payer plus d'impôts http://t.co/PiZXc0Ty"
 267024736968667136,2012-11-09 22:03:53 +0000,desertkev,@k_m_allan I'm more about #Obama being banished.
 267024736373063680,2012-11-09 22:03:52 +0000,blakecallaway,yo why did obama have to win
 267024736108818432,2012-11-09 22:03:52 +0000,AlondraMiaa,"RT @FaithOn1D: ""Las hijas de Obama conocieron a los Jonas, a Justin Bieber y ahora conocerán a One Direction"" @BarackObama ¡HOLA PAPIIIIIIIIIII!"
 267024735878119424,2012-11-09 22:03:52 +0000,4iHD,"Szef CIA zrezygnował przez romans. Obama ""trzyma kciuki za niego i żonę"" http://t.co/XiPB0RSW"
 267024735450324993,2012-11-09 22:03:52 +0000,fcukjessi,RT @JosieNelson7: Obama yeehaw http://t.co/DJxtDlAk
-267024735156703232,2012-11-09 22:03:52 +0000,Evilazio,"Obama ""decepciona"" mercados. Idiotice!  Os mercados estão sendo movidos pela China, que retoma  crescimento. Só os ricos estão preocupados."
+267024735156703232,2012-11-09 22:03:52 +0000,Evilazio,"Obama ""decepciona"" mercados. Idiotice!  Os mercados estão sendo movidos pela China, que retoma  crescimento. So os ricos estão preocupados."
 267024734628233218,2012-11-09 22:03:52 +0000,carolynedgar,@GoAngelo let's just speculate that Petraeus was having an affair WITH Obama and they conspired during pillow talk to cover up Benghazi.
-267024734481440769,2012-11-09 22:03:52 +0000,bob_mor,"RT @NoticiasCaracol: Obama acepta renuncia del director de la CIA, que deja el cargo tras reconocer que tuvo relación extramatrimonial http://t.co/uU6j0p7q"
+267024734481440769,2012-11-09 22:03:52 +0000,bob_mor,"RT @NoticiasCaracol: Obama acepta renuncia del director de la CIA, que deja el cargo tras reconocer que tuvo relacion extramatrimonial http://t.co/uU6j0p7q"
 267024734464651264,2012-11-09 22:03:52 +0000,NotBarack,FEMA Failed/Obama Hailed #Sandy #tcot #obama
 267024733319598080,2012-11-09 22:03:52 +0000,georgiaokeeffex,Obama
 267024733189582849,2012-11-09 22:03:52 +0000,LLW83,"RT @TheDailyEdge: Obama has a mandate to raise taxes on top 2% to Clinton-era levels. To stop him, the ""anti-tax"" GOP will raise taxes on 100% of us #insanity"
@@ -497,7 +497,7 @@ http://t.co/erdKx6HD"
 267024732984053761,2012-11-09 22:03:52 +0000,ASyrupp,@realDonaldTrump hey idiot-obama won pop. vote&electoral. What's the baby with the toupee crying bout? U Deleted revolution tweet? Coward
 267024732984053760,2012-11-09 22:03:52 +0000,JConason,RT @HuffingtonPost: CEO who forced workers to attend Romney rally now promises layoffs http://t.co/nZ15MB9x
 267024732812095488,2012-11-09 22:03:52 +0000,hwain_96,"RT @_Ken_barlow_: Cameron: ""I look forward to working with Obama for the next four years."" 2 years Dave, 2 years."
-267024731352481792,2012-11-09 22:03:51 +0000,shetrulylovedya,até o obama e a família dançam o gangnam style...
+267024731352481792,2012-11-09 22:03:51 +0000,shetrulylovedya,ate o obama e a familia dançam o gangnam style...
 267024731193110528,2012-11-09 22:03:51 +0000,r9mcgon,RT @Mike_hugs: Nixon +Kissinger tested the theory that if you bomb a country and risk no U.S. lives the anti-war movement fizzles. Obama proved it correct.
 267024729980928000,2012-11-09 22:03:51 +0000,skew11,RT @RepJeffDuncan: 102 miners laid off in Utah as a direct result of President Obama's policies. http://t.co/35lZ7Zmv
 267024729972568065,2012-11-09 22:03:51 +0000,ayyuradita,Congratulation for barack obama [pic] — http://t.co/OJy8DE6T
@@ -516,7 +516,7 @@ http://t.co/erdKx6HD"
 267024724792590336,2012-11-09 22:03:50 +0000,leenpaape,RT @TheEconomist: Video: Barack Obama looks ahead to four more years and China reveals its next leaders http://t.co/qpho3KlS
 267024724574474241,2012-11-09 22:03:50 +0000,Timmermanscm,"RT @__Wieke__: Net als in Nederland, toch?! @NOS: Obama: rijken moeten meer belasting betalen http://t.co/gDEN4urK"""
 267024723769176064,2012-11-09 22:03:49 +0000,ColeMurdock24,People who like the snow also voted for Obama.
-267024723211333632,2012-11-09 22:03:49 +0000,tbest,Awesome. “@daringfireball: ‘Obama Played OHIO to Win 26-24’: http://t.co/D2eP8EKy”
+267024723211333632,2012-11-09 22:03:49 +0000,tbest,"Awesome. ""@daringfireball: 'Obama Played OHIO to Win 26-24': http://t.co/D2eP8EKy"""
 267024723005808640,2012-11-09 22:03:49 +0000,ibtxhis_SaMone,"RT @WeirdFact: President Obama was known to be heavy marijuana smoker in his teen and college days. His nickname used to be ""Barack Oganja""."
 267024722540244992,2012-11-09 22:03:49 +0000,alejandrita_lm,"RT @VaneEscobarR: Las hijas de Obama conocieron a los Jonas, a Justin y consiguieron primera fila para ver a One Direction ¡OBAMA ADOPTAME!"
 267024721495879680,2012-11-09 22:03:49 +0000,stewie64,"RT @DanRiehl: How does this work, anyway? Does the media let Obama vet it's questions for everyone?"
@@ -524,18 +524,18 @@ http://t.co/erdKx6HD"
 267024720321458176,2012-11-09 22:03:49 +0000,DayKadence,RT @Frances_D: Pundit Press: What Luck! Obama Won Dozens of Cleveland Districts... http://t.co/xwWpcpAV
 267024719470002176,2012-11-09 22:03:48 +0000,Mel_DaOne_,"Nah, that ain't right RT @julieisthatcool: I'll fuck Obama wife"
 267024719272878080,2012-11-09 22:03:48 +0000,Aslans_Girl,Pundit Press: What Luck! Obama Won Dozens of Cleveland Districts... http://t.co/aCMvGeUr
-267024719138660352,2012-11-09 22:03:48 +0000,crazyinms,"RT @Clickman8: I’m sure PUTIN, HUGO,CASTRO & AhMADinejad are thrilled over the outcome of the Election! OBAMA fits quite nicely in2 their Circle of Friends"
-267024717301555200,2012-11-09 22:03:48 +0000,JaeGun_LaoLin,RT @Kennyment: POURQUOI VOUS INVENTEZ DES PAIRINGS COMME ÇA ? LE PIRE QUE J'AI VU DE TOUTE MA VIE C'ÉTAIT OBATAE. OBAMA/TAEMIN.
+267024719138660352,2012-11-09 22:03:48 +0000,crazyinms,"RT @Clickman8: I'm sure PUTIN, HUGO,CASTRO & AhMADinejad are thrilled over the outcome of the Election! OBAMA fits quite nicely in2 their Circle of Friends"
+267024717301555200,2012-11-09 22:03:48 +0000,JaeGun_LaoLin,RT @Kennyment: POURQUOI VOUS INVENTEZ DES PAIRINGS COMME ÇA ? LE PIRE QUE J'AI VU DE TOUTE MA VIE C'ETAIT OBATAE. OBAMA/TAEMIN.
 267024717028941824,2012-11-09 22:03:48 +0000,borealizz,RT @utaustinliberal: Jake Tapper demands Carney release a tick-tock of where Pres. Obama was during the Benghazi attack. Shorter Carney: Who the f**k are you?
 267024716429139968,2012-11-09 22:03:48 +0000,justessheather,"My uncle posted a picture on facebook of seagulls on a shore and said it was ""Obama's supporters waiting for their handouts"" lmfao I can't."
-267024716362031105,2012-11-09 22:03:48 +0000,maxD_ooUt,“@JennaNanci: My family is fucked because Obama is the president.” Join the club
+267024716362031105,2012-11-09 22:03:48 +0000,maxD_ooUt,"""@JennaNanci: My family is fucked because Obama is the president."" Join the club"
 267024716181696512,2012-11-09 22:03:48 +0000,KacyleneS,RT @ArsheanaLaNesha: White gyrls yall fucking black nigghas so stop riding OBAMA DICK DAMN
 267024714717884416,2012-11-09 22:03:47 +0000,Imercuryinfo,"I uploaded a @YouTube video http://t.co/BgQkRT5u 9% Inflation, Obama Care, fewer rights in our socialist future even if Romney had"
-267024714566885376,2012-11-09 22:03:47 +0000,MuslimGeezer,Aung San Suu Kyi initially opposed Obama’s Burma trip http://t.co/rntYv65C
+267024714566885376,2012-11-09 22:03:47 +0000,MuslimGeezer,Aung San Suu Kyi initially opposed Obama's Burma trip http://t.co/rntYv65C
 267024714407493632,2012-11-09 22:03:47 +0000,MDiPasquale1999,"@MarciaCM1 @royparrish of course Obama accepted his resignation because he wrote his ""resignation."""
 267024713979662336,2012-11-09 22:03:47 +0000,TigerBaby84,"RT @BreitbartNews: Obama: No Deal Without Tax Hikes: The lines are now set for the battle over the fiscal cliff. The fiscal cliff, ... http://t.co/YDHgzwFE"
-267024713883193344,2012-11-09 22:03:47 +0000,CriticalMassTX,RT @thinkprogress: The 6 best overreactions to Obama’s win. watch Glenn Beck's rant. spooky shit http://t.co/sZfQkkLd via @ARStrasser #icymi
-267024713161781250,2012-11-09 22:03:47 +0000,cobe001001,"RT @whitehouse: President Obama: ""I’m committed to solving our fiscal challenges. But I refuse to accept any approach that isn’t balanced."""
+267024713883193344,2012-11-09 22:03:47 +0000,CriticalMassTX,RT @thinkprogress: The 6 best overreactions to Obama's win. watch Glenn Beck's rant. spooky shit http://t.co/sZfQkkLd via @ARStrasser #icymi
+267024713161781250,2012-11-09 22:03:47 +0000,cobe001001,"RT @whitehouse: President Obama: ""I'm committed to solving our fiscal challenges. But I refuse to accept any approach that isn't balanced."""
 267024713157578752,2012-11-09 22:03:47 +0000,MeganPanatier,City of Obama to invite Obama to Japan - The Tokyo Times http://t.co/1SwafGOM via @TheTokyoTimes
 267024712977219584,2012-11-09 22:03:47 +0000,Katie_janca,RT @140elect: Hillary Clinton has said for years she wont serve in Obama's second term. Now if/when she resigns #Benghazi conspiracists will go crazy.
 267024712549400576,2012-11-09 22:03:47 +0000,Linapooh1,Sumbody had to do it!! The Obama Car! http://t.co/NLSrOT4A
@@ -582,7 +582,7 @@ ID                  Posted at     Screen name       Text
 267024749979373568  Nov  9 14:03  @OD_Worrell       RT @AP: White House says ...
 267024749622865921  Nov  9 14:03  @LathamChalaGrp   Obama Hangs Tough on the ...
 267024749501218817  Nov  9 14:03  @sesto09          La lettera di Obama sui g...
-267024748779819009  Nov  9 14:03  @NickLoveSlayer   RT @NewsMCyrus: Después D...
+267024748779819009  Nov  9 14:03  @NickLoveSlayer   RT @NewsMCyrus: Despues D...
 267024748536541185  Nov  9 14:03  @Ch_pavon17       RT @PrincipeWilli: -Hoy m...
 267024746821058560  Nov  9 14:03  @weeki1           RT @jjauthor: #Navy names...
 267024746724605952  Nov  9 14:03  @LugosLove        Wow, Obama Started Crying...
@@ -623,7 +623,7 @@ ID                  Posted at     Screen name       Text
 267024732984053761  Nov  9 14:03  @ASyrupp          @realDonaldTrump hey idio...
 267024732984053760  Nov  9 14:03  @JConason         RT @HuffingtonPost: CEO w...
 267024732812095488  Nov  9 14:03  @hwain_96         RT @_Ken_barlow_: Cameron...
-267024731352481792  Nov  9 14:03  @shetrulylovedya  até o obama e a família d...
+267024731352481792  Nov  9 14:03  @shetrulylovedya  ate o obama e a familia d...
 267024731193110528  Nov  9 14:03  @r9mcgon          RT @Mike_hugs: Nixon +Kis...
 267024729980928000  Nov  9 14:03  @skew11           RT @RepJeffDuncan: 102 mi...
 267024729972568065  Nov  9 14:03  @ayyuradita       Congratulation for barack...
@@ -641,7 +641,7 @@ ID                  Posted at     Screen name       Text
 267024724792590336  Nov  9 14:03  @leenpaape        RT @TheEconomist: Video: ...
 267024724574474241  Nov  9 14:03  @Timmermanscm     RT @__Wieke__: Net als in...
 267024723769176064  Nov  9 14:03  @ColeMurdock24    People who like the snow ...
-267024723211333632  Nov  9 14:03  @tbest            Awesome. “@daringfireball...
+267024723211333632  Nov  9 14:03  @tbest            Awesome. "@daringfireball...
 267024723005808640  Nov  9 14:03  @ibtxhis_SaMone   RT @WeirdFact: President ...
 267024722540244992  Nov  9 14:03  @alejandrita_lm   RT @VaneEscobarR: Las hij...
 267024721495879680  Nov  9 14:03  @stewie64         RT @DanRiehl: How does th...
@@ -649,11 +649,11 @@ ID                  Posted at     Screen name       Text
 267024720321458176  Nov  9 14:03  @DayKadence       RT @Frances_D: Pundit Pre...
 267024719470002176  Nov  9 14:03  @Mel_DaOne_       Nah, that ain't right RT ...
 267024719272878080  Nov  9 14:03  @Aslans_Girl      Pundit Press: What Luck! ...
-267024719138660352  Nov  9 14:03  @crazyinms        RT @Clickman8: I’m sure P...
+267024719138660352  Nov  9 14:03  @crazyinms        RT @Clickman8: I'm sure P...
 267024717301555200  Nov  9 14:03  @JaeGun_LaoLin    RT @Kennyment: POURQUOI V...
 267024717028941824  Nov  9 14:03  @borealizz        RT @utaustinliberal: Jake...
 267024716429139968  Nov  9 14:03  @justessheather   My uncle posted a picture...
-267024716362031105  Nov  9 14:03  @maxD_ooUt        “@JennaNanci: My family i...
+267024716362031105  Nov  9 14:03  @maxD_ooUt        "@JennaNanci: My family i...
 267024716181696512  Nov  9 14:03  @KacyleneS        RT @ArsheanaLaNesha: Whit...
 267024714717884416  Nov  9 14:03  @Imercuryinfo     I uploaded a @YouTube vid...
 267024714566885376  Nov  9 14:03  @MuslimGeezer     Aung San Suu Kyi initiall...
@@ -1308,7 +1308,7 @@ ID                  Posted at     Screen name  Text
         @search.users("Erik")
         expect($stdout.string).to eq <<-eos
 ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name,Verified,Bio,Status,Location,URL
-14100886,2008-03-08 16:34:22 +0000,2012-07-07 20:33:19 +0000,6940,192,358,3427,5457,pengwynn,Wynn Netherland ⚡,false,"Christian, husband, father, GitHubber, Co-host of @thechangelog, Co-author of Sass, Compass, #CSS book  http://wynn.fm/sass-meap",@akosmasoftware Sass book! @hcatlin @nex3 are the brains behind Sass. :-),"Denton, TX",http://wynnnetherland.com
+14100886,2008-03-08 16:34:22 +0000,2012-07-07 20:33:19 +0000,6940,192,358,3427,5457,pengwynn,Wynn Netherland,false,"Christian, husband, father, GitHubber, Co-host of @thechangelog, Co-author of Sass, Compass, #CSS book  http://wynn.fm/sass-meap",@akosmasoftware Sass book! @hcatlin @nex3 are the brains behind Sass. :-),"Denton, TX",http://wynnnetherland.com
 7505382,2007-07-16 12:59:01 +0000,2012-07-08 18:29:20 +0000,7890,3755,118,212,2262,sferik,Erik Michaels-Ober,false,Vagabond.,@goldman You're near my home town! Say hi to Woodstock for me.,San Francisco,https://github.com/sferik
         eos
       end

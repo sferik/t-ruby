@@ -298,7 +298,7 @@ If you are running t on a remote computer you can use the flag --display-url dur
     t authorize --display-url
 
 ## Copyright
-Copyright (c) 2011 Erik Michaels-Ober. See [LICENSE][] for details.
+Copyright (c) 2011-2013 Erik Michaels-Ober. See [LICENSE][] for details.
 Application icon by [@nvk][nvk].
 
 [license]: LICENSE.md

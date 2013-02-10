@@ -21,9 +21,9 @@ end
 
 def bash_completion
 %Q[# Completion for Bash. Copy it in /etc/bash_completion.d/ or source it
-somewhere in your ~/.bashrc
+# somewhere in your ~/.bashrc
 
-_t (){
+_t() {
 
   local cur prev completions
 
@@ -32,10 +32,10 @@ _t (){
   prev=${COMP_WORDS[COMP_CWORD-1]}
 
   COMMANDS='#{commands}'
-  GLOBAL_OPTS='-H --host --color -U --no-ssl -P --profile'
+  GLOBAL_OPTS='#{global_options}'
 
   case "${prev}" in
-    #TODO all commands
+    #{case_commands_options}
     *)
     completions="$COMMANDS"
     ;;
@@ -52,5 +52,30 @@ _t (){
 end
 
 def commands
-    T::CLI.tasks.keys.join ' '
+    T::CLI.tasks.map(&:last).map(&:name).join ' '
+end
+
+def global_options
+  '-H --host --color -U --no-ssl -P --profile'
+end
+
+def case_command_options(cmd)
+
+    options = cmd.options.map(&:last).map do |o|
+
+        if o.aliases
+            "--#{o.name} #{o.aliases.map{ |a| '-' + a }.join(' ')}"
+        else
+            "--#{o.name}"
+        end
+
+    end.join(' ')
+
+    "\t#{cmd.name})\n\t\tcompletions='#{options}'\n\t\t;;"
+end
+
+def case_commands_options
+    T::CLI.tasks.map(&:last).map do |c|
+        case_command_options(c)
+    end.join("\n")
 end

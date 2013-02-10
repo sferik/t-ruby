@@ -29,20 +29,20 @@ _t() {
 
   COMPREPLY=()
   cur=${COMP_WORDS[COMP_CWORD]}
+  topcmd=${COMP_WORDS[1]}
   prev=${COMP_WORDS[COMP_CWORD-1]}
 
-  COMMANDS='#{commands}'
-  GLOBAL_OPTS='#{global_options}'
+  COMMANDS='#{commands.map(&:name).join(' ')}'
 
-  case "${prev}" in
-    #{case_commands_options}
+  case "$topcmd" in
+    #{comp_cases}
     *)
     completions="$COMMANDS"
     ;;
   esac
 
-    COMPREPLY=( $( compgen -W "$GLOBAL_OPTS $completions" -- $cur ))
-    return 0
+  COMPREPLY=( $( compgen -W "$completions" -- $cur ))
+  return 0
 
 }
 
@@ -51,17 +51,36 @@ _t() {
 
 end
 
-def commands
-    T::CLI.tasks.map(&:last).map(&:name).join ' '
+def comp_cases
+
+    commands.map do |cmd|
+
+        options_str = options(cmd).join(' ')
+        subcmds = subcommands(cmd)
+
+        subcommands_cases = subcmds.map do |sn|
+
+            "#{sn})\n\t\tcompletions='#{options_str}'\n\t\t;;"
+
+        end.join("\n")
+
+
+        %Q[#{cmd.name})
+    case "$prev" in
+        #{cmd.name})
+            completions='#{subcmds.join(' ')}';;
+        #{subcommands_cases}
+        *)
+            completions='#{options_str}';;
+    esac;;\n]
+
+    end
+
 end
 
-def global_options
-  '-H --host --color -U --no-ssl -P --profile'
-end
+def options(cmd)
 
-def case_command_options(cmd)
-
-    options = cmd.options.map(&:last).map do |o|
+    cmd.options.map(&:last).map do |o|
 
         if o.aliases
             "--#{o.name} #{o.aliases.map{ |a| '-' + a }.join(' ')}"
@@ -69,13 +88,24 @@ def case_command_options(cmd)
             "--#{o.name}"
         end
 
-    end.join(' ')
+    end.concat(global_options)
 
-    "\t#{cmd.name})\n\t\tcompletions='#{options}'\n\t\t;;"
 end
 
-def case_commands_options
-    T::CLI.tasks.map(&:last).map do |c|
-        case_command_options(c)
-    end.join("\n")
+def commands
+    T::CLI.tasks.map(&:last)
+end
+
+def global_options
+  %w(-H --host --color -U --no-ssl -P --profile)
+end
+
+def subcommands(cmd=nil)
+
+    return [] unless T::CLI.subcommands.include?(cmd.name)
+
+    klass = T.const_get cmd.name.capitalize
+
+    klass.tasks.map(&:last).map(&:name)
+
 end

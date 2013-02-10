@@ -249,11 +249,12 @@ used by `t`:
 ![List](https://github.com/sferik/t/raw/master/screenshots/list.png)
 
 ## Shell completion
-If you're running [Zsh][zsh], you can source the [bundled completion file][completion]
-to get shell completion for `t` commands, subcommands, and flags.
+If you're running [Zsh][zsh] or Bash, you can source one of the
+[bundled completion files][completion] to get shell completion for
+`t` commands, subcommands, and flags.
 
-Don't run Zsh? Why not [contribute][] completion support for your favorite
-shell?
+Don't run Zsh or Bash? Why not [contribute][] completion support for your
+favorite shell?
 
 ## History
 The [twitter gem][gem] previously contained a command-line interface, up until
@@ -297,5 +298,5 @@ Application icon by [@nvk][nvk].
 [license]: https://github.com/sferik/t/blob/master/LICENSE.md
 [nvk]: http://rodolfonovak.com
 [zsh]: http://zsh.org
-[completion]: https://github.com/sferik/t/blob/master/etc/t-completion.zsh
+[completion]: https://github.com/sferik/t/blob/master/etc/
 [contribute]: https://github.com/sferik/t/blob/master/CONTRIBUTING.md

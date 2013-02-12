@@ -16,7 +16,7 @@ module T
     end
 
     def build_long_user(user)
-      [user.id, ls_formatted_time(user), ls_formatted_time(user.status), user.statuses_count, user.favourites_count, user.listed_count, user.friends_count, user.followers_count, "@#{user.screen_name}", user.name, user.verified? ? "Yes" : "No", user.status ? decode_full_text(user.status, options['decode_urls']).gsub(/\n+/, ' ') : nil, user.location, user.url]
+      [user.id, ls_formatted_time(user), ls_formatted_time(user.status), user.statuses_count, user.favourites_count, user.listed_count, user.friends_count, user.followers_count, "@#{user.screen_name}", user.name, user.verified? ? "Yes" : "No", user.description, user.status ? decode_full_text(user.status, options['decode_urls']).gsub(/\n+/, ' ') : nil, user.location, user.url]
     end
 
     def csv_formatted_time(object, key=:created_at)

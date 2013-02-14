@@ -1,3 +1,5 @@
+--require emoji-rspec
 --color
 --fail-fast
+--format hearts
 --order random

@@ -9,6 +9,7 @@ group :development do
 end
 
 group :test do
+  gem 'emoji-rspec'
   gem 'rspec', '>= 2.11'
   gem 'simplecov', :require => false
   gem 'timecop'

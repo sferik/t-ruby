@@ -1,5 +1,4 @@
---require emoji-rspec
 --color
 --fail-fast
---format hearts
+--format NyanCatMusicFormatter
 --order random

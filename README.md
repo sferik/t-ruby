@@ -63,7 +63,7 @@ previously registered a Twitter application, it should be listed at
 to set your application's Access Level to "Read, Write and Access direct
 messages", otherwise you'll receive an error that looks like this:
 
-    Read-only application cannot POST
+    Error processing your OAuth request: Read-only application cannot POST
 
 Now, you're ready to authorize a Twitter account with your application. To
 proceed, type the following command at the prompt and follow the instructions:

@@ -10,7 +10,9 @@ require 'twitter'
 
 # Output message to $stderr, prefixed with the program name
 def pute(*args)
-  args.first.insert(0, "#{$0}: ")
+  first = args.shift.dup
+  first.insert(0, "#{$0}: ")
+  args.unshift(first)
   $stderr.puts(*args)
 end
 
@@ -27,8 +29,20 @@ rescue Twitter::Error::TooManyRequests => error
     "The rate limit for this request will reset in #{error.rate_limit.reset_in} seconds.",
     "While you wait, consider making a polite request for Twitter to increase the API rate limit at https://dev.twitter.com/discussions/10644"
   exit 1
-rescue Twitter::Error::Unauthorized => error
-  pute error.message, "Run `t authorize` to authorize."
+rescue Twitter::Error::BadRequest => error
+  pute error.message,
+    "Run `t authorize` to authorize."
+  exit 1
+rescue Twitter::Error::Forbidden, Twitter::Error::Unauthorized => error
+  pute error.message
+  if error.message == "Error processing your OAuth request: Read-only application cannot POST" ||
+    error.message == "This application is not allowed to access or delete your direct messages"
+    $stderr.puts(%q(Make sure to set your Twitter application's Access Level to "Read, Write and Access direct messages".))
+    require 'thor'
+    Thor::Shell::Basic.new.ask "Press [Enter] to open the Twitter Developer site."
+    require 'launchy'
+    Launchy.open("https://dev.twitter.com/apps")
+  end
   exit 1
 rescue Twitter::Error => error
   pute error.message

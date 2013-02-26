@@ -29,7 +29,7 @@ module T
     check_unknown_options!
 
     class_option "host", :aliases => "-H", :type => :string, :default => T::Requestable::DEFAULT_HOST, :desc => "Twitter API server"
-    class_option "color", :type => :string, :default => "auto", :desc => "Control how color is used in output."
+    class_option "color", :aliases => "-C", :type => :string, :enum => %w(auto never), :default => "auto", :desc => "Control how color is used in output"
     class_option "no-ssl", :aliases => "-U", :type => :boolean, :default => false, :desc => "Disable SSL"
     class_option "profile", :aliases => "-P", :type => :string, :default => File.join(File.expand_path("~"), T::RCFile::FILE_NAME), :desc => "Path to RC file", :banner => "FILE"
 

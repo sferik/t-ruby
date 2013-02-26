@@ -1,4 +1,3 @@
-
 namespace :completion do
   desc 'Generate zsh completion file'
   task :zsh do
@@ -50,7 +49,7 @@ end
 
 def general_options_completions
 %Q(t_general_options=("(-H --host)"{-H,--host=}"[Twitter API server]:URL:_urls"
-    "(-N --no-color)"{-N,--no-color}"[Disable colorization in output]"
+    "(-C --color)"{-C,--color}"[Control how color is used in output]"
     "(-U --no-ssl)"{-U,--no-ssl}"[Disable SSL]"
     "(-P --profile)"{-P,--profile=}"[Path to RC file]:file:_files"
     $nul_arg

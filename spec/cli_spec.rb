@@ -158,39 +158,39 @@ testcli
     it "has the correct output" do
       @cli.direct_messages
       expect($stdout.string).to eq <<-eos
-\e[1m\e[33m   @sferik\e[0m
+   @sferik
    Sounds good. Meeting Tuesday is fine.
 
-\e[1m\e[33m   @sferik\e[0m
+   @sferik
    That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does 
    that work for you?
 
-\e[1m\e[33m   @sferik\e[0m
+   @sferik
    I asked Yehuda about the stipend. I believe it has already been sent. Glad 
    you're feeling better.
 
-\e[1m\e[33m   @sferik\e[0m
+   @sferik
    Just checking in. How's everything going?
 
-\e[1m\e[33m   @sferik\e[0m
+   @sferik
    Not sure about the payment. Feel free to ask Leah or Yehuda directly. Think 
    you'll be able to finish up your work on graphs this weekend?
 
-\e[1m\e[33m   @sferik\e[0m
+   @sferik
    How are the graph enhancements coming?
 
-\e[1m\e[33m   @sferik\e[0m
+   @sferik
    How are the graphs coming? I'm really looking forward to seeing what you do 
    with Raphaël.
 
-\e[1m\e[33m   @sferik\e[0m
+   @sferik
    Awesome! Any luck duplicating the Gemfile.lock error with Ruby 1.9.2 final?
 
-\e[1m\e[33m   @sferik\e[0m
+   @sferik
    I just committed a bunch of cleanup and fixes to RailsAdmin that touched many 
    of files. Make sure you pull to avoid conflicts.
 
-\e[1m\e[33m   @sferik\e[0m
+   @sferik
    I'm trying to debug the issue you were having with the Bundler Gemfile.lock 
    shortref. What version of Ruby and RubyGems are you running?
 
@@ -263,40 +263,40 @@ ID          Posted at     Screen name  Text
       it "reverses the order of the sort" do
         @cli.direct_messages
         expect($stdout.string).to eq <<-eos
-\e[1m\e[33m   @sferik\e[0m
+   @sferik
    I'm trying to debug the issue you were having with the Bundler Gemfile.lock 
    shortref. What version of Ruby and RubyGems are you running?
 
-\e[1m\e[33m   @sferik\e[0m
+   @sferik
    I just committed a bunch of cleanup and fixes to RailsAdmin that touched many 
    of files. Make sure you pull to avoid conflicts.
 
-\e[1m\e[33m   @sferik\e[0m
+   @sferik
    Awesome! Any luck duplicating the Gemfile.lock error with Ruby 1.9.2 final?
 
-\e[1m\e[33m   @sferik\e[0m
+   @sferik
    How are the graphs coming? I'm really looking forward to seeing what you do 
    with Raphaël.
 
-\e[1m\e[33m   @sferik\e[0m
+   @sferik
    How are the graph enhancements coming?
 
-\e[1m\e[33m   @sferik\e[0m
+   @sferik
    Not sure about the payment. Feel free to ask Leah or Yehuda directly. Think 
    you'll be able to finish up your work on graphs this weekend?
 
-\e[1m\e[33m   @sferik\e[0m
+   @sferik
    Just checking in. How's everything going?
 
-\e[1m\e[33m   @sferik\e[0m
+   @sferik
    I asked Yehuda about the stipend. I believe it has already been sent. Glad 
    you're feeling better.
 
-\e[1m\e[33m   @sferik\e[0m
+   @sferik
    That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does 
    that work for you?
 
-\e[1m\e[33m   @sferik\e[0m
+   @sferik
    Sounds good. Meeting Tuesday is fine.
 
         eos
@@ -316,39 +316,39 @@ ID          Posted at     Screen name  Text
     it "has the correct output" do
       @cli.direct_messages_sent
       expect($stdout.string).to eq <<-eos
-\e[1m\e[33m   @hurrycane\e[0m
+   @hurrycane
    Sounds good. Meeting Tuesday is fine.
 
-\e[1m\e[33m   @hurrycane\e[0m
+   @hurrycane
    That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does 
    that work for you?
 
-\e[1m\e[33m   @hurrycane\e[0m
+   @hurrycane
    I asked Yehuda about the stipend. I believe it has already been sent. Glad 
    you're feeling better.
 
-\e[1m\e[33m   @hurrycane\e[0m
+   @hurrycane
    Just checking in. How's everything going?
 
-\e[1m\e[33m   @hurrycane\e[0m
+   @hurrycane
    Not sure about the payment. Feel free to ask Leah or Yehuda directly. Think 
    you'll be able to finish up your work on graphs this weekend?
 
-\e[1m\e[33m   @hurrycane\e[0m
+   @hurrycane
    How are the graph enhancements coming?
 
-\e[1m\e[33m   @hurrycane\e[0m
+   @hurrycane
    How are the graphs coming? I'm really looking forward to seeing what you do 
    with Raphaël.
 
-\e[1m\e[33m   @hurrycane\e[0m
+   @hurrycane
    Awesome! Any luck duplicating the Gemfile.lock error with Ruby 1.9.2 final?
 
-\e[1m\e[33m   @hurrycane\e[0m
+   @hurrycane
    I just committed a bunch of cleanup and fixes to RailsAdmin that touched many 
    of files. Make sure you pull to avoid conflicts.
 
-\e[1m\e[33m   @hurrycane\e[0m
+   @hurrycane
    I'm trying to debug the issue you were having with the Bundler Gemfile.lock 
    shortref. What version of Ruby and RubyGems are you running?
 
@@ -421,40 +421,40 @@ ID          Posted at     Screen name  Text
       it "reverses the order of the sort" do
         @cli.direct_messages_sent
         expect($stdout.string).to eq <<-eos
-\e[1m\e[33m   @hurrycane\e[0m
+   @hurrycane
    I'm trying to debug the issue you were having with the Bundler Gemfile.lock 
    shortref. What version of Ruby and RubyGems are you running?
 
-\e[1m\e[33m   @hurrycane\e[0m
+   @hurrycane
    I just committed a bunch of cleanup and fixes to RailsAdmin that touched many 
    of files. Make sure you pull to avoid conflicts.
 
-\e[1m\e[33m   @hurrycane\e[0m
+   @hurrycane
    Awesome! Any luck duplicating the Gemfile.lock error with Ruby 1.9.2 final?
 
-\e[1m\e[33m   @hurrycane\e[0m
+   @hurrycane
    How are the graphs coming? I'm really looking forward to seeing what you do 
    with Raphaël.
 
-\e[1m\e[33m   @hurrycane\e[0m
+   @hurrycane
    How are the graph enhancements coming?
 
-\e[1m\e[33m   @hurrycane\e[0m
+   @hurrycane
    Not sure about the payment. Feel free to ask Leah or Yehuda directly. Think 
    you'll be able to finish up your work on graphs this weekend?
 
-\e[1m\e[33m   @hurrycane\e[0m
+   @hurrycane
    Just checking in. How's everything going?
 
-\e[1m\e[33m   @hurrycane\e[0m
+   @hurrycane
    I asked Yehuda about the stipend. I believe it has already been sent. Glad 
    you're feeling better.
 
-\e[1m\e[33m   @hurrycane\e[0m
+   @hurrycane
    That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does 
    that work for you?
 
-\e[1m\e[33m   @hurrycane\e[0m
+   @hurrycane
    Sounds good. Meeting Tuesday is fine.
 
         eos
@@ -800,78 +800,78 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
     it "has the correct output" do
       @cli.favorites
       expect($stdout.string).to eq <<-eos
-\e[1m\e[33m   @mutgoff\e[0m
+   @mutgoff
    Happy Birthday @imdane. Watch out for those @rally pranksters!
 
-\e[1m\e[33m   @ironicsans\e[0m
+   @ironicsans
    If you like good real-life stories, check out @NarrativelyNY's just-launched 
    site http://t.co/wiUL07jE (and also visit http://t.co/ZoyQxqWA)
 
-\e[1m\e[33m   @pat_shaughnessy\e[0m
+   @pat_shaughnessy
    Something else to vote for: "New Rails workshops to bring more women into the 
    Boston software scene" http://t.co/eNBuckHc /cc @bostonrb
 
-\e[1m\e[33m   @calebelston\e[0m
+   @calebelston
    Pushing the button to launch the site. http://t.co/qLoEn5jG
 
-\e[1m\e[33m   @calebelston\e[0m
+   @calebelston
    RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
 
-\e[1m\e[33m   @fivethirtyeight\e[0m
+   @fivethirtyeight
    The Weatherman is Not a Moron: http://t.co/ZwL5Gnq5. An excerpt from my book, 
    THE SIGNAL AND THE NOISE (http://t.co/fNXj8vCE)
 
-\e[1m\e[33m   @codeforamerica\e[0m
+   @codeforamerica
    RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat, 
    Sep 8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica 
    @TheaClay
 
-\e[1m\e[33m   @fbjork\e[0m
+   @fbjork
    RT @jondot: Just published: "Pragmatic Concurrency With #Ruby" 
    http://t.co/kGEykswZ /cc @JRuby @headius
 
-\e[1m\e[33m   @mbostock\e[0m
+   @mbostock
    If you are wondering how we computed the split bubbles: http://t.co/BcaqSs5u
 
-\e[1m\e[33m   @FakeDorsey\e[0m
+   @FakeDorsey
    "Write drunk. Edit sober."—Ernest Hemingway
 
-\e[1m\e[33m   @al3x\e[0m
+   @al3x
    RT @wcmaier: Better banking through better ops: build something new with us 
    @Simplify (remote, PDX) http://t.co/8WgzKZH3
 
-\e[1m\e[33m   @calebelston\e[0m
+   @calebelston
    We just announced Mosaic, what we've been working on since the Yobongo 
    acquisition. My personal post, http://t.co/ELOyIRZU @heymosaic
 
-\e[1m\e[33m   @BarackObama\e[0m
+   @BarackObama
    Donate $10 or more --> get your favorite car magnet: http://t.co/NfRhl2s2 
    #Obama2012
 
-\e[1m\e[33m   @JEG2\e[0m
+   @JEG2
    RT @tenderlove: If corporations are people, can we use them to drive in the 
    carpool lane?
 
-\e[1m\e[33m   @eveningedition\e[0m
+   @eveningedition
    LDN—Obama's nomination; Putin woos APEC; Bombs hit Damascus; Quakes shake 
    China; Canada cuts Iran ties; weekend read: http://t.co/OFs6dVW4
 
-\e[1m\e[33m   @dhh\e[0m
+   @dhh
    RT @ggreenwald: Democrats parade Osama bin Laden's corpse as their proudest 
    achievement: why this goulish jingoism is so warped http://t.co/kood278s
 
-\e[1m\e[33m   @jasonfried\e[0m
+   @jasonfried
    The story of Mars Curiosity's gears, made by a factory in Rockford, IL: 
    http://t.co/MwCRsHQg
 
-\e[1m\e[33m   @sferik\e[0m
+   @sferik
    @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem 
    to be missing "1.1" from the URL.
 
-\e[1m\e[33m   @sferik\e[0m
+   @sferik
    @episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
 
-\e[1m\e[33m   @dwiskus\e[0m
+   @dwiskus
    Gentlemen, you can't fight in here! This is the war room! 
    http://t.co/kMxMYyqF
 
@@ -1784,78 +1784,78 @@ ID        Created at    Screen name  Slug      Members  Subscribers  Mode    ...
     it "has the correct output" do
       @cli.mentions
       expect($stdout.string).to eq <<-eos
-\e[1m\e[33m   @mutgoff\e[0m
+   @mutgoff
    Happy Birthday @imdane. Watch out for those @rally pranksters!
 
-\e[1m\e[33m   @ironicsans\e[0m
+   @ironicsans
    If you like good real-life stories, check out @NarrativelyNY's just-launched 
    site http://t.co/wiUL07jE (and also visit http://t.co/ZoyQxqWA)
 
-\e[1m\e[33m   @pat_shaughnessy\e[0m
+   @pat_shaughnessy
    Something else to vote for: "New Rails workshops to bring more women into the 
    Boston software scene" http://t.co/eNBuckHc /cc @bostonrb
 
-\e[1m\e[33m   @calebelston\e[0m
+   @calebelston
    Pushing the button to launch the site. http://t.co/qLoEn5jG
 
-\e[1m\e[33m   @calebelston\e[0m
+   @calebelston
    RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
 
-\e[1m\e[33m   @fivethirtyeight\e[0m
+   @fivethirtyeight
    The Weatherman is Not a Moron: http://t.co/ZwL5Gnq5. An excerpt from my book, 
    THE SIGNAL AND THE NOISE (http://t.co/fNXj8vCE)
 
-\e[1m\e[33m   @codeforamerica\e[0m
+   @codeforamerica
    RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat, 
    Sep 8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica 
    @TheaClay
 
-\e[1m\e[33m   @fbjork\e[0m
+   @fbjork
    RT @jondot: Just published: "Pragmatic Concurrency With #Ruby" 
    http://t.co/kGEykswZ /cc @JRuby @headius
 
-\e[1m\e[33m   @mbostock\e[0m
+   @mbostock
    If you are wondering how we computed the split bubbles: http://t.co/BcaqSs5u
 
-\e[1m\e[33m   @FakeDorsey\e[0m
+   @FakeDorsey
    "Write drunk. Edit sober."—Ernest Hemingway
 
-\e[1m\e[33m   @al3x\e[0m
+   @al3x
    RT @wcmaier: Better banking through better ops: build something new with us 
    @Simplify (remote, PDX) http://t.co/8WgzKZH3
 
-\e[1m\e[33m   @calebelston\e[0m
+   @calebelston
    We just announced Mosaic, what we've been working on since the Yobongo 
    acquisition. My personal post, http://t.co/ELOyIRZU @heymosaic
 
-\e[1m\e[33m   @BarackObama\e[0m
+   @BarackObama
    Donate $10 or more --> get your favorite car magnet: http://t.co/NfRhl2s2 
    #Obama2012
 
-\e[1m\e[33m   @JEG2\e[0m
+   @JEG2
    RT @tenderlove: If corporations are people, can we use them to drive in the 
    carpool lane?
 
-\e[1m\e[33m   @eveningedition\e[0m
+   @eveningedition
    LDN—Obama's nomination; Putin woos APEC; Bombs hit Damascus; Quakes shake 
    China; Canada cuts Iran ties; weekend read: http://t.co/OFs6dVW4
 
-\e[1m\e[33m   @dhh\e[0m
+   @dhh
    RT @ggreenwald: Democrats parade Osama bin Laden's corpse as their proudest 
    achievement: why this goulish jingoism is so warped http://t.co/kood278s
 
-\e[1m\e[33m   @jasonfried\e[0m
+   @jasonfried
    The story of Mars Curiosity's gears, made by a factory in Rockford, IL: 
    http://t.co/MwCRsHQg
 
-\e[1m\e[33m   @sferik\e[0m
+   @sferik
    @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem 
    to be missing "1.1" from the URL.
 
-\e[1m\e[33m   @sferik\e[0m
+   @sferik
    @episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
 
-\e[1m\e[33m   @dwiskus\e[0m
+   @dwiskus
    Gentlemen, you can't fight in here! This is the war room! 
    http://t.co/kMxMYyqF
 
@@ -2102,82 +2102,82 @@ ID                   Posted at     Screen name       Text
       it "has the correct output" do
         @cli.retweets
         expect($stdout.string).to eq <<-eos
-\e[1m\e[33m   @calebelston\e[0m
+   @calebelston
    RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
 
-\e[1m\e[33m   @codeforamerica\e[0m
+   @codeforamerica
    RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat, 
    Sep 8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica 
    @TheaClay
 
-\e[1m\e[33m   @fbjork\e[0m
+   @fbjork
    RT @jondot: Just published: "Pragmatic Concurrency With #Ruby" 
    http://t.co/kGEykswZ /cc @JRuby @headius
 
-\e[1m\e[33m   @al3x\e[0m
+   @al3x
    RT @wcmaier: Better banking through better ops: build something new with us 
    @Simplify (remote, PDX) http://t.co/8WgzKZH3
 
-\e[1m\e[33m   @JEG2\e[0m
+   @JEG2
    RT @tenderlove: If corporations are people, can we use them to drive in the 
    carpool lane?
 
-\e[1m\e[33m   @dhh\e[0m
+   @dhh
    RT @ggreenwald: Democrats parade Osama bin Laden's corpse as their proudest 
    achievement: why this goulish jingoism is so warped http://t.co/kood278s
 
-\e[1m\e[33m   @calebelston\e[0m
+   @calebelston
    RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
 
-\e[1m\e[33m   @codeforamerica\e[0m
+   @codeforamerica
    RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat, 
    Sep 8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica 
    @TheaClay
 
-\e[1m\e[33m   @fbjork\e[0m
+   @fbjork
    RT @jondot: Just published: "Pragmatic Concurrency With #Ruby" 
    http://t.co/kGEykswZ /cc @JRuby @headius
 
-\e[1m\e[33m   @al3x\e[0m
+   @al3x
    RT @wcmaier: Better banking through better ops: build something new with us 
    @Simplify (remote, PDX) http://t.co/8WgzKZH3
 
-\e[1m\e[33m   @JEG2\e[0m
+   @JEG2
    RT @tenderlove: If corporations are people, can we use them to drive in the 
    carpool lane?
 
-\e[1m\e[33m   @dhh\e[0m
+   @dhh
    RT @ggreenwald: Democrats parade Osama bin Laden's corpse as their proudest 
    achievement: why this goulish jingoism is so warped http://t.co/kood278s
 
-\e[1m\e[33m   @calebelston\e[0m
+   @calebelston
    RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
 
-\e[1m\e[33m   @codeforamerica\e[0m
+   @codeforamerica
    RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat, 
    Sep 8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica 
    @TheaClay
 
-\e[1m\e[33m   @fbjork\e[0m
+   @fbjork
    RT @jondot: Just published: "Pragmatic Concurrency With #Ruby" 
    http://t.co/kGEykswZ /cc @JRuby @headius
 
-\e[1m\e[33m   @al3x\e[0m
+   @al3x
    RT @wcmaier: Better banking through better ops: build something new with us 
    @Simplify (remote, PDX) http://t.co/8WgzKZH3
 
-\e[1m\e[33m   @JEG2\e[0m
+   @JEG2
    RT @tenderlove: If corporations are people, can we use them to drive in the 
    carpool lane?
 
-\e[1m\e[33m   @dhh\e[0m
+   @dhh
    RT @ggreenwald: Democrats parade Osama bin Laden's corpse as their proudest 
    achievement: why this goulish jingoism is so warped http://t.co/kood278s
 
-\e[1m\e[33m   @calebelston\e[0m
+   @calebelston
    RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
 
-\e[1m\e[33m   @codeforamerica\e[0m
+   @codeforamerica
    RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat, 
    Sep 8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica 
    @TheaClay
@@ -2555,78 +2555,78 @@ ID                 Posted at     Screen name  Text                           ...
       it "has the correct output" do
         @cli.timeline
         expect($stdout.string).to eq <<-eos
-\e[1m\e[33m   @mutgoff\e[0m
+   @mutgoff
    Happy Birthday @imdane. Watch out for those @rally pranksters!
 
-\e[1m\e[33m   @ironicsans\e[0m
+   @ironicsans
    If you like good real-life stories, check out @NarrativelyNY's just-launched 
    site http://t.co/wiUL07jE (and also visit http://t.co/ZoyQxqWA)
 
-\e[1m\e[33m   @pat_shaughnessy\e[0m
+   @pat_shaughnessy
    Something else to vote for: "New Rails workshops to bring more women into the 
    Boston software scene" http://t.co/eNBuckHc /cc @bostonrb
 
-\e[1m\e[33m   @calebelston\e[0m
+   @calebelston
    Pushing the button to launch the site. http://t.co/qLoEn5jG
 
-\e[1m\e[33m   @calebelston\e[0m
+   @calebelston
    RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
 
-\e[1m\e[33m   @fivethirtyeight\e[0m
+   @fivethirtyeight
    The Weatherman is Not a Moron: http://t.co/ZwL5Gnq5. An excerpt from my book, 
    THE SIGNAL AND THE NOISE (http://t.co/fNXj8vCE)
 
-\e[1m\e[33m   @codeforamerica\e[0m
+   @codeforamerica
    RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat, 
    Sep 8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica 
    @TheaClay
 
-\e[1m\e[33m   @fbjork\e[0m
+   @fbjork
    RT @jondot: Just published: "Pragmatic Concurrency With #Ruby" 
    http://t.co/kGEykswZ /cc @JRuby @headius
 
-\e[1m\e[33m   @mbostock\e[0m
+   @mbostock
    If you are wondering how we computed the split bubbles: http://t.co/BcaqSs5u
 
-\e[1m\e[33m   @FakeDorsey\e[0m
+   @FakeDorsey
    "Write drunk. Edit sober."—Ernest Hemingway
 
-\e[1m\e[33m   @al3x\e[0m
+   @al3x
    RT @wcmaier: Better banking through better ops: build something new with us 
    @Simplify (remote, PDX) http://t.co/8WgzKZH3
 
-\e[1m\e[33m   @calebelston\e[0m
+   @calebelston
    We just announced Mosaic, what we've been working on since the Yobongo 
    acquisition. My personal post, http://t.co/ELOyIRZU @heymosaic
 
-\e[1m\e[33m   @BarackObama\e[0m
+   @BarackObama
    Donate $10 or more --> get your favorite car magnet: http://t.co/NfRhl2s2 
    #Obama2012
 
-\e[1m\e[33m   @JEG2\e[0m
+   @JEG2
    RT @tenderlove: If corporations are people, can we use them to drive in the 
    carpool lane?
 
-\e[1m\e[33m   @eveningedition\e[0m
+   @eveningedition
    LDN—Obama's nomination; Putin woos APEC; Bombs hit Damascus; Quakes shake 
    China; Canada cuts Iran ties; weekend read: http://t.co/OFs6dVW4
 
-\e[1m\e[33m   @dhh\e[0m
+   @dhh
    RT @ggreenwald: Democrats parade Osama bin Laden's corpse as their proudest 
    achievement: why this goulish jingoism is so warped http://t.co/kood278s
 
-\e[1m\e[33m   @jasonfried\e[0m
+   @jasonfried
    The story of Mars Curiosity's gears, made by a factory in Rockford, IL: 
    http://t.co/MwCRsHQg
 
-\e[1m\e[33m   @sferik\e[0m
+   @sferik
    @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem 
    to be missing "1.1" from the URL.
 
-\e[1m\e[33m   @sferik\e[0m
+   @sferik
    @episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
 
-\e[1m\e[33m   @dwiskus\e[0m
+   @dwiskus
    Gentlemen, you can't fight in here! This is the war room! 
    http://t.co/kMxMYyqF
 

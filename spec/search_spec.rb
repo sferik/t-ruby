@@ -41,388 +41,388 @@ describe T::Search do
       @search.all("twitter")
       expect($stdout.string).to eq <<-eos
 
-\e[1m\e[33m   @saintsday998\e[0m
+   @saintsday998
    Murray Energy Corp. Obama Reelection, Announces Layoffs http://t.co/D1OPtKnw 
    via @HuffPostBiz MAYBE his workers can do something for him ?
 
-\e[1m\e[33m   @thlyons\e[0m
+   @thlyons
    Obama Administration Extends Deadline For State Exchanges - Kaiser Health 
    News http://t.co/dyaM4jF1
 
-\e[1m\e[33m   @justmaryse\e[0m
+   @justmaryse
    Fox News accidentally insults the intelligence of every Mitt Romney voter in 
    the country. http://t.co/sQbt16RF via @HappyPlace #awkward
 
-\e[1m\e[33m   @BlueTrooth\e[0m
+   @BlueTrooth
    RT @AntiWacko: It's hilarious to watch the Conservatives getting hysterical 
    about Pres Obama's re-election. #p2 #tcot
 
-\e[1m\e[33m   @robbiegleeson\e[0m
+   @robbiegleeson
    RT @Revolution_IRL: RT if you agree its insane that tubridy gets paid more 
    than obama #LateLate
 
-\e[1m\e[33m   @melinwy\e[0m
+   @melinwy
    RT @Kristina_x_x: GOP enthusiasm, was higher, registration was higher, crowds 
    larger, intensity larger. yet Obama won. Hmmmm @mittromney
 
-\e[1m\e[33m   @WANT1DTOFOLLOWU\e[0m
+   @WANT1DTOFOLLOWU
    RT @LoveYungCotta: Romney talks about Obama. Obama talks about the nation. 
    Romney says "I." Obama says "We." Pay attention to the small things. 
    #voteobama
 
-\e[1m\e[33m   @bodysouls\e[0m
+   @bodysouls
    @RealJonLovitz Did u see this? Barbara Teixeira@BarbArn
 
    OBAMA REELECTION TRIGGERS MASSIVE LAYOFFS ACROSS AMERICA http://t.co/kfuILrmE 
    …
 
-\e[1m\e[33m   @tinasebring\e[0m
+   @tinasebring
    RT @ken24xavier: YES OBAMA we really really believe CIA Director Petraeus 
    Resigns... over extramarital affair? OH LOOK cows flying over the Moon
 
-\e[1m\e[33m   @OD_Worrell\e[0m
+   @OD_Worrell
    RT @AP: White House says #Obama will travel to New York on Thursday to view 
    recovery efforts from Superstorm Sandy: http://t.co/MCS6MceM
 
-\e[1m\e[33m   @LathamChalaGrp\e[0m
+   @LathamChalaGrp
    Obama Hangs Tough on the Fiscal Cliff His speech increases the likelihood 
    that negotiations will drag on well into 2013
 
-\e[1m\e[33m   @sesto09\e[0m
+   @sesto09
    La lettera di Obama sui genitori gay http://t.co/dmFkfbgG
 
-\e[1m\e[33m   @NickLoveSlayer\e[0m
+   @NickLoveSlayer
    RT @NewsMCyrus: Despues De que gano Obama las elecciones, empezo a sonar 
    Party In The U.S.A de Miley Cyrus en la casa blanca
 
-\e[1m\e[33m   @Ch_pavon17\e[0m
+   @Ch_pavon17
    RT @PrincipeWilli: -Hoy me desperte bien electo. -Jajaja, pinche Obama, eres 
    un desmadre..
 
-\e[1m\e[33m   @weeki1\e[0m
+   @weeki1
    RT @jjauthor: #Navy names newest ship - USS Barack Obama #GoNavy 
    http://t.co/F6PGNTjX
 
-\e[1m\e[33m   @LugosLove\e[0m
+   @LugosLove
    Wow, Obama Started Crying While He Was Giving A Speech To His Campaign Staff
 
-\e[1m\e[33m   @jbrons\e[0m
+   @jbrons
    RT @dwiskus: Obama played OHIO to win 26-24. http://t.co/CEW5XMtc
 
-\e[1m\e[33m   @Moondances_\e[0m
+   @Moondances_
    RT @_pedropenna: OBAMA teve o tweet mais retweetado da historia ai e obvio 
    que as fãs do justin vão falar: VAMOS BATER ESSE 
    RECORDDDDDDDDDDDDDDDDDDDDDDDDDDDD
 
-\e[1m\e[33m   @matthew_austin4\e[0m
+   @matthew_austin4
    No, I will not shut up. I don't like Obama. I will continue to tweet my mind.
 
-\e[1m\e[33m   @FreebirdForever\e[0m
+   @FreebirdForever
    RT @Bobprintdoc: @vickikellar vicki your overdrawn on your Obama bashing 
    account please insert 16,000,000,000,000 dollars or whatever the national 
    debt is
 
-\e[1m\e[33m   @_WHOOPdefckindo\e[0m
+   @_WHOOPdefckindo
    RT @RiIeyJokess: ME: who you voting for? WHITE PEOPLE: I rather not discuss 
    that with you.
 
    ME: who you voting for?? BLACK PEOPLE: TF U MEAN?? OBAMA N*GGA!
 
-\e[1m\e[33m   @nikkipjah\e[0m
+   @nikkipjah
    #Obama's track record with #HumanRights http://t.co/fTrjJHtB
 
-\e[1m\e[33m   @pandphomemades\e[0m
+   @pandphomemades
    RT @JewPublican: Think about it. All of big Hollywood supported obama. 
    Everything we see now is pretty much out of movies. Truth is Stranger than 
    Fiction!
 
-\e[1m\e[33m   @Vita__Nova\e[0m
+   @Vita__Nova
    Bunda rus-israil ittifakının etkisi çok büyük. Obama ilk ziyaretini 
    Türkiye'ye yapmayacak. Yoksa hedef tahtasında olur.
 
-\e[1m\e[33m   @tv6tnt\e[0m
+   @tv6tnt
    White House says Obama will travel to New York on Thursday to view recovery 
    efforts from Superstorm Sandy
 
-\e[1m\e[33m   @ricardo126234\e[0m
+   @ricardo126234
    @Jacquie0415 @gregwhoward obama is not a muslim. Whatever fox news channel 
    you got that from was lying to you.
 
-\e[1m\e[33m   @LifesaBishh\e[0m
+   @LifesaBishh
    RT @SomeoneBelow: The person below is complaining about Obama.
 
-\e[1m\e[33m   @I_Fuk_Wid_OBAMA\e[0m
+   @I_Fuk_Wid_OBAMA
    :) #Pixect http://t.co/jZxz8JeC
 
-\e[1m\e[33m   @llParadisell\e[0m
+   @llParadisell
    Why Libya Cover-Up: Obama Was Arming Al Qaeda & Islamists 
    http://t.co/erdKx6HD
 
-\e[1m\e[33m   @naiburnwoood\e[0m
+   @naiburnwoood
    RT @StephenAtHome: I still can't believe Obama won. I will do everything in 
    my power to make sure this is his LAST term as president!
 
-\e[1m\e[33m   @Neo_Sweetness\e[0m
+   @Neo_Sweetness
    RT @5oodaysofautumn: #Obama crying choked me up NEVER SEEN A PRES DO THAT. U 
    CAN TELL HIS INTENTIONS ARE IN THE RIGHT PLACE TO LEAD http://t.co/oez0ySOl
 
-\e[1m\e[33m   @vcAraceli\e[0m
+   @vcAraceli
    RT @jusxy: Obama what's my name? Obama what's my name? OBAMA what's my name? 
    what's my name? .... #OBALIEN what's my name
 
-\e[1m\e[33m   @notsoslimshadys\e[0m
+   @notsoslimshadys
    RT @harrynstuff: I bet one day stalker sarah stalks her way into the white 
    house she'll just take a picture from Obama's bedroom
 
-\e[1m\e[33m   @ThinksLogical\e[0m
+   @ThinksLogical
    RT @dlb703: The difference between Romney and Obama supporters? Romney's look 
    like they just got out of church. Obama's look like they're out on parole.
 
-\e[1m\e[33m   @pabloirossi\e[0m
+   @pabloirossi
    Obama, ante el precipicio fiscal: "Tengo mi boligrafo listo para firmar" 
    http://t.co/m5Q6O0lq via @expansioncom
 
-\e[1m\e[33m   @mermaid6590\e[0m
+   @mermaid6590
    @LeslieMHooper I think Obama and Chris Christie are having an affair! LMAO!!!
 
-\e[1m\e[33m   @n_mariee3\e[0m
+   @n_mariee3
    RT @SAMhOes: Lmao #Obama http://t.co/uxLqQ8zq
 
-\e[1m\e[33m   @soso2583\e[0m
+   @soso2583
    RT @20Minutes: Pour Obama, les Americains les plus riches doivent payer plus 
    d'impôts http://t.co/PiZXc0Ty
 
-\e[1m\e[33m   @desertkev\e[0m
+   @desertkev
    @k_m_allan I'm more about #Obama being banished.
 
-\e[1m\e[33m   @blakecallaway\e[0m
+   @blakecallaway
    yo why did obama have to win
 
-\e[1m\e[33m   @AlondraMiaa\e[0m
+   @AlondraMiaa
    RT @FaithOn1D: "Las hijas de Obama conocieron a los Jonas, a Justin Bieber y 
    ahora conocerán a One Direction" @BarackObama ¡HOLA PAPIIIIIIIIIII!
 
-\e[1m\e[33m   @4iHD\e[0m
+   @4iHD
    Szef CIA zrezygnował przez romans. Obama "trzyma kciuki za niego i żonę" 
    http://t.co/XiPB0RSW
 
-\e[1m\e[33m   @fcukjessi\e[0m
+   @fcukjessi
    RT @JosieNelson7: Obama yeehaw http://t.co/DJxtDlAk
 
-\e[1m\e[33m   @Evilazio\e[0m
+   @Evilazio
    Obama "decepciona" mercados. Idiotice! Os mercados estão sendo movidos pela 
    China, que retoma crescimento. So os ricos estão preocupados.
 
-\e[1m\e[33m   @carolynedgar\e[0m
+   @carolynedgar
    @GoAngelo let's just speculate that Petraeus was having an affair WITH Obama 
    and they conspired during pillow talk to cover up Benghazi.
 
-\e[1m\e[33m   @bob_mor\e[0m
+   @bob_mor
    RT @NoticiasCaracol: Obama acepta renuncia del director de la CIA, que deja 
    el cargo tras reconocer que tuvo relacion extramatrimonial 
    http://t.co/uU6j0p7q
 
-\e[1m\e[33m   @NotBarack\e[0m
+   @NotBarack
    FEMA Failed/Obama Hailed #Sandy #tcot #obama
 
-\e[1m\e[33m   @georgiaokeeffex\e[0m
+   @georgiaokeeffex
    Obama
 
-\e[1m\e[33m   @LLW83\e[0m
+   @LLW83
    RT @TheDailyEdge: Obama has a mandate to raise taxes on top 2% to Clinton-era 
    levels. To stop him, the "anti-tax" GOP will raise taxes on 100% of us 
    #insanity
 
-\e[1m\e[33m   @aylin_arellanoo\e[0m
+   @aylin_arellanoo
    RT @lupiss14: - Ya viste que gano el PRI en EU? -¿El PRI? - Si, el PRIeto de 
    Obama.
 
-\e[1m\e[33m   @ASyrupp\e[0m
+   @ASyrupp
    @realDonaldTrump hey idiot-obama won pop. vote&electoral. What's the baby 
    with the toupee crying bout? U Deleted revolution tweet? Coward
 
-\e[1m\e[33m   @JConason\e[0m
+   @JConason
    RT @HuffingtonPost: CEO who forced workers to attend Romney rally now 
    promises layoffs http://t.co/nZ15MB9x
 
-\e[1m\e[33m   @hwain_96\e[0m
+   @hwain_96
    RT @_Ken_barlow_: Cameron: "I look forward to working with Obama for the next 
    four years." 2 years Dave, 2 years.
 
-\e[1m\e[33m   @shetrulylovedya\e[0m
+   @shetrulylovedya
    ate o obama e a familia dançam o gangnam style...
 
-\e[1m\e[33m   @r9mcgon\e[0m
+   @r9mcgon
    RT @Mike_hugs: Nixon +Kissinger tested the theory that if you bomb a country 
    and risk no U.S. lives the anti-war movement fizzles. Obama proved it 
    correct.
 
-\e[1m\e[33m   @skew11\e[0m
+   @skew11
    RT @RepJeffDuncan: 102 miners laid off in Utah as a direct result of 
    President Obama's policies. http://t.co/35lZ7Zmv
 
-\e[1m\e[33m   @ayyuradita\e[0m
+   @ayyuradita
    Congratulation for barack obama [pic] — http://t.co/OJy8DE6T
 
-\e[1m\e[33m   @homeoffice_biz\e[0m
+   @homeoffice_biz
    Hugo Chavez Offers Obama Some Advice: Fresh off his own reelection, 
    Venezuelan President Hugo Chavez has a stron... http://t.co/HD7dUzVg
 
-\e[1m\e[33m   @donthebear\e[0m
+   @donthebear
    Bone head and Google eys would not answer the POTUS phone call! 
    http://t.co/rra6QAiw
 
-\e[1m\e[33m   @Imercuryinfo\e[0m
+   @Imercuryinfo
    9% Inflation, Obama Care, fewer rights in our socialist future even if Romney 
    had won. http://t.co/0ZAO8Xv6
 
-\e[1m\e[33m   @lege_atque_lacr\e[0m
+   @lege_atque_lacr
    Obama holds firm to tax hikes (That is his DNA) http://t.co/TgRk59ir via 
    @foxbusiness
 
-\e[1m\e[33m   @vldpopov\e[0m
+   @vldpopov
    So, selling Obama is similar to selling yoghurts - Secret Data Crunchers Who 
    Helped Obama Win http://t.co/dt5w3xuE via @TIMEPolitics
 
-\e[1m\e[33m   @DanieMilli_anne\e[0m
+   @DanieMilli_anne
    then they really wanna argue about it..like what you mad at? Obama is 
    president don't waste your emotion.
 
-\e[1m\e[33m   @Says_The_King\e[0m
+   @Says_The_King
    I got me an Obama momma. She always be puttin some free money in my account
 
-\e[1m\e[33m   @Tatts_N_Dreads\e[0m
+   @Tatts_N_Dreads
    RT @CNNMoney: Gun sales are up after Obama's reelection, driven by fears of 
    tighter regulation, especially for assault weapons. http://t.co/KEOgWSG9
 
-\e[1m\e[33m   @mensadude\e[0m
+   @mensadude
    Ron Paul: Election shows U.S. 'far gone' http://t.co/CQoYn2iQ #tcot #teaparty 
    #ronpaul #unemployment #deficit #jobs #gop #USHOUSE #OBAMA
 
-\e[1m\e[33m   @IKrUsHiNsKi\e[0m
+   @IKrUsHiNsKi
    @britney_brinae lol move to Canada if u like Obama sorry this countries not 
    socialist. Ignorance at its finest.
 
-\e[1m\e[33m   @mgracer514\e[0m
+   @mgracer514
    @SpeakerBoehner Do NOT give in To Obama John!!! He and Harry Reid KNOW 
    raising taxes on the job creators will not create more tax revenue!!!
 
-\e[1m\e[33m   @leenpaape\e[0m
+   @leenpaape
    RT @TheEconomist: Video: Barack Obama looks ahead to four more years and 
    China reveals its next leaders http://t.co/qpho3KlS
 
-\e[1m\e[33m   @Timmermanscm\e[0m
+   @Timmermanscm
    RT @__Wieke__: Net als in Nederland, toch?! @NOS: Obama: rijken moeten meer 
    belasting betalen http://t.co/gDEN4urK"
 
-\e[1m\e[33m   @ColeMurdock24\e[0m
+   @ColeMurdock24
    People who like the snow also voted for Obama.
 
-\e[1m\e[33m   @tbest\e[0m
+   @tbest
    Awesome. "@daringfireball: 'Obama Played OHIO to Win 26-24': 
    http://t.co/D2eP8EKy"
 
-\e[1m\e[33m   @ibtxhis_SaMone\e[0m
+   @ibtxhis_SaMone
    RT @WeirdFact: President Obama was known to be heavy marijuana smoker in his 
    teen and college days. His nickname used to be "Barack Oganja".
 
-\e[1m\e[33m   @alejandrita_lm\e[0m
+   @alejandrita_lm
    RT @VaneEscobarR: Las hijas de Obama conocieron a los Jonas, a Justin y 
    consiguieron primera fila para ver a One Direction ¡OBAMA ADOPTAME!
 
-\e[1m\e[33m   @stewie64\e[0m
+   @stewie64
    RT @DanRiehl: How does this work, anyway? Does the media let Obama vet it's 
    questions for everyone?
 
-\e[1m\e[33m   @Evilpa\e[0m
+   @Evilpa
    RT @AACONS: How does Obama's plan to close 1.6M acres of fed land to shale 
    development fit in his plan to create jobs? http://t.co/FOYjcxP6 #tcot #acon
 
-\e[1m\e[33m   @DayKadence\e[0m
+   @DayKadence
    RT @Frances_D: Pundit Press: What Luck! Obama Won Dozens of Cleveland 
    Districts... http://t.co/xwWpcpAV
 
-\e[1m\e[33m   @Mel_DaOne_\e[0m
+   @Mel_DaOne_
    Nah, that ain't right RT @julieisthatcool: I'll fuck Obama wife
 
-\e[1m\e[33m   @Aslans_Girl\e[0m
+   @Aslans_Girl
    Pundit Press: What Luck! Obama Won Dozens of Cleveland Districts... 
    http://t.co/aCMvGeUr
 
-\e[1m\e[33m   @crazyinms\e[0m
+   @crazyinms
    RT @Clickman8: I'm sure PUTIN, HUGO,CASTRO & AhMADinejad are thrilled over 
    the outcome of the Election! OBAMA fits quite nicely in2 their Circle of 
    Friends
 
-\e[1m\e[33m   @JaeGun_LaoLin\e[0m
+   @JaeGun_LaoLin
    RT @Kennyment: POURQUOI VOUS INVENTEZ DES PAIRINGS COMME ÇA ? LE PIRE QUE 
    J'AI VU DE TOUTE MA VIE C'ETAIT OBATAE. OBAMA/TAEMIN.
 
-\e[1m\e[33m   @borealizz\e[0m
+   @borealizz
    RT @utaustinliberal: Jake Tapper demands Carney release a tick-tock of where 
    Pres. Obama was during the Benghazi attack. Shorter Carney: Who the f**k are 
    you?
 
-\e[1m\e[33m   @justessheather\e[0m
+   @justessheather
    My uncle posted a picture on facebook of seagulls on a shore and said it was 
    "Obama's supporters waiting for their handouts" lmfao I can't.
 
-\e[1m\e[33m   @maxD_ooUt\e[0m
+   @maxD_ooUt
    "@JennaNanci: My family is fucked because Obama is the president." Join the 
    club
 
-\e[1m\e[33m   @KacyleneS\e[0m
+   @KacyleneS
    RT @ArsheanaLaNesha: White gyrls yall fucking black nigghas so stop riding 
    OBAMA DICK DAMN
 
-\e[1m\e[33m   @Imercuryinfo\e[0m
+   @Imercuryinfo
    I uploaded a @YouTube video http://t.co/BgQkRT5u 9% Inflation, Obama Care, 
    fewer rights in our socialist future even if Romney had
 
-\e[1m\e[33m   @MuslimGeezer\e[0m
+   @MuslimGeezer
    Aung San Suu Kyi initially opposed Obama's Burma trip http://t.co/rntYv65C
 
-\e[1m\e[33m   @MDiPasquale1999\e[0m
+   @MDiPasquale1999
    @MarciaCM1 @royparrish of course Obama accepted his resignation because he 
    wrote his "resignation."
 
-\e[1m\e[33m   @TigerBaby84\e[0m
+   @TigerBaby84
    RT @BreitbartNews: Obama: No Deal Without Tax Hikes: The lines are now set 
    for the battle over the fiscal cliff. The fiscal cliff, ... 
    http://t.co/YDHgzwFE
 
-\e[1m\e[33m   @CriticalMassTX\e[0m
+   @CriticalMassTX
    RT @thinkprogress: The 6 best overreactions to Obama's win. watch Glenn 
    Beck's rant. spooky shit http://t.co/sZfQkkLd via @ARStrasser #icymi
 
-\e[1m\e[33m   @cobe001001\e[0m
+   @cobe001001
    RT @whitehouse: President Obama: "I'm committed to solving our fiscal 
    challenges. But I refuse to accept any approach that isn't balanced."
 
-\e[1m\e[33m   @MeganPanatier\e[0m
+   @MeganPanatier
    City of Obama to invite Obama to Japan - The Tokyo Times http://t.co/1SwafGOM 
    via @TheTokyoTimes
 
-\e[1m\e[33m   @Katie_janca\e[0m
+   @Katie_janca
    RT @140elect: Hillary Clinton has said for years she wont serve in Obama's 
    second term. Now if/when she resigns #Benghazi conspiracists will go crazy.
 
-\e[1m\e[33m   @Linapooh1\e[0m
+   @Linapooh1
    Sumbody had to do it!! The Obama Car! http://t.co/NLSrOT4A
 
-\e[1m\e[33m   @cinrui\e[0m
+   @cinrui
    RT @SeanKCarter: Oliver Stone "I find Obama scary!" So do we Mr. Stone, so do 
    we... http://t.co/39YIdQkq #tcot
 
-\e[1m\e[33m   @nthowa2\e[0m
+   @nthowa2
    Obama in a cover up folks! Are we this dumb? CIA Director Petraeus Resigns 
    Over 'Affair' http://t.co/ZKu297Gz via @BreitbartNews
 
-\e[1m\e[33m   @dirtyvic_1\e[0m
+   @dirtyvic_1
    @glennbeck @seahannity Commander Fitzpatrick Files Treason Charges Against 
    Barack Obama #teaparty #UT #Election http://t.co/T9GHyUZ4
 
-\e[1m\e[33m   @SteveCaruso\e[0m
+   @SteveCaruso
    Great election background....http://t.co/HwdVs40N
 
       eos
@@ -706,11 +706,11 @@ ID                  Posted at     Screen name       Text
     it "has the correct output" do
       @search.favorites("twitter")
       expect($stdout.string).to eq <<-eos
-\e[1m\e[33m   @sferik\e[0m
+   @sferik
    @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem 
    to be missing "1.1" from the URL.
 
-\e[1m\e[33m   @sferik\e[0m
+   @sferik
    @episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
 
       eos
@@ -779,11 +779,11 @@ ID                  Posted at     Screen name  Text
       it "has the correct output" do
         @search.favorites("sferik", "twitter")
         expect($stdout.string).to eq <<-eos
-\e[1m\e[33m   @sferik\e[0m
+   @sferik
    @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem 
    to be missing "1.1" from the URL.
 
-\e[1m\e[33m   @sferik\e[0m
+   @sferik
    @episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
 
         eos
@@ -802,11 +802,11 @@ ID                  Posted at     Screen name  Text
         it "has the correct output" do
           @search.favorites("7505382", "twitter")
           expect($stdout.string).to eq <<-eos
-\e[1m\e[33m   @sferik\e[0m
+   @sferik
    @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem 
    to be missing "1.1" from the URL.
 
-\e[1m\e[33m   @sferik\e[0m
+   @sferik
    @episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
 
           eos
@@ -828,11 +828,11 @@ ID                  Posted at     Screen name  Text
     it "has the correct output" do
       @search.mentions("twitter")
       expect($stdout.string).to eq <<-eos
-\e[1m\e[33m   @sferik\e[0m
+   @sferik
    @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem 
    to be missing "1.1" from the URL.
 
-\e[1m\e[33m   @sferik\e[0m
+   @sferik
    @episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
 
       eos
@@ -903,11 +903,11 @@ ID                  Posted at     Screen name  Text
     it "has the correct output" do
       @search.list("presidents", "twitter")
       expect($stdout.string).to eq <<-eos
-\e[1m\e[33m   @sferik\e[0m
+   @sferik
    @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem 
    to be missing "1.1" from the URL.
 
-\e[1m\e[33m   @sferik\e[0m
+   @sferik
    @episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
 
       eos
@@ -996,7 +996,7 @@ ID                  Posted at     Screen name  Text
     it "has the correct output" do
       @search.retweets("mosaic")
       expect($stdout.string).to eq <<-eos
-\e[1m\e[33m   @calebelston\e[0m
+   @calebelston
    RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
 
       eos
@@ -1063,7 +1063,7 @@ ID                  Posted at     Screen name   Text
       it "has the correct output" do
         @search.retweets("sferik", "mosaic")
         expect($stdout.string).to eq <<-eos
-\e[1m\e[33m   @calebelston\e[0m
+   @calebelston
    RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
 
         eos
@@ -1082,7 +1082,7 @@ ID                  Posted at     Screen name   Text
         it "has the correct output" do
           @search.retweets("7505382", "mosaic")
           expect($stdout.string).to eq <<-eos
-\e[1m\e[33m   @calebelston\e[0m
+   @calebelston
    RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
 
           eos
@@ -1104,11 +1104,11 @@ ID                  Posted at     Screen name   Text
     it "has the correct output" do
       @search.timeline("twitter")
       expect($stdout.string).to eq <<-eos
-\e[1m\e[33m   @sferik\e[0m
+   @sferik
    @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem 
    to be missing "1.1" from the URL.
 
-\e[1m\e[33m   @sferik\e[0m
+   @sferik
    @episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
 
       eos
@@ -1213,11 +1213,11 @@ ID                  Posted at     Screen name  Text
       it "has the correct output" do
         @search.timeline("sferik", "twitter")
         expect($stdout.string).to eq <<-eos
-\e[1m\e[33m   @sferik\e[0m
+   @sferik
    @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem 
    to be missing "1.1" from the URL.
 
-\e[1m\e[33m   @sferik\e[0m
+   @sferik
    @episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
 
         eos

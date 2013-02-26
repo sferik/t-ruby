@@ -11,6 +11,7 @@ group :development do
 end
 
 group :test do
+  gem 'coveralls', :require => false
   gem 'nyan-cat-formatter'
   gem 'rspec', '>= 2.11'
   gem 'simplecov', :require => false

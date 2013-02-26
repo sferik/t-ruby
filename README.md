@@ -5,12 +5,14 @@
 [![Gem Version](https://badge.fury.io/rb/t.png)][gem]
 [![Build Status](https://secure.travis-ci.org/sferik/t.png?branch=master)][travis]
 [![Dependency Status](https://gemnasium.com/sferik/t.png?travis)][gemnasium]
+[![Coverage Status](https://coveralls.io/repos/sferik/t/badge.png?branch=master)][coveralls]
 [![Pledgie](http://www.pledgie.com/campaigns/17330.png)][pledgie]
 [![Flattr](http://api.flattr.com/button/flattr-badge-large.png)][flattr]
 
 [gem]: https://rubygems.org/gems/t
 [travis]: http://travis-ci.org/sferik/t
 [gemnasium]: https://gemnasium.com/sferik/t
+[coveralls]: https://coveralls.io/r/sferik/t
 [pledgie]: http://www.pledgie.com/campaigns/17330
 [flattr]: http://flattr.com/thing/815001/sferikt-on-GitHub
 

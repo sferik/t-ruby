@@ -11,12 +11,12 @@ group :development do
 end
 
 group :test do
-  gem 'coveralls', '>= 0.6.0', :require => false
+  gem 'coveralls', :require => false
   gem 'nyan-cat-formatter'
   gem 'rspec', '>= 2.11'
   gem 'simplecov', :require => false
   gem 'timecop'
-  gem 'webmock', '1.9.3'
+  gem 'webmock', '>= 1.10'
 end
 
 gemspec

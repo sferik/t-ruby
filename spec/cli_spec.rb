@@ -617,11 +617,11 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
   describe "#dm" do
     before do
       @cli.options = @cli.options.merge("profile" => fixture_path + "/.trc")
-      stub_post("/1.1/direct_messages/new.json").with(:body => {:screen_name => "pengwynn", :text => "Creating a fixture for the Twitter gem"}).to_return(:body => fixture("direct_message.json"))
+      stub_post("/1.1/direct_messages/new.json").with(:body => {:screen_name => "pengwynn", :text => "Creating+a+fixture+for+the+Twitter+gem"}).to_return(:body => fixture("direct_message.json"))
     end
     it "requests the correct resource" do
       @cli.dm("pengwynn", "Creating a fixture for the Twitter gem")
-      expect(a_post("/1.1/direct_messages/new.json").with(:body => {:screen_name => "pengwynn", :text => "Creating a fixture for the Twitter gem"})).to have_been_made
+      expect(a_post("/1.1/direct_messages/new.json").with(:body => {:screen_name => "pengwynn", :text => "Creating+a+fixture+for+the+Twitter+gem"})).to have_been_made
     end
     it "has the correct output" do
       @cli.dm("pengwynn", "Creating a fixture for the Twitter gem")
@@ -630,11 +630,11 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
     context "--id" do
       before do
         @cli.options = @cli.options.merge("id" => true)
-        stub_post("/1.1/direct_messages/new.json").with(:body => {:user_id => "14100886", :text => "Creating a fixture for the Twitter gem"}).to_return(:body => fixture("direct_message.json"))
+        stub_post("/1.1/direct_messages/new.json").with(:body => {:user_id => "14100886", :text => "Creating+a+fixture+for+the+Twitter+gem"}).to_return(:body => fixture("direct_message.json"))
       end
       it "requests the correct resource" do
         @cli.dm("14100886", "Creating a fixture for the Twitter gem")
-        expect(a_post("/1.1/direct_messages/new.json").with(:body => {:user_id => "14100886", :text => "Creating a fixture for the Twitter gem"})).to have_been_made
+        expect(a_post("/1.1/direct_messages/new.json").with(:body => {:user_id => "14100886", :text => "Creating+a+fixture+for+the+Twitter+gem"})).to have_been_made
       end
     end
   end
@@ -2014,14 +2014,14 @@ ID                   Posted at     Screen name       Text
     before do
       @cli.options = @cli.options.merge("profile" => fixture_path + "/.trc", "location" => true)
       stub_get("/1.1/statuses/show/263813522369159169.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status_with_mention.json"))
-      stub_post("/1.1/statuses/update.json").with(:body => {:in_reply_to_status_id => "263813522369159169", :status => "@joshfrench Testing", :lat => "37.76969909668", :long => "-122.39330291748", :trim_user => "true"}).to_return(:body => fixture("status.json"))
+      stub_post("/1.1/statuses/update.json").with(:body => {:in_reply_to_status_id => "263813522369159169", :status => "@joshfrench+Testing", :lat => "37.76969909668", :long => "-122.39330291748", :trim_user => "true"}).to_return(:body => fixture("status.json"))
       stub_request(:get, "http://checkip.dyndns.org/").to_return(:body => fixture("checkip.html"), :headers => {:content_type => "text/html"})
       stub_request(:get, "http://www.geoplugin.net/xml.gp?ip=50.131.22.169").to_return(:body => fixture("geoplugin.xml"), :headers => {:content_type => "application/xml"})
     end
     it "requests the correct resource" do
       @cli.reply("263813522369159169", "Testing")
       expect(a_get("/1.1/statuses/show/263813522369159169.json").with(:query => {:include_my_retweet => "false"})).to have_been_made
-      expect(a_post("/1.1/statuses/update.json").with(:body => {:in_reply_to_status_id => "263813522369159169", :status => "@joshfrench Testing", :lat => "37.76969909668", :long => "-122.39330291748", :trim_user => "true"})).to have_been_made
+      expect(a_post("/1.1/statuses/update.json").with(:body => {:in_reply_to_status_id => "263813522369159169", :status => "@joshfrench+Testing", :lat => "37.76969909668", :long => "-122.39330291748", :trim_user => "true"})).to have_been_made
       expect(a_request(:get, "http://checkip.dyndns.org/")).to have_been_made
       expect(a_request(:get, "http://www.geoplugin.net/xml.gp?ip=50.131.22.169")).to have_been_made
     end
@@ -2032,12 +2032,12 @@ ID                   Posted at     Screen name       Text
     context "--all" do
       before do
         @cli.options = @cli.options.merge("all" => true)
-        stub_post("/1.1/statuses/update.json").with(:body => {:in_reply_to_status_id => "263813522369159169", :status => "@joshfrench @sferik Testing", :lat => "37.76969909668", :long => "-122.39330291748", :trim_user => "true"}).to_return(:body => fixture("status.json"))
+        stub_post("/1.1/statuses/update.json").with(:body => {:in_reply_to_status_id => "263813522369159169", :status => "@joshfrench+@sferik+Testing", :lat => "37.76969909668", :long => "-122.39330291748", :trim_user => "true"}).to_return(:body => fixture("status.json"))
       end
       it "requests the correct resource" do
         @cli.reply("263813522369159169", "Testing")
         expect(a_get("/1.1/statuses/show/263813522369159169.json").with(:query => {:include_my_retweet => "false"})).to have_been_made
-        expect(a_post("/1.1/statuses/update.json").with(:body => {:in_reply_to_status_id => "263813522369159169", :status => "@joshfrench @sferik Testing", :lat => "37.76969909668", :long => "-122.39330291748", :trim_user => "true"})).to have_been_made
+        expect(a_post("/1.1/statuses/update.json").with(:body => {:in_reply_to_status_id => "263813522369159169", :status => "@joshfrench+@sferik+Testing", :lat => "37.76969909668", :long => "-122.39330291748", :trim_user => "true"})).to have_been_made
         expect(a_request(:get, "http://checkip.dyndns.org/")).to have_been_made
         expect(a_request(:get, "http://www.geoplugin.net/xml.gp?ip=50.131.22.169")).to have_been_made
       end

@@ -79,11 +79,11 @@ describe T::Set do
   describe "#location" do
     before do
       @set.options = @set.options.merge("profile" => fixture_path + "/.trc")
-      stub_post("/1.1/account/update_profile.json").with(:body => {:location => "San+Francisco"}).to_return(:body => fixture("sferik.json"))
+      stub_post("/1.1/account/update_profile.json").with(:body => {:location => "San Francisco"}).to_return(:body => fixture("sferik.json"))
     end
     it "requests the correct resource" do
       @set.location("San Francisco")
-      expect(a_post("/1.1/account/update_profile.json").with(:body => {:location => "San+Francisco"})).to have_been_made
+      expect(a_post("/1.1/account/update_profile.json").with(:body => {:location => "San Francisco"})).to have_been_made
     end
     it "has the correct output" do
       @set.location("San Francisco")
@@ -94,11 +94,11 @@ describe T::Set do
   describe "#name" do
     before do
       @set.options = @set.options.merge("profile" => fixture_path + "/.trc")
-      stub_post("/1.1/account/update_profile.json").with(:body => {:name => "Erik+Michaels-Ober"}).to_return(:body => fixture("sferik.json"))
+      stub_post("/1.1/account/update_profile.json").with(:body => {:name => "Erik Michaels-Ober"}).to_return(:body => fixture("sferik.json"))
     end
     it "requests the correct resource" do
       @set.name("Erik Michaels-Ober")
-      expect(a_post("/1.1/account/update_profile.json").with(:body => {:name => "Erik+Michaels-Ober"})).to have_been_made
+      expect(a_post("/1.1/account/update_profile.json").with(:body => {:name => "Erik Michaels-Ober"})).to have_been_made
     end
     it "has the correct output" do
       @set.name("Erik Michaels-Ober")

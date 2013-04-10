@@ -3,6 +3,7 @@ require 'forwardable'
 require 'oauth'
 require 'thor'
 require 'twitter'
+require 'launchy'
 require 't/collectable'
 require 't/delete'
 require 't/list'
@@ -78,8 +79,7 @@ module T
         ask "Press [Enter] to open the Twitter Developer site."
         say
       end
-      require 'launchy'
-      Launchy.open("https://dev.twitter.com/apps", :dry_run => options['display-url'])
+      open_url "https://dev.twitter.com/apps", options['display-url']
       key = ask "Enter your consumer key:"
       secret = ask "Enter your consumer secret:"
       consumer = OAuth::Consumer.new(key, secret, :site => base_url)
@@ -94,7 +94,7 @@ module T
       say
       ask "Press [Enter] to open the Twitter app authorization page."
       say
-      Launchy.open(url, :dry_run => options['display-url'])
+      open_url url, options['display-url']
       pin = ask "Enter the supplied PIN:"
       access_token = request_token.get_access_token(:oauth_verifier => pin.chomp)
       oauth_response = access_token.get('/1.1/account/verify_credentials.json?include_entities=false&skip_status=true')
@@ -507,16 +507,15 @@ module T
     method_option "id", :aliases => "-i", :type => :boolean, :default => false, :desc => "Specify user via ID instead of screen name."
     method_option "status", :aliases => "-s", :type => :boolean, :default => false, :desc => "Specify input as a Twitter status ID instead of a screen name."
     def open(user)
-      require 'launchy'
       if options['id']
         user = client.user(user.to_i)
-        Launchy.open("https://twitter.com/#{user.screen_name}", :dry_run => options['display-url'])
+        open_url "https://twitter.com/#{user.screen_name}", options['display-url']
       elsif options['status']
         status = client.status(user.to_i, :include_my_retweet => false)
-        Launchy.open("https://twitter.com/#{status.from_user}/status/#{status.id}", :dry_run => options['display-url'])
+        open_url "https://twitter.com/#{status.from_user}/status/#{status.id}", options['display-url']
       else
         require 't/core_ext/string'
-        Launchy.open("https://twitter.com/#{user.strip_ats}", :dry_run => options['display-url'])
+        open_url "https://twitter.com/#{user.strip_ats}", options['display-url']
       end
     end
 
@@ -834,6 +833,14 @@ module T
     subcommand 'stream', T::Stream
 
   private
+
+    def open_url(url, dry_run)
+      begin
+        Launchy.open(url, :dry_run => dry_run)
+      rescue Launchy::CommandNotFoundError
+        puts "Please visit this url:\n#{url}"
+      end
+    end
 
     def extract_mentioned_screen_names(text)
       valid_mention_preceding_chars = /(?:[^a-zA-Z0-9_!#\$%&*@＠]|^|RT:?)/o

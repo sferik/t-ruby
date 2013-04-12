@@ -79,7 +79,7 @@ module T
         say
       end
       require 'launchy'
-      Launchy.open("https://dev.twitter.com/apps", :dry_run => options['display-url'])
+      open_or_print( "https://dev.twitter.com/apps", :dry_run => options['display-url'] )
       key = ask "Enter your consumer key:"
       secret = ask "Enter your consumer secret:"
       consumer = OAuth::Consumer.new(key, secret, :site => base_url)
@@ -94,7 +94,7 @@ module T
       say
       ask "Press [Enter] to open the Twitter app authorization page."
       say
-      Launchy.open(url, :dry_run => options['display-url'])
+      open_or_print(url, :dry_run => options['display-url'])
       pin = ask "Enter the supplied PIN:"
       access_token = request_token.get_access_token(:oauth_verifier => pin.chomp)
       oauth_response = access_token.get('/1.1/account/verify_credentials.json?include_entities=false&skip_status=true')
@@ -510,13 +510,13 @@ module T
       require 'launchy'
       if options['id']
         user = client.user(user.to_i)
-        Launchy.open("https://twitter.com/#{user.screen_name}", :dry_run => options['display-url'])
+        open_or_print("https://twitter.com/#{user.screen_name}", :dry_run => options['display-url'])
       elsif options['status']
         status = client.status(user.to_i, :include_my_retweet => false)
-        Launchy.open("https://twitter.com/#{status.from_user}/status/#{status.id}", :dry_run => options['display-url'])
+        open_or_print("https://twitter.com/#{status.from_user}/status/#{status.id}", :dry_run => options['display-url'])
       else
         require 't/core_ext/string'
-        Launchy.open("https://twitter.com/#{user.strip_ats}", :dry_run => options['display-url'])
+        open_or_print("https://twitter.com/#{user.strip_ats}", :dry_run => options['display-url'])
       end
     end
 

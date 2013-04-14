@@ -113,8 +113,8 @@ module T
     end
 
     def open_or_print( url, options )
-      Launchy.open( url, options ) do |u, o, e|
-        say "You will have to manually go to #{u}"
+      Launchy.open( url, options ) do |e|
+        say "You will have to manually go to #{url}"
       end
     end
   end

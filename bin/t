@@ -41,7 +41,7 @@ rescue Twitter::Error::Forbidden, Twitter::Error::Unauthorized => error
     require 'thor'
     Thor::Shell::Basic.new.ask "Press [Enter] to open the Twitter Developer site."
     require 'launchy'
-    Launchy.open("https://dev.twitter.com/apps")
+    Launchy.open("https://dev.twitter.com/apps") { |u,o,e| $stderr.puts "Manually open #{u}" }
   end
   exit 1
 rescue Twitter::Error => error

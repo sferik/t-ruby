@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 't/version'
 
 Gem::Specification.new do |spec|
-  spec.add_dependency 'launchy', '~> 2.0'
+  spec.add_dependency 'launchy', '~> 2.3'
   spec.add_dependency 'fastercsv', '~> 1.5'
   spec.add_dependency 'geokit', '~> 1.6'
   spec.add_dependency 'htmlentities', '~> 4.3'

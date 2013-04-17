@@ -1,7 +1,5 @@
 source 'https://rubygems.org'
 
-gem 'thor', :git => 'git://github.com/wycats/thor.git'
-
 gem 'rake'
 gem 'jruby-openssl', :platforms => :jruby
 

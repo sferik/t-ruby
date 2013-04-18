@@ -1179,6 +1179,16 @@ ID                  Posted at     Screen name  Text
         eos
       end
     end
+    context "--max-id" do
+      before do
+        @search.options = @search.options.merge("max_id" => 244104558433951744)
+        stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200", :max_id => "244104558433951744"}).to_return(:body => fixture("statuses.json"))
+      end
+      it "requests the correct resource" do
+        @search.timeline("twitter")
+        expect(a_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200", :max_id => "244104558433951744"})).to have_been_made
+      end
+    end
     context "--since-id" do
       before do
         @search.options = @search.options.merge("since_id" => 244104558433951744)
@@ -1258,6 +1268,16 @@ ID                  Posted at     Screen name  Text
 244102209942458368  Sep  7 07:57  @sferik      @episod @twitterapi now https:...
 244100411563339777  Sep  7 07:50  @sferik      @episod @twitterapi Did you ca...
           eos
+        end
+      end
+      context "--max-id" do
+        before do
+          @search.options = @search.options.merge("max_id" => 244104558433951744)
+          stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :screen_name => "sferik", :max_id => "244104558433951744"}).to_return(:body => fixture("statuses.json"))
+        end
+        it "requests the correct resource" do
+          @search.timeline("sferik", "twitter")
+          expect(a_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :screen_name => "sferik", :max_id => "244104558433951744"})).to have_been_made
         end
       end
       context "--since-id" do

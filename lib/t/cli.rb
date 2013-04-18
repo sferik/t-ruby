@@ -651,6 +651,7 @@ module T
     method_option "exclude", :aliases => "-e", :type => :string, :enum => %w(replies retweets), :desc => "Exclude certain types of Tweets from the results.", :banner => "TYPE"
     method_option "id", :aliases => "-i", :type => :boolean, :default => false, :desc => "Specify user via ID instead of screen name."
     method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
+    method_option "max_id", :aliases => "-m", :type => :numeric, :desc => "Returns only the results with an ID less than the specified ID."
     method_option "number", :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => "Limit the number of results."
     method_option "reverse", :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     method_option "since_id", :aliases => "-s", :type => :numeric, :desc => "Returns only the results with an ID greater than the specified ID."
@@ -659,6 +660,7 @@ module T
       opts = {}
       opts[:exclude_replies] = true if options['exclude'] == 'replies'
       opts[:include_rts] = false if options['exclude'] == 'retweets'
+      opts[:max_id] = options['max_id'] if options['max_id']
       opts[:since_id] = options['since_id'] if options['since_id']
       if user
         require 't/core_ext/string'

@@ -271,6 +271,7 @@ _t_timeline() {
     "(-e --exclude)"{-e,--exclude}"[Exclude certain types of Tweets from the results.]" \
     "(-i --id)"{-i,--id}"[Specify user via ID instead of screen name.]" \
     "(-l --long)"{-l,--long}"[Output in long format.]" \
+    "(-m --max_id)"{-m,--max_id}"[Returns only the results with an ID less than the specified ID.]" \
     "(-n --number)"{-n,--number}"[Limit the number of results.]" \
     "(-r --reverse)"{-r,--reverse}"[Reverse the order of the sort.]" \
     "(-s --since_id)"{-s,--since_id}"[Returns only the results with an ID greater than the specified ID.]" \

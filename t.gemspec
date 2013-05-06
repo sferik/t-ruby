@@ -29,7 +29,7 @@ Gem::Specification.new do |spec|
   spec.licenses = ['MIT']
   spec.name = 't'
   spec.require_paths = ['lib']
-  spec.required_rubygems_version = '>= 1.3.6'
+  spec.required_rubygems_version = '>= 1.3.5'
   spec.signing_key = File.expand_path("~/.gem/private_key.pem") if $0 =~ /gem\z/
   spec.summary = %q{CLI for Twitter}
   spec.test_files = Dir.glob("spec/**/*")

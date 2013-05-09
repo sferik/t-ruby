@@ -1,43 +1,45 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
-    <meta charset='utf-8'>
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+    <title>T by sferik</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <title>T by sferik</title>
   </head>
-
   <body>
-    <div id="container">
-      <div class="inner">
+    <div class="wrapper">
+      <header>
+        <h1 class="header">T</h1>
+        <p class="header">A command-line power tool for Twitter.</p>
 
-        <header>
-          <h1>T</h1>
-          <h2>A command-line power tool for Twitter.</h2>
-        </header>
+        <ul>
+          <li class="download"><a class="buttons" href="https://github.com/sferik/t/zipball/master">Download ZIP</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/sferik/t/tarball/master">Download TAR</a></li>
+          <li><a class="buttons github" href="https://github.com/sferik/t">View On GitHub</a></li>
+        </ul>
 
-        <section id="downloads" class="clearfix">
-          <a href="https://github.com/sferik/t/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
-          <a href="https://github.com/sferik/t/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
-          <a href="https://github.com/sferik/t" id="view-on-github" class="button"><span>View on GitHub</span></a>
-        </section>
+        <p class="header">This project is maintained by <a class="header name" href="https://github.com/sferik">sferik</a></p>
 
-        <hr>
 
-        <section id="main_content">
-          <h1><a href="https://github.com/sferik/t/raw/master/icon/t.png"><img src="https://github.com/sferik/t/raw/master/icon/t.png" alt="Application icon"></a></h1>
+      </header>
+      <section>
+        <h1><a href="https://github.com/sferik/t/raw/master/icon/t.png"><img src="https://github.com/sferik/t/raw/master/icon/t.png" alt="Application icon"></a></h1>
 
 <h1>Twitter CLI</h1>
 
-<p><a href="http://travis-ci.org/sferik/t"><img src="https://secure.travis-ci.org/sferik/t.png?branch=master" alt="Build Status"></a>
+<p><a href="https://rubygems.org/gems/twitter"><img src="https://badge.fury.io/rb/t.png" alt="Gem Version"></a>
+<a href="http://travis-ci.org/sferik/t"><img src="https://secure.travis-ci.org/sferik/t.png?branch=master" alt="Build Status"></a>
 <a href="https://gemnasium.com/sferik/t"><img src="https://gemnasium.com/sferik/t.png?travis" alt="Dependency Status"></a>
-<a href="http://www.pledgie.com/campaigns/17330"><img src="http://www.pledgie.com/campaigns/17330.png" alt="Pledgie"></a></p>
+<a href="https://coveralls.io/r/sferik/t"><img src="https://coveralls.io/repos/sferik/t/badge.png?branch=master" alt="Coverage Status"></a>
+<a href="http://www.pledgie.com/campaigns/17330"><img src="http://www.pledgie.com/campaigns/17330.png" alt="Pledgie"></a>
+<a href="http://flattr.com/thing/815001/sferikt-on-GitHub"><img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr"></a></p>
 
 <h4>A command-line power tool for Twitter.</h4>
 
@@ -55,7 +57,7 @@ offers vastly more commands and capabilities than are available via SMS.</p>
 
 <p>If the output looks something like this, you're in good shape:</p>
 
-<pre><code>ruby 1.9.3p194 (2012-04-20 revision 35410) [x86_64-darwin12.0.0]
+<pre><code>ruby 1.9.3p385 (2013-02-06 revision 39114) [x86_64-darwin12.2.1]
 </code></pre>
 
 <p>If the output looks more like this, you need to <a href="http://www.ruby-lang.org/en/downloads/">install Ruby</a>:</p>
@@ -70,6 +72,18 @@ offers vastly more commands and capabilities than are available via SMS.</p>
 <pre><code>gem install t
 </code></pre>
 
+<p>To ensure the code you're installing hasn't been tampered with, it's
+recommended that you verify the signature. To do this, you need to add my
+public key as a trusted certificate (you only need to do this once):</p>
+
+<pre><code>gem cert --add &lt;(curl -Ls https://gist.github.com/sferik/4701180/raw/public_cert.pem)
+</code></pre>
+
+<p>Then, install the gem with the high security trust policy:</p>
+
+<pre><code>gem install t -P HighSecurity
+</code></pre>
+
 <h2>Configuration</h2>
 
 <p>Twitter API v1.1 requires OAuth for all of its functionality, so you'll need a
@@ -81,7 +95,7 @@ previously registered a Twitter application, it should be listed at
 to set your application's Access Level to "Read, Write and Access direct
 messages", otherwise you'll receive an error that looks like this:</p>
 
-<pre><code>Read-only application cannot POST
+<pre><code>Error processing your OAuth request: Read-only application cannot POST
 </code></pre>
 
 <p>Now, you're ready to authorize a Twitter account with your application. To
@@ -206,7 +220,7 @@ example, send a user a direct message only if he already follows you:</p>
 
 <h4>Unfollow 10 people who haven't tweeted in the longest time</h4>
 
-<pre><code>t followings -l --sort=tweeted | head -10 | awk '{print $1}' | xargs t unfollow
+<pre><code>t followings -l --sort=tweets | head -10 | awk '{print $1}' | xargs t unfollow
 </code></pre>
 
 <h4>Twitter roulette: randomly follow someone who follows you (who you don't already follow)</h4>
@@ -282,7 +296,7 @@ like grep, comm, cut, awk, bc, wc, and xargs for advanced text processing.</li>
 <li>Generate spreadsheets: Convert the output of any command to CSV format simply
 by adding the <code>--csv</code> flag.</li>
 <li>95% C0 Code Coverage: Well tested, with a 2.5:1 test-to-code ratio.</li>
-</ul><h1>Using T for Backup</h1>
+</ul><h2>Using T for Backup</h2>
 
 <p><a href="https://github.com/jphpsf">@jphpsf</a> wrote a <a href="http://blog.jphpsf.com/2012/05/07/backing-up-your-twitter-account-with-t/">blog post</a> explaining how to use <code>t</code> to backup
 your Twitter account.</p>
@@ -319,6 +333,15 @@ used by <code>t</code>:</p>
 
 <p><img src="https://github.com/sferik/t/raw/master/screenshots/timeline.png" alt="Timeline"><img src="https://github.com/sferik/t/raw/master/screenshots/list.png" alt="List"></p>
 
+<h2>Shell completion</h2>
+
+<p>If you're running Zsh, you can source one of the <a href="etc">bundled completion
+files</a> to get shell completion for <code>t</code> commands, subcommands, and
+flags.</p>
+
+<p>Don't run Zsh? Why not <a href="CONTRIBUTING.md">contribute</a> completion support for your favorite
+shell?</p>
+
 <h2>History</h2>
 
 <p>The <a href="https://rubygems.org/gems/twitter">twitter gem</a> previously contained a command-line interface, up until
@@ -337,6 +360,7 @@ implementations:</p>
 <li>Ruby 1.8.7</li>
 <li>Ruby 1.9.2</li>
 <li>Ruby 1.9.3</li>
+<li>Ruby 2.0.0</li>
 </ul><p>If something doesn't work on one of these Ruby versions, it's a bug.</p>
 
 <p>This library may inadvertently work (or seem to work) on other Ruby
@@ -350,19 +374,23 @@ implementation, you will be responsible for providing patches in a timely
 fashion. If critical issues for a particular implementation exist at the time
 of a major release, support for that Ruby version may be dropped.</p>
 
+<h2>Troubleshooting</h2>
+
+<p>If you are running t on a remote computer you can use the flag --display-url during authorize process to display the url instead of opening the web browser.</p>
+
+<pre><code>t authorize --display-url
+</code></pre>
+
 <h2>Copyright</h2>
 
-<p>Copyright (c) 2011 Erik Michaels-Ober. See <a href="https://github.com/sferik/t/blob/master/LICENSE.md">LICENSE</a> for details.
+<p>Copyright (c) 2011-2013 Erik Michaels-Ober. See <a href="LICENSE.md">LICENSE</a> for details.
 Application icon by <a href="http://rodolfonovak.com">@nvk</a>.</p>
-        </section>
-
-        <footer>
-          T is maintained by <a href="https://github.com/sferik">sferik</a><br>
-          This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.
-        </footer>
-
-        
-      </div>
+      </section>
+      <footer>
+        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
     </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+		
   </body>
 </html>

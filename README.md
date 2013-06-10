@@ -172,7 +172,7 @@ example, send a user a direct message only if he already follows you:
     t stream timeline
 
 #### Count the number of employees who work for Twitter
-    t list members twitter team | wc -l
+    t list members twitter/team | wc -l
 
 #### Search Twitter for the 20 most recent Tweets that match a specified query
     t search all "query"

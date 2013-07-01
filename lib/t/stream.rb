@@ -22,8 +22,8 @@ module T
     end
 
     desc "all", "Stream a random sample of all Tweets (Control-C to stop)"
-    method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
-    method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
+    method_option "csv", aliases: "-c", type: :boolean, default: false, desc: "Output in CSV format."
+    method_option "long", aliases: "-l", type: :boolean, default: false, desc: "Output in long format."
     def all
       require 'tweetstream'
       client.on_inited do
@@ -44,7 +44,7 @@ module T
           array = build_long_tweet(tweet).each_with_index.map do |element, index|
             TWEET_HEADINGS_FORMATTING[index] % element
           end
-          print_table([array], :truncate => STDOUT.tty?)
+          print_table([array], truncate: STDOUT.tty?)
         else
           print_message(tweet.user.screen_name, tweet.text)
         end
@@ -62,8 +62,8 @@ module T
     end
 
     desc "search KEYWORD [KEYWORD...]", "Stream Tweets that contain specified keywords, joined with logical ORs (Control-C to stop)"
-    method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
-    method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
+    method_option "csv", aliases: "-c", type: :boolean, default: false, desc: "Output in CSV format."
+    method_option "long", aliases: "-l", type: :boolean, default: false, desc: "Output in long format."
     def search(keyword, *keywords)
       keywords.unshift(keyword)
       require 'tweetstream'
@@ -71,8 +71,8 @@ module T
       client.on_inited do
         search = T::Search.new
         search.options = search.options.merge(options)
-        search.options = search.options.merge(:reverse => true)
-        search.options = search.options.merge(:format => TWEET_HEADINGS_FORMATTING)
+        search.options = search.options.merge(reverse: true)
+        search.options = search.options.merge(format: TWEET_HEADINGS_FORMATTING)
         search.all(keywords.join(' OR '))
       end
       client.on_timeline_status do |tweet|
@@ -82,7 +82,7 @@ module T
           array = build_long_tweet(tweet).each_with_index.map do |element, index|
             TWEET_HEADINGS_FORMATTING[index] % element
           end
-          print_table([array], :truncate => STDOUT.tty?)
+          print_table([array], truncate: STDOUT.tty?)
         else
           print_message(tweet.user.screen_name, tweet.text)
         end
@@ -91,16 +91,16 @@ module T
     end
 
     desc "timeline", "Stream your timeline (Control-C to stop)"
-    method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
-    method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
+    method_option "csv", aliases: "-c", type: :boolean, default: false, desc: "Output in CSV format."
+    method_option "long", aliases: "-l", type: :boolean, default: false, desc: "Output in long format."
     def timeline
       require 'tweetstream'
       require 't/cli'
       client.on_inited do
         cli = T::CLI.new
         cli.options = cli.options.merge(options)
-        cli.options = cli.options.merge(:reverse => true)
-        cli.options = cli.options.merge(:format => TWEET_HEADINGS_FORMATTING)
+        cli.options = cli.options.merge(reverse: true)
+        cli.options = cli.options.merge(format: TWEET_HEADINGS_FORMATTING)
         cli.timeline
       end
       client.on_timeline_status do |tweet|
@@ -110,7 +110,7 @@ module T
           array = build_long_tweet(tweet).each_with_index.map do |element, index|
             TWEET_HEADINGS_FORMATTING[index] % element
           end
-          print_table([array], :truncate => STDOUT.tty?)
+          print_table([array], truncate: STDOUT.tty?)
         else
           print_message(tweet.user.screen_name, tweet.text)
         end
@@ -119,8 +119,8 @@ module T
     end
 
     desc "users USER_ID [USER_ID...]", "Stream Tweets either from or in reply to specified users (Control-C to stop)"
-    method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
-    method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
+    method_option "csv", aliases: "-c", type: :boolean, default: false, desc: "Output in CSV format."
+    method_option "long", aliases: "-l", type: :boolean, default: false, desc: "Output in long format."
     def users(user_id, *user_ids)
       user_ids.unshift(user_id)
       user_ids.map!(&:to_i)
@@ -143,7 +143,7 @@ module T
           array = build_long_tweet(tweet).each_with_index.map do |element, index|
             TWEET_HEADINGS_FORMATTING[index] % element
           end
-          print_table([array], :truncate => STDOUT.tty?)
+          print_table([array], truncate: STDOUT.tty?)
         else
           print_message(tweet.user.screen_name, tweet.text)
         end
@@ -157,10 +157,10 @@ module T
       return @client if @client
       @rcfile.path = options['profile'] if options['profile']
       @client = TweetStream::Client.new(
-        :consumer_key => @rcfile.active_consumer_key,
-        :consumer_secret => @rcfile.active_consumer_secret,
-        :oauth_token => @rcfile.active_token,
-        :oauth_token_secret => @rcfile.active_secret
+        consumer_key: @rcfile.active_consumer_key,
+        consumer_secret: @rcfile.active_consumer_secret,
+        oauth_token: @rcfile.active_token,
+        oauth_token_secret: @rcfile.active_secret
       )
     end
 

@@ -31,13 +31,13 @@ describe T::List do
   describe "#add" do
     before do
       @list.options = @list.options.merge("profile" => fixture_path + "/.trc")
-      stub_get("/1.1/account/verify_credentials.json").to_return(:body => fixture("sferik.json"))
-      stub_post("/1.1/lists/members/create_all.json").with(:body => {:screen_name => "BarackObama", :slug => "presidents", :owner_screen_name => "sferik"}).to_return(:body => fixture("list.json"))
+      stub_get("/1.1/account/verify_credentials.json").to_return(body: fixture("sferik.json"))
+      stub_post("/1.1/lists/members/create_all.json").with(body: {screen_name: "BarackObama", slug: "presidents", owner_screen_name: "sferik"}).to_return(body: fixture("list.json"))
     end
     it "requests the correct resource" do
       @list.add("presidents", "BarackObama")
       expect(a_get("/1.1/account/verify_credentials.json")).to have_been_made
-      expect(a_post("/1.1/lists/members/create_all.json").with(:body => {:screen_name => "BarackObama", :slug => "presidents", :owner_screen_name => "sferik"})).to have_been_made
+      expect(a_post("/1.1/lists/members/create_all.json").with(body: {screen_name: "BarackObama", slug: "presidents", owner_screen_name: "sferik"})).to have_been_made
     end
     it "has the correct output" do
       @list.add("presidents", "BarackObama")
@@ -46,21 +46,21 @@ describe T::List do
     context "--id" do
       before do
         @list.options = @list.options.merge("id" => true)
-        stub_post("/1.1/lists/members/create_all.json").with(:body => {:user_id => "7505382", :slug => "presidents", :owner_screen_name => "sferik"}).to_return(:body => fixture("list.json"))
+        stub_post("/1.1/lists/members/create_all.json").with(body: {user_id: "7505382", slug: "presidents", owner_screen_name: "sferik"}).to_return(body: fixture("list.json"))
       end
       it "requests the correct resource" do
         @list.add("presidents", "7505382")
         expect(a_get("/1.1/account/verify_credentials.json")).to have_been_made
-        expect(a_post("/1.1/lists/members/create_all.json").with(:body => {:user_id => "7505382", :slug => "presidents", :owner_screen_name => "sferik"})).to have_been_made
+        expect(a_post("/1.1/lists/members/create_all.json").with(body: {user_id: "7505382", slug: "presidents", owner_screen_name: "sferik"})).to have_been_made
       end
     end
     context "Twitter is down" do
       it "retries 3 times and then raise an error" do
-        stub_post("/1.1/lists/members/create_all.json").with(:body => {:screen_name => "BarackObama", :slug => "presidents", :owner_screen_name => "sferik"}).to_return(:status => 502)
+        stub_post("/1.1/lists/members/create_all.json").with(body: {screen_name: "BarackObama", slug: "presidents", owner_screen_name: "sferik"}).to_return(status: 502)
         expect do
           @list.add("presidents", "BarackObama")
         end.to raise_error("Twitter is down or being upgraded.")
-        expect(a_post("/1.1/lists/members/create_all.json").with(:body => {:screen_name => "BarackObama", :slug => "presidents", :owner_screen_name => "sferik"})).to have_been_made.times(3)
+        expect(a_post("/1.1/lists/members/create_all.json").with(body: {screen_name: "BarackObama", slug: "presidents", owner_screen_name: "sferik"})).to have_been_made.times(3)
       end
     end
   end
@@ -68,11 +68,11 @@ describe T::List do
   describe "#create" do
     before do
       @list.options = @list.options.merge("profile" => fixture_path + "/.trc")
-      stub_post("/1.1/lists/create.json").with(:body => {:name => "presidents"}).to_return(:body => fixture("list.json"))
+      stub_post("/1.1/lists/create.json").with(body: {name: "presidents"}).to_return(body: fixture("list.json"))
     end
     it "requests the correct resource" do
       @list.create("presidents")
-      expect(a_post("/1.1/lists/create.json").with(:body => {:name => "presidents"})).to have_been_made
+      expect(a_post("/1.1/lists/create.json").with(body: {name: "presidents"})).to have_been_made
     end
     it "has the correct output" do
       @list.create("presidents")
@@ -83,11 +83,11 @@ describe T::List do
   describe "#information" do
     before do
       @list.options = @list.options.merge("profile" => fixture_path + "/.trc")
-      stub_get("/1.1/lists/show.json").with(:query => {:owner_screen_name => "testcli", :slug => "presidents"}).to_return(:body => fixture("list.json"))
+      stub_get("/1.1/lists/show.json").with(query: {owner_screen_name: "testcli", slug: "presidents"}).to_return(body: fixture("list.json"))
     end
     it "requests the correct resource" do
       @list.information("presidents")
-      expect(a_get("/1.1/lists/show.json").with(:query => {:owner_screen_name => "testcli", :slug => "presidents"})).to have_been_made
+      expect(a_get("/1.1/lists/show.json").with(query: {owner_screen_name: "testcli", slug: "presidents"})).to have_been_made
     end
     it "has the correct output" do
       @list.information("presidents")
@@ -107,16 +107,16 @@ URL          https://twitter.com/sferik/presidents
     context "with a user passed" do
       it "requests the correct resource" do
         @list.information("testcli/presidents")
-        expect(a_get("/1.1/lists/show.json").with(:query => {:owner_screen_name => "testcli", :slug => "presidents"})).to have_been_made
+        expect(a_get("/1.1/lists/show.json").with(query: {owner_screen_name: "testcli", slug: "presidents"})).to have_been_made
       end
       context "--id" do
         before do
           @list.options = @list.options.merge("id" => true)
-          stub_get("/1.1/lists/show.json").with(:query => {:owner_id => "7505382", :slug => "presidents"}).to_return(:body => fixture("list.json"))
+          stub_get("/1.1/lists/show.json").with(query: {owner_id: "7505382", slug: "presidents"}).to_return(body: fixture("list.json"))
         end
         it "requests the correct resource" do
           @list.information("7505382/presidents")
-          expect(a_get("/1.1/lists/show.json").with(:query => {:owner_id => "7505382", :slug => "presidents"})).to have_been_made
+          expect(a_get("/1.1/lists/show.json").with(query: {owner_id: "7505382", slug: "presidents"})).to have_been_made
         end
       end
     end
@@ -136,11 +136,11 @@ ID,Description,Slug,Screen name,Created at,Members,Subscribers,Following,Mode,UR
 
   describe "#members" do
     before do
-      stub_get("/1.1/lists/members.json").with(:query => {:cursor => "-1", :owner_screen_name => "testcli", :slug => "presidents"}).to_return(:body => fixture("users_list.json"))
+      stub_get("/1.1/lists/members.json").with(query: {cursor: "-1", owner_screen_name: "testcli", slug: "presidents"}).to_return(body: fixture("users_list.json"))
     end
     it "requests the correct resource" do
       @list.members("presidents")
-      expect(a_get("/1.1/lists/members.json").with(:query => {:cursor => "-1", :owner_screen_name => "testcli", :slug => "presidents"})).to have_been_made
+      expect(a_get("/1.1/lists/members.json").with(query: {cursor: "-1", owner_screen_name: "testcli", slug: "presidents"})).to have_been_made
     end
     it "has the correct output" do
       @list.members("presidents")
@@ -256,16 +256,16 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
     context "with a user passed" do
       it "requests the correct resource" do
         @list.members("testcli/presidents")
-        expect(a_get("/1.1/lists/members.json").with(:query => {:cursor => "-1", :owner_screen_name => "testcli", :slug => "presidents"})).to have_been_made
+        expect(a_get("/1.1/lists/members.json").with(query: {cursor: "-1", owner_screen_name: "testcli", slug: "presidents"})).to have_been_made
       end
       context "--id" do
         before do
           @list.options = @list.options.merge("id" => true)
-          stub_get("/1.1/lists/members.json").with(:query => {:cursor => "-1", :owner_id => "7505382", :slug => "presidents"}).to_return(:body => fixture("users_list.json"))
+          stub_get("/1.1/lists/members.json").with(query: {cursor: "-1", owner_id: "7505382", slug: "presidents"}).to_return(body: fixture("users_list.json"))
         end
         it "requests the correct resource" do
           @list.members("7505382/presidents")
-          expect(a_get("/1.1/lists/members.json").with(:query => {:cursor => "-1", :owner_id => "7505382", :slug => "presidents"})).to have_been_made
+          expect(a_get("/1.1/lists/members.json").with(query: {cursor: "-1", owner_id: "7505382", slug: "presidents"})).to have_been_made
         end
       end
     end
@@ -274,37 +274,37 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
   describe "#remove" do
     before do
       @list.options = @list.options.merge("profile" => fixture_path + "/.trc")
-      stub_get("/1.1/account/verify_credentials.json").to_return(:body => fixture("sferik.json"))
+      stub_get("/1.1/account/verify_credentials.json").to_return(body: fixture("sferik.json"))
     end
     it "requests the correct resource" do
-      stub_post("/1.1/lists/members/destroy_all.json").with(:body => {:screen_name => "BarackObama", :slug => "presidents", :owner_screen_name => "sferik"}).to_return(:body => fixture("list.json"))
+      stub_post("/1.1/lists/members/destroy_all.json").with(body: {screen_name: "BarackObama", slug: "presidents", owner_screen_name: "sferik"}).to_return(body: fixture("list.json"))
       @list.remove("presidents", "BarackObama")
       expect(a_get("/1.1/account/verify_credentials.json")).to have_been_made
-      expect(a_post("/1.1/lists/members/destroy_all.json").with(:body => {:screen_name => "BarackObama", :slug => "presidents", :owner_screen_name => "sferik"})).to have_been_made
+      expect(a_post("/1.1/lists/members/destroy_all.json").with(body: {screen_name: "BarackObama", slug: "presidents", owner_screen_name: "sferik"})).to have_been_made
     end
     it "has the correct output" do
-      stub_post("/1.1/lists/members/destroy_all.json").with(:body => {:screen_name => "BarackObama", :slug => "presidents", :owner_screen_name => "sferik"}).to_return(:body => fixture("list.json"))
+      stub_post("/1.1/lists/members/destroy_all.json").with(body: {screen_name: "BarackObama", slug: "presidents", owner_screen_name: "sferik"}).to_return(body: fixture("list.json"))
       @list.remove("presidents", "BarackObama")
       expect($stdout.string.split("\n").first).to eq "@testcli removed 1 member from the list \"presidents\"."
     end
     context "--id" do
       before do
         @list.options = @list.options.merge("id" => true)
-        stub_post("/1.1/lists/members/destroy_all.json").with(:body => {:user_id => "7505382", :slug => "presidents", :owner_screen_name => "sferik"}).to_return(:body => fixture("list.json"))
+        stub_post("/1.1/lists/members/destroy_all.json").with(body: {user_id: "7505382", slug: "presidents", owner_screen_name: "sferik"}).to_return(body: fixture("list.json"))
       end
       it "requests the correct resource" do
         @list.remove("presidents", "7505382")
         expect(a_get("/1.1/account/verify_credentials.json")).to have_been_made
-        expect(a_post("/1.1/lists/members/destroy_all.json").with(:body => {:user_id => "7505382", :slug => "presidents", :owner_screen_name => "sferik"})).to have_been_made
+        expect(a_post("/1.1/lists/members/destroy_all.json").with(body: {user_id: "7505382", slug: "presidents", owner_screen_name: "sferik"})).to have_been_made
       end
     end
     context "Twitter is down" do
       it "retries 3 times and then raise an error" do
-        stub_post("/1.1/lists/members/destroy_all.json").with(:body => {:screen_name => "BarackObama", :slug => "presidents", :owner_screen_name => "sferik"}).to_return(:status => 502)
+        stub_post("/1.1/lists/members/destroy_all.json").with(body: {screen_name: "BarackObama", slug: "presidents", owner_screen_name: "sferik"}).to_return(status: 502)
         expect do
           @list.remove("presidents", "BarackObama")
         end.to raise_error("Twitter is down or being upgraded.")
-        expect(a_post("/1.1/lists/members/destroy_all.json").with(:body => {:screen_name => "BarackObama", :slug => "presidents", :owner_screen_name => "sferik"})).to have_been_made.times(3)
+        expect(a_post("/1.1/lists/members/destroy_all.json").with(body: {screen_name: "BarackObama", slug: "presidents", owner_screen_name: "sferik"})).to have_been_made.times(3)
       end
     end
   end
@@ -312,11 +312,11 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
   describe "#timeline" do
     before do
       @list.options = @list.options.merge("color" => "always")
-      stub_get("/1.1/lists/statuses.json").with(:query => {:owner_screen_name => "testcli", :count => "20", :slug => "presidents"}).to_return(:body => fixture("statuses.json"))
+      stub_get("/1.1/lists/statuses.json").with(query: {owner_screen_name: "testcli", count: "20", slug: "presidents"}).to_return(body: fixture("statuses.json"))
     end
     it "requests the correct resource" do
       @list.timeline("presidents")
-      expect(a_get("/1.1/lists/statuses.json").with(:query => {:owner_screen_name => "testcli", :count => "20", :slug => "presidents"})).to have_been_made
+      expect(a_get("/1.1/lists/statuses.json").with(query: {owner_screen_name: "testcli", count: "20", slug: "presidents"})).to have_been_made
     end
     it "has the correct output" do
       @list.timeline("presidents")
@@ -745,35 +745,35 @@ ID                   Posted at     Screen name       Text
     end
     context "--number" do
       before do
-        stub_get("/1.1/lists/statuses.json").with(:query => {:owner_screen_name => "testcli", :count => "1", :slug => "presidents"}).to_return(:body => fixture("statuses.json"))
-        stub_get("/1.1/lists/statuses.json").with(:query => {:owner_screen_name => "testcli", :count => "200", :slug => "presidents"}).to_return(:body => fixture("200_statuses.json"))
-        stub_get("/1.1/lists/statuses.json").with(:query => {:owner_screen_name => "testcli", :count => "1", :max_id => "265500541700956160", :slug => "presidents"}).to_return(:body => fixture("statuses.json"))
+        stub_get("/1.1/lists/statuses.json").with(query: {owner_screen_name: "testcli", count: "1", slug: "presidents"}).to_return(body: fixture("statuses.json"))
+        stub_get("/1.1/lists/statuses.json").with(query: {owner_screen_name: "testcli", count: "200", slug: "presidents"}).to_return(body: fixture("200_statuses.json"))
+        stub_get("/1.1/lists/statuses.json").with(query: {owner_screen_name: "testcli", count: "1", max_id: "265500541700956160", slug: "presidents"}).to_return(body: fixture("statuses.json"))
       end
       it "limits the number of results to 1" do
         @list.options = @list.options.merge("number" => 1)
         @list.timeline("presidents")
-        expect(a_get("/1.1/lists/statuses.json").with(:query => {:owner_screen_name => "testcli", :count => "1", :slug => "presidents"})).to have_been_made
+        expect(a_get("/1.1/lists/statuses.json").with(query: {owner_screen_name: "testcli", count: "1", slug: "presidents"})).to have_been_made
       end
       it "limits the number of results to 201" do
         @list.options = @list.options.merge("number" => 201)
         @list.timeline("presidents")
-        expect(a_get("/1.1/lists/statuses.json").with(:query => {:owner_screen_name => "testcli", :count => "200", :slug => "presidents"})).to have_been_made
-        expect(a_get("/1.1/lists/statuses.json").with(:query => {:owner_screen_name => "testcli", :count => "1", :max_id => "265500541700956160", :slug => "presidents"})).to have_been_made
+        expect(a_get("/1.1/lists/statuses.json").with(query: {owner_screen_name: "testcli", count: "200", slug: "presidents"})).to have_been_made
+        expect(a_get("/1.1/lists/statuses.json").with(query: {owner_screen_name: "testcli", count: "1", max_id: "265500541700956160", slug: "presidents"})).to have_been_made
       end
     end
     context "with a user passed" do
       it "requests the correct resource" do
         @list.timeline("testcli/presidents")
-        expect(a_get("/1.1/lists/statuses.json").with(:query => {:owner_screen_name => "testcli", :count => "20", :slug => "presidents"})).to have_been_made
+        expect(a_get("/1.1/lists/statuses.json").with(query: {owner_screen_name: "testcli", count: "20", slug: "presidents"})).to have_been_made
       end
       context "--id" do
         before do
           @list.options = @list.options.merge("id" => true)
-          stub_get("/1.1/lists/statuses.json").with(:query => {:owner_id => "7505382", :count => "20", :slug => "presidents"}).to_return(:body => fixture("statuses.json"))
+          stub_get("/1.1/lists/statuses.json").with(query: {owner_id: "7505382", count: "20", slug: "presidents"}).to_return(body: fixture("statuses.json"))
         end
         it "requests the correct resource" do
           @list.timeline("7505382/presidents")
-          expect(a_get("/1.1/lists/statuses.json").with(:query => {:owner_id => "7505382", :count => "20", :slug => "presidents"})).to have_been_made
+          expect(a_get("/1.1/lists/statuses.json").with(query: {owner_id: "7505382", count: "20", slug: "presidents"})).to have_been_made
         end
       end
     end

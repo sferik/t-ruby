@@ -26,32 +26,32 @@ module T
 
     desc "bio DESCRIPTION", "Edits your Bio information on your Twitter profile."
     def bio(description)
-      client.update_profile(:description => description)
+      client.update_profile(description: description)
       say "@#{@rcfile.active_profile[0]}'s bio has been updated."
     end
 
     desc "language LANGUAGE_NAME", "Selects the language you'd like to receive notifications in."
     def language(language_name)
-      client.settings(:lang => language_name)
+      client.settings(lang: language_name)
       say "@#{@rcfile.active_profile[0]}'s language has been updated."
     end
 
     desc "location PLACE_NAME", "Updates the location field in your profile."
     def location(place_name)
-      client.update_profile(:location => place_name)
+      client.update_profile(location: place_name)
       say "@#{@rcfile.active_profile[0]}'s location has been updated."
     end
 
     desc "name NAME", "Sets the name field on your Twitter profile."
     def name(name)
-      client.update_profile(:name => name)
+      client.update_profile(name: name)
       say "@#{@rcfile.active_profile[0]}'s name has been updated."
     end
 
     desc "profile_background_image FILE", "Sets the background image on your Twitter profile."
-    method_option "tile", :aliases => "-t", :type => :boolean, :default => false, :desc => "Whether or not to tile the background image."
+    method_option "tile", aliases: "-t", type: :boolean, default: false, desc: "Whether or not to tile the background image."
     def profile_background_image(file)
-      client.update_profile_background_image(File.new(File.expand_path(file)), :tile => options['tile'], :skip_status => true)
+      client.update_profile_background_image(File.new(File.expand_path(file)), tile: options['tile'], skip_status: true)
       say "@#{@rcfile.active_profile[0]}'s background image has been updated."
     end
     map %w(background background_image) => :profile_background_image
@@ -65,7 +65,7 @@ module T
 
     desc "url URL", "Sets the URL field on your profile."
     def url(url)
-      client.update_profile(:url => url)
+      client.update_profile(url: url)
       say "@#{@rcfile.active_profile[0]}'s URL has been updated."
     end
 

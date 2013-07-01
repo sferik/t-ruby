@@ -1,11 +1,11 @@
 module Kernel
 
-  def Bignum(arg)
-    Integer(arg)
+  def Bignum(arg, base=0)
+    Integer(arg, base)
   end
 
-  def Fixnum(arg)
-    Integer(arg)
+  def Fixnum(arg, base=0)
+    Integer(arg, base)
   end
 
   def NilClass(arg)

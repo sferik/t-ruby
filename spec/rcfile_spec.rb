@@ -52,7 +52,7 @@ describe T::RCFile do
       }
       expect(rcfile['testcli'].keys).to eq ['abc123']
     end
-    it "is not be world readable or writable" do
+    it "is not be world writable" do
       rcfile = T::RCFile.instance
       rcfile.path = project_path + "/tmp/trc"
       rcfile['testcli'] = {
@@ -64,7 +64,21 @@ describe T::RCFile do
           secret: 'jkl012',
         }
       }
-      expect(File.stat(rcfile.path).mode).to eq 33152
+      expect(File.world_writable?(rcfile.path)).to be_nil
+    end
+    it "is not be world readable" do
+      rcfile = T::RCFile.instance
+      rcfile.path = project_path + "/tmp/trc"
+      rcfile['testcli'] = {
+        'abc123' => {
+          :username => 'testcli',
+          :consumer_key => 'abc123',
+          :consumer_secret => 'def456',
+          :token => 'ghi789',
+          :secret => 'jkl012',
+        }
+      }
+      expect(File.world_readable?(rcfile.path)).to be_nil
     end
   end
 

@@ -10,7 +10,7 @@ SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
 SimpleCov.start
 
 require 't'
-require 'multi_json'
+require 'json'
 require 'rspec'
 require 'timecop'
 require 'webmock/rspec'
@@ -70,5 +70,5 @@ def fixture(file)
 end
 
 def status_from_fixture(file)
-  Twitter::Status.new(MultiJson.load(fixture(file).read, :symbolize_keys => true))
+  Twitter::Status.new(JSON.parse(fixture(file).read, :symbolize_names => true))
 end

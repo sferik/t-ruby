@@ -29,7 +29,6 @@ module T
       client.on_inited do
         if options['csv']
           require 'csv'
-          require 'fastercsv' unless Array.new.respond_to?(:to_csv)
           say TWEET_HEADINGS.to_csv
         elsif options['long'] && STDOUT.tty?
           headings = TWEET_HEADINGS.size.times.map do |index|
@@ -129,7 +128,6 @@ module T
       client.on_inited do
         if options['csv']
           require 'csv'
-          require 'fastercsv' unless Array.new.respond_to?(:to_csv)
           say TWEET_HEADINGS.to_csv
         elsif options['long'] && STDOUT.tty?
           headings = TWEET_HEADINGS.size.times.map do |index|

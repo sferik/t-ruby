@@ -38,7 +38,6 @@ module T
       require 'htmlentities'
       if options['csv']
         require 'csv'
-        require 'fastercsv' unless Array.new.respond_to?(:to_csv)
         say TWEET_HEADINGS.to_csv unless tweets.empty?
         tweets.each do |tweet|
           say [tweet.id, csv_formatted_time(tweet), tweet.from_user, decode_full_text(tweet)].to_csv

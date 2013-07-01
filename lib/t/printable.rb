@@ -37,20 +37,17 @@ module T
 
     def print_csv_list(list)
       require 'csv'
-      require 'fastercsv' unless Array.new.respond_to?(:to_csv)
       say [list.id, csv_formatted_time(list), list.user.screen_name, list.slug, list.member_count, list.subscriber_count, list.mode, list.description].to_csv
     end
 
     def print_csv_tweet(tweet)
       require 'csv'
-      require 'fastercsv' unless Array.new.respond_to?(:to_csv)
       require 'htmlentities'
       say [tweet.id, csv_formatted_time(tweet), tweet.from_user, decode_full_text(tweet)].to_csv
     end
 
     def print_csv_user(user)
       require 'csv'
-      require 'fastercsv' unless Array.new.respond_to?(:to_csv)
       say [user.id, csv_formatted_time(user), csv_formatted_time(user.status), user.statuses_count, user.favourites_count, user.listed_count, user.friends_count, user.followers_count, user.screen_name, user.name, user.verified?, user.protected?, user.description, user.status ? user.status.full_text : nil, user.location, user.url].to_csv
     end
 
@@ -70,7 +67,6 @@ module T
       lists.reverse! if options['reverse']
       if options['csv']
         require 'csv'
-        require 'fastercsv' unless Array.new.respond_to?(:to_csv)
         say LIST_HEADINGS.to_csv unless lists.empty?
         lists.each do |list|
           print_csv_list(list)
@@ -128,7 +124,6 @@ module T
       tweets.reverse! if options['reverse']
       if options['csv']
         require 'csv'
-        require 'fastercsv' unless Array.new.respond_to?(:to_csv)
         say TWEET_HEADINGS.to_csv unless tweets.empty?
         tweets.each do |tweet|
           print_csv_tweet(tweet)
@@ -168,7 +163,6 @@ module T
       users.reverse! if options['reverse']
       if options['csv']
         require 'csv'
-        require 'fastercsv' unless Array.new.respond_to?(:to_csv)
         say USER_HEADINGS.to_csv unless users.empty?
         users.each do |user|
           print_csv_user(user)

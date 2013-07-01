@@ -137,7 +137,6 @@ module T
       require 'htmlentities'
       if options['csv']
         require 'csv'
-        require 'fastercsv' unless Array.new.respond_to?(:to_csv)
         say DIRECT_MESSAGE_HEADINGS.to_csv unless direct_messages.empty?
         direct_messages.each do |direct_message|
           say [direct_message.id, csv_formatted_time(direct_message), direct_message.sender.screen_name, HTMLEntities.new.decode(direct_message.text)].to_csv
@@ -170,7 +169,6 @@ module T
       require 'htmlentities'
       if options['csv']
         require 'csv'
-        require 'fastercsv' unless Array.new.respond_to?(:to_csv)
         say DIRECT_MESSAGE_HEADINGS.to_csv unless direct_messages.empty?
         direct_messages.each do |direct_message|
           say [direct_message.id, csv_formatted_time(direct_message), direct_message.recipient.screen_name, HTMLEntities.new.decode(direct_message.text)].to_csv
@@ -624,7 +622,6 @@ module T
       status_headings = ["ID", "Posted at", "Screen name", "Text", "Retweets", "Favorites", "Replies", "Source", "Location"]
       if options['csv']
         require 'csv'
-        require 'fastercsv' unless Array.new.respond_to?(:to_csv)
         say status_headings.to_csv
         say [status.id, csv_formatted_time(status), status.from_user, decode_full_text(status), status.retweet_count, status_activity.favoriters_count, status_activity.repliers_count, strip_tags(status.source), location].to_csv
       elsif options['long']
@@ -713,7 +710,6 @@ module T
       places.reverse! if options['reverse']
       if options['csv']
         require 'csv'
-        require 'fastercsv' unless Array.new.respond_to?(:to_csv)
         say TREND_HEADINGS.to_csv unless places.empty?
         places.each do |place|
           say [place.woeid, place.parent_id, place.place_type, place.name, place.country].to_csv

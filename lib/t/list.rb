@@ -25,7 +25,7 @@ module T
     end
 
     desc "add LIST USER [USER...]", "Add members to a list."
-    method_option "id", aliases: "-i", type: :boolean, default: false, desc: "Specify input as Twitter user IDs instead of screen names."
+    method_option "id", :aliases => "-i", :type => :boolean, :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     def add(list, user, *users)
       users, number = fetch_users(users.unshift(user), options) do |users|
         client.list_add_members(list, users)
@@ -41,16 +41,16 @@ module T
     end
 
     desc "create LIST [DESCRIPTION]", "Create a new list."
-    method_option "private", aliases: "-p", type: :boolean
+    method_option "private", :aliases => "-p", :type => :boolean
     def create(list, description=nil)
-      opts = description ? {description: description} : {}
-      opts.merge!(mode: 'private') if options['private']
+      opts = description ? {:description => description} : {}
+      opts.merge!(:mode => 'private') if options['private']
       client.list_create(list, opts)
       say "@#{@rcfile.active_profile[0]} created the list \"#{list}\"."
     end
 
     desc "information [USER/]LIST", "Retrieves detailed information about a Twitter list."
-    method_option "csv", aliases: "-c", type: :boolean, default: false, desc: "Output in CSV format."
+    method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     def information(list)
       owner, list = extract_owner(list, options)
       list = client.list(owner, list)
@@ -76,22 +76,22 @@ module T
     map %w(details) => :information
 
     desc "members [USER/]LIST", "Returns the members of a Twitter list."
-    method_option "csv", aliases: "-c", type: :boolean, default: false, desc: "Output in CSV format."
-    method_option "id", aliases: "-i", type: :boolean, default: false, desc: "Specify user via ID instead of screen name."
-    method_option "long", aliases: "-l", type: :boolean, default: false, desc: "Output in long format."
-    method_option "reverse", aliases: "-r", type: :boolean, default: false, desc: "Reverse the order of the sort."
-    method_option "sort", aliases: "-s", type: :string, enum: %w(favorites followers friends listed screen_name since tweets tweeted), default: "screen_name", desc: "Specify the order of the results.", banner: "ORDER"
-    method_option "unsorted", aliases: "-u", type: :boolean, default: false, desc: "Output is not sorted."
+    method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
+    method_option "id", :aliases => "-i", :type => :boolean, :default => false, :desc => "Specify user via ID instead of screen name."
+    method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
+    method_option "reverse", :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
+    method_option "sort", :aliases => "-s", :type => :string, :enum => %w(favorites followers friends listed screen_name since tweets tweeted), :default => "screen_name", :desc => "Specify the order of the results.", :banner => "ORDER"
+    method_option "unsorted", :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
     def members(list)
       owner, list = extract_owner(list, options)
       users = collect_with_cursor do |cursor|
-        client.list_members(owner, list, cursor: cursor)
+        client.list_members(owner, list, :cursor => cursor)
       end
       print_users(users)
     end
 
     desc "remove LIST USER [USER...]", "Remove members from a list."
-    method_option "id", aliases: "-i", type: :boolean, default: false, desc: "Specify input as Twitter user IDs instead of screen names."
+    method_option "id", :aliases => "-i", :type => :boolean, :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     def remove(list, user, *users)
       users, number = fetch_users(users.unshift(user), options) do |users|
         client.list_remove_members(list, users)
@@ -107,11 +107,11 @@ module T
     end
 
     desc "timeline [USER/]LIST", "Show tweet timeline for members of the specified list."
-    method_option "csv", aliases: "-c", type: :boolean, default: false, desc: "Output in CSV format."
-    method_option "id", aliases: "-i", type: :boolean, default: false, desc: "Specify user via ID instead of screen name."
-    method_option "long", aliases: "-l", type: :boolean, default: false, desc: "Output in long format."
-    method_option "number", aliases: "-n", type: :numeric, default: DEFAULT_NUM_RESULTS, desc: "Limit the number of results."
-    method_option "reverse", aliases: "-r", type: :boolean, default: false, desc: "Reverse the order of the sort."
+    method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
+    method_option "id", :aliases => "-i", :type => :boolean, :default => false, :desc => "Specify user via ID instead of screen name."
+    method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
+    method_option "number", :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => "Limit the number of results."
+    method_option "reverse", :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
     def timeline(list)
       owner, list = extract_owner(list, options)
       count = options['number'] || DEFAULT_NUM_RESULTS

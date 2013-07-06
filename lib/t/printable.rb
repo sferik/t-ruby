@@ -102,7 +102,7 @@ module T
             Kernel.send(element.class.name.to_sym, format[index] % element)
           end
         end
-        print_table(array, truncate: true)
+        print_table(array, :truncate => true)
       else
         print_table(array)
       end
@@ -116,7 +116,7 @@ module T
         say("   @#{from_user}")
       end
       require 'htmlentities'
-      print_wrapped(HTMLEntities.new.decode(message), indent: 3)
+      print_wrapped(HTMLEntities.new.decode(message), :indent => 3)
       say
     end
 

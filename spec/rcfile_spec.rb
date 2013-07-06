@@ -29,11 +29,11 @@ describe T::RCFile do
       rcfile.path = project_path + "/tmp/trc"
       rcfile['testcli'] = {
         'abc123' => {
-          username: 'testcli',
-          consumer_key: 'abc123',
-          consumer_secret: 'def456',
-          token: 'ghi789',
-          secret: 'jkl012',
+          :username => 'testcli',
+          :consumer_key => 'abc123',
+          :consumer_secret => 'def456',
+          :token => 'ghi789',
+          :secret => 'jkl012',
         }
       }
       expect(rcfile['testcli'].keys).to eq ['abc123']
@@ -43,11 +43,11 @@ describe T::RCFile do
       rcfile.path = project_path + "/tmp/trc"
       rcfile['testcli'] = {
         'abc123' => {
-          username: 'testcli',
-          consumer_key: 'abc123',
-          consumer_secret: 'def456',
-          token: 'ghi789',
-          secret: 'jkl012',
+          :username => 'testcli',
+          :consumer_key => 'abc123',
+          :consumer_secret => 'def456',
+          :token => 'ghi789',
+          :secret => 'jkl012',
         }
       }
       expect(rcfile['testcli'].keys).to eq ['abc123']
@@ -57,11 +57,11 @@ describe T::RCFile do
       rcfile.path = project_path + "/tmp/trc"
       rcfile['testcli'] = {
         'abc123' => {
-          username: 'testcli',
-          consumer_key: 'abc123',
-          consumer_secret: 'def456',
-          token: 'ghi789',
-          secret: 'jkl012',
+          :username => 'testcli',
+          :consumer_key => 'abc123',
+          :consumer_secret => 'def456',
+          :token => 'ghi789',
+          :secret => 'jkl012',
         }
       }
       expect(File.world_writable?(rcfile.path)).to be_nil

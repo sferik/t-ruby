@@ -15,11 +15,11 @@ module T
       return @client if @client
       @rcfile.path = options['profile'] if options['profile']
       @client = Twitter::Client.new(
-        endpoint: base_url,
-        consumer_key: @rcfile.active_consumer_key,
-        consumer_secret: @rcfile.active_consumer_secret,
-        oauth_token: @rcfile.active_token,
-        oauth_token_secret:  @rcfile.active_secret,
+        :endpoint => base_url,
+        :consumer_key => @rcfile.active_consumer_key,
+        :consumer_secret => @rcfile.active_consumer_secret,
+        :oauth_token => @rcfile.active_token,
+        :oauth_token_secret => @rcfile.active_secret,
       )
     end
 

@@ -3,8 +3,8 @@ require 'helper'
 describe T::Stream do
   let(:t_class) {
     klass = Class.new
-    klass.stub(:options=).and_return
-    klass.stub(:options).and_return({})
+    allow(klass).to receive(:options=).and_return
+    allow(klass).to receive(:options).and_return({})
     klass
   }
 
@@ -18,10 +18,10 @@ describe T::Stream do
     @tweetstream_client = double('TweetStream::Client').as_null_object
 
     @stream = T::Stream.new
-    @stream.stub(:client) { @tweetstream_client }
-    @stream.stub(:say).and_return
+    allow(@stream).to receive(:client) { @tweetstream_client }
+    allow(@stream).to receive(:say).and_return
 
-    STDOUT.stub(:tty?).and_return(true)
+    allow(STDOUT).to receive(:tty?).and_return(true)
   end
 
 	describe "#all" do
@@ -31,16 +31,16 @@ describe T::Stream do
       end
 
       it "outputs headings when the stream initializes" do
-        @tweetstream_client.stub(:on_timeline_status).and_return
-        @tweetstream_client.stub(:on_inited).and_yield
+        allow(@tweetstream_client).to receive(:on_timeline_status).and_return
+        allow(@tweetstream_client).to receive(:on_inited).and_yield
 
         @stream.should_receive(:say).with("ID,Posted at,Screen name,Text\n")
         @stream.all
       end
 
       it "outputs in CSV format" do
-        @tweetstream_client.stub(:on_inited).and_return
-        @tweetstream_client.stub(:on_timeline_status).
+        allow(@tweetstream_client).to receive(:on_inited).and_return
+        allow(@tweetstream_client).to receive(:on_timeline_status).
           and_yield(@status)
 
         @stream.should_receive(:print_csv_tweet).with(any_args)
@@ -54,16 +54,16 @@ describe T::Stream do
       end
 
       it "outputs headings when the stream initializes" do
-        @tweetstream_client.stub(:on_inited).and_yield
-        @tweetstream_client.stub(:on_timeline_status).and_return
+        allow(@tweetstream_client).to receive(:on_inited).and_yield
+        allow(@tweetstream_client).to receive(:on_timeline_status).and_return
 
         @stream.should_receive(:print_table).with(any_args)
         @stream.all
       end
 
       it "outputs in long text format" do
-        @tweetstream_client.stub(:on_inited).and_return
-        @tweetstream_client.stub(:on_timeline_status).
+        allow(@tweetstream_client).to receive(:on_inited).and_return
+        allow(@tweetstream_client).to receive(:on_timeline_status).
           and_yield(@status)
 
         @stream.should_receive(:print_table).with(any_args)
@@ -73,7 +73,7 @@ describe T::Stream do
 
     context "normal usage" do
       before :each do
-        @tweetstream_client.stub(:on_timeline_status).
+        allow(@tweetstream_client).to receive(:on_timeline_status).
           and_yield(@status)
       end
 
@@ -91,7 +91,7 @@ describe T::Stream do
 
   describe "#matrix" do
     before :each do
-      @tweetstream_client.stub(:on_timeline_status).
+      allow(@tweetstream_client).to receive(:on_timeline_status).
         and_yield(@status)
     end
 
@@ -108,7 +108,7 @@ describe T::Stream do
 
   describe "#search" do
     before :each do
-      @tweetstream_client.stub(:on_timeline_status).
+      allow(@tweetstream_client).to receive(:on_timeline_status).
         and_yield(@status)
     end
 
@@ -118,7 +118,7 @@ describe T::Stream do
       end
 
       it "outputs in CSV format" do
-        @tweetstream_client.stub(:on_inited).and_return
+        allow(@tweetstream_client).to receive(:on_inited).and_return
 
         @stream.should_receive(:print_csv_tweet).with(any_args)
         @stream.search('t gem')
@@ -131,8 +131,8 @@ describe T::Stream do
       end
 
       it "outputs in long text format" do
-        @tweetstream_client.stub(:on_inited).and_return
-        @tweetstream_client.stub(:on_timeline_status).
+        allow(@tweetstream_client).to receive(:on_inited).and_return
+        allow(@tweetstream_client).to receive(:on_timeline_status).
           and_yield(@status)
 
         @stream.should_receive(:print_table).with(any_args)
@@ -142,7 +142,7 @@ describe T::Stream do
 
     context "normal usage" do
       before :each do
-        @tweetstream_client.stub(:on_timeline_status).
+        allow(@tweetstream_client).to receive(:on_timeline_status).
           and_yield(@status)
       end
 
@@ -153,17 +153,17 @@ describe T::Stream do
     end
 
     it "performs a REST search when the stream initializes" do
-      @tweetstream_client.stub(:on_timeline_status).and_return
-      @tweetstream_client.stub(:on_inited).and_yield
+      allow(@tweetstream_client).to receive(:on_timeline_status).and_return
+      allow(@tweetstream_client).to receive(:on_inited).and_yield
 
-      T::Search.stub(:new).and_return(t_class)
+      allow(T::Search).to receive(:new).and_return(t_class)
       t_class.should_receive(:all).with('t OR gem').and_return
 
       @stream.search('t', 'gem')
     end
 
     it "invokes TweetStream::Client#track" do
-      @tweetstream_client.stub(:on_timeline_status).and_return
+      allow(@tweetstream_client).to receive(:on_timeline_status).and_return
 
       @tweetstream_client.should_receive(:track).with(['t gem'])
       @stream.search('t gem')
@@ -172,7 +172,7 @@ describe T::Stream do
 
   describe "#timeline" do
     before :each do
-      @tweetstream_client.stub(:on_timeline_status).
+      allow(@tweetstream_client).to receive(:on_timeline_status).
         and_yield(@status)
     end
 
@@ -182,7 +182,7 @@ describe T::Stream do
       end
 
       it "outputs in CSV format" do
-        @tweetstream_client.stub(:on_inited).and_return
+        allow(@tweetstream_client).to receive(:on_inited).and_return
 
         @stream.should_receive(:print_csv_tweet).with(any_args)
         @stream.timeline
@@ -195,8 +195,8 @@ describe T::Stream do
       end
 
       it "outputs in long text format" do
-        @tweetstream_client.stub(:on_inited).and_return
-        @tweetstream_client.stub(:on_timeline_status).
+        allow(@tweetstream_client).to receive(:on_inited).and_return
+        allow(@tweetstream_client).to receive(:on_timeline_status).
           and_yield(@status)
 
         @stream.should_receive(:print_table).with(any_args)
@@ -206,7 +206,7 @@ describe T::Stream do
 
     context "normal usage" do
       before :each do
-        @tweetstream_client.stub(:on_timeline_status).
+        allow(@tweetstream_client).to receive(:on_timeline_status).
           and_yield(@status)
       end
 
@@ -217,17 +217,17 @@ describe T::Stream do
     end
 
     it "performs a REST search when the stream initializes" do
-      @tweetstream_client.stub(:on_timeline_status).and_return
-      @tweetstream_client.stub(:on_inited).and_yield
+      allow(@tweetstream_client).to receive(:on_timeline_status).and_return
+      allow(@tweetstream_client).to receive(:on_inited).and_yield
 
-      T::CLI.stub(:new).and_return(t_class)
+      allow(T::CLI).to receive(:new).and_return(t_class)
       t_class.should_receive(:timeline).and_return
 
       @stream.timeline
     end
 
     it "invokes TweetStream::Client#userstream" do
-      @tweetstream_client.stub(:on_timeline_status).and_return
+      allow(@tweetstream_client).to receive(:on_timeline_status).and_return
 
       @tweetstream_client.should_receive(:userstream)
       @stream.timeline
@@ -236,7 +236,7 @@ describe T::Stream do
 
   describe "#users" do
     before :each do
-      @tweetstream_client.stub(:on_timeline_status).
+      allow(@tweetstream_client).to receive(:on_timeline_status).
         and_yield(@status)
     end
 
@@ -246,15 +246,15 @@ describe T::Stream do
       end
 
       it "outputs headings when the stream initializes" do
-        @tweetstream_client.stub(:on_timeline_status).and_return
-        @tweetstream_client.stub(:on_inited).and_yield
+        allow(@tweetstream_client).to receive(:on_timeline_status).and_return
+        allow(@tweetstream_client).to receive(:on_inited).and_yield
 
         @stream.should_receive(:say).with("ID,Posted at,Screen name,Text\n")
         @stream.users('123')
       end
 
       it "outputs in CSV format" do
-        @tweetstream_client.stub(:on_inited).and_return
+        allow(@tweetstream_client).to receive(:on_inited).and_return
 
         @stream.should_receive(:print_csv_tweet).with(any_args)
         @stream.users('123')
@@ -267,16 +267,16 @@ describe T::Stream do
       end
 
       it "outputs headings when the stream initializes" do
-        @tweetstream_client.stub(:on_inited).and_yield
-        @tweetstream_client.stub(:on_timeline_status).and_return
+        allow(@tweetstream_client).to receive(:on_inited).and_yield
+        allow(@tweetstream_client).to receive(:on_timeline_status).and_return
 
         @stream.should_receive(:print_table).with(any_args)
         @stream.users('123')
       end
 
       it "outputs in long text format" do
-        @tweetstream_client.stub(:on_inited).and_return
-        @tweetstream_client.stub(:on_timeline_status).
+        allow(@tweetstream_client).to receive(:on_inited).and_return
+        allow(@tweetstream_client).to receive(:on_timeline_status).
           and_yield(@status)
 
         @stream.should_receive(:print_table).with(any_args)
@@ -286,7 +286,7 @@ describe T::Stream do
 
     context "normal usage" do
       before :each do
-        @tweetstream_client.stub(:on_timeline_status).
+        allow(@tweetstream_client).to receive(:on_timeline_status).
           and_yield(@status)
       end
 
@@ -297,7 +297,7 @@ describe T::Stream do
     end
 
     it "invokes TweetStream::Client#follow" do
-      @tweetstream_client.stub(:on_timeline_status).and_return
+      allow(@tweetstream_client).to receive(:on_timeline_status).and_return
 
       @tweetstream_client.should_receive(:follow).with([123, 456, 789])
       @stream.users('123', '456', '789')

@@ -34,7 +34,7 @@ describe T::Stream do
         allow(@tweetstream_client).to receive(:on_timeline_status).and_return
         allow(@tweetstream_client).to receive(:on_inited).and_yield
 
-        @stream.should_receive(:say).with("ID,Posted at,Screen name,Text\n")
+        expect(@stream).to receive(:say).with("ID,Posted at,Screen name,Text\n")
         @stream.all
       end
 
@@ -43,7 +43,7 @@ describe T::Stream do
         allow(@tweetstream_client).to receive(:on_timeline_status).
           and_yield(@status)
 
-        @stream.should_receive(:print_csv_tweet).with(any_args)
+        expect(@stream).to receive(:print_csv_tweet).with(any_args)
         @stream.all
       end
     end
@@ -57,7 +57,7 @@ describe T::Stream do
         allow(@tweetstream_client).to receive(:on_inited).and_yield
         allow(@tweetstream_client).to receive(:on_timeline_status).and_return
 
-        @stream.should_receive(:print_table).with(any_args)
+        expect(@stream).to receive(:print_table).with(any_args)
         @stream.all
       end
 
@@ -66,7 +66,7 @@ describe T::Stream do
         allow(@tweetstream_client).to receive(:on_timeline_status).
           and_yield(@status)
 
-        @stream.should_receive(:print_table).with(any_args)
+        expect(@stream).to receive(:print_table).with(any_args)
         @stream.all
       end
     end
@@ -78,13 +78,13 @@ describe T::Stream do
       end
 
       it "prints the tweet status" do
-        @stream.should_receive(:print_message)
+        expect(@stream).to receive(:print_message)
         @stream.all
       end
     end
 
     it "invokes TweetStream::Client#sample" do
-      @tweetstream_client.should_receive(:sample)
+      expect(@tweetstream_client).to receive(:sample)
       @stream.all
     end
   end
@@ -96,12 +96,12 @@ describe T::Stream do
     end
 
     it "outputs the tweet status" do
-      @stream.should_receive(:say).with(any_args)
+      expect(@stream).to receive(:say).with(any_args)
       @stream.matrix
     end
 
     it "invokes TweetStream::Client.sample" do
-      @tweetstream_client.should_receive(:sample)
+      expect(@tweetstream_client).to receive(:sample)
       @stream.matrix
     end
   end
@@ -120,7 +120,7 @@ describe T::Stream do
       it "outputs in CSV format" do
         allow(@tweetstream_client).to receive(:on_inited).and_return
 
-        @stream.should_receive(:print_csv_tweet).with(any_args)
+        expect(@stream).to receive(:print_csv_tweet).with(any_args)
         @stream.search('t gem')
       end
     end
@@ -135,7 +135,7 @@ describe T::Stream do
         allow(@tweetstream_client).to receive(:on_timeline_status).
           and_yield(@status)
 
-        @stream.should_receive(:print_table).with(any_args)
+        expect(@stream).to receive(:print_table).with(any_args)
         @stream.search('t gem')
       end
     end
@@ -147,7 +147,7 @@ describe T::Stream do
       end
 
       it "prints the tweet status" do
-        @stream.should_receive(:print_message)
+        expect(@stream).to receive(:print_message)
         @stream.search('t gem')
       end
     end
@@ -157,7 +157,7 @@ describe T::Stream do
       allow(@tweetstream_client).to receive(:on_inited).and_yield
 
       allow(T::Search).to receive(:new).and_return(t_class)
-      t_class.should_receive(:all).with('t OR gem').and_return
+      expect(t_class).to receive(:all).with('t OR gem').and_return
 
       @stream.search('t', 'gem')
     end
@@ -165,7 +165,7 @@ describe T::Stream do
     it "invokes TweetStream::Client#track" do
       allow(@tweetstream_client).to receive(:on_timeline_status).and_return
 
-      @tweetstream_client.should_receive(:track).with(['t gem'])
+      expect(@tweetstream_client).to receive(:track).with(['t gem'])
       @stream.search('t gem')
     end
   end
@@ -184,7 +184,7 @@ describe T::Stream do
       it "outputs in CSV format" do
         allow(@tweetstream_client).to receive(:on_inited).and_return
 
-        @stream.should_receive(:print_csv_tweet).with(any_args)
+        expect(@stream).to receive(:print_csv_tweet).with(any_args)
         @stream.timeline
       end
     end
@@ -199,7 +199,7 @@ describe T::Stream do
         allow(@tweetstream_client).to receive(:on_timeline_status).
           and_yield(@status)
 
-        @stream.should_receive(:print_table).with(any_args)
+        expect(@stream).to receive(:print_table).with(any_args)
         @stream.timeline
       end
     end
@@ -211,7 +211,7 @@ describe T::Stream do
       end
 
       it "prints the tweet status" do
-        @stream.should_receive(:print_message)
+        expect(@stream).to receive(:print_message)
         @stream.timeline
       end
     end
@@ -221,7 +221,7 @@ describe T::Stream do
       allow(@tweetstream_client).to receive(:on_inited).and_yield
 
       allow(T::CLI).to receive(:new).and_return(t_class)
-      t_class.should_receive(:timeline).and_return
+      expect(t_class).to receive(:timeline).and_return
 
       @stream.timeline
     end
@@ -229,7 +229,7 @@ describe T::Stream do
     it "invokes TweetStream::Client#userstream" do
       allow(@tweetstream_client).to receive(:on_timeline_status).and_return
 
-      @tweetstream_client.should_receive(:userstream)
+      expect(@tweetstream_client).to receive(:userstream)
       @stream.timeline
     end
   end
@@ -249,14 +249,14 @@ describe T::Stream do
         allow(@tweetstream_client).to receive(:on_timeline_status).and_return
         allow(@tweetstream_client).to receive(:on_inited).and_yield
 
-        @stream.should_receive(:say).with("ID,Posted at,Screen name,Text\n")
+        expect(@stream).to receive(:say).with("ID,Posted at,Screen name,Text\n")
         @stream.users('123')
       end
 
       it "outputs in CSV format" do
         allow(@tweetstream_client).to receive(:on_inited).and_return
 
-        @stream.should_receive(:print_csv_tweet).with(any_args)
+        expect(@stream).to receive(:print_csv_tweet).with(any_args)
         @stream.users('123')
       end
     end
@@ -270,7 +270,7 @@ describe T::Stream do
         allow(@tweetstream_client).to receive(:on_inited).and_yield
         allow(@tweetstream_client).to receive(:on_timeline_status).and_return
 
-        @stream.should_receive(:print_table).with(any_args)
+        expect(@stream).to receive(:print_table).with(any_args)
         @stream.users('123')
       end
 
@@ -279,7 +279,7 @@ describe T::Stream do
         allow(@tweetstream_client).to receive(:on_timeline_status).
           and_yield(@status)
 
-        @stream.should_receive(:print_table).with(any_args)
+        expect(@stream).to receive(:print_table).with(any_args)
         @stream.users('123')
       end
     end
@@ -291,7 +291,7 @@ describe T::Stream do
       end
 
       it "prints the tweet status" do
-        @stream.should_receive(:print_message)
+        expect(@stream).to receive(:print_message)
         @stream.users('123')
       end
     end
@@ -299,7 +299,7 @@ describe T::Stream do
     it "invokes TweetStream::Client#follow" do
       allow(@tweetstream_client).to receive(:on_timeline_status).and_return
 
-      @tweetstream_client.should_receive(:follow).with([123, 456, 789])
+      expect(@tweetstream_client).to receive(:follow).with([123, 456, 789])
       @stream.users('123', '456', '789')
     end
   end

@@ -50,16 +50,16 @@ testcli
       stub_get("/1.1/account/verify_credentials.json").with(:query => {:include_entities => "false", :skip_status => "true"}).to_return(:body => fixture("sferik.json"))
     end
     it "requests the correct resource" do
-      $stdout.should_receive(:print)
-      $stdin.should_receive(:gets).and_return("\n")
-      $stdout.should_receive(:print).with("Enter your consumer key: ")
-      $stdin.should_receive(:gets).and_return("abc123")
-      $stdout.should_receive(:print).with("Enter your consumer secret: ")
-      $stdin.should_receive(:gets).and_return("asdfasd223sd2")
-      $stdout.should_receive(:print).with("Press [Enter] to open the Twitter app authorization page. ")
-      $stdin.should_receive(:gets).and_return("\n")
-      $stdout.should_receive(:print).with("Enter the supplied PIN: ")
-      $stdin.should_receive(:gets).and_return("1234567890")
+      expect($stdout).to receive(:print)
+      expect($stdin).to receive(:gets).and_return("\n")
+      expect($stdout).to receive(:print).with("Enter your consumer key: ")
+      expect($stdin).to receive(:gets).and_return("abc123")
+      expect($stdout).to receive(:print).with("Enter your consumer secret: ")
+      expect($stdin).to receive(:gets).and_return("asdfasd223sd2")
+      expect($stdout).to receive(:print).with("Press [Enter] to open the Twitter app authorization page. ")
+      expect($stdin).to receive(:gets).and_return("\n")
+      expect($stdout).to receive(:print).with("Enter the supplied PIN: ")
+      expect($stdin).to receive(:gets).and_return("1234567890")
       @cli.authorize
       expect(a_post("/oauth/request_token")).to have_been_made
       expect(a_post("/oauth/access_token")).to have_been_made
@@ -67,16 +67,16 @@ testcli
     end
     it "does not raise error" do
       expect do
-        $stdout.should_receive(:print)
-        $stdin.should_receive(:gets).and_return("\n")
-        $stdout.should_receive(:print).with("Enter your consumer key: ")
-        $stdin.should_receive(:gets).and_return("abc123")
-        $stdout.should_receive(:print).with("Enter your consumer secret: ")
-        $stdin.should_receive(:gets).and_return("asdfasd223sd2")
-        $stdout.should_receive(:print).with("Press [Enter] to open the Twitter app authorization page. ")
-        $stdin.should_receive(:gets).and_return("\n")
-        $stdout.should_receive(:print).with("Enter the supplied PIN: ")
-        $stdin.should_receive(:gets).and_return("1234567890")
+        expect($stdout).to receive(:print)
+        expect($stdin).to receive(:gets).and_return("\n")
+        expect($stdout).to receive(:print).with("Enter your consumer key: ")
+        expect($stdin).to receive(:gets).and_return("abc123")
+        expect($stdout).to receive(:print).with("Enter your consumer secret: ")
+        expect($stdin).to receive(:gets).and_return("asdfasd223sd2")
+        expect($stdout).to receive(:print).with("Press [Enter] to open the Twitter app authorization page. ")
+        expect($stdin).to receive(:gets).and_return("\n")
+        expect($stdout).to receive(:print).with("Enter the supplied PIN: ")
+        expect($stdin).to receive(:gets).and_return("1234567890")
         @cli.authorize
       end.not_to raise_error
     end
@@ -88,16 +88,16 @@ testcli
         File.delete(project_path + "/tmp/empty")
       end
       it "requests the correct resource" do
-        $stdout.should_receive(:print)
-        $stdin.should_receive(:gets).and_return("\n")
-        $stdout.should_receive(:print).with("Enter your consumer key: ")
-        $stdin.should_receive(:gets).and_return("abc123")
-        $stdout.should_receive(:print).with("Enter your consumer secret: ")
-        $stdin.should_receive(:gets).and_return("asdfasd223sd2")
-        $stdout.should_receive(:print).with("Press [Enter] to open the Twitter app authorization page. ")
-        $stdin.should_receive(:gets).and_return("\n")
-        $stdout.should_receive(:print).with("Enter the supplied PIN: ")
-        $stdin.should_receive(:gets).and_return("1234567890")
+        expect($stdout).to receive(:print)
+        expect($stdin).to receive(:gets).and_return("\n")
+        expect($stdout).to receive(:print).with("Enter your consumer key: ")
+        expect($stdin).to receive(:gets).and_return("abc123")
+        expect($stdout).to receive(:print).with("Enter your consumer secret: ")
+        expect($stdin).to receive(:gets).and_return("asdfasd223sd2")
+        expect($stdout).to receive(:print).with("Press [Enter] to open the Twitter app authorization page. ")
+        expect($stdin).to receive(:gets).and_return("\n")
+        expect($stdout).to receive(:print).with("Enter the supplied PIN: ")
+        expect($stdin).to receive(:gets).and_return("1234567890")
         @cli.authorize
         expect(a_post("/oauth/request_token")).to have_been_made
         expect(a_post("/oauth/access_token")).to have_been_made
@@ -105,16 +105,16 @@ testcli
       end
       it "does not raise error" do
         expect do
-          $stdout.should_receive(:print)
-          $stdin.should_receive(:gets).and_return("\n")
-          $stdout.should_receive(:print).with("Enter your consumer key: ")
-          $stdin.should_receive(:gets).and_return("abc123")
-          $stdout.should_receive(:print).with("Enter your consumer secret: ")
-          $stdin.should_receive(:gets).and_return("asdfasd223sd2")
-          $stdout.should_receive(:print).with("Press [Enter] to open the Twitter app authorization page. ")
-          $stdin.should_receive(:gets).and_return("\n")
-          $stdout.should_receive(:print).with("Enter the supplied PIN: ")
-          $stdin.should_receive(:gets).and_return("1234567890")
+          expect($stdout).to receive(:print)
+          expect($stdin).to receive(:gets).and_return("\n")
+          expect($stdout).to receive(:print).with("Enter your consumer key: ")
+          expect($stdin).to receive(:gets).and_return("abc123")
+          expect($stdout).to receive(:print).with("Enter your consumer secret: ")
+          expect($stdin).to receive(:gets).and_return("asdfasd223sd2")
+          expect($stdout).to receive(:print).with("Press [Enter] to open the Twitter app authorization page. ")
+          expect($stdin).to receive(:gets).and_return("\n")
+          expect($stdout).to receive(:print).with("Enter the supplied PIN: ")
+          expect($stdin).to receive(:gets).and_return("1234567890")
           @cli.authorize
         end.not_to raise_error
       end

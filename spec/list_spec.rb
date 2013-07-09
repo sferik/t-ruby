@@ -568,7 +568,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
         eos
       end
       it "outputs with color when stdout is a tty" do
-        $stdout.stub!(:"tty?").and_return(true)
+        $stdout.stub(:"tty?").and_return(true)
         @list.timeline("presidents")
         expect($stdout.string).to eq <<-eos
 \e[1m\e[33m   @mutgoff\e[0m

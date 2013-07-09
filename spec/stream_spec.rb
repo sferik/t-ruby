@@ -15,7 +15,7 @@ describe T::Stream do
   before :each do
     T::RCFile.instance.path = fixture_path + "/.trc"
 
-    @tweetstream_client = stub('TweetStream::Client').as_null_object
+    @tweetstream_client = double('TweetStream::Client').as_null_object
 
     @stream = T::Stream.new
     @stream.stub(:client) { @tweetstream_client }

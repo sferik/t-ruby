@@ -5,6 +5,7 @@ require 'thor'
 require 'twitter'
 require 't/collectable'
 require 't/delete'
+require 't/editor'
 require 't/list'
 require 't/printable'
 require 't/rcfile'
@@ -737,10 +738,11 @@ module T
       say "Run `#{File.basename($0)} follow #{users.map{|user| "@#{user.screen_name}"}.join(' ')}` to follow again."
     end
 
-    desc "update MESSAGE", "Post a Tweet."
+    desc "update [MESSAGE]", "Post a Tweet."
     method_option "location", :aliases => "-l", :type => :string, :default => nil, :desc => "Add location information. If the optional 'latitude,longitude' parameter is not supplied, looks up location by IP address."
     method_option "file", :aliases => "-f", :type => :string, :desc => "The path to an image to attach to your tweet."
-    def update(message)
+    def update(message = nil)
+      message = T::Editor.gets(:update) if message.nil? || message.empty?
       opts = {:trim_user => true}
       opts = add_location(options, opts)
 

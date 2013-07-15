@@ -2012,7 +2012,7 @@ ID                   Posted at     Screen name       Text
 
   describe "#reply" do
     before do
-      @cli.options = @cli.options.merge("profile" => fixture_path + "/.trc", "location" => false)
+      @cli.options = @cli.options.merge("profile" => fixture_path + "/.trc", "location" => nil)
       stub_get("/1.1/statuses/show/263813522369159169.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status_with_mention.json"))
       stub_post("/1.1/statuses/update.json").with(:body => {:in_reply_to_status_id => "263813522369159169", :status => "@joshfrench Testing", :trim_user => "true"}).to_return(:body => fixture("status.json"))
       stub_request(:get, "http://checkip.dyndns.org/").to_return(:body => fixture("checkip.html"), :headers => {:content_type => "text/html"})
@@ -2048,7 +2048,7 @@ ID                   Posted at     Screen name       Text
     end
     context "--location" do
       before do
-        @cli.options = @cli.options.merge("location" => true)
+        @cli.options = @cli.options.merge("location" => '')
         stub_get("/1.1/statuses/show/263813522369159169.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status_with_mention.json"))
         stub_post("/1.1/statuses/update.json").with(:body => {:in_reply_to_status_id => "263813522369159169", :status => "@joshfrench Testing", :lat => "37.76969909668", :long => "-122.39330291748", :trim_user => "true"}).to_return(:body => fixture("status.json"))
       end
@@ -2064,9 +2064,9 @@ ID                   Posted at     Screen name       Text
         expect($stdout.string.split("\n").first).to eq "Reply posted by @testcli to @joshfrench."
       end
     end
-    context "--location --latitude --longitude" do
+    context "--location 'latitude,longitude'" do
       before do
-        @cli.options = @cli.options.merge("location" => true, "latitude" => "41.03132", "longitude" => "28.9869")
+        @cli.options = @cli.options.merge("location" => "41.03132,28.9869")
         stub_get("/1.1/statuses/show/263813522369159169.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status_with_mention.json"))
         stub_post("/1.1/statuses/update.json").with(:body => {:in_reply_to_status_id => "263813522369159169", :status => "@joshfrench Testing", :lat => "41.03132", :long => "28.9869", :trim_user => "true"}).to_return(:body => fixture("status.json"))
       end
@@ -3089,7 +3089,7 @@ WOEID     Parent ID  Type       Name           Country
     end
     context "with just location" do
       before do
-        @cli.options = @cli.options.merge("location" => true)
+        @cli.options = @cli.options.merge("location" => '')
         stub_post("/1.1/statuses/update.json").with(:body => {:status => "Testing", :lat => "37.76969909668", :long => "-122.39330291748", :trim_user => "true"}).to_return(:body => fixture("status.json"))
       end
       it "requests the correct resource" do
@@ -3105,7 +3105,7 @@ WOEID     Parent ID  Type       Name           Country
     end
     context "with location, latitude and longitude" do
       before do
-        @cli.options = @cli.options.merge("location" => true, "latitude" => "41.03132", "longitude" => "28.9869")
+        @cli.options = @cli.options.merge("location" => "41.03132,28.9869")
         stub_post("/1.1/statuses/update.json").with(:body => {:status => "Testing", :lat => "41.03132", :long => "28.9869", :trim_user => "true"}).to_return(:body => fixture("status.json"))
       end
       it "requests the correct resource" do

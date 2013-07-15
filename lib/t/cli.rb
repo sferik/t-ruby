@@ -520,9 +520,7 @@ module T
 
     desc "reply TWEET_ID MESSAGE", "Post your Tweet as a reply directed at another person."
     method_option "all", :aliases => "-a", :type => :boolean, :default => false, :desc => "Reply to all users mentioned in the Tweet."
-    method_option "location", :aliases => "-l", :type => :boolean, :default => false
-    method_option "latitude", :aliases => "-A", :type => :numeric, :default => nil, :desc => "Desired latitude for the tweet location. Use with --location."
-    method_option "longitude", :aliases => "-O", :type => :numeric, :default => nil, :desc => "Desired longitude for the tweet location. Use with --location."
+    method_option "location", :aliases => "-l", :type => :string, :default => nil, :desc => "Add location information. If the optional 'latitude,longitude' parameter is not supplied, looks up location by IP address."
     def reply(status_id, message)
       status = client.status(status_id.to_i, :include_my_retweet => false)
       users = Array(status.from_user)
@@ -533,11 +531,7 @@ module T
       require 't/core_ext/string'
       users.map!(&:prepend_at)
       opts = {:in_reply_to_status_id => status.id, :trim_user => true}
-      if options['location']
-        lat = options[:latitude] || location.lat
-        lng = options[:longitude] || location.lng
-        opts.merge!(:lat => lat, :long => lng)
-      end
+      opts = add_location(options, opts)
       reply = client.update("#{users.join(' ')} #{message}", opts)
       say "Reply posted by @#{@rcfile.active_profile[0]} to #{users.join(' ')}."
       say
@@ -744,17 +738,12 @@ module T
     end
 
     desc "update MESSAGE", "Post a Tweet."
-    method_option "location", :aliases => "-l", :type => :boolean, :default => false
-    method_option "latitude", :aliases => "-A", :type => :numeric, :default => nil, :desc => "Desired latitude for the tweet location. Use with --location."
-    method_option "longitude", :aliases => "-O", :type => :numeric, :default => nil, :desc => "Desired longitude for the tweet location. Use with --location."
+    method_option "location", :aliases => "-l", :type => :string, :default => nil, :desc => "Add location information. If the optional 'latitude,longitude' parameter is not supplied, looks up location by IP address."
     method_option "file", :aliases => "-f", :type => :string, :desc => "The path to an image to attach to your tweet."
     def update(message)
       opts = {:trim_user => true}
-      if options['location']
-        lat = options[:latitude] || location.lat
-        lng = options[:longitude] || location.lng
-        opts.merge!(:lat => lat, :long => lng)
-      end
+      opts = add_location(options, opts)
+
       status = if options['file']
         client.update_with_media(message, File.new(File.expand_path(options['file'])), opts)
       else
@@ -877,6 +866,16 @@ module T
 
     def pin_auth_parameters
       {:oauth_callback => 'oob'}
+    end
+
+    def add_location(options, opts)
+      unless options['location'].nil?
+        lat, lng = options['location'].strip.empty? ?
+                      [location.lat, location.lng] :
+                      options['location'].split(',').map(&:to_f)
+        opts.merge!(:lat => lat, :long => lng)
+      end
+      opts
     end
 
     def location

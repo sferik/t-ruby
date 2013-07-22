@@ -9,12 +9,12 @@ module T
       }
 
       def gets(operation = :update)
-        f = temfile(PREFILLS[operation])
+        f = tempfile(PREFILLS[operation])
         edit(f.path)
         f.read.gsub(/(?:^#.*$\n?)+\s*\z/, '').strip
       end
 
-      def tempfile(prefill = "")
+      def tempfile(prefill = PREFILLS[:update])
         f = Tempfile.new("TWEET_MESSAGE")
         f << prefill
         f.rewind

@@ -1,24 +1,32 @@
+require 'tempfile'
+
 module T
   class Editor
     class << self
-      TMP_TWEET = "/tmp/TWEET_MESSAGE"
       PREFILLS = {
         :update => "\n# Enter your tweet above."
       }
 
       def gets(operation = :update)
-        File.open TMP_TWEET, 'a+' do |f|
-          f << PREFILLS[operation] if File.zero? TMP_TWEET
-          f.rewind
-          system "#{editor} #{TMP_TWEET}"
-          return File.read(TMP_TWEET).gsub(/(?:^#.*$\n?)+\s*\z/, '').strip
-        end
+        f = Tempfile.new("TWEET_MESSAGE")
+        f << PREFILLS[operation]
+        f.rewind
+        system Shellwords.join([editor, f.path])
+        f.read.gsub(/(?:^#.*$\n?)+\s*\z/, '').strip
       end
 
       def editor
         editor   = ENV['VISUAL']
         editor ||= ENV['EDITOR']
-        editor ||= 'vi'
+        editor ||= system_editor
+      end
+
+      def system_editor
+        if RbConfig::CONFIG['host_os'] =~ /mswin|mingw/
+          'notepad'
+        else
+          'vi'
+        end
       end
     end
   end

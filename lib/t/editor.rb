@@ -1,4 +1,5 @@
 require 'tempfile'
+require 'shellwords'
 
 module T
   class Editor

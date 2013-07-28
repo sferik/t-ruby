@@ -12,16 +12,16 @@ module T
     end
 
     def build_long_tweet(tweet)
-      [tweet.id, ls_formatted_time(tweet), "@#{tweet.from_user}", decode_full_text(tweet, options['decode_urls']).gsub(/\n+/, ' ')]
+      [tweet.id, ls_formatted_time(tweet), "@#{tweet.user.screen_name}", decode_full_text(tweet, options['decode_uris']).gsub(/\n+/, ' ')]
     end
 
     def build_long_user(user)
-      [user.id, ls_formatted_time(user), ls_formatted_time(user.status), user.statuses_count, user.favourites_count, user.listed_count, user.friends_count, user.followers_count, "@#{user.screen_name}", user.name, user.verified? ? "Yes" : "No", user.protected? ? "Yes" : "No", user.description, user.status ? decode_full_text(user.status, options['decode_urls']).gsub(/\n+/, ' ') : nil, user.location, user.url]
+      [user.id, ls_formatted_time(user), ls_formatted_time(user.status), user.statuses_count, user.favorites_count, user.listed_count, user.friends_count, user.followers_count, "@#{user.screen_name}", user.name, user.verified? ? "Yes" : "No", user.protected? ? "Yes" : "No", user.description, user.status ? decode_full_text(user.status, options['decode_uris']).gsub(/\n+/, ' ') : nil, user.location, user.website.to_s]
     end
 
     def csv_formatted_time(object, key=:created_at)
       return nil if object.nil?
-      time = object.send(key.to_sym)
+      time = object.send(key.to_sym).dup
       time.utc.strftime("%Y-%m-%d %H:%M:%S %z")
     end
 
@@ -43,12 +43,12 @@ module T
     def print_csv_tweet(tweet)
       require 'csv'
       require 'htmlentities'
-      say [tweet.id, csv_formatted_time(tweet), tweet.from_user, decode_full_text(tweet)].to_csv
+      say [tweet.id, csv_formatted_time(tweet), tweet.user.screen_name, decode_full_text(tweet)].to_csv
     end
 
     def print_csv_user(user)
       require 'csv'
-      say [user.id, csv_formatted_time(user), csv_formatted_time(user.status), user.statuses_count, user.favourites_count, user.listed_count, user.friends_count, user.followers_count, user.screen_name, user.name, user.verified?, user.protected?, user.description, user.status ? user.status.full_text : nil, user.location, user.url].to_csv
+      say [user.id, csv_formatted_time(user), csv_formatted_time(user.status), user.statuses_count, user.favorites_count, user.listed_count, user.friends_count, user.followers_count, user.screen_name, user.name, user.verified?, user.protected?, user.description, user.status ? user.status.full_text : nil, user.location, user.website].to_csv
     end
 
     def print_lists(lists)
@@ -136,7 +136,7 @@ module T
         print_table_with_headings(array, TWEET_HEADINGS, format)
       else
         tweets.each do |tweet|
-          print_message(tweet.user.screen_name, decode_urls(tweet.full_text, options['decode_urls'] ? tweet.urls : nil))
+          print_message(tweet.user.screen_name, decode_uris(tweet.full_text, options['decode_uris'] ? tweet.uris : nil))
         end
       end
     end
@@ -144,7 +144,7 @@ module T
     def print_users(users)
       users = case options['sort']
       when 'favorites'
-        users.sort_by{|user| user.favourites_count.to_i}
+        users.sort_by{|user| user.favorites_count.to_i}
       when 'followers'
         users.sort_by{|user| user.followers_count.to_i}
       when 'friends'

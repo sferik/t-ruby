@@ -63,10 +63,10 @@ module T
     end
     map %w(avatar image) => :profile_image
 
-    desc "url URL", "Sets the URL field on your profile."
-    def url(url)
-      client.update_profile(:url => url)
-      say "@#{@rcfile.active_profile[0]}'s URL has been updated."
+    desc "website URI", "Sets the website field on your profile."
+    def website(uri)
+      client.update_profile(:url => uri)
+      say "@#{@rcfile.active_profile[0]}'s website has been updated."
     end
 
   end

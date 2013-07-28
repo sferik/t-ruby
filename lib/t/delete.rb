@@ -60,14 +60,14 @@ module T
       if options['force']
         tweets = client.unfavorite(status_ids)
         tweets.each do |status|
-          say "@#{@rcfile.active_profile[0]} unfavorited @#{status.from_user}'s status: \"#{status.full_text}\""
+          say "@#{@rcfile.active_profile[0]} unfavorited @#{status.user.screen_name}'s status: \"#{status.full_text}\""
         end
       else
         status_ids.each do |status_id|
           status = client.status(status_id, :include_my_retweet => false)
-          return unless yes? "Are you sure you want to remove @#{status.from_user}'s status: \"#{status.full_text}\" from your favorites? [y/N]"
+          return unless yes? "Are you sure you want to remove @#{status.user.screen_name}'s status: \"#{status.full_text}\" from your favorites? [y/N]"
           client.unfavorite(status_id)
-          say "@#{@rcfile.active_profile[0]} unfavorited @#{status.from_user}'s status: \"#{status.full_text}\""
+          say "@#{@rcfile.active_profile[0]} unfavorited @#{status.user.screen_name}'s status: \"#{status.full_text}\""
         end
       end
     end
@@ -103,7 +103,7 @@ module T
       else
         status_ids.each do |status_id|
           status = client.status(status_id, :include_my_retweet => false)
-          return unless yes? "Are you sure you want to permanently delete @#{status.from_user}'s status: \"#{status.full_text}\"? [y/N]"
+          return unless yes? "Are you sure you want to permanently delete @#{status.user.screen_name}'s status: \"#{status.full_text}\"? [y/N]"
           client.status_destroy(status_id, :trim_user => true)
           say "@#{@rcfile.active_profile[0]} deleted the Tweet: \"#{status.full_text}\""
         end

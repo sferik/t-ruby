@@ -29,9 +29,7 @@ module T
 
     check_unknown_options!
 
-    class_option "host", :aliases => "-H", :type => :string, :default => T::Requestable::DEFAULT_HOST, :desc => "Twitter API server"
     class_option "color", :aliases => "-C", :type => :string, :enum => %w(auto never), :default => "auto", :desc => "Control how color is used in output"
-    class_option "no-ssl", :aliases => "-U", :type => :boolean, :default => false, :desc => "Disable SSL"
     class_option "profile", :aliases => "-P", :type => :string, :default => File.join(File.expand_path("~"), T::RCFile::FILE_NAME), :desc => "Path to RC file", :banner => "FILE"
 
     def initialize(*)
@@ -51,7 +49,7 @@ module T
     end
 
     desc "authorize", "Allows an application to request user authorization"
-    method_option "display-url", :aliases => "-d", :type => :boolean, :default => false, :desc => "Display the authorization URL instead of attempting to open it."
+    method_option "display-uri", :aliases => "-d", :type => :boolean, :default => false, :desc => "Display the authorization URL instead of attempting to open it."
     def authorize
       @rcfile.path = options['profile'] if options['profile']
       if @rcfile.empty?
@@ -80,12 +78,12 @@ module T
         say
       end
       require 'launchy'
-      open_or_print( "https://dev.twitter.com/apps", :dry_run => options['display-url'] )
+      open_or_print( "https://dev.twitter.com/apps", :dry_run => options['display-uri'] )
       key = ask "Enter your consumer key:"
       secret = ask "Enter your consumer secret:"
-      consumer = OAuth::Consumer.new(key, secret, :site => base_url)
+      consumer = OAuth::Consumer.new(key, secret, :site => Twitter::REST::Client::ENDPOINT)
       request_token = consumer.get_request_token
-      url = generate_authorize_url(consumer, request_token)
+      uri = generate_authorize_uri(consumer, request_token)
       say
       say "In a moment, you will be directed to the Twitter app authorization page."
       say "Perform the following steps to complete the authorization process:"
@@ -95,7 +93,7 @@ module T
       say
       ask "Press [Enter] to open the Twitter app authorization page."
       say
-      open_or_print(url, :dry_run => options['display-url'])
+      open_or_print(uri, :dry_run => options['display-uri'])
       pin = ask "Enter the supplied PIN:"
       access_token = request_token.get_access_token(:oauth_verifier => pin.chomp)
       oauth_response = access_token.get('/1.1/account/verify_credentials.json?include_entities=false&skip_status=true')
@@ -207,18 +205,14 @@ module T
         client.verify_credentials.screen_name
       end
       follower_ids = Thread.new do
-        collect_with_cursor do |cursor|
-          client.follower_ids(user, :cursor => cursor)
-        end
+        client.follower_ids(user).to_a
       end
       following_ids = Thread.new do
-        collect_with_cursor do |cursor|
-          client.friend_ids(user, :cursor => cursor)
-        end
+        client.friend_ids(user).to_a
       end
       disciple_ids = (follower_ids.value - following_ids.value)
       require 'retryable'
-      users = retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
+      users = retryable(:tries => 3, :on => Twitter::Error, :sleep => 0) do
         client.users(disciple_ids)
       end
       print_users(users)
@@ -294,7 +288,7 @@ module T
       status_ids.unshift(status_id)
       status_ids.map!(&:to_i)
       require 'retryable'
-      favorites = retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
+      favorites = retryable(:tries => 3, :on => Twitter::Error, :sleep => 0) do
         client.favorite(status_ids)
       end
       number = favorites.length
@@ -361,11 +355,9 @@ module T
           user.strip_ats
         end
       end
-      following_ids = collect_with_cursor do |cursor|
-        client.friend_ids(user, :cursor => cursor)
-      end
+      following_ids = client.friend_ids(user).to_a
       require 'retryable'
-      users = retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
+      users = retryable(:tries => 3, :on => Twitter::Error, :sleep => 0) do
         client.users(following_ids)
       end
       print_users(users)
@@ -387,11 +379,9 @@ module T
           user.strip_ats
         end
       end
-      follower_ids = collect_with_cursor do |cursor|
-        client.follower_ids(user, :cursor => cursor)
-      end
+      follower_ids = client.follower_ids(user).to_a
       require 'retryable'
-      users = retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
+      users = retryable(:tries => 3, :on => Twitter::Error, :sleep => 0) do
         client.users(follower_ids)
       end
       print_users(users)
@@ -416,18 +406,14 @@ module T
         client.verify_credentials.screen_name
       end
       following_ids = Thread.new do
-        collect_with_cursor do |cursor|
-          client.friend_ids(user, :cursor => cursor)
-        end
+        client.friend_ids(user).to_a
       end
       follower_ids = Thread.new do
-        collect_with_cursor do |cursor|
-          client.follower_ids(user, :cursor => cursor)
-        end
+        client.follower_ids(user).to_a
       end
       friend_ids = (following_ids.value & follower_ids.value)
       require 'retryable'
-      users = retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
+      users = retryable(:tries => 3, :on => Twitter::Error, :sleep => 0) do
         client.users(friend_ids)
       end
       print_users(users)
@@ -452,18 +438,14 @@ module T
         client.verify_credentials.screen_name
       end
       following_ids = Thread.new do
-        collect_with_cursor do |cursor|
-          client.friend_ids(user, :cursor => cursor)
-        end
+        client.friend_ids(user).to_a
       end
       follower_ids = Thread.new do
-        collect_with_cursor do |cursor|
-          client.follower_ids(user, :cursor => cursor)
-        end
+        client.follower_ids(user).to_a
       end
       leader_ids = (following_ids.value - follower_ids.value)
       require 'retryable'
-      users = retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
+      users = retryable(:tries => 3, :on => Twitter::Error, :sleep => 0) do
         client.users(leader_ids)
       end
       print_users(users)
@@ -509,20 +491,20 @@ module T
     map %w(replies) => :mentions
 
     desc "open USER", "Opens that user's profile in a web browser."
-    method_option "display-url", :aliases => "-d", :type => :boolean, :default => false, :desc => "Display the requested URL instead of attempting to open it."
+    method_option "display-uri", :aliases => "-d", :type => :boolean, :default => false, :desc => "Display the requested URL instead of attempting to open it."
     method_option "id", :aliases => "-i", :type => :boolean, :default => false, :desc => "Specify user via ID instead of screen name."
     method_option "status", :aliases => "-s", :type => :boolean, :default => false, :desc => "Specify input as a Twitter status ID instead of a screen name."
     def open(user)
       require 'launchy'
       if options['id']
         user = client.user(user.to_i)
-        open_or_print("https://twitter.com/#{user.screen_name}", :dry_run => options['display-url'])
+        open_or_print(user.website, :dry_run => options['display-uri'])
       elsif options['status']
         status = client.status(user.to_i, :include_my_retweet => false)
-        open_or_print("https://twitter.com/#{status.from_user}/status/#{status.id}", :dry_run => options['display-url'])
+        open_or_print(status.uri, :dry_run => options['display-uri'])
       else
         require 't/core_ext/string'
-        open_or_print("https://twitter.com/#{user.strip_ats}", :dry_run => options['display-url'])
+        open_or_print("https://twitter.com/#{user.strip_ats}", :dry_run => options['display-uri'])
       end
     end
 
@@ -531,7 +513,7 @@ module T
     method_option "location", :aliases => "-l", :type => :string, :default => "location", :desc => "Add location information. If the optional 'latitude,longitude' parameter is not supplied, looks up location by IP address."
     def reply(status_id, message)
       status = client.status(status_id.to_i, :include_my_retweet => false)
-      users = Array(status.from_user)
+      users = Array(status.user.screen_name)
       if options['all']
         users += extract_mentioned_screen_names(status.full_text)
         users.uniq!
@@ -561,7 +543,7 @@ module T
       status_ids.unshift(status_id)
       status_ids.map!(&:to_i)
       require 'retryable'
-      retweets = retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
+      retweets = retryable(:tries => 3, :on => Twitter::Error, :sleep => 0) do
         client.retweet(status_ids, :trim_user => true)
       end
       number = retweets.length
@@ -609,8 +591,7 @@ module T
     method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
     def status(status_id)
       status = client.status(status_id.to_i, :include_my_retweet => false)
-      status_activity = client.status_activity(status_id.to_i)
-      location = if status.place
+      location = if status.place?
         if status.place.name && status.place.attributes && status.place.attributes[:street_address] && status.place.attributes[:locality] && status.place.attributes[:region] && status.place.country
           [status.place.name, status.place.attributes[:street_address], status.place.attributes[:locality], status.place.attributes[:region], status.place.country].join(", ")
         elsif status.place.name && status.place.attributes && status.place.attributes[:locality] && status.place.attributes[:region] && status.place.country
@@ -624,27 +605,26 @@ module T
         else
           status.place.name
         end
-      elsif status.geo
+      elsif status.geo?
         reverse_geocode(status.geo)
       end
-      status_headings = ["ID", "Posted at", "Screen name", "Text", "Retweets", "Favorites", "Replies", "Source", "Location"]
+      status_headings = ["ID", "Posted at", "Screen name", "Text", "Retweets", "Favorites", "Source", "Location"]
       if options['csv']
         require 'csv'
         say status_headings.to_csv
-        say [status.id, csv_formatted_time(status), status.from_user, decode_full_text(status), status.retweet_count, status_activity.favoriters_count, status_activity.repliers_count, strip_tags(status.source), location].to_csv
+        say [status.id, csv_formatted_time(status), status.user.screen_name, decode_full_text(status), status.retweet_count, status.favorite_count, strip_tags(status.source), location].to_csv
       elsif options['long']
-        array = [status.id, ls_formatted_time(status), "@#{status.from_user}", decode_full_text(status).gsub(/\n+/, ' '), status.retweet_count, status_activity.favoriters_count, status_activity.repliers_count, strip_tags(status.source), location]
+        array = [status.id, ls_formatted_time(status), "@#{status.user.screen_name}", decode_full_text(status).gsub(/\n+/, ' '), status.retweet_count, status.favorite_count, strip_tags(status.source), location]
         format = options['format'] || status_headings.size.times.map{"%s"}
         print_table_with_headings([array], status_headings, format)
       else
         array = []
         array << ["ID", status.id.to_s]
         array << ["Text", decode_full_text(status).gsub(/\n+/, ' ')]
-        array << ["Screen name", "@#{status.from_user}"]
+        array << ["Screen name", "@#{status.user.screen_name}"]
         array << ["Posted at", "#{ls_formatted_time(status)} (#{time_ago_in_words(status.created_at)} ago)"]
         array << ["Retweets", number_with_delimiter(status.retweet_count)]
-        array << ["Favorites", number_with_delimiter(status_activity.favoriters_count)]
-        array << ["Replies", number_with_delimiter(status_activity.repliers_count)]
+        array << ["Favorites", number_with_delimiter(status.favorite_count)]
         array << ["Source", strip_tags(status.source)]
         array << ["Location", location] unless location.nil?
         print_table(array)
@@ -813,13 +793,13 @@ module T
         array << ["Screen name", "@#{user.screen_name}"]
         array << [user.verified ? "Name (Verified)" : "Name", user.name] unless user.name.nil?
         array << ["Tweets", number_with_delimiter(user.statuses_count)]
-        array << ["Favorites", number_with_delimiter(user.favourites_count)]
+        array << ["Favorites", number_with_delimiter(user.favorites_count)]
         array << ["Listed", number_with_delimiter(user.listed_count)]
         array << ["Following", number_with_delimiter(user.friends_count)]
         array << ["Followers", number_with_delimiter(user.followers_count)]
         array << ["Bio", user.description.gsub(/\n+/, ' ')] unless user.description.nil?
         array << ["Location", user.location] unless user.location.nil?
-        array << ["URL", user.url] unless user.url.nil?
+        array << ["URL", user.website] unless user.website.nil?
         print_table(array)
       end
     end
@@ -858,18 +838,14 @@ module T
       end
     end
 
-    def base_url
-      "#{protocol}://#{host}"
-    end
-
-    def generate_authorize_url(consumer, request_token)
+    def generate_authorize_uri(consumer, request_token)
       request = consumer.create_signed_request(:get, consumer.authorize_path, request_token, pin_auth_parameters)
       params = request['Authorization'].sub(/^OAuth\s+/, '').split(/,\s+/).map do |param|
         key, value = param.split('=')
         value =~ /"(.*?)"/
         "#{key}=#{CGI::escape($1)}"
       end.join('&')
-      "#{base_url}#{request.path}?#{params}"
+      "#{Twitter::REST::Client::ENDPOINT}#{request.path}?#{params}"
     end
 
     def pin_auth_parameters

@@ -6,16 +6,8 @@ module T
 
     MAX_NUM_RESULTS = 200
 
-    def collect_with_cursor(collection=[], cursor=-1, &block)
-      object = retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
-        yield(cursor)
-      end
-      collection += object.collection
-      object.last? ? collection.flatten : collect_with_cursor(collection, object.next_cursor, &block)
-    end
-
     def collect_with_max_id(collection=[], max_id=nil, &block)
-      tweets = retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
+      tweets = retryable(:tries => 3, :on => Twitter::Error, :sleep => 0) do
         yield(max_id)
       end
       return collection if tweets.nil?
@@ -38,7 +30,7 @@ module T
     end
 
     def collect_with_page(collection=[], page=1, &block)
-      tweets = retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
+      tweets = retryable(:tries => 3, :on => Twitter::Error, :sleep => 0) do
         yield page
       end
       return collection if tweets.nil?

@@ -44,7 +44,7 @@ testcli
 
   describe "#authorize" do
     before do
-      @cli.options = @cli.options.merge("profile" => project_path + "/tmp/authorize", "display-url" => true)
+      @cli.options = @cli.options.merge("profile" => project_path + "/tmp/authorize", "display-uri" => true)
       stub_post("/oauth/request_token").to_return(:body => fixture("request_token"))
       stub_post("/oauth/access_token").to_return(:body => fixture("access_token"))
       stub_get("/1.1/account/verify_credentials.json").with(:query => {:include_entities => "false", :skip_status => "true"}).to_return(:body => fixture("sferik.json"))
@@ -82,7 +82,7 @@ testcli
     end
     context "empty RC file" do
       before do
-        @cli.options = @cli.options.merge("profile" => project_path + "/tmp/empty", "display-url" => true)
+        @cli.options = @cli.options.merge("profile" => project_path + "/tmp/empty", "display-uri" => true)
       end
       after do
         File.delete(project_path + "/tmp/empty")
@@ -1110,7 +1110,7 @@ ID                   Posted at     Screen name       Text
           stub_post("/1.1/friendships/create.json").with(:body => {:user_id => "14100886"}).to_return(:status => 502)
           expect do
             @cli.follow("sferik", "pengwynn")
-          end.to raise_error("Twitter is down or being upgraded.")
+          end.to raise_error(Twitter::Error::BadGateway)
           expect(a_get("/1.1/friends/ids.json").with(:query => {:cursor => "-1", :screen_name => "sferik"})).to have_been_made.times(3)
           expect(a_post("/1.1/users/lookup.json").with(:body => {:screen_name => "sferik,pengwynn"})).to have_been_made.times(3)
           expect(a_post("/1.1/friendships/create.json").with(:body => {:user_id => "14100886"})).to have_been_made.times(3)
@@ -2034,7 +2034,7 @@ ID                   Posted at     Screen name       Text
 
   describe "#open" do
     before do
-      @cli.options = @cli.options.merge("display-url" => true)
+      @cli.options = @cli.options.merge("display-uri" => true)
     end
     it "has the correct output" do
       expect do
@@ -2434,12 +2434,10 @@ ID                  Posted at     Screen name      Text
   describe "#status" do
     before do
       stub_get("/1.1/statuses/show/55709764298092545.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status.json"))
-      stub_get("/i/statuses/55709764298092545/activity/summary.json").to_return(:body => fixture("activity_summary.json"))
     end
     it "requests the correct resources" do
       @cli.status("55709764298092545")
       expect(a_get("/1.1/statuses/show/55709764298092545.json").with(:query => {:include_my_retweet => "false"})).to have_been_made
-      expect(a_get("/i/statuses/55709764298092545/activity/summary.json")).to have_been_made
     end
     it "has the correct output" do
       @cli.status("55709764298092545")
@@ -2449,8 +2447,7 @@ Text         The problem with your code is that it's doing exactly what you told
 Screen name  @sferik
 Posted at    Apr  6  2011 (8 months ago)
 Retweets     320
-Favorites    2
-Replies      1
+Favorites    50
 Source       Twitter for iPhone
 Location     Blowfish Sushi To Die For, 2170 Bryant St, San Francisco, California, United States
       eos
@@ -2462,8 +2459,8 @@ Location     Blowfish Sushi To Die For, 2170 Bryant St, San Francisco, Californi
       it "has the correct output" do
         @cli.status("55709764298092545")
         expect($stdout.string).to eq <<-eos
-ID,Posted at,Screen name,Text,Retweets,Favorites,Replies,Source,Location
-55709764298092545,2011-04-06 19:13:37 +0000,sferik,The problem with your code is that it's doing exactly what you told it to do.,320,2,1,Twitter for iPhone,"Blowfish Sushi To Die For, 2170 Bryant St, San Francisco, California, United States"
+ID,Posted at,Screen name,Text,Retweets,Favorites,Source,Location
+55709764298092545,2011-04-06 19:13:37 +0000,sferik,The problem with your code is that it's doing exactly what you told it to do.,320,50,Twitter for iPhone,"Blowfish Sushi To Die For, 2170 Bryant St, San Francisco, California, United States"
         eos
       end
     end
@@ -2479,8 +2476,7 @@ Text         The problem with your code is that it's doing exactly what you told
 Screen name  @sferik
 Posted at    Apr  6  2011 (8 months ago)
 Retweets     320
-Favorites    2
-Replies      1
+Favorites    50
 Source       Twitter for iPhone
 Location     Blowfish Sushi To Die For, San Francisco, California, United States
         eos
@@ -2498,8 +2494,7 @@ Text         The problem with your code is that it's doing exactly what you told
 Screen name  @sferik
 Posted at    Apr  6  2011 (8 months ago)
 Retweets     320
-Favorites    2
-Replies      1
+Favorites    50
 Source       Twitter for iPhone
 Location     Blowfish Sushi To Die For, San Francisco, California, United States
         eos
@@ -2517,8 +2512,7 @@ Text         The problem with your code is that it's doing exactly what you told
 Screen name  @sferik
 Posted at    Apr  6  2011 (8 months ago)
 Retweets     320
-Favorites    2
-Replies      1
+Favorites    50
 Source       Twitter for iPhone
 Location     Blowfish Sushi To Die For, San Francisco, United States
         eos
@@ -2536,8 +2530,7 @@ Text         The problem with your code is that it's doing exactly what you told
 Screen name  @sferik
 Posted at    Apr  6  2011 (8 months ago)
 Retweets     320
-Favorites    2
-Replies      1
+Favorites    50
 Source       Twitter for iPhone
 Location     Blowfish Sushi To Die For, San Francisco
         eos
@@ -2555,8 +2548,7 @@ Text         The problem with your code is that it's doing exactly what you told
 Screen name  @sferik
 Posted at    Apr  6  2011 (8 months ago)
 Retweets     320
-Favorites    2
-Replies      1
+Favorites    50
 Source       Twitter for iPhone
 Location     Blowfish Sushi To Die For
         eos
@@ -2575,8 +2567,7 @@ Text         The problem with your code is that it's doing exactly what you told
 Screen name  @sferik
 Posted at    Apr  6  2011 (8 months ago)
 Retweets     320
-Favorites    2
-Replies      1
+Favorites    50
 Source       Twitter for iPhone
 Location     San Francisco, CA, USA
         eos
@@ -2594,8 +2585,7 @@ Text         The problem with your code is that it's doing exactly what you told
 Screen name  @sferik
 Posted at    Apr  6  2011 (8 months ago)
 Retweets     320
-Favorites    2
-Replies      1
+Favorites    50
 Source       Twitter for iPhone
 Location     CA, USA
           eos
@@ -2614,8 +2604,7 @@ Text         The problem with your code is that it's doing exactly what you told
 Screen name  @sferik
 Posted at    Apr  6  2011 (8 months ago)
 Retweets     320
-Favorites    2
-Replies      1
+Favorites    50
 Source       Twitter for iPhone
 Location     USA
           eos
@@ -3107,7 +3096,7 @@ WOEID     Parent ID  Type       Name           Country
           stub_post("/1.1/friendships/destroy.json").with(:body => {:screen_name => "sferik"}).to_return(:status => 502)
           expect do
             @cli.unfollow("sferik")
-          end.to raise_error("Twitter is down or being upgraded.")
+          end.to raise_error(Twitter::Error::BadGateway)
           expect(a_post("/1.1/friendships/destroy.json").with(:body => {:screen_name => "sferik"})).to have_been_made.times(3)
         end
       end

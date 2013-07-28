@@ -546,9 +546,9 @@ http://t.co/erdKx6HD"
         eos
       end
     end
-    context "--decode-urls" do
+    context "--decode-uris" do
       before(:each) do
-        @search.options = @search.options.merge("decode_urls" => true)
+        @search.options = @search.options.merge("decode_uris" => true)
         stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :include_entities => 1, :count => 20}).to_return(:body => fixture("search_with_entities.json"))
         stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :include_entities => 1, :count => 5, :max_id => 264784855672442882}).to_return(:body => fixture("search_with_entities.json"))
       end
@@ -728,9 +728,9 @@ ID,Posted at,Screen name,Text
         eos
       end
     end
-    context "--decode-urls" do
+    context "--decode-uris" do
       before(:each) do
-        @search.options = @search.options.merge("decode_urls" => true)
+        @search.options = @search.options.merge("decode_uris" => true)
         stub_get("/1.1/favorites/list.json").with(:query => {:count => "200", :include_entities => 1}).to_return(:body => fixture("statuses.json"))
         stub_get("/1.1/favorites/list.json").with(:query => {:count => "200", :include_entities => 1, :max_id => "244099460672679937"}).to_return(:body => fixture("empty_array.json"))
       end
@@ -762,7 +762,7 @@ ID                  Posted at     Screen name  Text
         stub_get("/1.1/favorites/list.json").with(:query => {:count => "200"}).to_return(:status => 502)
         expect do
           @search.favorites("twitter")
-        end.to raise_error("Twitter is down or being upgraded.")
+        end.to raise_error(Twitter::Error::BadGateway)
         expect(a_get("/1.1/favorites/list.json").with(:query => {:count => "200"})).to have_been_made.times(3)
       end
     end
@@ -850,9 +850,9 @@ ID,Posted at,Screen name,Text
         eos
       end
     end
-    context "--decode-urls" do
+    context "--decode-uris" do
       before(:each) do
-        @search.options = @search.options.merge("decode_urls" => true)
+        @search.options = @search.options.merge("decode_uris" => true)
         stub_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => "200", :include_entities => 1}).to_return(:body => fixture("statuses.json"))
         stub_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => "200", :include_entities => 1, :max_id => "244099460672679937"}).to_return(:body => fixture("empty_array.json"))
       end
@@ -884,7 +884,7 @@ ID                  Posted at     Screen name  Text
         stub_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => "200"}).to_return(:status => 502)
         expect do
           @search.mentions("twitter")
-        end.to raise_error("Twitter is down or being upgraded.")
+        end.to raise_error(Twitter::Error::BadGateway)
         expect(a_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => "200"})).to have_been_made.times(3)
       end
     end
@@ -925,9 +925,9 @@ ID,Posted at,Screen name,Text
         eos
       end
     end
-    context "--decode-urls" do
+    context "--decode-uris" do
       before(:each) do
-        @search.options = @search.options.merge("decode_urls" => true)
+        @search.options = @search.options.merge("decode_uris" => true)
         stub_get("/1.1/lists/statuses.json").with(:query => {:count => "200", :include_entities => 1, :owner_screen_name => "testcli", :slug => "presidents"}).to_return(:body => fixture("statuses.json"))
         stub_get("/1.1/lists/statuses.json").with(:query => {:count => "200", :include_entities => 1, :max_id => "244099460672679937", :owner_screen_name => "testcli", :slug => "presidents"}).to_return(:body => fixture("empty_array.json"))
       end
@@ -977,7 +977,7 @@ ID                  Posted at     Screen name  Text
         stub_get("/1.1/lists/statuses.json").with(:query => {:count => "200", :owner_screen_name => "testcli", :slug => "presidents"}).to_return(:status => 502)
         expect do
           @search.list("presidents", "twitter")
-        end.to raise_error("Twitter is down or being upgraded.")
+        end.to raise_error(Twitter::Error::BadGateway)
         expect(a_get("/1.1/lists/statuses.json").with(:query => {:count => "200", :owner_screen_name => "testcli", :slug => "presidents"})).to have_been_made.times(3)
       end
     end
@@ -1013,9 +1013,9 @@ ID,Posted at,Screen name,Text
         eos
       end
     end
-    context "--decode-urls" do
+    context "--decode-uris" do
       before(:each) do
-        @search.options = @search.options.merge("decode_urls" => true)
+        @search.options = @search.options.merge("decode_uris" => true)
         stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_entities => 1, :include_rts => "true"}).to_return(:body => fixture("statuses.json"))
         stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_entities => 1, :include_rts => "true", :max_id => "244102729860009983"}).to_return(:body => fixture("empty_array.json"))
       end
@@ -1046,7 +1046,7 @@ ID                  Posted at     Screen name   Text
         stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true"}).to_return(:status => 502)
         expect do
           @search.retweets("mosaic")
-        end.to raise_error("Twitter is down or being upgraded.")
+        end.to raise_error(Twitter::Error::BadGateway)
         expect(a_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true"})).to have_been_made.times(3)
       end
     end
@@ -1126,9 +1126,9 @@ ID,Posted at,Screen name,Text
         eos
       end
     end
-    context "--decode-urls" do
+    context "--decode-uris" do
       before(:each) do
-        @search.options = @search.options.merge("decode_urls" => true)
+        @search.options = @search.options.merge("decode_uris" => true)
         stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200", :include_entities => 1}).to_return(:body => fixture("statuses.json"))
         stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200", :max_id => "244099460672679937", :include_entities => 1}).to_return(:body => fixture("empty_array.json"))
       end
@@ -1206,7 +1206,7 @@ ID                  Posted at     Screen name  Text
         stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200"}).to_return(:status => 502)
         expect do
           @search.timeline("twitter")
-        end.to raise_error("Twitter is down or being upgraded.")
+        end.to raise_error(Twitter::Error::BadGateway)
         expect(a_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200"})).to have_been_made.times(3)
       end
     end
@@ -1297,7 +1297,7 @@ ID                  Posted at     Screen name  Text
           stub_get("/1.1/statuses/user_timeline.json").with(:query => {:screen_name => "sferik", :count => "200"}).to_return(:status => 502)
           expect do
             @search.timeline("sferik", "twitter")
-          end.to raise_error("Twitter is down or being upgraded.")
+          end.to raise_error(Twitter::Error::BadGateway)
           expect(a_get("/1.1/statuses/user_timeline.json").with(:query => {:screen_name => "sferik", :count => "200"})).to have_been_made.times(3)
         end
       end
@@ -1432,7 +1432,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
         stub_get("/1.1/users/search.json").with(:query => {:page => "2", :q => "Erik", }).to_return(:status => 502)
         expect do
           @search.users("Erik")
-        end.to raise_error("Twitter is down or being upgraded.")
+        end.to raise_error(Twitter::Error::BadGateway)
         expect(a_get("/1.1/users/search.json").with(:query => {:page => "2", :q => "Erik", })).to have_been_made.times(3)
       end
     end

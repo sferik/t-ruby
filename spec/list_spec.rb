@@ -59,7 +59,7 @@ describe T::List do
         stub_post("/1.1/lists/members/create_all.json").with(:body => {:screen_name => "BarackObama", :slug => "presidents", :owner_screen_name => "sferik"}).to_return(:status => 502)
         expect do
           @list.add("presidents", "BarackObama")
-        end.to raise_error("Twitter is down or being upgraded.")
+        end.to raise_error(Twitter::Error::BadGateway)
         expect(a_post("/1.1/lists/members/create_all.json").with(:body => {:screen_name => "BarackObama", :slug => "presidents", :owner_screen_name => "sferik"})).to have_been_made.times(3)
       end
     end
@@ -303,7 +303,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
         stub_post("/1.1/lists/members/destroy_all.json").with(:body => {:screen_name => "BarackObama", :slug => "presidents", :owner_screen_name => "sferik"}).to_return(:status => 502)
         expect do
           @list.remove("presidents", "BarackObama")
-        end.to raise_error("Twitter is down or being upgraded.")
+        end.to raise_error(Twitter::Error::BadGateway)
         expect(a_post("/1.1/lists/members/destroy_all.json").with(:body => {:screen_name => "BarackObama", :slug => "presidents", :owner_screen_name => "sferik"})).to have_been_made.times(3)
       end
     end

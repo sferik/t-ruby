@@ -136,18 +136,18 @@ describe T::Set do
     end
   end
 
-  describe "#url" do
+  describe "#website" do
     before do
       @set.options = @set.options.merge("profile" => fixture_path + "/.trc")
       stub_post("/1.1/account/update_profile.json").with(:body => {:url => "https://github.com/sferik"}).to_return(:body => fixture("sferik.json"))
     end
     it "requests the correct resource" do
-      @set.url("https://github.com/sferik")
+      @set.website("https://github.com/sferik")
       expect(a_post("/1.1/account/update_profile.json").with(:body => {:url => "https://github.com/sferik"})).to have_been_made
     end
     it "has the correct output" do
-      @set.url("https://github.com/sferik")
-      expect($stdout.string.chomp).to eq "@testcli's URL has been updated."
+      @set.website("https://github.com/sferik")
+      expect($stdout.string.chomp).to eq "@testcli's website has been updated."
     end
   end
 

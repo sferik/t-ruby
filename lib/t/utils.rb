@@ -50,7 +50,7 @@ module T
     def fetch_users(users, options, &block)
       format_users!(users, options)
       require 'retryable'
-      users = retryable(:tries => 3, :on => Twitter::Error::ServerError, :sleep => 0) do
+      users = retryable(:tries => 3, :on => Twitter::Error, :sleep => 0) do
         yield users
       end
       [users, users.length]
@@ -95,26 +95,26 @@ module T
       "#{count || 0} " + ((count == 1 || count =~ /^1(\.0+)?$/) ? singular : (plural || "#{singular}s"))
     end
 
-    def decode_full_text(tweet, decode_full_urls = false)
+    def decode_full_text(tweet, decode_full_uris = false)
       require 'htmlentities'
       text = HTMLEntities.new.decode(tweet.full_text)
-      text = decode_urls(text, tweet.urls) if decode_full_urls
+      text = decode_uris(text, tweet.uris) if decode_full_uris
       text
     end
 
-    def decode_urls(full_text, url_entities)
-      return full_text if url_entities.nil?
+    def decode_uris(full_text, uri_entities)
+      return full_text if uri_entities.nil?
 
-      url_entities.each do |url_hash|
-        full_text = full_text.gsub(url_hash.url, url_hash.expanded_url)
+      uri_entities.each do |uri_entity|
+        full_text = full_text.gsub(uri_entity.uri.to_s, uri_entity.expanded_uri.to_s)
       end
 
       full_text
     end
 
-    def open_or_print( url, options )
-      Launchy.open( url, options ) do |e|
-        say "Open: #{url}"
+    def open_or_print(uri, options)
+      Launchy.open(uri, options) do
+        say "Open: #{uri}"
       end
     end
   end

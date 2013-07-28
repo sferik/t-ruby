@@ -57,7 +57,7 @@ module T
       if options['csv']
         require 'csv'
         say ["ID", "Description", "Slug", "Screen name", "Created at", "Members", "Subscribers", "Following", "Mode", "URL"].to_csv
-        say [list.id, list.description, list.slug, list.user.screen_name, csv_formatted_time(list), list.member_count, list.subscriber_count, list.following?, list.mode, "https://twitter.com#{list.uri}"].to_csv
+        say [list.id, list.description, list.slug, list.user.screen_name, csv_formatted_time(list), list.member_count, list.subscriber_count, list.following?, list.mode, list.uri].to_csv
       else
         array = []
         array << ["ID", list.id.to_s]
@@ -69,7 +69,7 @@ module T
         array << ["Subscribers", number_with_delimiter(list.subscriber_count)]
         array << ["Status", list.following ? "Following" : "Not following"]
         array << ["Mode", list.mode]
-        array << ["URL", "https://twitter.com#{list.uri}"]
+        array << ["URL", list.uri]
         print_table(array)
       end
     end
@@ -84,9 +84,7 @@ module T
     method_option "unsorted", :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
     def members(list)
       owner, list = extract_owner(list, options)
-      users = collect_with_cursor do |cursor|
-        client.list_members(owner, list, :cursor => cursor)
-      end
+      users = client.list_members(owner, list).to_a
       print_users(users)
     end
 

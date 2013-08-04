@@ -3,16 +3,6 @@ require 'helper'
 
 describe T::Editor do
 
-  context "when generating a tempfile" do
-    it "appends with default filler text" do
-      expect(T::Editor.tempfile.read).to eq("\n# Enter your tweet above.")
-    end
-
-    it "starts with specified filler text" do
-      expect(T::Editor.tempfile("# Oh yeah.").read).to eq("# Oh yeah.")
-    end
-  end
-
   context "when editing a file" do
     before(:all) do
       T::Editor.stub(:edit) do |path|
@@ -23,7 +13,7 @@ describe T::Editor do
     end
 
     it "fetches your tweet content without comments" do
-      expect(T::Editor.gets(:update)).to eq("A tweet!!!!")
+      expect(T::Editor.gets).to eq("A tweet!!!!")
     end
   end
 

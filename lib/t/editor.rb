@@ -4,25 +4,22 @@ require 'shellwords'
 module T
   class Editor
     class << self
-      PREFILLS = {
-        :update => "\n# Enter your tweet above."
-      }
 
-      def gets(operation = :update)
-        f = tempfile(PREFILLS[operation])
-        edit(f.path)
-        f.read.gsub(/(?:^#.*$\n?)+\s*\z/, '').strip
+      def gets
+        file = tempfile
+        edit(file.path)
+        File.read(file).strip
+      ensure
+        file.close
+        file.unlink
       end
 
-      def tempfile(prefill = PREFILLS[:update])
-        f = Tempfile.new("TWEET_MESSAGE")
-        f << prefill
-        f.rewind
-        f
+      def tempfile
+        Tempfile.new("TWEET_EDITMSG")
       end
 
       def edit(path)
-        system Shellwords.join([editor, path])
+        system(Shellwords.join([editor, path]))
       end
 
       def editor
@@ -38,6 +35,7 @@ module T
           'vi'
         end
       end
+
     end
   end
 end

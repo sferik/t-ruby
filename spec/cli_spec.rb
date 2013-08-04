@@ -2048,7 +2048,7 @@ ID                   Posted at     Screen name       Text
     end
     context "--location" do
       before do
-        @cli.options = @cli.options.merge("location" => '')
+        @cli.options = @cli.options.merge("location" => "location")
         stub_get("/1.1/statuses/show/263813522369159169.json").with(:query => {:include_my_retweet => "false"}).to_return(:body => fixture("status_with_mention.json"))
         stub_post("/1.1/statuses/update.json").with(:body => {:in_reply_to_status_id => "263813522369159169", :status => "@joshfrench Testing", :lat => "37.76969909668", :long => "-122.39330291748", :trim_user => "true"}).to_return(:body => fixture("status.json"))
       end
@@ -3087,9 +3087,9 @@ WOEID     Parent ID  Type       Name           Country
         expect($stdout.string.split("\n").first).to eq "Tweet posted by @testcli."
       end
     end
-    context "with just location" do
+    context "--location" do
       before do
-        @cli.options = @cli.options.merge("location" => '')
+        @cli.options = @cli.options.merge("location" => "location")
         stub_post("/1.1/statuses/update.json").with(:body => {:status => "Testing", :lat => "37.76969909668", :long => "-122.39330291748", :trim_user => "true"}).to_return(:body => fixture("status.json"))
       end
       it "requests the correct resource" do
@@ -3103,7 +3103,7 @@ WOEID     Parent ID  Type       Name           Country
         expect($stdout.string.split("\n").first).to eq "Tweet posted by @testcli."
       end
     end
-    context "with location, latitude and longitude" do
+    context "--location 'latitude,longitude'" do
       before do
         @cli.options = @cli.options.merge("location" => "41.03132,28.9869")
         stub_post("/1.1/statuses/update.json").with(:body => {:status => "Testing", :lat => "41.03132", :long => "28.9869", :trim_user => "true"}).to_return(:body => fixture("status.json"))

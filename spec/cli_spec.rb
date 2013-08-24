@@ -970,6 +970,16 @@ ID                   Posted at     Screen name       Text
         end
       end
     end
+    context "--max-id" do
+      before do
+        @cli.options = @cli.options.merge("max_id" => 244104558433951744)
+        stub_get("/1.1/favorites/list.json").with(:query => {:count => "20", :max_id => "244104558433951744"}).to_return(:body => fixture("statuses.json"))
+      end
+      it "requests the correct resource" do
+        @cli.favorites
+        expect(a_get("/1.1/favorites/list.json").with(:query => {:count => "20", :max_id => "244104558433951744"})).to have_been_made
+      end
+    end
     context "--number" do
       before do
         stub_get("/1.1/favorites/list.json").with(:query => {:count => "1"}).to_return(:body => fixture("statuses.json"))
@@ -988,6 +998,16 @@ ID                   Posted at     Screen name       Text
         expect(a_get("/1.1/favorites/list.json").with(:query => {:count => "1", :max_id => "265500541700956160"})).to have_been_made
       end
     end
+    context "--since-id" do
+      before do
+        @cli.options = @cli.options.merge("since_id" => 244104558433951744)
+        stub_get("/1.1/favorites/list.json").with(:query => {:count => "20", :since_id => "244104558433951744"}).to_return(:body => fixture("statuses.json"))
+      end
+      it "requests the correct resource" do
+        @cli.favorites
+        expect(a_get("/1.1/favorites/list.json").with(:query => {:count => "20", :since_id => "244104558433951744"})).to have_been_made
+      end
+    end
     context "with a user passed" do
       before do
         stub_get("/1.1/favorites/list.json").with(:query => {:count => "20", :screen_name => "sferik"}).to_return(:body => fixture("statuses.json"))
@@ -1004,6 +1024,44 @@ ID                   Posted at     Screen name       Text
         it "requests the correct resource" do
           @cli.favorites("7505382")
           expect(a_get("/1.1/favorites/list.json").with(:query => {:user_id => "7505382", :count => "20"})).to have_been_made
+        end
+      end
+      context "--max-id" do
+        before do
+          @cli.options = @cli.options.merge("max_id" => 244104558433951744)
+          stub_get("/1.1/favorites/list.json").with(:query => {:count => "20", :screen_name => "sferik", :max_id => "244104558433951744"}).to_return(:body => fixture("statuses.json"))
+        end
+        it "requests the correct resource" do
+          @cli.favorites("sferik")
+          expect(a_get("/1.1/favorites/list.json").with(:query => {:count => "20", :screen_name => "sferik", :max_id => "244104558433951744"})).to have_been_made
+        end
+      end
+      context "--number" do
+        before do
+          stub_get("/1.1/favorites/list.json").with(:query => {:count => "1", :screen_name => "sferik"}).to_return(:body => fixture("statuses.json"))
+          stub_get("/1.1/favorites/list.json").with(:query => {:count => "200", :screen_name => "sferik"}).to_return(:body => fixture("200_statuses.json"))
+          stub_get("/1.1/favorites/list.json").with(:query => {:count => "1", :screen_name => "sferik", :max_id => "265500541700956160"}).to_return(:body => fixture("statuses.json"))
+        end
+        it "limits the number of results to 1" do
+          @cli.options = @cli.options.merge("number" => 1)
+          @cli.favorites("sferik")
+          expect(a_get("/1.1/favorites/list.json").with(:query => {:count => "1", :screen_name => "sferik"})).to have_been_made
+        end
+        it "limits the number of results to 201" do
+          @cli.options = @cli.options.merge("number" => 201)
+          @cli.favorites("sferik")
+          expect(a_get("/1.1/favorites/list.json").with(:query => {:count => "200", :screen_name => "sferik"})).to have_been_made
+          expect(a_get("/1.1/favorites/list.json").with(:query => {:count => "1", :screen_name => "sferik", :max_id => "265500541700956160"})).to have_been_made
+        end
+      end
+      context "--since-id" do
+        before do
+          @cli.options = @cli.options.merge("since_id" => 244104558433951744)
+          stub_get("/1.1/favorites/list.json").with(:query => {:count => "20", :screen_name => "sferik", :since_id => "244104558433951744"}).to_return(:body => fixture("statuses.json"))
+        end
+        it "requests the correct resource" do
+          @cli.favorites("sferik")
+          expect(a_get("/1.1/favorites/list.json").with(:query => {:count => "20", :screen_name => "sferik", :since_id => "244104558433951744"})).to have_been_made
         end
       end
     end
@@ -2749,34 +2807,6 @@ ID                   Posted at     Screen name       Text
  244099460672679938  Sep  7 07:47  @dwiskus          Gentlemen, you can't fig...
         eos
       end
-      context "--max-id" do
-        before do
-          @cli.options = @cli.options.merge("max_id" => 244104558433951744)
-          stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "20", :max_id => "244104558433951744"}).to_return(:body => fixture("statuses.json"))
-        end
-        it "requests the correct resource" do
-          @cli.timeline
-          expect(a_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "20", :max_id => "244104558433951744"})).to have_been_made
-        end
-      end
-      context "--number" do
-        before do
-          stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "1"}).to_return(:body => fixture("statuses.json"))
-          stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200"}).to_return(:body => fixture("200_statuses.json"))
-          stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "1", :max_id => "265500541700956160"}).to_return(:body => fixture("statuses.json"))
-        end
-        it "limits the number of results to 1" do
-          @cli.options = @cli.options.merge("number" => 1)
-          @cli.timeline
-          expect(a_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "1"})).to have_been_made
-        end
-        it "limits the number of results to 201" do
-          @cli.options = @cli.options.merge("number" => 201)
-          @cli.timeline
-          expect(a_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200"})).to have_been_made
-          expect(a_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "1", :max_id => "265500541700956160"})).to have_been_made
-        end
-      end
       context "--reverse" do
         before do
           @cli.options = @cli.options.merge("reverse" => true)
@@ -2807,6 +2837,34 @@ ID                   Posted at     Screen name       Text
 4611686018427387904  Sep  7 08:35  @mutgoff          Happy Birthday @imdane. ...
           eos
         end
+      end
+    end
+    context "--max-id" do
+      before do
+        @cli.options = @cli.options.merge("max_id" => 244104558433951744)
+        stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "20", :max_id => "244104558433951744"}).to_return(:body => fixture("statuses.json"))
+      end
+      it "requests the correct resource" do
+        @cli.timeline
+        expect(a_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "20", :max_id => "244104558433951744"})).to have_been_made
+      end
+    end
+    context "--number" do
+      before do
+        stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "1"}).to_return(:body => fixture("statuses.json"))
+        stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200"}).to_return(:body => fixture("200_statuses.json"))
+        stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "1", :max_id => "265500541700956160"}).to_return(:body => fixture("statuses.json"))
+      end
+      it "limits the number of results to 1" do
+        @cli.options = @cli.options.merge("number" => 1)
+        @cli.timeline
+        expect(a_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "1"})).to have_been_made
+      end
+      it "limits the number of results to 201" do
+        @cli.options = @cli.options.merge("number" => 201)
+        @cli.timeline
+        expect(a_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200"})).to have_been_made
+        expect(a_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "1", :max_id => "265500541700956160"})).to have_been_made
       end
     end
     context "--since-id" do

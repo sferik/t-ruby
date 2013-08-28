@@ -23,7 +23,7 @@ module T
       end
 
       def editor
-        editor = ENV['VISUAL'] || ENV['EDITOR'] || system_editor
+        ENV['VISUAL'] || ENV['EDITOR'] || system_editor
       end
 
       def system_editor

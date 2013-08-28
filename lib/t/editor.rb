@@ -7,7 +7,7 @@ module T
 
       def gets
         file = tempfile
-        edit(file.path)
+        edit file.path
         File.read(file).strip
       ensure
         file.close
@@ -18,22 +18,16 @@ module T
         Tempfile.new("TWEET_EDITMSG")
       end
 
-      def edit(path)
+      def edit path
         system(Shellwords.join([editor, path]))
       end
 
       def editor
-        editor   = ENV['VISUAL']
-        editor ||= ENV['EDITOR']
-        editor ||= system_editor
+        editor = ENV['VISUAL'] || ENV['EDITOR'] || system_editor
       end
 
       def system_editor
-        if RbConfig::CONFIG['host_os'] =~ /mswin|mingw/
-          'notepad'
-        else
-          'vi'
-        end
+        RbConfig::CONFIG['host_os'] =~ /mswin|mingw/ ? 'notepad' : 'vi'
       end
 
     end

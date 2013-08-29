@@ -7,7 +7,7 @@ module T
 
       def gets
         file = tempfile
-        edit file.path
+        edit(file.path)
         File.read(file).strip
       ensure
         file.close
@@ -18,7 +18,7 @@ module T
         Tempfile.new("TWEET_EDITMSG")
       end
 
-      def edit path
+      def edit(path)
         system(Shellwords.join([editor, path]))
       end
 

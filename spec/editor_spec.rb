@@ -79,24 +79,4 @@ describe T::Editor do
     end
   end
 
-  context "when fetching system editor" do
-    context "on a mac" do
-      before(:all) do
-        RbConfig::CONFIG['host_os'] = "darwin12.2.0"
-      end
-      it "returns 'vi' on a unix machine" do
-        expect(T::Editor.system_editor).to eq("vi")
-      end
-    end
-
-    context "on a Windows POC" do
-      before(:all) do
-        RbConfig::CONFIG['host_os'] = "mswin"
-      end
-      it "returns 'notepad' on a windows box" do
-        expect(T::Editor.system_editor).to eq("notepad")
-      end
-    end
-  end
-
 end

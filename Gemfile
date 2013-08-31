@@ -14,6 +14,7 @@ group :test do
   gem 'simplecov', :require => false
   gem 'timecop'
   gem 'webmock', '>= 1.10.1'
+  gem 'guard-rspec'
 end
 
 gemspec

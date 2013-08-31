@@ -21,11 +21,27 @@ describe T::Editor do
     context "no $VISUAL or $EDITOR set" do
       before(:all) do
         ENV["EDITOR"] = ENV["VISUAL"] = nil
-        RbConfig::CONFIG['host_os'] = "darwin12.2.0"
       end
 
-      it "returns the system editor" do
-        expect(T::Editor.editor).to eq("vi")
+      context "host_os is Mac OSX" do
+        it "returns the system editor" do
+          RbConfig::CONFIG['host_os'] = "darwin12.2.0"
+          expect(T::Editor.editor).to eq("vi")
+        end
+      end
+
+      context "host_os is Linux" do
+        it "returns the system editor" do
+          RbConfig::CONFIG['host_os'] = "3.2.0-4-amd64"
+          expect(T::Editor.editor).to eq("vi")
+        end
+      end
+
+      context "host_os is Windows" do
+        it "returns the system editor" do
+          RbConfig::CONFIG['host_os'] = "mswin"
+          expect(T::Editor.editor).to eq("notepad")
+        end
       end
     end
 
@@ -59,26 +75,6 @@ describe T::Editor do
 
       it "returns the system editor" do
         expect(T::Editor.editor).to eq("/usr/bin/emacs")
-      end
-    end
-  end
-
-  context "when fetching system editor" do
-    context "on a mac" do
-      before(:all) do
-        RbConfig::CONFIG['host_os'] = "darwin12.2.0"
-      end
-      it "returns 'vi' on a unix machine" do
-        expect(T::Editor.system_editor).to eq("vi")
-      end
-    end
-
-    context "on a Windows POC" do
-      before(:all) do
-        RbConfig::CONFIG['host_os'] = "mswin"
-      end
-      it "returns 'notepad' on a windows box" do
-        expect(T::Editor.system_editor).to eq("notepad")
       end
     end
   end

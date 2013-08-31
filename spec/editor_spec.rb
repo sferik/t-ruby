@@ -21,11 +21,27 @@ describe T::Editor do
     context "no $VISUAL or $EDITOR set" do
       before(:all) do
         ENV["EDITOR"] = ENV["VISUAL"] = nil
-        RbConfig::CONFIG['host_os'] = "darwin12.2.0"
       end
 
-      it "returns the system editor" do
-        expect(T::Editor.editor).to eq("vi")
+      context "host_os is Mac OSX" do
+        it "returns the system editor" do
+          RbConfig::CONFIG['host_os'] = "darwin12.2.0"
+          expect(T::Editor.editor).to eq("vi")
+        end
+      end
+
+      context "host_os is Linux" do
+        it "returns the system editor" do
+          RbConfig::CONFIG['host_os'] = "3.2.0-4-amd64"
+          expect(T::Editor.editor).to eq("vi")
+        end
+      end
+
+      context "host_os is Windows" do
+        it "returns the system editor" do
+          RbConfig::CONFIG['host_os'] = "mswin"
+          expect(T::Editor.editor).to eq("notepad")
+        end
       end
     end
 

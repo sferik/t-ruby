@@ -38,6 +38,12 @@ If the output looks more like this, you need to [install Ruby][ruby]:
 
     ruby: command not found
 
+**On Linux**, open a Terminal (<kbd>Ctrl+Alt+T</kbd>) and type:
+
+    sudo apt-get install ruby-dev
+
+(if necessary, adapt for your package manager)
+
 **On Windows**, you can install Ruby with [RubyInstaller][].
 [rubyinstaller]: http://rubyinstaller.org/
 

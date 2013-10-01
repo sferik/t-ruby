@@ -38,9 +38,13 @@ If the output looks more like this, you need to [install Ruby][ruby]:
 
     ruby: command not found
 
-**On Linux**, open a Terminal (<kbd>Ctrl+Alt+T</kbd>) and type:
+**On Linux**, for Debian-based systems, open a terminal and type:
 
     sudo apt-get install ruby-dev
+
+or for Red Hat-based distros like Fedora and CentOS, type:
+
+    sudo yum install ruby-devel
 
 (if necessary, adapt for your package manager)
 

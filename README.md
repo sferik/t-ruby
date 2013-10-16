@@ -268,8 +268,8 @@ flags.
 Don't run Zsh? Why not [contribute][] completion support for your favorite
 shell?
 
-[completion]: etc
-[contribute]: CONTRIBUTING.md
+[completion]: https://github.com/sferik/t/tree/master/etc
+[contribute]: https://github.com/sferik/t/blob/master/CONTRIBUTING.md
 
 ## History
 The [twitter gem][gem] previously contained a command-line interface, up until
@@ -311,5 +311,5 @@ If you are running t on a remote computer you can use the flag --display-url dur
 Copyright (c) 2011-2013 Erik Michaels-Ober. See [LICENSE][] for details.
 Application icon by [@nvk][nvk].
 
-[license]: LICENSE.md
+[license]: https://github.com/sferik/t/blob/master/LICENSE.md
 [nvk]: http://rodolfonovak.com

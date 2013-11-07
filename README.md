@@ -228,7 +228,11 @@ your Twitter account.
 
 `t` was also mentioned on [an episode of the Ruby 5 podcast][ruby5].
 
+`t` was also discussed on [an episode of the Ruby Rogues podcast][rubyrogues].
+
 [ruby5]: http://ruby5.envylabs.com/episodes/273-episode-269-may-4th-2012/stories/2400-t-command-line-power-tool-for-twitter
+
+[rubyrogues]: http://rubyrogues.com/127-rr-erik-michaels-ober/
 
 If you discuss `t` in a blog post or podcast, [let me know][email] and I'll
 link it here.

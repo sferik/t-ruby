@@ -167,7 +167,7 @@ example, send a user a direct message only if he already follows you:
     t leaders | xargs t unfollow
 
 #### Unfollow 10 people who haven't tweeted in the longest time
-    t followings -l --sort=tweets | head -10 | awk '{print $1}' | xargs t unfollow
+    t followings -l --sort=tweets | head -10 | awk '{print $1}' | xargs t unfollow -i 
 
 #### Twitter roulette: randomly follow someone who follows you (who you don't already follow)
     t groupies | shuf | head -1 | xargs t follow

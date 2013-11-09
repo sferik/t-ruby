@@ -149,7 +149,7 @@ describe T::RCFile do
     it "deletes the rcfile" do
       path = project_path + "/tmp/trc"
       File.open(path, 'w'){|file| file.write(YAML.dump({}))}
-      expect(File.exist?(path)).to be_true
+      expect(File.exist?(path)).to be true
       rcfile = T::RCFile.instance
       rcfile.path = path
       rcfile.delete
@@ -169,7 +169,7 @@ describe T::RCFile do
       it "returns true" do
         rcfile = T::RCFile.instance
         rcfile.path = File.expand_path('../fixtures/foo', __FILE__)
-        expect(rcfile.empty?).to be_true
+        expect(rcfile.empty?).to be true
       end
     end
   end

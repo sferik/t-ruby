@@ -153,7 +153,7 @@ describe T::RCFile do
       rcfile = T::RCFile.instance
       rcfile.path = path
       rcfile.delete
-      expect(File.exist?(path)).to be_false
+      expect(File.exist?(path)).to be false
     end
   end
 
@@ -162,7 +162,7 @@ describe T::RCFile do
       it "returns false" do
         rcfile = T::RCFile.instance
         rcfile.path = fixture_path + "/.trc"
-        expect(rcfile.empty?).to be_false
+        expect(rcfile.empty?).to be false
       end
     end
     context "when file does not exist at path" do

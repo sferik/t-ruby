@@ -16,10 +16,10 @@ Here are some ways *you* can contribute:
 * by refactoring code
 * by fixing [issues][]
 * by reviewing patches
-* [financially][pledgie]
+* [financially][gittip]
 
 [issues]: https://github.com/sferik/t/issues
-[pledgie]: http://www.pledgie.com/campaigns/17330
+[gittip]: https://www.gittip.com/sferik/
 
 ## Submitting an Issue
 We use the [GitHub issue tracker][issues] to track bugs and features. Before

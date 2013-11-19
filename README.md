@@ -6,15 +6,13 @@
 [![Build Status](https://secure.travis-ci.org/sferik/t.png?branch=master)][travis]
 [![Dependency Status](https://gemnasium.com/sferik/t.png?travis)][gemnasium]
 [![Coverage Status](https://coveralls.io/repos/sferik/t/badge.png?branch=master)][coveralls]
-[![Pledgie](https://pledgie.com/campaigns/17330.png)][pledgie]
-[![Flattr](http://api.flattr.com/button/flattr-badge-large.png)][flattr]
+[![Gittip](http://img.shields.io/gittip/sferik.png)][gittip]
 
 [gem]: https://rubygems.org/gems/t
 [travis]: http://travis-ci.org/sferik/t
 [gemnasium]: https://gemnasium.com/sferik/t
 [coveralls]: https://coveralls.io/r/sferik/t
-[pledgie]: http://www.pledgie.com/campaigns/17330
-[flattr]: http://flattr.com/thing/815001/sferikt-on-GitHub
+[gittip]: https://www.gittip.com/sferik/
 
 #### A command-line power tool for Twitter.
 The CLI takes syntactic cues from the [Twitter SMS commands][sms], however it
@@ -167,7 +165,7 @@ example, send a user a direct message only if he already follows you:
     t leaders | xargs t unfollow
 
 #### Unfollow 10 people who haven't tweeted in the longest time
-    t followings -l --sort=tweeted | head -10 | awk '{print $1}' | xargs t unfollow -i 
+    t followings -l --sort=tweeted | head -10 | awk '{print $1}' | xargs t unfollow -i
 
 #### Twitter roulette: randomly follow someone who follows you (who you don't already follow)
     t groupies | shuf | head -1 | xargs t follow

@@ -583,7 +583,8 @@ module T
     desc "ruler", "Prints a 140-character ruler"
     method_option "indent", :aliases => "-i", :type => :numeric, :default => 0, :desc => "The number of space to print before the ruler."
     def ruler
-      say "#{' ' * options['indent'].to_i}----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|"
+      markings = '----|'.chars.cycle.take(140).join
+      say "#{' ' * options['indent'].to_i}#{markings}"
     end
 
     desc "status TWEET_ID", "Retrieves detailed information about a Tweet."

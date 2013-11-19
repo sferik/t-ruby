@@ -69,7 +69,7 @@ _t_accounts() {
 
 _t_authorize() {
   _arguments \
-    "(-d --display-url)"{-d,--display-url}"[Display the authorization URL instead of attempting to open it.]" \
+    "(-d --display-uri)"{-d,--display-uri}"[Display the authorization URL instead of attempting to open it.]" \
     $t_general_options && ret=0
 }
 
@@ -136,8 +136,10 @@ _t_favorites() {
     "(-c --csv)"{-c,--csv}"[Output in CSV format.]" \
     "(-i --id)"{-i,--id}"[Specify user via ID instead of screen name.]" \
     "(-l --long)"{-l,--long}"[Output in long format.]" \
+    "(-m --max_id)"{-m,--max_id}"[Returns only the results with an ID less than the specified ID.]" \
     "(-n --number)"{-n,--number}"[Limit the number of results.]" \
     "(-r --reverse)"{-r,--reverse}"[Reverse the order of the sort.]" \
+    "(-s --since_id)"{-s,--since_id}"[Returns only the results with an ID greater than the specified ID.]" \
     $t_general_options && ret=0
 }
 
@@ -218,7 +220,7 @@ _t_mentions() {
 
 _t_open() {
   _arguments \
-    "(-d --display-url)"{-d,--display-url}"[Display the requested URL instead of attempting to open it.]" \
+    "(-d --display-uri)"{-d,--display-uri}"[Display the requested URL instead of attempting to open it.]" \
     "(-i --id)"{-i,--id}"[Specify user via ID instead of screen name.]" \
     "(-s --status)"{-s,--status}"[Specify input as a Twitter status ID instead of a screen name.]" \
     $t_general_options && ret=0
@@ -227,7 +229,7 @@ _t_open() {
 _t_reply() {
   _arguments \
     "(-a --all)"{-a,--all}"[Reply to all users mentioned in the Tweet.]" \
-    "(-l --location)"{-l,--location}"[]" \
+    "(-l --location)"{-l,--location}"[Add location information. If the optional \'latitude,longitude\' parameter is not supplied, looks up location by IP address.]" \
     $t_general_options && ret=0
 }
 
@@ -302,7 +304,7 @@ _t_unfollow() {
 
 _t_update() {
   _arguments \
-    "(-l --location)"{-l,--location}"[]" \
+    "(-l --location)"{-l,--location}"[Add location information. If the optional \'latitude,longitude\' parameter is not supplied, looks up location by IP address.]" \
     "(-f --file)"{-f,--file}"[The path to an image to attach to your tweet.]" \
     $t_general_options && ret=0
 }
@@ -376,7 +378,7 @@ __t_set_arguments() {
     name
     profile_background_image
     profile_image
-    url
+    website
     help
   )
   compadd "$@" -k _args

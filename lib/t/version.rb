@@ -4,17 +4,17 @@ module T
 
       # @return [Integer]
       def major
-        1
+        2
       end
 
       # @return [Integer]
       def minor
-        7
+        0
       end
 
       # @return [Integer]
       def patch
-        2
+        0
       end
 
       # @return [String, NilClass]

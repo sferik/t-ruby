@@ -39,8 +39,7 @@
 <a href="http://travis-ci.org/sferik/t"><img src="https://secure.travis-ci.org/sferik/t.png?branch=master" alt="Build Status"></a>
 <a href="https://gemnasium.com/sferik/t"><img src="https://gemnasium.com/sferik/t.png?travis" alt="Dependency Status"></a>
 <a href="https://coveralls.io/r/sferik/t"><img src="https://coveralls.io/repos/sferik/t/badge.png?branch=master" alt="Coverage Status"></a>
-<a href="http://www.pledgie.com/campaigns/17330"><img src="http://www.pledgie.com/campaigns/17330.png" alt="Pledgie"></a>
-<a href="http://flattr.com/thing/815001/sferikt-on-GitHub"><img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr"></a></p>
+<a href="https://www.gittip.com/sferik/"><img src="http://img.shields.io/gittip/sferik.png" alt="Gittip"></a></p>
 
 <h4>
 <a name="a-command-line-power-tool-for-twitter" class="anchor" href="#a-command-line-power-tool-for-twitter"><span class="octicon octicon-link"></span></a>A command-line power tool for Twitter.</h4>
@@ -250,7 +249,7 @@ example, send a user a direct message only if he already follows you:</p>
 <h4>
 <a name="unfollow-10-people-who-havent-tweeted-in-the-longest-time" class="anchor" href="#unfollow-10-people-who-havent-tweeted-in-the-longest-time"><span class="octicon octicon-link"></span></a>Unfollow 10 people who haven't tweeted in the longest time</h4>
 
-<pre><code>t followings -l --sort=tweets | head -10 | awk '{print $1}' | xargs t unfollow
+<pre><code>t followings -l --sort=tweeted | head -10 | awk '{print $1}' | xargs t unfollow -i
 </code></pre>
 
 <h4>
@@ -346,6 +345,8 @@ by adding the <code>--csv</code> flag.</li>
 your Twitter account.</p>
 
 <p><code>t</code> was also mentioned on <a href="http://ruby5.envylabs.com/episodes/273-episode-269-may-4th-2012/stories/2400-t-command-line-power-tool-for-twitter">an episode of the Ruby 5 podcast</a>.</p>
+
+<p><code>t</code> was also discussed on <a href="http://rubyrogues.com/127-rr-erik-michaels-ober/">an episode of the Ruby Rogues podcast</a>.</p>
 
 <p>If you discuss <code>t</code> in a blog post or podcast, <a href="mailto:sferik@gmail.com">let me know</a> and I'll
 link it here.</p>

@@ -156,7 +156,7 @@ module T
       when 'tweets'
         users.sort_by{|user| user.statuses_count.to_i}
       when 'tweeted'
-        users.sort_by{|user| user.status.created_at rescue Time.at(0)}
+        users.sort_by{|user| user.status? ? user.status.created_at : Time.at(0)}
       else
         users.sort_by{|user| user.screen_name.downcase}
       end unless options['unsorted']

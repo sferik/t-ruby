@@ -179,8 +179,8 @@ example, send a user a direct message only if he already follows you:
 #### Start streaming your timeline (Control-C to stop)
     t stream timeline
 
-#### Count the number of employees who work for Twitter
-    t list members twitter/team | wc -l
+#### Count the number of official Twitter engineering accounts
+    t list members twitter/engineering | wc -l
 
 #### Search Twitter for the 20 most recent Tweets that match a specified query
     t search all "query"

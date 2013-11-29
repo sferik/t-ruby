@@ -59,9 +59,9 @@ public key as a trusted certificate (you only need to do this once):
 
     gem cert --add <(curl -Ls https://raw.github.com/sferik/t/master/certs/sferik.pem)
 
-Then, install the gem with the high security trust policy:
+Then, install the gem with the medium security trust policy:
 
-    gem install t -P HighSecurity
+    gem install t -P MediumSecurity
 
 ## Configuration
 Twitter API v1.1 requires OAuth for all of its functionality, so you'll need a

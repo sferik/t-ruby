@@ -29,7 +29,7 @@ First, make sure you have Ruby installed.
 
 If the output looks something like this, you're in good shape:
 
-    ruby 1.9.3p385 (2013-02-06 revision 39114) [x86_64-darwin12.2.1]
+    ruby 1.9.3p484 (2013-11-22 revision 43786) [x86_64-darwin13.0.0]
 
 If the output looks more like this, you need to [install Ruby][ruby]:
 [ruby]: http://www.ruby-lang.org/en/downloads/

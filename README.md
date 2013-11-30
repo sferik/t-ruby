@@ -275,7 +275,7 @@ shell?
 
 ## History
 The [twitter gem][gem] previously contained a command-line interface, up until
-version 0.5.0, when it was [removed][]. This project is offered as a sucessor
+version 0.5.0, when it was [removed][]. This project is offered as a successor
 to that effort, however it is a clean room implementation that contains none of
 the original code.
 

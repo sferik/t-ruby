@@ -139,7 +139,7 @@ obviously can't contain any apostrophes.)
 
 **Note**: If the first user does not follow the second, `t` will exit with a
 non-zero exit code. This allows you to execute commands conditionally, for
-example, send a user a direct message only if he already follows you:
+example, send a user a direct message only if they already follow you:
 
     t does_follow @ev && t dm @ev "What's up, bro?"
 

@@ -59,7 +59,7 @@ offers vastly more commands and capabilities than are available via SMS.</p>
 
 <p>If the output looks something like this, you're in good shape:</p>
 
-<pre><code>ruby 1.9.3p385 (2013-02-06 revision 39114) [x86_64-darwin12.2.1]
+<pre><code>ruby 1.9.3p484 (2013-11-22 revision 43786) [x86_64-darwin13.0.0]
 </code></pre>
 
 <p>If the output looks more like this, you need to <a href="http://www.ruby-lang.org/en/downloads/">install Ruby</a>:</p>
@@ -93,9 +93,9 @@ public key as a trusted certificate (you only need to do this once):</p>
 <pre><code>gem cert --add &lt;(curl -Ls https://raw.github.com/sferik/t/master/certs/sferik.pem)
 </code></pre>
 
-<p>Then, install the gem with the high security trust policy:</p>
+<p>Then, install the gem with the medium security trust policy:</p>
 
-<pre><code>gem install t -P HighSecurity
+<pre><code>gem install t -P MediumSecurity
 </code></pre>
 
 <h2>
@@ -199,7 +199,7 @@ obviously can't contain any apostrophes.)</p>
 
 <p><strong>Note</strong>: If the first user does not follow the second, <code>t</code> will exit with a
 non-zero exit code. This allows you to execute commands conditionally, for
-example, send a user a direct message only if he already follows you:</p>
+example, send a user a direct message only if they already follow you:</p>
 
 <pre><code>t does_follow @ev &amp;&amp; t dm @ev "What's up, bro?"
 </code></pre>
@@ -394,7 +394,7 @@ shell?</p>
 <a name="history" class="anchor" href="#history"><span class="octicon octicon-link"></span></a>History</h2>
 
 <p>The <a href="https://rubygems.org/gems/twitter">twitter gem</a> previously contained a command-line interface, up until
-version 0.5.0, when it was <a href="https://github.com/jnunemaker/twitter/commit/dd2445e3e2c97f38b28a3f32ea902536b3897adf">removed</a>. This project is offered as a sucessor
+version 0.5.0, when it was <a href="https://github.com/jnunemaker/twitter/commit/dd2445e3e2c97f38b28a3f32ea902536b3897adf">removed</a>. This project is offered as a successor
 to that effort, however it is a clean room implementation that contains none of
 the original code.</p>
 

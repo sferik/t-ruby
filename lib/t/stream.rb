@@ -52,8 +52,8 @@ module T
 
     desc "matrix", "Unfortunately, no one can be told what the Matrix is. You have to see it for yourself."
     def matrix
-      client.sample do |tweet|
-        say(tweet.full_text.gsub("\n", ''), [:bold, :green, :on_black])
+      client.sample(:language => "ja") do |tweet|
+        say(tweet.full_text.gsub("\n", '').reverse, [:bold, :green, :on_black])
       end
     end
 

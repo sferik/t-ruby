@@ -7,6 +7,10 @@ module T
 
   private
 
+    def printable_tweet?(tweet)
+      tweet && tweet.respond_to?(:text) && tweet.text
+    end
+
     def build_long_list(list)
       [list.id, ls_formatted_time(list), "@#{list.user.screen_name}", list.slug, list.member_count, list.subscriber_count, list.mode, list.description]
     end

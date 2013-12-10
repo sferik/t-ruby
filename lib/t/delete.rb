@@ -35,7 +35,7 @@ module T
       require 't/core_ext/string'
       direct_message_ids.map!(&:to_i)
       if options['force']
-        direct_messages = client.direct_message_destroy(direct_message_ids)
+        direct_messages = client.destroy_direct_message(direct_message_ids)
         direct_messages.each do |direct_message|
           say "@#{@rcfile.active_profile[0]} deleted the direct message sent to @#{direct_message.recipient.screen_name}: \"#{direct_message.text}\""
         end
@@ -43,7 +43,7 @@ module T
         direct_message_ids.each do |direct_message_id|
           direct_message = client.direct_message(direct_message_id)
           return unless yes? "Are you sure you want to permanently delete the direct message to @#{direct_message.recipient.screen_name}: \"#{direct_message.text}\"? [y/N]"
-          client.direct_message_destroy(direct_message_id)
+          client.destroy_direct_message(direct_message_id)
           say "@#{@rcfile.active_profile[0]} deleted the direct message sent to @#{direct_message.recipient.screen_name}: \"#{direct_message.text}\""
         end
       end
@@ -85,7 +85,7 @@ module T
       unless options['force']
         return unless yes? "Are you sure you want to permanently delete the list \"#{list.name}\"? [y/N]"
       end
-      client.list_destroy(list)
+      client.destroy_list(list)
       say "@#{@rcfile.active_profile[0]} deleted the list \"#{list.name}\"."
     end
 
@@ -96,7 +96,7 @@ module T
       require 't/core_ext/string'
       status_ids.map!(&:to_i)
       if options['force']
-        tweets = client.status_destroy(status_ids, :trim_user => true)
+        tweets = client.destroy_status(status_ids, :trim_user => true)
         tweets.each do |status|
           say "@#{@rcfile.active_profile[0]} deleted the Tweet: \"#{status.full_text}\""
         end
@@ -104,7 +104,7 @@ module T
         status_ids.each do |status_id|
           status = client.status(status_id, :include_my_retweet => false)
           return unless yes? "Are you sure you want to permanently delete @#{status.user.screen_name}'s status: \"#{status.full_text}\"? [y/N]"
-          client.status_destroy(status_id, :trim_user => true)
+          client.destroy_status(status_id, :trim_user => true)
           say "@#{@rcfile.active_profile[0]} deleted the Tweet: \"#{status.full_text}\""
         end
       end

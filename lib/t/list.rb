@@ -28,7 +28,7 @@ module T
     method_option "id", :aliases => "-i", :type => :boolean, :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     def add(list, user, *users)
       users, number = fetch_users(users.unshift(user), options) do |users|
-        client.list_add_members(list, users)
+        client.add_list_members(list, users)
         users
       end
       say "@#{@rcfile.active_profile[0]} added #{pluralize(number, 'member')} to the list \"#{list}\"."
@@ -45,7 +45,7 @@ module T
     def create(list, description=nil)
       opts = description ? {:description => description} : {}
       opts.merge!(:mode => 'private') if options['private']
-      client.list_create(list, opts)
+      client.create_list(list, opts)
       say "@#{@rcfile.active_profile[0]} created the list \"#{list}\"."
     end
 
@@ -92,7 +92,7 @@ module T
     method_option "id", :aliases => "-i", :type => :boolean, :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
     def remove(list, user, *users)
       users, number = fetch_users(users.unshift(user), options) do |users|
-        client.list_remove_members(list, users)
+        client.remove_list_members(list, users)
         users
       end
       say "@#{@rcfile.active_profile[0]} removed #{pluralize(number, 'member')} from the list \"#{list}\"."

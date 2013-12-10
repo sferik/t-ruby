@@ -24,7 +24,7 @@ module T
     desc 'all', 'Stream a random sample of all Tweets (Control-C to stop)'
     method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
-    def all
+    def all # rubocop:disable CyclomaticComplexity
       client.before_request do
         if options['csv']
           require 'csv'
@@ -37,6 +37,7 @@ module T
         end
       end
       client.sample do |tweet|
+        next unless tweet.is_a?(Twitter::Tweet)
         if options['csv']
           print_csv_tweet(tweet)
         elsif options['long']
@@ -53,6 +54,7 @@ module T
     desc 'matrix', 'Unfortunately, no one can be told what the Matrix is. You have to see it for yourself.'
     def matrix
       client.sample(:language => 'ja') do |tweet|
+        next unless tweet.is_a?(Twitter::Tweet)
         say(tweet.full_text.gsub("\n", '').reverse, [:bold, :green, :on_black])
       end
     end
@@ -71,6 +73,7 @@ module T
         search.all(keywords.join(' OR '))
       end
       client.filter(:track => keywords) do |tweet|
+        next unless tweet.is_a?(Twitter::Tweet)
         if options['csv']
           print_csv_tweet(tweet)
         elsif options['long']
@@ -97,6 +100,7 @@ module T
         cli.timeline
       end
       client.user do |tweet|
+        next unless tweet.is_a?(Twitter::Tweet)
         if options['csv']
           print_csv_tweet(tweet)
         elsif options['long']
@@ -113,7 +117,7 @@ module T
     desc 'users USER_ID [USER_ID...]', 'Stream Tweets either from or in reply to specified users (Control-C to stop)'
     method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
-    def users(user_id, *user_ids)
+    def users(user_id, *user_ids) # rubocop:disable CyclomaticComplexity
       user_ids.unshift(user_id)
       user_ids.map!(&:to_i)
       client.before_request do
@@ -128,6 +132,7 @@ module T
         end
       end
       client.follow(user_ids) do |tweet|
+        next unless tweet.is_a?(Twitter::Tweet)
         if options['csv']
           print_csv_tweet(tweet)
         elsif options['long']

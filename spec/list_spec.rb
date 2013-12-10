@@ -185,7 +185,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       before do
         @list.options = @list.options.merge("sort" => "favorites")
       end
-      it "sorts by number of favorites" do
+      it "sorts by the number of favorites" do
         @list.members("presidents")
         expect($stdout.string.chomp).to eq "pengwynn  sferik"
       end
@@ -194,7 +194,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       before do
         @list.options = @list.options.merge("sort" => "followers")
       end
-      it "sorts by number of followers" do
+      it "sorts by the number of followers" do
         @list.members("presidents")
         expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
@@ -203,7 +203,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       before do
         @list.options = @list.options.merge("sort" => "friends")
       end
-      it "sorts by number of friends" do
+      it "sorts by the number of friends" do
         @list.members("presidents")
         expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
@@ -212,7 +212,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       before do
         @list.options = @list.options.merge("sort" => "listed")
       end
-      it "sorts by number of list memberships" do
+      it "sorts by the number of list memberships" do
         @list.members("presidents")
         expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
@@ -221,7 +221,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       before do
         @list.options = @list.options.merge("sort" => "since")
       end
-      it "sorts by the time wshen Twitter account was created" do
+      it "sorts by the time when Twitter account was created" do
         @list.members("presidents")
         expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
@@ -230,7 +230,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       before do
         @list.options = @list.options.merge("sort" => "tweets")
       end
-      it "sorts by number of Tweets" do
+      it "sorts by the number of Tweets" do
         @list.members("presidents")
         expect($stdout.string.chomp).to eq "pengwynn  sferik"
       end

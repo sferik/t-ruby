@@ -519,7 +519,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       before do
         @cli.options = @cli.options.merge("sort" => "favorites")
       end
-      it "sorts by number of favorites" do
+      it "sorts by the number of favorites" do
         @cli.groupies
         expect($stdout.string.chomp).to eq "pengwynn  sferik"
       end
@@ -528,7 +528,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       before do
         @cli.options = @cli.options.merge("sort" => "followers")
       end
-      it "sorts by number of followers" do
+      it "sorts by the number of followers" do
         @cli.groupies
         expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
@@ -537,7 +537,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       before do
         @cli.options = @cli.options.merge("sort" => "friends")
       end
-      it "sorts by number of friends" do
+      it "sorts by the number of friends" do
         @cli.groupies
         expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
@@ -546,7 +546,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       before do
         @cli.options = @cli.options.merge("sort" => "listed")
       end
-      it "sorts by number of list memberships" do
+      it "sorts by the number of list memberships" do
         @cli.groupies
         expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
@@ -564,7 +564,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       before do
         @cli.options = @cli.options.merge("sort" => "tweets")
       end
-      it "sorts by number of Tweets" do
+      it "sorts by the number of Tweets" do
         @cli.groupies
         expect($stdout.string.chomp).to eq "pengwynn  sferik"
       end
@@ -1174,7 +1174,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       before do
         @cli.options = @cli.options.merge("sort" => "favorites")
       end
-      it "sorts by number of favorites" do
+      it "sorts by the number of favorites" do
         @cli.followings
         expect($stdout.string.chomp).to eq "pengwynn  sferik"
       end
@@ -1183,7 +1183,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       before do
         @cli.options = @cli.options.merge("sort" => "followers")
       end
-      it "sorts by number of followers" do
+      it "sorts by the number of followers" do
         @cli.followings
         expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
@@ -1192,7 +1192,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       before do
         @cli.options = @cli.options.merge("sort" => "friends")
       end
-      it "sorts by number of friends" do
+      it "sorts by the number of friends" do
         @cli.followings
         expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
@@ -1201,7 +1201,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       before do
         @cli.options = @cli.options.merge("sort" => "listed")
       end
-      it "sorts by number of list memberships" do
+      it "sorts by the number of list memberships" do
         @cli.followings
         expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
@@ -1219,7 +1219,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       before do
         @cli.options = @cli.options.merge("sort" => "tweets")
       end
-      it "sorts by number of Tweets" do
+      it "sorts by the number of Tweets" do
         @cli.followings
         expect($stdout.string.chomp).to eq "pengwynn  sferik"
       end
@@ -1320,7 +1320,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       before do
         @cli.options = @cli.options.merge("sort" => "favorites")
       end
-      it "sorts by number of favorites" do
+      it "sorts by the number of favorites" do
         @cli.followers
         expect($stdout.string.chomp).to eq "pengwynn  sferik"
       end
@@ -1329,7 +1329,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       before do
         @cli.options = @cli.options.merge("sort" => "followers")
       end
-      it "sorts by number of followers" do
+      it "sorts by the number of followers" do
         @cli.followers
         expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
@@ -1338,7 +1338,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       before do
         @cli.options = @cli.options.merge("sort" => "friends")
       end
-      it "sorts by number of friends" do
+      it "sorts by the number of friends" do
         @cli.followers
         expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
@@ -1347,7 +1347,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       before do
         @cli.options = @cli.options.merge("sort" => "listed")
       end
-      it "sorts by number of list memberships" do
+      it "sorts by the number of list memberships" do
         @cli.followers
         expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
@@ -1365,7 +1365,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       before do
         @cli.options = @cli.options.merge("sort" => "tweets")
       end
-      it "sorts by number of Tweets" do
+      it "sorts by the number of Tweets" do
         @cli.followers
         expect($stdout.string.chomp).to eq "pengwynn  sferik"
       end
@@ -1469,7 +1469,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       before do
         @cli.options = @cli.options.merge("sort" => "favorites")
       end
-      it "sorts by number of favorites" do
+      it "sorts by the number of favorites" do
         @cli.friends
         expect($stdout.string.chomp).to eq "pengwynn  sferik"
       end
@@ -1478,7 +1478,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       before do
         @cli.options = @cli.options.merge("sort" => "followers")
       end
-      it "sorts by number of followers" do
+      it "sorts by the number of followers" do
         @cli.friends
         expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
@@ -1487,7 +1487,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       before do
         @cli.options = @cli.options.merge("sort" => "friends")
       end
-      it "sorts by number of friends" do
+      it "sorts by the number of friends" do
         @cli.friends
         expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
@@ -1496,7 +1496,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       before do
         @cli.options = @cli.options.merge("sort" => "listed")
       end
-      it "sorts by number of list memberships" do
+      it "sorts by the number of list memberships" do
         @cli.friends
         expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
@@ -1514,7 +1514,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       before do
         @cli.options = @cli.options.merge("sort" => "tweets")
       end
-      it "sorts by number of Tweets" do
+      it "sorts by the number of Tweets" do
         @cli.friends
         expect($stdout.string.chomp).to eq "pengwynn  sferik"
       end
@@ -1621,7 +1621,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       before do
         @cli.options = @cli.options.merge("sort" => "favorites")
       end
-      it "sorts by number of favorites" do
+      it "sorts by the number of favorites" do
         @cli.leaders
         expect($stdout.string.chomp).to eq "pengwynn  sferik"
       end
@@ -1630,7 +1630,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       before do
         @cli.options = @cli.options.merge("sort" => "followers")
       end
-      it "sorts by number of followers" do
+      it "sorts by the number of followers" do
         @cli.leaders
         expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
@@ -1639,7 +1639,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       before do
         @cli.options = @cli.options.merge("sort" => "friends")
       end
-      it "sorts by number of friends" do
+      it "sorts by the number of friends" do
         @cli.leaders
         expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
@@ -1648,7 +1648,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       before do
         @cli.options = @cli.options.merge("sort" => "listed")
       end
-      it "sorts by number of list memberships" do
+      it "sorts by the number of list memberships" do
         @cli.leaders
         expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
@@ -1666,7 +1666,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       before do
         @cli.options = @cli.options.merge("sort" => "tweets")
       end
-      it "sorts by number of Tweets" do
+      it "sorts by the number of Tweets" do
         @cli.leaders
         expect($stdout.string.chomp).to eq "pengwynn  sferik"
       end
@@ -1737,7 +1737,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
         expect($stdout.string).to eq <<-eos
 ID,Created at,Screen name,Slug,Members,Subscribers,Mode,Description
 1129440,2009-10-30 14:39:25 +0000,pengwynn,rubyists,499,39,public,""
-574,2009-09-23 01:18:01 +0000,twitter,team,1199,78078,public,""
+574,2009-09-23 01:18:01 +0000,twitter,team,1199,78078,other,""
 73546689,2012-07-08 22:19:05 +0000,sferik,test,2,0,private,""
         eos
       end
@@ -1751,7 +1751,7 @@ ID,Created at,Screen name,Slug,Members,Subscribers,Mode,Description
         expect($stdout.string).to eq <<-eos
 ID        Created at    Screen name  Slug      Members  Subscribers  Mode    ...
  1129440  Oct 30  2009  @pengwynn    rubyists      499           39  public   
-     574  Sep 22  2009  @twitter     team         1199        78078  public   
+     574  Sep 22  2009  @twitter     team         1199        78078  other    
 73546689  Jul  8 14:19  @sferik      test            2            0  private  
         eos
       end
@@ -1769,7 +1769,7 @@ ID        Created at    Screen name  Slug      Members  Subscribers  Mode    ...
       before do
         @cli.options = @cli.options.merge("sort" => "members")
       end
-      it "sorts by the time when Twitter acount was created" do
+      it "sorts by the number of members" do
         @cli.lists
         expect($stdout.string.chomp).to eq "@sferik/test        @pengwynn/rubyists  @twitter/team"
       end
@@ -1778,16 +1778,16 @@ ID        Created at    Screen name  Slug      Members  Subscribers  Mode    ...
       before do
         @cli.options = @cli.options.merge("sort" => "mode")
       end
-      it "sorts by the time when Twitter acount was created" do
+      it "sorts by the mode" do
         @cli.lists
-        expect($stdout.string.chomp).to eq "@sferik/test        @twitter/team       @pengwynn/rubyists"
+        expect($stdout.string.chomp).to eq "@twitter/team       @sferik/test        @pengwynn/rubyists"
       end
     end
-    context "--sort=posted" do
+    context "--sort=since" do
       before do
-        @cli.options = @cli.options.merge("sort" => "posted")
+        @cli.options = @cli.options.merge("sort" => "since")
       end
-      it "sorts by the time when Twitter acount was created" do
+      it "sorts by the time when Twitter list was created" do
         @cli.lists
         expect($stdout.string.chomp).to eq "@twitter/team       @pengwynn/rubyists  @sferik/test"
       end
@@ -1796,7 +1796,7 @@ ID        Created at    Screen name  Slug      Members  Subscribers  Mode    ...
       before do
         @cli.options = @cli.options.merge("sort" => "subscribers")
       end
-      it "sorts by the time when Twitter acount was created" do
+      it "sorts by the number of subscribers" do
         @cli.lists
         expect($stdout.string.chomp).to eq "@sferik/test        @pengwynn/rubyists  @twitter/team"
       end
@@ -2976,7 +2976,7 @@ ID                   Posted at     Screen name       Text
     end
     it "has the correct output" do
       @cli.trend_locations
-      expect($stdout.string.chomp).to eq "Boston         New York       San Francisco  United States  Worldwide"
+      expect($stdout.string.chomp).to eq "San Francisco  Soweto         United States  Worldwide"
     end
     context "--csv" do
       before do
@@ -2986,11 +2986,10 @@ ID                   Posted at     Screen name       Text
         @cli.trend_locations
         expect($stdout.string.chomp).to eq <<-eos.chomp
 WOEID,Parent ID,Type,Name,Country
-2367105,,Town,Boston,United States
-2459115,,Town,New York,United States
-2487956,,Town,San Francisco,United States
-23424977,,Country,United States,United States
-1,,Supername,Worldwide,""
+2487956,23424977,Town,San Francisco,United States
+1587677,23424942,Unknown,Soweto,South Africa
+23424977,1,Country,United States,United States
+1,0,Supername,Worldwide,""
         eos
       end
     end
@@ -3002,11 +3001,10 @@ WOEID,Parent ID,Type,Name,Country
         @cli.trend_locations
         expect($stdout.string.chomp).to eq <<-eos.chomp
 WOEID     Parent ID  Type       Name           Country
- 2367105             Town       Boston         United States
- 2459115             Town       New York       United States
- 2487956             Town       San Francisco  United States
-23424977             Country    United States  United States
-       1             Supername  Worldwide      
+ 2487956   23424977  Town       San Francisco  United States
+ 1587677   23424942  Unknown    Soweto         South Africa
+23424977          1  Country    United States  United States
+       1          0  Supername  Worldwide      
         eos
       end
     end
@@ -3016,43 +3014,43 @@ WOEID     Parent ID  Type       Name           Country
       end
       it "reverses the order of the sort" do
         @cli.trend_locations
-        expect($stdout.string.chomp).to eq "Worldwide      United States  San Francisco  New York       Boston"
+        expect($stdout.string.chomp).to eq "Worldwide      United States  Soweto         San Francisco"
       end
     end
     context "--sort=country" do
       before do
         @cli.options = @cli.options.merge("sort" => "country")
       end
-      it "sorts by number of favorites" do
+      it "sorts by the country name" do
         @cli.trend_locations
-        expect($stdout.string.chomp).to eq "Worldwide      New York       Boston         United States  San Francisco"
+        expect($stdout.string.chomp).to match "Worldwide      Soweto         San Francisco  United States"
       end
     end
     context "--sort=parent" do
       before do
         @cli.options = @cli.options.merge("sort" => "parent")
       end
-      it "sorts by number of favorites" do
+      it "sorts by the parent ID" do
         @cli.trend_locations
-        expect($stdout.string.chomp).to eq "Boston         Worldwide      New York       United States  San Francisco"
+        expect($stdout.string.chomp).to eq "Worldwide      United States  Soweto         San Francisco"
       end
     end
     context "--sort=type" do
       before do
         @cli.options = @cli.options.merge("sort" => "type")
       end
-      it "sorts by number of favorites" do
+      it "sorts by the type" do
         @cli.trend_locations
-        expect($stdout.string.chomp).to eq "United States  Worldwide      New York       Boston         San Francisco"
+        expect($stdout.string.chomp).to eq "United States  Worldwide      San Francisco  Soweto"
       end
     end
     context "--sort=woeid" do
       before do
         @cli.options = @cli.options.merge("sort" => "woeid")
       end
-      it "sorts by number of favorites" do
+      it "sorts by the WOEID" do
         @cli.trend_locations
-        expect($stdout.string.chomp).to eq "Worldwide      Boston         New York       San Francisco  United States"
+        expect($stdout.string.chomp).to eq "Worldwide      Soweto         San Francisco  United States"
       end
     end
     context "--unsorted" do
@@ -3061,7 +3059,7 @@ WOEID     Parent ID  Type       Name           Country
       end
       it "is not sorted" do
         @cli.trend_locations
-        expect($stdout.string.chomp).to eq "Boston         Worldwide      New York       United States  San Francisco"
+        expect($stdout.string.chomp).to eq "Worldwide      San Francisco  United States  Soweto"
       end
     end
   end
@@ -3219,7 +3217,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       before do
         @cli.options = @cli.options.merge("sort" => "favorites")
       end
-      it "sorts by number of favorites" do
+      it "sorts by the number of favorites" do
         @cli.users("sferik", "pengwynn")
         expect($stdout.string.chomp).to eq "pengwynn  sferik"
       end
@@ -3228,7 +3226,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       before do
         @cli.options = @cli.options.merge("sort" => "followers")
       end
-      it "sorts by number of followers" do
+      it "sorts by the number of followers" do
         @cli.users("sferik", "pengwynn")
         expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
@@ -3237,7 +3235,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       before do
         @cli.options = @cli.options.merge("sort" => "friends")
       end
-      it "sorts by number of friends" do
+      it "sorts by the number of friends" do
         @cli.users("sferik", "pengwynn")
         expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
@@ -3256,7 +3254,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       before do
         @cli.options = @cli.options.merge("sort" => "listed")
       end
-      it "sorts by number of list memberships" do
+      it "sorts by the number of list memberships" do
         @cli.users("sferik", "pengwynn")
         expect($stdout.string.chomp).to eq "sferik    pengwynn"
       end
@@ -3274,7 +3272,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       before do
         @cli.options = @cli.options.merge("sort" => "tweets")
       end
-      it "sorts by number of Tweets" do
+      it "sorts by the number of Tweets" do
         @cli.users("sferik", "pengwynn")
         expect($stdout.string.chomp).to eq "pengwynn  sferik"
       end

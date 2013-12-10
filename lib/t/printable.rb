@@ -57,7 +57,7 @@ module T
         lists.sort_by{|user| user.member_count}
       when 'mode'
         lists.sort_by{|user| user.mode}
-      when 'posted'
+      when 'since'
         lists.sort_by{|user| user.created_at}
       when 'subscribers'
         lists.sort_by{|user| user.subscriber_count}

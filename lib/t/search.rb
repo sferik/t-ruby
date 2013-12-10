@@ -90,7 +90,7 @@ module T
     end
     map %w(faves) => :favorites
 
-    desc "list [USER/]LIST QUERY", "Returns Tweets on a list that match specified query."
+    desc "list [USER/]LIST QUERY", "Returns Tweets on a list that match the specified query."
     method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
     method_option "id", :aliases => "-i", :type => :boolean, :default => false, :desc => "Specify user via ID instead of screen name."
     method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."

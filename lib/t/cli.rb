@@ -228,7 +228,7 @@ module T
       else
         user.strip_ats
       end
-      direct_message = client.direct_message_create(user, message)
+      direct_message = client.create_direct_message(user, message)
       say "Direct Message sent from @#{@rcfile.active_profile[0]} to @#{direct_message.recipient.screen_name}."
     end
     map %w(d m) => :dm

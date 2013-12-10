@@ -37,15 +37,17 @@ module T
         end
       end
       client.sample do |tweet|
-        if options['csv']
-          print_csv_tweet(tweet)
-        elsif options['long']
-          array = build_long_tweet(tweet).each_with_index.map do |element, index|
-            TWEET_HEADINGS_FORMATTING[index] % element
+        if printable_tweet?(tweet)
+          if options['csv']
+            print_csv_tweet(tweet)
+          elsif options['long']
+            array = build_long_tweet(tweet).each_with_index.map do |element, index|
+              TWEET_HEADINGS_FORMATTING[index] % element
+            end
+            print_table([array], :truncate => STDOUT.tty?)
+          else
+            print_message(tweet.user.screen_name, tweet.text)
           end
-          print_table([array], :truncate => STDOUT.tty?)
-        else
-          print_message(tweet.user.screen_name, tweet.text)
         end
       end
     end
@@ -53,7 +55,7 @@ module T
     desc "matrix", "Unfortunately, no one can be told what the Matrix is. You have to see it for yourself."
     def matrix
       client.sample do |tweet|
-        if tweet.full_text
+        if printable_tweet?(tweet)
           say(tweet.full_text.gsub("\n", ''), [:bold, :green, :on_black])
         end
       end

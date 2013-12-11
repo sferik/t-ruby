@@ -16,20 +16,20 @@ module T
       super
     end
 
-    desc "block USER [USER...]", "Unblock users."
-    method_option "id", :aliases => "-i", :type => :boolean, :default => false, :desc => "Specify input as Twitter user IDs instead of screen names."
-    method_option "force", :aliases => "-f", :type => :boolean, :default => false
+    desc 'block USER [USER...]', 'Unblock users.'
+    method_option 'id', :aliases => '-i', :type => :boolean, :default => false, :desc => 'Specify input as Twitter user IDs instead of screen names.'
+    method_option 'force', :aliases => '-f', :type => :boolean, :default => false
     def block(user, *users)
-      users, number = fetch_users(users.unshift(user), options) do |users|
-        client.unblock(users)
+      unblocked_users, number = fetch_users(users.unshift(user), options) do |users_to_unblock|
+        client.unblock(users_to_unblock)
       end
       say "@#{@rcfile.active_profile[0]} unblocked #{pluralize(number, 'user')}."
       say
-      say "Run `#{File.basename($0)} block #{users.map{|user| "@#{user.screen_name}"}.join(' ')}` to block."
+      say "Run `#{File.basename($PROGRAM_NAME)} block #{unblocked_users.map { |unblocked_user| "@#{unblocked_user.screen_name}"}.join(' ')}` to block."
     end
 
-    desc "dm [DIRECT_MESSAGE_ID] [DIRECT_MESSAGE_ID...]", "Delete the last Direct Message sent."
-    method_option "force", :aliases => "-f", :type => :boolean, :default => false
+    desc 'dm [DIRECT_MESSAGE_ID] [DIRECT_MESSAGE_ID...]', 'Delete the last Direct Message sent.'
+    method_option 'force', :aliases => '-f', :type => :boolean, :default => false
     def dm(direct_message_id, *direct_message_ids)
       direct_message_ids.unshift(direct_message_id)
       require 't/core_ext/string'
@@ -40,19 +40,18 @@ module T
           say "@#{@rcfile.active_profile[0]} deleted the direct message sent to @#{direct_message.recipient.screen_name}: \"#{direct_message.text}\""
         end
       else
-        direct_message_ids.each do |direct_message_id|
-          direct_message = client.direct_message(direct_message_id)
+        direct_message_ids.each do |direct_message_id_to_delete|
+          direct_message = client.direct_message(direct_message_id_to_delete)
           return unless yes? "Are you sure you want to permanently delete the direct message to @#{direct_message.recipient.screen_name}: \"#{direct_message.text}\"? [y/N]"
-          client.destroy_direct_message(direct_message_id)
+          client.destroy_direct_message(direct_message_id_to_delete)
           say "@#{@rcfile.active_profile[0]} deleted the direct message sent to @#{direct_message.recipient.screen_name}: \"#{direct_message.text}\""
         end
       end
-
     end
     map %w(d m) => :dm
 
-    desc "favorite TWEET_ID [TWEET_ID...]", "Delete favorites."
-    method_option "force", :aliases => "-f", :type => :boolean, :default => false
+    desc 'favorite TWEET_ID [TWEET_ID...]', 'Delete favorites.'
+    method_option 'force', :aliases => '-f', :type => :boolean, :default => false
     def favorite(status_id, *status_ids)
       status_ids.unshift(status_id)
       require 't/core_ext/string'
@@ -63,19 +62,19 @@ module T
           say "@#{@rcfile.active_profile[0]} unfavorited @#{status.user.screen_name}'s status: \"#{status.full_text}\""
         end
       else
-        status_ids.each do |status_id|
-          status = client.status(status_id, :include_my_retweet => false)
+        status_ids.each do |status_id_to_unfavorite|
+          status = client.status(status_id_to_unfavorite, :include_my_retweet => false)
           return unless yes? "Are you sure you want to remove @#{status.user.screen_name}'s status: \"#{status.full_text}\" from your favorites? [y/N]"
-          client.unfavorite(status_id)
+          client.unfavorite(status_id_to_unfavorite)
           say "@#{@rcfile.active_profile[0]} unfavorited @#{status.user.screen_name}'s status: \"#{status.full_text}\""
         end
       end
     end
     map %w(fave favourite) => :favorite
 
-    desc "list LIST", "Delete a list."
-    method_option "force", :aliases => "-f", :type => :boolean, :default => false
-    method_option "id", :aliases => "-i", :type => :boolean, :default => false, :desc => "Specify list via ID instead of slug."
+    desc 'list LIST', 'Delete a list.'
+    method_option 'force', :aliases => '-f', :type => :boolean, :default => false
+    method_option 'id', :aliases => '-i', :type => :boolean, :default => false, :desc => 'Specify list via ID instead of slug.'
     def list(list)
       if options['id']
         require 't/core_ext/string'
@@ -89,8 +88,8 @@ module T
       say "@#{@rcfile.active_profile[0]} deleted the list \"#{list.name}\"."
     end
 
-    desc "status TWEET_ID [TWEET_ID...]", "Delete Tweets."
-    method_option "force", :aliases => "-f", :type => :boolean, :default => false
+    desc 'status TWEET_ID [TWEET_ID...]', 'Delete Tweets.'
+    method_option 'force', :aliases => '-f', :type => :boolean, :default => false
     def status(status_id, *status_ids)
       status_ids.unshift(status_id)
       require 't/core_ext/string'
@@ -101,15 +100,14 @@ module T
           say "@#{@rcfile.active_profile[0]} deleted the Tweet: \"#{status.full_text}\""
         end
       else
-        status_ids.each do |status_id|
-          status = client.status(status_id, :include_my_retweet => false)
+        status_ids.each do |status_id_to_delete|
+          status = client.status(status_id_to_delete, :include_my_retweet => false)
           return unless yes? "Are you sure you want to permanently delete @#{status.user.screen_name}'s status: \"#{status.full_text}\"? [y/N]"
-          client.destroy_status(status_id, :trim_user => true)
+          client.destroy_status(status_id_to_delete, :trim_user => true)
           say "@#{@rcfile.active_profile[0]} deleted the Tweet: \"#{status.full_text}\""
         end
       end
     end
     map %w(post tweet update) => :status
-
   end
 end

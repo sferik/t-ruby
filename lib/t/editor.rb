@@ -4,7 +4,6 @@ require 'shellwords'
 module T
   class Editor
     class << self
-
       def gets
         file = tempfile
         edit(file.path)
@@ -15,7 +14,7 @@ module T
       end
 
       def tempfile
-        Tempfile.new("TWEET_EDITMSG")
+        Tempfile.new('TWEET_EDITMSG')
       end
 
       def edit(path)
@@ -29,7 +28,6 @@ module T
       def system_editor
         RbConfig::CONFIG['host_os'] =~ /mswin|mingw/ ? 'notepad' : 'vi'
       end
-
     end
   end
 end

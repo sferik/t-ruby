@@ -2,8 +2,7 @@ require 'twitter'
 
 module T
   module Requestable
-
-  private
+    private
 
     def client
       return @client if @client
@@ -15,6 +14,5 @@ module T
         config.access_token_secret = @rcfile.active_secret
       end
     end
-
   end
 end

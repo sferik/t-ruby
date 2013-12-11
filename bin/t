@@ -2,7 +2,7 @@
 
 # Trap interrupts to quit cleanly. See
 # https://twitter.com/mitchellh/status/283014103189053442
-Signal.trap("INT") { exit 1 }
+Signal.trap('INT') { exit 1 }
 
 require 'oauth'
 require 't'
@@ -11,7 +11,7 @@ require 'twitter'
 # Output message to $stderr, prefixed with the program name
 def pute(*args)
   first = args.shift.dup
-  first.insert(0, "#{$0}: ")
+  first.insert(0, "#{$PROGRAM_NAME}: ")
   args.unshift(first)
   $stderr.puts(*args)
 end
@@ -19,29 +19,29 @@ end
 begin
   T::CLI.start(ARGV)
 rescue Interrupt
-  pute "Quitting..."
+  pute 'Quitting...'
   exit 1
 rescue OAuth::Unauthorized
-  pute "Authorization failed"
+  pute 'Authorization failed'
   exit 1
 rescue Twitter::Error::TooManyRequests => error
   pute error.message,
-    "The rate limit for this request will reset in #{error.rate_limit.reset_in} seconds.",
-    "While you wait, consider making a polite request for Twitter to increase the API rate limit at https://dev.twitter.com/discussions/10644"
+       "The rate limit for this request will reset in #{error.rate_limit.reset_in} seconds.",
+       'While you wait, consider making a polite request for Twitter to increase the API rate limit at https://dev.twitter.com/discussions/10644'
   exit 1
 rescue Twitter::Error::BadRequest => error
   pute error.message,
-    "Run `t authorize` to authorize."
+       'Run `t authorize` to authorize.'
   exit 1
 rescue Twitter::Error::Forbidden, Twitter::Error::Unauthorized => error
   pute error.message
-  if error.message == "Error processing your OAuth request: Read-only application cannot POST" ||
-    error.message == "This application is not allowed to access or delete your direct messages"
+  if error.message == 'Error processing your OAuth request: Read-only application cannot POST' ||
+    error.message == 'This application is not allowed to access or delete your direct messages'
     $stderr.puts(%q(Make sure to set your Twitter application's Access Level to "Read, Write and Access direct messages".))
     require 'thor'
-    Thor::Shell::Basic.new.ask "Press [Enter] to open the Twitter Developer site."
+    Thor::Shell::Basic.new.ask 'Press [Enter] to open the Twitter Developer site.'
     require 'launchy'
-    Launchy.open("https://dev.twitter.com/apps") { |u,o,e| $stderr.puts "Manually open #{u}" }
+    Launchy.open('https://dev.twitter.com/apps') { |u, o, e| $stderr.puts "Manually open #{u}" }
   end
   exit 1
 rescue Twitter::Error => error

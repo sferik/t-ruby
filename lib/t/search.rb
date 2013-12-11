@@ -23,12 +23,12 @@ module T
       super
     end
 
-    desc "all QUERY", "Returns the #{DEFAULT_NUM_RESULTS} most recent Tweets that match the specified query."
-    method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
-    method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
-    method_option "decode_uris", :aliases => "-d", :type => :boolean, :default => false, :desc => "Decodes t.co URLs into their original form."
-    method_option "number", :aliases => "-n", :type => :numeric, :default => DEFAULT_NUM_RESULTS
-    def all(query)
+    desc 'all QUERY', "Returns the #{DEFAULT_NUM_RESULTS} most recent Tweets that match the specified query."
+    method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
+    method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
+    method_option 'decode_uris', :aliases => '-d', :type => :boolean, :default => false, :desc => 'Decodes t.co URLs into their original form.'
+    method_option 'number', :aliases => '-n', :type => :numeric, :default => DEFAULT_NUM_RESULTS
+    def all(query) # rubocop:disable CyclomaticComplexity
       count = options['number'] || DEFAULT_NUM_RESULTS
       tweets = collect_with_count(count) do |count_opts|
         count_opts[:include_entities] = 1 if options['decode_uris']
@@ -46,7 +46,7 @@ module T
         array = tweets.map do |tweet|
           [tweet.id, ls_formatted_time(tweet), "@#{tweet.user.screen_name}", decode_full_text(tweet, options['decode_uris']).gsub(/\n+/, ' ')]
         end
-        format = options['format'] || TWEET_HEADINGS.size.times.map{"%s"}
+        format = options['format'] || TWEET_HEADINGS.size.times.map { '%s' }
         print_table_with_headings(array, TWEET_HEADINGS, format)
       else
         say unless tweets.empty?
@@ -56,11 +56,11 @@ module T
       end
     end
 
-    desc "favorites [USER] QUERY", "Returns Tweets you've favorited that match the specified query."
-    method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
-    method_option "id", :aliases => "-i", :type => :boolean, :default => false, :desc => "Specify user via ID instead of screen name."
-    method_option "decode_uris", :aliases => "-d", :type => :boolean, :default => false, :desc => "Decodes t.co URLs into their original form."
-    method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
+    desc 'favorites [USER] QUERY', "Returns Tweets you've favorited that match the specified query."
+    method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
+    method_option 'id', :aliases => '-i', :type => :boolean, :default => false, :desc => 'Specify user via ID instead of screen name.'
+    method_option 'decode_uris', :aliases => '-d', :type => :boolean, :default => false, :desc => 'Decodes t.co URLs into their original form.'
+    method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
     def favorites(*args)
       opts = {:count => MAX_NUM_RESULTS}
       query = args.pop
@@ -68,11 +68,7 @@ module T
       opts[:include_entities] = 1 if options['decode_uris']
       if user
         require 't/core_ext/string'
-        user = if options['id']
-          user.to_i
-        else
-          user.strip_ats
-        end
+        user = options['id'] ? user.to_i : user.strip_ats
         tweets = collect_with_max_id do |max_id|
           opts[:max_id] = max_id unless max_id.nil?
           client.favorites(user, opts)
@@ -90,11 +86,11 @@ module T
     end
     map %w(faves) => :favorites
 
-    desc "list [USER/]LIST QUERY", "Returns Tweets on a list that match the specified query."
-    method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
-    method_option "id", :aliases => "-i", :type => :boolean, :default => false, :desc => "Specify user via ID instead of screen name."
-    method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
-    method_option "decode_uris", :aliases => "-d", :type => :boolean, :default => false, :desc => "Decodes t.co URLs into their original form."
+    desc 'list [USER/]LIST QUERY', 'Returns Tweets on a list that match the specified query.'
+    method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
+    method_option 'id', :aliases => '-i', :type => :boolean, :default => false, :desc => 'Specify user via ID instead of screen name.'
+    method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
+    method_option 'decode_uris', :aliases => '-d', :type => :boolean, :default => false, :desc => 'Decodes t.co URLs into their original form.'
     def list(list, query)
       owner, list = extract_owner(list, options)
       opts = {:count => MAX_NUM_RESULTS}
@@ -109,10 +105,10 @@ module T
       print_tweets(tweets)
     end
 
-    desc "mentions QUERY", "Returns Tweets mentioning you that match the specified query."
-    method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
-    method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
-    method_option "decode_uris", :aliases => "-d", :type => :boolean, :default => false, :desc => "Decodes t.co URLs into their original form."
+    desc 'mentions QUERY', 'Returns Tweets mentioning you that match the specified query.'
+    method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
+    method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
+    method_option 'decode_uris', :aliases => '-d', :type => :boolean, :default => false, :desc => 'Decodes t.co URLs into their original form.'
     def mentions(query)
       opts = {:count => MAX_NUM_RESULTS}
       opts[:include_entities] = 1 if options['decode_uris']
@@ -127,11 +123,11 @@ module T
     end
     map %w(replies) => :mentions
 
-    desc "retweets [USER] QUERY", "Returns Tweets you've retweeted that match the specified query."
-    method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
-    method_option "id", :aliases => "-i", :type => :boolean, :default => false, :desc => "Specify user via ID instead of screen name."
-    method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
-    method_option "decode_uris", :aliases => "-d", :type => :boolean, :default => false, :desc => "Decodes t.co URLs into their original form."
+    desc 'retweets [USER] QUERY', "Returns Tweets you've retweeted that match the specified query."
+    method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
+    method_option 'id', :aliases => '-i', :type => :boolean, :default => false, :desc => 'Specify user via ID instead of screen name.'
+    method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
+    method_option 'decode_uris', :aliases => '-d', :type => :boolean, :default => false, :desc => 'Decodes t.co URLs into their original form.'
     def retweets(*args)
       opts = {:count => MAX_NUM_RESULTS}
       query = args.pop
@@ -139,11 +135,7 @@ module T
       opts[:include_entities] = 1 if options['decode_uris']
       if user
         require 't/core_ext/string'
-        user = if options['id']
-          user.to_i
-        else
-          user.strip_ats
-        end
+        user = options['id'] ? user.to_i : user.strip_ats
         tweets = collect_with_max_id do |max_id|
           opts[:max_id] = max_id unless max_id.nil?
           client.retweeted_by_user(user, opts)
@@ -161,15 +153,15 @@ module T
     end
     map %w(rts) => :retweets
 
-    desc "timeline [USER] QUERY", "Returns Tweets in your timeline that match the specified query."
-    method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
-    method_option "decode_uris", :aliases => "-d", :type => :boolean, :default => false, :desc => "Decodes t.co URLs into their original form."
-    method_option "exclude", :aliases => "-e", :type => :string, :enum => %w(replies retweets), :desc => "Exclude certain types of Tweets from the results.", :banner => "TYPE"
-    method_option "id", :aliases => "-i", :type => :boolean, :default => false, :desc => "Specify user via ID instead of screen name."
-    method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
-    method_option "max_id", :aliases => "-m", :type => :numeric, :desc => "Returns only the results with an ID less than the specified ID."
-    method_option "since_id", :aliases => "-s", :type => :numeric, :desc => "Returns only the results with an ID greater than the specified ID."
-    def timeline(*args)
+    desc 'timeline [USER] QUERY', 'Returns Tweets in your timeline that match the specified query.'
+    method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
+    method_option 'decode_uris', :aliases => '-d', :type => :boolean, :default => false, :desc => 'Decodes t.co URLs into their original form.'
+    method_option 'exclude', :aliases => '-e', :type => :string, :enum => %w(replies retweets), :desc => 'Exclude certain types of Tweets from the results.', :banner => 'TYPE'
+    method_option 'id', :aliases => '-i', :type => :boolean, :default => false, :desc => 'Specify user via ID instead of screen name.'
+    method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
+    method_option 'max_id', :aliases => '-m', :type => :numeric, :desc => 'Returns only the results with an ID less than the specified ID.'
+    method_option 'since_id', :aliases => '-s', :type => :numeric, :desc => 'Returns only the results with an ID greater than the specified ID.'
+    def timeline(*args) # rubocop:disable CyclomaticComplexity
       query = args.pop
       user = args.pop
       opts = {:count => MAX_NUM_RESULTS}
@@ -180,11 +172,7 @@ module T
       opts[:since_id] = options['since_id'] if options['since_id']
       if user
         require 't/core_ext/string'
-        user = if options['id']
-          user.to_i
-        else
-          user.strip_ats
-        end
+        user = options['id'] ? user.to_i : user.strip_ats
         tweets = collect_with_max_id do |max_id|
           opts[:max_id] = max_id unless max_id.nil?
           client.user_timeline(user, opts)
@@ -202,18 +190,17 @@ module T
     end
     map %w(tl) => :timeline
 
-    desc "users QUERY", "Returns users that match the specified query."
-    method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
-    method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
-    method_option "reverse", :aliases => "-r", :type => :boolean, :default => false, :desc => "Reverse the order of the sort."
-    method_option "sort", :aliases => "-s", :type => :string, :enum => %w(favorites followers friends listed screen_name since tweets tweeted), :default => "screen_name", :desc => "Specify the order of the results.", :banner => "ORDER"
-    method_option "unsorted", :aliases => "-u", :type => :boolean, :default => false, :desc => "Output is not sorted."
+    desc 'users QUERY', 'Returns users that match the specified query.'
+    method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
+    method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
+    method_option 'reverse', :aliases => '-r', :type => :boolean, :default => false, :desc => 'Reverse the order of the sort.'
+    method_option 'sort', :aliases => '-s', :type => :string, :enum => %w(favorites followers friends listed screen_name since tweets tweeted), :default => 'screen_name', :desc => 'Specify the order of the results.', :banner => 'ORDER'
+    method_option 'unsorted', :aliases => '-u', :type => :boolean, :default => false, :desc => 'Output is not sorted.'
     def users(query)
       users = collect_with_page do |page|
         client.user_search(query, :page => page)
       end
       print_users(users)
     end
-
   end
 end

@@ -7,7 +7,7 @@ module T
     FILE_NAME = '.trc'
 
     def initialize
-      @path = File.join(File.expand_path("~"), FILE_NAME)
+      @path = File.join(File.expand_path('~'), FILE_NAME)
       @data = load_file
     end
 
@@ -20,7 +20,7 @@ module T
       if possibilities.size == 1
         possibilities.first
       else
-        raise ArgumentError, "Username #{username} is #{possibilities.size < 1 ? 'not found.' : 'ambiguous, matching ' + possibilities.join(', ')}"
+        fail ArgumentError, "Username #{username} is #{possibilities.size < 1 ? 'not found.' : 'ambiguous, matching ' + possibilities.join(', ')}"
       end
     end
 
@@ -93,7 +93,7 @@ module T
     end
 
     def reset
-      self.send(:initialize)
+      send(:initialize)
     end
 
   private
@@ -108,10 +108,9 @@ module T
 
     def write
       require 'yaml'
-      File.open(@path, File::RDWR|File::TRUNC|File::CREAT, 0600) do |rcfile|
+      File.open(@path, File::RDWR | File::TRUNC | File::CREAT, 0600) do |rcfile|
         rcfile.write @data.to_yaml
       end
     end
-
   end
 end

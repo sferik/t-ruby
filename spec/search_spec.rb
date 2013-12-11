@@ -14,9 +14,9 @@ describe T::Search do
   end
 
   before :each do
-    T::RCFile.instance.path = fixture_path + "/.trc"
+    T::RCFile.instance.path = fixture_path + '/.trc'
     @search = T::Search.new
-    @search.options = @search.options.merge("color" => "always")
+    @search.options = @search.options.merge('color' => 'always')
     @old_stderr = $stderr
     $stderr = StringIO.new
     @old_stdout = $stdout
@@ -29,16 +29,16 @@ describe T::Search do
     $stdout = @old_stdout
   end
 
-  describe "#all" do
+  describe '#all' do
     before do
-      stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :count => "20"}).to_return(:body => fixture("search.json"))
+      stub_get('/1.1/search/tweets.json').with(:query => {:q => 'twitter', :count => '20'}).to_return(:body => fixture('search.json'))
     end
-    it "requests the correct resource" do
-      @search.all("twitter")
-      expect(a_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :count => "20"})).to have_been_made
+    it 'requests the correct resource' do
+      @search.all('twitter')
+      expect(a_get('/1.1/search/tweets.json').with(:query => {:q => 'twitter', :count => '20'})).to have_been_made
     end
-    it "has the correct output" do
-      @search.all("twitter")
+    it 'has the correct output' do
+      @search.all('twitter')
       expect($stdout.string).to eq <<-eos
 
    @saintsday998
@@ -427,12 +427,12 @@ describe T::Search do
 
       eos
     end
-    context "--csv" do
+    context '--csv' do
       before do
-        @search.options = @search.options.merge("csv" => true)
+        @search.options = @search.options.merge('csv' => true)
       end
-      it "outputs in CSV format" do
-        @search.all("twitter")
+      it 'outputs in CSV format' do
+        @search.all('twitter')
         expect($stdout.string).to eq <<-eos
 ID,Posted at,Screen name,Text
 267024754278539266,2012-11-09 22:03:57 +0000,saintsday998,"Murray Energy Corp. Obama Reelection, Announces Layoffs http://t.co/D1OPtKnw via @HuffPostBiz MAYBE  his workers can do something for him ?"
@@ -546,28 +546,28 @@ http://t.co/erdKx6HD"
         eos
       end
     end
-    context "--decode-uris" do
+    context '--decode-uris' do
       before(:each) do
-        @search.options = @search.options.merge("decode_uris" => true)
-        stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :include_entities => 1, :count => 20}).to_return(:body => fixture("search_with_entities.json"))
-        stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :include_entities => 1, :count => 5, :max_id => 264784855672442882}).to_return(:body => fixture("search_with_entities.json"))
+        @search.options = @search.options.merge('decode_uris' => true)
+        stub_get('/1.1/search/tweets.json').with(:query => {:q => 'twitter', :include_entities => 1, :count => 20}).to_return(:body => fixture('search_with_entities.json'))
+        stub_get('/1.1/search/tweets.json').with(:query => {:q => 'twitter', :include_entities => 1, :count => 5, :max_id => 264_784_855_672_442_882}).to_return(:body => fixture('search_with_entities.json'))
       end
-      it "requests the correct resource" do
-        @search.all("twitter")
-        expect(a_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :include_entities => 1, :count => 20})).to have_been_made
-        expect(a_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :include_entities => 1, :count => 5, :max_id => 264784855672442882})).to have_been_made
+      it 'requests the correct resource' do
+        @search.all('twitter')
+        expect(a_get('/1.1/search/tweets.json').with(:query => {:q => 'twitter', :include_entities => 1, :count => 20})).to have_been_made
+        expect(a_get('/1.1/search/tweets.json').with(:query => {:q => 'twitter', :include_entities => 1, :count => 5, :max_id => 264_784_855_672_442_882})).to have_been_made
       end
-      it "decodes URLs" do
-        @search.all("twitter")
-        expect($stdout.string).to include "http://semver.org"
+      it 'decodes URLs' do
+        @search.all('twitter')
+        expect($stdout.string).to include 'http://semver.org'
       end
     end
-    context "--long" do
+    context '--long' do
       before do
-        @search.options = @search.options.merge("long" => true)
+        @search.options = @search.options.merge('long' => true)
       end
-      it "outputs in long format" do
-        @search.all("twitter")
+      it 'outputs in long format' do
+        @search.all('twitter')
         expect($stdout.string).to eq <<-eos
 ID                  Posted at     Screen name       Text
 267024754278539266  Nov  9 14:03  @saintsday998     Murray Energy Corp. Obama...
@@ -671,40 +671,40 @@ ID                  Posted at     Screen name       Text
         eos
       end
     end
-    context "--number" do
+    context '--number' do
       before do
-        stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :count => "1"}).to_return(:body => fixture("search.json"))
-        stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :count => "200"}).to_return(:body => fixture("search.json"))
-        stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :count => "103", :max_id => "267024711169503231"}).to_return(:body => fixture("search.json"))
-        stub_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :count => "5", :max_id => "267024711169503231"}).to_return(:body => fixture("search.json"))
+        stub_get('/1.1/search/tweets.json').with(:query => {:q => 'twitter', :count => '1'}).to_return(:body => fixture('search.json'))
+        stub_get('/1.1/search/tweets.json').with(:query => {:q => 'twitter', :count => '200'}).to_return(:body => fixture('search.json'))
+        stub_get('/1.1/search/tweets.json').with(:query => {:q => 'twitter', :count => '103', :max_id => '267024711169503231'}).to_return(:body => fixture('search.json'))
+        stub_get('/1.1/search/tweets.json').with(:query => {:q => 'twitter', :count => '5', :max_id => '267024711169503231'}).to_return(:body => fixture('search.json'))
       end
-      it "limits the number of results to 1" do
-        @search.options = @search.options.merge("number" => 1)
-        results = @search.all("twitter")
-        expect(a_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :count => "1"})).to have_been_made
+      it 'limits the number of results to 1' do
+        @search.options = @search.options.merge('number' => 1)
+        @search.all('twitter')
+        expect(a_get('/1.1/search/tweets.json').with(:query => {:q => 'twitter', :count => '1'})).to have_been_made
       end
-      it "limits the number of results to 201" do
-        @search.options = @search.options.merge("number" => 201)
-        @search.all("twitter")
-        expect(a_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :count => "200"})).to have_been_made
-        expect(a_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :count => "103", :max_id => "267024711169503231"})).to have_been_made
-        expect(a_get("/1.1/search/tweets.json").with(:query => {:q => "twitter", :count => "5", :max_id => "267024711169503231"})).to have_been_made
+      it 'limits the number of results to 201' do
+        @search.options = @search.options.merge('number' => 201)
+        @search.all('twitter')
+        expect(a_get('/1.1/search/tweets.json').with(:query => {:q => 'twitter', :count => '200'})).to have_been_made
+        expect(a_get('/1.1/search/tweets.json').with(:query => {:q => 'twitter', :count => '103', :max_id => '267024711169503231'})).to have_been_made
+        expect(a_get('/1.1/search/tweets.json').with(:query => {:q => 'twitter', :count => '5', :max_id => '267024711169503231'})).to have_been_made
       end
     end
   end
 
-  describe "#favorites" do
+  describe '#favorites' do
     before do
-      stub_get("/1.1/favorites/list.json").with(:query => {:count => "200"}).to_return(:body => fixture("statuses.json"))
-      stub_get("/1.1/favorites/list.json").with(:query => {:count => "200", :max_id => "244099460672679937"}).to_return(:body => fixture("empty_array.json"))
+      stub_get('/1.1/favorites/list.json').with(:query => {:count => '200'}).to_return(:body => fixture('statuses.json'))
+      stub_get('/1.1/favorites/list.json').with(:query => {:count => '200', :max_id => '244099460672679937'}).to_return(:body => fixture('empty_array.json'))
     end
-    it "requests the correct resource" do
-      @search.favorites("twitter")
-      expect(a_get("/1.1/favorites/list.json").with(:query => {:count => "200"})).to have_been_made
-      expect(a_get("/1.1/favorites/list.json").with(:query => {:count => "200", :max_id => "244099460672679937"})).to have_been_made
+    it 'requests the correct resource' do
+      @search.favorites('twitter')
+      expect(a_get('/1.1/favorites/list.json').with(:query => {:count => '200'})).to have_been_made
+      expect(a_get('/1.1/favorites/list.json').with(:query => {:count => '200', :max_id => '244099460672679937'})).to have_been_made
     end
-    it "has the correct output" do
-      @search.favorites("twitter")
+    it 'has the correct output' do
+      @search.favorites('twitter')
       expect($stdout.string).to eq <<-eos
    @sferik
    @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem 
@@ -715,12 +715,12 @@ ID                  Posted at     Screen name       Text
 
       eos
     end
-    context "--csv" do
+    context '--csv' do
       before do
-        @search.options = @search.options.merge("csv" => true)
+        @search.options = @search.options.merge('csv' => true)
       end
-      it "outputs in CSV format" do
-        @search.favorites("twitter")
+      it 'outputs in CSV format' do
+        @search.favorites('twitter')
         expect($stdout.string).to eq <<-eos
 ID,Posted at,Screen name,Text
 244102209942458368,2012-09-07 15:57:56 +0000,sferik,"@episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem to be missing ""1.1"" from the URL."
@@ -728,28 +728,28 @@ ID,Posted at,Screen name,Text
         eos
       end
     end
-    context "--decode-uris" do
+    context '--decode-uris' do
       before(:each) do
-        @search.options = @search.options.merge("decode_uris" => true)
-        stub_get("/1.1/favorites/list.json").with(:query => {:count => "200", :include_entities => 1}).to_return(:body => fixture("statuses.json"))
-        stub_get("/1.1/favorites/list.json").with(:query => {:count => "200", :include_entities => 1, :max_id => "244099460672679937"}).to_return(:body => fixture("empty_array.json"))
+        @search.options = @search.options.merge('decode_uris' => true)
+        stub_get('/1.1/favorites/list.json').with(:query => {:count => '200', :include_entities => 1}).to_return(:body => fixture('statuses.json'))
+        stub_get('/1.1/favorites/list.json').with(:query => {:count => '200', :include_entities => 1, :max_id => '244099460672679937'}).to_return(:body => fixture('empty_array.json'))
       end
-      it "requests the correct resource" do
-        @search.favorites("twitter")
-        expect(a_get("/1.1/favorites/list.json").with(:query => {:count => "200", :include_entities => 1})).to have_been_made
-        expect(a_get("/1.1/favorites/list.json").with(:query => {:count => "200", :include_entities => 1, :max_id => "244099460672679937"})).to have_been_made
+      it 'requests the correct resource' do
+        @search.favorites('twitter')
+        expect(a_get('/1.1/favorites/list.json').with(:query => {:count => '200', :include_entities => 1})).to have_been_made
+        expect(a_get('/1.1/favorites/list.json').with(:query => {:count => '200', :include_entities => 1, :max_id => '244099460672679937'})).to have_been_made
       end
-      it "decodes URLs" do
-        @search.favorites("twitter")
-        expect($stdout.string).to include "https://twitter.com/sferik/status/243988000076337152"
+      it 'decodes URLs' do
+        @search.favorites('twitter')
+        expect($stdout.string).to include 'https://twitter.com/sferik/status/243988000076337152'
       end
     end
-    context "--long" do
+    context '--long' do
       before do
-        @search.options = @search.options.merge("long" => true)
+        @search.options = @search.options.merge('long' => true)
       end
-      it "outputs in long format" do
-        @search.favorites("twitter")
+      it 'outputs in long format' do
+        @search.favorites('twitter')
         expect($stdout.string).to eq <<-eos
 ID                  Posted at     Screen name  Text
 244102209942458368  Sep  7 07:57  @sferik      @episod @twitterapi now https:...
@@ -757,27 +757,27 @@ ID                  Posted at     Screen name  Text
         eos
       end
     end
-    context "Twitter is down" do
-      it "retries 3 times and then raise an error" do
-        stub_get("/1.1/favorites/list.json").with(:query => {:count => "200"}).to_return(:status => 502)
+    context 'Twitter is down' do
+      it 'retries 3 times and then raise an error' do
+        stub_get('/1.1/favorites/list.json').with(:query => {:count => '200'}).to_return(:status => 502)
         expect do
-          @search.favorites("twitter")
+          @search.favorites('twitter')
         end.to raise_error(Twitter::Error::BadGateway)
-        expect(a_get("/1.1/favorites/list.json").with(:query => {:count => "200"})).to have_been_made.times(3)
+        expect(a_get('/1.1/favorites/list.json').with(:query => {:count => '200'})).to have_been_made.times(3)
       end
     end
-    context "with a user passed" do
+    context 'with a user passed' do
       before do
-        stub_get("/1.1/favorites/list.json").with(:query => {:count => "200", :screen_name => "sferik"}).to_return(:body => fixture("statuses.json"))
-        stub_get("/1.1/favorites/list.json").with(:query => {:count => "200", :max_id => "244099460672679937", :screen_name => "sferik"}).to_return(:body => fixture("empty_array.json"))
+        stub_get('/1.1/favorites/list.json').with(:query => {:count => '200', :screen_name => 'sferik'}).to_return(:body => fixture('statuses.json'))
+        stub_get('/1.1/favorites/list.json').with(:query => {:count => '200', :max_id => '244099460672679937', :screen_name => 'sferik'}).to_return(:body => fixture('empty_array.json'))
       end
-      it "requests the correct resource" do
-        @search.favorites("sferik", "twitter")
-        expect(a_get("/1.1/favorites/list.json").with(:query => {:count => "200", :screen_name => "sferik"})).to have_been_made
-        expect(a_get("/1.1/favorites/list.json").with(:query => {:count => "200", :max_id => "244099460672679937", :screen_name => "sferik"})).to have_been_made
+      it 'requests the correct resource' do
+        @search.favorites('sferik', 'twitter')
+        expect(a_get('/1.1/favorites/list.json').with(:query => {:count => '200', :screen_name => 'sferik'})).to have_been_made
+        expect(a_get('/1.1/favorites/list.json').with(:query => {:count => '200', :max_id => '244099460672679937', :screen_name => 'sferik'})).to have_been_made
       end
-      it "has the correct output" do
-        @search.favorites("sferik", "twitter")
+      it 'has the correct output' do
+        @search.favorites('sferik', 'twitter')
         expect($stdout.string).to eq <<-eos
    @sferik
    @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem 
@@ -788,19 +788,19 @@ ID                  Posted at     Screen name  Text
 
         eos
       end
-      context "--id" do
+      context '--id' do
         before do
-          @search.options = @search.options.merge("id" => true)
-          stub_get("/1.1/favorites/list.json").with(:query => {:count => "200", :user_id => "7505382"}).to_return(:body => fixture("statuses.json"))
-          stub_get("/1.1/favorites/list.json").with(:query => {:count => "200", :max_id => "244099460672679937", :user_id => "7505382"}).to_return(:body => fixture("empty_array.json"))
+          @search.options = @search.options.merge('id' => true)
+          stub_get('/1.1/favorites/list.json').with(:query => {:count => '200', :user_id => '7505382'}).to_return(:body => fixture('statuses.json'))
+          stub_get('/1.1/favorites/list.json').with(:query => {:count => '200', :max_id => '244099460672679937', :user_id => '7505382'}).to_return(:body => fixture('empty_array.json'))
         end
-        it "requests the correct resource" do
-          @search.favorites("7505382", "twitter")
-          expect(a_get("/1.1/favorites/list.json").with(:query => {:count => "200", :user_id => "7505382"})).to have_been_made
-          expect(a_get("/1.1/favorites/list.json").with(:query => {:count => "200", :max_id => "244099460672679937", :user_id => "7505382"})).to have_been_made
+        it 'requests the correct resource' do
+          @search.favorites('7505382', 'twitter')
+          expect(a_get('/1.1/favorites/list.json').with(:query => {:count => '200', :user_id => '7505382'})).to have_been_made
+          expect(a_get('/1.1/favorites/list.json').with(:query => {:count => '200', :max_id => '244099460672679937', :user_id => '7505382'})).to have_been_made
         end
-        it "has the correct output" do
-          @search.favorites("7505382", "twitter")
+        it 'has the correct output' do
+          @search.favorites('7505382', 'twitter')
           expect($stdout.string).to eq <<-eos
    @sferik
    @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem 
@@ -815,18 +815,18 @@ ID                  Posted at     Screen name  Text
     end
   end
 
-  describe "#mentions" do
+  describe '#mentions' do
     before do
-      stub_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => "200"}).to_return(:body => fixture("statuses.json"))
-      stub_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => "200", :max_id => "244099460672679937"}).to_return(:body => fixture("empty_array.json"))
+      stub_get('/1.1/statuses/mentions_timeline.json').with(:query => {:count => '200'}).to_return(:body => fixture('statuses.json'))
+      stub_get('/1.1/statuses/mentions_timeline.json').with(:query => {:count => '200', :max_id => '244099460672679937'}).to_return(:body => fixture('empty_array.json'))
     end
-    it "requests the correct resource" do
-      @search.mentions("twitter")
-      expect(a_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => "200"})).to have_been_made
-      expect(a_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => "200", :max_id => "244099460672679937"})).to have_been_made
+    it 'requests the correct resource' do
+      @search.mentions('twitter')
+      expect(a_get('/1.1/statuses/mentions_timeline.json').with(:query => {:count => '200'})).to have_been_made
+      expect(a_get('/1.1/statuses/mentions_timeline.json').with(:query => {:count => '200', :max_id => '244099460672679937'})).to have_been_made
     end
-    it "has the correct output" do
-      @search.mentions("twitter")
+    it 'has the correct output' do
+      @search.mentions('twitter')
       expect($stdout.string).to eq <<-eos
    @sferik
    @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem 
@@ -837,12 +837,12 @@ ID                  Posted at     Screen name  Text
 
       eos
     end
-    context "--csv" do
+    context '--csv' do
       before do
-        @search.options = @search.options.merge("csv" => true)
+        @search.options = @search.options.merge('csv' => true)
       end
-      it "outputs in CSV format" do
-        @search.mentions("twitter")
+      it 'outputs in CSV format' do
+        @search.mentions('twitter')
         expect($stdout.string).to eq <<-eos
 ID,Posted at,Screen name,Text
 244102209942458368,2012-09-07 15:57:56 +0000,sferik,"@episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem to be missing ""1.1"" from the URL."
@@ -850,28 +850,28 @@ ID,Posted at,Screen name,Text
         eos
       end
     end
-    context "--decode-uris" do
+    context '--decode-uris' do
       before(:each) do
-        @search.options = @search.options.merge("decode_uris" => true)
-        stub_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => "200", :include_entities => 1}).to_return(:body => fixture("statuses.json"))
-        stub_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => "200", :include_entities => 1, :max_id => "244099460672679937"}).to_return(:body => fixture("empty_array.json"))
+        @search.options = @search.options.merge('decode_uris' => true)
+        stub_get('/1.1/statuses/mentions_timeline.json').with(:query => {:count => '200', :include_entities => 1}).to_return(:body => fixture('statuses.json'))
+        stub_get('/1.1/statuses/mentions_timeline.json').with(:query => {:count => '200', :include_entities => 1, :max_id => '244099460672679937'}).to_return(:body => fixture('empty_array.json'))
       end
-      it "requests the correct resource" do
-        @search.mentions("twitter")
-        expect(a_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => "200", :include_entities => 1})).to have_been_made
-        expect(a_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => "200", :include_entities => 1, :max_id => "244099460672679937"})).to have_been_made
+      it 'requests the correct resource' do
+        @search.mentions('twitter')
+        expect(a_get('/1.1/statuses/mentions_timeline.json').with(:query => {:count => '200', :include_entities => 1})).to have_been_made
+        expect(a_get('/1.1/statuses/mentions_timeline.json').with(:query => {:count => '200', :include_entities => 1, :max_id => '244099460672679937'})).to have_been_made
       end
-      it "decodes URLs" do
-        @search.mentions("twitter")
-        expect($stdout.string).to include "https://twitter.com/sferik/status/243988000076337152"
+      it 'decodes URLs' do
+        @search.mentions('twitter')
+        expect($stdout.string).to include 'https://twitter.com/sferik/status/243988000076337152'
       end
     end
-    context "--long" do
+    context '--long' do
       before do
-        @search.options = @search.options.merge("long" => true)
+        @search.options = @search.options.merge('long' => true)
       end
-      it "outputs in long format" do
-        @search.mentions("twitter")
+      it 'outputs in long format' do
+        @search.mentions('twitter')
         expect($stdout.string).to eq <<-eos
 ID                  Posted at     Screen name  Text
 244102209942458368  Sep  7 07:57  @sferik      @episod @twitterapi now https:...
@@ -879,29 +879,29 @@ ID                  Posted at     Screen name  Text
         eos
       end
     end
-    context "Twitter is down" do
-      it "retries 3 times and then raise an error" do
-        stub_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => "200"}).to_return(:status => 502)
+    context 'Twitter is down' do
+      it 'retries 3 times and then raise an error' do
+        stub_get('/1.1/statuses/mentions_timeline.json').with(:query => {:count => '200'}).to_return(:status => 502)
         expect do
-          @search.mentions("twitter")
+          @search.mentions('twitter')
         end.to raise_error(Twitter::Error::BadGateway)
-        expect(a_get("/1.1/statuses/mentions_timeline.json").with(:query => {:count => "200"})).to have_been_made.times(3)
+        expect(a_get('/1.1/statuses/mentions_timeline.json').with(:query => {:count => '200'})).to have_been_made.times(3)
       end
     end
   end
 
-  describe "#list" do
+  describe '#list' do
     before do
-      stub_get("/1.1/lists/statuses.json").with(:query => {:count => "200", :owner_screen_name => "testcli", :slug => "presidents"}).to_return(:body => fixture("statuses.json"))
-      stub_get("/1.1/lists/statuses.json").with(:query => {:count => "200", :max_id => "244099460672679937", :owner_screen_name => "testcli", :slug => "presidents"}).to_return(:body => fixture("empty_array.json"))
+      stub_get('/1.1/lists/statuses.json').with(:query => {:count => '200', :owner_screen_name => 'testcli', :slug => 'presidents'}).to_return(:body => fixture('statuses.json'))
+      stub_get('/1.1/lists/statuses.json').with(:query => {:count => '200', :max_id => '244099460672679937', :owner_screen_name => 'testcli', :slug => 'presidents'}).to_return(:body => fixture('empty_array.json'))
     end
-    it "requests the correct resource" do
-      @search.list("presidents", "twitter")
-      expect(a_get("/1.1/lists/statuses.json").with(:query => {:count => "200", :owner_screen_name => "testcli", :slug => "presidents"})).to have_been_made
-      expect(a_get("/1.1/lists/statuses.json").with(:query => {:count => "200", :max_id => "244099460672679937", :owner_screen_name => "testcli", :slug => "presidents"})).to have_been_made
+    it 'requests the correct resource' do
+      @search.list('presidents', 'twitter')
+      expect(a_get('/1.1/lists/statuses.json').with(:query => {:count => '200', :owner_screen_name => 'testcli', :slug => 'presidents'})).to have_been_made
+      expect(a_get('/1.1/lists/statuses.json').with(:query => {:count => '200', :max_id => '244099460672679937', :owner_screen_name => 'testcli', :slug => 'presidents'})).to have_been_made
     end
-    it "has the correct output" do
-      @search.list("presidents", "twitter")
+    it 'has the correct output' do
+      @search.list('presidents', 'twitter')
       expect($stdout.string).to eq <<-eos
    @sferik
    @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem 
@@ -912,12 +912,12 @@ ID                  Posted at     Screen name  Text
 
       eos
     end
-    context "--csv" do
+    context '--csv' do
       before do
-        @search.options = @search.options.merge("csv" => true)
+        @search.options = @search.options.merge('csv' => true)
       end
-      it "outputs in CSV format" do
-        @search.list("presidents", "twitter")
+      it 'outputs in CSV format' do
+        @search.list('presidents', 'twitter')
         expect($stdout.string).to eq <<-eos
 ID,Posted at,Screen name,Text
 244102209942458368,2012-09-07 15:57:56 +0000,sferik,"@episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem to be missing ""1.1"" from the URL."
@@ -925,28 +925,28 @@ ID,Posted at,Screen name,Text
         eos
       end
     end
-    context "--decode-uris" do
+    context '--decode-uris' do
       before(:each) do
-        @search.options = @search.options.merge("decode_uris" => true)
-        stub_get("/1.1/lists/statuses.json").with(:query => {:count => "200", :include_entities => 1, :owner_screen_name => "testcli", :slug => "presidents"}).to_return(:body => fixture("statuses.json"))
-        stub_get("/1.1/lists/statuses.json").with(:query => {:count => "200", :include_entities => 1, :max_id => "244099460672679937", :owner_screen_name => "testcli", :slug => "presidents"}).to_return(:body => fixture("empty_array.json"))
+        @search.options = @search.options.merge('decode_uris' => true)
+        stub_get('/1.1/lists/statuses.json').with(:query => {:count => '200', :include_entities => 1, :owner_screen_name => 'testcli', :slug => 'presidents'}).to_return(:body => fixture('statuses.json'))
+        stub_get('/1.1/lists/statuses.json').with(:query => {:count => '200', :include_entities => 1, :max_id => '244099460672679937', :owner_screen_name => 'testcli', :slug => 'presidents'}).to_return(:body => fixture('empty_array.json'))
       end
-      it "requests the correct resource" do
-        @search.list("presidents", "twitter")
-        expect(a_get("/1.1/lists/statuses.json").with(:query => {:count => "200", :include_entities => 1, :owner_screen_name => "testcli", :slug => "presidents"})).to have_been_made
-        expect(a_get("/1.1/lists/statuses.json").with(:query => {:count => "200", :include_entities => 1, :max_id => "244099460672679937", :owner_screen_name => "testcli", :slug => "presidents"})).to have_been_made
+      it 'requests the correct resource' do
+        @search.list('presidents', 'twitter')
+        expect(a_get('/1.1/lists/statuses.json').with(:query => {:count => '200', :include_entities => 1, :owner_screen_name => 'testcli', :slug => 'presidents'})).to have_been_made
+        expect(a_get('/1.1/lists/statuses.json').with(:query => {:count => '200', :include_entities => 1, :max_id => '244099460672679937', :owner_screen_name => 'testcli', :slug => 'presidents'})).to have_been_made
       end
-      it "decodes URLs" do
-        @search.list("presidents", "twitter")
-        expect($stdout.string).to include "https://dev.twitter.com/docs/api/post/direct_messages/destroy"
+      it 'decodes URLs' do
+        @search.list('presidents', 'twitter')
+        expect($stdout.string).to include 'https://dev.twitter.com/docs/api/post/direct_messages/destroy'
       end
     end
-    context "--long" do
+    context '--long' do
       before do
-        @search.options = @search.options.merge("long" => true)
+        @search.options = @search.options.merge('long' => true)
       end
-      it "outputs in long format" do
-        @search.list("presidents", "twitter")
+      it 'outputs in long format' do
+        @search.list('presidents', 'twitter')
         expect($stdout.string).to eq <<-eos
 ID                  Posted at     Screen name  Text
 244102209942458368  Sep  7 07:57  @sferik      @episod @twitterapi now https:...
@@ -954,133 +954,133 @@ ID                  Posted at     Screen name  Text
         eos
       end
     end
-    context "with a user passed" do
-      it "requests the correct resource" do
-        @search.list("testcli/presidents", "twitter")
-        expect(a_get("/1.1/lists/statuses.json").with(:query => {:count => "200", :owner_screen_name => "testcli", :slug => "presidents"})).to have_been_made
+    context 'with a user passed' do
+      it 'requests the correct resource' do
+        @search.list('testcli/presidents', 'twitter')
+        expect(a_get('/1.1/lists/statuses.json').with(:query => {:count => '200', :owner_screen_name => 'testcli', :slug => 'presidents'})).to have_been_made
       end
-      context "--id" do
+      context '--id' do
         before do
-          @search.options = @search.options.merge("id" => true)
-          stub_get("/1.1/lists/statuses.json").with(:query => {:count => "200", :owner_id => "7505382", :slug => "presidents"}).to_return(:body => fixture("statuses.json"))
-          stub_get("/1.1/lists/statuses.json").with(:query => {:count => "200", :max_id => "244099460672679937", :owner_id => "7505382", :slug => "presidents"}).to_return(:body => fixture("empty_array.json"))
+          @search.options = @search.options.merge('id' => true)
+          stub_get('/1.1/lists/statuses.json').with(:query => {:count => '200', :owner_id => '7505382', :slug => 'presidents'}).to_return(:body => fixture('statuses.json'))
+          stub_get('/1.1/lists/statuses.json').with(:query => {:count => '200', :max_id => '244099460672679937', :owner_id => '7505382', :slug => 'presidents'}).to_return(:body => fixture('empty_array.json'))
         end
-        it "requests the correct resource" do
-          @search.list("7505382/presidents", "twitter")
-          expect(a_get("/1.1/lists/statuses.json").with(:query => {:count => "200", :owner_id => "7505382", :slug => "presidents"})).to have_been_made
-          expect(a_get("/1.1/lists/statuses.json").with(:query => {:count => "200", :max_id => "244099460672679937", :owner_id => "7505382", :slug => "presidents"})).to have_been_made
+        it 'requests the correct resource' do
+          @search.list('7505382/presidents', 'twitter')
+          expect(a_get('/1.1/lists/statuses.json').with(:query => {:count => '200', :owner_id => '7505382', :slug => 'presidents'})).to have_been_made
+          expect(a_get('/1.1/lists/statuses.json').with(:query => {:count => '200', :max_id => '244099460672679937', :owner_id => '7505382', :slug => 'presidents'})).to have_been_made
         end
       end
     end
-    context "Twitter is down" do
-      it "retries 3 times and then raise an error" do
-        stub_get("/1.1/lists/statuses.json").with(:query => {:count => "200", :owner_screen_name => "testcli", :slug => "presidents"}).to_return(:status => 502)
+    context 'Twitter is down' do
+      it 'retries 3 times and then raise an error' do
+        stub_get('/1.1/lists/statuses.json').with(:query => {:count => '200', :owner_screen_name => 'testcli', :slug => 'presidents'}).to_return(:status => 502)
         expect do
-          @search.list("presidents", "twitter")
+          @search.list('presidents', 'twitter')
         end.to raise_error(Twitter::Error::BadGateway)
-        expect(a_get("/1.1/lists/statuses.json").with(:query => {:count => "200", :owner_screen_name => "testcli", :slug => "presidents"})).to have_been_made.times(3)
+        expect(a_get('/1.1/lists/statuses.json').with(:query => {:count => '200', :owner_screen_name => 'testcli', :slug => 'presidents'})).to have_been_made.times(3)
       end
     end
   end
 
-  describe "#retweets" do
+  describe '#retweets' do
     before do
-      stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true"}).to_return(:body => fixture("statuses.json"))
-      stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true", :max_id => "244102729860009983"}).to_return(:body => fixture("empty_array.json"))
+      stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true'}).to_return(:body => fixture('statuses.json'))
+      stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :max_id => '244102729860009983'}).to_return(:body => fixture('empty_array.json'))
     end
-    it "requests the correct resource" do
-      @search.retweets("mosaic")
-      expect(a_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true"})).to have_been_made
-      expect(a_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true", :max_id => "244102729860009983"})).to have_been_made.times(2)
+    it 'requests the correct resource' do
+      @search.retweets('mosaic')
+      expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true'})).to have_been_made
+      expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :max_id => '244102729860009983'})).to have_been_made.times(2)
     end
-    it "has the correct output" do
-      @search.retweets("mosaic")
+    it 'has the correct output' do
+      @search.retweets('mosaic')
       expect($stdout.string).to eq <<-eos
    @calebelston
    RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
 
       eos
     end
-    context "--csv" do
+    context '--csv' do
       before do
-        @search.options = @search.options.merge("csv" => true)
+        @search.options = @search.options.merge('csv' => true)
       end
-      it "outputs in CSV format" do
-        @search.retweets("mosaic")
+      it 'outputs in CSV format' do
+        @search.retweets('mosaic')
         expect($stdout.string).to eq <<-eos
 ID,Posted at,Screen name,Text
 244108728834592770,2012-09-07 16:23:50 +0000,calebelston,RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
         eos
       end
     end
-    context "--decode-uris" do
+    context '--decode-uris' do
       before(:each) do
-        @search.options = @search.options.merge("decode_uris" => true)
-        stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_entities => 1, :include_rts => "true"}).to_return(:body => fixture("statuses.json"))
-        stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_entities => 1, :include_rts => "true", :max_id => "244102729860009983"}).to_return(:body => fixture("empty_array.json"))
+        @search.options = @search.options.merge('decode_uris' => true)
+        stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_entities => 1, :include_rts => 'true'}).to_return(:body => fixture('statuses.json'))
+        stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_entities => 1, :include_rts => 'true', :max_id => '244102729860009983'}).to_return(:body => fixture('empty_array.json'))
       end
-      it "requests the correct resource" do
-        @search.retweets("mosaic")
-        expect(a_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_entities => 1, :include_rts => "true"})).to have_been_made
-        expect(a_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_entities => 1, :include_rts => "true", :max_id => "244102729860009983"})).to have_been_made.times(2)
+      it 'requests the correct resource' do
+        @search.retweets('mosaic')
+        expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_entities => 1, :include_rts => 'true'})).to have_been_made
+        expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_entities => 1, :include_rts => 'true', :max_id => '244102729860009983'})).to have_been_made.times(2)
       end
-      it "decodes URLs" do
-        @search.retweets("mosaic")
-        expect($stdout.string).to include "http://heymosaic.com/i/1Z8ssK"
+      it 'decodes URLs' do
+        @search.retweets('mosaic')
+        expect($stdout.string).to include 'http://heymosaic.com/i/1Z8ssK'
       end
     end
-    context "--long" do
+    context '--long' do
       before do
-        @search.options = @search.options.merge("long" => true)
+        @search.options = @search.options.merge('long' => true)
       end
-      it "outputs in long format" do
-        @search.retweets("mosaic")
+      it 'outputs in long format' do
+        @search.retweets('mosaic')
         expect($stdout.string).to eq <<-eos
 ID                  Posted at     Screen name   Text
 244108728834592770  Sep  7 08:23  @calebelston  RT @olivercameron: Mosaic loo...
         eos
       end
     end
-    context "Twitter is down" do
-      it "retries 3 times and then raise an error" do
-        stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true"}).to_return(:status => 502)
+    context 'Twitter is down' do
+      it 'retries 3 times and then raise an error' do
+        stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true'}).to_return(:status => 502)
         expect do
-          @search.retweets("mosaic")
+          @search.retweets('mosaic')
         end.to raise_error(Twitter::Error::BadGateway)
-        expect(a_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true"})).to have_been_made.times(3)
+        expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true'})).to have_been_made.times(3)
       end
     end
-    context "with a user passed" do
+    context 'with a user passed' do
       before do
-        stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true", :screen_name => "sferik"}).to_return(:body => fixture("statuses.json"))
-        stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true", :screen_name => "sferik", :max_id => "244102729860009983"}).to_return(:body => fixture("empty_array.json"))
+        stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :screen_name => 'sferik'}).to_return(:body => fixture('statuses.json'))
+        stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :screen_name => 'sferik', :max_id => '244102729860009983'}).to_return(:body => fixture('empty_array.json'))
       end
-      it "requests the correct resource" do
-        @search.retweets("sferik", "mosaic")
-        expect(a_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true", :screen_name => "sferik"})).to have_been_made
-        expect(a_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true", :screen_name => "sferik", :max_id => "244102729860009983"})).to have_been_made.times(2)
+      it 'requests the correct resource' do
+        @search.retweets('sferik', 'mosaic')
+        expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :screen_name => 'sferik'})).to have_been_made
+        expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :screen_name => 'sferik', :max_id => '244102729860009983'})).to have_been_made.times(2)
       end
-      it "has the correct output" do
-        @search.retweets("sferik", "mosaic")
+      it 'has the correct output' do
+        @search.retweets('sferik', 'mosaic')
         expect($stdout.string).to eq <<-eos
    @calebelston
    RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
 
         eos
       end
-      context "--id" do
+      context '--id' do
         before do
-          @search.options = @search.options.merge("id" => true)
-          stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true", :user_id => "7505382"}).to_return(:body => fixture("statuses.json"))
-          stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true", :user_id => "7505382", :max_id => "244102729860009983"}).to_return(:body => fixture("empty_array.json"))
+          @search.options = @search.options.merge('id' => true)
+          stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :user_id => '7505382'}).to_return(:body => fixture('statuses.json'))
+          stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :user_id => '7505382', :max_id => '244102729860009983'}).to_return(:body => fixture('empty_array.json'))
         end
-        it "requests the correct resource" do
-          @search.retweets("7505382", "mosaic")
-          expect(a_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true", :user_id => "7505382"})).to have_been_made
-          expect(a_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :include_rts => "true", :user_id => "7505382", :max_id => "244102729860009983"})).to have_been_made.times(2)
+        it 'requests the correct resource' do
+          @search.retweets('7505382', 'mosaic')
+          expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :user_id => '7505382'})).to have_been_made
+          expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :user_id => '7505382', :max_id => '244102729860009983'})).to have_been_made.times(2)
         end
-        it "has the correct output" do
-          @search.retweets("7505382", "mosaic")
+        it 'has the correct output' do
+          @search.retweets('7505382', 'mosaic')
           expect($stdout.string).to eq <<-eos
    @calebelston
    RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
@@ -1091,18 +1091,18 @@ ID                  Posted at     Screen name   Text
     end
   end
 
-  describe "#timeline" do
+  describe '#timeline' do
     before do
-      stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200"}).to_return(:body => fixture("statuses.json"))
-      stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200", :max_id => "244099460672679937"}).to_return(:body => fixture("empty_array.json"))
+      stub_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '200'}).to_return(:body => fixture('statuses.json'))
+      stub_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '200', :max_id => '244099460672679937'}).to_return(:body => fixture('empty_array.json'))
     end
-    it "requests the correct resource" do
-      @search.timeline("twitter")
-      expect(a_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200"})).to have_been_made
-      expect(a_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200", :max_id => "244099460672679937"})).to have_been_made
+    it 'requests the correct resource' do
+      @search.timeline('twitter')
+      expect(a_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '200'})).to have_been_made
+      expect(a_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '200', :max_id => '244099460672679937'})).to have_been_made
     end
-    it "has the correct output" do
-      @search.timeline("twitter")
+    it 'has the correct output' do
+      @search.timeline('twitter')
       expect($stdout.string).to eq <<-eos
    @sferik
    @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem 
@@ -1113,12 +1113,12 @@ ID                  Posted at     Screen name   Text
 
       eos
     end
-    context "--csv" do
+    context '--csv' do
       before do
-        @search.options = @search.options.merge("csv" => true)
+        @search.options = @search.options.merge('csv' => true)
       end
-      it "outputs in CSV format" do
-        @search.timeline("twitter")
+      it 'outputs in CSV format' do
+        @search.timeline('twitter')
         expect($stdout.string).to eq <<-eos
 ID,Posted at,Screen name,Text
 244102209942458368,2012-09-07 15:57:56 +0000,sferik,"@episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem to be missing ""1.1"" from the URL."
@@ -1126,52 +1126,52 @@ ID,Posted at,Screen name,Text
         eos
       end
     end
-    context "--decode-uris" do
+    context '--decode-uris' do
       before(:each) do
-        @search.options = @search.options.merge("decode_uris" => true)
-        stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200", :include_entities => 1}).to_return(:body => fixture("statuses.json"))
-        stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200", :max_id => "244099460672679937", :include_entities => 1}).to_return(:body => fixture("empty_array.json"))
+        @search.options = @search.options.merge('decode_uris' => true)
+        stub_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '200', :include_entities => 1}).to_return(:body => fixture('statuses.json'))
+        stub_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '200', :max_id => '244099460672679937', :include_entities => 1}).to_return(:body => fixture('empty_array.json'))
       end
-      it "requests the correct resource" do
-        @search.timeline("twitter")
-        expect(a_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200", :include_entities => 1})).to have_been_made
-        expect(a_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200", :max_id => "244099460672679937", :include_entities => 1})).to have_been_made
+      it 'requests the correct resource' do
+        @search.timeline('twitter')
+        expect(a_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '200', :include_entities => 1})).to have_been_made
+        expect(a_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '200', :max_id => '244099460672679937', :include_entities => 1})).to have_been_made
       end
-      it "decodes URLs" do
-        @search.timeline("twitter")
-        expect($stdout.string).to include "https://dev.twitter.com/docs/api/post/direct_messages/destroy"
+      it 'decodes URLs' do
+        @search.timeline('twitter')
+        expect($stdout.string).to include 'https://dev.twitter.com/docs/api/post/direct_messages/destroy'
       end
     end
-    context "--exclude=replies" do
+    context '--exclude=replies' do
       before do
-        @search.options = @search.options.merge("exclude" => "replies")
-        stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200", :exclude_replies => "true"}).to_return(:body => fixture("statuses.json"))
-        stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200", :exclude_replies => "true", :max_id => "244099460672679937"}).to_return(:body => fixture("empty_array.json"))
+        @search.options = @search.options.merge('exclude' => 'replies')
+        stub_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '200', :exclude_replies => 'true'}).to_return(:body => fixture('statuses.json'))
+        stub_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '200', :exclude_replies => 'true', :max_id => '244099460672679937'}).to_return(:body => fixture('empty_array.json'))
       end
-      it "excludes replies" do
+      it 'excludes replies' do
         @search.timeline
-        expect(a_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200", :exclude_replies => "true"})).to have_been_made
-        expect(a_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200", :exclude_replies => "true", :max_id => "244099460672679937"})).to have_been_made
+        expect(a_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '200', :exclude_replies => 'true'})).to have_been_made
+        expect(a_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '200', :exclude_replies => 'true', :max_id => '244099460672679937'})).to have_been_made
       end
     end
-    context "--exclude=retweets" do
+    context '--exclude=retweets' do
       before do
-        @search.options = @search.options.merge("exclude" => "retweets")
-        stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200", :include_rts => "false"}).to_return(:body => fixture("statuses.json"))
-        stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200", :include_rts => "false", :max_id => "244099460672679937"}).to_return(:body => fixture("empty_array.json"))
+        @search.options = @search.options.merge('exclude' => 'retweets')
+        stub_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '200', :include_rts => 'false'}).to_return(:body => fixture('statuses.json'))
+        stub_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '200', :include_rts => 'false', :max_id => '244099460672679937'}).to_return(:body => fixture('empty_array.json'))
       end
-      it "excludes retweets" do
+      it 'excludes retweets' do
         @search.timeline
-        expect(a_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200", :include_rts => "false"})).to have_been_made
-        expect(a_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200", :include_rts => "false", :max_id => "244099460672679937"})).to have_been_made
+        expect(a_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '200', :include_rts => 'false'})).to have_been_made
+        expect(a_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '200', :include_rts => 'false', :max_id => '244099460672679937'})).to have_been_made
       end
     end
-    context "--long" do
+    context '--long' do
       before do
-        @search.options = @search.options.merge("long" => true)
+        @search.options = @search.options.merge('long' => true)
       end
-      it "outputs in long format" do
-        @search.timeline("twitter")
+      it 'outputs in long format' do
+        @search.timeline('twitter')
         expect($stdout.string).to eq <<-eos
 ID                  Posted at     Screen name  Text
 244102209942458368  Sep  7 07:57  @sferik      @episod @twitterapi now https:...
@@ -1179,49 +1179,49 @@ ID                  Posted at     Screen name  Text
         eos
       end
     end
-    context "--max-id" do
+    context '--max-id' do
       before do
-        @search.options = @search.options.merge("max_id" => 244104558433951744)
-        stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200", :max_id => "244104558433951744"}).to_return(:body => fixture("statuses.json"))
+        @search.options = @search.options.merge('max_id' => 244_104_558_433_951_744)
+        stub_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '200', :max_id => '244104558433951744'}).to_return(:body => fixture('statuses.json'))
       end
-      it "requests the correct resource" do
-        @search.timeline("twitter")
-        expect(a_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200", :max_id => "244104558433951744"})).to have_been_made
+      it 'requests the correct resource' do
+        @search.timeline('twitter')
+        expect(a_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '200', :max_id => '244104558433951744'})).to have_been_made
       end
     end
-    context "--since-id" do
+    context '--since-id' do
       before do
-        @search.options = @search.options.merge("since_id" => 244104558433951744)
-        stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200", :since_id => "244104558433951744"}).to_return(:body => fixture("statuses.json"))
-        stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200", :max_id => "244099460672679937", :since_id => "244104558433951744"}).to_return(:body => fixture("empty_array.json"))
+        @search.options = @search.options.merge('since_id' => 244_104_558_433_951_744)
+        stub_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '200', :since_id => '244104558433951744'}).to_return(:body => fixture('statuses.json'))
+        stub_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '200', :max_id => '244099460672679937', :since_id => '244104558433951744'}).to_return(:body => fixture('empty_array.json'))
       end
-      it "requests the correct resource" do
-        @search.timeline("twitter")
-        expect(a_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200", :since_id => "244104558433951744"})).to have_been_made
-        expect(a_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200", :max_id => "244099460672679937", :since_id => "244104558433951744"})).to have_been_made
+      it 'requests the correct resource' do
+        @search.timeline('twitter')
+        expect(a_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '200', :since_id => '244104558433951744'})).to have_been_made
+        expect(a_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '200', :max_id => '244099460672679937', :since_id => '244104558433951744'})).to have_been_made
       end
     end
-    context "Twitter is down" do
-      it "retries 3 times and then raise an error" do
-        stub_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200"}).to_return(:status => 502)
+    context 'Twitter is down' do
+      it 'retries 3 times and then raise an error' do
+        stub_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '200'}).to_return(:status => 502)
         expect do
-          @search.timeline("twitter")
+          @search.timeline('twitter')
         end.to raise_error(Twitter::Error::BadGateway)
-        expect(a_get("/1.1/statuses/home_timeline.json").with(:query => {:count => "200"})).to have_been_made.times(3)
+        expect(a_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '200'})).to have_been_made.times(3)
       end
     end
-    context "with a user passed" do
+    context 'with a user passed' do
       before do
-        stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :screen_name => "sferik"}).to_return(:body => fixture("statuses.json"))
-        stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :max_id => "244099460672679937", :screen_name => "sferik"}).to_return(:body => fixture("empty_array.json"))
+        stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :screen_name => 'sferik'}).to_return(:body => fixture('statuses.json'))
+        stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :max_id => '244099460672679937', :screen_name => 'sferik'}).to_return(:body => fixture('empty_array.json'))
       end
-      it "requests the correct resource" do
-        @search.timeline("sferik", "twitter")
-        expect(a_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :screen_name => "sferik"})).to have_been_made
-        expect(a_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :max_id => "244099460672679937", :screen_name => "sferik"})).to have_been_made
+      it 'requests the correct resource' do
+        @search.timeline('sferik', 'twitter')
+        expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :screen_name => 'sferik'})).to have_been_made
+        expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :max_id => '244099460672679937', :screen_name => 'sferik'})).to have_been_made
       end
-      it "has the correct output" do
-        @search.timeline("sferik", "twitter")
+      it 'has the correct output' do
+        @search.timeline('sferik', 'twitter')
         expect($stdout.string).to eq <<-eos
    @sferik
    @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem 
@@ -1232,12 +1232,12 @@ ID                  Posted at     Screen name  Text
 
         eos
       end
-      context "--csv" do
+      context '--csv' do
         before do
-          @search.options = @search.options.merge("csv" => true)
+          @search.options = @search.options.merge('csv' => true)
         end
-        it "outputs in CSV format" do
-          @search.timeline("sferik", "twitter")
+        it 'outputs in CSV format' do
+          @search.timeline('sferik', 'twitter')
           expect($stdout.string).to eq <<-eos
 ID,Posted at,Screen name,Text
 244102209942458368,2012-09-07 15:57:56 +0000,sferik,"@episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem to be missing ""1.1"" from the URL."
@@ -1245,24 +1245,24 @@ ID,Posted at,Screen name,Text
           eos
         end
       end
-      context "--id" do
+      context '--id' do
         before do
-          @search.options = @search.options.merge("id" => true)
-          stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :user_id => "7505382"}).to_return(:body => fixture("statuses.json"))
-          stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :max_id => "244099460672679937", :user_id => "7505382"}).to_return(:body => fixture("empty_array.json"))
+          @search.options = @search.options.merge('id' => true)
+          stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :user_id => '7505382'}).to_return(:body => fixture('statuses.json'))
+          stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :max_id => '244099460672679937', :user_id => '7505382'}).to_return(:body => fixture('empty_array.json'))
         end
-        it "requests the correct resource" do
-          @search.timeline("7505382", "twitter")
-          expect(a_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :user_id => "7505382"})).to have_been_made
-          expect(a_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :max_id => "244099460672679937", :user_id => "7505382"})).to have_been_made
+        it 'requests the correct resource' do
+          @search.timeline('7505382', 'twitter')
+          expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :user_id => '7505382'})).to have_been_made
+          expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :max_id => '244099460672679937', :user_id => '7505382'})).to have_been_made
         end
       end
-      context "--long" do
+      context '--long' do
         before do
-          @search.options = @search.options.merge("long" => true)
+          @search.options = @search.options.merge('long' => true)
         end
-        it "outputs in long format" do
-          @search.timeline("sferik", "twitter")
+        it 'outputs in long format' do
+          @search.timeline('sferik', 'twitter')
           expect($stdout.string).to eq <<-eos
 ID                  Posted at     Screen name  Text
 244102209942458368  Sep  7 07:57  @sferik      @episod @twitterapi now https:...
@@ -1270,62 +1270,62 @@ ID                  Posted at     Screen name  Text
           eos
         end
       end
-      context "--max-id" do
+      context '--max-id' do
         before do
-          @search.options = @search.options.merge("max_id" => 244104558433951744)
-          stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :screen_name => "sferik", :max_id => "244104558433951744"}).to_return(:body => fixture("statuses.json"))
+          @search.options = @search.options.merge('max_id' => 244_104_558_433_951_744)
+          stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :screen_name => 'sferik', :max_id => '244104558433951744'}).to_return(:body => fixture('statuses.json'))
         end
-        it "requests the correct resource" do
-          @search.timeline("sferik", "twitter")
-          expect(a_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :screen_name => "sferik", :max_id => "244104558433951744"})).to have_been_made
+        it 'requests the correct resource' do
+          @search.timeline('sferik', 'twitter')
+          expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :screen_name => 'sferik', :max_id => '244104558433951744'})).to have_been_made
         end
       end
-      context "--since-id" do
+      context '--since-id' do
         before do
-          @search.options = @search.options.merge("since_id" => 244104558433951744)
-          stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :screen_name => "sferik", :since_id => "244104558433951744"}).to_return(:body => fixture("statuses.json"))
-          stub_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :screen_name => "sferik", :max_id => "244099460672679937", :since_id => "244104558433951744"}).to_return(:body => fixture("empty_array.json"))
+          @search.options = @search.options.merge('since_id' => 244_104_558_433_951_744)
+          stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :screen_name => 'sferik', :since_id => '244104558433951744'}).to_return(:body => fixture('statuses.json'))
+          stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :screen_name => 'sferik', :max_id => '244099460672679937', :since_id => '244104558433951744'}).to_return(:body => fixture('empty_array.json'))
         end
-        it "requests the correct resource" do
-          @search.timeline("sferik", "twitter")
-          expect(a_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :screen_name => "sferik", :since_id => "244104558433951744"})).to have_been_made
-          expect(a_get("/1.1/statuses/user_timeline.json").with(:query => {:count => "200", :screen_name => "sferik", :max_id => "244099460672679937", :since_id => "244104558433951744"})).to have_been_made
+        it 'requests the correct resource' do
+          @search.timeline('sferik', 'twitter')
+          expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :screen_name => 'sferik', :since_id => '244104558433951744'})).to have_been_made
+          expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :screen_name => 'sferik', :max_id => '244099460672679937', :since_id => '244104558433951744'})).to have_been_made
         end
       end
-      context "Twitter is down" do
-        it "retries 3 times and then raise an error" do
-          stub_get("/1.1/statuses/user_timeline.json").with(:query => {:screen_name => "sferik", :count => "200"}).to_return(:status => 502)
+      context 'Twitter is down' do
+        it 'retries 3 times and then raise an error' do
+          stub_get('/1.1/statuses/user_timeline.json').with(:query => {:screen_name => 'sferik', :count => '200'}).to_return(:status => 502)
           expect do
-            @search.timeline("sferik", "twitter")
+            @search.timeline('sferik', 'twitter')
           end.to raise_error(Twitter::Error::BadGateway)
-          expect(a_get("/1.1/statuses/user_timeline.json").with(:query => {:screen_name => "sferik", :count => "200"})).to have_been_made.times(3)
+          expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:screen_name => 'sferik', :count => '200'})).to have_been_made.times(3)
         end
       end
     end
   end
 
-  describe "#users" do
+  describe '#users' do
     before do
-      stub_get("/1.1/users/search.json").with(:query => {:page => "1", :q => "Erik"}).to_return(:body => fixture("users.json"))
-      stub_get("/1.1/users/search.json").with(:query => {:page => "2", :q => "Erik"}).to_return(:body => fixture("empty_array.json"))
+      stub_get('/1.1/users/search.json').with(:query => {:page => '1', :q => 'Erik'}).to_return(:body => fixture('users.json'))
+      stub_get('/1.1/users/search.json').with(:query => {:page => '2', :q => 'Erik'}).to_return(:body => fixture('empty_array.json'))
     end
-    it "requests the correct resource" do
-      @search.users("Erik")
+    it 'requests the correct resource' do
+      @search.users('Erik')
       1.upto(50).each do |page|
-        expect(a_get("/1.1/users/search.json").with(:query => {:page => "1", :q => "Erik"})).to have_been_made
-        expect(a_get("/1.1/users/search.json").with(:query => {:page => "2", :q => "Erik"})).to have_been_made
+        expect(a_get('/1.1/users/search.json').with(:query => {:page => '1', :q => 'Erik'})).to have_been_made
+        expect(a_get('/1.1/users/search.json').with(:query => {:page => '2', :q => 'Erik'})).to have_been_made
       end
     end
-    it "has the correct output" do
-      @search.users("Erik")
-      expect($stdout.string.chomp).to eq "pengwynn  sferik"
+    it 'has the correct output' do
+      @search.users('Erik')
+      expect($stdout.string.chomp).to eq 'pengwynn  sferik'
     end
-    context "--csv" do
+    context '--csv' do
       before do
-        @search.options = @search.options.merge("csv" => true)
+        @search.options = @search.options.merge('csv' => true)
       end
-      it "outputs in CSV format" do
-        @search.users("Erik")
+      it 'outputs in CSV format' do
+        @search.users('Erik')
         expect($stdout.string).to eq <<-eos
 ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name,Verified,Protected,Bio,Status,Location,URL
 14100886,2008-03-08 16:34:22 +0000,2012-07-07 20:33:19 +0000,6940,192,358,3427,5457,pengwynn,Wynn Netherland,false,false,"Christian, husband, father, GitHubber, Co-host of @thechangelog, Co-author of Sass, Compass, #CSS book  http://wynn.fm/sass-meap",@akosmasoftware Sass book! @hcatlin @nex3 are the brains behind Sass. :-),"Denton, TX",http://wynnnetherland.com
@@ -1333,12 +1333,12 @@ ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name
         eos
       end
     end
-    context "--long" do
+    context '--long' do
       before do
-        @search.options = @search.options.merge("long" => true)
+        @search.options = @search.options.merge('long' => true)
       end
-      it "outputs in long format" do
-        @search.users("Erik")
+      it 'outputs in long format' do
+        @search.users('Erik')
         expect($stdout.string).to eq <<-eos
 ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
 14100886  Mar  8  2008  Jul  7 12:33       6940        192     358       3427...
@@ -1346,94 +1346,94 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
         eos
       end
     end
-    context "--reverse" do
+    context '--reverse' do
       before do
-        @search.options = @search.options.merge("reverse" => true)
+        @search.options = @search.options.merge('reverse' => true)
       end
-      it "reverses the order of the sort" do
-        @search.users("Erik")
-        expect($stdout.string.chomp).to eq "sferik    pengwynn"
+      it 'reverses the order of the sort' do
+        @search.users('Erik')
+        expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
-    context "--sort=favorites" do
+    context '--sort=favorites' do
       before do
-        @search.options = @search.options.merge("sort" => "favorites")
+        @search.options = @search.options.merge('sort' => 'favorites')
       end
-      it "sorts by the number of favorites" do
-        @search.users("Erik")
-        expect($stdout.string.chomp).to eq "pengwynn  sferik"
+      it 'sorts by the number of favorites' do
+        @search.users('Erik')
+        expect($stdout.string.chomp).to eq 'pengwynn  sferik'
       end
     end
-    context "--sort=followers" do
+    context '--sort=followers' do
       before do
-        @search.options = @search.options.merge("sort" => "followers")
+        @search.options = @search.options.merge('sort' => 'followers')
       end
-      it "sorts by the number of followers" do
-        @search.users("Erik")
-        expect($stdout.string.chomp).to eq "sferik    pengwynn"
+      it 'sorts by the number of followers' do
+        @search.users('Erik')
+        expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
-    context "--sort=friends" do
+    context '--sort=friends' do
       before do
-        @search.options = @search.options.merge("sort" => "friends")
+        @search.options = @search.options.merge('sort' => 'friends')
       end
-      it "sorts by the number of friends" do
-        @search.users("Erik")
-        expect($stdout.string.chomp).to eq "sferik    pengwynn"
+      it 'sorts by the number of friends' do
+        @search.users('Erik')
+        expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
-    context "--sort=listed" do
+    context '--sort=listed' do
       before do
-        @search.options = @search.options.merge("sort" => "listed")
+        @search.options = @search.options.merge('sort' => 'listed')
       end
-      it "sorts by the number of list memberships" do
-        @search.users("Erik")
-        expect($stdout.string.chomp).to eq "sferik    pengwynn"
+      it 'sorts by the number of list memberships' do
+        @search.users('Erik')
+        expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
-    context "--sort=since" do
+    context '--sort=since' do
       before do
-        @search.options = @search.options.merge("sort" => "since")
+        @search.options = @search.options.merge('sort' => 'since')
       end
-      it "sorts by the time when Twitter account was created" do
-        @search.users("Erik")
-        expect($stdout.string.chomp).to eq "sferik    pengwynn"
+      it 'sorts by the time when Twitter account was created' do
+        @search.users('Erik')
+        expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
-    context "--sort=tweets" do
+    context '--sort=tweets' do
       before do
-        @search.options = @search.options.merge("sort" => "tweets")
+        @search.options = @search.options.merge('sort' => 'tweets')
       end
-      it "sorts by the number of Tweets" do
-        @search.users("Erik")
-        expect($stdout.string.chomp).to eq "pengwynn  sferik"
+      it 'sorts by the number of Tweets' do
+        @search.users('Erik')
+        expect($stdout.string.chomp).to eq 'pengwynn  sferik'
       end
     end
-    context "--sort=tweeted" do
+    context '--sort=tweeted' do
       before do
-        @search.options = @search.options.merge("sort" => "tweeted")
+        @search.options = @search.options.merge('sort' => 'tweeted')
       end
-      it "sorts by the time of the last Tweet" do
-        @search.users("Erik")
-        expect($stdout.string.chomp).to eq "pengwynn  sferik"
+      it 'sorts by the time of the last Tweet' do
+        @search.users('Erik')
+        expect($stdout.string.chomp).to eq 'pengwynn  sferik'
       end
     end
-    context "--unsorted" do
+    context '--unsorted' do
       before do
-        @search.options = @search.options.merge("unsorted" => true)
+        @search.options = @search.options.merge('unsorted' => true)
       end
-      it "is not sorted" do
-        @search.users("Erik")
-        expect($stdout.string.chomp).to eq "pengwynn  sferik"
+      it 'is not sorted' do
+        @search.users('Erik')
+        expect($stdout.string.chomp).to eq 'pengwynn  sferik'
       end
     end
-    context "Twitter is down" do
-      it "retries 3 times and then raise an error" do
-        stub_get("/1.1/users/search.json").with(:query => {:page => "2", :q => "Erik", }).to_return(:status => 502)
+    context 'Twitter is down' do
+      it 'retries 3 times and then raise an error' do
+        stub_get('/1.1/users/search.json').with(:query => {:page => '2', :q => 'Erik'}).to_return(:status => 502)
         expect do
-          @search.users("Erik")
+          @search.users('Erik')
         end.to raise_error(Twitter::Error::BadGateway)
-        expect(a_get("/1.1/users/search.json").with(:query => {:page => "2", :q => "Erik", })).to have_been_made.times(3)
+        expect(a_get('/1.1/users/search.json').with(:query => {:page => '2', :q => 'Erik'})).to have_been_made.times(3)
       end
     end
   end

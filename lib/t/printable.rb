@@ -1,9 +1,9 @@
 module T
   module Printable
-    LIST_HEADINGS = ["ID", "Created at", "Screen name", "Slug", "Members", "Subscribers", "Mode", "Description"]
-    TWEET_HEADINGS = ["ID", "Posted at", "Screen name", "Text"]
-    USER_HEADINGS = ["ID", "Since", "Last tweeted at", "Tweets", "Favorites", "Listed", "Following", "Followers", "Screen name", "Name", "Verified", "Protected", "Bio", "Status", "Location", "URL"]
-    MONTH_IN_SECONDS = 2592000
+    LIST_HEADINGS = ['ID', 'Created at', 'Screen name', 'Slug', 'Members', 'Subscribers', 'Mode', 'Description']
+    TWEET_HEADINGS = ['ID', 'Posted at', 'Screen name', 'Text']
+    USER_HEADINGS = ['ID', 'Since', 'Last tweeted at', 'Tweets', 'Favorites', 'Listed', 'Following', 'Followers', 'Screen name', 'Name', 'Verified', 'Protected', 'Bio', 'Status', 'Location', 'URL']
+    MONTH_IN_SECONDS = 2_592_000
 
   private
 
@@ -16,22 +16,22 @@ module T
     end
 
     def build_long_user(user)
-      [user.id, ls_formatted_time(user), ls_formatted_time(user.status), user.statuses_count, user.favorites_count, user.listed_count, user.friends_count, user.followers_count, "@#{user.screen_name}", user.name, user.verified? ? "Yes" : "No", user.protected? ? "Yes" : "No", user.description.gsub(/\n+/, ' '), user.status ? decode_full_text(user.status, options['decode_uris']).gsub(/\n+/, ' ') : nil, user.location, user.website.to_s]
+      [user.id, ls_formatted_time(user), ls_formatted_time(user.status), user.statuses_count, user.favorites_count, user.listed_count, user.friends_count, user.followers_count, "@#{user.screen_name}", user.name, user.verified? ? 'Yes' : 'No', user.protected? ? 'Yes' : 'No', user.description.gsub(/\n+/, ' '), user.status ? decode_full_text(user.status, options['decode_uris']).gsub(/\n+/, ' ') : nil, user.location, user.website.to_s]
     end
 
-    def csv_formatted_time(object, key=:created_at)
+    def csv_formatted_time(object, key = :created_at)
       return nil if object.nil?
       time = object.send(key.to_sym).dup
-      time.utc.strftime("%Y-%m-%d %H:%M:%S %z")
+      time.utc.strftime('%Y-%m-%d %H:%M:%S %z')
     end
 
-    def ls_formatted_time(object, key=:created_at)
-      return "" if object.nil?
+    def ls_formatted_time(object, key = :created_at)
+      return '' if object.nil?
       time = T.local_time(object.send(key.to_sym))
       if time > Time.now - MONTH_IN_SECONDS * 6
-        time.strftime("%b %e %H:%M")
+        time.strftime('%b %e %H:%M')
       else
-        time.strftime("%b %e  %Y")
+        time.strftime('%b %e  %Y')
       end
     end
 
@@ -51,19 +51,19 @@ module T
       say [user.id, csv_formatted_time(user), csv_formatted_time(user.status), user.statuses_count, user.favorites_count, user.listed_count, user.friends_count, user.followers_count, user.screen_name, user.name, user.verified?, user.protected?, user.description, user.status ? user.status.full_text : nil, user.location, user.website].to_csv
     end
 
-    def print_lists(lists)
+    def print_lists(lists) # rubocop:disable CyclomaticComplexity
       lists = case options['sort']
-      when 'members'
-        lists.sort_by{|user| user.member_count}
-      when 'mode'
-        lists.sort_by{|user| user.mode}
-      when 'since'
-        lists.sort_by{|user| user.created_at}
-      when 'subscribers'
-        lists.sort_by{|user| user.subscriber_count}
-      else
-        lists.sort_by{|list| list.slug.downcase}
-      end unless options['unsorted']
+              when 'members'
+                lists.sort_by { |user| user.member_count }
+              when 'mode'
+                lists.sort_by { |user| user.mode }
+              when 'since'
+                lists.sort_by { |user| user.created_at }
+              when 'subscribers'
+                lists.sort_by { |user| user.subscriber_count }
+              else
+                lists.sort_by { |list| list.slug.downcase }
+              end unless options['unsorted']
       lists.reverse! if options['reverse']
       if options['csv']
         require 'csv'
@@ -75,7 +75,7 @@ module T
         array = lists.map do |list|
           build_long_list(list)
         end
-        format = options['format'] || LIST_HEADINGS.size.times.map{"%s"}
+        format = options['format'] || LIST_HEADINGS.size.times.map { '%s' }
         print_table_with_headings(array, LIST_HEADINGS, format)
       else
         print_attribute(lists, :full_name)
@@ -120,7 +120,7 @@ module T
       say
     end
 
-    def print_tweets(tweets)
+    def print_tweets(tweets) # rubocop:disable CyclomaticComplexity
       tweets.reverse! if options['reverse']
       if options['csv']
         require 'csv'
@@ -132,7 +132,7 @@ module T
         array = tweets.map do |tweet|
           build_long_tweet(tweet)
         end
-        format = options['format'] || TWEET_HEADINGS.size.times.map{"%s"}
+        format = options['format'] || TWEET_HEADINGS.size.times.map { '%s' }
         print_table_with_headings(array, TWEET_HEADINGS, format)
       else
         tweets.each do |tweet|
@@ -141,25 +141,25 @@ module T
       end
     end
 
-    def print_users(users)
+    def print_users(users) # rubocop:disable CyclomaticComplexity
       users = case options['sort']
-      when 'favorites'
-        users.sort_by{|user| user.favorites_count.to_i}
-      when 'followers'
-        users.sort_by{|user| user.followers_count.to_i}
-      when 'friends'
-        users.sort_by{|user| user.friends_count.to_i}
-      when 'listed'
-        users.sort_by{|user| user.listed_count.to_i}
-      when 'since'
-        users.sort_by{|user| user.created_at}
-      when 'tweets'
-        users.sort_by{|user| user.statuses_count.to_i}
-      when 'tweeted'
-        users.sort_by{|user| user.status? ? user.status.created_at : Time.at(0)}
-      else
-        users.sort_by{|user| user.screen_name.downcase}
-      end unless options['unsorted']
+              when 'favorites'
+                users.sort_by { |user| user.favorites_count.to_i }
+              when 'followers'
+                users.sort_by { |user| user.followers_count.to_i }
+              when 'friends'
+                users.sort_by { |user| user.friends_count.to_i }
+              when 'listed'
+                users.sort_by { |user| user.listed_count.to_i }
+              when 'since'
+                users.sort_by { |user| user.created_at }
+              when 'tweets'
+                users.sort_by { |user| user.statuses_count.to_i }
+              when 'tweeted'
+                users.sort_by { |user| user.status? ? user.status.created_at : Time.at(0) }
+              else
+                users.sort_by { |user| user.screen_name.downcase }
+              end unless options['unsorted']
       users.reverse! if options['reverse']
       if options['csv']
         require 'csv'
@@ -171,12 +171,11 @@ module T
         array = users.map do |user|
           build_long_user(user)
         end
-        format = options['format'] || USER_HEADINGS.size.times.map{"%s"}
+        format = options['format'] || USER_HEADINGS.size.times.map { '%s' }
         print_table_with_headings(array, USER_HEADINGS, format)
       else
         print_attribute(users, :screen_name)
       end
     end
-
   end
 end

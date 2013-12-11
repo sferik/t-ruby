@@ -3,7 +3,6 @@ require 'time'
 
 module T
   class << self
-
     # Convert time to local time by applying the `utc_offset` setting.
     def local_time(time)
       utc_offset ? (time.dup.utc + utc_offset) : time.localtime
@@ -15,14 +14,13 @@ module T
 
     def utc_offset=(offset)
       @utc_offset = case offset
-      when String
-        Time.zone_offset(offset)
-      when NilClass
-        nil
-      else
-        offset.to_i
-      end
+                    when String
+                      Time.zone_offset(offset)
+                    when NilClass
+                      nil
+                    else
+                      offset.to_i
+                    end
     end
-
   end
 end

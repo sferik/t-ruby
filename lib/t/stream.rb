@@ -8,10 +8,10 @@ module T
     include T::Utils
 
     TWEET_HEADINGS_FORMATTING = [
-      "%-18s",  # Add padding to maximum length of a Tweet ID
-      "%-12s",  # Add padding to length of a timestamp formatted with ls_formatted_time
-      "%-20s",  # Add padding to maximum length of a Twitter screen name
-      "%s",     # Last element does not need special formatting
+      '%-18s',  # Add padding to maximum length of a Tweet ID
+      '%-12s',  # Add padding to length of a timestamp formatted with ls_formatted_time
+      '%-20s',  # Add padding to maximum length of a Twitter screen name
+      '%s',     # Last element does not need special formatting
     ]
 
     check_unknown_options!
@@ -21,9 +21,9 @@ module T
       super
     end
 
-    desc "all", "Stream a random sample of all Tweets (Control-C to stop)"
-    method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
-    method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
+    desc 'all', 'Stream a random sample of all Tweets (Control-C to stop)'
+    method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
+    method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
     def all
       client.before_request do
         if options['csv']
@@ -50,16 +50,16 @@ module T
       end
     end
 
-    desc "matrix", "Unfortunately, no one can be told what the Matrix is. You have to see it for yourself."
+    desc 'matrix', 'Unfortunately, no one can be told what the Matrix is. You have to see it for yourself.'
     def matrix
-      client.sample(:language => "ja") do |tweet|
+      client.sample(:language => 'ja') do |tweet|
         say(tweet.full_text.gsub("\n", '').reverse, [:bold, :green, :on_black])
       end
     end
 
-    desc "search KEYWORD [KEYWORD...]", "Stream Tweets that contain specified keywords, joined with logical ORs (Control-C to stop)"
-    method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
-    method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
+    desc 'search KEYWORD [KEYWORD...]', 'Stream Tweets that contain specified keywords, joined with logical ORs (Control-C to stop)'
+    method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
+    method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
     def search(keyword, *keywords)
       keywords.unshift(keyword)
       require 't/search'
@@ -84,9 +84,9 @@ module T
       end
     end
 
-    desc "timeline", "Stream your timeline (Control-C to stop)"
-    method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
-    method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
+    desc 'timeline', 'Stream your timeline (Control-C to stop)'
+    method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
+    method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
     def timeline
       require 't/cli'
       client.before_request do
@@ -110,9 +110,9 @@ module T
       end
     end
 
-    desc "users USER_ID [USER_ID...]", "Stream Tweets either from or in reply to specified users (Control-C to stop)"
-    method_option "csv", :aliases => "-c", :type => :boolean, :default => false, :desc => "Output in CSV format."
-    method_option "long", :aliases => "-l", :type => :boolean, :default => false, :desc => "Output in long format."
+    desc 'users USER_ID [USER_ID...]', 'Stream Tweets either from or in reply to specified users (Control-C to stop)'
+    method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
+    method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
     def users(user_id, *user_ids)
       user_ids.unshift(user_id)
       user_ids.map!(&:to_i)
@@ -153,6 +153,5 @@ module T
         config.access_token_secret = @rcfile.active_secret
       end
     end
-
   end
 end

@@ -3,10 +3,9 @@ require 'retryable'
 
 module T
   module Collectable
-
     MAX_NUM_RESULTS = 200
 
-    def collect_with_max_id(collection=[], max_id=nil, &block)
+    def collect_with_max_id(collection = [], max_id = nil, &block)
       tweets = retryable(:tries => 3, :on => Twitter::Error, :sleep => 0) do
         yield(max_id)
       end
@@ -29,7 +28,7 @@ module T
       end.flatten.compact
     end
 
-    def collect_with_page(collection=[], page=1, &block)
+    def collect_with_page(collection = [], page = 1, &block)
       tweets = retryable(:tries => 3, :on => Twitter::Error, :sleep => 0) do
         yield page
       end
@@ -37,6 +36,5 @@ module T
       collection += tweets
       tweets.empty? ? collection.flatten.uniq : collect_with_page(collection, page + 1, &block)
     end
-
   end
 end

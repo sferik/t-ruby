@@ -15,7 +15,7 @@
 [gittip]: https://www.gittip.com/sferik/
 
 #### A command-line power tool for Twitter.
-The CLI takes syntactic cues from the [Twitter SMS commands][sms], however it
+The CLI takes syntactic cues from the [Twitter SMS commands][sms]; however, it
 offers vastly more commands and capabilities than are available via SMS.
 
 [sms]: https://support.twitter.com/articles/14020-twitter-sms-command

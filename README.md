@@ -21,35 +21,8 @@ offers vastly more commands and capabilities than are available via SMS.
 [sms]: https://support.twitter.com/articles/14020-twitter-sms-command
 
 ## Installation
-First, make sure you have Ruby installed.
-
-**On a Mac**, open `/Applications/Utilities/Terminal.app` and type:
-
-    ruby -v
-
-If the output looks something like this, you're in good shape:
-
-    ruby 1.9.3p484 (2013-11-22 revision 43786) [x86_64-darwin13.0.0]
-
-If the output looks more like this, you need to [install Ruby][ruby]:
-[ruby]: http://www.ruby-lang.org/en/downloads/
-
-    ruby: command not found
-
-**On Linux**, for Debian-based systems, open a terminal and type:
-
-    sudo apt-get install ruby-dev
-
-or for Red Hat-based distros like Fedora and CentOS, type:
-
-    sudo yum install ruby-devel
-
-(if necessary, adapt for your package manager)
-
-**On Windows**, you can install Ruby with [RubyInstaller][].
-[rubyinstaller]: http://rubyinstaller.org/
-
-Once you've verified that Ruby is installed:
+First, make sure you have [Ruby installed](#installing-ruby). Once you've
+verified that Ruby is installed:
 
     gem install t
 
@@ -303,6 +276,34 @@ run and pass on that implementation. When something breaks on your
 implementation, you will be responsible for providing patches in a timely
 fashion. If critical issues for a particular implementation exist at the time
 of a major release, support for that Ruby version may be dropped.
+
+## Installing Ruby
+
+**On a Mac**, open `/Applications/Utilities/Terminal.app` and type:
+
+    ruby -v
+
+If the output looks something like this, you're in good shape:
+
+    ruby 1.9.3p484 (2013-11-22 revision 43786) [x86_64-darwin13.0.0]
+
+If the output looks more like this, you need to [install Ruby][ruby]:
+[ruby]: http://www.ruby-lang.org/en/downloads/
+
+    ruby: command not found
+
+**On Linux**, for Debian-based systems, open a terminal and type:
+
+    sudo apt-get install ruby-dev
+
+or for Red Hat-based distros like Fedora and CentOS, type:
+
+    sudo yum install ruby-devel
+
+(if necessary, adapt for your package manager)
+
+**On Windows**, you can install Ruby with [RubyInstaller][].
+[rubyinstaller]: http://rubyinstaller.org/
 
 ## Troubleshooting
 If you are running t on a remote computer you can use the flag --display-url during authorize process to display the url instead of opening the web browser.

@@ -52,10 +52,6 @@ DotPosition:
 Encoding:
   Enabled: false
 
-# Don't prefer sprintf to String#%
-FavorSprintf:
-  Enabled: false
-
 # Trailing whitespace is required to test output
 TrailingWhitespace:
   Enabled: false

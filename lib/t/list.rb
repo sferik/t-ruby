@@ -64,7 +64,7 @@ module T
         array << ['Description', list.description] unless list.description.nil?
         array << ['Slug', list.slug]
         array << ['Screen name', "@#{list.user.screen_name}"]
-        array << ['Created at', "#{ls_formatted_time(list)} (#{time_ago_in_words(list.created_at)} ago)"]
+        array << ['Created at', "#{ls_formatted_time(list, :created_at, false)} (#{time_ago_in_words(list.created_at)} ago)"]
         array << ['Members', number_with_delimiter(list.member_count)]
         array << ['Subscribers', number_with_delimiter(list.subscriber_count)]
         array << ['Status', list.following ? 'Following' : 'Not following']

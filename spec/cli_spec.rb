@@ -29,6 +29,69 @@ describe T::CLI do
     $stdout = @old_stdout
   end
 
+  describe '--relative-dates' do
+    before do
+      stub_get('/1.1/statuses/show/55709764298092545.json').with(:query => {:include_my_retweet => 'false'}).to_return(:body => fixture('status.json'))
+      stub_get('/1.1/users/show.json').with(:query => {:screen_name => 'sferik'}).to_return(:body => fixture('sferik.json'))
+      @cli.options = @cli.options.merge('relative_dates' => true)
+    end
+    it 'status has the correct output (absolute and relative date together)' do
+      @cli.status('55709764298092545')
+      expect($stdout.string).to eq <<-eos
+ID           55709764298092545
+Text         The problem with your code is that it's doing exactly what you told it to do.
+Screen name  @sferik
+Posted at    Apr  6  2011 (8 months ago)
+Retweets     320
+Favorites    50
+Source       Twitter for iPhone
+Location     Blowfish Sushi To Die For, 2170 Bryant St, San Francisco, California, United States
+      eos
+    end
+    it 'whois has the correct output (absolute and relative date together)' do
+      @cli.whois('sferik')
+      expect($stdout.string).to eq <<-eos
+ID           7505382
+Since        Jul 16  2007 (4 years ago)
+Last update  @goldman You're near my home town! Say hi to Woodstock for me. (7 months ago)
+Screen name  @sferik
+Name         Erik Michaels-Ober
+Tweets       7,890
+Favorites    3,755
+Listed       118
+Following    212
+Followers    2,262
+Bio          Vagabond.
+Location     San Francisco
+URL          https://github.com/sferik
+      eos
+    end
+    context '--csv' do
+      before do
+        @cli.options = @cli.options.merge('csv' => true)
+      end
+      it 'has the correct output (absolute date in csv)' do
+        @cli.status('55709764298092545')
+        expect($stdout.string).to eq <<-eos
+ID,Posted at,Screen name,Text,Retweets,Favorites,Source,Location
+55709764298092545,2011-04-06 19:13:37 +0000,sferik,The problem with your code is that it's doing exactly what you told it to do.,320,50,Twitter for iPhone,"Blowfish Sushi To Die For, 2170 Bryant St, San Francisco, California, United States"
+        eos
+      end
+    end
+    context '--long' do
+      before do
+        @cli.options = @cli.options.merge('long' => true)
+      end
+      it 'outputs in long format' do
+        @cli.status('55709764298092545')
+        expect($stdout.string).to eq <<-eos
+ID                 Posted at     Screen name  Text                           ...
+55709764298092545  8 months ago  @sferik      The problem with your code is t...
+        eos
+      end
+    end
+  end
+
   describe '#account' do
     before do
       @cli.options = @cli.options.merge('profile' => fixture_path + '/.trc')

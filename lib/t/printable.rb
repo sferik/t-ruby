@@ -25,10 +25,12 @@ module T
       time.utc.strftime('%Y-%m-%d %H:%M:%S %z')
     end
 
-    def ls_formatted_time(object, key = :created_at)
+    def ls_formatted_time(object, key = :created_at, allow_relative = true)
       return '' if object.nil?
       time = T.local_time(object.send(key.to_sym))
-      if time > Time.now - MONTH_IN_SECONDS * 6
+      if allow_relative && options['relative_dates']
+        distance_of_time_in_words(time) + ' ago'
+      elsif time > Time.now - MONTH_IN_SECONDS * 6
         time.strftime('%b %e %H:%M')
       else
         time.strftime('%b %e  %Y')

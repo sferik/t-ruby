@@ -31,6 +31,7 @@ module T
 
     class_option 'color', :aliases => '-C', :type => :string, :enum => %w(auto never), :default => 'auto', :desc => 'Control how color is used in output'
     class_option 'profile', :aliases => '-P', :type => :string, :default => File.join(File.expand_path('~'), T::RCFile::FILE_NAME), :desc => 'Path to RC file', :banner => 'FILE'
+    class_option 'relative_dates', :type => :boolean, :desc => 'Show relative dates'
 
     def initialize(*)
       @rcfile = T::RCFile.instance
@@ -575,7 +576,7 @@ module T
         array << ['ID', status.id.to_s]
         array << ['Text', decode_full_text(status).gsub(/\n+/, ' ')]
         array << ['Screen name', "@#{status.user.screen_name}"]
-        array << ['Posted at', "#{ls_formatted_time(status)} (#{time_ago_in_words(status.created_at)} ago)"]
+        array << ['Posted at', "#{ls_formatted_time(status, :created_at, false)} (#{time_ago_in_words(status.created_at)} ago)"]
         array << ['Retweets', number_with_delimiter(status.retweet_count)]
         array << ['Favorites', number_with_delimiter(status.favorite_count)]
         array << ['Source', strip_tags(status.source)]
@@ -729,7 +730,7 @@ module T
       else
         array = []
         array << ['ID', user.id.to_s]
-        array << ['Since', "#{ls_formatted_time(user)} (#{time_ago_in_words(user.created_at)} ago)"]
+        array << ['Since', "#{ls_formatted_time(user, :created_at, false)} (#{time_ago_in_words(user.created_at)} ago)"]
         array << ['Last update', "#{decode_full_text(user.status).gsub(/\n+/, ' ')} (#{time_ago_in_words(user.status.created_at)} ago)"] unless user.status.nil?
         array << ['Screen name', "@#{user.screen_name}"]
         array << [user.verified ? 'Name (Verified)' : 'Name', user.name] unless user.name.nil?

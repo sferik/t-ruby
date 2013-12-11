@@ -47,12 +47,13 @@ module T
         end
       end
     end
-
+    
     desc 'authorize', 'Allows an application to request user authorization'
     method_option 'display-uri', :aliases => '-d', :type => :boolean, :default => false, :desc => 'Display the authorization URL instead of attempting to open it.'
     def authorize
       @rcfile.path = options['profile'] if options['profile']
       if @rcfile.empty?
+        #Welcome Message (No Twitter Application)
         say "Welcome! Before you can use t, you'll first need to register an"
         say 'application with Twitter. Just follow the steps below:'
         say '  1. Sign in to the Twitter Developer site and click'
@@ -68,6 +69,7 @@ module T
         ask 'Press [Enter] to open the Twitter Developer site.'
         say
       else
+        #User with Twitter Application Created
         say "It looks like you've already registered an application with Twitter."
         say 'To authorize a new account, just follow the steps below:'
         say '  1. Sign in to the Twitter Developer site.'
@@ -215,7 +217,7 @@ module T
     end
     map %w(disciples) => :groupies
 
-    desc 'dm USER MESSAGE', 'Sends that person a Direct Message.'
+    desc 'dm USER MESSAGE', 'Sends that person(USER) a Direct Message(MESSAGE).'
     method_option 'id', :aliases => '-i', :type => :boolean, :default => false, :desc => 'Specify user via ID instead of screen name.'
     def dm(user, message)
       require 't/core_ext/string'

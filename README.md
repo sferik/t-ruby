@@ -66,7 +66,7 @@ Then, install the gem with the medium security trust policy:
 ## Configuration
 Twitter API v1.1 requires OAuth for all of its functionality, so you'll need a
 registered Twitter application. If you've never registered a Twitter
-application before, it's easy! Just sign-in using your Twitter account and the
+application before, it's easy! Just sign-in using your Twitter account and then
 fill out the short form at <http://dev.twitter.com/apps/new>. If you've
 previously registered a Twitter application, it should be listed at
 <http://dev.twitter.com/apps>. Once you've registered an application, make sure

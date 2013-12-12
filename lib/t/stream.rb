@@ -37,6 +37,7 @@ module T
         end
       end
       client.sample do |tweet|
+        next unless tweet.is_a?(Twitter::Tweet)
         if options['csv']
           print_csv_tweet(tweet)
         elsif options['long']
@@ -53,6 +54,7 @@ module T
     desc 'matrix', 'Unfortunately, no one can be told what the Matrix is. You have to see it for yourself.'
     def matrix
       client.sample(:language => 'ja') do |tweet|
+        next unless tweet.is_a?(Twitter::Tweet)
         say(tweet.full_text.gsub("\n", '').reverse, [:bold, :green, :on_black])
       end
     end
@@ -71,6 +73,7 @@ module T
         search.all(keywords.join(' OR '))
       end
       client.filter(:track => keywords) do |tweet|
+        next unless tweet.is_a?(Twitter::Tweet)
         if options['csv']
           print_csv_tweet(tweet)
         elsif options['long']
@@ -97,6 +100,7 @@ module T
         cli.timeline
       end
       client.user do |tweet|
+        next unless tweet.is_a?(Twitter::Tweet)
         if options['csv']
           print_csv_tweet(tweet)
         elsif options['long']
@@ -128,6 +132,7 @@ module T
         end
       end
       client.follow(user_ids) do |tweet|
+        next unless tweet.is_a?(Twitter::Tweet)
         if options['csv']
           print_csv_tweet(tweet)
         elsif options['long']

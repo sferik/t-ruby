@@ -53,7 +53,7 @@ module T
       say [user.id, csv_formatted_time(user), csv_formatted_time(user.status), user.statuses_count, user.favorites_count, user.listed_count, user.friends_count, user.followers_count, user.screen_name, user.name, user.verified?, user.protected?, user.description, user.status ? user.status.full_text : nil, user.location, user.website].to_csv
     end
 
-    def print_lists(lists) # rubocop:disable CyclomaticComplexity
+    def print_lists(lists)
       lists = case options['sort']
               when 'members'
                 lists.sort_by { |user| user.member_count }
@@ -122,7 +122,7 @@ module T
       say
     end
 
-    def print_tweets(tweets) # rubocop:disable CyclomaticComplexity
+    def print_tweets(tweets)
       tweets.reverse! if options['reverse']
       if options['csv']
         require 'csv'

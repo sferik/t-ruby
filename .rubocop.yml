@@ -1,6 +1,7 @@
 AllCops:
   Includes:
     - 'Gemfile'
+    - 'Rakefile'
 
 # Avoid long parameter lists
 ParameterLists:
@@ -10,6 +11,10 @@ ParameterLists:
 # Avoid more than `Max` levels of nesting.
 BlockNesting:
   Max: 3
+
+# This threashold should be lowered back down to 6 over time
+CyclomaticComplexity:
+  Max: 11
 
 # Align with the style guide.
 CollectionMethods:

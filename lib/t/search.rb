@@ -28,7 +28,7 @@ module T
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
     method_option 'decode_uris', :aliases => '-d', :type => :boolean, :default => false, :desc => 'Decodes t.co URLs into their original form.'
     method_option 'number', :aliases => '-n', :type => :numeric, :default => DEFAULT_NUM_RESULTS
-    def all(query) # rubocop:disable CyclomaticComplexity
+    def all(query)
       count = options['number'] || DEFAULT_NUM_RESULTS
       tweets = collect_with_count(count) do |count_opts|
         count_opts[:include_entities] = 1 if options['decode_uris']
@@ -161,7 +161,7 @@ module T
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
     method_option 'max_id', :aliases => '-m', :type => :numeric, :desc => 'Returns only the results with an ID less than the specified ID.'
     method_option 'since_id', :aliases => '-s', :type => :numeric, :desc => 'Returns only the results with an ID greater than the specified ID.'
-    def timeline(*args) # rubocop:disable CyclomaticComplexity
+    def timeline(*args)
       query = args.pop
       user = args.pop
       opts = {:count => MAX_NUM_RESULTS}

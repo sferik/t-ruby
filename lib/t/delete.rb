@@ -25,7 +25,7 @@ module T
       end
       say "@#{@rcfile.active_profile[0]} unblocked #{pluralize(number, 'user')}."
       say
-      say "Run `#{File.basename($PROGRAM_NAME)} block #{unblocked_users.map { |unblocked_user| "@#{unblocked_user.screen_name}"}.join(' ')}` to block."
+      say "Run `#{File.basename($PROGRAM_NAME)} block #{unblocked_users.map { |unblocked_user| "@#{unblocked_user.screen_name}" }.join(' ')}` to block."
     end
 
     desc 'dm [DIRECT_MESSAGE_ID] [DIRECT_MESSAGE_ID...]', 'Delete the last Direct Message sent.'

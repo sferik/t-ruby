@@ -119,7 +119,7 @@ module T
       end
       say "@#{@rcfile.active_profile[0]} blocked #{pluralize(number, 'user')}."
       say
-      say "Run `#{File.basename($PROGRAM_NAME)} delete block #{blocked_users.map { |blocked_user| "@#{blocked_user.screen_name}"}.join(' ')}` to unblock."
+      say "Run `#{File.basename($PROGRAM_NAME)} delete block #{blocked_users.map { |blocked_user| "@#{blocked_user.screen_name}" }.join(' ')}` to unblock."
     end
 
     desc 'direct_messages', "Returns the #{DEFAULT_NUM_RESULTS} most recent Direct Messages sent to you."
@@ -127,7 +127,7 @@ module T
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
     method_option 'number', :aliases => '-n', :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => 'Limit the number of results.'
     method_option 'reverse', :aliases => '-r', :type => :boolean, :default => false, :desc => 'Reverse the order of the sort.'
-    def direct_messages # rubocop:disable CyclomaticComplexity
+    def direct_messages
       count = options['number'] || DEFAULT_NUM_RESULTS
       direct_messages = collect_with_count(count) do |count_opts|
         client.direct_messages(count_opts)
@@ -159,7 +159,7 @@ module T
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
     method_option 'number', :aliases => '-n', :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => 'Limit the number of results.'
     method_option 'reverse', :aliases => '-r', :type => :boolean, :default => false, :desc => 'Reverse the order of the sort.'
-    def direct_messages_sent # rubocop:disable CyclomaticComplexity
+    def direct_messages_sent
       count = options['number'] || DEFAULT_NUM_RESULTS
       direct_messages = collect_with_count(count) do |count_opts|
         client.direct_messages_sent(count_opts)
@@ -286,7 +286,7 @@ module T
     method_option 'number', :aliases => '-n', :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => 'Limit the number of results.'
     method_option 'reverse', :aliases => '-r', :type => :boolean, :default => false, :desc => 'Reverse the order of the sort.'
     method_option 'since_id', :aliases => '-s', :type => :numeric, :desc => 'Returns only the results with an ID greater than the specified ID.'
-    def favorites(user = nil) # rubocop:disable CyclomaticComplexity
+    def favorites(user = nil)
       count = options['number'] || DEFAULT_NUM_RESULTS
       opts = {}
       opts[:exclude_replies] = true if options['exclude'] == 'replies'
@@ -312,7 +312,7 @@ module T
       end
       say "@#{@rcfile.active_profile[0]} is now following #{pluralize(number, 'more user')}."
       say
-      say "Run `#{File.basename($PROGRAM_NAME)} unfollow #{followed_users.map { |followed_user| "@#{followed_user.screen_name}"}.join(' ')}` to stop."
+      say "Run `#{File.basename($PROGRAM_NAME)} unfollow #{followed_users.map { |followed_user| "@#{followed_user.screen_name}" }.join(' ')}` to stop."
     end
 
     desc 'followings [USER]', 'Returns a list of the people you follow on Twitter.'
@@ -505,7 +505,7 @@ module T
       number = retweets.length
       say "@#{@rcfile.active_profile[0]} retweeted #{pluralize(number, 'tweet')}."
       say
-      say "Run `#{File.basename($PROGRAM_NAME)} delete status #{retweets.map { |tweet| tweet.retweeted_status.id}.join(' ')}` to undo."
+      say "Run `#{File.basename($PROGRAM_NAME)} delete status #{retweets.map { |tweet| tweet.retweeted_status.id }.join(' ')}` to undo."
     end
     map %w(rt) => :retweet
 
@@ -593,7 +593,7 @@ module T
     method_option 'number', :aliases => '-n', :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => 'Limit the number of results.'
     method_option 'reverse', :aliases => '-r', :type => :boolean, :default => false, :desc => 'Reverse the order of the sort.'
     method_option 'since_id', :aliases => '-s', :type => :numeric, :desc => 'Returns only the results with an ID greater than the specified ID.'
-    def timeline(user = nil) # rubocop:disable CyclomaticComplexity
+    def timeline(user = nil)
       count = options['number'] || DEFAULT_NUM_RESULTS
       opts = {}
       opts[:exclude_replies] = true if options['exclude'] == 'replies'
@@ -630,7 +630,7 @@ module T
     method_option 'reverse', :aliases => '-r', :type => :boolean, :default => false, :desc => 'Reverse the order of the sort.'
     method_option 'sort', :aliases => '-s', :type => :string, :enum => %w(country name parent type woeid), :default => 'name', :desc => 'Specify the order of the results.', :banner => 'ORDER'
     method_option 'unsorted', :aliases => '-u', :type => :boolean, :default => false, :desc => 'Output is not sorted.'
-    def trend_locations # rubocop:disable CyclomaticComplexity
+    def trend_locations
       places = client.trend_locations
       places = case options['sort']
                when 'country'
@@ -671,7 +671,7 @@ module T
       end
       say "@#{@rcfile.active_profile[0]} is no longer following #{pluralize(number, 'user')}."
       say
-      say "Run `#{File.basename($PROGRAM_NAME)} follow #{unfollowed_users.map { |unfollowed_user| "@#{unfollowed_user.screen_name}"}.join(' ')}` to follow again."
+      say "Run `#{File.basename($PROGRAM_NAME)} follow #{unfollowed_users.map { |unfollowed_user| "@#{unfollowed_user.screen_name}" }.join(' ')}` to follow again."
     end
 
     desc 'update [MESSAGE]', 'Post a Tweet.'
@@ -719,7 +719,7 @@ module T
     method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
     method_option 'id', :aliases => '-i', :type => :boolean, :default => false, :desc => 'Specify user via ID instead of screen name.'
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
-    def whois(user) # rubocop:disable CyclomaticComplexity
+    def whois(user)
       require 't/core_ext/string'
       user = options['id'] ? user.to_i : user.strip_ats
       user = client.user(user)

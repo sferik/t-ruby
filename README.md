@@ -15,7 +15,7 @@
 [gittip]: https://www.gittip.com/sferik/
 
 #### A command-line power tool for Twitter.
-The CLI takes syntactic cues from the [Twitter SMS commands][sms], however it
+The CLI takes syntactic cues from the [Twitter SMS commands][sms], but it
 offers vastly more commands and capabilities than are available via SMS.
 
 [sms]: https://support.twitter.com/articles/14020-twitter-sms-command
@@ -138,8 +138,8 @@ obviously can't contain any apostrophes.)
     t does_follow @ev @sferik
 
 **Note**: If the first user does not follow the second, `t` will exit with a
-non-zero exit code. This allows you to execute commands conditionally, for
-example, send a user a direct message only if they already follow you:
+non-zero exit code. This allows you to execute commands conditionally. For
+example, here's how to send a user a direct message only if they already follow you:
 
     t does_follow @ev && t dm @ev "What's up, bro?"
 
@@ -185,7 +185,7 @@ example, send a user a direct message only if they already follow you:
 #### Search Twitter for the 20 most recent Tweets that match a specified query
     t search all "query"
 
-#### Download the latest Linux kernel via BitTorrent (possibly NSFW, depending where you work)
+#### Download the latest Linux kernel via BitTorrent (possibly NSFW, depending on where you work)
     t search all "lang:en filter:links linux torrent" -n 1 | grep -o "http://t.co/[0-9A-Za-z]*" | xargs open
 
 #### Search Tweets you've favorited that match a specified query
@@ -204,7 +204,7 @@ example, send a user a direct message only if they already follow you:
     t search timeline @sferik "query"
 
 ## Features
-* Deep search: Instead of using the Twitter Search API, [which only only goes
+* Deep search: Instead of using the Twitter Search API, [which only goes
   back 6-9 days][search], `t search` fetches up to 3,200 tweets via the REST API
   and then checks each one against a regular expression.
 * Multi-threaded: Whenever possible, Twitter API requests are made in parallel,

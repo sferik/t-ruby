@@ -13,7 +13,7 @@ module T
 
       # @return [Integer]
       def patch
-        1
+        2
       end
 
       # @return [String, NilClass]

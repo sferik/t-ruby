@@ -125,6 +125,7 @@ module T
     desc 'direct_messages', "Returns the #{DEFAULT_NUM_RESULTS} most recent Direct Messages sent to you."
     method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
+    method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
     method_option 'number', :aliases => '-n', :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => 'Limit the number of results.'
     method_option 'reverse', :aliases => '-r', :type => :boolean, :default => false, :desc => 'Reverse the order of the sort.'
     def direct_messages
@@ -157,6 +158,7 @@ module T
     desc 'direct_messages_sent', "Returns the #{DEFAULT_NUM_RESULTS} most recent Direct Messages you've sent."
     method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
+    method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
     method_option 'number', :aliases => '-n', :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => 'Limit the number of results.'
     method_option 'reverse', :aliases => '-r', :type => :boolean, :default => false, :desc => 'Reverse the order of the sort.'
     def direct_messages_sent
@@ -190,6 +192,7 @@ module T
     method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
     method_option 'id', :aliases => '-i', :type => :boolean, :default => false, :desc => 'Specify user via ID instead of screen name.'
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
+    method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
     method_option 'reverse', :aliases => '-r', :type => :boolean, :default => false, :desc => 'Reverse the order of the sort.'
     method_option 'sort', :aliases => '-s', :type => :string, :enum => %w(favorites followers friends listed screen_name since tweets tweeted), :default => 'screen_name', :desc => 'Specify the order of the results.', :banner => 'ORDER'
     method_option 'unsorted', :aliases => '-u', :type => :boolean, :default => false, :desc => 'Output is not sorted.'
@@ -282,6 +285,7 @@ module T
     method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
     method_option 'id', :aliases => '-i', :type => :boolean, :default => false, :desc => 'Specify user via ID instead of screen name.'
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
+    method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
     method_option 'max_id', :aliases => '-m', :type => :numeric, :desc => 'Returns only the results with an ID less than the specified ID.'
     method_option 'number', :aliases => '-n', :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => 'Limit the number of results.'
     method_option 'reverse', :aliases => '-r', :type => :boolean, :default => false, :desc => 'Reverse the order of the sort.'
@@ -319,6 +323,7 @@ module T
     method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
     method_option 'id', :aliases => '-i', :type => :boolean, :default => false, :desc => 'Specify user via ID instead of screen name.'
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
+    method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
     method_option 'reverse', :aliases => '-r', :type => :boolean, :default => false, :desc => 'Reverse the order of the sort.'
     method_option 'sort', :aliases => '-s', :type => :string, :enum => %w(favorites followers friends listed screen_name since tweets tweeted), :default => 'screen_name', :desc => 'Specify the order of the results.', :banner => 'ORDER'
     method_option 'unsorted', :aliases => '-u', :type => :boolean, :default => false, :desc => 'Output is not sorted.'
@@ -339,6 +344,7 @@ module T
     method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
     method_option 'id', :aliases => '-i', :type => :boolean, :default => false, :desc => 'Specify user via ID instead of screen name.'
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
+    method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
     method_option 'reverse', :aliases => '-r', :type => :boolean, :default => false, :desc => 'Reverse the order of the sort.'
     method_option 'sort', :aliases => '-s', :type => :string, :enum => %w(favorites followers friends listed screen_name since tweets tweeted), :default => 'screen_name', :desc => 'Specify the order of the results.', :banner => 'ORDER'
     method_option 'unsorted', :aliases => '-u', :type => :boolean, :default => false, :desc => 'Output is not sorted.'
@@ -359,6 +365,7 @@ module T
     method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
     method_option 'id', :aliases => '-i', :type => :boolean, :default => false, :desc => 'Specify user via ID instead of screen name.'
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
+    method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
     method_option 'reverse', :aliases => '-r', :type => :boolean, :default => false, :desc => 'Reverse the order of the sort.'
     method_option 'sort', :aliases => '-s', :type => :string, :enum => %w(favorites followers friends listed screen_name since tweets tweeted), :default => 'screen_name', :desc => 'Specify the order of the results.', :banner => 'ORDER'
     method_option 'unsorted', :aliases => '-u', :type => :boolean, :default => false, :desc => 'Output is not sorted.'
@@ -387,6 +394,7 @@ module T
     method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
     method_option 'id', :aliases => '-i', :type => :boolean, :default => false, :desc => 'Specify user via ID instead of screen name.'
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
+    method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
     method_option 'reverse', :aliases => '-r', :type => :boolean, :default => false, :desc => 'Reverse the order of the sort.'
     method_option 'sort', :aliases => '-s', :type => :string, :enum => %w(favorites followers friends listed screen_name since tweets tweeted), :default => 'screen_name', :desc => 'Specify the order of the results.', :banner => 'ORDER'
     method_option 'unsorted', :aliases => '-u', :type => :boolean, :default => false, :desc => 'Output is not sorted.'
@@ -415,6 +423,7 @@ module T
     method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
     method_option 'id', :aliases => '-i', :type => :boolean, :default => false, :desc => 'Specify user via ID instead of screen name.'
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
+    method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
     method_option 'reverse', :aliases => '-r', :type => :boolean, :default => false, :desc => 'Reverse the order of the sort.'
     method_option 'sort', :aliases => '-s', :type => :string, :enum => %w(members mode since slug subscribers), :default => 'slug', :desc => 'Specify the order of the results.', :banner => 'ORDER'
     method_option 'unsorted', :aliases => '-u', :type => :boolean, :default => false, :desc => 'Output is not sorted.'
@@ -435,6 +444,7 @@ module T
     desc 'mentions', "Returns the #{DEFAULT_NUM_RESULTS} most recent Tweets mentioning you."
     method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
+    method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
     method_option 'number', :aliases => '-n', :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => 'Limit the number of results.'
     method_option 'reverse', :aliases => '-r', :type => :boolean, :default => false, :desc => 'Reverse the order of the sort.'
     def mentions
@@ -513,6 +523,7 @@ module T
     method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
     method_option 'id', :aliases => '-i', :type => :boolean, :default => false, :desc => 'Specify user via ID instead of screen name.'
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
+    method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
     method_option 'number', :aliases => '-n', :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => 'Limit the number of results.'
     method_option 'reverse', :aliases => '-r', :type => :boolean, :default => false, :desc => 'Reverse the order of the sort.'
     def retweets(user = nil)
@@ -542,6 +553,7 @@ module T
     desc 'status TWEET_ID', 'Retrieves detailed information about a Tweet.'
     method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
+    method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
     def status(status_id) # rubocop:disable CyclomaticComplexity
       status = client.status(status_id.to_i, :include_my_retweet => false)
       location = if status.place?
@@ -575,7 +587,7 @@ module T
         array << ['ID', status.id.to_s]
         array << ['Text', decode_full_text(status).gsub(/\n+/, ' ')]
         array << ['Screen name', "@#{status.user.screen_name}"]
-        array << ['Posted at', "#{ls_formatted_time(status)} (#{time_ago_in_words(status.created_at)} ago)"]
+        array << ['Posted at', "#{ls_formatted_time(status, :created_at, false)} (#{time_ago_in_words(status.created_at)} ago)"]
         array << ['Retweets', number_with_delimiter(status.retweet_count)]
         array << ['Favorites', number_with_delimiter(status.favorite_count)]
         array << ['Source', strip_tags(status.source)]
@@ -589,6 +601,7 @@ module T
     method_option 'exclude', :aliases => '-e', :type => :string, :enum => %w(replies retweets), :desc => 'Exclude certain types of Tweets from the results.', :banner => 'TYPE'
     method_option 'id', :aliases => '-i', :type => :boolean, :default => false, :desc => 'Specify user via ID instead of screen name.'
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
+    method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
     method_option 'max_id', :aliases => '-m', :type => :numeric, :desc => 'Returns only the results with an ID less than the specified ID.'
     method_option 'number', :aliases => '-n', :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => 'Limit the number of results.'
     method_option 'reverse', :aliases => '-r', :type => :boolean, :default => false, :desc => 'Reverse the order of the sort.'
@@ -627,6 +640,7 @@ module T
     desc 'trend_locations', 'Returns the locations for which Twitter has trending topic information.'
     method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
+    method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
     method_option 'reverse', :aliases => '-r', :type => :boolean, :default => false, :desc => 'Reverse the order of the sort.'
     method_option 'sort', :aliases => '-s', :type => :string, :enum => %w(country name parent type woeid), :default => 'name', :desc => 'Specify the order of the results.', :banner => 'ORDER'
     method_option 'unsorted', :aliases => '-u', :type => :boolean, :default => false, :desc => 'Output is not sorted.'
@@ -697,6 +711,7 @@ module T
     method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
     method_option 'id', :aliases => '-i', :type => :boolean, :default => false, :desc => 'Specify input as Twitter user IDs instead of screen names.'
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
+    method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
     method_option 'reverse', :aliases => '-r', :type => :boolean, :default => false, :desc => 'Reverse the order of the sort.'
     method_option 'sort', :aliases => '-s', :type => :string, :enum => %w(favorites followers friends listed screen_name since tweets tweeted), :default => 'screen_name', :desc => 'Specify the order of the results.', :banner => 'ORDER'
     method_option 'unsorted', :aliases => '-u', :type => :boolean, :default => false, :desc => 'Output is not sorted.'
@@ -720,7 +735,8 @@ module T
     method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
     method_option 'id', :aliases => '-i', :type => :boolean, :default => false, :desc => 'Specify user via ID instead of screen name.'
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
-    def whois(user)
+    method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
+    def whois(user) # rubocop:disable CyclomaticComplexity
       require 't/core_ext/string'
       user = options['id'] ? user.to_i : user.strip_ats
       user = client.user(user)
@@ -730,7 +746,7 @@ module T
       else
         array = []
         array << ['ID', user.id.to_s]
-        array << ['Since', "#{ls_formatted_time(user)} (#{time_ago_in_words(user.created_at)} ago)"]
+        array << ['Since', "#{ls_formatted_time(user, :created_at, false)} (#{time_ago_in_words(user.created_at)} ago)"]
         array << ['Last update', "#{decode_full_text(user.status).gsub(/\n+/, ' ')} (#{time_ago_in_words(user.status.created_at)} ago)"] unless user.status.nil?
         array << ['Screen name', "@#{user.screen_name}"]
         array << [user.verified ? 'Name (Verified)' : 'Name', user.name] unless user.name.nil?

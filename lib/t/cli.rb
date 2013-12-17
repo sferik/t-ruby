@@ -466,7 +466,7 @@ module T
 
     desc 'reply TWEET_ID MESSAGE', 'Post your Tweet as a reply directed at another person.'
     method_option 'all', :aliases => '-a', :type => :boolean, :default => false, :desc => 'Reply to all users mentioned in the Tweet.'
-    method_option 'location', :aliases => '-l', :type => :string, :default => 'location', :desc => "Add location information. If the optional 'latitude,longitude' parameter is not supplied, looks up location by IP address."
+    method_option 'location', :aliases => '-l', :type => :string, :default => nil, :desc => "Add location information. If the optional 'latitude,longitude' parameter is not supplied, looks up location by IP address."
     def reply(status_id, message)
       status = client.status(status_id.to_i, :include_my_retweet => false)
       users = Array(status.user.screen_name)
@@ -675,12 +675,13 @@ module T
     end
 
     desc 'update [MESSAGE]', 'Post a Tweet.'
-    method_option 'location', :aliases => '-l', :type => :string, :default => 'location', :desc => "Add location information. If the optional 'latitude,longitude' parameter is not supplied, looks up location by IP address."
+    method_option 'location', :aliases => '-l', :type => :string, :default => nil, :desc => "Add location information. If the optional 'latitude,longitude' parameter is not supplied, looks up location by IP address."
     method_option 'file', :aliases => '-f', :type => :string, :desc => 'The path to an image to attach to your tweet.'
     def update(message = nil)
       message = T::Editor.gets if message.nil? || message.empty?
       opts = {:trim_user => true}
       add_location!(options, opts)
+
       status = if options['file']
                  client.update_with_media(message, File.new(File.expand_path(options['file'])), opts)
                else

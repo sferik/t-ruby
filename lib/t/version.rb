@@ -8,12 +8,12 @@ module T
 
       # @return [Integer]
       def minor
-        0
+        1
       end
 
       # @return [Integer]
       def patch
-        2
+        0
       end
 
       # @return [String, NilClass]

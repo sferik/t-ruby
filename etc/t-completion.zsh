@@ -83,6 +83,7 @@ _t_direct_messages() {
   _arguments \
     "(-c --csv)"{-c,--csv}"[Output in CSV format.]" \
     "(-l --long)"{-l,--long}"[Output in long format.]" \
+    "(-a --relative_dates)"{-a,--relative_dates}"[Show relative dates.]" \
     "(-n --number)"{-n,--number}"[Limit the number of results.]" \
     "(-r --reverse)"{-r,--reverse}"[Reverse the order of the sort.]" \
     $t_general_options && ret=0
@@ -92,6 +93,7 @@ _t_direct_messages_sent() {
   _arguments \
     "(-c --csv)"{-c,--csv}"[Output in CSV format.]" \
     "(-l --long)"{-l,--long}"[Output in long format.]" \
+    "(-a --relative_dates)"{-a,--relative_dates}"[Show relative dates.]" \
     "(-n --number)"{-n,--number}"[Limit the number of results.]" \
     "(-r --reverse)"{-r,--reverse}"[Reverse the order of the sort.]" \
     $t_general_options && ret=0
@@ -102,6 +104,7 @@ _t_groupies() {
     "(-c --csv)"{-c,--csv}"[Output in CSV format.]" \
     "(-i --id)"{-i,--id}"[Specify user via ID instead of screen name.]" \
     "(-l --long)"{-l,--long}"[Output in long format.]" \
+    "(-a --relative_dates)"{-a,--relative_dates}"[Show relative dates.]" \
     "(-r --reverse)"{-r,--reverse}"[Reverse the order of the sort.]" \
     "(-s --sort)"{-s,--sort}"[Specify the order of the results.]" \
     "(-u --unsorted)"{-u,--unsorted}"[Output is not sorted.]" \
@@ -136,6 +139,7 @@ _t_favorites() {
     "(-c --csv)"{-c,--csv}"[Output in CSV format.]" \
     "(-i --id)"{-i,--id}"[Specify user via ID instead of screen name.]" \
     "(-l --long)"{-l,--long}"[Output in long format.]" \
+    "(-a --relative_dates)"{-a,--relative_dates}"[Show relative dates.]" \
     "(-m --max_id)"{-m,--max_id}"[Returns only the results with an ID less than the specified ID.]" \
     "(-n --number)"{-n,--number}"[Limit the number of results.]" \
     "(-r --reverse)"{-r,--reverse}"[Reverse the order of the sort.]" \
@@ -154,6 +158,7 @@ _t_followings() {
     "(-c --csv)"{-c,--csv}"[Output in CSV format.]" \
     "(-i --id)"{-i,--id}"[Specify user via ID instead of screen name.]" \
     "(-l --long)"{-l,--long}"[Output in long format.]" \
+    "(-a --relative_dates)"{-a,--relative_dates}"[Show relative dates.]" \
     "(-r --reverse)"{-r,--reverse}"[Reverse the order of the sort.]" \
     "(-s --sort)"{-s,--sort}"[Specify the order of the results.]" \
     "(-u --unsorted)"{-u,--unsorted}"[Output is not sorted.]" \
@@ -165,6 +170,7 @@ _t_followers() {
     "(-c --csv)"{-c,--csv}"[Output in CSV format.]" \
     "(-i --id)"{-i,--id}"[Specify user via ID instead of screen name.]" \
     "(-l --long)"{-l,--long}"[Output in long format.]" \
+    "(-a --relative_dates)"{-a,--relative_dates}"[Show relative dates.]" \
     "(-r --reverse)"{-r,--reverse}"[Reverse the order of the sort.]" \
     "(-s --sort)"{-s,--sort}"[Specify the order of the results.]" \
     "(-u --unsorted)"{-u,--unsorted}"[Output is not sorted.]" \
@@ -176,6 +182,7 @@ _t_friends() {
     "(-c --csv)"{-c,--csv}"[Output in CSV format.]" \
     "(-i --id)"{-i,--id}"[Specify user via ID instead of screen name.]" \
     "(-l --long)"{-l,--long}"[Output in long format.]" \
+    "(-a --relative_dates)"{-a,--relative_dates}"[Show relative dates.]" \
     "(-r --reverse)"{-r,--reverse}"[Reverse the order of the sort.]" \
     "(-s --sort)"{-s,--sort}"[Specify the order of the results.]" \
     "(-u --unsorted)"{-u,--unsorted}"[Output is not sorted.]" \
@@ -187,6 +194,7 @@ _t_leaders() {
     "(-c --csv)"{-c,--csv}"[Output in CSV format.]" \
     "(-i --id)"{-i,--id}"[Specify user via ID instead of screen name.]" \
     "(-l --long)"{-l,--long}"[Output in long format.]" \
+    "(-a --relative_dates)"{-a,--relative_dates}"[Show relative dates.]" \
     "(-r --reverse)"{-r,--reverse}"[Reverse the order of the sort.]" \
     "(-s --sort)"{-s,--sort}"[Specify the order of the results.]" \
     "(-u --unsorted)"{-u,--unsorted}"[Output is not sorted.]" \
@@ -198,6 +206,7 @@ _t_lists() {
     "(-c --csv)"{-c,--csv}"[Output in CSV format.]" \
     "(-i --id)"{-i,--id}"[Specify user via ID instead of screen name.]" \
     "(-l --long)"{-l,--long}"[Output in long format.]" \
+    "(-a --relative_dates)"{-a,--relative_dates}"[Show relative dates.]" \
     "(-r --reverse)"{-r,--reverse}"[Reverse the order of the sort.]" \
     "(-s --sort)"{-s,--sort}"[Specify the order of the results.]" \
     "(-u --unsorted)"{-u,--unsorted}"[Output is not sorted.]" \
@@ -213,6 +222,7 @@ _t_mentions() {
   _arguments \
     "(-c --csv)"{-c,--csv}"[Output in CSV format.]" \
     "(-l --long)"{-l,--long}"[Output in long format.]" \
+    "(-a --relative_dates)"{-a,--relative_dates}"[Show relative dates.]" \
     "(-n --number)"{-n,--number}"[Limit the number of results.]" \
     "(-r --reverse)"{-r,--reverse}"[Reverse the order of the sort.]" \
     $t_general_options && ret=0
@@ -249,6 +259,7 @@ _t_retweets() {
     "(-c --csv)"{-c,--csv}"[Output in CSV format.]" \
     "(-i --id)"{-i,--id}"[Specify user via ID instead of screen name.]" \
     "(-l --long)"{-l,--long}"[Output in long format.]" \
+    "(-a --relative_dates)"{-a,--relative_dates}"[Show relative dates.]" \
     "(-n --number)"{-n,--number}"[Limit the number of results.]" \
     "(-r --reverse)"{-r,--reverse}"[Reverse the order of the sort.]" \
     $t_general_options && ret=0
@@ -264,6 +275,7 @@ _t_status() {
   _arguments \
     "(-c --csv)"{-c,--csv}"[Output in CSV format.]" \
     "(-l --long)"{-l,--long}"[Output in long format.]" \
+    "(-a --relative_dates)"{-a,--relative_dates}"[Show relative dates.]" \
     $t_general_options && ret=0
 }
 
@@ -273,6 +285,7 @@ _t_timeline() {
     "(-e --exclude)"{-e,--exclude}"[Exclude certain types of Tweets from the results.]" \
     "(-i --id)"{-i,--id}"[Specify user via ID instead of screen name.]" \
     "(-l --long)"{-l,--long}"[Output in long format.]" \
+    "(-a --relative_dates)"{-a,--relative_dates}"[Show relative dates.]" \
     "(-m --max_id)"{-m,--max_id}"[Returns only the results with an ID less than the specified ID.]" \
     "(-n --number)"{-n,--number}"[Limit the number of results.]" \
     "(-r --reverse)"{-r,--reverse}"[Reverse the order of the sort.]" \
@@ -290,6 +303,7 @@ _t_trend_locations() {
   _arguments \
     "(-c --csv)"{-c,--csv}"[Output in CSV format.]" \
     "(-l --long)"{-l,--long}"[Output in long format.]" \
+    "(-a --relative_dates)"{-a,--relative_dates}"[Show relative dates.]" \
     "(-r --reverse)"{-r,--reverse}"[Reverse the order of the sort.]" \
     "(-s --sort)"{-s,--sort}"[Specify the order of the results.]" \
     "(-u --unsorted)"{-u,--unsorted}"[Output is not sorted.]" \
@@ -314,6 +328,7 @@ _t_users() {
     "(-c --csv)"{-c,--csv}"[Output in CSV format.]" \
     "(-i --id)"{-i,--id}"[Specify input as Twitter user IDs instead of screen names.]" \
     "(-l --long)"{-l,--long}"[Output in long format.]" \
+    "(-a --relative_dates)"{-a,--relative_dates}"[Show relative dates.]" \
     "(-r --reverse)"{-r,--reverse}"[Reverse the order of the sort.]" \
     "(-s --sort)"{-s,--sort}"[Specify the order of the results.]" \
     "(-u --unsorted)"{-u,--unsorted}"[Output is not sorted.]" \
@@ -330,6 +345,7 @@ _t_whois() {
     "(-c --csv)"{-c,--csv}"[Output in CSV format.]" \
     "(-i --id)"{-i,--id}"[Specify user via ID instead of screen name.]" \
     "(-l --long)"{-l,--long}"[Output in long format.]" \
+    "(-a --relative_dates)"{-a,--relative_dates}"[Show relative dates.]" \
     $t_general_options && ret=0
 }
 

@@ -305,9 +305,9 @@ fashion. If critical issues for a particular implementation exist at the time
 of a major release, support for that Ruby version may be dropped.
 
 ## Troubleshooting
-If you are running t on a remote computer you can use the flag --display-url during authorize process to display the url instead of opening the web browser.
+If you are running t on a remote computer you can use the flag --display-uri during authorize process to display the url instead of opening the web browser.
 
-    t authorize --display-url
+    t authorize --display-uri
 
 ## Copyright
 Copyright (c) 2011-2013 Erik Michaels-Ober. See [LICENSE][] for details.

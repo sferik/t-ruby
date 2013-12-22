@@ -53,16 +53,6 @@ Once you've verified that Ruby is installed:
 
     gem install t
 
-To ensure the code you're installing hasn't been tampered with, it's
-recommended that you verify the signature. To do this, you need to add my
-public key as a trusted certificate (you only need to do this once):
-
-    gem cert --add <(curl -Ls https://raw.github.com/sferik/t/master/certs/sferik.pem)
-
-Then, install the gem with the medium security trust policy:
-
-    gem install t -P MediumSecurity
-
 ## Configuration
 Twitter API v1.1 requires OAuth for all of its functionality, so you'll need a
 registered Twitter application. If you've never registered a Twitter

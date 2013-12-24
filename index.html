@@ -44,7 +44,7 @@
 <h4>
 <a name="a-command-line-power-tool-for-twitter" class="anchor" href="#a-command-line-power-tool-for-twitter"><span class="octicon octicon-link"></span></a>A command-line power tool for Twitter.</h4>
 
-<p>The CLI takes syntactic cues from the <a href="https://support.twitter.com/articles/14020-twitter-sms-command">Twitter SMS commands</a>, however it
+<p>The CLI takes syntactic cues from the <a href="https://support.twitter.com/articles/14020-twitter-sms-command">Twitter SMS commands</a>, but it
 offers vastly more commands and capabilities than are available via SMS.</p>
 
 <h2>
@@ -86,24 +86,12 @@ offers vastly more commands and capabilities than are available via SMS.</p>
 <pre><code>gem install t
 </code></pre>
 
-<p>To ensure the code you're installing hasn't been tampered with, it's
-recommended that you verify the signature. To do this, you need to add my
-public key as a trusted certificate (you only need to do this once):</p>
-
-<pre><code>gem cert --add &lt;(curl -Ls https://raw.github.com/sferik/t/master/certs/sferik.pem)
-</code></pre>
-
-<p>Then, install the gem with the medium security trust policy:</p>
-
-<pre><code>gem install t -P MediumSecurity
-</code></pre>
-
 <h2>
 <a name="configuration" class="anchor" href="#configuration"><span class="octicon octicon-link"></span></a>Configuration</h2>
 
 <p>Twitter API v1.1 requires OAuth for all of its functionality, so you'll need a
 registered Twitter application. If you've never registered a Twitter
-application before, it's easy! Just sign-in using your Twitter account and the
+application before, it's easy! Just sign-in using your Twitter account and then
 fill out the short form at <a href="http://dev.twitter.com/apps/new">http://dev.twitter.com/apps/new</a>. If you've
 previously registered a Twitter application, it should be listed at
 <a href="http://dev.twitter.com/apps">http://dev.twitter.com/apps</a>. Once you've registered an application, make sure
@@ -198,8 +186,8 @@ obviously can't contain any apostrophes.)</p>
 </code></pre>
 
 <p><strong>Note</strong>: If the first user does not follow the second, <code>t</code> will exit with a
-non-zero exit code. This allows you to execute commands conditionally, for
-example, send a user a direct message only if they already follow you:</p>
+non-zero exit code. This allows you to execute commands conditionally. For
+example, here's how to send a user a direct message only if they already follow you:</p>
 
 <pre><code>t does_follow @ev &amp;&amp; t dm @ev "What's up, bro?"
 </code></pre>
@@ -289,7 +277,7 @@ example, send a user a direct message only if they already follow you:</p>
 </code></pre>
 
 <h4>
-<a name="download-the-latest-linux-kernel-via-bittorrent-possibly-nsfw-depending-where-you-work" class="anchor" href="#download-the-latest-linux-kernel-via-bittorrent-possibly-nsfw-depending-where-you-work"><span class="octicon octicon-link"></span></a>Download the latest Linux kernel via BitTorrent (possibly NSFW, depending where you work)</h4>
+<a name="download-the-latest-linux-kernel-via-bittorrent-possibly-nsfw-depending-on-where-you-work" class="anchor" href="#download-the-latest-linux-kernel-via-bittorrent-possibly-nsfw-depending-on-where-you-work"><span class="octicon octicon-link"></span></a>Download the latest Linux kernel via BitTorrent (possibly NSFW, depending on where you work)</h4>
 
 <pre><code>t search all "lang:en filter:links linux torrent" -n 1 | grep -o "http://t.co/[0-9A-Za-z]*" | xargs open
 </code></pre>
@@ -328,7 +316,7 @@ example, send a user a direct message only if they already follow you:</p>
 <a name="features" class="anchor" href="#features"><span class="octicon octicon-link"></span></a>Features</h2>
 
 <ul>
-<li>Deep search: Instead of using the Twitter Search API, <a href="https://dev.twitter.com/docs/using-search">which only only goes
+<li>Deep search: Instead of using the Twitter Search API, <a href="https://dev.twitter.com/docs/using-search">which only goes
 back 6-9 days</a>, <code>t search</code> fetches up to 3,200 tweets via the REST API
 and then checks each one against a regular expression.</li>
 <li>Multi-threaded: Whenever possible, Twitter API requests are made in parallel,
@@ -426,9 +414,9 @@ of a major release, support for that Ruby version may be dropped.</p>
 <h2>
 <a name="troubleshooting" class="anchor" href="#troubleshooting"><span class="octicon octicon-link"></span></a>Troubleshooting</h2>
 
-<p>If you are running t on a remote computer you can use the flag --display-url during authorize process to display the url instead of opening the web browser.</p>
+<p>If you are running t on a remote computer you can use the flag --display-uri during authorize process to display the url instead of opening the web browser.</p>
 
-<pre><code>t authorize --display-url
+<pre><code>t authorize --display-uri
 </code></pre>
 
 <h2>

@@ -15,6 +15,7 @@ module T
 
     DEFAULT_NUM_RESULTS = 20
     MAX_NUM_RESULTS = 200
+    MAX_SEARCH_RESULTS = 100
 
     check_unknown_options!
 
@@ -25,15 +26,14 @@ module T
 
     desc 'all QUERY', "Returns the #{DEFAULT_NUM_RESULTS} most recent Tweets that match the specified query."
     method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
-    method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
     method_option 'decode_uris', :aliases => '-d', :type => :boolean, :default => false, :desc => 'Decodes t.co URLs into their original form.'
+    method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
     method_option 'number', :aliases => '-n', :type => :numeric, :default => DEFAULT_NUM_RESULTS
     def all(query)
       count = options['number'] || DEFAULT_NUM_RESULTS
-      tweets = collect_with_count(count) do |count_opts|
-        count_opts[:include_entities] = 1 if options['decode_uris']
-        client.search(query, count_opts).to_a
-      end
+      opts = {:count => MAX_SEARCH_RESULTS}
+      opts[:include_entities] = 1 if options['decode_uris']
+      tweets = client.search(query, opts).take(count)
       tweets.reverse! if options['reverse']
       require 'htmlentities'
       if options['csv']
@@ -58,8 +58,8 @@ module T
 
     desc 'favorites [USER] QUERY', "Returns Tweets you've favorited that match the specified query."
     method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
-    method_option 'id', :aliases => '-i', :type => :boolean, :default => false, :desc => 'Specify user via ID instead of screen name.'
     method_option 'decode_uris', :aliases => '-d', :type => :boolean, :default => false, :desc => 'Decodes t.co URLs into their original form.'
+    method_option 'id', :aliases => '-i', :type => :boolean, :default => false, :desc => 'Specify user via ID instead of screen name.'
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
     def favorites(*args)
       opts = {:count => MAX_NUM_RESULTS}

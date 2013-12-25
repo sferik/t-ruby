@@ -24,14 +24,7 @@ end
 
 platforms :rbx do
   gem 'rubinius-coverage', '~> 2.0'
-  gem 'rubysl-base64', '~> 2.0'
-  gem 'rubysl-bigdecimal', '~> 2.0'
-  gem 'rubysl-coverage', '~> 2.0'
-  gem 'rubysl-csv', '~> 2.0'
-  gem 'rubysl-ipaddr', '~> 2.0'
-  gem 'rubysl-logger', '~> 2.0'
-  gem 'rubysl-rexml', '~> 2.0'
-  gem 'rubysl-singleton', '~> 2.0'
+  gem 'rubysl', '~> 2.0'
 end
 
 gemspec

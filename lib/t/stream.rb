@@ -72,7 +72,7 @@ module T
         search.options = search.options.merge(:format => TWEET_HEADINGS_FORMATTING)
         search.all(keywords.join(' OR '))
       end
-      client.filter(:track => keywords) do |tweet|
+      client.filter(:track => keywords.join(',')) do |tweet|
         next unless tweet.is_a?(Twitter::Tweet)
         if options['csv']
           print_csv_tweet(tweet)

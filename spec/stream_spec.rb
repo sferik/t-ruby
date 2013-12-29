@@ -99,7 +99,7 @@ describe T::Stream do
 
   describe '#search' do
     before :each do
-      allow(@client).to receive(:filter).with(:track => ['gem']).
+      allow(@client).to receive(:filter).with(:track => 'twitter,gem').
         and_yield(@status)
     end
 
@@ -111,7 +111,7 @@ describe T::Stream do
       it 'outputs in CSV format' do
         allow(@client).to receive(:before_request).and_return
         expect(@stream).to receive(:print_csv_tweet).with(any_args)
-        @stream.search('gem')
+        @stream.search(%w[twitter gem])
       end
     end
 
@@ -122,21 +122,21 @@ describe T::Stream do
 
       it 'outputs in long text format' do
         allow(@client).to receive(:before_request).and_return
-        allow(@client).to receive(:filter).with(:track => ['gem']).
+        allow(@client).to receive(:filter).with(:track => 'twitter,gem').
           and_yield(@status)
         expect(@stream).to receive(:print_table).with(any_args)
-        @stream.search('gem')
+        @stream.search(%w[twitter gem])
       end
     end
 
     context 'normal usage' do
       before :each do
-        allow(@client).to receive(:filter).with(:track => ['gem']).
+        allow(@client).to receive(:filter).with(:track => 'twitter,gem').
           and_yield(@status)
       end
       it 'prints the tweet status' do
         expect(@stream).to receive(:print_message)
-        @stream.search('gem')
+        @stream.search(%w[twitter gem])
       end
     end
 
@@ -150,8 +150,8 @@ describe T::Stream do
 
     it 'invokes Twitter::Streaming::Client#filter' do
       allow(@client).to receive(:filter).and_return
-      expect(@client).to receive(:filter).with(:track => ['gem'])
-      @stream.search('gem')
+      expect(@client).to receive(:filter).with(:track => 'twitter,gem')
+      @stream.search(%w[twitter gem])
     end
   end
 

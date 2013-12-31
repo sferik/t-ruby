@@ -2621,7 +2621,7 @@ Location     Blowfish Sushi To Die For
     context 'with no place' do
       before do
         stub_get('/1.1/statuses/show/55709764298092545.json').with(:query => {:include_my_retweet => 'false'}).to_return(:body => fixture('status_no_place.json'))
-        stub_request(:get, 'http://maps.google.com/maps/geo').with(:query => hash_including(:key => 'REPLACE_WITH_YOUR_GOOGLE_KEY', :oe => 'utf-8', :output => 'xml')).to_return(:body => fixture('geo.kml'), :headers => {:content_type => 'text/xml; charset=UTF-8'})
+        stub_request(:get, 'http://maps.google.com/maps/api/geocode/json').with(:query => {:latlng => '37.75963095,-122.410067', :sensor => 'false'}).to_return(:body => fixture('geo.json'), :headers => {:content_type => 'application/json; charset=UTF-8'})
       end
       it 'has the correct output' do
         @cli.status('55709764298092545')
@@ -2633,13 +2633,13 @@ Posted at    Apr  6  2011 (8 months ago)
 Retweets     320
 Favorites    50
 Source       Twitter for iPhone
-Location     San Francisco, CA, USA
+Location     San Francisco, CA, United States
         eos
       end
       context 'with no city' do
         before do
           stub_get('/1.1/statuses/show/55709764298092545.json').with(:query => {:include_my_retweet => 'false'}).to_return(:body => fixture('status_no_place.json'))
-          stub_request(:get, 'http://maps.google.com/maps/geo').with(:query => hash_including(:key => 'REPLACE_WITH_YOUR_GOOGLE_KEY', :oe => 'utf-8', :output => 'xml')).to_return(:body => fixture('geo_no_city.kml'), :headers => {:content_type => 'text/xml; charset=UTF-8'})
+          stub_request(:get, 'http://maps.google.com/maps/api/geocode/json').with(:query => {:latlng => '37.75963095,-122.410067', :sensor => 'false'}).to_return(:body => fixture('geo_no_city.json'), :headers => {:content_type => 'application/json; charset=UTF-8'})
         end
         it 'has the correct output' do
           @cli.status('55709764298092545')
@@ -2651,14 +2651,14 @@ Posted at    Apr  6  2011 (8 months ago)
 Retweets     320
 Favorites    50
 Source       Twitter for iPhone
-Location     CA, USA
+Location     CA, United States
           eos
         end
       end
       context 'with no state' do
         before do
           stub_get('/1.1/statuses/show/55709764298092545.json').with(:query => {:include_my_retweet => 'false'}).to_return(:body => fixture('status_no_place.json'))
-          stub_request(:get, 'http://maps.google.com/maps/geo').with(:query => hash_including(:key => 'REPLACE_WITH_YOUR_GOOGLE_KEY', :oe => 'utf-8', :output => 'xml')).to_return(:body => fixture('geo_no_state.kml'), :headers => {:content_type => 'text/xml; charset=UTF-8'})
+          stub_request(:get, 'http://maps.google.com/maps/api/geocode/json').with(:query => {:latlng => '37.75963095,-122.410067', :sensor => 'false'}).to_return(:body => fixture('geo_no_state.json'), :headers => {:content_type => 'application/json; charset=UTF-8'})
         end
         it 'has the correct output' do
           @cli.status('55709764298092545')
@@ -2670,7 +2670,7 @@ Posted at    Apr  6  2011 (8 months ago)
 Retweets     320
 Favorites    50
 Source       Twitter for iPhone
-Location     USA
+Location     United States
           eos
         end
       end

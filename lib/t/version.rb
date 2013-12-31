@@ -1,29 +1,14 @@
 module T
   class Version
+    MAJOR = 2
+    MINOR = 2
+    PATCH = 0
+    PRE = nil
+
     class << self
-      # @return [Integer]
-      def major
-        2
-      end
-
-      # @return [Integer]
-      def minor
-        2
-      end
-
-      # @return [Integer]
-      def patch
-        0
-      end
-
-      # @return [String, NilClass]
-      def pre
-        nil
-      end
-
       # @return [String]
       def to_s
-        [major, minor, patch, pre].compact.join('.')
+        [MAJOR, MINOR, PATCH, PRE].compact.join('.')
       end
     end
   end

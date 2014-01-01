@@ -198,11 +198,11 @@ module T
     method_option 'unsorted', :aliases => '-u', :type => :boolean, :default => false, :desc => 'Output is not sorted.'
     def groupies(user = nil)
       user = if user
-               require 't/core_ext/string'
-               options['id'] ? user.to_i : user.strip_ats
-             else
-               client.verify_credentials.screen_name
-             end
+        require 't/core_ext/string'
+        options['id'] ? user.to_i : user.strip_ats
+      else
+        client.verify_credentials.screen_name
+      end
       follower_ids = Thread.new do
         client.follower_ids(user).to_a
       end
@@ -371,11 +371,11 @@ module T
     method_option 'unsorted', :aliases => '-u', :type => :boolean, :default => false, :desc => 'Output is not sorted.'
     def friends(user = nil)
       user = if user
-               require 't/core_ext/string'
-               options['id'] ? user.to_i : user.strip_ats
-             else
-               client.verify_credentials.screen_name
-             end
+        require 't/core_ext/string'
+        options['id'] ? user.to_i : user.strip_ats
+      else
+        client.verify_credentials.screen_name
+      end
       following_ids = Thread.new do
         client.friend_ids(user).to_a
       end
@@ -400,11 +400,11 @@ module T
     method_option 'unsorted', :aliases => '-u', :type => :boolean, :default => false, :desc => 'Output is not sorted.'
     def leaders(user = nil)
       user = if user
-               require 't/core_ext/string'
-               options['id'] ? user.to_i : user.strip_ats
-             else
-               client.verify_credentials.screen_name
-             end
+        require 't/core_ext/string'
+        options['id'] ? user.to_i : user.strip_ats
+      else
+        client.verify_credentials.screen_name
+      end
       following_ids = Thread.new do
         client.friend_ids(user).to_a
       end
@@ -429,12 +429,12 @@ module T
     method_option 'unsorted', :aliases => '-u', :type => :boolean, :default => false, :desc => 'Output is not sorted.'
     def lists(user = nil)
       lists = if user
-                require 't/core_ext/string'
-                user = options['id'] ? user.to_i : user.strip_ats
-                client.lists(user)
-              else
-                client.lists
-              end
+        require 't/core_ext/string'
+        user = options['id'] ? user.to_i : user.strip_ats
+        client.lists(user)
+      else
+        client.lists
+      end
       print_lists(lists)
     end
 
@@ -529,16 +529,16 @@ module T
     def retweets(user = nil)
       count = options['number'] || DEFAULT_NUM_RESULTS
       tweets = if user
-                 require 't/core_ext/string'
-                 user = options['id'] ? user.to_i : user.strip_ats
-                 collect_with_count(count) do |count_opts|
-                   client.retweeted_by_user(user, count_opts)
-                 end
-               else
-                 collect_with_count(count) do |count_opts|
-                   client.retweeted_by_me(count_opts)
-                 end
-               end
+        require 't/core_ext/string'
+        user = options['id'] ? user.to_i : user.strip_ats
+        collect_with_count(count) do |count_opts|
+          client.retweeted_by_user(user, count_opts)
+        end
+      else
+        collect_with_count(count) do |count_opts|
+          client.retweeted_by_me(count_opts)
+        end
+      end
       print_tweets(tweets)
     end
     map %w(rts) => :retweets
@@ -557,22 +557,22 @@ module T
     def status(status_id) # rubocop:disable CyclomaticComplexity
       status = client.status(status_id.to_i, :include_my_retweet => false)
       location = if status.place?
-                   if status.place.name && status.place.attributes && status.place.attributes[:street_address] && status.place.attributes[:locality] && status.place.attributes[:region] && status.place.country
-                     [status.place.name, status.place.attributes[:street_address], status.place.attributes[:locality], status.place.attributes[:region], status.place.country].join(', ')
-                   elsif status.place.name && status.place.attributes && status.place.attributes[:locality] && status.place.attributes[:region] && status.place.country
-                     [status.place.name, status.place.attributes[:locality], status.place.attributes[:region], status.place.country].join(', ')
-                   elsif status.place.full_name && status.place.attributes && status.place.attributes[:region] && status.place.country
-                     [status.place.full_name, status.place.attributes[:region], status.place.country].join(', ')
-                   elsif status.place.full_name && status.place.country
-                     [status.place.full_name, status.place.country].join(', ')
-                   elsif status.place.full_name
-                     status.place.full_name
-                   else
-                     status.place.name
-                   end
-                 elsif status.geo?
-                   reverse_geocode(status.geo)
-                 end
+        if status.place.name && status.place.attributes && status.place.attributes[:street_address] && status.place.attributes[:locality] && status.place.attributes[:region] && status.place.country
+          [status.place.name, status.place.attributes[:street_address], status.place.attributes[:locality], status.place.attributes[:region], status.place.country].join(', ')
+        elsif status.place.name && status.place.attributes && status.place.attributes[:locality] && status.place.attributes[:region] && status.place.country
+          [status.place.name, status.place.attributes[:locality], status.place.attributes[:region], status.place.country].join(', ')
+        elsif status.place.full_name && status.place.attributes && status.place.attributes[:region] && status.place.country
+          [status.place.full_name, status.place.attributes[:region], status.place.country].join(', ')
+        elsif status.place.full_name && status.place.country
+          [status.place.full_name, status.place.country].join(', ')
+        elsif status.place.full_name
+          status.place.full_name
+        else
+          status.place.name
+        end
+      elsif status.geo?
+        reverse_geocode(status.geo)
+      end
       status_headings = ['ID', 'Posted at', 'Screen name', 'Text', 'Retweets', 'Favorites', 'Source', 'Location']
       if options['csv']
         require 'csv'
@@ -647,17 +647,17 @@ module T
     def trend_locations
       places = client.trend_locations
       places = case options['sort']
-               when 'country'
-                 places.sort_by { |place| place.country.downcase }
-               when 'parent'
-                 places.sort_by { |place| place.parent_id.to_i }
-               when 'type'
-                 places.sort_by { |place| place.place_type.downcase }
-               when 'woeid'
-                 places.sort_by { |place| place.woeid.to_i }
-               else
-                 places.sort_by { |place| place.name.downcase }
-               end unless options['unsorted']
+      when 'country'
+        places.sort_by { |place| place.country.downcase }
+      when 'parent'
+        places.sort_by { |place| place.parent_id.to_i }
+      when 'type'
+        places.sort_by { |place| place.place_type.downcase }
+      when 'woeid'
+        places.sort_by { |place| place.woeid.to_i }
+      else
+        places.sort_by { |place| place.name.downcase }
+      end unless options['unsorted']
       places.reverse! if options['reverse']
       if options['csv']
         require 'csv'
@@ -695,12 +695,11 @@ module T
       message = T::Editor.gets if message.nil? || message.empty?
       opts = {:trim_user => true}
       add_location!(options, opts)
-
       status = if options['file']
-                 client.update_with_media(message, File.new(File.expand_path(options['file'])), opts)
-               else
-                 client.update(message, opts)
-               end
+        client.update_with_media(message, File.new(File.expand_path(options['file'])), opts)
+      else
+        client.update(message, opts)
+      end
       say "Tweet posted by @#{@rcfile.active_profile[0]}."
       say
       say "Run `#{File.basename($PROGRAM_NAME)} delete status #{status.id}` to delete."

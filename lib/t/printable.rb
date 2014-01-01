@@ -55,17 +55,17 @@ module T
 
     def print_lists(lists)
       lists = case options['sort']
-              when 'members'
-                lists.sort_by { |user| user.member_count }
-              when 'mode'
-                lists.sort_by { |user| user.mode }
-              when 'since'
-                lists.sort_by { |user| user.created_at }
-              when 'subscribers'
-                lists.sort_by { |user| user.subscriber_count }
-              else
-                lists.sort_by { |list| list.slug.downcase }
-              end unless options['unsorted']
+      when 'members'
+        lists.sort_by { |user| user.member_count }
+      when 'mode'
+        lists.sort_by { |user| user.mode }
+      when 'since'
+        lists.sort_by { |user| user.created_at }
+      when 'subscribers'
+        lists.sort_by { |user| user.subscriber_count }
+      else
+        lists.sort_by { |list| list.slug.downcase }
+      end unless options['unsorted']
       lists.reverse! if options['reverse']
       if options['csv']
         require 'csv'
@@ -145,23 +145,23 @@ module T
 
     def print_users(users) # rubocop:disable CyclomaticComplexity
       users = case options['sort']
-              when 'favorites'
-                users.sort_by { |user| user.favorites_count.to_i }
-              when 'followers'
-                users.sort_by { |user| user.followers_count.to_i }
-              when 'friends'
-                users.sort_by { |user| user.friends_count.to_i }
-              when 'listed'
-                users.sort_by { |user| user.listed_count.to_i }
-              when 'since'
-                users.sort_by { |user| user.created_at }
-              when 'tweets'
-                users.sort_by { |user| user.statuses_count.to_i }
-              when 'tweeted'
-                users.sort_by { |user| user.status? ? user.status.created_at : Time.at(0) }
-              else
-                users.sort_by { |user| user.screen_name.downcase }
-              end unless options['unsorted']
+      when 'favorites'
+        users.sort_by { |user| user.favorites_count.to_i }
+      when 'followers'
+        users.sort_by { |user| user.followers_count.to_i }
+      when 'friends'
+        users.sort_by { |user| user.friends_count.to_i }
+      when 'listed'
+        users.sort_by { |user| user.listed_count.to_i }
+      when 'since'
+        users.sort_by { |user| user.created_at }
+      when 'tweets'
+        users.sort_by { |user| user.statuses_count.to_i }
+      when 'tweeted'
+        users.sort_by { |user| user.status? ? user.status.created_at : Time.at(0) }
+      else
+        users.sort_by { |user| user.screen_name.downcase }
+      end unless options['unsorted']
       users.reverse! if options['reverse']
       if options['csv']
         require 'csv'

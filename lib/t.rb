@@ -14,13 +14,13 @@ module T
 
     def utc_offset=(offset)
       @utc_offset = case offset
-                    when String
-                      Time.zone_offset(offset)
-                    when NilClass
-                      nil
-                    else
-                      offset.to_i
-                    end
+      when String
+        Time.zone_offset(offset)
+      when NilClass
+        nil
+      else
+        offset.to_i
+      end
     end
   end
 end

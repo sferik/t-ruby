@@ -32,15 +32,14 @@ module T
     def all(query)
       count = options['number'] || DEFAULT_NUM_RESULTS
       opts = {:count => MAX_SEARCH_RESULTS}
-      opts[:include_entities] = 1 if options['decode_uris']
+      opts[:include_entities] = !!options['decode_uris']
       tweets = client.search(query, opts).take(count)
       tweets.reverse! if options['reverse']
-      require 'htmlentities'
       if options['csv']
         require 'csv'
         say TWEET_HEADINGS.to_csv unless tweets.empty?
         tweets.each do |tweet|
-          say [tweet.id, csv_formatted_time(tweet), tweet.user.screen_name, decode_full_text(tweet)].to_csv
+          say [tweet.id, csv_formatted_time(tweet), tweet.user.screen_name, decode_full_text(tweet, options['decode_uris'])].to_csv
         end
       elsif options['long']
         array = tweets.map do |tweet|
@@ -62,10 +61,10 @@ module T
     method_option 'id', :aliases => '-i', :type => :boolean, :default => false, :desc => 'Specify user via ID instead of screen name.'
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
     def favorites(*args)
-      opts = {:count => MAX_NUM_RESULTS}
       query = args.pop
       user = args.pop
-      opts[:include_entities] = 1 if options['decode_uris']
+      opts = {:count => MAX_NUM_RESULTS}
+      opts[:include_entities] = !!options['decode_uris']
       if user
         require 't/core_ext/string'
         user = options['id'] ? user.to_i : user.strip_ats
@@ -94,7 +93,7 @@ module T
     def list(list, query)
       owner, list = extract_owner(list, options)
       opts = {:count => MAX_NUM_RESULTS}
-      opts[:include_entities] = 1 if options['decode_uris']
+      opts[:include_entities] = !!options['decode_uris']
       tweets = collect_with_max_id do |max_id|
         opts[:max_id] = max_id unless max_id.nil?
         client.list_timeline(owner, list, opts)
@@ -111,7 +110,7 @@ module T
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
     def mentions(query)
       opts = {:count => MAX_NUM_RESULTS}
-      opts[:include_entities] = 1 if options['decode_uris']
+      opts[:include_entities] = !!options['decode_uris']
       tweets = collect_with_max_id do |max_id|
         opts[:max_id] = max_id unless max_id.nil?
         client.mentions(opts)
@@ -129,10 +128,10 @@ module T
     method_option 'id', :aliases => '-i', :type => :boolean, :default => false, :desc => 'Specify user via ID instead of screen name.'
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
     def retweets(*args)
-      opts = {:count => MAX_NUM_RESULTS}
       query = args.pop
       user = args.pop
-      opts[:include_entities] = 1 if options['decode_uris']
+      opts = {:count => MAX_NUM_RESULTS}
+      opts[:include_entities] = !!options['decode_uris']
       if user
         require 't/core_ext/string'
         user = options['id'] ? user.to_i : user.strip_ats
@@ -165,8 +164,8 @@ module T
       query = args.pop
       user = args.pop
       opts = {:count => MAX_NUM_RESULTS}
-      opts[:include_entities] = 1 if options['decode_uris']
       opts[:exclude_replies] = true if options['exclude'] == 'replies'
+      opts[:include_entities] = !!options['decode_uris']
       opts[:include_rts] = false if options['exclude'] == 'retweets'
       opts[:max_id] = options['max_id'] if options['max_id']
       opts[:since_id] = options['since_id'] if options['since_id']

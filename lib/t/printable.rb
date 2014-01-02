@@ -44,8 +44,7 @@ module T
 
     def print_csv_tweet(tweet)
       require 'csv'
-      require 'htmlentities'
-      say [tweet.id, csv_formatted_time(tweet), tweet.user.screen_name, decode_full_text(tweet)].to_csv
+      say [tweet.id, csv_formatted_time(tweet), tweet.user.screen_name, decode_full_text(tweet, options['decode_uris'])].to_csv
     end
 
     def print_csv_user(user)

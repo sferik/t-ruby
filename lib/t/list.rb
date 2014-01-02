@@ -106,6 +106,7 @@ module T
 
     desc 'timeline [USER/]LIST', 'Show tweet timeline for members of the specified list.'
     method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
+    method_option 'decode_uris', :aliases => '-d', :type => :boolean, :default => false, :desc => 'Decodes t.co URLs into their original form.'
     method_option 'id', :aliases => '-i', :type => :boolean, :default => false, :desc => 'Specify user via ID instead of screen name.'
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
     method_option 'number', :aliases => '-n', :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => 'Limit the number of results.'
@@ -113,8 +114,10 @@ module T
     def timeline(list)
       owner, list = extract_owner(list, options)
       count = options['number'] || DEFAULT_NUM_RESULTS
+      opts = {}
+      opts[:include_entities] = !!options['decode_uris']
       tweets = collect_with_count(count) do |count_opts|
-        client.list_timeline(owner, list, count_opts)
+        client.list_timeline(owner, list, count_opts.merge(opts))
       end
       print_tweets(tweets)
     end

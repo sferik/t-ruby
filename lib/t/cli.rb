@@ -124,26 +124,28 @@ module T
 
     desc 'direct_messages', "Returns the #{DEFAULT_NUM_RESULTS} most recent Direct Messages sent to you."
     method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
+    method_option 'decode_uris', :aliases => '-d', :type => :boolean, :default => false, :desc => 'Decodes t.co URLs into their original form.'
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
     method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
     method_option 'number', :aliases => '-n', :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => 'Limit the number of results.'
     method_option 'reverse', :aliases => '-r', :type => :boolean, :default => false, :desc => 'Reverse the order of the sort.'
     def direct_messages
       count = options['number'] || DEFAULT_NUM_RESULTS
+      opts = {}
+      opts[:include_entities] = !!options['decode_uris']
       direct_messages = collect_with_count(count) do |count_opts|
-        client.direct_messages(count_opts)
+        client.direct_messages(count_opts.merge(opts))
       end
       direct_messages.reverse! if options['reverse']
-      require 'htmlentities'
       if options['csv']
         require 'csv'
         say DIRECT_MESSAGE_HEADINGS.to_csv unless direct_messages.empty?
         direct_messages.each do |direct_message|
-          say [direct_message.id, csv_formatted_time(direct_message), direct_message.sender.screen_name, HTMLEntities.new.decode(direct_message.text)].to_csv
+          say [direct_message.id, csv_formatted_time(direct_message), direct_message.sender.screen_name, decode_full_text(direct_message, options['decode_uris'])].to_csv
         end
       elsif options['long']
         array = direct_messages.map do |direct_message|
-          [direct_message.id, ls_formatted_time(direct_message), "@#{direct_message.sender.screen_name}", HTMLEntities.new.decode(direct_message.text).gsub(/\n+/, ' ')]
+          [direct_message.id, ls_formatted_time(direct_message), "@#{direct_message.sender.screen_name}", decode_full_text(direct_message, options['decode_uris']).gsub(/\n+/, ' ')]
         end
         format = options['format'] || DIRECT_MESSAGE_HEADINGS.size.times.map { '%s' }
         print_table_with_headings(array, DIRECT_MESSAGE_HEADINGS, format)
@@ -157,26 +159,28 @@ module T
 
     desc 'direct_messages_sent', "Returns the #{DEFAULT_NUM_RESULTS} most recent Direct Messages you've sent."
     method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
+    method_option 'decode_uris', :aliases => '-d', :type => :boolean, :default => false, :desc => 'Decodes t.co URLs into their original form.'
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
     method_option 'number', :aliases => '-n', :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => 'Limit the number of results.'
     method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
     method_option 'reverse', :aliases => '-r', :type => :boolean, :default => false, :desc => 'Reverse the order of the sort.'
     def direct_messages_sent
       count = options['number'] || DEFAULT_NUM_RESULTS
+      opts = {}
+      opts[:include_entities] = !!options['decode_uris']
       direct_messages = collect_with_count(count) do |count_opts|
-        client.direct_messages_sent(count_opts)
+        client.direct_messages_sent(count_opts.merge(opts))
       end
       direct_messages.reverse! if options['reverse']
-      require 'htmlentities'
       if options['csv']
         require 'csv'
         say DIRECT_MESSAGE_HEADINGS.to_csv unless direct_messages.empty?
         direct_messages.each do |direct_message|
-          say [direct_message.id, csv_formatted_time(direct_message), direct_message.recipient.screen_name, HTMLEntities.new.decode(direct_message.text)].to_csv
+          say [direct_message.id, csv_formatted_time(direct_message), direct_message.recipient.screen_name, decode_full_text(direct_message, options['decode_uris'])].to_csv
         end
       elsif options['long']
         array = direct_messages.map do |direct_message|
-          [direct_message.id, ls_formatted_time(direct_message), "@#{direct_message.recipient.screen_name}", HTMLEntities.new.decode(direct_message.text).gsub(/\n+/, ' ')]
+          [direct_message.id, ls_formatted_time(direct_message), "@#{direct_message.recipient.screen_name}", decode_full_text(direct_message, options['decode_uris']).gsub(/\n+/, ' ')]
         end
         format = options['format'] || DIRECT_MESSAGE_HEADINGS.size.times.map { '%s' }
         print_table_with_headings(array, DIRECT_MESSAGE_HEADINGS, format)
@@ -283,6 +287,7 @@ module T
 
     desc 'favorites [USER]', "Returns the #{DEFAULT_NUM_RESULTS} most recent Tweets you favorited."
     method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
+    method_option 'decode_uris', :aliases => '-d', :type => :boolean, :default => false, :desc => 'Decodes t.co URLs into their original form.'
     method_option 'id', :aliases => '-i', :type => :boolean, :default => false, :desc => 'Specify user via ID instead of screen name.'
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
     method_option 'max_id', :aliases => '-m', :type => :numeric, :desc => 'Returns only the results with an ID less than the specified ID.'
@@ -294,6 +299,7 @@ module T
       count = options['number'] || DEFAULT_NUM_RESULTS
       opts = {}
       opts[:exclude_replies] = true if options['exclude'] == 'replies'
+      opts[:include_entities] = !!options['decode_uris']
       opts[:include_rts] = false if options['exclude'] == 'retweets'
       opts[:max_id] = options['max_id'] if options['max_id']
       opts[:since_id] = options['since_id'] if options['since_id']
@@ -443,14 +449,17 @@ module T
 
     desc 'mentions', "Returns the #{DEFAULT_NUM_RESULTS} most recent Tweets mentioning you."
     method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
+    method_option 'decode_uris', :aliases => '-d', :type => :boolean, :default => false, :desc => 'Decodes t.co URLs into their original form.'
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
     method_option 'number', :aliases => '-n', :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => 'Limit the number of results.'
     method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
     method_option 'reverse', :aliases => '-r', :type => :boolean, :default => false, :desc => 'Reverse the order of the sort.'
     def mentions
       count = options['number'] || DEFAULT_NUM_RESULTS
+      opts = {}
+      opts[:include_entities] = !!options['decode_uris']
       tweets = collect_with_count(count) do |count_opts|
-        client.mentions(count_opts)
+        client.mentions(count_opts.merge(opts))
       end
       print_tweets(tweets)
     end
@@ -521,6 +530,7 @@ module T
 
     desc 'retweets [USER]', "Returns the #{DEFAULT_NUM_RESULTS} most recent Retweets by a user."
     method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
+    method_option 'decode_uris', :aliases => '-d', :type => :boolean, :default => false, :desc => 'Decodes t.co URLs into their original form.'
     method_option 'id', :aliases => '-i', :type => :boolean, :default => false, :desc => 'Specify user via ID instead of screen name.'
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
     method_option 'number', :aliases => '-n', :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => 'Limit the number of results.'
@@ -528,15 +538,17 @@ module T
     method_option 'reverse', :aliases => '-r', :type => :boolean, :default => false, :desc => 'Reverse the order of the sort.'
     def retweets(user = nil)
       count = options['number'] || DEFAULT_NUM_RESULTS
+      opts = {}
+      opts[:include_entities] = !!options['decode_uris']
       tweets = if user
         require 't/core_ext/string'
         user = options['id'] ? user.to_i : user.strip_ats
         collect_with_count(count) do |count_opts|
-          client.retweeted_by_user(user, count_opts)
+          client.retweeted_by_user(user, count_opts.merge(opts))
         end
       else
         collect_with_count(count) do |count_opts|
-          client.retweeted_by_me(count_opts)
+          client.retweeted_by_me(count_opts.merge(opts))
         end
       end
       print_tweets(tweets)
@@ -552,10 +564,13 @@ module T
 
     desc 'status TWEET_ID', 'Retrieves detailed information about a Tweet.'
     method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
+    method_option 'decode_uris', :aliases => '-d', :type => :boolean, :default => false, :desc => 'Decodes t.co URLs into their original form.'
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
     method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
     def status(status_id) # rubocop:disable CyclomaticComplexity
-      status = client.status(status_id.to_i, :include_my_retweet => false)
+      opts = {:include_my_retweet => false}
+      opts[:include_entities] = !!options['decode_uris']
+      status = client.status(status_id.to_i, opts)
       location = if status.place?
         if status.place.name && status.place.attributes && status.place.attributes[:street_address] && status.place.attributes[:locality] && status.place.attributes[:region] && status.place.country
           [status.place.name, status.place.attributes[:street_address], status.place.attributes[:locality], status.place.attributes[:region], status.place.country].join(', ')
@@ -577,15 +592,15 @@ module T
       if options['csv']
         require 'csv'
         say status_headings.to_csv
-        say [status.id, csv_formatted_time(status), status.user.screen_name, decode_full_text(status), status.retweet_count, status.favorite_count, strip_tags(status.source), location].to_csv
+        say [status.id, csv_formatted_time(status), status.user.screen_name, decode_full_text(status, options['decode_uris']), status.retweet_count, status.favorite_count, strip_tags(status.source), location].to_csv
       elsif options['long']
-        array = [status.id, ls_formatted_time(status), "@#{status.user.screen_name}", decode_full_text(status).gsub(/\n+/, ' '), status.retweet_count, status.favorite_count, strip_tags(status.source), location]
+        array = [status.id, ls_formatted_time(status), "@#{status.user.screen_name}", decode_full_text(status, options['decode_uris']).gsub(/\n+/, ' '), status.retweet_count, status.favorite_count, strip_tags(status.source), location]
         format = options['format'] || status_headings.size.times.map { '%s' }
         print_table_with_headings([array], status_headings, format)
       else
         array = []
         array << ['ID', status.id.to_s]
-        array << ['Text', decode_full_text(status).gsub(/\n+/, ' ')]
+        array << ['Text', decode_full_text(status, options['decode_uris']).gsub(/\n+/, ' ')]
         array << ['Screen name', "@#{status.user.screen_name}"]
         array << ['Posted at', "#{ls_formatted_time(status, :created_at, false)} (#{time_ago_in_words(status.created_at)} ago)"]
         array << ['Retweets', number_with_delimiter(status.retweet_count)]
@@ -598,6 +613,7 @@ module T
 
     desc 'timeline [USER]', "Returns the #{DEFAULT_NUM_RESULTS} most recent Tweets posted by a user."
     method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
+    method_option 'decode_uris', :aliases => '-d', :type => :boolean, :default => false, :desc => 'Decodes t.co URLs into their original form.'
     method_option 'exclude', :aliases => '-e', :type => :string, :enum => %w(replies retweets), :desc => 'Exclude certain types of Tweets from the results.', :banner => 'TYPE'
     method_option 'id', :aliases => '-i', :type => :boolean, :default => false, :desc => 'Specify user via ID instead of screen name.'
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
@@ -610,6 +626,7 @@ module T
       count = options['number'] || DEFAULT_NUM_RESULTS
       opts = {}
       opts[:exclude_replies] = true if options['exclude'] == 'replies'
+      opts[:include_entities] = !!options['decode_uris']
       opts[:include_rts] = false if options['exclude'] == 'retweets'
       opts[:max_id] = options['max_id'] if options['max_id']
       opts[:since_id] = options['since_id'] if options['since_id']
@@ -732,21 +749,23 @@ module T
 
     desc 'whois USER', 'Retrieves profile information for the user.'
     method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
+    method_option 'decode_uris', :aliases => '-d', :type => :boolean, :default => false, :desc => 'Decodes t.co URLs into their original form.'
     method_option 'id', :aliases => '-i', :type => :boolean, :default => false, :desc => 'Specify user via ID instead of screen name.'
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
     method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
     def whois(user) # rubocop:disable CyclomaticComplexity
       require 't/core_ext/string'
+      opts = {}
+      opts[:include_entities] = !!options['decode_uris']
       user = options['id'] ? user.to_i : user.strip_ats
-      user = client.user(user)
-      require 'htmlentities'
+      user = client.user(user, opts)
       if options['csv'] || options['long']
         print_users([user])
       else
         array = []
         array << ['ID', user.id.to_s]
         array << ['Since', "#{ls_formatted_time(user, :created_at, false)} (#{time_ago_in_words(user.created_at)} ago)"]
-        array << ['Last update', "#{decode_full_text(user.status).gsub(/\n+/, ' ')} (#{time_ago_in_words(user.status.created_at)} ago)"] unless user.status.nil?
+        array << ['Last update', "#{decode_full_text(user.status, options['decode_uris']).gsub(/\n+/, ' ')} (#{time_ago_in_words(user.status.created_at)} ago)"] unless user.status.nil?
         array << ['Screen name', "@#{user.screen_name}"]
         array << [user.verified ? 'Name (Verified)' : 'Name', user.name] unless user.name.nil?
         array << ['Tweets', number_with_delimiter(user.statuses_count)]

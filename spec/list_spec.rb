@@ -328,11 +328,11 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
   describe '#timeline' do
     before do
       @list.options = @list.options.merge('color' => 'always')
-      stub_get('/1.1/lists/statuses.json').with(:query => {:owner_screen_name => 'testcli', :count => '20', :slug => 'presidents'}).to_return(:body => fixture('statuses.json'))
+      stub_get('/1.1/lists/statuses.json').with(:query => {:owner_screen_name => 'testcli', :count => '20', :slug => 'presidents', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'))
     end
     it 'requests the correct resource' do
       @list.timeline('presidents')
-      expect(a_get('/1.1/lists/statuses.json').with(:query => {:owner_screen_name => 'testcli', :count => '20', :slug => 'presidents'})).to have_been_made
+      expect(a_get('/1.1/lists/statuses.json').with(:query => {:owner_screen_name => 'testcli', :count => '20', :slug => 'presidents', :include_entities => 'false'})).to have_been_made
     end
     it 'has the correct output' do
       @list.timeline('presidents')
@@ -697,6 +697,20 @@ ID,Posted at,Screen name,Text
         eos
       end
     end
+    context '--decode-uris' do
+      before do
+        @list.options = @list.options.merge('decode_uris' => true)
+        stub_get('/1.1/lists/statuses.json').with(:query => {:owner_screen_name => 'testcli', :count => '20', :slug => 'presidents', :include_entities => 'true'}).to_return(:body => fixture('statuses.json'))
+      end
+      it 'requests the correct resource' do
+        @list.timeline('presidents')
+        expect(a_get('/1.1/lists/statuses.json').with(:query => {:owner_screen_name => 'testcli', :count => '20', :slug => 'presidents', :include_entities => 'true'})).to have_been_made
+      end
+      it 'decodes URLs' do
+        @list.timeline('presidents')
+        expect($stdout.string).to include 'https://twitter.com/sferik/status/243988000076337152'
+      end
+    end
     context '--long' do
       before do
         @list.options = @list.options.merge('long' => true)
@@ -761,35 +775,35 @@ ID                   Posted at     Screen name       Text
     end
     context '--number' do
       before do
-        stub_get('/1.1/lists/statuses.json').with(:query => {:owner_screen_name => 'testcli', :count => '1', :slug => 'presidents'}).to_return(:body => fixture('statuses.json'))
-        stub_get('/1.1/lists/statuses.json').with(:query => {:owner_screen_name => 'testcli', :count => '200', :slug => 'presidents'}).to_return(:body => fixture('200_statuses.json'))
-        stub_get('/1.1/lists/statuses.json').with(:query => {:owner_screen_name => 'testcli', :count => '1', :max_id => '265500541700956160', :slug => 'presidents'}).to_return(:body => fixture('statuses.json'))
+        stub_get('/1.1/lists/statuses.json').with(:query => {:owner_screen_name => 'testcli', :count => '1', :slug => 'presidents', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'))
+        stub_get('/1.1/lists/statuses.json').with(:query => {:owner_screen_name => 'testcli', :count => '200', :slug => 'presidents', :include_entities => 'false'}).to_return(:body => fixture('200_statuses.json'))
+        stub_get('/1.1/lists/statuses.json').with(:query => {:owner_screen_name => 'testcli', :count => '1', :max_id => '265500541700956160', :slug => 'presidents', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'))
       end
       it 'limits the number of results to 1' do
         @list.options = @list.options.merge('number' => 1)
         @list.timeline('presidents')
-        expect(a_get('/1.1/lists/statuses.json').with(:query => {:owner_screen_name => 'testcli', :count => '1', :slug => 'presidents'})).to have_been_made
+        expect(a_get('/1.1/lists/statuses.json').with(:query => {:owner_screen_name => 'testcli', :count => '1', :slug => 'presidents', :include_entities => 'false'})).to have_been_made
       end
       it 'limits the number of results to 201' do
         @list.options = @list.options.merge('number' => 201)
         @list.timeline('presidents')
-        expect(a_get('/1.1/lists/statuses.json').with(:query => {:owner_screen_name => 'testcli', :count => '200', :slug => 'presidents'})).to have_been_made
-        expect(a_get('/1.1/lists/statuses.json').with(:query => {:owner_screen_name => 'testcli', :count => '1', :max_id => '265500541700956160', :slug => 'presidents'})).to have_been_made
+        expect(a_get('/1.1/lists/statuses.json').with(:query => {:owner_screen_name => 'testcli', :count => '200', :slug => 'presidents', :include_entities => 'false'})).to have_been_made
+        expect(a_get('/1.1/lists/statuses.json').with(:query => {:owner_screen_name => 'testcli', :count => '1', :max_id => '265500541700956160', :slug => 'presidents', :include_entities => 'false'})).to have_been_made
       end
     end
     context 'with a user passed' do
       it 'requests the correct resource' do
         @list.timeline('testcli/presidents')
-        expect(a_get('/1.1/lists/statuses.json').with(:query => {:owner_screen_name => 'testcli', :count => '20', :slug => 'presidents'})).to have_been_made
+        expect(a_get('/1.1/lists/statuses.json').with(:query => {:owner_screen_name => 'testcli', :count => '20', :slug => 'presidents', :include_entities => 'false'})).to have_been_made
       end
       context '--id' do
         before do
           @list.options = @list.options.merge('id' => true)
-          stub_get('/1.1/lists/statuses.json').with(:query => {:owner_id => '7505382', :count => '20', :slug => 'presidents'}).to_return(:body => fixture('statuses.json'))
+          stub_get('/1.1/lists/statuses.json').with(:query => {:owner_id => '7505382', :count => '20', :slug => 'presidents', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'))
         end
         it 'requests the correct resource' do
           @list.timeline('7505382/presidents')
-          expect(a_get('/1.1/lists/statuses.json').with(:query => {:owner_id => '7505382', :count => '20', :slug => 'presidents'})).to have_been_made
+          expect(a_get('/1.1/lists/statuses.json').with(:query => {:owner_id => '7505382', :count => '20', :slug => 'presidents', :include_entities => 'false'})).to have_been_made
         end
       end
     end

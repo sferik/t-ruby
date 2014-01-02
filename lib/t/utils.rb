@@ -87,10 +87,10 @@ module T
       "#{count || 0} " + (count == 1 || count =~ /^1(\.0+)?$/ ? singular : (plural || "#{singular}s"))
     end
 
-    def decode_full_text(tweet, decode_full_uris = false)
+    def decode_full_text(message, decode_full_uris = false)
       require 'htmlentities'
-      text = HTMLEntities.new.decode(tweet.full_text)
-      text = decode_uris(text, tweet.uris) if decode_full_uris
+      text = HTMLEntities.new.decode(message.full_text)
+      text = decode_uris(text, message.uris) if decode_full_uris
       text
     end
 

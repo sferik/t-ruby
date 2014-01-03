@@ -241,8 +241,7 @@ module T
       if client.list_member?(owner, list, user)
         say "Yes, #{list} contains @#{user}."
       else
-        say "No, #{list} does not contain @#{user}."
-        exit 1
+        abort "No, #{list} does not contain @#{user}."
       end
     end
     map %w(dc doescontain) => :does_contain
@@ -269,8 +268,7 @@ module T
       if client.friendship?(user1, user2)
         say "Yes, @#{user1} follows @#{user2}."
       else
-        say "No, @#{user1} does not follow @#{user2}."
-        exit 1
+        abort "No, @#{user1} does not follow @#{user2}."
       end
     end
     map %w(df doesfollow) => :does_follow

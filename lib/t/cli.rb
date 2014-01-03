@@ -207,12 +207,8 @@ module T
       else
         client.verify_credentials.screen_name
       end
-      follower_ids = Thread.new do
-        client.follower_ids(user).to_a
-      end
-      following_ids = Thread.new do
-        client.friend_ids(user).to_a
-      end
+      follower_ids = Thread.new { client.follower_ids(user).to_a }
+      following_ids = Thread.new { client.friend_ids(user).to_a }
       disciple_ids = (follower_ids.value - following_ids.value)
       require 'retryable'
       users = retryable(:tries => 3, :on => Twitter::Error, :sleep => 0) do
@@ -255,12 +251,21 @@ module T
     method_option 'id', :aliases => '-i', :type => :boolean, :default => false, :desc => 'Specify user via ID instead of screen name.'
     def does_follow(user1, user2 = nil)
       require 't/core_ext/string'
-      user1 = options['id'] ? client.user(user1.to_i).screen_name : user1.strip_ats
-      if user2.nil?
-        user2 = @rcfile.active_profile[0]
+      thread1 = if options['id']
+        Thread.new { client.user(user1.to_i).screen_name }
       else
-        user2 = options['id'] ? client.user(user2.to_i).screen_name : user2.strip_ats
+        Thread.new { user1.strip_ats }
       end
+      thread2 = if user2.nil?
+        Thread.new { @rcfile.active_profile[0] }
+      else
+        if options['id']
+          Thread.new { client.user(user2.to_i).screen_name }
+        else
+          Thread.new { user2.strip_ats }
+        end
+      end
+      user1, user2 = thread1.value, thread2.value
       if client.friendship?(user1, user2)
         say "Yes, @#{user1} follows @#{user2}."
       else
@@ -382,12 +387,8 @@ module T
       else
         client.verify_credentials.screen_name
       end
-      following_ids = Thread.new do
-        client.friend_ids(user).to_a
-      end
-      follower_ids = Thread.new do
-        client.follower_ids(user).to_a
-      end
+      following_ids = Thread.new { client.friend_ids(user).to_a }
+      follower_ids = Thread.new { client.follower_ids(user).to_a }
       friend_ids = (following_ids.value & follower_ids.value)
       require 'retryable'
       users = retryable(:tries => 3, :on => Twitter::Error, :sleep => 0) do
@@ -411,12 +412,8 @@ module T
       else
         client.verify_credentials.screen_name
       end
-      following_ids = Thread.new do
-        client.friend_ids(user).to_a
-      end
-      follower_ids = Thread.new do
-        client.follower_ids(user).to_a
-      end
+      following_ids = Thread.new { client.friend_ids(user).to_a }
+      follower_ids = Thread.new { client.follower_ids(user).to_a }
       leader_ids = (following_ids.value - follower_ids.value)
       require 'retryable'
       users = retryable(:tries => 3, :on => Twitter::Error, :sleep => 0) do

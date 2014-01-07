@@ -211,11 +211,11 @@ ID                  Posted at     Screen name       Text
     it 'has the correct output' do
       @search.favorites('twitter')
       expect($stdout.string).to eq <<-eos
-   @sferik
+   @sferik (9 months ago)
    @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem 
    to be missing "1.1" from the URL.
 
-   @sferik
+   @sferik (9 months ago)
    @episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
 
       eos
@@ -284,11 +284,11 @@ ID                  Posted at     Screen name  Text
       it 'has the correct output' do
         @search.favorites('sferik', 'twitter')
         expect($stdout.string).to eq <<-eos
-   @sferik
+   @sferik (9 months ago)
    @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem 
    to be missing "1.1" from the URL.
 
-   @sferik
+   @sferik (9 months ago)
    @episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
 
         eos
@@ -307,11 +307,11 @@ ID                  Posted at     Screen name  Text
         it 'has the correct output' do
           @search.favorites('7505382', 'twitter')
           expect($stdout.string).to eq <<-eos
-   @sferik
+   @sferik (9 months ago)
    @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem 
    to be missing "1.1" from the URL.
 
-   @sferik
+   @sferik (9 months ago)
    @episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
 
           eos
@@ -333,11 +333,11 @@ ID                  Posted at     Screen name  Text
     it 'has the correct output' do
       @search.mentions('twitter')
       expect($stdout.string).to eq <<-eos
-   @sferik
+   @sferik (9 months ago)
    @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem 
    to be missing "1.1" from the URL.
 
-   @sferik
+   @sferik (9 months ago)
    @episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
 
       eos
@@ -408,11 +408,11 @@ ID                  Posted at     Screen name  Text
     it 'has the correct output' do
       @search.list('presidents', 'twitter')
       expect($stdout.string).to eq <<-eos
-   @sferik
+   @sferik (9 months ago)
    @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem 
    to be missing "1.1" from the URL.
 
-   @sferik
+   @sferik (9 months ago)
    @episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
 
       eos
@@ -501,7 +501,7 @@ ID                  Posted at     Screen name  Text
     it 'has the correct output' do
       @search.retweets('mosaic')
       expect($stdout.string).to eq <<-eos
-   @calebelston
+   @calebelston (9 months ago)
    RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
 
       eos
@@ -568,7 +568,7 @@ ID                  Posted at     Screen name   Text
       it 'has the correct output' do
         @search.retweets('sferik', 'mosaic')
         expect($stdout.string).to eq <<-eos
-   @calebelston
+   @calebelston (9 months ago)
    RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
 
         eos
@@ -587,7 +587,7 @@ ID                  Posted at     Screen name   Text
         it 'has the correct output' do
           @search.retweets('7505382', 'mosaic')
           expect($stdout.string).to eq <<-eos
-   @calebelston
+   @calebelston (9 months ago)
    RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
 
           eos
@@ -609,11 +609,11 @@ ID                  Posted at     Screen name   Text
     it 'has the correct output' do
       @search.timeline('twitter')
       expect($stdout.string).to eq <<-eos
-   @sferik
+   @sferik (9 months ago)
    @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem 
    to be missing "1.1" from the URL.
 
-   @sferik
+   @sferik (9 months ago)
    @episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
 
       eos
@@ -728,11 +728,11 @@ ID                  Posted at     Screen name  Text
       it 'has the correct output' do
         @search.timeline('sferik', 'twitter')
         expect($stdout.string).to eq <<-eos
-   @sferik
+   @sferik (9 months ago)
    @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem 
    to be missing "1.1" from the URL.
 
-   @sferik
+   @sferik (9 months ago)
    @episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
 
         eos

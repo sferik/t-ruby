@@ -670,78 +670,78 @@ ID          Posted at     Screen name  Text
     it 'has the correct output' do
       @cli.favorites
       expect($stdout.string).to eq <<-eos
-   @mutgoff
+   @mutgoff (9 months ago)
    Happy Birthday @imdane. Watch out for those @rally pranksters!
 
-   @ironicsans
+   @ironicsans (9 months ago)
    If you like good real-life stories, check out @NarrativelyNY's just-launched 
    site http://t.co/wiUL07jE (and also visit http://t.co/ZoyQxqWA)
 
-   @pat_shaughnessy
+   @pat_shaughnessy (9 months ago)
    Something else to vote for: "New Rails workshops to bring more women into the 
    Boston software scene" http://t.co/eNBuckHc /cc @bostonrb
 
-   @calebelston
+   @calebelston (9 months ago)
    Pushing the button to launch the site. http://t.co/qLoEn5jG
 
-   @calebelston
+   @calebelston (9 months ago)
    RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
 
-   @fivethirtyeight
+   @fivethirtyeight (9 months ago)
    The Weatherman is Not a Moron: http://t.co/ZwL5Gnq5. An excerpt from my book, 
    THE SIGNAL AND THE NOISE (http://t.co/fNXj8vCE)
 
-   @codeforamerica
+   @codeforamerica (9 months ago)
    RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat, 
    Sep 8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica 
    @TheaClay
 
-   @fbjork
+   @fbjork (9 months ago)
    RT @jondot: Just published: "Pragmatic Concurrency With #Ruby" 
    http://t.co/kGEykswZ /cc @JRuby @headius
 
-   @mbostock
+   @mbostock (9 months ago)
    If you are wondering how we computed the split bubbles: http://t.co/BcaqSs5u
 
-   @FakeDorsey
+   @FakeDorsey (9 months ago)
    "Write drunk. Edit sober."—Ernest Hemingway
 
-   @al3x
+   @al3x (9 months ago)
    RT @wcmaier: Better banking through better ops: build something new with us 
    @Simplify (remote, PDX) http://t.co/8WgzKZH3
 
-   @calebelston
+   @calebelston (9 months ago)
    We just announced Mosaic, what we've been working on since the Yobongo 
    acquisition. My personal post, http://t.co/ELOyIRZU @heymosaic
 
-   @BarackObama
+   @BarackObama (9 months ago)
    Donate $10 or more --> get your favorite car magnet: http://t.co/NfRhl2s2 
    #Obama2012
 
-   @JEG2
+   @JEG2 (9 months ago)
    RT @tenderlove: If corporations are people, can we use them to drive in the 
    carpool lane?
 
-   @eveningedition
+   @eveningedition (9 months ago)
    LDN—Obama's nomination; Putin woos APEC; Bombs hit Damascus; Quakes shake 
    China; Canada cuts Iran ties; weekend read: http://t.co/OFs6dVW4
 
-   @dhh
+   @dhh (9 months ago)
    RT @ggreenwald: Democrats parade Osama bin Laden's corpse as their proudest 
    achievement: why this goulish jingoism is so warped http://t.co/kood278s
 
-   @jasonfried
+   @jasonfried (9 months ago)
    The story of Mars Curiosity's gears, made by a factory in Rockford, IL: 
    http://t.co/MwCRsHQg
 
-   @sferik
+   @sferik (9 months ago)
    @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem 
    to be missing "1.1" from the URL.
 
-   @sferik
+   @sferik (9 months ago)
    @episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
 
-   @dwiskus
+   @dwiskus (9 months ago)
    Gentlemen, you can't fight in here! This is the war room! 
    http://t.co/kMxMYyqF
 
@@ -2197,78 +2197,78 @@ ID        Created at    Screen name  Slug      Members  Subscribers  Mode    ...
     it 'has the correct output' do
       @cli.mentions
       expect($stdout.string).to eq <<-eos
-   @mutgoff
+   @mutgoff (9 months ago)
    Happy Birthday @imdane. Watch out for those @rally pranksters!
 
-   @ironicsans
+   @ironicsans (9 months ago)
    If you like good real-life stories, check out @NarrativelyNY's just-launched 
    site http://t.co/wiUL07jE (and also visit http://t.co/ZoyQxqWA)
 
-   @pat_shaughnessy
+   @pat_shaughnessy (9 months ago)
    Something else to vote for: "New Rails workshops to bring more women into the 
    Boston software scene" http://t.co/eNBuckHc /cc @bostonrb
 
-   @calebelston
+   @calebelston (9 months ago)
    Pushing the button to launch the site. http://t.co/qLoEn5jG
 
-   @calebelston
+   @calebelston (9 months ago)
    RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
 
-   @fivethirtyeight
+   @fivethirtyeight (9 months ago)
    The Weatherman is Not a Moron: http://t.co/ZwL5Gnq5. An excerpt from my book, 
    THE SIGNAL AND THE NOISE (http://t.co/fNXj8vCE)
 
-   @codeforamerica
+   @codeforamerica (9 months ago)
    RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat, 
    Sep 8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica 
    @TheaClay
 
-   @fbjork
+   @fbjork (9 months ago)
    RT @jondot: Just published: "Pragmatic Concurrency With #Ruby" 
    http://t.co/kGEykswZ /cc @JRuby @headius
 
-   @mbostock
+   @mbostock (9 months ago)
    If you are wondering how we computed the split bubbles: http://t.co/BcaqSs5u
 
-   @FakeDorsey
+   @FakeDorsey (9 months ago)
    "Write drunk. Edit sober."—Ernest Hemingway
 
-   @al3x
+   @al3x (9 months ago)
    RT @wcmaier: Better banking through better ops: build something new with us 
    @Simplify (remote, PDX) http://t.co/8WgzKZH3
 
-   @calebelston
+   @calebelston (9 months ago)
    We just announced Mosaic, what we've been working on since the Yobongo 
    acquisition. My personal post, http://t.co/ELOyIRZU @heymosaic
 
-   @BarackObama
+   @BarackObama (9 months ago)
    Donate $10 or more --> get your favorite car magnet: http://t.co/NfRhl2s2 
    #Obama2012
 
-   @JEG2
+   @JEG2 (9 months ago)
    RT @tenderlove: If corporations are people, can we use them to drive in the 
    carpool lane?
 
-   @eveningedition
+   @eveningedition (9 months ago)
    LDN—Obama's nomination; Putin woos APEC; Bombs hit Damascus; Quakes shake 
    China; Canada cuts Iran ties; weekend read: http://t.co/OFs6dVW4
 
-   @dhh
+   @dhh (9 months ago)
    RT @ggreenwald: Democrats parade Osama bin Laden's corpse as their proudest 
    achievement: why this goulish jingoism is so warped http://t.co/kood278s
 
-   @jasonfried
+   @jasonfried (9 months ago)
    The story of Mars Curiosity's gears, made by a factory in Rockford, IL: 
    http://t.co/MwCRsHQg
 
-   @sferik
+   @sferik (9 months ago)
    @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem 
    to be missing "1.1" from the URL.
 
-   @sferik
+   @sferik (9 months ago)
    @episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
 
-   @dwiskus
+   @dwiskus (9 months ago)
    Gentlemen, you can't fight in here! This is the war room! 
    http://t.co/kMxMYyqF
 
@@ -2565,82 +2565,82 @@ ID                   Posted at     Screen name       Text
       it 'has the correct output' do
         @cli.retweets
         expect($stdout.string).to eq <<-eos
-   @calebelston
+   @calebelston (9 months ago)
    RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
 
-   @codeforamerica
+   @codeforamerica (9 months ago)
    RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat, 
    Sep 8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica 
    @TheaClay
 
-   @fbjork
+   @fbjork (9 months ago)
    RT @jondot: Just published: "Pragmatic Concurrency With #Ruby" 
    http://t.co/kGEykswZ /cc @JRuby @headius
 
-   @al3x
+   @al3x (9 months ago)
    RT @wcmaier: Better banking through better ops: build something new with us 
    @Simplify (remote, PDX) http://t.co/8WgzKZH3
 
-   @JEG2
+   @JEG2 (9 months ago)
    RT @tenderlove: If corporations are people, can we use them to drive in the 
    carpool lane?
 
-   @dhh
+   @dhh (9 months ago)
    RT @ggreenwald: Democrats parade Osama bin Laden's corpse as their proudest 
    achievement: why this goulish jingoism is so warped http://t.co/kood278s
 
-   @calebelston
+   @calebelston (9 months ago)
    RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
 
-   @codeforamerica
+   @codeforamerica (9 months ago)
    RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat, 
    Sep 8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica 
    @TheaClay
 
-   @fbjork
+   @fbjork (9 months ago)
    RT @jondot: Just published: "Pragmatic Concurrency With #Ruby" 
    http://t.co/kGEykswZ /cc @JRuby @headius
 
-   @al3x
+   @al3x (9 months ago)
    RT @wcmaier: Better banking through better ops: build something new with us 
    @Simplify (remote, PDX) http://t.co/8WgzKZH3
 
-   @JEG2
+   @JEG2 (9 months ago)
    RT @tenderlove: If corporations are people, can we use them to drive in the 
    carpool lane?
 
-   @dhh
+   @dhh (9 months ago)
    RT @ggreenwald: Democrats parade Osama bin Laden's corpse as their proudest 
    achievement: why this goulish jingoism is so warped http://t.co/kood278s
 
-   @calebelston
+   @calebelston (9 months ago)
    RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
 
-   @codeforamerica
+   @codeforamerica (9 months ago)
    RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat, 
    Sep 8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica 
    @TheaClay
 
-   @fbjork
+   @fbjork (9 months ago)
    RT @jondot: Just published: "Pragmatic Concurrency With #Ruby" 
    http://t.co/kGEykswZ /cc @JRuby @headius
 
-   @al3x
+   @al3x (9 months ago)
    RT @wcmaier: Better banking through better ops: build something new with us 
    @Simplify (remote, PDX) http://t.co/8WgzKZH3
 
-   @JEG2
+   @JEG2 (9 months ago)
    RT @tenderlove: If corporations are people, can we use them to drive in the 
    carpool lane?
 
-   @dhh
+   @dhh (9 months ago)
    RT @ggreenwald: Democrats parade Osama bin Laden's corpse as their proudest 
    achievement: why this goulish jingoism is so warped http://t.co/kood278s
 
-   @calebelston
+   @calebelston (9 months ago)
    RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
 
-   @codeforamerica
+   @codeforamerica (9 months ago)
    RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat, 
    Sep 8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica 
    @TheaClay
@@ -3298,78 +3298,78 @@ ID                 Posted at     Screen name  Text                           ...
       it 'has the correct output' do
         @cli.timeline
         expect($stdout.string).to eq <<-eos
-   @mutgoff
+   @mutgoff (9 months ago)
    Happy Birthday @imdane. Watch out for those @rally pranksters!
 
-   @ironicsans
+   @ironicsans (9 months ago)
    If you like good real-life stories, check out @NarrativelyNY's just-launched 
    site http://t.co/wiUL07jE (and also visit http://t.co/ZoyQxqWA)
 
-   @pat_shaughnessy
+   @pat_shaughnessy (9 months ago)
    Something else to vote for: "New Rails workshops to bring more women into the 
    Boston software scene" http://t.co/eNBuckHc /cc @bostonrb
 
-   @calebelston
+   @calebelston (9 months ago)
    Pushing the button to launch the site. http://t.co/qLoEn5jG
 
-   @calebelston
+   @calebelston (9 months ago)
    RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
 
-   @fivethirtyeight
+   @fivethirtyeight (9 months ago)
    The Weatherman is Not a Moron: http://t.co/ZwL5Gnq5. An excerpt from my book, 
    THE SIGNAL AND THE NOISE (http://t.co/fNXj8vCE)
 
-   @codeforamerica
+   @codeforamerica (9 months ago)
    RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat, 
    Sep 8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica 
    @TheaClay
 
-   @fbjork
+   @fbjork (9 months ago)
    RT @jondot: Just published: "Pragmatic Concurrency With #Ruby" 
    http://t.co/kGEykswZ /cc @JRuby @headius
 
-   @mbostock
+   @mbostock (9 months ago)
    If you are wondering how we computed the split bubbles: http://t.co/BcaqSs5u
 
-   @FakeDorsey
+   @FakeDorsey (9 months ago)
    "Write drunk. Edit sober."—Ernest Hemingway
 
-   @al3x
+   @al3x (9 months ago)
    RT @wcmaier: Better banking through better ops: build something new with us 
    @Simplify (remote, PDX) http://t.co/8WgzKZH3
 
-   @calebelston
+   @calebelston (9 months ago)
    We just announced Mosaic, what we've been working on since the Yobongo 
    acquisition. My personal post, http://t.co/ELOyIRZU @heymosaic
 
-   @BarackObama
+   @BarackObama (9 months ago)
    Donate $10 or more --> get your favorite car magnet: http://t.co/NfRhl2s2 
    #Obama2012
 
-   @JEG2
+   @JEG2 (9 months ago)
    RT @tenderlove: If corporations are people, can we use them to drive in the 
    carpool lane?
 
-   @eveningedition
+   @eveningedition (9 months ago)
    LDN—Obama's nomination; Putin woos APEC; Bombs hit Damascus; Quakes shake 
    China; Canada cuts Iran ties; weekend read: http://t.co/OFs6dVW4
 
-   @dhh
+   @dhh (9 months ago)
    RT @ggreenwald: Democrats parade Osama bin Laden's corpse as their proudest 
    achievement: why this goulish jingoism is so warped http://t.co/kood278s
 
-   @jasonfried
+   @jasonfried (9 months ago)
    The story of Mars Curiosity's gears, made by a factory in Rockford, IL: 
    http://t.co/MwCRsHQg
 
-   @sferik
+   @sferik (9 months ago)
    @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem 
    to be missing "1.1" from the URL.
 
-   @sferik
+   @sferik (9 months ago)
    @episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
 
-   @dwiskus
+   @dwiskus (9 months ago)
    Gentlemen, you can't fight in here! This is the war room! 
    http://t.co/kMxMYyqF
 

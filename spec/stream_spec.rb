@@ -217,7 +217,7 @@ describe T::Stream do
 
   describe '#users' do
     before :each do
-      allow(@client).to receive(:follow).
+      allow(@client).to receive(:filter).
         and_yield(@status)
     end
 
@@ -227,7 +227,7 @@ describe T::Stream do
       end
 
       it 'outputs headings when the stream initializes' do
-        allow(@client).to receive(:follow).and_return
+        allow(@client).to receive(:filter).and_return
         allow(@client).to receive(:before_request).and_yield
         expect(@stream).to receive(:say).with("ID,Posted at,Screen name,Text\n")
         @stream.users('123')
@@ -247,14 +247,14 @@ describe T::Stream do
 
       it 'outputs headings when the stream initializes' do
         allow(@client).to receive(:before_request).and_yield
-        allow(@client).to receive(:follow).and_return
+        allow(@client).to receive(:filter).and_return
         expect(@stream).to receive(:print_table).with(any_args)
         @stream.users('123')
       end
 
       it 'outputs in long text format' do
         allow(@client).to receive(:before_request).and_return
-        allow(@client).to receive(:follow).
+        allow(@client).to receive(:filter).
           and_yield(@status)
         expect(@stream).to receive(:print_table).with(any_args)
         @stream.users('123')
@@ -263,7 +263,7 @@ describe T::Stream do
 
     context 'normal usage' do
       before :each do
-        allow(@client).to receive(:follow).
+        allow(@client).to receive(:filter).
           and_yield(@status)
       end
 
@@ -274,8 +274,8 @@ describe T::Stream do
     end
 
     it 'invokes Twitter::Streaming::Client#follow' do
-      allow(@client).to receive(:follow).and_return
-      expect(@client).to receive(:follow).with([123, 456, 789])
+      allow(@client).to receive(:filter).and_return
+      expect(@client).to receive(:filter).with(:follow => '123,456,789')
       @stream.users('123', '456', '789')
     end
   end

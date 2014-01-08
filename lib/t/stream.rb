@@ -131,7 +131,7 @@ module T
           print_table([headings])
         end
       end
-      client.follow(user_ids) do |tweet|
+      client.filter(:follow => user_ids.join(',')) do |tweet|
         next unless tweet.is_a?(Twitter::Tweet)
         if options['csv']
           print_csv_tweet(tweet)

@@ -83,7 +83,7 @@ module T
       end
       print_tweets(tweets)
     end
-    map %w(faves) => :favorites
+    map %w[faves] => :favorites
 
     desc 'list [USER/]LIST QUERY', 'Returns Tweets on a list that match the specified query.'
     method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
@@ -120,7 +120,7 @@ module T
       end
       print_tweets(tweets)
     end
-    map %w(replies) => :mentions
+    map %w[replies] => :mentions
 
     desc 'retweets [USER] QUERY', "Returns Tweets you've retweeted that match the specified query."
     method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
@@ -150,12 +150,12 @@ module T
       end
       print_tweets(tweets)
     end
-    map %w(rts) => :retweets
+    map %w[rts] => :retweets
 
     desc 'timeline [USER] QUERY', 'Returns Tweets in your timeline that match the specified query.'
     method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
     method_option 'decode_uris', :aliases => '-d', :type => :boolean, :default => false, :desc => 'Decodes t.co URLs into their original form.'
-    method_option 'exclude', :aliases => '-e', :type => :string, :enum => %w(replies retweets), :desc => 'Exclude certain types of Tweets from the results.', :banner => 'TYPE'
+    method_option 'exclude', :aliases => '-e', :type => :string, :enum => %w[replies retweets], :desc => 'Exclude certain types of Tweets from the results.', :banner => 'TYPE'
     method_option 'id', :aliases => '-i', :type => :boolean, :default => false, :desc => 'Specify user via ID instead of screen name.'
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
     method_option 'max_id', :aliases => '-m', :type => :numeric, :desc => 'Returns only the results with an ID less than the specified ID.'
@@ -187,13 +187,13 @@ module T
       end
       print_tweets(tweets)
     end
-    map %w(tl) => :timeline
+    map %w[tl] => :timeline
 
     desc 'users QUERY', 'Returns users that match the specified query.'
     method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
     method_option 'reverse', :aliases => '-r', :type => :boolean, :default => false, :desc => 'Reverse the order of the sort.'
-    method_option 'sort', :aliases => '-s', :type => :string, :enum => %w(favorites followers friends listed screen_name since tweets tweeted), :default => 'screen_name', :desc => 'Specify the order of the results.', :banner => 'ORDER'
+    method_option 'sort', :aliases => '-s', :type => :string, :enum => %w[favorites followers friends listed screen_name since tweets tweeted], :default => 'screen_name', :desc => 'Specify the order of the results.', :banner => 'ORDER'
     method_option 'unsorted', :aliases => '-u', :type => :boolean, :default => false, :desc => 'Output is not sorted.'
     def users(query)
       users = collect_with_page do |page|

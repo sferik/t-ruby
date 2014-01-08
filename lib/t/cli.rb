@@ -29,7 +29,7 @@ module T
 
     check_unknown_options!
 
-    class_option 'color', :aliases => '-C', :type => :string, :enum => %w(auto never), :default => 'auto', :desc => 'Control how color is used in output'
+    class_option 'color', :aliases => '-C', :type => :string, :enum => %w[auto never], :default => 'auto', :desc => 'Control how color is used in output'
     class_option 'profile', :aliases => '-P', :type => :string, :default => File.join(File.expand_path('~'), T::RCFile::FILE_NAME), :desc => 'Path to RC file', :banner => 'FILE'
 
     def initialize(*)
@@ -155,7 +155,7 @@ module T
         end
       end
     end
-    map %w(directmessages dms) => :direct_messages
+    map %w[directmessages dms] => :direct_messages
 
     desc 'direct_messages_sent', "Returns the #{DEFAULT_NUM_RESULTS} most recent Direct Messages you've sent."
     method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
@@ -190,7 +190,7 @@ module T
         end
       end
     end
-    map %w(directmessagessent sent_messages sentmessages sms) => :direct_messages_sent
+    map %w[directmessagessent sent_messages sentmessages sms] => :direct_messages_sent
 
     desc 'groupies [USER]', "Returns the list of people who follow you but you don't follow back."
     method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
@@ -198,7 +198,7 @@ module T
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
     method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
     method_option 'reverse', :aliases => '-r', :type => :boolean, :default => false, :desc => 'Reverse the order of the sort.'
-    method_option 'sort', :aliases => '-s', :type => :string, :enum => %w(favorites followers friends listed screen_name since tweets tweeted), :default => 'screen_name', :desc => 'Specify the order of the results.', :banner => 'ORDER'
+    method_option 'sort', :aliases => '-s', :type => :string, :enum => %w[favorites followers friends listed screen_name since tweets tweeted], :default => 'screen_name', :desc => 'Specify the order of the results.', :banner => 'ORDER'
     method_option 'unsorted', :aliases => '-u', :type => :boolean, :default => false, :desc => 'Output is not sorted.'
     def groupies(user = nil)
       user = if user
@@ -216,7 +216,7 @@ module T
       end
       print_users(users)
     end
-    map %w(disciples) => :groupies
+    map %w[disciples] => :groupies
 
     desc 'dm USER MESSAGE', 'Sends that person a Direct Message.'
     method_option 'id', :aliases => '-i', :type => :boolean, :default => false, :desc => 'Specify user via ID instead of screen name.'
@@ -226,7 +226,7 @@ module T
       direct_message = client.create_direct_message(user, message)
       say "Direct Message sent from @#{@rcfile.active_profile[0]} to @#{direct_message.recipient.screen_name}."
     end
-    map %w(d m) => :dm
+    map %w[d m] => :dm
 
     desc 'does_contain [USER/]LIST USER', 'Find out whether a list contains a user.'
     method_option 'id', :aliases => '-i', :type => :boolean, :default => false, :desc => 'Specify user via ID instead of screen name.'
@@ -244,7 +244,7 @@ module T
         abort "No, #{list} does not contain @#{user}."
       end
     end
-    map %w(dc doescontain) => :does_contain
+    map %w[dc doescontain] => :does_contain
 
     desc 'does_follow USER [USER]', 'Find out whether one user follows another.'
     method_option 'id', :aliases => '-i', :type => :boolean, :default => false, :desc => 'Specify user via ID instead of screen name.'
@@ -271,7 +271,7 @@ module T
         abort "No, @#{user1} does not follow @#{user2}."
       end
     end
-    map %w(df doesfollow) => :does_follow
+    map %w[df doesfollow] => :does_follow
 
     desc 'favorite TWEET_ID [TWEET_ID...]', 'Marks Tweets as favorites.'
     def favorite(status_id, *status_ids)
@@ -286,7 +286,7 @@ module T
       say
       say "Run `#{File.basename($PROGRAM_NAME)} delete favorite #{status_ids.join(' ')}` to unfavorite."
     end
-    map %w(fave favourite) => :favorite
+    map %w[fave favourite] => :favorite
 
     desc 'favorites [USER]', "Returns the #{DEFAULT_NUM_RESULTS} most recent Tweets you favorited."
     method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
@@ -315,7 +315,7 @@ module T
       end
       print_tweets(tweets)
     end
-    map %w(faves favourites) => :favorites
+    map %w[faves favourites] => :favorites
 
     desc 'follow USER [USER...]', 'Allows you to start following users.'
     method_option 'id', :aliases => '-i', :type => :boolean, :default => false, :desc => 'Specify input as Twitter user IDs instead of screen names.'
@@ -334,7 +334,7 @@ module T
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
     method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
     method_option 'reverse', :aliases => '-r', :type => :boolean, :default => false, :desc => 'Reverse the order of the sort.'
-    method_option 'sort', :aliases => '-s', :type => :string, :enum => %w(favorites followers friends listed screen_name since tweets tweeted), :default => 'screen_name', :desc => 'Specify the order of the results.', :banner => 'ORDER'
+    method_option 'sort', :aliases => '-s', :type => :string, :enum => %w[favorites followers friends listed screen_name since tweets tweeted], :default => 'screen_name', :desc => 'Specify the order of the results.', :banner => 'ORDER'
     method_option 'unsorted', :aliases => '-u', :type => :boolean, :default => false, :desc => 'Output is not sorted.'
     def followings(user = nil)
       if user
@@ -355,7 +355,7 @@ module T
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
     method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
     method_option 'reverse', :aliases => '-r', :type => :boolean, :default => false, :desc => 'Reverse the order of the sort.'
-    method_option 'sort', :aliases => '-s', :type => :string, :enum => %w(favorites followers friends listed screen_name since tweets tweeted), :default => 'screen_name', :desc => 'Specify the order of the results.', :banner => 'ORDER'
+    method_option 'sort', :aliases => '-s', :type => :string, :enum => %w[favorites followers friends listed screen_name since tweets tweeted], :default => 'screen_name', :desc => 'Specify the order of the results.', :banner => 'ORDER'
     method_option 'unsorted', :aliases => '-u', :type => :boolean, :default => false, :desc => 'Output is not sorted.'
     def followers(user = nil)
       if user
@@ -376,7 +376,7 @@ module T
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
     method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
     method_option 'reverse', :aliases => '-r', :type => :boolean, :default => false, :desc => 'Reverse the order of the sort.'
-    method_option 'sort', :aliases => '-s', :type => :string, :enum => %w(favorites followers friends listed screen_name since tweets tweeted), :default => 'screen_name', :desc => 'Specify the order of the results.', :banner => 'ORDER'
+    method_option 'sort', :aliases => '-s', :type => :string, :enum => %w[favorites followers friends listed screen_name since tweets tweeted], :default => 'screen_name', :desc => 'Specify the order of the results.', :banner => 'ORDER'
     method_option 'unsorted', :aliases => '-u', :type => :boolean, :default => false, :desc => 'Output is not sorted.'
     def friends(user = nil)
       user = if user
@@ -401,7 +401,7 @@ module T
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
     method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
     method_option 'reverse', :aliases => '-r', :type => :boolean, :default => false, :desc => 'Reverse the order of the sort.'
-    method_option 'sort', :aliases => '-s', :type => :string, :enum => %w(favorites followers friends listed screen_name since tweets tweeted), :default => 'screen_name', :desc => 'Specify the order of the results.', :banner => 'ORDER'
+    method_option 'sort', :aliases => '-s', :type => :string, :enum => %w[favorites followers friends listed screen_name since tweets tweeted], :default => 'screen_name', :desc => 'Specify the order of the results.', :banner => 'ORDER'
     method_option 'unsorted', :aliases => '-u', :type => :boolean, :default => false, :desc => 'Output is not sorted.'
     def leaders(user = nil)
       user = if user
@@ -426,7 +426,7 @@ module T
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
     method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
     method_option 'reverse', :aliases => '-r', :type => :boolean, :default => false, :desc => 'Reverse the order of the sort.'
-    method_option 'sort', :aliases => '-s', :type => :string, :enum => %w(members mode since slug subscribers), :default => 'slug', :desc => 'Specify the order of the results.', :banner => 'ORDER'
+    method_option 'sort', :aliases => '-s', :type => :string, :enum => %w[members mode since slug subscribers], :default => 'slug', :desc => 'Specify the order of the results.', :banner => 'ORDER'
     method_option 'unsorted', :aliases => '-u', :type => :boolean, :default => false, :desc => 'Output is not sorted.'
     def lists(user = nil)
       lists = if user
@@ -458,7 +458,7 @@ module T
       end
       print_tweets(tweets)
     end
-    map %w(replies) => :mentions
+    map %w[replies] => :mentions
 
     desc 'open USER', "Opens that user's profile in a web browser."
     method_option 'display-uri', :aliases => '-d', :type => :boolean, :default => false, :desc => 'Display the requested URL instead of attempting to open it.'
@@ -506,7 +506,7 @@ module T
       end
       say "@#{@rcfile.active_profile[0]} reported #{pluralize(number, 'user')}."
     end
-    map %w(report reportspam spam) => :report_spam
+    map %w[report reportspam spam] => :report_spam
 
     desc 'retweet TWEET_ID [TWEET_ID...]', 'Sends Tweets to your followers.'
     def retweet(status_id, *status_ids)
@@ -521,7 +521,7 @@ module T
       say
       say "Run `#{File.basename($PROGRAM_NAME)} delete status #{retweets.map { |tweet| tweet.retweeted_status.id }.join(' ')}` to undo."
     end
-    map %w(rt) => :retweet
+    map %w[rt] => :retweet
 
     desc 'retweets [USER]', "Returns the #{DEFAULT_NUM_RESULTS} most recent Retweets by a user."
     method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
@@ -548,7 +548,7 @@ module T
       end
       print_tweets(tweets)
     end
-    map %w(rts) => :retweets
+    map %w[rts] => :retweets
 
     desc 'ruler', 'Prints a 140-character ruler'
     method_option 'indent', :aliases => '-i', :type => :numeric, :default => 0, :desc => 'The number of space to print before the ruler.'
@@ -609,7 +609,7 @@ module T
     desc 'timeline [USER]', "Returns the #{DEFAULT_NUM_RESULTS} most recent Tweets posted by a user."
     method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
     method_option 'decode_uris', :aliases => '-d', :type => :boolean, :default => false, :desc => 'Decodes t.co URLs into their original form.'
-    method_option 'exclude', :aliases => '-e', :type => :string, :enum => %w(replies retweets), :desc => 'Exclude certain types of Tweets from the results.', :banner => 'TYPE'
+    method_option 'exclude', :aliases => '-e', :type => :string, :enum => %w[replies retweets], :desc => 'Exclude certain types of Tweets from the results.', :banner => 'TYPE'
     method_option 'id', :aliases => '-i', :type => :boolean, :default => false, :desc => 'Specify user via ID instead of screen name.'
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
     method_option 'max_id', :aliases => '-m', :type => :numeric, :desc => 'Returns only the results with an ID less than the specified ID.'
@@ -638,7 +638,7 @@ module T
       end
       print_tweets(tweets)
     end
-    map %w(tl) => :timeline
+    map %w[tl] => :timeline
 
     desc 'trends [WOEID]', 'Returns the top 10 trending topics.'
     method_option 'exclude-hashtags', :aliases => '-x', :type => :boolean, :default => false, :desc => 'Remove all hashtags from the trends list.'
@@ -654,7 +654,7 @@ module T
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
     method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
     method_option 'reverse', :aliases => '-r', :type => :boolean, :default => false, :desc => 'Reverse the order of the sort.'
-    method_option 'sort', :aliases => '-s', :type => :string, :enum => %w(country name parent type woeid), :default => 'name', :desc => 'Specify the order of the results.', :banner => 'ORDER'
+    method_option 'sort', :aliases => '-s', :type => :string, :enum => %w[country name parent type woeid], :default => 'name', :desc => 'Specify the order of the results.', :banner => 'ORDER'
     method_option 'unsorted', :aliases => '-u', :type => :boolean, :default => false, :desc => 'Output is not sorted.'
     def trend_locations
       places = client.trend_locations
@@ -687,7 +687,7 @@ module T
         print_attribute(places, :name)
       end
     end
-    map %w(locations trendlocations) => :trend_locations
+    map %w[locations trendlocations] => :trend_locations
 
     desc 'unfollow USER [USER...]', 'Allows you to stop following users.'
     method_option 'id', :aliases => '-i', :type => :boolean, :default => false, :desc => 'Specify input as Twitter user IDs instead of screen names.'
@@ -716,7 +716,7 @@ module T
       say
       say "Run `#{File.basename($PROGRAM_NAME)} delete status #{status.id}` to delete."
     end
-    map %w(post tweet) => :update
+    map %w[post tweet] => :update
 
     desc 'users USER [USER...]', 'Returns a list of users you specify.'
     method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
@@ -724,7 +724,7 @@ module T
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
     method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
     method_option 'reverse', :aliases => '-r', :type => :boolean, :default => false, :desc => 'Reverse the order of the sort.'
-    method_option 'sort', :aliases => '-s', :type => :string, :enum => %w(favorites followers friends listed screen_name since tweets tweeted), :default => 'screen_name', :desc => 'Specify the order of the results.', :banner => 'ORDER'
+    method_option 'sort', :aliases => '-s', :type => :string, :enum => %w[favorites followers friends listed screen_name since tweets tweeted], :default => 'screen_name', :desc => 'Specify the order of the results.', :banner => 'ORDER'
     method_option 'unsorted', :aliases => '-u', :type => :boolean, :default => false, :desc => 'Output is not sorted.'
     def users(user, *users)
       users.unshift(user)
@@ -733,14 +733,14 @@ module T
       users = client.users(users)
       print_users(users)
     end
-    map %w(stats) => :users
+    map %w[stats] => :users
 
     desc 'version', 'Show version.'
     def version
       require 't/version'
       say T::Version
     end
-    map %w(-v --version) => :version
+    map %w[-v --version] => :version
 
     desc 'whois USER', 'Retrieves profile information for the user.'
     method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
@@ -774,7 +774,7 @@ module T
         print_table(array)
       end
     end
-    map %w(user) => :whois
+    map %w[user] => :whois
 
     desc 'delete SUBCOMMAND ...ARGS', 'Delete Tweets, Direct Messages, etc.'
     subcommand 'delete', T::Delete

@@ -2,6 +2,8 @@ AllCops:
   Includes:
     - 'Gemfile'
     - 'Rakefile'
+    - 'bin/t'
+    - 't.gemspec'
 
 # Avoid long parameter lists
 ParameterLists:

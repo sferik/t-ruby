@@ -192,32 +192,6 @@ module T
     end
     map %w[directmessagessent sent_messages sentmessages sms] => :direct_messages_sent
 
-    desc 'groupies [USER]', "Returns the list of people who follow you but you don't follow back."
-    method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
-    method_option 'id', :aliases => '-i', :type => :boolean, :default => false, :desc => 'Specify user via ID instead of screen name.'
-    method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
-    method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
-    method_option 'reverse', :aliases => '-r', :type => :boolean, :default => false, :desc => 'Reverse the order of the sort.'
-    method_option 'sort', :aliases => '-s', :type => :string, :enum => %w[favorites followers friends listed screen_name since tweets tweeted], :default => 'screen_name', :desc => 'Specify the order of the results.', :banner => 'ORDER'
-    method_option 'unsorted', :aliases => '-u', :type => :boolean, :default => false, :desc => 'Output is not sorted.'
-    def groupies(user = nil)
-      user = if user
-        require 't/core_ext/string'
-        options['id'] ? user.to_i : user.strip_ats
-      else
-        client.verify_credentials.screen_name
-      end
-      follower_ids = Thread.new { client.follower_ids(user).to_a }
-      following_ids = Thread.new { client.friend_ids(user).to_a }
-      disciple_ids = (follower_ids.value - following_ids.value)
-      require 'retryable'
-      users = retryable(:tries => 3, :on => Twitter::Error, :sleep => 0) do
-        client.users(disciple_ids)
-      end
-      print_users(users)
-    end
-    map %w[disciples] => :groupies
-
     desc 'dm USER MESSAGE', 'Sends that person a Direct Message.'
     method_option 'id', :aliases => '-i', :type => :boolean, :default => false, :desc => 'Specify user via ID instead of screen name.'
     def dm(user, message)
@@ -414,13 +388,71 @@ module T
       end
       following_ids = Thread.new { client.friend_ids(user).to_a }
       follower_ids = Thread.new { client.follower_ids(user).to_a }
-      friend_ids = (following_ids.value & follower_ids.value)
+      friend_ids = following_ids.value & follower_ids.value
       require 'retryable'
       users = retryable(:tries => 3, :on => Twitter::Error, :sleep => 0) do
         client.users(friend_ids)
       end
       print_users(users)
     end
+
+    desc 'groupies [USER]', "Returns the list of people who follow you but you don't follow back."
+    method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
+    method_option 'id', :aliases => '-i', :type => :boolean, :default => false, :desc => 'Specify user via ID instead of screen name.'
+    method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
+    method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
+    method_option 'reverse', :aliases => '-r', :type => :boolean, :default => false, :desc => 'Reverse the order of the sort.'
+    method_option 'sort', :aliases => '-s', :type => :string, :enum => %w[favorites followers friends listed screen_name since tweets tweeted], :default => 'screen_name', :desc => 'Specify the order of the results.', :banner => 'ORDER'
+    method_option 'unsorted', :aliases => '-u', :type => :boolean, :default => false, :desc => 'Output is not sorted.'
+    def groupies(user = nil)
+      user = if user
+        require 't/core_ext/string'
+        options['id'] ? user.to_i : user.strip_ats
+      else
+        client.verify_credentials.screen_name
+      end
+      follower_ids = Thread.new { client.follower_ids(user).to_a }
+      following_ids = Thread.new { client.friend_ids(user).to_a }
+      disciple_ids = (follower_ids.value - following_ids.value)
+      require 'retryable'
+      users = retryable(:tries => 3, :on => Twitter::Error, :sleep => 0) do
+        client.users(disciple_ids)
+      end
+      print_users(users)
+    end
+    map %w[disciples] => :groupies
+
+    desc 'intersection USER [USER...]', 'Displays the intersection of users followed by the specified users.'
+    method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
+    method_option 'id', :aliases => '-i', :type => :boolean, :default => false, :desc => 'Specify input as Twitter user IDs instead of screen names.'
+    method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
+    method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
+    method_option 'reverse', :aliases => '-r', :type => :boolean, :default => false, :desc => 'Reverse the order of the sort.'
+    method_option 'sort', :aliases => '-s', :type => :string, :enum => %w[favorites followers friends listed screen_name since tweets tweeted], :default => 'screen_name', :desc => 'Specify the order of the results.', :banner => 'ORDER'
+    method_option 'type', :aliases => '-t', :type => :string, :enum => %w[followers followings], :default => 'followings', :desc => 'Specify the typo of intersection.'
+    method_option 'unsorted', :aliases => '-u', :type => :boolean, :default => false, :desc => 'Output is not sorted.'
+    def intersection(first_user, *users)
+      users.push(first_user)
+      # If only one user is specified, compare to the authenticated user
+      users.push(@rcfile.active_profile[0]) if users.size == 1
+      require 't/core_ext/string'
+      options['id'] ? users.map!(&:to_i) : users.map!(&:strip_ats)
+      sets = parallel_map(users) do |user|
+        case options['type']
+        when 'followings'
+          client.friend_ids(user).to_a
+        when 'followers'
+          client.follower_ids(user).to_a
+        end
+      end
+      intersection = sets.reduce(:&)
+      require 'retryable'
+      users = retryable(:tries => 3, :on => Twitter::Error, :sleep => 0) do
+        client.users(intersection)
+      end
+      print_users(users)
+    end
+    map %w[overlap] => :intersection
 
     desc 'leaders [USER]', "Returns the list of people who you follow but don't follow you back."
     method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
@@ -757,7 +789,10 @@ module T
       users.unshift(user)
       require 't/core_ext/string'
       options['id'] ? users.map!(&:to_i) : users.map!(&:strip_ats)
-      users = client.users(users)
+      require 'retryable'
+      users = retryable(:tries => 3, :on => Twitter::Error, :sleep => 0) do
+        client.users(users)
+      end
       print_users(users)
     end
     map %w[stats] => :users

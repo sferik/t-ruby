@@ -484,158 +484,6 @@ ID          Posted at     Screen name  Text
     end
   end
 
-  describe '#groupies' do
-    before do
-      stub_get('/1.1/account/verify_credentials.json').to_return(:body => fixture('sferik.json'))
-      stub_get('/1.1/followers/ids.json').with(:query => {:cursor => '-1', :screen_name => 'sferik'}).to_return(:body => fixture('followers_ids.json'))
-      stub_get('/1.1/friends/ids.json').with(:query => {:cursor => '-1', :screen_name => 'sferik'}).to_return(:body => fixture('friends_ids.json'))
-      stub_post('/1.1/users/lookup.json').with(:body => {:user_id => '213747670,428004849'}).to_return(:body => fixture('users.json'))
-    end
-    it 'requests the correct resource' do
-      @cli.groupies
-      expect(a_get('/1.1/account/verify_credentials.json')).to have_been_made
-      expect(a_get('/1.1/followers/ids.json').with(:query => {:cursor => '-1', :screen_name => 'sferik'})).to have_been_made
-      expect(a_get('/1.1/friends/ids.json').with(:query => {:cursor => '-1', :screen_name => 'sferik'})).to have_been_made
-      expect(a_post('/1.1/users/lookup.json').with(:body => {:user_id => '213747670,428004849'})).to have_been_made
-    end
-    it 'has the correct output' do
-      @cli.groupies
-      expect($stdout.string.chomp).to eq 'pengwynn  sferik'
-    end
-    context '--csv' do
-      before do
-        @cli.options = @cli.options.merge('csv' => true)
-      end
-      it 'outputs in CSV format' do
-        @cli.groupies
-        expect($stdout.string).to eq <<-eos
-ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name,Verified,Protected,Bio,Status,Location,URL
-14100886,2008-03-08 16:34:22 +0000,2012-07-07 20:33:19 +0000,6940,192,358,3427,5457,pengwynn,Wynn Netherland,false,false,"Christian, husband, father, GitHubber, Co-host of @thechangelog, Co-author of Sass, Compass, #CSS book  http://wynn.fm/sass-meap",@akosmasoftware Sass book! @hcatlin @nex3 are the brains behind Sass. :-),"Denton, TX",http://wynnnetherland.com
-7505382,2007-07-16 12:59:01 +0000,2012-07-08 18:29:20 +0000,7890,3755,118,212,2262,sferik,Erik Michaels-Ober,false,false,Vagabond.,@goldman You're near my home town! Say hi to Woodstock for me.,San Francisco,https://github.com/sferik
-        eos
-      end
-    end
-    context '--long' do
-      before do
-        @cli.options = @cli.options.merge('long' => true)
-      end
-      it 'outputs in long format' do
-        @cli.groupies
-        expect($stdout.string).to eq <<-eos
-ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
-14100886  Mar  8  2008  Jul  7 12:33       6940        192     358       3427...
- 7505382  Jul 16  2007  Jul  8 10:29       7890       3755     118        212...
-        eos
-      end
-    end
-    context '--reverse' do
-      before do
-        @cli.options = @cli.options.merge('reverse' => true)
-      end
-      it 'reverses the order of the sort' do
-        @cli.groupies
-        expect($stdout.string.chomp).to eq 'sferik    pengwynn'
-      end
-    end
-    context '--sort=favorites' do
-      before do
-        @cli.options = @cli.options.merge('sort' => 'favorites')
-      end
-      it 'sorts by the number of favorites' do
-        @cli.groupies
-        expect($stdout.string.chomp).to eq 'pengwynn  sferik'
-      end
-    end
-    context '--sort=followers' do
-      before do
-        @cli.options = @cli.options.merge('sort' => 'followers')
-      end
-      it 'sorts by the number of followers' do
-        @cli.groupies
-        expect($stdout.string.chomp).to eq 'sferik    pengwynn'
-      end
-    end
-    context '--sort=friends' do
-      before do
-        @cli.options = @cli.options.merge('sort' => 'friends')
-      end
-      it 'sorts by the number of friends' do
-        @cli.groupies
-        expect($stdout.string.chomp).to eq 'sferik    pengwynn'
-      end
-    end
-    context '--sort=listed' do
-      before do
-        @cli.options = @cli.options.merge('sort' => 'listed')
-      end
-      it 'sorts by the number of list memberships' do
-        @cli.groupies
-        expect($stdout.string.chomp).to eq 'sferik    pengwynn'
-      end
-    end
-    context '--sort=since' do
-      before do
-        @cli.options = @cli.options.merge('sort' => 'since')
-      end
-      it 'sorts by the time when Twitter acount was created' do
-        @cli.groupies
-        expect($stdout.string.chomp).to eq 'sferik    pengwynn'
-      end
-    end
-    context '--sort=tweets' do
-      before do
-        @cli.options = @cli.options.merge('sort' => 'tweets')
-      end
-      it 'sorts by the number of Tweets' do
-        @cli.groupies
-        expect($stdout.string.chomp).to eq 'pengwynn  sferik'
-      end
-    end
-    context '--sort=tweeted' do
-      before do
-        @cli.options = @cli.options.merge('sort' => 'tweeted')
-      end
-      it 'sorts by the time of the last Tweet' do
-        @cli.groupies
-        expect($stdout.string.chomp).to eq 'pengwynn  sferik'
-      end
-    end
-    context '--unsorted' do
-      before do
-        @cli.options = @cli.options.merge('unsorted' => true)
-      end
-      it 'is not sorted' do
-        @cli.groupies
-        expect($stdout.string.chomp).to eq 'pengwynn  sferik'
-      end
-    end
-    context 'with a user passed' do
-      before do
-        stub_get('/1.1/followers/ids.json').with(:query => {:cursor => '-1', :screen_name => 'sferik'}).to_return(:body => fixture('followers_ids.json'))
-        stub_get('/1.1/friends/ids.json').with(:query => {:cursor => '-1', :screen_name => 'sferik'}).to_return(:body => fixture('friends_ids.json'))
-      end
-      it 'requests the correct resource' do
-        @cli.groupies('sferik')
-        expect(a_get('/1.1/followers/ids.json').with(:query => {:cursor => '-1', :screen_name => 'sferik'})).to have_been_made
-        expect(a_get('/1.1/friends/ids.json').with(:query => {:cursor => '-1', :screen_name => 'sferik'})).to have_been_made
-        expect(a_post('/1.1/users/lookup.json').with(:body => {:user_id => '213747670,428004849'})).to have_been_made
-      end
-      context '--id' do
-        before do
-          @cli.options = @cli.options.merge('id' => true)
-          stub_get('/1.1/followers/ids.json').with(:query => {:cursor => '-1', :user_id => '7505382'}).to_return(:body => fixture('followers_ids.json'))
-          stub_get('/1.1/friends/ids.json').with(:query => {:cursor => '-1', :user_id => '7505382'}).to_return(:body => fixture('friends_ids.json'))
-        end
-        it 'requests the correct resource' do
-          @cli.groupies('7505382')
-          expect(a_get('/1.1/followers/ids.json').with(:query => {:cursor => '-1', :user_id => '7505382'})).to have_been_made
-          expect(a_get('/1.1/friends/ids.json').with(:query => {:cursor => '-1', :user_id => '7505382'})).to have_been_made
-          expect(a_post('/1.1/users/lookup.json').with(:body => {:user_id => '213747670,428004849'})).to have_been_made
-        end
-      end
-    end
-  end
-
   describe '#dm' do
     before do
       @cli.options = @cli.options.merge('profile' => fixture_path + '/.trc')
@@ -1744,6 +1592,327 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
           @cli.friends('7505382')
           expect(a_get('/1.1/friends/ids.json').with(:query => {:cursor => '-1', :user_id => '7505382'})).to have_been_made
           expect(a_get('/1.1/followers/ids.json').with(:query => {:cursor => '-1', :user_id => '7505382'})).to have_been_made
+          expect(a_post('/1.1/users/lookup.json').with(:body => {:user_id => '7505382'})).to have_been_made
+        end
+      end
+    end
+  end
+
+  describe '#groupies' do
+    before do
+      stub_get('/1.1/account/verify_credentials.json').to_return(:body => fixture('sferik.json'))
+      stub_get('/1.1/followers/ids.json').with(:query => {:cursor => '-1', :screen_name => 'sferik'}).to_return(:body => fixture('followers_ids.json'))
+      stub_get('/1.1/friends/ids.json').with(:query => {:cursor => '-1', :screen_name => 'sferik'}).to_return(:body => fixture('friends_ids.json'))
+      stub_post('/1.1/users/lookup.json').with(:body => {:user_id => '213747670,428004849'}).to_return(:body => fixture('users.json'))
+    end
+    it 'requests the correct resource' do
+      @cli.groupies
+      expect(a_get('/1.1/account/verify_credentials.json')).to have_been_made
+      expect(a_get('/1.1/followers/ids.json').with(:query => {:cursor => '-1', :screen_name => 'sferik'})).to have_been_made
+      expect(a_get('/1.1/friends/ids.json').with(:query => {:cursor => '-1', :screen_name => 'sferik'})).to have_been_made
+      expect(a_post('/1.1/users/lookup.json').with(:body => {:user_id => '213747670,428004849'})).to have_been_made
+    end
+    it 'has the correct output' do
+      @cli.groupies
+      expect($stdout.string.chomp).to eq 'pengwynn  sferik'
+    end
+    context '--csv' do
+      before do
+        @cli.options = @cli.options.merge('csv' => true)
+      end
+      it 'outputs in CSV format' do
+        @cli.groupies
+        expect($stdout.string).to eq <<-eos
+ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name,Verified,Protected,Bio,Status,Location,URL
+14100886,2008-03-08 16:34:22 +0000,2012-07-07 20:33:19 +0000,6940,192,358,3427,5457,pengwynn,Wynn Netherland,false,false,"Christian, husband, father, GitHubber, Co-host of @thechangelog, Co-author of Sass, Compass, #CSS book  http://wynn.fm/sass-meap",@akosmasoftware Sass book! @hcatlin @nex3 are the brains behind Sass. :-),"Denton, TX",http://wynnnetherland.com
+7505382,2007-07-16 12:59:01 +0000,2012-07-08 18:29:20 +0000,7890,3755,118,212,2262,sferik,Erik Michaels-Ober,false,false,Vagabond.,@goldman You're near my home town! Say hi to Woodstock for me.,San Francisco,https://github.com/sferik
+        eos
+      end
+    end
+    context '--long' do
+      before do
+        @cli.options = @cli.options.merge('long' => true)
+      end
+      it 'outputs in long format' do
+        @cli.groupies
+        expect($stdout.string).to eq <<-eos
+ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
+14100886  Mar  8  2008  Jul  7 12:33       6940        192     358       3427...
+ 7505382  Jul 16  2007  Jul  8 10:29       7890       3755     118        212...
+        eos
+      end
+    end
+    context '--reverse' do
+      before do
+        @cli.options = @cli.options.merge('reverse' => true)
+      end
+      it 'reverses the order of the sort' do
+        @cli.groupies
+        expect($stdout.string.chomp).to eq 'sferik    pengwynn'
+      end
+    end
+    context '--sort=favorites' do
+      before do
+        @cli.options = @cli.options.merge('sort' => 'favorites')
+      end
+      it 'sorts by the number of favorites' do
+        @cli.groupies
+        expect($stdout.string.chomp).to eq 'pengwynn  sferik'
+      end
+    end
+    context '--sort=followers' do
+      before do
+        @cli.options = @cli.options.merge('sort' => 'followers')
+      end
+      it 'sorts by the number of followers' do
+        @cli.groupies
+        expect($stdout.string.chomp).to eq 'sferik    pengwynn'
+      end
+    end
+    context '--sort=friends' do
+      before do
+        @cli.options = @cli.options.merge('sort' => 'friends')
+      end
+      it 'sorts by the number of friends' do
+        @cli.groupies
+        expect($stdout.string.chomp).to eq 'sferik    pengwynn'
+      end
+    end
+    context '--sort=listed' do
+      before do
+        @cli.options = @cli.options.merge('sort' => 'listed')
+      end
+      it 'sorts by the number of list memberships' do
+        @cli.groupies
+        expect($stdout.string.chomp).to eq 'sferik    pengwynn'
+      end
+    end
+    context '--sort=since' do
+      before do
+        @cli.options = @cli.options.merge('sort' => 'since')
+      end
+      it 'sorts by the time when Twitter acount was created' do
+        @cli.groupies
+        expect($stdout.string.chomp).to eq 'sferik    pengwynn'
+      end
+    end
+    context '--sort=tweets' do
+      before do
+        @cli.options = @cli.options.merge('sort' => 'tweets')
+      end
+      it 'sorts by the number of Tweets' do
+        @cli.groupies
+        expect($stdout.string.chomp).to eq 'pengwynn  sferik'
+      end
+    end
+    context '--sort=tweeted' do
+      before do
+        @cli.options = @cli.options.merge('sort' => 'tweeted')
+      end
+      it 'sorts by the time of the last Tweet' do
+        @cli.groupies
+        expect($stdout.string.chomp).to eq 'pengwynn  sferik'
+      end
+    end
+    context '--unsorted' do
+      before do
+        @cli.options = @cli.options.merge('unsorted' => true)
+      end
+      it 'is not sorted' do
+        @cli.groupies
+        expect($stdout.string.chomp).to eq 'pengwynn  sferik'
+      end
+    end
+    context 'with a user passed' do
+      before do
+        stub_get('/1.1/followers/ids.json').with(:query => {:cursor => '-1', :screen_name => 'sferik'}).to_return(:body => fixture('followers_ids.json'))
+        stub_get('/1.1/friends/ids.json').with(:query => {:cursor => '-1', :screen_name => 'sferik'}).to_return(:body => fixture('friends_ids.json'))
+      end
+      it 'requests the correct resource' do
+        @cli.groupies('sferik')
+        expect(a_get('/1.1/followers/ids.json').with(:query => {:cursor => '-1', :screen_name => 'sferik'})).to have_been_made
+        expect(a_get('/1.1/friends/ids.json').with(:query => {:cursor => '-1', :screen_name => 'sferik'})).to have_been_made
+        expect(a_post('/1.1/users/lookup.json').with(:body => {:user_id => '213747670,428004849'})).to have_been_made
+      end
+      context '--id' do
+        before do
+          @cli.options = @cli.options.merge('id' => true)
+          stub_get('/1.1/followers/ids.json').with(:query => {:cursor => '-1', :user_id => '7505382'}).to_return(:body => fixture('followers_ids.json'))
+          stub_get('/1.1/friends/ids.json').with(:query => {:cursor => '-1', :user_id => '7505382'}).to_return(:body => fixture('friends_ids.json'))
+        end
+        it 'requests the correct resource' do
+          @cli.groupies('7505382')
+          expect(a_get('/1.1/followers/ids.json').with(:query => {:cursor => '-1', :user_id => '7505382'})).to have_been_made
+          expect(a_get('/1.1/friends/ids.json').with(:query => {:cursor => '-1', :user_id => '7505382'})).to have_been_made
+          expect(a_post('/1.1/users/lookup.json').with(:body => {:user_id => '213747670,428004849'})).to have_been_made
+        end
+      end
+    end
+  end
+
+  describe '#intersection' do
+    before do
+      @cli.options = @cli.options.merge('type' => 'followings')
+      stub_get('/1.1/friends/ids.json').with(:query => {:cursor => '-1', :screen_name => 'testcli'}).to_return(:body => fixture('friends_ids.json'))
+      stub_get('/1.1/friends/ids.json').with(:query => {:cursor => '-1', :screen_name => 'sferik'}).to_return(:body => fixture('friends_ids.json'))
+      stub_post('/1.1/users/lookup.json').with(:body => {:user_id => '7505382'}).to_return(:body => fixture('users.json'))
+    end
+    it 'requests the correct resource' do
+      @cli.intersection('sferik')
+      expect(a_get('/1.1/friends/ids.json').with(:query => {:cursor => '-1', :screen_name => 'testcli'})).to have_been_made
+      expect(a_get('/1.1/friends/ids.json').with(:query => {:cursor => '-1', :screen_name => 'sferik'})).to have_been_made
+      expect(a_post('/1.1/users/lookup.json').with(:body => {:user_id => '7505382'})).to have_been_made
+    end
+    it 'has the correct output' do
+      @cli.intersection('sferik')
+      expect($stdout.string.chomp).to eq 'pengwynn  sferik'
+    end
+    context '--csv' do
+      before do
+        @cli.options = @cli.options.merge('csv' => true)
+      end
+      it 'outputs in CSV format' do
+        @cli.intersection('sferik')
+        expect($stdout.string).to eq <<-eos
+ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name,Verified,Protected,Bio,Status,Location,URL
+14100886,2008-03-08 16:34:22 +0000,2012-07-07 20:33:19 +0000,6940,192,358,3427,5457,pengwynn,Wynn Netherland,false,false,"Christian, husband, father, GitHubber, Co-host of @thechangelog, Co-author of Sass, Compass, #CSS book  http://wynn.fm/sass-meap",@akosmasoftware Sass book! @hcatlin @nex3 are the brains behind Sass. :-),"Denton, TX",http://wynnnetherland.com
+7505382,2007-07-16 12:59:01 +0000,2012-07-08 18:29:20 +0000,7890,3755,118,212,2262,sferik,Erik Michaels-Ober,false,false,Vagabond.,@goldman You're near my home town! Say hi to Woodstock for me.,San Francisco,https://github.com/sferik
+        eos
+      end
+    end
+    context '--long' do
+      before do
+        @cli.options = @cli.options.merge('long' => true)
+      end
+      it 'outputs in long format' do
+        @cli.intersection('sferik')
+        expect($stdout.string).to eq <<-eos
+ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
+14100886  Mar  8  2008  Jul  7 12:33       6940        192     358       3427...
+ 7505382  Jul 16  2007  Jul  8 10:29       7890       3755     118        212...
+        eos
+      end
+    end
+    context '--reverse' do
+      before do
+        @cli.options = @cli.options.merge('reverse' => true)
+      end
+      it 'reverses the order of the sort' do
+        @cli.intersection('sferik')
+        expect($stdout.string.chomp).to eq 'sferik    pengwynn'
+      end
+    end
+    context '--sort=favorites' do
+      before do
+        @cli.options = @cli.options.merge('sort' => 'favorites')
+      end
+      it 'sorts by the number of favorites' do
+        @cli.intersection('sferik')
+        expect($stdout.string.chomp).to eq 'pengwynn  sferik'
+      end
+    end
+    context '--sort=followers' do
+      before do
+        @cli.options = @cli.options.merge('sort' => 'followers')
+      end
+      it 'sorts by the number of followers' do
+        @cli.intersection('sferik')
+        expect($stdout.string.chomp).to eq 'sferik    pengwynn'
+      end
+    end
+    context '--sort=friends' do
+      before do
+        @cli.options = @cli.options.merge('sort' => 'friends')
+      end
+      it 'sorts by the number of friends' do
+        @cli.intersection('sferik')
+        expect($stdout.string.chomp).to eq 'sferik    pengwynn'
+      end
+    end
+    context '--sort=listed' do
+      before do
+        @cli.options = @cli.options.merge('sort' => 'listed')
+      end
+      it 'sorts by the number of list memberships' do
+        @cli.intersection('sferik')
+        expect($stdout.string.chomp).to eq 'sferik    pengwynn'
+      end
+    end
+    context '--sort=since' do
+      before do
+        @cli.options = @cli.options.merge('sort' => 'since')
+      end
+      it 'sorts by the time when Twitter acount was created' do
+        @cli.intersection('sferik')
+        expect($stdout.string.chomp).to eq 'sferik    pengwynn'
+      end
+    end
+    context '--sort=tweets' do
+      before do
+        @cli.options = @cli.options.merge('sort' => 'tweets')
+      end
+      it 'sorts by the number of Tweets' do
+        @cli.intersection('sferik')
+        expect($stdout.string.chomp).to eq 'pengwynn  sferik'
+      end
+    end
+    context '--sort=tweeted' do
+      before do
+        @cli.options = @cli.options.merge('sort' => 'tweeted')
+      end
+      it 'sorts by the time of the last Tweet' do
+        @cli.intersection('sferik')
+        expect($stdout.string.chomp).to eq 'pengwynn  sferik'
+      end
+    end
+    context '--type=followers' do
+      before do
+        @cli.options = @cli.options.merge('type' => 'followers')
+        stub_get('/1.1/followers/ids.json').with(:query => {:cursor => '-1', :screen_name => 'testcli'}).to_return(:body => fixture('followers_ids.json'))
+        stub_get('/1.1/followers/ids.json').with(:query => {:cursor => '-1', :screen_name => 'sferik'}).to_return(:body => fixture('followers_ids.json'))
+        stub_post('/1.1/users/lookup.json').with(:body => {:user_id => '213747670,428004849'}).to_return(:body => fixture('users.json'))
+      end
+      it 'requests the correct resource' do
+        @cli.intersection('sferik')
+        expect(a_get('/1.1/followers/ids.json').with(:query => {:cursor => '-1', :screen_name => 'testcli'})).to have_been_made
+        expect(a_get('/1.1/followers/ids.json').with(:query => {:cursor => '-1', :screen_name => 'sferik'})).to have_been_made
+        expect(a_post('/1.1/users/lookup.json').with(:body => {:user_id => '213747670,428004849'})).to have_been_made
+      end
+      it 'has the correct output' do
+        @cli.intersection('sferik')
+        expect($stdout.string.chomp).to eq 'pengwynn  sferik'
+      end
+    end
+    context '--unsorted' do
+      before do
+        @cli.options = @cli.options.merge('unsorted' => true)
+      end
+      it 'is not sorted' do
+        @cli.intersection('sferik')
+        expect($stdout.string.chomp).to eq 'pengwynn  sferik'
+      end
+    end
+    context 'with two users passed' do
+      before do
+        stub_get('/1.1/friends/ids.json').with(:query => {:cursor => '-1', :screen_name => 'pengwynn'}).to_return(:body => fixture('friends_ids.json'))
+        stub_get('/1.1/friends/ids.json').with(:query => {:cursor => '-1', :screen_name => 'sferik'}).to_return(:body => fixture('friends_ids.json'))
+      end
+      it 'requests the correct resource' do
+        @cli.intersection('sferik', 'pengwynn')
+        expect(a_get('/1.1/friends/ids.json').with(:query => {:cursor => '-1', :screen_name => 'pengwynn'})).to have_been_made
+        expect(a_get('/1.1/friends/ids.json').with(:query => {:cursor => '-1', :screen_name => 'sferik'})).to have_been_made
+        expect(a_post('/1.1/users/lookup.json').with(:body => {:user_id => '7505382'})).to have_been_made
+      end
+      context '--id' do
+        before do
+          @cli.options = @cli.options.merge('id' => true)
+          stub_get('/1.1/friends/ids.json').with(:query => {:cursor => '-1', :user_id => '14100886'}).to_return(:body => fixture('friends_ids.json'))
+          stub_get('/1.1/friends/ids.json').with(:query => {:cursor => '-1', :user_id => '7505382'}).to_return(:body => fixture('friends_ids.json'))
+        end
+        it 'requests the correct resource' do
+          @cli.intersection('7505382', '14100886')
+          expect(a_get('/1.1/friends/ids.json').with(:query => {:cursor => '-1', :user_id => '14100886'})).to have_been_made
+          expect(a_get('/1.1/friends/ids.json').with(:query => {:cursor => '-1', :user_id => '7505382'})).to have_been_made
           expect(a_post('/1.1/users/lookup.json').with(:body => {:user_id => '7505382'})).to have_been_made
         end
       end

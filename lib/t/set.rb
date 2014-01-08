@@ -22,7 +22,7 @@ module T
       @rcfile.active_profile = {'username' => @rcfile[screen_name][consumer_key]['username'], 'consumer_key' => consumer_key}
       say "Active account has been updated to #{@rcfile.active_profile[0]}."
     end
-    map %w(default) => :active
+    map %w(account default) => :active
 
     desc 'bio DESCRIPTION', 'Edits your Bio information on your Twitter profile.'
     def bio(description)

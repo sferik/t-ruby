@@ -349,6 +349,33 @@ module T
       print_users(users)
     end
 
+    desc 'followings_following USER [USER]', 'Displays your friends who follow the specified user.'
+    method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
+    method_option 'id', :aliases => '-i', :type => :boolean, :default => false, :desc => 'Specify input as Twitter user IDs instead of screen names.'
+    method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
+    method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
+    method_option 'reverse', :aliases => '-r', :type => :boolean, :default => false, :desc => 'Reverse the order of the sort.'
+    method_option 'sort', :aliases => '-s', :type => :string, :enum => %w[favorites followers friends listed screen_name since tweets tweeted], :default => 'screen_name', :desc => 'Specify the order of the results.', :banner => 'ORDER'
+    method_option 'unsorted', :aliases => '-u', :type => :boolean, :default => false, :desc => 'Output is not sorted.'
+    def followings_following(user1, user2 = nil)
+      require 't/core_ext/string'
+      user1 = options['id'] ? user1.to_i : user1.strip_ats
+      user2 = if user2.nil?
+        @rcfile.active_profile[0]
+      else
+        options['id'] ? user2.to_i : user2.strip_ats
+      end
+      follower_ids = Thread.new { client.follower_ids(user1).to_a }
+      following_ids = Thread.new { client.friend_ids(user2).to_a }
+      followings_following_ids = follower_ids.value & following_ids.value
+      require 'retryable'
+      users = retryable(:tries => 3, :on => Twitter::Error, :sleep => 0) do
+        client.users(followings_following_ids)
+      end
+      print_users(users)
+    end
+    map %w[ff followingsfollowing] => :followings_following
+
     desc 'followers [USER]', 'Returns a list of the people who follow you on Twitter.'
     method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
     method_option 'id', :aliases => '-i', :type => :boolean, :default => false, :desc => 'Specify user via ID instead of screen name.'

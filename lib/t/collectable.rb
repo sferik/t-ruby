@@ -14,7 +14,7 @@ module T
       tweets.empty? ? collection.flatten : collect_with_max_id(collection, tweets.last.id - 1, &block)
     end
 
-    def collect_with_count(count, &block)
+    def collect_with_count(count)
       opts = {}
       opts[:count] = MAX_NUM_RESULTS
       collect_with_max_id do |max_id|

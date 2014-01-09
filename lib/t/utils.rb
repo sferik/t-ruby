@@ -47,7 +47,7 @@ module T
     alias_method :time_ago_in_words, :distance_of_time_in_words
     alias_method :time_from_now_in_words, :distance_of_time_in_words
 
-    def fetch_users(users, options, &block)
+    def fetch_users(users, options)
       format_users!(users, options)
       require 'retryable'
       users = retryable(:tries => 3, :on => Twitter::Error, :sleep => 0) do

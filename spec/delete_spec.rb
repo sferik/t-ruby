@@ -29,7 +29,7 @@ describe T::Delete do
     end
     it 'has the correct output' do
       @delete.block('sferik')
-      expect($stdout.string).to match /^@testcli unblocked 1 user\.$/
+      expect($stdout.string).to match(/^@testcli unblocked 1 user\.$/)
     end
     context '--id' do
       before do
@@ -105,7 +105,7 @@ describe T::Delete do
         expect($stdout).to receive(:print).with("Are you sure you want to remove @sferik's status: \"The problem with your code is that it's doing exactly what you told it to do.\" from your favorites? [y/N] ")
         expect($stdin).to receive(:gets).and_return('yes')
         @delete.favorite('28439861609')
-        expect($stdout.string).to match /^@testcli unfavorited @sferik's status: "The problem with your code is that it's doing exactly what you told it to do\."$/
+        expect($stdout.string).to match(/^@testcli unfavorited @sferik's status: "The problem with your code is that it's doing exactly what you told it to do\."$/)
       end
     end
     context 'no' do
@@ -126,7 +126,7 @@ describe T::Delete do
       end
       it 'has the correct output' do
         @delete.favorite('28439861609')
-        expect($stdout.string).to match /^@testcli unfavorited @sferik's status: "The problem with your code is that it's doing exactly what you told it to do\."$/
+        expect($stdout.string).to match(/^@testcli unfavorited @sferik's status: "The problem with your code is that it's doing exactly what you told it to do\."$/)
       end
     end
   end

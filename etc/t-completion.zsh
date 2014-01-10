@@ -82,6 +82,7 @@ _t_block() {
 _t_direct_messages() {
   _arguments \
     "(-c --csv)"{-c,--csv}"[Output in CSV format.]" \
+    "(-d --decode_uris)"{-d,--decode_uris}"[Decodes t.co URLs into their original form.]" \
     "(-l --long)"{-l,--long}"[Output in long format.]" \
     "(-a --relative_dates)"{-a,--relative_dates}"[Show relative dates.]" \
     "(-n --number)"{-n,--number}"[Limit the number of results.]" \
@@ -92,9 +93,10 @@ _t_direct_messages() {
 _t_direct_messages_sent() {
   _arguments \
     "(-c --csv)"{-c,--csv}"[Output in CSV format.]" \
+    "(-d --decode_uris)"{-d,--decode_uris}"[Decodes t.co URLs into their original form.]" \
     "(-l --long)"{-l,--long}"[Output in long format.]" \
-    "(-a --relative_dates)"{-a,--relative_dates}"[Show relative dates.]" \
     "(-n --number)"{-n,--number}"[Limit the number of results.]" \
+    "(-a --relative_dates)"{-a,--relative_dates}"[Show relative dates.]" \
     "(-r --reverse)"{-r,--reverse}"[Reverse the order of the sort.]" \
     $t_general_options && ret=0
 }
@@ -137,11 +139,12 @@ _t_favorite() {
 _t_favorites() {
   _arguments \
     "(-c --csv)"{-c,--csv}"[Output in CSV format.]" \
+    "(-d --decode_uris)"{-d,--decode_uris}"[Decodes t.co URLs into their original form.]" \
     "(-i --id)"{-i,--id}"[Specify user via ID instead of screen name.]" \
     "(-l --long)"{-l,--long}"[Output in long format.]" \
-    "(-a --relative_dates)"{-a,--relative_dates}"[Show relative dates.]" \
     "(-m --max_id)"{-m,--max_id}"[Returns only the results with an ID less than the specified ID.]" \
     "(-n --number)"{-n,--number}"[Limit the number of results.]" \
+    "(-a --relative_dates)"{-a,--relative_dates}"[Show relative dates.]" \
     "(-r --reverse)"{-r,--reverse}"[Reverse the order of the sort.]" \
     "(-s --since_id)"{-s,--since_id}"[Returns only the results with an ID greater than the specified ID.]" \
     $t_general_options && ret=0
@@ -221,9 +224,10 @@ _t_matrix() {
 _t_mentions() {
   _arguments \
     "(-c --csv)"{-c,--csv}"[Output in CSV format.]" \
+    "(-d --decode_uris)"{-d,--decode_uris}"[Decodes t.co URLs into their original form.]" \
     "(-l --long)"{-l,--long}"[Output in long format.]" \
-    "(-a --relative_dates)"{-a,--relative_dates}"[Show relative dates.]" \
     "(-n --number)"{-n,--number}"[Limit the number of results.]" \
+    "(-a --relative_dates)"{-a,--relative_dates}"[Show relative dates.]" \
     "(-r --reverse)"{-r,--reverse}"[Reverse the order of the sort.]" \
     $t_general_options && ret=0
 }
@@ -257,10 +261,11 @@ _t_retweet() {
 _t_retweets() {
   _arguments \
     "(-c --csv)"{-c,--csv}"[Output in CSV format.]" \
+    "(-d --decode_uris)"{-d,--decode_uris}"[Decodes t.co URLs into their original form.]" \
     "(-i --id)"{-i,--id}"[Specify user via ID instead of screen name.]" \
     "(-l --long)"{-l,--long}"[Output in long format.]" \
-    "(-a --relative_dates)"{-a,--relative_dates}"[Show relative dates.]" \
     "(-n --number)"{-n,--number}"[Limit the number of results.]" \
+    "(-a --relative_dates)"{-a,--relative_dates}"[Show relative dates.]" \
     "(-r --reverse)"{-r,--reverse}"[Reverse the order of the sort.]" \
     $t_general_options && ret=0
 }
@@ -274,6 +279,7 @@ _t_ruler() {
 _t_status() {
   _arguments \
     "(-c --csv)"{-c,--csv}"[Output in CSV format.]" \
+    "(-d --decode_uris)"{-d,--decode_uris}"[Decodes t.co URLs into their original form.]" \
     "(-l --long)"{-l,--long}"[Output in long format.]" \
     "(-a --relative_dates)"{-a,--relative_dates}"[Show relative dates.]" \
     $t_general_options && ret=0
@@ -282,12 +288,13 @@ _t_status() {
 _t_timeline() {
   _arguments \
     "(-c --csv)"{-c,--csv}"[Output in CSV format.]" \
+    "(-d --decode_uris)"{-d,--decode_uris}"[Decodes t.co URLs into their original form.]" \
     "(-e --exclude)"{-e,--exclude}"[Exclude certain types of Tweets from the results.]" \
     "(-i --id)"{-i,--id}"[Specify user via ID instead of screen name.]" \
     "(-l --long)"{-l,--long}"[Output in long format.]" \
-    "(-a --relative_dates)"{-a,--relative_dates}"[Show relative dates.]" \
     "(-m --max_id)"{-m,--max_id}"[Returns only the results with an ID less than the specified ID.]" \
     "(-n --number)"{-n,--number}"[Limit the number of results.]" \
+    "(-a --relative_dates)"{-a,--relative_dates}"[Show relative dates.]" \
     "(-r --reverse)"{-r,--reverse}"[Reverse the order of the sort.]" \
     "(-s --since_id)"{-s,--since_id}"[Returns only the results with an ID greater than the specified ID.]" \
     $t_general_options && ret=0
@@ -343,6 +350,7 @@ _t_version() {
 _t_whois() {
   _arguments \
     "(-c --csv)"{-c,--csv}"[Output in CSV format.]" \
+    "(-d --decode_uris)"{-d,--decode_uris}"[Decodes t.co URLs into their original form.]" \
     "(-i --id)"{-i,--id}"[Specify user via ID instead of screen name.]" \
     "(-l --long)"{-l,--long}"[Output in long format.]" \
     "(-a --relative_dates)"{-a,--relative_dates}"[Show relative dates.]" \

@@ -26,7 +26,7 @@ module T
 
     desc 'all QUERY', "Returns the #{DEFAULT_NUM_RESULTS} most recent Tweets that match the specified query."
     method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
-    method_option 'show_user', :aliases => '-U', :type => :boolean, :default => false, :desc => 'Get user information'
+    method_option 'show_user', :aliases => '-U', :type => :boolean, :default => false, :desc => 'Include user profile with each tweet'
     method_option 'decode_uris', :aliases => '-d', :type => :boolean, :default => false, :desc => 'Decodes t.co URLs into their original form.'
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
     method_option 'number', :aliases => '-n', :type => :numeric, :default => DEFAULT_NUM_RESULTS
@@ -50,7 +50,7 @@ module T
 
     desc 'favorites [USER] QUERY', "Returns Tweets you've favorited that match the specified query."
     method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
-    method_option 'show_user', :aliases => '-U', :type => :boolean, :default => false, :desc => 'Get user information'
+    method_option 'show_user', :aliases => '-U', :type => :boolean, :default => false, :desc => 'Include user profile with each tweet'
     method_option 'decode_uris', :aliases => '-d', :type => :boolean, :default => false, :desc => 'Decodes t.co URLs into their original form.'
     method_option 'id', :aliases => '-i', :type => :boolean, :default => false, :desc => 'Specify user via ID instead of screen name.'
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
@@ -82,7 +82,7 @@ module T
 
     desc 'list [USER/]LIST QUERY', 'Returns Tweets on a list that match the specified query.'
     method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
-    method_option 'show_user', :aliases => '-U', :type => :boolean, :default => false, :desc => 'Get user information'
+    method_option 'show_user', :aliases => '-U', :type => :boolean, :default => false, :desc => 'Include user profile with each tweet'
     method_option 'decode_uris', :aliases => '-d', :type => :boolean, :default => false, :desc => 'Decodes t.co URLs into their original form.'
     method_option 'id', :aliases => '-i', :type => :boolean, :default => false, :desc => 'Specify user via ID instead of screen name.'
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
@@ -103,7 +103,7 @@ module T
 
     desc 'mentions QUERY', 'Returns Tweets mentioning you that match the specified query.'
     method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
-    method_option 'show_user', :aliases => '-U', :type => :boolean, :default => false, :desc => 'Get user information'
+    method_option 'show_user', :aliases => '-U', :type => :boolean, :default => false, :desc => 'Include user profile with each tweet'
     method_option 'decode_uris', :aliases => '-d', :type => :boolean, :default => false, :desc => 'Decodes t.co URLs into their original form.'
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
     def mentions(query)
@@ -126,7 +126,7 @@ module T
     method_option 'decode_uris', :aliases => '-d', :type => :boolean, :default => false, :desc => 'Decodes t.co URLs into their original form.'
     method_option 'id', :aliases => '-i', :type => :boolean, :default => false, :desc => 'Specify user via ID instead of screen name.'
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
-    method_option 'show_user', :aliases => '-U', :type => :boolean, :default => false, :desc => 'Get user information'
+    method_option 'show_user', :aliases => '-U', :type => :boolean, :default => false, :desc => 'Include user profile with each tweet'
 
     def retweets(*args)
       query = args.pop
@@ -159,7 +159,7 @@ module T
 
     desc 'timeline [USER] QUERY', 'Returns Tweets in your timeline that match the specified query.'
     method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
-    method_option 'show_user', :aliases => '-U', :type => :boolean, :default => false, :desc => 'Get user information'
+    method_option 'show_user', :aliases => '-U', :type => :boolean, :default => false, :desc => 'Include user profile with each tweet'
     method_option 'decode_uris', :aliases => '-d', :type => :boolean, :default => false, :desc => 'Decodes t.co URLs into their original form.'
     method_option 'exclude', :aliases => '-e', :type => :string, :enum => %w[replies retweets], :desc => 'Exclude certain types of Tweets from the results.', :banner => 'TYPE'
     method_option 'id', :aliases => '-i', :type => :boolean, :default => false, :desc => 'Specify user via ID instead of screen name.'

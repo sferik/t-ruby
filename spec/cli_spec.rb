@@ -132,7 +132,7 @@ testcli
     end
     it 'has the correct output' do
       @cli.block('sferik')
-      expect($stdout.string).to match /^@testcli blocked 1 user/
+      expect($stdout.string).to match(/^@testcli blocked 1 user/)
     end
     context '--id' do
       before do
@@ -655,7 +655,7 @@ ID          Posted at     Screen name  Text
     end
     it 'has the correct output' do
       @cli.favorite('26755176471724032')
-      expect($stdout.string).to match /^@testcli favorited 1 tweet.$/
+      expect($stdout.string).to match(/^@testcli favorited 1 tweet.$/)
     end
   end
 
@@ -971,7 +971,7 @@ ID                   Posted at     Screen name       Text
       end
       it 'has the correct output' do
         @cli.follow('sferik', 'pengwynn')
-        expect($stdout.string).to match /^@testcli is now following 1 more user\.$/
+        expect($stdout.string).to match(/^@testcli is now following 1 more user\.$/)
       end
       context '--id' do
         before do
@@ -2522,7 +2522,7 @@ ID                   Posted at     Screen name       Text
     end
     it 'has the correct output' do
       @cli.report_spam('sferik')
-      expect($stdout.string).to match /^@testcli reported 1 user/
+      expect($stdout.string).to match(/^@testcli reported 1 user/)
     end
     context '--id' do
       before do
@@ -2547,7 +2547,7 @@ ID                   Posted at     Screen name       Text
     end
     it 'has the correct output' do
       @cli.retweet('26755176471724032')
-      expect($stdout.string).to match /^@testcli retweeted 1 tweet.$/
+      expect($stdout.string).to match(/^@testcli retweeted 1 tweet.$/)
     end
   end
 
@@ -3481,7 +3481,7 @@ WOEID     Parent ID  Type       Name           Country
       end
       it 'sorts by the country name' do
         @cli.trend_locations
-        expect($stdout.string.chomp).to match 'Worldwide      Soweto         San Francisco  United States'
+        expect($stdout.string.chomp).to eq 'Worldwide      Soweto         San Francisco  United States'
       end
     end
     context '--sort=parent' do
@@ -3535,7 +3535,7 @@ WOEID     Parent ID  Type       Name           Country
       it 'has the correct output' do
         stub_post('/1.1/friendships/destroy.json').with(:body => {:screen_name => 'sferik'}).to_return(:body => fixture('sferik.json'))
         @cli.unfollow('sferik')
-        expect($stdout.string).to match /^@testcli is no longer following 1 user\.$/
+        expect($stdout.string).to match(/^@testcli is no longer following 1 user\.$/)
       end
       context '--id' do
         before do

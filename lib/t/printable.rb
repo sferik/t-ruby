@@ -4,7 +4,10 @@ module T
     TWEET_HEADINGS = ['ID', 'Posted at', 'Screen name', 'Text']
     USER_HEADINGS = ['ID', 'Since', 'Last tweeted at', 'Tweets', 'Favorites', 'Listed', 'Following', 'Followers', 'Screen name', 'Name', 'Verified', 'Protected', 'Bio', 'Status', 'Location', 'URL']
     MONTH_IN_SECONDS = 2_592_000
-    TWEET_WITH_USER_HEADINGS = TWEET_HEADINGS + USER_HEADINGS
+
+    TWEET_WITH_USER_HEADINGS = ['ID', 'Posted at', 'Screen name', 'Text', 
+        'User ID', 'Since', 'Last tweeted at', 'Tweets', 'Favorites', 'Listed', 'Following', 'Followers', 'Name', 'Verified', 'Protected', 'Bio', 'Location', 'URL'
+    ]
 
   private
 
@@ -20,10 +23,13 @@ module T
       [user.id, ls_formatted_time(user), ls_formatted_time(user.status), user.statuses_count, user.favorites_count, user.listed_count, user.friends_count, user.followers_count, "@#{user.screen_name}", user.name, user.verified? ? 'Yes' : 'No', user.protected? ? 'Yes' : 'No', user.description.gsub(/\n+/, ' '), user.status? ? decode_full_text(user.status, options['decode_uris']).gsub(/\n+/, ' ') : nil, user.location, user.website.to_s]
     end
 
+    # DRY this up obviously
     def build_long_tweet_with_user(tweet)
       user = tweet.user
 
-      build_long_tweet(tweet) + build_long_user(user)
+      build_long_tweet(tweet) + 
+            [user.id, ls_formatted_time(user), ls_formatted_time(user.status), user.statuses_count, user.favorites_count, user.listed_count, user.friends_count, user.followers_count, user.name, user.verified? ? 'Yes' : 'No', user.protected? ? 'Yes' : 'No', user.description.gsub(/\n+/, ' '), user.location, user.website.to_s]
+
     end
 
     def csv_formatted_time(object, key = :created_at)
@@ -64,9 +70,9 @@ module T
       require 'csv'
       user = tweet.user
 
-      arr = [tweet.id, csv_formatted_time(tweet), tweet.user.screen_name, decode_full_text(tweet, options['decode_uris'])] \
+      arr = [tweet.id, csv_formatted_time(tweet), user.screen_name, decode_full_text(tweet, options['decode_uris'])] \
               + \
-             [user.id, csv_formatted_time(user), csv_formatted_time(user.status), user.statuses_count, user.favorites_count, user.listed_count, user.friends_count, user.followers_count, user.screen_name, user.name, user.verified?, user.protected?, user.description, user.status? ? user.status.full_text : nil, user.location, user.website]
+             [user.id, csv_formatted_time(user), csv_formatted_time(user.status), user.statuses_count, user.favorites_count, user.listed_count, user.friends_count, user.followers_count, user.name, user.verified?, user.protected?, user.description, user.location, user.website]
 
       say arr.to_csv
     end
@@ -139,6 +145,7 @@ module T
       print_wrapped(HTMLEntities.new.decode(message), :indent => 3)
       say
     end
+
 
     #  Expects tweets to have user object
     def print_tweets_with_users(tweets)

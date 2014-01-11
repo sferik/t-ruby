@@ -666,7 +666,7 @@ module T
     end
 
     desc 'timeline [USER]', "Returns the #{DEFAULT_NUM_RESULTS} most recent Tweets posted by a user."
-    method_option 'full', :aliases => '-f', :type => :boolean, :default => true, :desc => 'Get user status'
+    method_option 'show_user', :aliases => '-U', :type => :boolean, :default => false, :desc => 'Get user status'
     method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
     method_option 'decode_uris', :aliases => '-d', :type => :boolean, :default => false, :desc => 'Decodes t.co URLs into their original form.'
     method_option 'exclude', :aliases => '-e', :type => :string, :enum => %w[replies retweets], :desc => 'Exclude certain types of Tweets from the results.', :banner => 'TYPE'
@@ -680,7 +680,7 @@ module T
     def timeline(user = nil)
       count = options['number'] || DEFAULT_NUM_RESULTS
       opts = {}
-      opts [:trim_user] = false if options['full'] == true
+      opts[:trim_user] = false if options['show_user'] == true
       opts[:exclude_replies] = true if options['exclude'] == 'replies'
       opts[:include_entities] = !!options['decode_uris']
       opts[:include_rts] = false if options['exclude'] == 'retweets'
@@ -698,11 +698,7 @@ module T
         end
       end
 
-      if options['full'] == true
-        print_tweets_with_users(tweets)      
-      else
-        print_tweets(tweets)
-      end
+      options['show_user'] == true ? print_tweets_with_users(tweets) : print_tweets(tweets)
     end
     map %w[tl] => :timeline
 

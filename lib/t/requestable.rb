@@ -2,7 +2,7 @@ require 'twitter'
 
 module T
   module Requestable
-    private
+  private
 
     def client
       return @client if @client

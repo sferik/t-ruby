@@ -119,7 +119,7 @@ module T
       end
       say "@#{@rcfile.active_profile[0]} blocked #{pluralize(number, 'user')}."
       say
-      say "Run `#{File.basename($PROGRAM_NAME)} delete block #{blocked_users.map { |blocked_user| "@#{blocked_user.screen_name}" }.join(' ')}` to unblock."
+      say "Run `#{File.basename($PROGRAM_NAME)} delete block #{blocked_users.collect { |blocked_user| "@#{blocked_user.screen_name}" }.join(' ')}` to unblock."
     end
 
     desc 'direct_messages', "Returns the #{DEFAULT_NUM_RESULTS} most recent Direct Messages sent to you."
@@ -144,10 +144,10 @@ module T
           say [direct_message.id, csv_formatted_time(direct_message), direct_message.sender.screen_name, decode_full_text(direct_message, options['decode_uris'])].to_csv
         end
       elsif options['long']
-        array = direct_messages.map do |direct_message|
+        array = direct_messages.collect do |direct_message|
           [direct_message.id, ls_formatted_time(direct_message), "@#{direct_message.sender.screen_name}", decode_full_text(direct_message, options['decode_uris']).gsub(/\n+/, ' ')]
         end
-        format = options['format'] || DIRECT_MESSAGE_HEADINGS.size.times.map { '%s' }
+        format = options['format'] || DIRECT_MESSAGE_HEADINGS.size.times.collect { '%s' }
         print_table_with_headings(array, DIRECT_MESSAGE_HEADINGS, format)
       else
         direct_messages.each do |direct_message|
@@ -179,10 +179,10 @@ module T
           say [direct_message.id, csv_formatted_time(direct_message), direct_message.recipient.screen_name, decode_full_text(direct_message, options['decode_uris'])].to_csv
         end
       elsif options['long']
-        array = direct_messages.map do |direct_message|
+        array = direct_messages.collect do |direct_message|
           [direct_message.id, ls_formatted_time(direct_message), "@#{direct_message.recipient.screen_name}", decode_full_text(direct_message, options['decode_uris']).gsub(/\n+/, ' ')]
         end
-        format = options['format'] || DIRECT_MESSAGE_HEADINGS.size.times.map { '%s' }
+        format = options['format'] || DIRECT_MESSAGE_HEADINGS.size.times.collect { '%s' }
         print_table_with_headings(array, DIRECT_MESSAGE_HEADINGS, format)
       else
         direct_messages.each do |direct_message|
@@ -250,7 +250,7 @@ module T
     desc 'favorite TWEET_ID [TWEET_ID...]', 'Marks Tweets as favorites.'
     def favorite(status_id, *status_ids)
       status_ids.unshift(status_id)
-      status_ids.map!(&:to_i)
+      status_ids.collect!(&:to_i)
       require 'retryable'
       favorites = retryable(:tries => 3, :on => Twitter::Error, :sleep => 0) do
         client.favorite(status_ids)
@@ -299,7 +299,7 @@ module T
       end
       say "@#{@rcfile.active_profile[0]} is now following #{pluralize(number, 'more user')}."
       say
-      say "Run `#{File.basename($PROGRAM_NAME)} unfollow #{followed_users.map { |followed_user| "@#{followed_user.screen_name}" }.join(' ')}` to stop."
+      say "Run `#{File.basename($PROGRAM_NAME)} unfollow #{followed_users.collect { |followed_user| "@#{followed_user.screen_name}" }.join(' ')}` to stop."
     end
 
     desc 'followings [USER]', 'Returns a list of the people you follow on Twitter.'
@@ -436,7 +436,7 @@ module T
       # If only one user is specified, compare to the authenticated user
       users.push(@rcfile.active_profile[0]) if users.size == 1
       require 't/core_ext/string'
-      options['id'] ? users.map!(&:to_i) : users.map!(&:strip_ats)
+      options['id'] ? users.collect!(&:to_i) : users.collect!(&:strip_ats)
       sets = parallel_map(users) do |user|
         case options['type']
         when 'followings'
@@ -548,7 +548,7 @@ module T
         users.uniq!
       end
       require 't/core_ext/string'
-      users.map!(&:prepend_at)
+      users.collect!(&:prepend_at)
       opts = {:in_reply_to_status_id => status.id, :trim_user => true}
       add_location!(options, opts)
       reply = client.update("#{users.join(' ')} #{message}", opts)
@@ -570,7 +570,7 @@ module T
     desc 'retweet TWEET_ID [TWEET_ID...]', 'Sends Tweets to your followers.'
     def retweet(status_id, *status_ids)
       status_ids.unshift(status_id)
-      status_ids.map!(&:to_i)
+      status_ids.collect!(&:to_i)
       require 'retryable'
       retweets = retryable(:tries => 3, :on => Twitter::Error, :sleep => 0) do
         client.retweet(status_ids, :trim_user => true)
@@ -578,7 +578,7 @@ module T
       number = retweets.length
       say "@#{@rcfile.active_profile[0]} retweeted #{pluralize(number, 'tweet')}."
       say
-      say "Run `#{File.basename($PROGRAM_NAME)} delete status #{retweets.map { |tweet| tweet.retweeted_status.id }.join(' ')}` to undo."
+      say "Run `#{File.basename($PROGRAM_NAME)} delete status #{retweets.collect { |tweet| tweet.retweeted_status.id }.join(' ')}` to undo."
     end
     map %w[rt] => :retweet
 
@@ -649,7 +649,7 @@ module T
         say [status.id, csv_formatted_time(status), status.user.screen_name, decode_full_text(status, options['decode_uris']), status.retweet_count, status.favorite_count, strip_tags(status.source), location].to_csv
       elsif options['long']
         array = [status.id, ls_formatted_time(status), "@#{status.user.screen_name}", decode_full_text(status, options['decode_uris']).gsub(/\n+/, ' '), status.retweet_count, status.favorite_count, strip_tags(status.source), location]
-        format = options['format'] || status_headings.size.times.map { '%s' }
+        format = options['format'] || status_headings.size.times.collect { '%s' }
         print_table_with_headings([array], status_headings, format)
       else
         array = []
@@ -737,10 +737,10 @@ module T
           say [place.woeid, place.parent_id, place.place_type, place.name, place.country].to_csv
         end
       elsif options['long']
-        array = places.map do |place|
+        array = places.collect do |place|
           [place.woeid, place.parent_id, place.place_type, place.name, place.country]
         end
-        format = options['format'] || TREND_HEADINGS.size.times.map { '%s' }
+        format = options['format'] || TREND_HEADINGS.size.times.collect { '%s' }
         print_table_with_headings(array, TREND_HEADINGS, format)
       else
         print_attribute(places, :name)
@@ -756,7 +756,7 @@ module T
       end
       say "@#{@rcfile.active_profile[0]} is no longer following #{pluralize(number, 'user')}."
       say
-      say "Run `#{File.basename($PROGRAM_NAME)} follow #{unfollowed_users.map { |unfollowed_user| "@#{unfollowed_user.screen_name}" }.join(' ')}` to follow again."
+      say "Run `#{File.basename($PROGRAM_NAME)} follow #{unfollowed_users.collect { |unfollowed_user| "@#{unfollowed_user.screen_name}" }.join(' ')}` to follow again."
     end
 
     desc 'update [MESSAGE]', 'Post a Tweet.'
@@ -788,7 +788,7 @@ module T
     def users(user, *users)
       users.unshift(user)
       require 't/core_ext/string'
-      options['id'] ? users.map!(&:to_i) : users.map!(&:strip_ats)
+      options['id'] ? users.collect!(&:to_i) : users.collect!(&:strip_ats)
       require 'retryable'
       users = retryable(:tries => 3, :on => Twitter::Error, :sleep => 0) do
         client.users(users)
@@ -866,14 +866,14 @@ module T
 
       return [] if text !~ at_signs
 
-      text.to_s.scan(valid_mentions).map do |before, at, screen_name|
+      text.to_s.scan(valid_mentions).collect do |before, at, screen_name|
         screen_name
       end
     end
 
     def generate_authorize_uri(consumer, request_token)
       request = consumer.create_signed_request(:get, consumer.authorize_path, request_token, pin_auth_parameters)
-      params = request['Authorization'].sub(/^OAuth\s+/, '').split(/,\s+/).map do |param|
+      params = request['Authorization'].sub(/^OAuth\s+/, '').split(/,\s+/).collect do |param|
         key, value = param.split('=')
         value =~ /"(.*?)"/
         "#{key}=#{CGI.escape(Regexp.last_match[1])}"
@@ -887,7 +887,7 @@ module T
 
     def add_location!(options, opts)
       if options['location']
-        lat, lng = options['location'] == 'location' ? [location.lat, location.lng] : options['location'].split(',').map(&:to_f)
+        lat, lng = options['location'] == 'location' ? [location.lat, location.lng] : options['location'].split(',').collect(&:to_f)
         opts.merge!(:lat => lat, :long => lng)
       end
     end

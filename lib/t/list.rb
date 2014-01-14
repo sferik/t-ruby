@@ -36,7 +36,7 @@ module T
       if options['id']
         say "Run `#{File.basename($PROGRAM_NAME)} list remove --id #{list} #{added_users.join(' ')}` to undo."
       else
-        say "Run `#{File.basename($PROGRAM_NAME)} list remove #{list} #{added_users.map { |added_user| "@#{added_user}" }.join(' ')}` to undo."
+        say "Run `#{File.basename($PROGRAM_NAME)} list remove #{list} #{added_users.collect { |added_user| "@#{added_user}" }.join(' ')}` to undo."
       end
     end
 
@@ -100,7 +100,7 @@ module T
       if options['id']
         say "Run `#{File.basename($PROGRAM_NAME)} list add --id #{list} #{removed_users.join(' ')}` to undo."
       else
-        say "Run `#{File.basename($PROGRAM_NAME)} list add #{list} #{removed_users.map { |removed_user| "@#{removed_user}" }.join(' ')}` to undo."
+        say "Run `#{File.basename($PROGRAM_NAME)} list add #{list} #{removed_users.collect { |removed_user| "@#{removed_user}" }.join(' ')}` to undo."
       end
     end
 

@@ -25,7 +25,7 @@ module T
       end
       say "@#{@rcfile.active_profile[0]} unblocked #{pluralize(number, 'user')}."
       say
-      say "Run `#{File.basename($PROGRAM_NAME)} block #{unblocked_users.map { |unblocked_user| "@#{unblocked_user.screen_name}" }.join(' ')}` to block."
+      say "Run `#{File.basename($PROGRAM_NAME)} block #{unblocked_users.collect { |unblocked_user| "@#{unblocked_user.screen_name}" }.join(' ')}` to block."
     end
 
     desc 'dm [DIRECT_MESSAGE_ID] [DIRECT_MESSAGE_ID...]', 'Delete the last Direct Message sent.'
@@ -33,7 +33,7 @@ module T
     def dm(direct_message_id, *direct_message_ids)
       direct_message_ids.unshift(direct_message_id)
       require 't/core_ext/string'
-      direct_message_ids.map!(&:to_i)
+      direct_message_ids.collect!(&:to_i)
       if options['force']
         direct_messages = client.destroy_direct_message(direct_message_ids)
         direct_messages.each do |direct_message|
@@ -55,7 +55,7 @@ module T
     def favorite(status_id, *status_ids)
       status_ids.unshift(status_id)
       require 't/core_ext/string'
-      status_ids.map!(&:to_i)
+      status_ids.collect!(&:to_i)
       if options['force']
         tweets = client.unfavorite(status_ids)
         tweets.each do |status|
@@ -93,7 +93,7 @@ module T
     def status(status_id, *status_ids)
       status_ids.unshift(status_id)
       require 't/core_ext/string'
-      status_ids.map!(&:to_i)
+      status_ids.collect!(&:to_i)
       if options['force']
         tweets = client.destroy_status(status_ids, :trim_user => true)
         tweets.each do |status|

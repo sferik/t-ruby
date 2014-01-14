@@ -42,10 +42,10 @@ module T
           say [tweet.id, csv_formatted_time(tweet), tweet.user.screen_name, decode_full_text(tweet, options['decode_uris'])].to_csv
         end
       elsif options['long']
-        array = tweets.map do |tweet|
+        array = tweets.collect do |tweet|
           [tweet.id, ls_formatted_time(tweet), "@#{tweet.user.screen_name}", decode_full_text(tweet, options['decode_uris']).gsub(/\n+/, ' ')]
         end
-        format = options['format'] || TWEET_HEADINGS.size.times.map { '%s' }
+        format = options['format'] || TWEET_HEADINGS.size.times.collect { '%s' }
         print_table_with_headings(array, TWEET_HEADINGS, format)
       else
         say unless tweets.empty?

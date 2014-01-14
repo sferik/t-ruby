@@ -73,10 +73,10 @@ module T
           print_csv_list(list)
         end
       elsif options['long']
-        array = lists.map do |list|
+        array = lists.collect do |list|
           build_long_list(list)
         end
-        format = options['format'] || LIST_HEADINGS.size.times.map { '%s' }
+        format = options['format'] || LIST_HEADINGS.size.times.collect { '%s' }
         print_table_with_headings(array, LIST_HEADINGS, format)
       else
         print_attribute(lists, :full_name)
@@ -85,7 +85,7 @@ module T
 
     def print_attribute(array, attribute)
       if STDOUT.tty?
-        print_in_columns(array.map(&attribute.to_sym))
+        print_in_columns(array.collect(&attribute.to_sym))
       else
         array.each do |element|
           say element.send(attribute.to_sym)
@@ -98,8 +98,8 @@ module T
       if STDOUT.tty?
         array.unshift(headings)
         require 't/core_ext/kernel'
-        array.map! do |row|
-          row.each_with_index.map do |element, index|
+        array.collect! do |row|
+          row.each_with_index.collect do |element, index|
             Kernel.send(element.class.name.to_sym, format[index] % element)
           end
         end
@@ -130,10 +130,10 @@ module T
           print_csv_tweet(tweet)
         end
       elsif options['long']
-        array = tweets.map do |tweet|
+        array = tweets.collect do |tweet|
           build_long_tweet(tweet)
         end
-        format = options['format'] || TWEET_HEADINGS.size.times.map { '%s' }
+        format = options['format'] || TWEET_HEADINGS.size.times.collect { '%s' }
         print_table_with_headings(array, TWEET_HEADINGS, format)
       else
         tweets.each do |tweet|
@@ -169,10 +169,10 @@ module T
           print_csv_user(user)
         end
       elsif options['long']
-        array = users.map do |user|
+        array = users.collect do |user|
           build_long_user(user)
         end
-        format = options['format'] || USER_HEADINGS.size.times.map { '%s' }
+        format = options['format'] || USER_HEADINGS.size.times.collect { '%s' }
         print_table_with_headings(array, USER_HEADINGS, format)
       else
         print_attribute(users, :screen_name)

@@ -30,7 +30,7 @@ module T
           require 'csv'
           say TWEET_HEADINGS.to_csv
         elsif options['long'] && STDOUT.tty?
-          headings = TWEET_HEADINGS.size.times.map do |index|
+          headings = TWEET_HEADINGS.size.times.collect do |index|
             TWEET_HEADINGS_FORMATTING[index] % TWEET_HEADINGS[index]
           end
           print_table([headings])
@@ -41,7 +41,7 @@ module T
         if options['csv']
           print_csv_tweet(tweet)
         elsif options['long']
-          array = build_long_tweet(tweet).each_with_index.map do |element, index|
+          array = build_long_tweet(tweet).each_with_index.collect do |element, index|
             TWEET_HEADINGS_FORMATTING[index] % element
           end
           print_table([array], :truncate => STDOUT.tty?)
@@ -77,7 +77,7 @@ module T
         if options['csv']
           print_csv_tweet(tweet)
         elsif options['long']
-          array = build_long_tweet(tweet).each_with_index.map do |element, index|
+          array = build_long_tweet(tweet).each_with_index.collect do |element, index|
             TWEET_HEADINGS_FORMATTING[index] % element
           end
           print_table([array], :truncate => STDOUT.tty?)
@@ -104,7 +104,7 @@ module T
         if options['csv']
           print_csv_tweet(tweet)
         elsif options['long']
-          array = build_long_tweet(tweet).each_with_index.map do |element, index|
+          array = build_long_tweet(tweet).each_with_index.collect do |element, index|
             TWEET_HEADINGS_FORMATTING[index] % element
           end
           print_table([array], :truncate => STDOUT.tty?)
@@ -119,13 +119,13 @@ module T
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
     def users(user_id, *user_ids)
       user_ids.unshift(user_id)
-      user_ids.map!(&:to_i)
+      user_ids.collect!(&:to_i)
       client.before_request do
         if options['csv']
           require 'csv'
           say TWEET_HEADINGS.to_csv
         elsif options['long'] && STDOUT.tty?
-          headings = TWEET_HEADINGS.size.times.map do |index|
+          headings = TWEET_HEADINGS.size.times.collect do |index|
             TWEET_HEADINGS_FORMATTING[index] % TWEET_HEADINGS[index]
           end
           print_table([headings])
@@ -136,7 +136,7 @@ module T
         if options['csv']
           print_csv_tweet(tweet)
         elsif options['long']
-          array = build_long_tweet(tweet).each_with_index.map do |element, index|
+          array = build_long_tweet(tweet).each_with_index.collect do |element, index|
             TWEET_HEADINGS_FORMATTING[index] % element
           end
           print_table([array], :truncate => STDOUT.tty?)

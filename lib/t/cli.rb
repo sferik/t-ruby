@@ -680,7 +680,7 @@ module T
     def timeline(user = nil)
       count = options['number'] || DEFAULT_NUM_RESULTS
       opts = {}
-      opts[:trim_user] = false if options['show_user'] == true
+      opts[:trim_user] = false if options['show_user'].to_s == 'true'
       opts[:exclude_replies] = true if options['exclude'] == 'replies'
       opts[:include_entities] = !!options['decode_uris']
       opts[:include_rts] = false if options['exclude'] == 'retweets'

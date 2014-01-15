@@ -33,7 +33,7 @@ module T
     def all(query)
       count = options['number'] || DEFAULT_NUM_RESULTS
       opts = {:count => MAX_SEARCH_RESULTS}
-      opts[:trim_user] = false if options['show_user'] == true
+      opts[:trim_user] = false if options['show_user'].to_s == 'true'
       opts[:include_entities] = !!options['decode_uris']
       tweets = client.search(query, opts).take(count)
       tweets.reverse! if options['reverse']
@@ -133,7 +133,7 @@ module T
       user = args.pop
       opts = {:count => MAX_NUM_RESULTS}
       opts[:include_entities] = !!options['decode_uris']
-      opts[:trim_user] = false if options['show_user'] == true
+      opts[:trim_user] = false if options['show_user'].to_s == 'true'
 
       if user
         require 't/core_ext/string'
@@ -170,7 +170,7 @@ module T
       query = args.pop
       user = args.pop
       opts = {:count => MAX_NUM_RESULTS}
-      opts[:trim_user] = false if options['show_user'] == true
+      opts[:trim_user] = false if options['show_user'].to_s == 'true'
       opts[:exclude_replies] = true if options['exclude'] == 'replies'
       opts[:include_entities] = !!options['decode_uris']
       opts[:include_rts] = false if options['exclude'] == 'retweets'

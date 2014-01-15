@@ -667,7 +667,7 @@ module T
       end
     end
 
-    desc 'timeline [USER]', "Returns the #{DEFAULT_NUM_RESULTS} most recent Tweets posted by a user."    
+    desc 'timeline [USER]', "Returns the #{DEFAULT_NUM_RESULTS} most recent Tweets posted by a user."
     method_option 'csv', :aliases => '-c', :type => :boolean, :desc => 'Output in CSV format.'
     method_option 'decode_uris', :aliases => '-d', :type => :boolean, :desc => 'Decodes t.co URLs into their original form.'
     method_option 'exclude', :aliases => '-e', :type => :string, :enum => %w[replies retweets], :desc => 'Exclude certain types of Tweets from the results.', :banner => 'TYPE'

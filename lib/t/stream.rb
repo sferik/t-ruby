@@ -87,7 +87,7 @@ module T
       end
     end
 
-    desc 'timeline', 'Stream your timeline (Control-C to stop)' 
+    desc 'timeline', 'Stream your timeline (Control-C to stop)'
     method_option 'csv', :aliases => '-c', :type => :boolean, :desc => 'Output in CSV format.'
     method_option 'long', :aliases => '-l', :type => :boolean, :desc => 'Output in long format.'
     def timeline

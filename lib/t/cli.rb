@@ -274,7 +274,7 @@ module T
     method_option 'since_id', :aliases => '-s', :type => :numeric, :desc => 'Returns only the results with an ID greater than the specified ID.'
     def favorites(user = nil)
       count = options['number'] || DEFAULT_NUM_RESULTS
-      opts = {}
+      opts = {:trim_user => true}
       opts[:exclude_replies] = true if options['exclude'] == 'replies'
       opts[:include_entities] = !!options['decode_uris']
       opts[:include_rts] = false if options['exclude'] == 'retweets'
@@ -510,7 +510,7 @@ module T
     method_option 'reverse', :aliases => '-r', :type => :boolean, :default => false, :desc => 'Reverse the order of the sort.'
     def mentions
       count = options['number'] || DEFAULT_NUM_RESULTS
-      opts = {}
+      opts = {:trim_user => true}
       opts[:include_entities] = !!options['decode_uris']
       tweets = collect_with_count(count) do |count_opts|
         client.mentions(count_opts.merge(opts))
@@ -572,9 +572,10 @@ module T
     def retweet(status_id, *status_ids)
       status_ids.unshift(status_id)
       status_ids.collect!(&:to_i)
+      opts = {:trim_user => true}
       require 'retryable'
       retweets = retryable(:tries => 3, :on => Twitter::Error, :sleep => 0) do
-        client.retweet(status_ids, :trim_user => true)
+        client.retweet(status_ids, opts)
       end
       number = retweets.length
       say "@#{@rcfile.active_profile[0]} retweeted #{pluralize(number, 'tweet')}."
@@ -593,7 +594,7 @@ module T
     method_option 'reverse', :aliases => '-r', :type => :boolean, :default => false, :desc => 'Reverse the order of the sort.'
     def retweets(user = nil)
       count = options['number'] || DEFAULT_NUM_RESULTS
-      opts = {}
+      opts = {:trim_user => true}
       opts[:include_entities] = !!options['decode_uris']
       tweets = if user
         require 't/core_ext/string'
@@ -623,7 +624,7 @@ module T
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
     method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
     def status(status_id) # rubocop:disable CyclomaticComplexity
-      opts = {:include_my_retweet => false}
+      opts = {:include_my_retweet => false, :trim_user => true}
       opts[:include_entities] = !!options['decode_uris']
       status = client.status(status_id.to_i, opts)
       location = if status.place?
@@ -679,7 +680,7 @@ module T
     method_option 'since_id', :aliases => '-s', :type => :numeric, :desc => 'Returns only the results with an ID greater than the specified ID.'
     def timeline(user = nil)
       count = options['number'] || DEFAULT_NUM_RESULTS
-      opts = {}
+      opts = {:trim_user => true}
       opts[:exclude_replies] = true if options['exclude'] == 'replies'
       opts[:include_entities] = !!options['decode_uris']
       opts[:include_rts] = false if options['exclude'] == 'retweets'

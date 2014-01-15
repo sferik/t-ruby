@@ -65,7 +65,7 @@ module T
     def favorites(*args)
       query = args.pop
       user = args.pop
-      opts = {:count => MAX_NUM_RESULTS}
+      opts = {:count => MAX_NUM_RESULTS, :trim_user => true}
       opts[:include_entities] = !!options['decode_uris']
       if user
         require 't/core_ext/string'
@@ -113,7 +113,7 @@ module T
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
     method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
     def mentions(query)
-      opts = {:count => MAX_NUM_RESULTS}
+      opts = {:count => MAX_NUM_RESULTS, :trim_user => true}
       opts[:include_entities] = !!options['decode_uris']
       tweets = collect_with_max_id do |max_id|
         opts[:max_id] = max_id unless max_id.nil?
@@ -135,7 +135,7 @@ module T
     def retweets(*args)
       query = args.pop
       user = args.pop
-      opts = {:count => MAX_NUM_RESULTS}
+      opts = {:count => MAX_NUM_RESULTS, :trim_user => true}
       opts[:include_entities] = !!options['decode_uris']
       if user
         require 't/core_ext/string'
@@ -169,7 +169,7 @@ module T
     def timeline(*args)
       query = args.pop
       user = args.pop
-      opts = {:count => MAX_NUM_RESULTS}
+      opts = {:count => MAX_NUM_RESULTS, :trim_user => true}
       opts[:exclude_replies] = true if options['exclude'] == 'replies'
       opts[:include_entities] = !!options['decode_uris']
       opts[:include_rts] = false if options['exclude'] == 'retweets'

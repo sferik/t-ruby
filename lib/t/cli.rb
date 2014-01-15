@@ -547,6 +547,7 @@ module T
         users += extract_mentioned_screen_names(status.full_text)
         users.uniq!
       end
+      users.delete(@rcfile.active_profile[0])
       require 't/core_ext/string'
       users.collect!(&:prepend_at)
       opts = {:in_reply_to_status_id => status.id, :trim_user => true}

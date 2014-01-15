@@ -126,8 +126,8 @@ module T
     method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
     method_option 'decode_uris', :aliases => '-d', :type => :boolean, :default => false, :desc => 'Decodes t.co URLs into their original form.'
     method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
-    method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
     method_option 'number', :aliases => '-n', :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => 'Limit the number of results.'
+    method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
     method_option 'reverse', :aliases => '-r', :type => :boolean, :default => false, :desc => 'Reverse the order of the sort.'
     def direct_messages
       count = options['number'] || DEFAULT_NUM_RESULTS

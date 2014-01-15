@@ -50,7 +50,7 @@ module T
           end
           print_table([array], :truncate => STDOUT.tty?)
         else
-          print_message(tweet.user.screen_name, tweet.text)
+          print_message(tweet.user.screen_name, ls_formatted_time(tweet), tweet.text)
         end
       end
     end
@@ -120,7 +120,7 @@ module T
           end
           print_table([array], :truncate => STDOUT.tty?)
         else
-          print_message(tweet.user.screen_name, tweet.text)
+          print_message(tweet.user.screen_name, ls_formatted_time(tweet), tweet.text)
         end
       end
     end
@@ -148,7 +148,7 @@ module T
           end
           print_table([array], :truncate => STDOUT.tty?)
         else
-          print_message(tweet.user.screen_name, tweet.text)
+          print_message(tweet.user.screen_name, ls_formatted_time(tweet), tweet.text)
         end
       end
     end
@@ -181,7 +181,7 @@ module T
           end
           print_table([array], :truncate => STDOUT.tty?)
         else
-          print_message(tweet.user.screen_name, tweet.text)
+          print_message(tweet.user.screen_name, ls_formatted_time(tweet), tweet.text)
         end
       end
     end

@@ -17,8 +17,8 @@ module T
     end
 
     desc 'block USER [USER...]', 'Unblock users.'
-    method_option 'id', :aliases => '-i', :type => :boolean, :default => false, :desc => 'Specify input as Twitter user IDs instead of screen names.'
-    method_option 'force', :aliases => '-f', :type => :boolean, :default => false
+    method_option 'id', :aliases => '-i', :type => :boolean, :desc => 'Specify input as Twitter user IDs instead of screen names.'
+    method_option 'force', :aliases => '-f', :type => :boolean
     def block(user, *users)
       unblocked_users, number = fetch_users(users.unshift(user), options) do |users_to_unblock|
         client.unblock(users_to_unblock)
@@ -29,7 +29,7 @@ module T
     end
 
     desc 'dm [DIRECT_MESSAGE_ID] [DIRECT_MESSAGE_ID...]', 'Delete the last Direct Message sent.'
-    method_option 'force', :aliases => '-f', :type => :boolean, :default => false
+    method_option 'force', :aliases => '-f', :type => :boolean
     def dm(direct_message_id, *direct_message_ids)
       direct_message_ids.unshift(direct_message_id)
       require 't/core_ext/string'
@@ -51,7 +51,7 @@ module T
     map %w[d m] => :dm
 
     desc 'favorite TWEET_ID [TWEET_ID...]', 'Delete favorites.'
-    method_option 'force', :aliases => '-f', :type => :boolean, :default => false
+    method_option 'force', :aliases => '-f', :type => :boolean
     def favorite(status_id, *status_ids)
       status_ids.unshift(status_id)
       require 't/core_ext/string'
@@ -73,8 +73,8 @@ module T
     map %w[fave favourite] => :favorite
 
     desc 'list LIST', 'Delete a list.'
-    method_option 'force', :aliases => '-f', :type => :boolean, :default => false
-    method_option 'id', :aliases => '-i', :type => :boolean, :default => false, :desc => 'Specify list via ID instead of slug.'
+    method_option 'force', :aliases => '-f', :type => :boolean
+    method_option 'id', :aliases => '-i', :type => :boolean, :desc => 'Specify list via ID instead of slug.'
     def list(list)
       if options['id']
         require 't/core_ext/string'
@@ -89,7 +89,7 @@ module T
     end
 
     desc 'status TWEET_ID [TWEET_ID...]', 'Delete Tweets.'
-    method_option 'force', :aliases => '-f', :type => :boolean, :default => false
+    method_option 'force', :aliases => '-f', :type => :boolean
     def status(status_id, *status_ids)
       status_ids.unshift(status_id)
       require 't/core_ext/string'

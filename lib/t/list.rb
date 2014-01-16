@@ -36,7 +36,7 @@ module T
       if options['id']
         say "Run `#{File.basename($PROGRAM_NAME)} list remove --id #{list} #{added_users.join(' ')}` to undo."
       else
-        say "Run `#{File.basename($PROGRAM_NAME)} list remove #{list} #{added_users.map { |added_user| "@#{added_user}" }.join(' ')}` to undo."
+        say "Run `#{File.basename($PROGRAM_NAME)} list remove #{list} #{added_users.collect { |added_user| "@#{added_user}" }.join(' ')}` to undo."
       end
     end
 
@@ -100,7 +100,7 @@ module T
       if options['id']
         say "Run `#{File.basename($PROGRAM_NAME)} list add --id #{list} #{removed_users.join(' ')}` to undo."
       else
-        say "Run `#{File.basename($PROGRAM_NAME)} list add #{list} #{removed_users.map { |removed_user| "@#{removed_user}" }.join(' ')}` to undo."
+        say "Run `#{File.basename($PROGRAM_NAME)} list add #{list} #{removed_users.collect { |removed_user| "@#{removed_user}" }.join(' ')}` to undo."
       end
     end
 
@@ -110,11 +110,15 @@ module T
     method_option 'id', :aliases => '-i', :type => :boolean, :desc => 'Specify user via ID instead of screen name.'
     method_option 'long', :aliases => '-l', :type => :boolean, :desc => 'Output in long format.'
     method_option 'number', :aliases => '-n', :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => 'Limit the number of results.'
+<<<<<<< HEAD
+=======
+    method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
+>>>>>>> upstream/master
     method_option 'reverse', :aliases => '-r', :type => :boolean, :desc => 'Reverse the order of the sort.'
     def timeline(list)
       owner, list = extract_owner(list, options)
       count = options['number'] || DEFAULT_NUM_RESULTS
-      opts = {}
+      opts = {:trim_user => true}
       opts[:include_entities] = !!options['decode_uris']
       tweets = collect_with_count(count) do |count_opts|
         client.list_timeline(owner, list, count_opts.merge(opts))

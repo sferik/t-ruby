@@ -119,15 +119,20 @@ module T
       end
       say "@#{@rcfile.active_profile[0]} blocked #{pluralize(number, 'user')}."
       say
-      say "Run `#{File.basename($PROGRAM_NAME)} delete block #{blocked_users.map { |blocked_user| "@#{blocked_user.screen_name}" }.join(' ')}` to unblock."
+      say "Run `#{File.basename($PROGRAM_NAME)} delete block #{blocked_users.collect { |blocked_user| "@#{blocked_user.screen_name}" }.join(' ')}` to unblock."
     end
 
     desc 'direct_messages', "Returns the #{DEFAULT_NUM_RESULTS} most recent Direct Messages sent to you."
     method_option 'csv', :aliases => '-c', :type => :boolean, :desc => 'Output in CSV format.'
     method_option 'decode_uris', :aliases => '-d', :type => :boolean, :desc => 'Decodes t.co URLs into their original form.'
     method_option 'long', :aliases => '-l', :type => :boolean, :desc => 'Output in long format.'
+<<<<<<< HEAD
     method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
     method_option 'number', :aliases => '-n', :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => 'Limit the number of results.'
+=======
+    method_option 'number', :aliases => '-n', :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => 'Limit the number of results.'
+    method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
+>>>>>>> upstream/master
     method_option 'reverse', :aliases => '-r', :type => :boolean, :desc => 'Reverse the order of the sort.'
     def direct_messages
       count = options['number'] || DEFAULT_NUM_RESULTS
@@ -144,10 +149,10 @@ module T
           say [direct_message.id, csv_formatted_time(direct_message), direct_message.sender.screen_name, decode_full_text(direct_message, options['decode_uris'])].to_csv
         end
       elsif options['long']
-        array = direct_messages.map do |direct_message|
+        array = direct_messages.collect do |direct_message|
           [direct_message.id, ls_formatted_time(direct_message), "@#{direct_message.sender.screen_name}", decode_full_text(direct_message, options['decode_uris']).gsub(/\n+/, ' ')]
         end
-        format = options['format'] || DIRECT_MESSAGE_HEADINGS.size.times.map { '%s' }
+        format = options['format'] || DIRECT_MESSAGE_HEADINGS.size.times.collect { '%s' }
         print_table_with_headings(array, DIRECT_MESSAGE_HEADINGS, format)
       else
         direct_messages.each do |direct_message|
@@ -179,10 +184,10 @@ module T
           say [direct_message.id, csv_formatted_time(direct_message), direct_message.recipient.screen_name, decode_full_text(direct_message, options['decode_uris'])].to_csv
         end
       elsif options['long']
-        array = direct_messages.map do |direct_message|
+        array = direct_messages.collect do |direct_message|
           [direct_message.id, ls_formatted_time(direct_message), "@#{direct_message.recipient.screen_name}", decode_full_text(direct_message, options['decode_uris']).gsub(/\n+/, ' ')]
         end
-        format = options['format'] || DIRECT_MESSAGE_HEADINGS.size.times.map { '%s' }
+        format = options['format'] || DIRECT_MESSAGE_HEADINGS.size.times.collect { '%s' }
         print_table_with_headings(array, DIRECT_MESSAGE_HEADINGS, format)
       else
         direct_messages.each do |direct_message|
@@ -250,7 +255,7 @@ module T
     desc 'favorite TWEET_ID [TWEET_ID...]', 'Marks Tweets as favorites.'
     def favorite(status_id, *status_ids)
       status_ids.unshift(status_id)
-      status_ids.map!(&:to_i)
+      status_ids.collect!(&:to_i)
       require 'retryable'
       favorites = retryable(:tries => 3, :on => Twitter::Error, :sleep => 0) do
         client.favorite(status_ids)
@@ -274,7 +279,7 @@ module T
     method_option 'since_id', :aliases => '-s', :type => :numeric, :desc => 'Returns only the results with an ID greater than the specified ID.'
     def favorites(user = nil)
       count = options['number'] || DEFAULT_NUM_RESULTS
-      opts = {}
+      opts = {:trim_user => true}
       opts[:exclude_replies] = true if options['exclude'] == 'replies'
       opts[:include_entities] = !!options['decode_uris']
       opts[:include_rts] = false if options['exclude'] == 'retweets'
@@ -299,7 +304,7 @@ module T
       end
       say "@#{@rcfile.active_profile[0]} is now following #{pluralize(number, 'more user')}."
       say
-      say "Run `#{File.basename($PROGRAM_NAME)} unfollow #{followed_users.map { |followed_user| "@#{followed_user.screen_name}" }.join(' ')}` to stop."
+      say "Run `#{File.basename($PROGRAM_NAME)} unfollow #{followed_users.collect { |followed_user| "@#{followed_user.screen_name}" }.join(' ')}` to stop."
     end
 
     desc 'followings [USER]', 'Returns a list of the people you follow on Twitter.'
@@ -436,7 +441,7 @@ module T
       # If only one user is specified, compare to the authenticated user
       users.push(@rcfile.active_profile[0]) if users.size == 1
       require 't/core_ext/string'
-      options['id'] ? users.map!(&:to_i) : users.map!(&:strip_ats)
+      options['id'] ? users.collect!(&:to_i) : users.collect!(&:strip_ats)
       sets = parallel_map(users) do |user|
         case options['type']
         when 'followings'
@@ -510,7 +515,7 @@ module T
     method_option 'reverse', :aliases => '-r', :type => :boolean, :desc => 'Reverse the order of the sort.'
     def mentions
       count = options['number'] || DEFAULT_NUM_RESULTS
-      opts = {}
+      opts = {:trim_user => true}
       opts[:include_entities] = !!options['decode_uris']
       tweets = collect_with_count(count) do |count_opts|
         client.mentions(count_opts.merge(opts))
@@ -547,8 +552,9 @@ module T
         users += extract_mentioned_screen_names(status.full_text)
         users.uniq!
       end
+      users.delete(@rcfile.active_profile[0])
       require 't/core_ext/string'
-      users.map!(&:prepend_at)
+      users.collect!(&:prepend_at)
       opts = {:in_reply_to_status_id => status.id, :trim_user => true}
       add_location!(options, opts)
       reply = client.update("#{users.join(' ')} #{message}", opts)
@@ -570,15 +576,16 @@ module T
     desc 'retweet TWEET_ID [TWEET_ID...]', 'Sends Tweets to your followers.'
     def retweet(status_id, *status_ids)
       status_ids.unshift(status_id)
-      status_ids.map!(&:to_i)
+      status_ids.collect!(&:to_i)
+      opts = {:trim_user => true}
       require 'retryable'
       retweets = retryable(:tries => 3, :on => Twitter::Error, :sleep => 0) do
-        client.retweet(status_ids, :trim_user => true)
+        client.retweet(status_ids, opts)
       end
       number = retweets.length
       say "@#{@rcfile.active_profile[0]} retweeted #{pluralize(number, 'tweet')}."
       say
-      say "Run `#{File.basename($PROGRAM_NAME)} delete status #{retweets.map { |tweet| tweet.retweeted_status.id }.join(' ')}` to undo."
+      say "Run `#{File.basename($PROGRAM_NAME)} delete status #{retweets.collect { |tweet| tweet.retweeted_status.id }.join(' ')}` to undo."
     end
     map %w[rt] => :retweet
 
@@ -592,7 +599,7 @@ module T
     method_option 'reverse', :aliases => '-r', :type => :boolean, :desc => 'Reverse the order of the sort.'
     def retweets(user = nil)
       count = options['number'] || DEFAULT_NUM_RESULTS
-      opts = {}
+      opts = {:trim_user => true}
       opts[:include_entities] = !!options['decode_uris']
       tweets = if user
         require 't/core_ext/string'
@@ -622,7 +629,7 @@ module T
     method_option 'long', :aliases => '-l', :type => :boolean, :desc => 'Output in long format.'
     method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
     def status(status_id) # rubocop:disable CyclomaticComplexity
-      opts = {:include_my_retweet => false}
+      opts = {:include_my_retweet => false, :trim_user => true}
       opts[:include_entities] = !!options['decode_uris']
       status = client.status(status_id.to_i, opts)
       location = if status.place?
@@ -649,7 +656,7 @@ module T
         say [status.id, csv_formatted_time(status), status.user.screen_name, decode_full_text(status, options['decode_uris']), status.retweet_count, status.favorite_count, strip_tags(status.source), location].to_csv
       elsif options['long']
         array = [status.id, ls_formatted_time(status), "@#{status.user.screen_name}", decode_full_text(status, options['decode_uris']).gsub(/\n+/, ' '), status.retweet_count, status.favorite_count, strip_tags(status.source), location]
-        format = options['format'] || status_headings.size.times.map { '%s' }
+        format = options['format'] || status_headings.size.times.collect { '%s' }
         print_table_with_headings([array], status_headings, format)
       else
         array = []
@@ -665,8 +672,7 @@ module T
       end
     end
 
-    desc 'timeline [USER]', "Returns the #{DEFAULT_NUM_RESULTS} most recent Tweets posted by a user."
-    method_option 'show_user', :aliases => '-U', :type => :boolean, :desc => 'Include user profile with each tweet'
+    desc 'timeline [USER]', "Returns the #{DEFAULT_NUM_RESULTS} most recent Tweets posted by a user."    
     method_option 'csv', :aliases => '-c', :type => :boolean, :desc => 'Output in CSV format.'
     method_option 'decode_uris', :aliases => '-d', :type => :boolean, :desc => 'Decodes t.co URLs into their original form.'
     method_option 'exclude', :aliases => '-e', :type => :string, :enum => %w[replies retweets], :desc => 'Exclude certain types of Tweets from the results.', :banner => 'TYPE'
@@ -676,11 +682,17 @@ module T
     method_option 'number', :aliases => '-n', :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => 'Limit the number of results.'
     method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
     method_option 'reverse', :aliases => '-r', :type => :boolean, :desc => 'Reverse the order of the sort.'
+    method_option 'show_user', :aliases => '-U', :type => :boolean, :desc => 'Include user profile with each tweet'
     method_option 'since_id', :aliases => '-s', :type => :numeric, :desc => 'Returns only the results with an ID greater than the specified ID.'
+  
     def timeline(user = nil)
       count = options['number'] || DEFAULT_NUM_RESULTS
+<<<<<<< HEAD
       opts = {}
       opts[:trim_user] = !!options['show_user']
+=======
+      opts = {:trim_user => true}
+>>>>>>> upstream/master
       opts[:exclude_replies] = true if options['exclude'] == 'replies'
       opts[:include_entities] = !!options['decode_uris']
       opts[:include_rts] = false if options['exclude'] == 'retweets'
@@ -740,10 +752,10 @@ module T
           say [place.woeid, place.parent_id, place.place_type, place.name, place.country].to_csv
         end
       elsif options['long']
-        array = places.map do |place|
+        array = places.collect do |place|
           [place.woeid, place.parent_id, place.place_type, place.name, place.country]
         end
-        format = options['format'] || TREND_HEADINGS.size.times.map { '%s' }
+        format = options['format'] || TREND_HEADINGS.size.times.collect { '%s' }
         print_table_with_headings(array, TREND_HEADINGS, format)
       else
         print_attribute(places, :name)
@@ -759,7 +771,7 @@ module T
       end
       say "@#{@rcfile.active_profile[0]} is no longer following #{pluralize(number, 'user')}."
       say
-      say "Run `#{File.basename($PROGRAM_NAME)} follow #{unfollowed_users.map { |unfollowed_user| "@#{unfollowed_user.screen_name}" }.join(' ')}` to follow again."
+      say "Run `#{File.basename($PROGRAM_NAME)} follow #{unfollowed_users.collect { |unfollowed_user| "@#{unfollowed_user.screen_name}" }.join(' ')}` to follow again."
     end
 
     desc 'update [MESSAGE]', 'Post a Tweet.'
@@ -791,7 +803,7 @@ module T
     def users(user, *users)
       users.unshift(user)
       require 't/core_ext/string'
-      options['id'] ? users.map!(&:to_i) : users.map!(&:strip_ats)
+      options['id'] ? users.collect!(&:to_i) : users.collect!(&:strip_ats)
       require 'retryable'
       users = retryable(:tries => 3, :on => Twitter::Error, :sleep => 0) do
         client.users(users)
@@ -869,14 +881,14 @@ module T
 
       return [] if text !~ at_signs
 
-      text.to_s.scan(valid_mentions).map do |before, at, screen_name|
+      text.to_s.scan(valid_mentions).collect do |before, at, screen_name|
         screen_name
       end
     end
 
     def generate_authorize_uri(consumer, request_token)
       request = consumer.create_signed_request(:get, consumer.authorize_path, request_token, pin_auth_parameters)
-      params = request['Authorization'].sub(/^OAuth\s+/, '').split(/,\s+/).map do |param|
+      params = request['Authorization'].sub(/^OAuth\s+/, '').split(/,\s+/).collect do |param|
         key, value = param.split('=')
         value =~ /"(.*?)"/
         "#{key}=#{CGI.escape(Regexp.last_match[1])}"
@@ -890,7 +902,7 @@ module T
 
     def add_location!(options, opts)
       if options['location']
-        lat, lng = options['location'] == 'location' ? [location.lat, location.lng] : options['location'].split(',').map(&:to_f)
+        lat, lng = options['location'] == 'location' ? [location.lat, location.lng] : options['location'].split(',').collect(&:to_f)
         opts.merge!(:lat => lat, :long => lng)
       end
     end

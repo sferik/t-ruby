@@ -1,6 +1,6 @@
 module T
   module Utils
-    private
+  private
 
     # https://github.com/rails/rails/blob/bd8a970/actionpack/lib/action_view/helpers/date_helper.rb
     def distance_of_time_in_words(from_time, to_time = Time.now) # rubocop:disable CyclomaticComplexity
@@ -58,7 +58,7 @@ module T
 
     def format_users!(users, options)
       require 't/core_ext/string'
-      options['id'] ? users.map!(&:to_i) : users.map!(&:strip_ats)
+      options['id'] ? users.collect!(&:to_i) : users.collect!(&:strip_ats)
     end
 
     def extract_owner(list, options)
@@ -79,7 +79,7 @@ module T
 
     def number_with_delimiter(number, delimiter = ',')
       digits = number.to_s.split(//)
-      groups = digits.reverse.each_slice(3).map { |g| g.join('') }
+      groups = digits.reverse.each_slice(3).collect { |g| g.join('') }
       groups.join(delimiter).reverse
     end
 
@@ -111,7 +111,7 @@ module T
     end
 
     def parallel_map(enumerable)
-      enumerable.map { |object| Thread.new { yield object } }.map(&:value)
+      enumerable.collect { |object| Thread.new { yield object } }.collect(&:value)
     end
   end
 end

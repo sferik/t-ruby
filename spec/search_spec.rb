@@ -41,73 +41,73 @@ describe T::Search do
       @search.all('twitter')
       expect($stdout.string).to eq <<-eos
 
-   @amaliasafitri2
+   @amaliasafitri2 (Dec 24 13:49)
    RT @heartCOBOYJR: @AlvaroMaldini1 :-) http://t.co/Oxce0Tob3n
 
-   @BPDPipesDrums
+   @BPDPipesDrums (Dec 24 13:49)
    Here is a picture of us getting ready to Santa into @CITCBoston! #Boston 
    http://t.co/INACljvLLC
 
-   @yunistosun6034
+   @yunistosun6034 (Dec 24 13:49)
    RT @sevilayyaziyor: gerçekten @ademyavuza ?Nasıl elin vardı böyle bi twit 
    atmaya?Yolsuzlukla olmadı terörle mi şantaj yaparız diyosunuz? 
    http://t.co/YPtNVYhLxl
 
-   @_KAIRYALS
+   @_KAIRYALS (Dec 24 13:49)
    My birthday cake was bomb http://t.co/LquXc7JXj4
 
-   @frozenharryx
+   @frozenharryx (Dec 24 13:49)
    RT @LouisTexts: whos tessa? http://t.co/7DJQlmCfuu
 
-   @MIKEFANTASMA
+   @MIKEFANTASMA (Dec 24 13:49)
    Pues nada, aquí armando mi regalo de navidad solo me falta la cara y ya hago 
    mi pedido con santa!.. http://t.co/iDC7bE9o4M
 
-   @EleManera
+   @EleManera (Dec 24 13:49)
    RT @xmyband: La gente che si arrabbia perché Harry non ha fatto gli auguri a 
    Lou su Twitter. Non vorrei smontarvi, ma esistono i cellulari e i messaggi.
 
-   @BigAlFerguson
+   @BigAlFerguson (Dec 24 13:49)
    “@IrishRace; Merry Christmas to all our friends and followers from all 
    @IrishRaceRally have a good one! http://t.co/rXFsC2ncFo” @Danloi1
 
-   @goksantezgel
+   @goksantezgel (Dec 24 13:49)
    RT @nederlandline: Tayyip bey evladımızı severiz Biz ona dua 
    ediyoruz.Fitnelere SAKIN HA! Mahmud Efndi (ks) #BedduayaLanetDuayaDavet 
    http://t.co/h6MUyHxr9x"
 
-   @MaimounaLvb
+   @MaimounaLvb (Dec 24 13:49)
    RT @sissokodiaro: Miss mali pa pour les moche mon ga http://t.co/4WnwzoLgAD
 
-   @MrSilpy
+   @MrSilpy (Dec 24 13:49)
    @MrKATANI http://t.co/psk7K8rcND
 
-   @hunterdl19
+   @hunterdl19 (Dec 24 13:49)
    RT @MadisonBertini: Jakes turnt http://t.co/P60gYZNL8z
 
-   @jayjay42__
+   @jayjay42__ (Dec 24 13:49)
    RT @SteveStfler: Megan Fox Naked >> http://t.co/hMKlUMydFp
 
-   @Bs1972Bill
+   @Bs1972Bill (Dec 24 13:49)
    RT @erorin691: おはよう♪ http://t.co/v5YIFriCW3
 
-   @naked_gypsy
+   @naked_gypsy (Dec 24 13:49)
    All my friends are here 😂 http://t.co/w66iG4XXpL
 
-   @whoa_lashton
+   @whoa_lashton (Dec 24 13:49)
    @Ashton5SOS http://t.co/uhYwoRY0Iz
 
-   @seyfullaharpaci
+   @seyfullaharpaci (Dec 24 13:49)
    RT @Dedekorkut11: Utanmadıktan sonra... #CamiayaİftiraYolsuzluğuÖrtmez 
    http://t.co/sXPn17D2md
 
-   @NNGrilli
+   @NNGrilli (Dec 24 13:49)
    esperando la Navidad :D http://t.co/iwBL2Xj3g7
 
-   @omersafak74
+   @omersafak74 (Dec 24 13:49)
    RT @1903Rc: Ben Beşiktaşlıyım.. http://t.co/qnEpDJwI3b
 
-   @bryony_thfc
+   @bryony_thfc (Dec 24 13:49)
    merry christmas you arse X http://t.co/yRiWFgqr7p
 
       eos

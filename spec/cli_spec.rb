@@ -158,39 +158,39 @@ testcli
     it 'has the correct output' do
       @cli.direct_messages
       expect($stdout.string).to eq <<-eos
-   @sferik
+   @sferik (Oct 17  2010)
    Sounds good. Meeting Tuesday is fine.
 
-   @sferik
+   @sferik (Oct 14  2010)
    That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does 
    that work for you?
 
-   @sferik
+   @sferik (Oct  1  2010)
    I asked Yehuda about the stipend. I believe it has already been sent. Glad 
    you're feeling better.
 
-   @sferik
+   @sferik (Oct  1  2010)
    Just checking in. How's everything going?
 
-   @sferik
+   @sferik (Sep 16  2010)
    Not sure about the payment. Feel free to ask Leah or Yehuda directly. Think 
    you'll be able to finish up your work on graphs this weekend?
 
-   @sferik
+   @sferik (Sep 14  2010)
    How are the graph enhancements coming?
 
-   @sferik
+   @sferik (Sep 11  2010)
    How are the graphs coming? I'm really looking forward to seeing what you do 
    with Raphaël.
 
-   @sferik
+   @sferik (Sep 10  2010)
    Awesome! Any luck duplicating the Gemfile.lock error with Ruby 1.9.2 final?
 
-   @sferik
+   @sferik (Sep 10  2010)
    I just committed a bunch of cleanup and fixes to RailsAdmin that touched many 
    of files. Make sure you pull to avoid conflicts.
 
-   @sferik
+   @sferik (Sep  9  2010)
    I'm trying to debug the issue you were having with the Bundler Gemfile.lock 
    shortref. What version of Ruby and RubyGems are you running?
 
@@ -274,40 +274,40 @@ ID          Posted at     Screen name  Text
       it 'reverses the order of the sort' do
         @cli.direct_messages
         expect($stdout.string).to eq <<-eos
-   @sferik
+   @sferik (Sep  9  2010)
    I'm trying to debug the issue you were having with the Bundler Gemfile.lock 
    shortref. What version of Ruby and RubyGems are you running?
 
-   @sferik
+   @sferik (Sep 10  2010)
    I just committed a bunch of cleanup and fixes to RailsAdmin that touched many 
    of files. Make sure you pull to avoid conflicts.
 
-   @sferik
+   @sferik (Sep 10  2010)
    Awesome! Any luck duplicating the Gemfile.lock error with Ruby 1.9.2 final?
 
-   @sferik
+   @sferik (Sep 11  2010)
    How are the graphs coming? I'm really looking forward to seeing what you do 
    with Raphaël.
 
-   @sferik
+   @sferik (Sep 14  2010)
    How are the graph enhancements coming?
 
-   @sferik
+   @sferik (Sep 16  2010)
    Not sure about the payment. Feel free to ask Leah or Yehuda directly. Think 
    you'll be able to finish up your work on graphs this weekend?
 
-   @sferik
+   @sferik (Oct  1  2010)
    Just checking in. How's everything going?
 
-   @sferik
+   @sferik (Oct  1  2010)
    I asked Yehuda about the stipend. I believe it has already been sent. Glad 
    you're feeling better.
 
-   @sferik
+   @sferik (Oct 14  2010)
    That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does 
    that work for you?
 
-   @sferik
+   @sferik (Oct 17  2010)
    Sounds good. Meeting Tuesday is fine.
 
         eos
@@ -327,39 +327,39 @@ ID          Posted at     Screen name  Text
     it 'has the correct output' do
       @cli.direct_messages_sent
       expect($stdout.string).to eq <<-eos
-   @hurrycane
+   @hurrycane (Oct 17  2010)
    Sounds good. Meeting Tuesday is fine.
 
-   @hurrycane
+   @hurrycane (Oct 14  2010)
    That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does 
    that work for you?
 
-   @hurrycane
+   @hurrycane (Oct  1  2010)
    I asked Yehuda about the stipend. I believe it has already been sent. Glad 
    you're feeling better.
 
-   @hurrycane
+   @hurrycane (Oct  1  2010)
    Just checking in. How's everything going?
 
-   @hurrycane
+   @hurrycane (Sep 16  2010)
    Not sure about the payment. Feel free to ask Leah or Yehuda directly. Think 
    you'll be able to finish up your work on graphs this weekend?
 
-   @hurrycane
+   @hurrycane (Sep 14  2010)
    How are the graph enhancements coming?
 
-   @hurrycane
+   @hurrycane (Sep 11  2010)
    How are the graphs coming? I'm really looking forward to seeing what you do 
    with Raphaël.
 
-   @hurrycane
+   @hurrycane (Sep 10  2010)
    Awesome! Any luck duplicating the Gemfile.lock error with Ruby 1.9.2 final?
 
-   @hurrycane
+   @hurrycane (Sep 10  2010)
    I just committed a bunch of cleanup and fixes to RailsAdmin that touched many 
    of files. Make sure you pull to avoid conflicts.
 
-   @hurrycane
+   @hurrycane (Sep  9  2010)
    I'm trying to debug the issue you were having with the Bundler Gemfile.lock 
    shortref. What version of Ruby and RubyGems are you running?
 
@@ -443,40 +443,40 @@ ID          Posted at     Screen name  Text
       it 'reverses the order of the sort' do
         @cli.direct_messages_sent
         expect($stdout.string).to eq <<-eos
-   @hurrycane
+   @hurrycane (Sep  9  2010)
    I'm trying to debug the issue you were having with the Bundler Gemfile.lock 
    shortref. What version of Ruby and RubyGems are you running?
 
-   @hurrycane
+   @hurrycane (Sep 10  2010)
    I just committed a bunch of cleanup and fixes to RailsAdmin that touched many 
    of files. Make sure you pull to avoid conflicts.
 
-   @hurrycane
+   @hurrycane (Sep 10  2010)
    Awesome! Any luck duplicating the Gemfile.lock error with Ruby 1.9.2 final?
 
-   @hurrycane
+   @hurrycane (Sep 11  2010)
    How are the graphs coming? I'm really looking forward to seeing what you do 
    with Raphaël.
 
-   @hurrycane
+   @hurrycane (Sep 14  2010)
    How are the graph enhancements coming?
 
-   @hurrycane
+   @hurrycane (Sep 16  2010)
    Not sure about the payment. Feel free to ask Leah or Yehuda directly. Think 
    you'll be able to finish up your work on graphs this weekend?
 
-   @hurrycane
+   @hurrycane (Oct  1  2010)
    Just checking in. How's everything going?
 
-   @hurrycane
+   @hurrycane (Oct  1  2010)
    I asked Yehuda about the stipend. I believe it has already been sent. Glad 
    you're feeling better.
 
-   @hurrycane
+   @hurrycane (Oct 14  2010)
    That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does 
    that work for you?
 
-   @hurrycane
+   @hurrycane (Oct 17  2010)
    Sounds good. Meeting Tuesday is fine.
 
         eos

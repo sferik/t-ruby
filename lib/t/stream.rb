@@ -22,8 +22,8 @@ module T
     end
 
     desc 'all', 'Stream a random sample of all Tweets (Control-C to stop)'
-    method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
-    method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
+    method_option 'csv', :aliases => '-c', :type => :boolean, :desc => 'Output in CSV format.'
+    method_option 'long', :aliases => '-l', :type => :boolean, :desc => 'Output in long format.'
     def all
       client.before_request do
         if options['csv']
@@ -60,8 +60,8 @@ module T
     end
 
     desc 'search KEYWORD [KEYWORD...]', 'Stream Tweets that contain specified keywords, joined with logical ORs (Control-C to stop)'
-    method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
-    method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
+    method_option 'csv', :aliases => '-c', :type => :boolean, :desc => 'Output in CSV format.'
+    method_option 'long', :aliases => '-l', :type => :boolean, :desc => 'Output in long format.'
     def search(keyword, *keywords)
       keywords.unshift(keyword)
       require 't/search'
@@ -88,8 +88,8 @@ module T
     end
 
     desc 'timeline', 'Stream your timeline (Control-C to stop)'
-    method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
-    method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
+    method_option 'csv', :aliases => '-c', :type => :boolean, :desc => 'Output in CSV format.'
+    method_option 'long', :aliases => '-l', :type => :boolean, :desc => 'Output in long format.'
     def timeline
       require 't/cli'
       client.before_request do
@@ -115,8 +115,8 @@ module T
     end
 
     desc 'users USER_ID [USER_ID...]', 'Stream Tweets either from or in reply to specified users (Control-C to stop)'
-    method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
-    method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
+    method_option 'csv', :aliases => '-c', :type => :boolean, :desc => 'Output in CSV format.'
+    method_option 'long', :aliases => '-l', :type => :boolean, :desc => 'Output in long format.'
     def users(user_id, *user_ids)
       user_ids.unshift(user_id)
       user_ids.map!(&:to_i)

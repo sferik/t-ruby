@@ -13,7 +13,7 @@ def pute(*args)
   first = args.shift.dup
   first.insert(0, "#{$PROGRAM_NAME}: ")
   args.unshift(first)
-  abort(*args)
+  abort(args.join("\n"))
 end
 
 begin

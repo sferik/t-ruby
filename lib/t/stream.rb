@@ -22,15 +22,15 @@ module T
     end
 
     desc 'all', 'Stream a random sample of all Tweets (Control-C to stop)'
-    method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
-    method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
+    method_option 'csv', :aliases => '-c', :type => :boolean, :desc => 'Output in CSV format.'
+    method_option 'long', :aliases => '-l', :type => :boolean, :desc => 'Output in long format.'
     def all
       client.before_request do
         if options['csv']
           require 'csv'
           say TWEET_HEADINGS.to_csv
         elsif options['long'] && STDOUT.tty?
-          headings = TWEET_HEADINGS.size.times.map do |index|
+          headings = TWEET_HEADINGS.size.times.collect do |index|
             TWEET_HEADINGS_FORMATTING[index] % TWEET_HEADINGS[index]
           end
           print_table([headings])
@@ -41,7 +41,7 @@ module T
         if options['csv']
           print_csv_tweet(tweet)
         elsif options['long']
-          array = build_long_tweet(tweet).each_with_index.map do |element, index|
+          array = build_long_tweet(tweet).each_with_index.collect do |element, index|
             TWEET_HEADINGS_FORMATTING[index] % element
           end
           print_table([array], :truncate => STDOUT.tty?)
@@ -60,8 +60,8 @@ module T
     end
 
     desc 'search KEYWORD [KEYWORD...]', 'Stream Tweets that contain specified keywords, joined with logical ORs (Control-C to stop)'
-    method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
-    method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
+    method_option 'csv', :aliases => '-c', :type => :boolean, :desc => 'Output in CSV format.'
+    method_option 'long', :aliases => '-l', :type => :boolean, :desc => 'Output in long format.'
     def search(keyword, *keywords)
       keywords.unshift(keyword)
       require 't/search'
@@ -77,7 +77,7 @@ module T
         if options['csv']
           print_csv_tweet(tweet)
         elsif options['long']
-          array = build_long_tweet(tweet).each_with_index.map do |element, index|
+          array = build_long_tweet(tweet).each_with_index.collect do |element, index|
             TWEET_HEADINGS_FORMATTING[index] % element
           end
           print_table([array], :truncate => STDOUT.tty?)
@@ -88,8 +88,8 @@ module T
     end
 
     desc 'timeline', 'Stream your timeline (Control-C to stop)'
-    method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
-    method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
+    method_option 'csv', :aliases => '-c', :type => :boolean, :desc => 'Output in CSV format.'
+    method_option 'long', :aliases => '-l', :type => :boolean, :desc => 'Output in long format.'
     def timeline
       require 't/cli'
       client.before_request do
@@ -104,7 +104,7 @@ module T
         if options['csv']
           print_csv_tweet(tweet)
         elsif options['long']
-          array = build_long_tweet(tweet).each_with_index.map do |element, index|
+          array = build_long_tweet(tweet).each_with_index.collect do |element, index|
             TWEET_HEADINGS_FORMATTING[index] % element
           end
           print_table([array], :truncate => STDOUT.tty?)
@@ -115,17 +115,17 @@ module T
     end
 
     desc 'users USER_ID [USER_ID...]', 'Stream Tweets either from or in reply to specified users (Control-C to stop)'
-    method_option 'csv', :aliases => '-c', :type => :boolean, :default => false, :desc => 'Output in CSV format.'
-    method_option 'long', :aliases => '-l', :type => :boolean, :default => false, :desc => 'Output in long format.'
+    method_option 'csv', :aliases => '-c', :type => :boolean, :desc => 'Output in CSV format.'
+    method_option 'long', :aliases => '-l', :type => :boolean, :desc => 'Output in long format.'
     def users(user_id, *user_ids)
       user_ids.unshift(user_id)
-      user_ids.map!(&:to_i)
+      user_ids.collect!(&:to_i)
       client.before_request do
         if options['csv']
           require 'csv'
           say TWEET_HEADINGS.to_csv
         elsif options['long'] && STDOUT.tty?
-          headings = TWEET_HEADINGS.size.times.map do |index|
+          headings = TWEET_HEADINGS.size.times.collect do |index|
             TWEET_HEADINGS_FORMATTING[index] % TWEET_HEADINGS[index]
           end
           print_table([headings])
@@ -136,7 +136,7 @@ module T
         if options['csv']
           print_csv_tweet(tweet)
         elsif options['long']
-          array = build_long_tweet(tweet).each_with_index.map do |element, index|
+          array = build_long_tweet(tweet).each_with_index.collect do |element, index|
             TWEET_HEADINGS_FORMATTING[index] % element
           end
           print_table([array], :truncate => STDOUT.tty?)

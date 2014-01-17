@@ -49,7 +49,7 @@ module T
     end
 
     desc 'profile_background_image FILE', 'Sets the background image on your Twitter profile.'
-    method_option 'tile', :aliases => '-t', :type => :boolean, :default => false, :desc => 'Whether or not to tile the background image.'
+    method_option 'tile', :aliases => '-t', :type => :boolean, :desc => 'Whether or not to tile the background image.'
     def profile_background_image(file)
       client.update_profile_background_image(File.new(File.expand_path(file)), :tile => options['tile'], :skip_status => true)
       say "@#{@rcfile.active_profile[0]}'s background image has been updated."

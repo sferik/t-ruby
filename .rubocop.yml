@@ -2,6 +2,7 @@ AllCops:
   Includes:
     - 'Gemfile'
     - 'Rakefile'
+    - 'tasks/*.rake'
     - 'bin/t'
     - 't.gemspec'
 

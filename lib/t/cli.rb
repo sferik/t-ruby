@@ -527,7 +527,7 @@ module T
       require 'launchy'
       if options['id']
         user = client.user(user.to_i)
-        open_or_print(user.website, :dry_run => options['display-uri'])
+        open_or_print(user.uri, :dry_run => options['display-uri'])
       elsif options['status']
         status = client.status(user.to_i, :include_my_retweet => false)
         open_or_print(status.uri, :dry_run => options['display-uri'])

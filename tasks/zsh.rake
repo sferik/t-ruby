@@ -10,16 +10,16 @@ namespace :completion do
     File.open(file_path, 'w') { |f| f.write zsh_completion }
 
     git_status = %x[git status -s]
-    if !!git_status[%r{M #{output_path}}]
+    if git_status[/M #{output_path}/]
       cmd = "git add #{output_path} && git commit -m 'Updating Zsh completion'"
       result = system cmd
-      fail "Could not commit changes" unless result
+      fail('Could not commit changes') unless result
     end
   end
 end
 
 def zsh_completion
-%Q(#compdef t
+  %Q(#compdef t
 
 # Completion for Zsh. Source from somewhere in your $fpath.
 
@@ -48,7 +48,7 @@ _t (){
 end
 
 def general_options_completions
-%Q(t_general_options=("(-H --host)"{-H,--host=}"[Twitter API server]:URL:_urls"
+  %Q(t_general_options=("(-H --host)"{-H,--host=}"[Twitter API server]:URL:_urls"
     "(-C --color)"{-C,--color}"[Control how color is used in output]"
     "(-U --no-ssl)"{-U,--no-ssl}"[Disable SSL]"
     "(-P --profile)"{-P,--profile=}"[Path to RC file]:file:_files"
@@ -61,32 +61,29 @@ def option_completion(thor_option)
   aliases = thor_option.aliases
   name = thor_option.name
   desc = thor_option.description.to_s.gsub "'", "\\\\'"
-%Q("(#{aliases.join(' ')} --#{name})"{#{aliases.join(',')},--#{name}}"[#{desc}]" \\)
-
+  %Q("(#{aliases.join(' ')} --#{name})"{#{aliases.join(',')},--#{name}}"[#{desc}]" \\)
 end
 
 def command_function_arguments(command)
-  body = command.options.map {|name, option | option_completion(option) }
-  body << "$t_general_options && ret=0"
+  body = command.options.collect { |name, option | option_completion(option) }
+  body << '$t_general_options && ret=0'
 
   body.join("\n    ")
 end
 
 def task_completions
-  T::CLI.tasks.map(&:last).map do |task|
+  T::CLI.tasks.collect(&:last).collect do |task|
     desc = task.description.to_s.gsub "'", "\\\\'"
     %Q(      \"#{task.name}[#{desc}]\" \\)
   end.join("\n")
 end
 
 def commands
-  T::CLI.tasks.
-    reject {|name, task| T::CLI.subcommands.include?(name) }.
-    map(&:last)
+  T::CLI.tasks.reject { |name, task| T::CLI.subcommands.include?(name) }.collect(&:last)
 end
 
 def command_function(command)
-  func = %Q(_t_#{command.name}() {
+  %Q(_t_#{command.name}() {
   _arguments \\
     #{ command_function_arguments(command) }
 }
@@ -95,18 +92,18 @@ end
 
 def command_functions
   commands.
-    map {|t| command_function(t) }.
+    collect { |t| command_function(t) }.
     join("\n")
 end
 
 def subcommands
   T::CLI.tasks.
-    select {|name, task| T::CLI.subcommands.include?(name) }.
-    map(&:last)
+    select { |name, task| T::CLI.subcommands.include?(name) }.
+    collect(&:last)
 end
 
 def subcommand_function(command)
-  func = %Q(_t_#{command.name}() {
+  %Q(_t_#{command.name}() {
   _arguments \\
     ":argument:__t_#{command.name}_arguments" \\
     $t_general_options && ret=0
@@ -116,14 +113,14 @@ end
 
 def subcommand_functions
   subcommands.
-    map {|t| subcommand_function(t) }.
+    collect { |t| subcommand_function(t) }.
     join("\n")
 end
 
 def arguments_function(subcommand)
   klass = T.const_get subcommand.name.capitalize
-%Q(__t_#{subcommand.name}_arguments() {
-  _args=(#{klass.tasks.map {|t| t.last.name }.join("\n    ") }
+  %Q(__t_#{subcommand.name}_arguments() {
+  _args=(#{klass.tasks.collect { |t| t.last.name }.join("\n    ") }
   )
   compadd "$@" -k _args
 }
@@ -131,5 +128,5 @@ def arguments_function(subcommand)
 end
 
 def subcommand_arguments_functions
-  subcommands.map {|s| arguments_function(s) }.join("\n")
+  subcommands.collect { |s| arguments_function(s) }.join("\n")
 end

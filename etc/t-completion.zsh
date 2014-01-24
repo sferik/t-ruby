@@ -24,7 +24,6 @@ _t (){
       "block[Block users.]" \
       "direct_messages[Returns the 20 most recent Direct Messages sent to you.]" \
       "direct_messages_sent[Returns the 20 most recent Direct Messages you\'ve sent.]" \
-      "groupies[Returns the list of people who follow you but you don\'t follow back.]" \
       "dm[Sends that person a Direct Message.]" \
       "does_contain[Find out whether a list contains a user.]" \
       "does_follow[Find out whether one user follows another.]" \
@@ -32,8 +31,11 @@ _t (){
       "favorites[Returns the 20 most recent Tweets you favorited.]" \
       "follow[Allows you to start following users.]" \
       "followings[Returns a list of the people you follow on Twitter.]" \
+      "followings_following[Displays your friends who follow the specified user.]" \
       "followers[Returns a list of the people who follow you on Twitter.]" \
       "friends[Returns the list of people who you follow and follow you back.]" \
+      "groupies[Returns the list of people who follow you but you don\'t follow back.]" \
+      "intersection[Displays the intersection of users followed by the specified users.]" \
       "leaders[Returns the list of people who you follow but don\'t follow you back.]" \
       "lists[Returns the lists created by a user.]" \
       "matrix[Unfortunately, no one can be told what the Matrix is. You have to see it for yourself.]" \
@@ -43,6 +45,7 @@ _t (){
       "report_spam[Report users for spam.]" \
       "retweet[Sends Tweets to your followers.]" \
       "retweets[Returns the 20 most recent Retweets by a user.]" \
+      "retweets_of_me[Returns the 20 most recent Tweets of the authenticated user that have been retweeted by others.]" \
       "ruler[Prints a 140-character ruler]" \
       "status[Retrieves detailed information about a Tweet.]" \
       "timeline[Returns the 20 most recent Tweets posted by a user.]" \
@@ -84,8 +87,8 @@ _t_direct_messages() {
     "(-c --csv)"{-c,--csv}"[Output in CSV format.]" \
     "(-d --decode_uris)"{-d,--decode_uris}"[Decodes t.co URLs into their original form.]" \
     "(-l --long)"{-l,--long}"[Output in long format.]" \
-    "(-a --relative_dates)"{-a,--relative_dates}"[Show relative dates.]" \
     "(-n --number)"{-n,--number}"[Limit the number of results.]" \
+    "(-a --relative_dates)"{-a,--relative_dates}"[Show relative dates.]" \
     "(-r --reverse)"{-r,--reverse}"[Reverse the order of the sort.]" \
     $t_general_options && ret=0
 }
@@ -98,18 +101,6 @@ _t_direct_messages_sent() {
     "(-n --number)"{-n,--number}"[Limit the number of results.]" \
     "(-a --relative_dates)"{-a,--relative_dates}"[Show relative dates.]" \
     "(-r --reverse)"{-r,--reverse}"[Reverse the order of the sort.]" \
-    $t_general_options && ret=0
-}
-
-_t_groupies() {
-  _arguments \
-    "(-c --csv)"{-c,--csv}"[Output in CSV format.]" \
-    "(-i --id)"{-i,--id}"[Specify user via ID instead of screen name.]" \
-    "(-l --long)"{-l,--long}"[Output in long format.]" \
-    "(-a --relative_dates)"{-a,--relative_dates}"[Show relative dates.]" \
-    "(-r --reverse)"{-r,--reverse}"[Reverse the order of the sort.]" \
-    "(-s --sort)"{-s,--sort}"[Specify the order of the results.]" \
-    "(-u --unsorted)"{-u,--unsorted}"[Output is not sorted.]" \
     $t_general_options && ret=0
 }
 
@@ -168,6 +159,18 @@ _t_followings() {
     $t_general_options && ret=0
 }
 
+_t_followings_following() {
+  _arguments \
+    "(-c --csv)"{-c,--csv}"[Output in CSV format.]" \
+    "(-i --id)"{-i,--id}"[Specify input as Twitter user IDs instead of screen names.]" \
+    "(-l --long)"{-l,--long}"[Output in long format.]" \
+    "(-a --relative_dates)"{-a,--relative_dates}"[Show relative dates.]" \
+    "(-r --reverse)"{-r,--reverse}"[Reverse the order of the sort.]" \
+    "(-s --sort)"{-s,--sort}"[Specify the order of the results.]" \
+    "(-u --unsorted)"{-u,--unsorted}"[Output is not sorted.]" \
+    $t_general_options && ret=0
+}
+
 _t_followers() {
   _arguments \
     "(-c --csv)"{-c,--csv}"[Output in CSV format.]" \
@@ -188,6 +191,31 @@ _t_friends() {
     "(-a --relative_dates)"{-a,--relative_dates}"[Show relative dates.]" \
     "(-r --reverse)"{-r,--reverse}"[Reverse the order of the sort.]" \
     "(-s --sort)"{-s,--sort}"[Specify the order of the results.]" \
+    "(-u --unsorted)"{-u,--unsorted}"[Output is not sorted.]" \
+    $t_general_options && ret=0
+}
+
+_t_groupies() {
+  _arguments \
+    "(-c --csv)"{-c,--csv}"[Output in CSV format.]" \
+    "(-i --id)"{-i,--id}"[Specify user via ID instead of screen name.]" \
+    "(-l --long)"{-l,--long}"[Output in long format.]" \
+    "(-a --relative_dates)"{-a,--relative_dates}"[Show relative dates.]" \
+    "(-r --reverse)"{-r,--reverse}"[Reverse the order of the sort.]" \
+    "(-s --sort)"{-s,--sort}"[Specify the order of the results.]" \
+    "(-u --unsorted)"{-u,--unsorted}"[Output is not sorted.]" \
+    $t_general_options && ret=0
+}
+
+_t_intersection() {
+  _arguments \
+    "(-c --csv)"{-c,--csv}"[Output in CSV format.]" \
+    "(-i --id)"{-i,--id}"[Specify input as Twitter user IDs instead of screen names.]" \
+    "(-l --long)"{-l,--long}"[Output in long format.]" \
+    "(-a --relative_dates)"{-a,--relative_dates}"[Show relative dates.]" \
+    "(-r --reverse)"{-r,--reverse}"[Reverse the order of the sort.]" \
+    "(-s --sort)"{-s,--sort}"[Specify the order of the results.]" \
+    "(-t --type)"{-t,--type}"[Specify the typo of intersection.]" \
     "(-u --unsorted)"{-u,--unsorted}"[Output is not sorted.]" \
     $t_general_options && ret=0
 }
@@ -259,6 +287,18 @@ _t_retweet() {
 }
 
 _t_retweets() {
+  _arguments \
+    "(-c --csv)"{-c,--csv}"[Output in CSV format.]" \
+    "(-d --decode_uris)"{-d,--decode_uris}"[Decodes t.co URLs into their original form.]" \
+    "(-i --id)"{-i,--id}"[Specify user via ID instead of screen name.]" \
+    "(-l --long)"{-l,--long}"[Output in long format.]" \
+    "(-n --number)"{-n,--number}"[Limit the number of results.]" \
+    "(-a --relative_dates)"{-a,--relative_dates}"[Show relative dates.]" \
+    "(-r --reverse)"{-r,--reverse}"[Reverse the order of the sort.]" \
+    $t_general_options && ret=0
+}
+
+_t_retweets_of_me() {
   _arguments \
     "(-c --csv)"{-c,--csv}"[Output in CSV format.]" \
     "(-d --decode_uris)"{-d,--decode_uris}"[Decodes t.co URLs into their original form.]" \

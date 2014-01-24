@@ -78,3 +78,12 @@ EndAlignment:
 CaseIndentation:
   IndentWhenRelativeTo: end
   IndentOneStep: false
+
+Lambda:
+  Enabled: false
+
+RaiseArgs:
+  EnforcedStyle: compact
+
+TrailingComma:
+  Enabled: false

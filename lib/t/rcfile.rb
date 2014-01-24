@@ -20,7 +20,7 @@ module T
       if possibilities.size == 1
         possibilities.first
       else
-        fail ArgumentError, "Username #{username} is #{possibilities.size < 1 ? 'not found.' : 'ambiguous, matching ' + possibilities.join(', ')}"
+        fail(ArgumentError.new("Username #{username} is #{possibilities.size < 1 ? 'not found.' : 'ambiguous, matching ' + possibilities.join(', ')}"))
       end
     end
 

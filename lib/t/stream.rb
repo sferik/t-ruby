@@ -23,6 +23,7 @@ module T
 
     desc 'all', 'Stream a random sample of all Tweets (Control-C to stop)'
     method_option 'csv', :aliases => '-c', :type => :boolean, :desc => 'Output in CSV format.'
+    method_option 'decode_uris', :aliases => '-d', :type => :boolean, :desc => 'Decodes t.co URLs into their original form.'
     method_option 'long', :aliases => '-l', :type => :boolean, :desc => 'Output in long format.'
     def all
       client.before_request do
@@ -61,6 +62,7 @@ module T
 
     desc 'search KEYWORD [KEYWORD...]', 'Stream Tweets that contain specified keywords, joined with logical ORs (Control-C to stop)'
     method_option 'csv', :aliases => '-c', :type => :boolean, :desc => 'Output in CSV format.'
+    method_option 'decode_uris', :aliases => '-d', :type => :boolean, :desc => 'Decodes t.co URLs into their original form.'
     method_option 'long', :aliases => '-l', :type => :boolean, :desc => 'Output in long format.'
     def search(keyword, *keywords)
       keywords.unshift(keyword)
@@ -89,6 +91,7 @@ module T
 
     desc 'timeline', 'Stream your timeline (Control-C to stop)'
     method_option 'csv', :aliases => '-c', :type => :boolean, :desc => 'Output in CSV format.'
+    method_option 'decode_uris', :aliases => '-d', :type => :boolean, :desc => 'Decodes t.co URLs into their original form.'
     method_option 'long', :aliases => '-l', :type => :boolean, :desc => 'Output in long format.'
     def timeline
       require 't/cli'
@@ -116,6 +119,7 @@ module T
 
     desc 'users USER_ID [USER_ID...]', 'Stream Tweets either from or in reply to specified users (Control-C to stop)'
     method_option 'csv', :aliases => '-c', :type => :boolean, :desc => 'Output in CSV format.'
+    method_option 'decode_uris', :aliases => '-d', :type => :boolean, :desc => 'Decodes t.co URLs into their original form.'
     method_option 'long', :aliases => '-l', :type => :boolean, :desc => 'Output in long format.'
     def users(user_id, *user_ids)
       user_ids.unshift(user_id)

@@ -115,7 +115,7 @@ module T
     def timeline(user_list)
       owner, list_name = extract_owner(user_list, options)
       count = options['number'] || DEFAULT_NUM_RESULTS
-      opts = {}
+      opts = {:trim_user => true}
       opts[:include_entities] = !!options['decode_uris']
       tweets = collect_with_count(count) do |count_opts|
         client.list_timeline(owner, list_name, count_opts.merge(opts))

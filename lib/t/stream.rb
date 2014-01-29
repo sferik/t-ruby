@@ -1,10 +1,13 @@
 require 'thor'
 require 't/printable'
 require 't/rcfile'
+require 't/requestable'
+require 't/utils'
 
 module T
   class Stream < Thor
     include T::Printable
+    include T::Requestable
     include T::Utils
 
     TWEET_HEADINGS_FORMATTING = [
@@ -26,7 +29,7 @@ module T
     method_option 'decode_uris', :aliases => '-d', :type => :boolean, :desc => 'Decodes t.co URLs into their original form.'
     method_option 'long', :aliases => '-l', :type => :boolean, :desc => 'Output in long format.'
     def all
-      client.before_request do
+      streaming_client.before_request do
         if options['csv']
           require 'csv'
           say TWEET_HEADINGS.to_csv
@@ -37,7 +40,7 @@ module T
           print_table([headings])
         end
       end
-      client.sample do |tweet|
+      streaming_client.sample do |tweet|
         next unless tweet.is_a?(Twitter::Tweet)
         if options['csv']
           print_csv_tweet(tweet)
@@ -52,9 +55,42 @@ module T
       end
     end
 
+    desc 'list [USER/]LIST', 'Stream a timeline for members of the specified list (Control-C to stop)'
+    method_option 'csv', :aliases => '-c', :type => :boolean, :desc => 'Output in CSV format.'
+    method_option 'decode_uris', :aliases => '-d', :type => :boolean, :desc => 'Decodes t.co URLs into their original form.'
+    method_option 'id', :aliases => '-i', :type => :boolean, :desc => 'Specify user via ID instead of screen name.'
+    method_option 'long', :aliases => '-l', :type => :boolean, :desc => 'Output in long format.'
+    method_option 'reverse', :aliases => '-r', :type => :boolean, :desc => 'Reverse the order of the sort.'
+    def list(user_list)
+      owner, list_name = extract_owner(user_list, options)
+      require 't/list'
+      streaming_client.before_request do
+        list = T::List.new
+        list.options = list.options.merge(options)
+        list.options = list.options.merge(:reverse => true)
+        list.options = list.options.merge(:format => TWEET_HEADINGS_FORMATTING)
+        list.timeline(user_list)
+      end
+      user_ids = client.list_members(owner, list_name).collect(&:id)
+      streaming_client.filter(:follow => user_ids.join(',')) do |tweet|
+        next unless tweet.is_a?(Twitter::Tweet)
+        if options['csv']
+          print_csv_tweet(tweet)
+        elsif options['long']
+          array = build_long_tweet(tweet).each_with_index.collect do |element, index|
+            TWEET_HEADINGS_FORMATTING[index] % element
+          end
+          print_table([array], :truncate => STDOUT.tty?)
+        else
+          print_message(tweet.user.screen_name, tweet.text)
+        end
+      end
+    end
+    map %w[tl] => :timeline
+
     desc 'matrix', 'Unfortunately, no one can be told what the Matrix is. You have to see it for yourself.'
     def matrix
-      client.sample(:language => 'ja') do |tweet|
+      streaming_client.sample(:language => 'ja') do |tweet|
         next unless tweet.is_a?(Twitter::Tweet)
         say(tweet.full_text.gsub("\n", '').reverse, [:bold, :green, :on_black])
       end
@@ -67,14 +103,14 @@ module T
     def search(keyword, *keywords)
       keywords.unshift(keyword)
       require 't/search'
-      client.before_request do
+      streaming_client.before_request do
         search = T::Search.new
         search.options = search.options.merge(options)
         search.options = search.options.merge(:reverse => true)
         search.options = search.options.merge(:format => TWEET_HEADINGS_FORMATTING)
         search.all(keywords.join(' OR '))
       end
-      client.filter(:track => keywords.join(',')) do |tweet|
+      streaming_client.filter(:track => keywords.join(',')) do |tweet|
         next unless tweet.is_a?(Twitter::Tweet)
         if options['csv']
           print_csv_tweet(tweet)
@@ -95,14 +131,14 @@ module T
     method_option 'long', :aliases => '-l', :type => :boolean, :desc => 'Output in long format.'
     def timeline
       require 't/cli'
-      client.before_request do
+      streaming_client.before_request do
         cli = T::CLI.new
         cli.options = cli.options.merge(options)
         cli.options = cli.options.merge(:reverse => true)
         cli.options = cli.options.merge(:format => TWEET_HEADINGS_FORMATTING)
         cli.timeline
       end
-      client.user do |tweet|
+      streaming_client.user do |tweet|
         next unless tweet.is_a?(Twitter::Tweet)
         if options['csv']
           print_csv_tweet(tweet)
@@ -124,7 +160,7 @@ module T
     def users(user_id, *user_ids)
       user_ids.unshift(user_id)
       user_ids.collect!(&:to_i)
-      client.before_request do
+      streaming_client.before_request do
         if options['csv']
           require 'csv'
           say TWEET_HEADINGS.to_csv
@@ -135,7 +171,7 @@ module T
           print_table([headings])
         end
       end
-      client.filter(:follow => user_ids.join(',')) do |tweet|
+      streaming_client.filter(:follow => user_ids.join(',')) do |tweet|
         next unless tweet.is_a?(Twitter::Tweet)
         if options['csv']
           print_csv_tweet(tweet)
@@ -152,10 +188,10 @@ module T
 
   private
 
-    def client
-      return @client if @client
+    def streaming_client
+      return @streaming_client if @streaming_client
       @rcfile.path = options['profile'] if options['profile']
-      @client = Twitter::Streaming::Client.new do |config|
+      @streaming_client = Twitter::Streaming::Client.new do |config|
         config.consumer_key        = @rcfile.active_consumer_key
         config.consumer_secret     = @rcfile.active_consumer_secret
         config.access_token        = @rcfile.active_token

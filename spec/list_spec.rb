@@ -8,12 +8,7 @@ describe T::List do
     T.utc_offset = 'PST'
   end
 
-  after :all do
-    T.utc_offset = nil
-    Timecop.return
-  end
-
-  before :each do
+  before do
     T::RCFile.instance.path = fixture_path + '/.trc'
     @list = T::List.new
     @old_stderr = $stderr
@@ -22,10 +17,15 @@ describe T::List do
     $stdout = StringIO.new
   end
 
-  after :each do
+  after do
     T::RCFile.instance.reset
     $stderr = @old_stderr
     $stdout = @old_stdout
+  end
+
+  after :all do
+    T.utc_offset = nil
+    Timecop.return
   end
 
   describe '#add' do

@@ -61,16 +61,16 @@ module T
       options['id'] ? users.collect!(&:to_i) : users.collect!(&:strip_ats)
     end
 
-    def extract_owner(list, options)
-      owner, list = list.split('/')
-      if list.nil?
-        list = owner
+    def extract_owner(user_list, options)
+      owner, list_name = user_list.split('/')
+      if list_name.nil?
+        list_name = owner
         owner = @rcfile.active_profile[0]
       else
         require 't/core_ext/string'
         owner = options['id'] ? owner.to_i : owner.strip_ats
       end
-      [owner, list]
+      [owner, list_name]
     end
 
     def strip_tags(html)

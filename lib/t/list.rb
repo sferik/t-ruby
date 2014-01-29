@@ -26,34 +26,34 @@ module T
 
     desc 'add LIST USER [USER...]', 'Add members to a list.'
     method_option 'id', :aliases => '-i', :type => :boolean, :desc => 'Specify input as Twitter user IDs instead of screen names.'
-    def add(list, user, *users)
+    def add(list_name, user, *users)
       added_users, number = fetch_users(users.unshift(user), options) do |users_to_add|
-        client.add_list_members(list, users_to_add)
+        client.add_list_members(list_name, users_to_add)
         users_to_add
       end
-      say "@#{@rcfile.active_profile[0]} added #{pluralize(number, 'member')} to the list \"#{list}\"."
+      say "@#{@rcfile.active_profile[0]} added #{pluralize(number, 'member')} to the list \"#{list_name}\"."
       say
       if options['id']
-        say "Run `#{File.basename($PROGRAM_NAME)} list remove --id #{list} #{added_users.join(' ')}` to undo."
+        say "Run `#{File.basename($PROGRAM_NAME)} list remove --id #{list_name} #{added_users.join(' ')}` to undo."
       else
-        say "Run `#{File.basename($PROGRAM_NAME)} list remove #{list} #{added_users.collect { |added_user| "@#{added_user}" }.join(' ')}` to undo."
+        say "Run `#{File.basename($PROGRAM_NAME)} list remove #{list_name} #{added_users.collect { |added_user| "@#{added_user}" }.join(' ')}` to undo."
       end
     end
 
     desc 'create LIST [DESCRIPTION]', 'Create a new list.'
     method_option 'private', :aliases => '-p', :type => :boolean
-    def create(list, description = nil)
+    def create(list_name, description = nil)
       opts = description ? {:description => description} : {}
       opts.merge!(:mode => 'private') if options['private']
-      client.create_list(list, opts)
-      say "@#{@rcfile.active_profile[0]} created the list \"#{list}\"."
+      client.create_list(list_name, opts)
+      say "@#{@rcfile.active_profile[0]} created the list \"#{list_name}\"."
     end
 
     desc 'information [USER/]LIST', 'Retrieves detailed information about a Twitter list.'
     method_option 'csv', :aliases => '-c', :type => :boolean, :desc => 'Output in CSV format.'
-    def information(list)
-      owner, list = extract_owner(list, options)
-      list = client.list(owner, list)
+    def information(user_list)
+      owner, list_name = extract_owner(user_list, options)
+      list = client.list(owner, list_name)
       if options['csv']
         require 'csv'
         say ['ID', 'Description', 'Slug', 'Screen name', 'Created at', 'Members', 'Subscribers', 'Following', 'Mode', 'URL'].to_csv
@@ -82,25 +82,25 @@ module T
     method_option 'reverse', :aliases => '-r', :type => :boolean, :desc => 'Reverse the order of the sort.'
     method_option 'sort', :aliases => '-s', :type => :string, :enum => %w[favorites followers friends listed screen_name since tweets tweeted], :default => 'screen_name', :desc => 'Specify the order of the results.', :banner => 'ORDER'
     method_option 'unsorted', :aliases => '-u', :type => :boolean, :desc => 'Output is not sorted.'
-    def members(list)
-      owner, list = extract_owner(list, options)
-      users = client.list_members(owner, list).to_a
+    def members(user_list)
+      owner, list_name = extract_owner(user_list, options)
+      users = client.list_members(owner, list_name).to_a
       print_users(users)
     end
 
     desc 'remove LIST USER [USER...]', 'Remove members from a list.'
     method_option 'id', :aliases => '-i', :type => :boolean, :desc => 'Specify input as Twitter user IDs instead of screen names.'
-    def remove(list, user, *users)
+    def remove(list_name, user, *users)
       removed_users, number = fetch_users(users.unshift(user), options) do |users_to_remove|
-        client.remove_list_members(list, users_to_remove)
+        client.remove_list_members(list_name, users_to_remove)
         users_to_remove
       end
-      say "@#{@rcfile.active_profile[0]} removed #{pluralize(number, 'member')} from the list \"#{list}\"."
+      say "@#{@rcfile.active_profile[0]} removed #{pluralize(number, 'member')} from the list \"#{list_name}\"."
       say
       if options['id']
-        say "Run `#{File.basename($PROGRAM_NAME)} list add --id #{list} #{removed_users.join(' ')}` to undo."
+        say "Run `#{File.basename($PROGRAM_NAME)} list add --id #{list_name} #{removed_users.join(' ')}` to undo."
       else
-        say "Run `#{File.basename($PROGRAM_NAME)} list add #{list} #{removed_users.collect { |removed_user| "@#{removed_user}" }.join(' ')}` to undo."
+        say "Run `#{File.basename($PROGRAM_NAME)} list add #{list_name} #{removed_users.collect { |removed_user| "@#{removed_user}" }.join(' ')}` to undo."
       end
     end
 
@@ -112,13 +112,13 @@ module T
     method_option 'number', :aliases => '-n', :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => 'Limit the number of results.'
     method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
     method_option 'reverse', :aliases => '-r', :type => :boolean, :desc => 'Reverse the order of the sort.'
-    def timeline(list)
-      owner, list = extract_owner(list, options)
+    def timeline(user_list)
+      owner, list_name = extract_owner(user_list, options)
       count = options['number'] || DEFAULT_NUM_RESULTS
       opts = {}
       opts[:include_entities] = !!options['decode_uris']
       tweets = collect_with_count(count) do |count_opts|
-        client.list_timeline(owner, list, count_opts.merge(opts))
+        client.list_timeline(owner, list_name, count_opts.merge(opts))
       end
       print_tweets(tweets)
     end

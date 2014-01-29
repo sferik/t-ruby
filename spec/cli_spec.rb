@@ -8,12 +8,7 @@ describe T::CLI do
     T.utc_offset = 'PST'
   end
 
-  after :all do
-    T.utc_offset = nil
-    Timecop.return
-  end
-
-  before :each do
+  before do
     T::RCFile.instance.path = fixture_path + '/.trc'
     @cli = T::CLI.new
     @cli.options = @cli.options.merge('color' => 'always')
@@ -23,10 +18,15 @@ describe T::CLI do
     $stdout = StringIO.new
   end
 
-  after :each do
+  after do
     T::RCFile.instance.reset
     $stderr = @old_stderr
     $stdout = @old_stdout
+  end
+
+  after :all do
+    T.utc_offset = nil
+    Timecop.return
   end
 
   describe '#account' do

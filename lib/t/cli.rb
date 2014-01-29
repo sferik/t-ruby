@@ -204,18 +204,18 @@ module T
 
     desc 'does_contain [USER/]LIST USER', 'Find out whether a list contains a user.'
     method_option 'id', :aliases => '-i', :type => :boolean, :desc => 'Specify user via ID instead of screen name.'
-    def does_contain(list, user = nil)
-      owner, list = extract_owner(list, options)
+    def does_contain(user_list, user = nil)
+      owner, list_name = extract_owner(user_list, options)
       if user.nil?
         user = @rcfile.active_profile[0]
       else
         require 't/core_ext/string'
         user = options['id'] ? client.user(user.to_i).screen_name : user.strip_ats
       end
-      if client.list_member?(owner, list, user)
-        say "Yes, #{list} contains @#{user}."
+      if client.list_member?(owner, list_name, user)
+        say "Yes, #{list_name} contains @#{user}."
       else
-        abort "No, #{list} does not contain @#{user}."
+        abort "No, #{list_name} does not contain @#{user}."
       end
     end
     map %w[dc doescontain] => :does_contain

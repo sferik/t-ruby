@@ -93,13 +93,13 @@ module T
     method_option 'id', :aliases => '-i', :type => :boolean, :desc => 'Specify user via ID instead of screen name.'
     method_option 'long', :aliases => '-l', :type => :boolean, :desc => 'Output in long format.'
     method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
-    def list(list, query)
-      owner, list = extract_owner(list, options)
+    def list(user_list, query)
+      owner, list_name = extract_owner(user_list, options)
       opts = {:count => MAX_NUM_RESULTS}
       opts[:include_entities] = !!options['decode_uris']
       tweets = collect_with_max_id do |max_id|
         opts[:max_id] = max_id unless max_id.nil?
-        client.list_timeline(owner, list, opts)
+        client.list_timeline(owner, list_name, opts)
       end
       tweets = tweets.select do |tweet|
         /#{query}/i.match(tweet.full_text)

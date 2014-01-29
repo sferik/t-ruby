@@ -9,7 +9,7 @@ describe T::Utils do
     class Test; end
   end
 
-  before :each do
+  before do
     @test = Test.new
     @test.extend(T::Utils)
   end

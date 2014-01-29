@@ -110,10 +110,7 @@ module T
     method_option 'id', :aliases => '-i', :type => :boolean, :desc => 'Specify user via ID instead of screen name.'
     method_option 'long', :aliases => '-l', :type => :boolean, :desc => 'Output in long format.'
     method_option 'number', :aliases => '-n', :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => 'Limit the number of results.'
-<<<<<<< HEAD
-=======
     method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
->>>>>>> upstream/master
     method_option 'reverse', :aliases => '-r', :type => :boolean, :desc => 'Reverse the order of the sort.'
     def timeline(list)
       owner, list = extract_owner(list, options)

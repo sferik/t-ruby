@@ -31,11 +31,11 @@ describe T::Search do
 
   describe '#all' do
     before do
-      stub_get('/1.1/search/tweets.json').with(:query => {:q => 'twitter', :count => '100', :include_entities => 'false'}).to_return(:body => fixture('search.json'))
+      stub_get('/1.1/search/tweets.json').with(:query => {:q => 'twitter', :count => '100', :include_entities => 'false', :trim_user => 'true'}).to_return(:body => fixture('search.json'))
     end
     it 'requests the correct resource' do
       @search.all('twitter')
-      expect(a_get('/1.1/search/tweets.json').with(:query => {:q => 'twitter', :count => '100', :include_entities => 'false'})).to have_been_made
+      expect(a_get('/1.1/search/tweets.json').with(:query => {:q => 'twitter', :count => '100', :include_entities => 'false', :trim_user => 'true'})).to have_been_made
     end
     it 'has the correct output' do
       @search.all('twitter')
@@ -180,19 +180,19 @@ ID                  Posted at     Screen name       Text
     end
     context '--number' do
       before do
-        stub_get('/1.1/search/tweets.json').with(:query => {:q => 'twitter', :count => '1', :include_entities => 'false'}).to_return(:body => fixture('search2.json'))
-        stub_get('/1.1/search/tweets.json').with(:query => {:q => 'twitter', :count => '100', :include_entities => 'false'}).to_return(:body => fixture('search.json'))
+        stub_get('/1.1/search/tweets.json').with(:query => {:q => 'twitter', :count => '1', :include_entities => 'false', :trim_user => 'true'}).to_return(:body => fixture('search2.json'))
+        stub_get('/1.1/search/tweets.json').with(:query => {:q => 'twitter', :count => '100', :include_entities => 'false', :trim_user => 'true'}).to_return(:body => fixture('search.json'))
         stub_get('/1.1/search/tweets.json').with(:query => {:q => 'twitter', :count => '100', :include_entities => '1', :max_id => '415600158693675007'}).to_return(:body => fixture('search2.json'))
       end
       it 'limits the number of results to 1' do
         @search.options = @search.options.merge('number' => 1)
         @search.all('twitter')
-        expect(a_get('/1.1/search/tweets.json').with(:query => {:q => 'twitter', :count => '100', :include_entities => 'false'})).to have_been_made
+        expect(a_get('/1.1/search/tweets.json').with(:query => {:q => 'twitter', :count => '100', :include_entities => 'false', :trim_user => 'true'})).to have_been_made
       end
       it 'limits the number of results to 201' do
-        @search.options = @search.options.merge('number' => 201)
+        @search.options = @search.options.merge('number' => 200)
         @search.all('twitter')
-        expect(a_get('/1.1/search/tweets.json').with(:query => {:q => 'twitter', :count => '100', :include_entities => 'false'})).to have_been_made
+        expect(a_get('/1.1/search/tweets.json').with(:query => {:q => 'twitter', :count => '100', :include_entities => 'false', :trim_user => 'true'})).to have_been_made
         expect(a_get('/1.1/search/tweets.json').with(:query => {:q => 'twitter', :count => '100', :include_entities => '1', :max_id => '415600158693675007'})).to have_been_made
       end
     end

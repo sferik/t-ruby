@@ -197,8 +197,6 @@ example, here's how to send a user a direct message only if they already follow 
     t search all "puppy" -U --csv
 
 
-
-
 ## Features
 * Deep search: Instead of using the Twitter Search API, [which only goes
   back 6-9 days][search], `t search` fetches up to 3,200 tweets via the REST API

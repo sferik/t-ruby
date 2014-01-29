@@ -23,13 +23,11 @@ module T
       [user.id, ls_formatted_time(user), ls_formatted_time(user.status), user.statuses_count, user.favorites_count, user.listed_count, user.friends_count, user.followers_count, "@#{user.screen_name}", user.name, user.verified? ? 'Yes' : 'No', user.protected? ? 'Yes' : 'No', user.description.gsub(/\n+/, ' '), user.status? ? decode_full_text(user.status, options['decode_uris']).gsub(/\n+/, ' ') : nil, user.location, user.website.to_s]
     end
 
-    # DRY this up obviously
     def build_long_tweet_with_user(tweet)
       user = tweet.user
 
       build_long_tweet(tweet) + 
             [user.id, ls_formatted_time(user), ls_formatted_time(user.status), user.statuses_count, user.favorites_count, user.listed_count, user.friends_count, user.followers_count, user.name, user.verified? ? 'Yes' : 'No', user.protected? ? 'Yes' : 'No', user.description.gsub(/\n+/, ' '), user.location, user.website.to_s]
-
     end
 
     def csv_formatted_time(object, key = :created_at)
@@ -65,11 +63,9 @@ module T
       say [user.id, csv_formatted_time(user), csv_formatted_time(user.status), user.statuses_count, user.favorites_count, user.listed_count, user.friends_count, user.followers_count, user.screen_name, user.name, user.verified?, user.protected?, user.description, user.status? ? user.status.full_text : nil, user.location, user.website].to_csv
     end
 
-    # should be dried up obviously
     def print_csv_tweet_with_user(tweet)
       require 'csv'
       user = tweet.user
-
       arr = [tweet.id, csv_formatted_time(tweet), user.screen_name, decode_full_text(tweet, options['decode_uris'])] \
               + \
              [user.id, csv_formatted_time(user), csv_formatted_time(user.status), user.statuses_count, user.favorites_count, user.listed_count, user.friends_count, user.followers_count, user.name, user.verified?, user.protected?, user.description, user.location, user.website]
@@ -147,7 +143,8 @@ module T
     end
 
 
-    #  Expects tweets to have user object
+    #  The tweets that are passed in have the :user object, since
+    #  :trim_user was set to false
     def print_tweets_with_users(tweets)
       tweets.reverse! if options['reverse']
       if options['csv']
@@ -156,8 +153,9 @@ module T
         tweets.each do |tweet|
           print_csv_tweet_with_user(tweet)
         end
-      # elsif options['long']
-      else # by default, if you're doing this, you want the long format
+      else 
+      # Currently, there is no "short" format for tweet + user, so the default
+      # is to output the long format
         array = tweets.map do |tweet|
           build_long_tweet_with_user(tweet)
         end

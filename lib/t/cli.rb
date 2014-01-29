@@ -126,13 +126,8 @@ module T
     method_option 'csv', :aliases => '-c', :type => :boolean, :desc => 'Output in CSV format.'
     method_option 'decode_uris', :aliases => '-d', :type => :boolean, :desc => 'Decodes t.co URLs into their original form.'
     method_option 'long', :aliases => '-l', :type => :boolean, :desc => 'Output in long format.'
-<<<<<<< HEAD
-    method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
-    method_option 'number', :aliases => '-n', :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => 'Limit the number of results.'
-=======
     method_option 'number', :aliases => '-n', :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => 'Limit the number of results.'
     method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
->>>>>>> upstream/master
     method_option 'reverse', :aliases => '-r', :type => :boolean, :desc => 'Reverse the order of the sort.'
     def direct_messages
       count = options['number'] || DEFAULT_NUM_RESULTS
@@ -687,12 +682,8 @@ module T
   
     def timeline(user = nil)
       count = options['number'] || DEFAULT_NUM_RESULTS
-<<<<<<< HEAD
       opts = {}
-      opts[:trim_user] = !!options['show_user']
-=======
-      opts = {:trim_user => true}
->>>>>>> upstream/master
+      opts[:trim_user] = !options['show_user']
       opts[:exclude_replies] = true if options['exclude'] == 'replies'
       opts[:include_entities] = !!options['decode_uris']
       opts[:include_rts] = false if options['exclude'] == 'retweets'

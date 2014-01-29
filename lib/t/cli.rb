@@ -858,6 +858,16 @@ module T
     end
     map %w[user] => :whois
 
+    desc 'whoami', 'Retrieves profile information for the authenticated user.'
+    method_option 'csv', :aliases => '-c', :type => :boolean, :desc => 'Output in CSV format.'
+    method_option 'decode_uris', :aliases => '-d', :type => :boolean, :desc => 'Decodes t.co URLs into their original form.'
+    method_option 'long', :aliases => '-l', :type => :boolean, :desc => 'Output in long format.'
+    method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
+    def whoami
+      user = @rcfile.active_profile[0]
+      whois(user)
+    end
+
     desc 'delete SUBCOMMAND ...ARGS', 'Delete Tweets, Direct Messages, etc.'
     subcommand 'delete', T::Delete
 

@@ -8,12 +8,7 @@ describe T::CLI do
     T.utc_offset = 'PST'
   end
 
-  after :all do
-    T.utc_offset = nil
-    Timecop.return
-  end
-
-  before :each do
+  before do
     T::RCFile.instance.path = fixture_path + '/.trc'
     @cli = T::CLI.new
     @cli.options = @cli.options.merge('color' => 'always')
@@ -23,10 +18,15 @@ describe T::CLI do
     $stdout = StringIO.new
   end
 
-  after :each do
+  after do
     T::RCFile.instance.reset
     $stderr = @old_stderr
     $stdout = @old_stdout
+  end
+
+  after :all do
+    T.utc_offset = nil
+    Timecop.return
   end
 
   describe '#account' do
@@ -4033,6 +4033,58 @@ ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name
       end
       it 'outputs in long format' do
         @cli.whois('sferik')
+        expect($stdout.string).to eq <<-eos
+ID       Since         Last tweeted at  Tweets  Favorites  Listed  Following ...
+7505382  Jul 16  2007  Jul  8 10:29       7890       3755     118        212 ...
+        eos
+      end
+    end
+  end
+
+  describe '#whoami' do
+    before do
+      stub_get('/1.1/users/show.json').with(:query => {:screen_name => 'testcli', :include_entities => 'false'}).to_return(:body => fixture('sferik.json'))
+    end
+    it 'requests the correct resource' do
+      @cli.whoami
+      expect(a_get('/1.1/users/show.json').with(:query => {:screen_name => 'testcli', :include_entities => 'false'})).to have_been_made
+    end
+    it 'has the correct output' do
+      @cli.whoami
+      expect($stdout.string).to eq <<-eos
+ID           7505382
+Since        Jul 16  2007 (4 years ago)
+Last update  @goldman You're near my home town! Say hi to Woodstock for me. (7 months ago)
+Screen name  @sferik
+Name         Erik Michaels-Ober
+Tweets       7,890
+Favorites    3,755
+Listed       118
+Following    212
+Followers    2,262
+Bio          Vagabond.
+Location     San Francisco
+URL          https://github.com/sferik
+      eos
+    end
+    context '--csv' do
+      before do
+        @cli.options = @cli.options.merge('csv' => true)
+      end
+      it 'has the correct output' do
+        @cli.whoami
+        expect($stdout.string).to eq <<-eos
+ID,Since,Last tweeted at,Tweets,Favorites,Listed,Following,Followers,Screen name,Name,Verified,Protected,Bio,Status,Location,URL
+7505382,2007-07-16 12:59:01 +0000,2012-07-08 18:29:20 +0000,7890,3755,118,212,2262,sferik,Erik Michaels-Ober,false,false,Vagabond.,@goldman You're near my home town! Say hi to Woodstock for me.,San Francisco,https://github.com/sferik
+        eos
+      end
+    end
+    context '--long' do
+      before do
+        @cli.options = @cli.options.merge('long' => true)
+      end
+      it 'outputs in long format' do
+        @cli.whoami
         expect($stdout.string).to eq <<-eos
 ID       Since         Last tweeted at  Tweets  Favorites  Listed  Following ...
 7505382  Jul 16  2007  Jul  8 10:29       7890       3755     118        212 ...

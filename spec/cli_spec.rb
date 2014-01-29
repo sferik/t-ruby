@@ -661,11 +661,11 @@ ID          Posted at     Screen name  Text
 
   describe '#favorites' do
     before do
-      stub_get('/1.1/favorites/list.json').with(:query => {:count => '20', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'))
+      stub_get('/1.1/favorites/list.json').with(:query => {:count => '20', :include_entities => 'false', :trim_user => 'true'}).to_return(:body => fixture('statuses.json'))
     end
     it 'requests the correct resource' do
       @cli.favorites
-      expect(a_get('/1.1/favorites/list.json').with(:query => {:count => '20', :include_entities => 'false'})).to have_been_made
+      expect(a_get('/1.1/favorites/list.json').with(:query => {:count => '20', :include_entities => 'false', :trim_user => 'true'})).to have_been_made
     end
     it 'has the correct output' do
       @cli.favorites
@@ -781,11 +781,11 @@ ID,Posted at,Screen name,Text
     context '--decode-uris' do
       before do
         @cli.options = @cli.options.merge('decode_uris' => true)
-        stub_get('/1.1/favorites/list.json').with(:query => {:count => '20', :include_entities => 'true'}).to_return(:body => fixture('statuses.json'))
+        stub_get('/1.1/favorites/list.json').with(:query => {:count => '20', :include_entities => 'true', :trim_user => 'true'}).to_return(:body => fixture('statuses.json'))
       end
       it 'requests the correct resource' do
         @cli.favorites
-        expect(a_get('/1.1/favorites/list.json').with(:query => {:count => '20', :include_entities => 'true'})).to have_been_made
+        expect(a_get('/1.1/favorites/list.json').with(:query => {:count => '20', :include_entities => 'true', :trim_user => 'true'})).to have_been_made
       end
       it 'decodes URLs' do
         @cli.favorites
@@ -857,95 +857,95 @@ ID                   Posted at     Screen name       Text
     context '--max-id' do
       before do
         @cli.options = @cli.options.merge('max_id' => 244_104_558_433_951_744)
-        stub_get('/1.1/favorites/list.json').with(:query => {:count => '20', :max_id => '244104558433951744', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'))
+        stub_get('/1.1/favorites/list.json').with(:query => {:count => '20', :max_id => '244104558433951744', :include_entities => 'false', :trim_user => 'true'}).to_return(:body => fixture('statuses.json'))
       end
       it 'requests the correct resource' do
         @cli.favorites
-        expect(a_get('/1.1/favorites/list.json').with(:query => {:count => '20', :max_id => '244104558433951744', :include_entities => 'false'})).to have_been_made
+        expect(a_get('/1.1/favorites/list.json').with(:query => {:count => '20', :max_id => '244104558433951744', :include_entities => 'false', :trim_user => 'true'})).to have_been_made
       end
     end
     context '--number' do
       before do
-        stub_get('/1.1/favorites/list.json').with(:query => {:count => '1', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'))
-        stub_get('/1.1/favorites/list.json').with(:query => {:count => '200', :include_entities => 'false'}).to_return(:body => fixture('200_statuses.json'))
-        stub_get('/1.1/favorites/list.json').with(:query => {:count => '1', :max_id => '265500541700956160', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'))
+        stub_get('/1.1/favorites/list.json').with(:query => {:count => '1', :include_entities => 'false', :trim_user => 'true'}).to_return(:body => fixture('statuses.json'))
+        stub_get('/1.1/favorites/list.json').with(:query => {:count => '200', :include_entities => 'false', :trim_user => 'true'}).to_return(:body => fixture('200_statuses.json'))
+        stub_get('/1.1/favorites/list.json').with(:query => {:count => '1', :max_id => '265500541700956160', :include_entities => 'false', :trim_user => 'true'}).to_return(:body => fixture('statuses.json'))
       end
       it 'limits the number of results to 1' do
         @cli.options = @cli.options.merge('number' => 1)
         @cli.favorites
-        expect(a_get('/1.1/favorites/list.json').with(:query => {:count => '1', :include_entities => 'false'})).to have_been_made
+        expect(a_get('/1.1/favorites/list.json').with(:query => {:count => '1', :include_entities => 'false', :trim_user => 'true'})).to have_been_made
       end
       it 'limits the number of results to 201' do
         @cli.options = @cli.options.merge('number' => 201)
         @cli.favorites
-        expect(a_get('/1.1/favorites/list.json').with(:query => {:count => '200', :include_entities => 'false'})).to have_been_made
-        expect(a_get('/1.1/favorites/list.json').with(:query => {:count => '1', :max_id => '265500541700956160', :include_entities => 'false'})).to have_been_made
+        expect(a_get('/1.1/favorites/list.json').with(:query => {:count => '200', :include_entities => 'false', :trim_user => 'true'})).to have_been_made
+        expect(a_get('/1.1/favorites/list.json').with(:query => {:count => '1', :max_id => '265500541700956160', :include_entities => 'false', :trim_user => 'true'})).to have_been_made
       end
     end
     context '--since-id' do
       before do
         @cli.options = @cli.options.merge('since_id' => 244_104_558_433_951_744)
-        stub_get('/1.1/favorites/list.json').with(:query => {:count => '20', :since_id => '244104558433951744', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'))
+        stub_get('/1.1/favorites/list.json').with(:query => {:count => '20', :since_id => '244104558433951744', :include_entities => 'false', :trim_user => 'true'}).to_return(:body => fixture('statuses.json'))
       end
       it 'requests the correct resource' do
         @cli.favorites
-        expect(a_get('/1.1/favorites/list.json').with(:query => {:count => '20', :since_id => '244104558433951744', :include_entities => 'false'})).to have_been_made
+        expect(a_get('/1.1/favorites/list.json').with(:query => {:count => '20', :since_id => '244104558433951744', :include_entities => 'false', :trim_user => 'true'})).to have_been_made
       end
     end
     context 'with a user passed' do
       before do
-        stub_get('/1.1/favorites/list.json').with(:query => {:count => '20', :screen_name => 'sferik', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'))
+        stub_get('/1.1/favorites/list.json').with(:query => {:count => '20', :screen_name => 'sferik', :include_entities => 'false', :trim_user => 'true'}).to_return(:body => fixture('statuses.json'))
       end
       it 'requests the correct resource' do
         @cli.favorites('sferik')
-        expect(a_get('/1.1/favorites/list.json').with(:query => {:count => '20', :screen_name => 'sferik', :include_entities => 'false'})).to have_been_made
+        expect(a_get('/1.1/favorites/list.json').with(:query => {:count => '20', :screen_name => 'sferik', :include_entities => 'false', :trim_user => 'true'})).to have_been_made
       end
       context '--id' do
         before do
           @cli.options = @cli.options.merge('id' => true)
-          stub_get('/1.1/favorites/list.json').with(:query => {:user_id => '7505382', :count => '20', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'))
+          stub_get('/1.1/favorites/list.json').with(:query => {:user_id => '7505382', :count => '20', :include_entities => 'false', :trim_user => 'true'}).to_return(:body => fixture('statuses.json'))
         end
         it 'requests the correct resource' do
           @cli.favorites('7505382')
-          expect(a_get('/1.1/favorites/list.json').with(:query => {:user_id => '7505382', :count => '20', :include_entities => 'false'})).to have_been_made
+          expect(a_get('/1.1/favorites/list.json').with(:query => {:user_id => '7505382', :count => '20', :include_entities => 'false', :trim_user => 'true'})).to have_been_made
         end
       end
       context '--max-id' do
         before do
           @cli.options = @cli.options.merge('max_id' => 244_104_558_433_951_744)
-          stub_get('/1.1/favorites/list.json').with(:query => {:count => '20', :screen_name => 'sferik', :max_id => '244104558433951744', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'))
+          stub_get('/1.1/favorites/list.json').with(:query => {:count => '20', :screen_name => 'sferik', :max_id => '244104558433951744', :include_entities => 'false', :trim_user => 'true'}).to_return(:body => fixture('statuses.json'))
         end
         it 'requests the correct resource' do
           @cli.favorites('sferik')
-          expect(a_get('/1.1/favorites/list.json').with(:query => {:count => '20', :screen_name => 'sferik', :max_id => '244104558433951744', :include_entities => 'false'})).to have_been_made
+          expect(a_get('/1.1/favorites/list.json').with(:query => {:count => '20', :screen_name => 'sferik', :max_id => '244104558433951744', :include_entities => 'false', :trim_user => 'true'})).to have_been_made
         end
       end
       context '--number' do
         before do
-          stub_get('/1.1/favorites/list.json').with(:query => {:count => '1', :screen_name => 'sferik', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'))
-          stub_get('/1.1/favorites/list.json').with(:query => {:count => '200', :screen_name => 'sferik', :include_entities => 'false'}).to_return(:body => fixture('200_statuses.json'))
-          stub_get('/1.1/favorites/list.json').with(:query => {:count => '1', :screen_name => 'sferik', :max_id => '265500541700956160', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'))
+          stub_get('/1.1/favorites/list.json').with(:query => {:count => '1', :screen_name => 'sferik', :include_entities => 'false', :trim_user => 'true'}).to_return(:body => fixture('statuses.json'))
+          stub_get('/1.1/favorites/list.json').with(:query => {:count => '200', :screen_name => 'sferik', :include_entities => 'false', :trim_user => 'true'}).to_return(:body => fixture('200_statuses.json'))
+          stub_get('/1.1/favorites/list.json').with(:query => {:count => '1', :screen_name => 'sferik', :max_id => '265500541700956160', :include_entities => 'false', :trim_user => 'true'}).to_return(:body => fixture('statuses.json'))
         end
         it 'limits the number of results to 1' do
           @cli.options = @cli.options.merge('number' => 1)
           @cli.favorites('sferik')
-          expect(a_get('/1.1/favorites/list.json').with(:query => {:count => '1', :screen_name => 'sferik', :include_entities => 'false'})).to have_been_made
+          expect(a_get('/1.1/favorites/list.json').with(:query => {:count => '1', :screen_name => 'sferik', :include_entities => 'false', :trim_user => 'true'})).to have_been_made
         end
         it 'limits the number of results to 201' do
           @cli.options = @cli.options.merge('number' => 201)
           @cli.favorites('sferik')
-          expect(a_get('/1.1/favorites/list.json').with(:query => {:count => '200', :screen_name => 'sferik', :include_entities => 'false'})).to have_been_made
-          expect(a_get('/1.1/favorites/list.json').with(:query => {:count => '1', :screen_name => 'sferik', :max_id => '265500541700956160', :include_entities => 'false'})).to have_been_made
+          expect(a_get('/1.1/favorites/list.json').with(:query => {:count => '200', :screen_name => 'sferik', :include_entities => 'false', :trim_user => 'true'})).to have_been_made
+          expect(a_get('/1.1/favorites/list.json').with(:query => {:count => '1', :screen_name => 'sferik', :max_id => '265500541700956160', :include_entities => 'false', :trim_user => 'true'})).to have_been_made
         end
       end
       context '--since-id' do
         before do
           @cli.options = @cli.options.merge('since_id' => 244_104_558_433_951_744)
-          stub_get('/1.1/favorites/list.json').with(:query => {:count => '20', :screen_name => 'sferik', :since_id => '244104558433951744', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'))
+          stub_get('/1.1/favorites/list.json').with(:query => {:count => '20', :screen_name => 'sferik', :since_id => '244104558433951744', :include_entities => 'false', :trim_user => 'true'}).to_return(:body => fixture('statuses.json'))
         end
         it 'requests the correct resource' do
           @cli.favorites('sferik')
-          expect(a_get('/1.1/favorites/list.json').with(:query => {:count => '20', :screen_name => 'sferik', :since_id => '244104558433951744', :include_entities => 'false'})).to have_been_made
+          expect(a_get('/1.1/favorites/list.json').with(:query => {:count => '20', :screen_name => 'sferik', :since_id => '244104558433951744', :include_entities => 'false', :trim_user => 'true'})).to have_been_made
         end
       end
     end
@@ -2188,11 +2188,11 @@ ID        Created at    Screen name  Slug      Members  Subscribers  Mode    ...
 
   describe '#mentions' do
     before do
-      stub_get('/1.1/statuses/mentions_timeline.json').with(:query => {:count => '20', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'))
+      stub_get('/1.1/statuses/mentions_timeline.json').with(:query => {:count => '20', :include_entities => 'false', :trim_user => 'true'}).to_return(:body => fixture('statuses.json'))
     end
     it 'requests the correct resource' do
       @cli.mentions
-      expect(a_get('/1.1/statuses/mentions_timeline.json').with(:query => {:count => '20', :include_entities => 'false'})).to have_been_made
+      expect(a_get('/1.1/statuses/mentions_timeline.json').with(:query => {:count => '20', :include_entities => 'false', :trim_user => 'true'})).to have_been_made
     end
     it 'has the correct output' do
       @cli.mentions
@@ -2308,11 +2308,11 @@ ID,Posted at,Screen name,Text
     context '--decode-uris' do
       before do
         @cli.options = @cli.options.merge('decode_uris' => true)
-        stub_get('/1.1/statuses/mentions_timeline.json').with(:query => {:count => '20', :include_entities => 'true'}).to_return(:body => fixture('statuses.json'))
+        stub_get('/1.1/statuses/mentions_timeline.json').with(:query => {:count => '20', :include_entities => 'true', :trim_user => 'true'}).to_return(:body => fixture('statuses.json'))
       end
       it 'requests the correct resource' do
         @cli.mentions
-        expect(a_get('/1.1/statuses/mentions_timeline.json').with(:query => {:count => '20', :include_entities => 'true'})).to have_been_made
+        expect(a_get('/1.1/statuses/mentions_timeline.json').with(:query => {:count => '20', :include_entities => 'true', :trim_user => 'true'})).to have_been_made
       end
       it 'decodes URLs' do
         @cli.mentions
@@ -2383,20 +2383,20 @@ ID                   Posted at     Screen name       Text
     end
     context '--number' do
       before do
-        stub_get('/1.1/statuses/mentions_timeline.json').with(:query => {:count => '1', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'))
-        stub_get('/1.1/statuses/mentions_timeline.json').with(:query => {:count => '200', :include_entities => 'false'}).to_return(:body => fixture('200_statuses.json'))
-        stub_get('/1.1/statuses/mentions_timeline.json').with(:query => {:count => '1', :max_id => '265500541700956160', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'))
+        stub_get('/1.1/statuses/mentions_timeline.json').with(:query => {:count => '1', :include_entities => 'false', :trim_user => 'true'}).to_return(:body => fixture('statuses.json'))
+        stub_get('/1.1/statuses/mentions_timeline.json').with(:query => {:count => '200', :include_entities => 'false', :trim_user => 'true'}).to_return(:body => fixture('200_statuses.json'))
+        stub_get('/1.1/statuses/mentions_timeline.json').with(:query => {:count => '1', :max_id => '265500541700956160', :include_entities => 'false', :trim_user => 'true'}).to_return(:body => fixture('statuses.json'))
       end
       it 'limits the number of results to 1' do
         @cli.options = @cli.options.merge('number' => 1)
         @cli.mentions
-        expect(a_get('/1.1/statuses/mentions_timeline.json').with(:query => {:count => '1', :include_entities => 'false'})).to have_been_made
+        expect(a_get('/1.1/statuses/mentions_timeline.json').with(:query => {:count => '1', :include_entities => 'false', :trim_user => 'true'})).to have_been_made
       end
       it 'limits the number of results to 201' do
         @cli.options = @cli.options.merge('number' => 201)
         @cli.mentions
-        expect(a_get('/1.1/statuses/mentions_timeline.json').with(:query => {:count => '200', :include_entities => 'false'})).to have_been_made
-        expect(a_get('/1.1/statuses/mentions_timeline.json').with(:query => {:count => '1', :max_id => '265500541700956160', :include_entities => 'false'})).to have_been_made
+        expect(a_get('/1.1/statuses/mentions_timeline.json').with(:query => {:count => '200', :include_entities => 'false', :trim_user => 'true'})).to have_been_made
+        expect(a_get('/1.1/statuses/mentions_timeline.json').with(:query => {:count => '1', :max_id => '265500541700956160', :include_entities => 'false', :trim_user => 'true'})).to have_been_made
       end
     end
   end
@@ -2553,14 +2553,14 @@ ID                   Posted at     Screen name       Text
 
   describe '#retweets' do
     before do
-      stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'))
-      stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :max_id => '244102729860009983', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'))
+      stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :include_entities => 'false', :trim_user => 'true'}).to_return(:body => fixture('statuses.json'))
+      stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :max_id => '244102729860009983', :include_entities => 'false', :trim_user => 'true'}).to_return(:body => fixture('statuses.json'))
     end
     context 'without arguments' do
       it 'requests the correct resource' do
         @cli.retweets
-        expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :include_entities => 'false'})).to have_been_made
-        expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :max_id => '244102729860009983', :include_entities => 'false'})).to have_been_made.times(3)
+        expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :include_entities => 'false', :trim_user => 'true'})).to have_been_made
+        expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :max_id => '244102729860009983', :include_entities => 'false', :trim_user => 'true'})).to have_been_made.times(3)
       end
       it 'has the correct output' do
         @cli.retweets
@@ -2682,13 +2682,13 @@ ID,Posted at,Screen name,Text
     context '--decode-uris' do
       before do
         @cli.options = @cli.options.merge('decode_uris' => true)
-        stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :include_entities => 'true'}).to_return(:body => fixture('statuses.json'))
-        stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :max_id => '244102729860009983', :include_entities => 'true'}).to_return(:body => fixture('statuses.json'))
+        stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :include_entities => 'true', :trim_user => 'true'}).to_return(:body => fixture('statuses.json'))
+        stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :max_id => '244102729860009983', :include_entities => 'true', :trim_user => 'true'}).to_return(:body => fixture('statuses.json'))
       end
       it 'requests the correct resource' do
         @cli.retweets
-        expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :include_entities => 'true'})).to have_been_made
-        expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :max_id => '244102729860009983', :include_entities => 'true'})).to have_been_made.times(3)
+        expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :include_entities => 'true', :trim_user => 'true'})).to have_been_made
+        expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :max_id => '244102729860009983', :include_entities => 'true', :trim_user => 'true'})).to have_been_made.times(3)
       end
     end
     context '--long' do
@@ -2755,41 +2755,41 @@ ID                  Posted at     Screen name      Text
     end
     context '--number' do
       before do
-        stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'))
-        stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :max_id => '244107823733174271', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'))
+        stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :include_entities => 'false', :trim_user => 'true'}).to_return(:body => fixture('statuses.json'))
+        stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :max_id => '244107823733174271', :include_entities => 'false', :trim_user => 'true'}).to_return(:body => fixture('statuses.json'))
       end
       it 'limits the number of results to 1' do
         @cli.options = @cli.options.merge('number' => 1)
         @cli.retweets
-        expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :include_entities => 'false'})).to have_been_made
+        expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :include_entities => 'false', :trim_user => 'true'})).to have_been_made
       end
       it 'limits the number of results to 201' do
         @cli.options = @cli.options.merge('number' => 201)
         @cli.retweets
-        expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :include_entities => 'false'})).to have_been_made
-        expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :max_id => '244107823733174271', :include_entities => 'false'})).to have_been_made
+        expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :include_entities => 'false', :trim_user => 'true'})).to have_been_made
+        expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :max_id => '244107823733174271', :include_entities => 'false', :trim_user => 'true'})).to have_been_made
       end
     end
     context 'with a user passed' do
       before do
-        stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :screen_name => 'sferik', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'))
-        stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :screen_name => 'sferik', :max_id => '244102729860009983', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'))
+        stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :screen_name => 'sferik', :include_entities => 'false', :trim_user => 'true'}).to_return(:body => fixture('statuses.json'))
+        stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :screen_name => 'sferik', :max_id => '244102729860009983', :include_entities => 'false', :trim_user => 'true'}).to_return(:body => fixture('statuses.json'))
       end
       it 'requests the correct resource' do
         @cli.retweets('sferik')
-        expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :screen_name => 'sferik', :include_entities => 'false'})).to have_been_made
-        expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :screen_name => 'sferik', :max_id => '244102729860009983', :include_entities => 'false'})).to have_been_made.times(3)
+        expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :screen_name => 'sferik', :include_entities => 'false', :trim_user => 'true'})).to have_been_made
+        expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :screen_name => 'sferik', :max_id => '244102729860009983', :include_entities => 'false', :trim_user => 'true'})).to have_been_made.times(3)
       end
       context '--id' do
         before do
           @cli.options = @cli.options.merge('id' => true)
-          stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :user_id => '7505382', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'))
-          stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :user_id => '7505382', :max_id => '244102729860009983', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'))
+          stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :user_id => '7505382', :include_entities => 'false', :trim_user => 'true'}).to_return(:body => fixture('statuses.json'))
+          stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :user_id => '7505382', :max_id => '244102729860009983', :include_entities => 'false', :trim_user => 'true'}).to_return(:body => fixture('statuses.json'))
         end
         it 'requests the correct resource' do
           @cli.retweets('7505382')
-          expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :user_id => '7505382', :include_entities => 'false'})).to have_been_made
-          expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :user_id => '7505382', :max_id => '244102729860009983', :include_entities => 'false'})).to have_been_made.times(3)
+          expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :user_id => '7505382', :include_entities => 'false', :trim_user => 'true'})).to have_been_made
+          expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :user_id => '7505382', :max_id => '244102729860009983', :include_entities => 'false', :trim_user => 'true'})).to have_been_made.times(3)
         end
       end
     end
@@ -3032,11 +3032,11 @@ ID                   Posted at     Screen name       Text
 
   describe '#status' do
     before do
-      stub_get('/1.1/statuses/show/55709764298092545.json').with(:query => {:include_my_retweet => 'false', :include_entities => 'false'}).to_return(:body => fixture('status.json'))
+      stub_get('/1.1/statuses/show/55709764298092545.json').with(:query => {:include_my_retweet => 'false', :include_entities => 'false', :trim_user => 'true'}).to_return(:body => fixture('status.json'))
     end
     it 'requests the correct resources' do
       @cli.status('55709764298092545')
-      expect(a_get('/1.1/statuses/show/55709764298092545.json').with(:query => {:include_my_retweet => 'false', :include_entities => 'false'})).to have_been_made
+      expect(a_get('/1.1/statuses/show/55709764298092545.json').with(:query => {:include_my_retweet => 'false', :include_entities => 'false', :trim_user => 'true'})).to have_been_made
     end
     it 'has the correct output' do
       @cli.status('55709764298092545')
@@ -3065,7 +3065,7 @@ ID,Posted at,Screen name,Text,Retweets,Favorites,Source,Location
     end
     context 'with no street address' do
       before do
-        stub_get('/1.1/statuses/show/55709764298092545.json').with(:query => {:include_my_retweet => 'false', :include_entities => 'false'}).to_return(:body => fixture('status_no_street_address.json'))
+        stub_get('/1.1/statuses/show/55709764298092545.json').with(:query => {:include_my_retweet => 'false', :include_entities => 'false', :trim_user => 'true'}).to_return(:body => fixture('status_no_street_address.json'))
       end
       it 'has the correct output' do
         @cli.status('55709764298092545')
@@ -3083,7 +3083,7 @@ Location     Blowfish Sushi To Die For, San Francisco, California, United States
     end
     context 'with no locality' do
       before do
-        stub_get('/1.1/statuses/show/55709764298092545.json').with(:query => {:include_my_retweet => 'false', :include_entities => 'false'}).to_return(:body => fixture('status_no_locality.json'))
+        stub_get('/1.1/statuses/show/55709764298092545.json').with(:query => {:include_my_retweet => 'false', :include_entities => 'false', :trim_user => 'true'}).to_return(:body => fixture('status_no_locality.json'))
       end
       it 'has the correct output' do
         @cli.status('55709764298092545')
@@ -3101,7 +3101,7 @@ Location     Blowfish Sushi To Die For, San Francisco, California, United States
     end
     context 'with no attributes' do
       before do
-        stub_get('/1.1/statuses/show/55709764298092545.json').with(:query => {:include_my_retweet => 'false', :include_entities => 'false'}).to_return(:body => fixture('status_no_attributes.json'))
+        stub_get('/1.1/statuses/show/55709764298092545.json').with(:query => {:include_my_retweet => 'false', :include_entities => 'false', :trim_user => 'true'}).to_return(:body => fixture('status_no_attributes.json'))
       end
       it 'has the correct output' do
         @cli.status('55709764298092545')
@@ -3119,7 +3119,7 @@ Location     Blowfish Sushi To Die For, San Francisco, United States
     end
     context 'with no country' do
       before do
-        stub_get('/1.1/statuses/show/55709764298092545.json').with(:query => {:include_my_retweet => 'false', :include_entities => 'false'}).to_return(:body => fixture('status_no_country.json'))
+        stub_get('/1.1/statuses/show/55709764298092545.json').with(:query => {:include_my_retweet => 'false', :include_entities => 'false', :trim_user => 'true'}).to_return(:body => fixture('status_no_country.json'))
       end
       it 'has the correct output' do
         @cli.status('55709764298092545')
@@ -3137,7 +3137,7 @@ Location     Blowfish Sushi To Die For, San Francisco
     end
     context 'with no full name' do
       before do
-        stub_get('/1.1/statuses/show/55709764298092545.json').with(:query => {:include_my_retweet => 'false', :include_entities => 'false'}).to_return(:body => fixture('status_no_full_name.json'))
+        stub_get('/1.1/statuses/show/55709764298092545.json').with(:query => {:include_my_retweet => 'false', :include_entities => 'false', :trim_user => 'true'}).to_return(:body => fixture('status_no_full_name.json'))
       end
       it 'has the correct output' do
         @cli.status('55709764298092545')
@@ -3155,7 +3155,7 @@ Location     Blowfish Sushi To Die For
     end
     context 'with no place' do
       before do
-        stub_get('/1.1/statuses/show/55709764298092545.json').with(:query => {:include_my_retweet => 'false', :include_entities => 'false'}).to_return(:body => fixture('status_no_place.json'))
+        stub_get('/1.1/statuses/show/55709764298092545.json').with(:query => {:include_my_retweet => 'false', :include_entities => 'false', :trim_user => 'true'}).to_return(:body => fixture('status_no_place.json'))
         stub_request(:get, 'http://maps.google.com/maps/api/geocode/json').with(:query => {:latlng => '37.75963095,-122.410067', :sensor => 'false'}).to_return(:body => fixture('geo.json'), :headers => {:content_type => 'application/json; charset=UTF-8'})
       end
       it 'has the correct output' do
@@ -3173,7 +3173,7 @@ Location     San Francisco, CA, United States
       end
       context 'with no city' do
         before do
-          stub_get('/1.1/statuses/show/55709764298092545.json').with(:query => {:include_my_retweet => 'false', :include_entities => 'false'}).to_return(:body => fixture('status_no_place.json'))
+          stub_get('/1.1/statuses/show/55709764298092545.json').with(:query => {:include_my_retweet => 'false', :include_entities => 'false', :trim_user => 'true'}).to_return(:body => fixture('status_no_place.json'))
           stub_request(:get, 'http://maps.google.com/maps/api/geocode/json').with(:query => {:latlng => '37.75963095,-122.410067', :sensor => 'false'}).to_return(:body => fixture('geo_no_city.json'), :headers => {:content_type => 'application/json; charset=UTF-8'})
         end
         it 'has the correct output' do
@@ -3192,7 +3192,7 @@ Location     CA, United States
       end
       context 'with no state' do
         before do
-          stub_get('/1.1/statuses/show/55709764298092545.json').with(:query => {:include_my_retweet => 'false', :include_entities => 'false'}).to_return(:body => fixture('status_no_place.json'))
+          stub_get('/1.1/statuses/show/55709764298092545.json').with(:query => {:include_my_retweet => 'false', :include_entities => 'false', :trim_user => 'true'}).to_return(:body => fixture('status_no_place.json'))
           stub_request(:get, 'http://maps.google.com/maps/api/geocode/json').with(:query => {:latlng => '37.75963095,-122.410067', :sensor => 'false'}).to_return(:body => fixture('geo_no_state.json'), :headers => {:content_type => 'application/json; charset=UTF-8'})
         end
         it 'has the correct output' do
@@ -3288,12 +3288,12 @@ ID                 Posted at     Screen name  Text                           ...
 
   describe '#timeline' do
     before do
-      stub_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '20', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'))
+      stub_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '20', :include_entities => 'false', :trim_user => 'true'}).to_return(:body => fixture('statuses.json'))
     end
     context 'without user' do
       it 'requests the correct resource' do
         @cli.timeline
-        expect(a_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '20', :include_entities => 'false'})).to have_been_made
+        expect(a_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '20', :include_entities => 'false', :trim_user => 'true'})).to have_been_made
       end
       it 'has the correct output' do
         @cli.timeline
@@ -3410,11 +3410,11 @@ ID,Posted at,Screen name,Text
     context '--decode-uris' do
       before do
         @cli.options = @cli.options.merge('decode_uris' => true)
-        stub_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '20', :include_entities => 'true'}).to_return(:body => fixture('statuses.json'))
+        stub_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '20', :include_entities => 'true', :trim_user => 'true'}).to_return(:body => fixture('statuses.json'))
       end
       it 'requests the correct resource' do
         @cli.timeline
-        expect(a_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '20', :include_entities => 'true'})).to have_been_made
+        expect(a_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '20', :include_entities => 'true', :trim_user => 'true'})).to have_been_made
       end
       it 'decodes URLs' do
         @cli.timeline
@@ -3424,21 +3424,21 @@ ID,Posted at,Screen name,Text
     context '--exclude=replies' do
       before do
         @cli.options = @cli.options.merge('exclude' => 'replies')
-        stub_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '20', :exclude_replies => 'true', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'))
+        stub_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '20', :exclude_replies => 'true', :include_entities => 'false', :trim_user => 'true'}).to_return(:body => fixture('statuses.json'))
       end
       it 'excludes replies' do
         @cli.timeline
-        expect(a_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '20', :exclude_replies => 'true', :include_entities => 'false'})).to have_been_made
+        expect(a_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '20', :exclude_replies => 'true', :include_entities => 'false', :trim_user => 'true'})).to have_been_made
       end
     end
     context '--exclude=retweets' do
       before do
         @cli.options = @cli.options.merge('exclude' => 'retweets')
-        stub_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '20', :include_rts => 'false', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'))
+        stub_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '20', :include_rts => 'false', :include_entities => 'false', :trim_user => 'true'}).to_return(:body => fixture('statuses.json'))
       end
       it 'excludes retweets' do
         @cli.timeline
-        expect(a_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '20', :include_rts => 'false', :include_entities => 'false'})).to have_been_made
+        expect(a_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '20', :include_rts => 'false', :include_entities => 'false', :trim_user => 'true'})).to have_been_made
       end
     end
     context '--long' do
@@ -3506,95 +3506,95 @@ ID                   Posted at     Screen name       Text
     context '--max-id' do
       before do
         @cli.options = @cli.options.merge('max_id' => 244_104_558_433_951_744)
-        stub_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '20', :max_id => '244104558433951744', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'))
+        stub_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '20', :max_id => '244104558433951744', :include_entities => 'false', :trim_user => 'true'}).to_return(:body => fixture('statuses.json'))
       end
       it 'requests the correct resource' do
         @cli.timeline
-        expect(a_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '20', :max_id => '244104558433951744', :include_entities => 'false'})).to have_been_made
+        expect(a_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '20', :max_id => '244104558433951744', :include_entities => 'false', :trim_user => 'true'})).to have_been_made
       end
     end
     context '--number' do
       before do
-        stub_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '1', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'))
-        stub_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '200', :include_entities => 'false'}).to_return(:body => fixture('200_statuses.json'))
-        stub_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '1', :max_id => '265500541700956160', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'))
+        stub_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '1', :include_entities => 'false', :trim_user => 'true'}).to_return(:body => fixture('statuses.json'))
+        stub_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '200', :include_entities => 'false', :trim_user => 'true'}).to_return(:body => fixture('200_statuses.json'))
+        stub_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '1', :max_id => '265500541700956160', :include_entities => 'false', :trim_user => 'true'}).to_return(:body => fixture('statuses.json'))
       end
       it 'limits the number of results to 1' do
         @cli.options = @cli.options.merge('number' => 1)
         @cli.timeline
-        expect(a_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '1', :include_entities => 'false'})).to have_been_made
+        expect(a_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '1', :include_entities => 'false', :trim_user => 'true'})).to have_been_made
       end
       it 'limits the number of results to 201' do
         @cli.options = @cli.options.merge('number' => 201)
         @cli.timeline
-        expect(a_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '200', :include_entities => 'false'})).to have_been_made
-        expect(a_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '1', :max_id => '265500541700956160', :include_entities => 'false'})).to have_been_made
+        expect(a_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '200', :include_entities => 'false', :trim_user => 'true'})).to have_been_made
+        expect(a_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '1', :max_id => '265500541700956160', :include_entities => 'false', :trim_user => 'true'})).to have_been_made
       end
     end
     context '--since-id' do
       before do
         @cli.options = @cli.options.merge('since_id' => 244_104_558_433_951_744)
-        stub_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '20', :since_id => '244104558433951744', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'))
+        stub_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '20', :since_id => '244104558433951744', :include_entities => 'false', :trim_user => 'true'}).to_return(:body => fixture('statuses.json'))
       end
       it 'requests the correct resource' do
         @cli.timeline
-        expect(a_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '20', :since_id => '244104558433951744', :include_entities => 'false'})).to have_been_made
+        expect(a_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '20', :since_id => '244104558433951744', :include_entities => 'false', :trim_user => 'true'})).to have_been_made
       end
     end
     context 'with a user passed' do
       before do
-        stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '20', :screen_name => 'sferik', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'))
+        stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '20', :screen_name => 'sferik', :include_entities => 'false', :trim_user => 'true'}).to_return(:body => fixture('statuses.json'))
       end
       it 'requests the correct resource' do
         @cli.timeline('sferik')
-        expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '20', :screen_name => 'sferik', :include_entities => 'false'})).to have_been_made
+        expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '20', :screen_name => 'sferik', :include_entities => 'false', :trim_user => 'true'})).to have_been_made
       end
       context '--id' do
         before do
           @cli.options = @cli.options.merge('id' => true)
-          stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '20', :user_id => '7505382', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'))
+          stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '20', :user_id => '7505382', :include_entities => 'false', :trim_user => 'true'}).to_return(:body => fixture('statuses.json'))
         end
         it 'requests the correct resource' do
           @cli.timeline('7505382')
-          expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '20', :user_id => '7505382', :include_entities => 'false'})).to have_been_made
+          expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '20', :user_id => '7505382', :include_entities => 'false', :trim_user => 'true'})).to have_been_made
         end
       end
       context '--max-id' do
         before do
           @cli.options = @cli.options.merge('max_id' => 244_104_558_433_951_744)
-          stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '20', :screen_name => 'sferik', :max_id => '244104558433951744', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'))
+          stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '20', :screen_name => 'sferik', :max_id => '244104558433951744', :include_entities => 'false', :trim_user => 'true'}).to_return(:body => fixture('statuses.json'))
         end
         it 'requests the correct resource' do
           @cli.timeline('sferik')
-          expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '20', :screen_name => 'sferik', :max_id => '244104558433951744', :include_entities => 'false'})).to have_been_made
+          expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '20', :screen_name => 'sferik', :max_id => '244104558433951744', :include_entities => 'false', :trim_user => 'true'})).to have_been_made
         end
       end
       context '--number' do
         before do
-          stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '1', :screen_name => 'sferik', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'))
-          stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :screen_name => 'sferik', :include_entities => 'false'}).to_return(:body => fixture('200_statuses.json'))
-          stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '1', :screen_name => 'sferik', :max_id => '265500541700956160', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'))
+          stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '1', :screen_name => 'sferik', :include_entities => 'false', :trim_user => 'true'}).to_return(:body => fixture('statuses.json'))
+          stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :screen_name => 'sferik', :include_entities => 'false', :trim_user => 'true'}).to_return(:body => fixture('200_statuses.json'))
+          stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '1', :screen_name => 'sferik', :max_id => '265500541700956160', :include_entities => 'false', :trim_user => 'true'}).to_return(:body => fixture('statuses.json'))
         end
         it 'limits the number of results to 1' do
           @cli.options = @cli.options.merge('number' => 1)
           @cli.timeline('sferik')
-          expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '1', :screen_name => 'sferik', :include_entities => 'false'})).to have_been_made
+          expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '1', :screen_name => 'sferik', :include_entities => 'false', :trim_user => 'true'})).to have_been_made
         end
         it 'limits the number of results to 201' do
           @cli.options = @cli.options.merge('number' => 201)
           @cli.timeline('sferik')
-          expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :screen_name => 'sferik', :include_entities => 'false'})).to have_been_made
-          expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '1', :screen_name => 'sferik', :max_id => '265500541700956160', :include_entities => 'false'})).to have_been_made
+          expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :screen_name => 'sferik', :include_entities => 'false', :trim_user => 'true'})).to have_been_made
+          expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '1', :screen_name => 'sferik', :max_id => '265500541700956160', :include_entities => 'false', :trim_user => 'true'})).to have_been_made
         end
       end
       context '--since-id' do
         before do
           @cli.options = @cli.options.merge('since_id' => 244_104_558_433_951_744)
-          stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '20', :screen_name => 'sferik', :since_id => '244104558433951744', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'))
+          stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '20', :screen_name => 'sferik', :since_id => '244104558433951744', :include_entities => 'false', :trim_user => 'true'}).to_return(:body => fixture('statuses.json'))
         end
         it 'requests the correct resource' do
           @cli.timeline('sferik')
-          expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '20', :screen_name => 'sferik', :since_id => '244104558433951744', :include_entities => 'false'})).to have_been_made
+          expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '20', :screen_name => 'sferik', :since_id => '244104558433951744', :include_entities => 'false', :trim_user => 'true'})).to have_been_made
         end
       end
     end

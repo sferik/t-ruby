@@ -30,24 +30,16 @@ module T
     method_option 'long', :aliases => '-l', :type => :boolean, :desc => 'Output in long format.'
     method_option 'number', :aliases => '-n', :type => :numeric, :default => DEFAULT_NUM_RESULTS
     method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
+    method_option 'show_user', :aliases => '-U', :type => :boolean, :desc => 'Include user profile with each tweet'
     def all(query)
       count = options['number'] || DEFAULT_NUM_RESULTS
       opts = {:count => MAX_SEARCH_RESULTS}
+      opts[:trim_user] = !options['show_user']
       opts[:include_entities] = !!options['decode_uris']
       tweets = client.search(query, opts).take(count)
       tweets.reverse! if options['reverse']
-      if options['csv']
-        require 'csv'
-        say TWEET_HEADINGS.to_csv unless tweets.empty?
-        tweets.each do |tweet|
-          say [tweet.id, csv_formatted_time(tweet), tweet.user.screen_name, decode_full_text(tweet, options['decode_uris'])].to_csv
-        end
-      elsif options['long']
-        array = tweets.collect do |tweet|
-          [tweet.id, ls_formatted_time(tweet), "@#{tweet.user.screen_name}", decode_full_text(tweet, options['decode_uris']).gsub(/\n+/, ' ')]
-        end
-        format = options['format'] || TWEET_HEADINGS.size.times.collect { '%s' }
-        print_table_with_headings(array, TWEET_HEADINGS, format)
+      if options['csv'] || options['long'] || options['show_user']
+        options['show_user'] == true ? print_tweets_with_users(tweets) : print_tweets(tweets)
       else
         say unless tweets.empty?
         tweets.each do |tweet|
@@ -62,11 +54,14 @@ module T
     method_option 'id', :aliases => '-i', :type => :boolean, :desc => 'Specify user via ID instead of screen name.'
     method_option 'long', :aliases => '-l', :type => :boolean, :desc => 'Output in long format.'
     method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
+    method_option 'show_user', :aliases => '-U', :type => :boolean, :desc => 'Include user profile with each tweet'
     def favorites(*args)
       query = args.pop
       user = args.pop
       opts = {:count => MAX_NUM_RESULTS}
       opts[:include_entities] = !!options['decode_uris']
+      # :trim_user is omitted by default when making the call, to be consistent with current spec/search_spec.rb
+      opts[:trim_user] = !options['show_user'] if options['show_user'] 
       if user
         require 't/core_ext/string'
         user = options['id'] ? user.to_i : user.strip_ats
@@ -83,7 +78,8 @@ module T
       tweets = tweets.select do |tweet|
         /#{query}/i.match(tweet.full_text)
       end
-      print_tweets(tweets)
+      
+      options['show_user'] == true ? print_tweets_with_users(tweets) : print_tweets(tweets)
     end
     map %w[faves] => :favorites
 
@@ -93,10 +89,13 @@ module T
     method_option 'id', :aliases => '-i', :type => :boolean, :desc => 'Specify user via ID instead of screen name.'
     method_option 'long', :aliases => '-l', :type => :boolean, :desc => 'Output in long format.'
     method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
+    method_option 'show_user', :aliases => '-U', :type => :boolean, :desc => 'Include user profile with each tweet'
     def list(user_list, query)
       owner, list_name = extract_owner(user_list, options)
       opts = {:count => MAX_NUM_RESULTS}
       opts[:include_entities] = !!options['decode_uris']
+      # :trim_user is omitted by default when making the call, to be consistent with current spec/search_spec.rb
+      opts[:trim_user] = !options['show_user'] if options['show_user'] 
       tweets = collect_with_max_id do |max_id|
         opts[:max_id] = max_id unless max_id.nil?
         client.list_timeline(owner, list_name, opts)
@@ -104,7 +103,8 @@ module T
       tweets = tweets.select do |tweet|
         /#{query}/i.match(tweet.full_text)
       end
-      print_tweets(tweets)
+      
+      options['show_user'] == true ? print_tweets_with_users(tweets) : print_tweets(tweets)
     end
 
     desc 'mentions QUERY', 'Returns Tweets mentioning you that match the specified query.'
@@ -112,9 +112,11 @@ module T
     method_option 'decode_uris', :aliases => '-d', :type => :boolean, :desc => 'Decodes t.co URLs into their original form.'
     method_option 'long', :aliases => '-l', :type => :boolean, :desc => 'Output in long format.'
     method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
+    method_option 'show_user', :aliases => '-U', :type => :boolean, :desc => 'Include user profile with each tweet'
     def mentions(query)
-      opts = {:count => MAX_NUM_RESULTS}
+      opts = {:count => MAX_NUM_RESULTS, :trim_user => true}
       opts[:include_entities] = !!options['decode_uris']
+      opts[:trim_user] = !options['show_user']
       tweets = collect_with_max_id do |max_id|
         opts[:max_id] = max_id unless max_id.nil?
         client.mentions(opts)
@@ -122,7 +124,8 @@ module T
       tweets = tweets.select do |tweet|
         /#{query}/i.match(tweet.full_text)
       end
-      print_tweets(tweets)
+
+      options['show_user'] == true ? print_tweets_with_users(tweets) : print_tweets(tweets)
     end
     map %w[replies] => :mentions
 
@@ -132,11 +135,13 @@ module T
     method_option 'id', :aliases => '-i', :type => :boolean, :desc => 'Specify user via ID instead of screen name.'
     method_option 'long', :aliases => '-l', :type => :boolean, :desc => 'Output in long format.'
     method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
+    method_option 'show_user', :aliases => '-U', :type => :boolean, :desc => 'Include user profile with each tweet'
     def retweets(*args)
       query = args.pop
       user = args.pop
-      opts = {:count => MAX_NUM_RESULTS}
+      opts = {:count => MAX_NUM_RESULTS, :trim_user => true}
       opts[:include_entities] = !!options['decode_uris']
+      opts[:trim_user] = !options['show_user']
       if user
         require 't/core_ext/string'
         user = options['id'] ? user.to_i : user.strip_ats
@@ -153,7 +158,9 @@ module T
       tweets = tweets.select do |tweet|
         /#{query}/i.match(tweet.full_text)
       end
-      print_tweets(tweets)
+      
+      options['show_user'] == true ? print_tweets_with_users(tweets) : print_tweets(tweets)
+
     end
     map %w[rts] => :retweets
 
@@ -165,11 +172,13 @@ module T
     method_option 'long', :aliases => '-l', :type => :boolean, :desc => 'Output in long format.'
     method_option 'max_id', :aliases => '-m', :type => :numeric, :desc => 'Returns only the results with an ID less than the specified ID.'
     method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
+    method_option 'show_user', :aliases => '-U', :type => :boolean, :desc => 'Include user profile with each tweet'
     method_option 'since_id', :aliases => '-s', :type => :numeric, :desc => 'Returns only the results with an ID greater than the specified ID.'
     def timeline(*args)
       query = args.pop
       user = args.pop
       opts = {:count => MAX_NUM_RESULTS}
+      opts[:trim_user] = !options['show_user']
       opts[:exclude_replies] = true if options['exclude'] == 'replies'
       opts[:include_entities] = !!options['decode_uris']
       opts[:include_rts] = false if options['exclude'] == 'retweets'
@@ -191,7 +200,9 @@ module T
       tweets = tweets.select do |tweet|
         /#{query}/i.match(tweet.full_text)
       end
-      print_tweets(tweets)
+      
+      options['show_user'] == true ? print_tweets_with_users(tweets) : print_tweets(tweets)
+
     end
     map %w[tl] => :timeline
 

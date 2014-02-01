@@ -204,18 +204,18 @@ module T
 
     desc 'does_contain [USER/]LIST USER', 'Find out whether a list contains a user.'
     method_option 'id', :aliases => '-i', :type => :boolean, :desc => 'Specify user via ID instead of screen name.'
-    def does_contain(list, user = nil)
-      owner, list = extract_owner(list, options)
+    def does_contain(user_list, user = nil)
+      owner, list_name = extract_owner(user_list, options)
       if user.nil?
         user = @rcfile.active_profile[0]
       else
         require 't/core_ext/string'
         user = options['id'] ? client.user(user.to_i).screen_name : user.strip_ats
       end
-      if client.list_member?(owner, list, user)
-        say "Yes, #{list} contains @#{user}."
+      if client.list_member?(owner, list_name, user)
+        say "Yes, #{list_name} contains @#{user}."
       else
-        abort "No, #{list} does not contain @#{user}."
+        abort "No, #{list_name} does not contain @#{user}."
       end
     end
     map %w[dc doescontain] => :does_contain
@@ -527,7 +527,7 @@ module T
       require 'launchy'
       if options['id']
         user = client.user(user.to_i)
-        open_or_print(user.website, :dry_run => options['display-uri'])
+        open_or_print(user.uri, :dry_run => options['display-uri'])
       elsif options['status']
         status = client.status(user.to_i, :include_my_retweet => false)
         open_or_print(status.uri, :dry_run => options['display-uri'])
@@ -609,6 +609,25 @@ module T
       print_tweets(tweets)
     end
     map %w[rts] => :retweets
+
+    desc 'retweets_of_me', "Returns the #{DEFAULT_NUM_RESULTS} most recent Tweets of the authenticated user that have been retweeted by others."
+    method_option 'csv', :aliases => '-c', :type => :boolean, :desc => 'Output in CSV format.'
+    method_option 'decode_uris', :aliases => '-d', :type => :boolean, :desc => 'Decodes t.co URLs into their original form.'
+    method_option 'id', :aliases => '-i', :type => :boolean, :desc => 'Specify user via ID instead of screen name.'
+    method_option 'long', :aliases => '-l', :type => :boolean, :desc => 'Output in long format.'
+    method_option 'number', :aliases => '-n', :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => 'Limit the number of results.'
+    method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
+    method_option 'reverse', :aliases => '-r', :type => :boolean, :desc => 'Reverse the order of the sort.'
+    def retweets_of_me(user = nil)
+      count = options['number'] || DEFAULT_NUM_RESULTS
+      opts = {}
+      opts[:include_entities] = !!options['decode_uris']
+      tweets = collect_with_count(count) do |count_opts|
+        client.retweets_of_me(count_opts.merge(opts))
+      end
+      print_tweets(tweets)
+    end
+    map %w[retweetsofme] => :retweets_of_me
 
     desc 'ruler', 'Prints a 140-character ruler'
     method_option 'indent', :aliases => '-i', :type => :numeric, :default => 0, :desc => 'The number of space to print before the ruler.'
@@ -838,6 +857,16 @@ module T
       end
     end
     map %w[user] => :whois
+
+    desc 'whoami', 'Retrieves profile information for the authenticated user.'
+    method_option 'csv', :aliases => '-c', :type => :boolean, :desc => 'Output in CSV format.'
+    method_option 'decode_uris', :aliases => '-d', :type => :boolean, :desc => 'Decodes t.co URLs into their original form.'
+    method_option 'long', :aliases => '-l', :type => :boolean, :desc => 'Output in long format.'
+    method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
+    def whoami
+      user = @rcfile.active_profile[0]
+      whois(user)
+    end
 
     desc 'delete SUBCOMMAND ...ARGS', 'Delete Tweets, Direct Messages, etc.'
     subcommand 'delete', T::Delete

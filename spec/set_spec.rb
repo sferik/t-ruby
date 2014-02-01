@@ -3,7 +3,7 @@ require 'helper'
 
 describe T::Set do
 
-  before :each do
+  before do
     T::RCFile.instance.path = fixture_path + '/.trc'
     @set = T::Set.new
     @old_stderr = $stderr
@@ -12,7 +12,7 @@ describe T::Set do
     $stdout = StringIO.new
   end
 
-  after :each do
+  after do
     T::RCFile.instance.reset
     $stderr = @old_stderr
     $stdout = @old_stdout

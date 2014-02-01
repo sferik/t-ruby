@@ -3,7 +3,7 @@ require 'helper'
 
 describe T::RCFile do
 
-  after :each do
+  after do
     T::RCFile.instance.reset
     File.delete(project_path + '/tmp/trc') if File.exist?(project_path + '/tmp/trc')
   end

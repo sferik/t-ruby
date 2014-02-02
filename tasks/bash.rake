@@ -57,19 +57,33 @@ module BashCompletion
             options_str = options(cmd).join(' ')
             subcmds = subcommands(cmd)
 
-            subcommands_cases = subcmds.map do |sn|
-                "#{sn}) completions='#{options_str}' ;;"
-            end.join("\n")
+            opts_args = cmd.options.map do |_, opt|
+              if cases = opt.enum
+                %Q[#{option_str(opt).gsub(/ /, '|')})
+                   completions='#{cases.join(' ')}' ;;]
+              end
+            end.compact
 
             if subcmds.empty?
-                "#{cmd.name}) completions='#{options_str}';;"
-            else
                 %Q[#{cmd.name})
                     case "$prev" in
-                    #{cmd.name}) completions='#{subcmds.join(' ')}';;
-                    #{subcommands_cases}
-                    *) completions='#{options_str}';;
+                    #{opts_args.join("\n") unless opts_args.empty?}
+                    #{global_options_args}
+                    *) completions='#{options_str}' ;;
                     esac;;\n]
+            else
+              subcommands_cases = subcmds.map do |sn|
+                  "#{sn}) completions='#{options_str}' ;;"
+              end.join("\n")
+
+              %Q[#{cmd.name})
+                  case "$prev" in
+                  #{cmd.name}) completions='#{subcmds.join(' ')}';;
+                  #{subcommands_cases}
+                  #{opts_args.join("\n") unless opts_args.empty?}
+                  #{global_options_args}
+                  *) completions='#{options_str}';;
+                  esac;;\n]
             end
 
         end.join("\n")
@@ -77,15 +91,15 @@ module BashCompletion
     end
 
     def options(cmd)
+        cmd.options.map { |_, o| option_str(o) }.concat(global_options)
+    end
 
-        cmd.options.map(&:last).map do |o|
-            if o.aliases
-                "--#{o.name} #{o.aliases.map{ |a| '-' + a }.join(' ')}"
-            else
-                "--#{o.name}"
-            end
-        end.concat(global_options)
-
+    def option_str(o)
+      if o.aliases
+          "--#{o.name} #{o.aliases.join(' ')}"
+      else
+          "--#{o.name}"
+      end
     end
 
     def commands
@@ -93,7 +107,11 @@ module BashCompletion
     end
 
     def global_options
-      %w(-H --host -C --color -U --no-ssl -P --profile)
+      %w(-H --host -C --color -P --profile)
+    end
+
+    def global_options_args
+      "-C|--color) completions='auto never' ;;\n"
     end
 
     def subcommands(cmd=nil)

@@ -16,6 +16,6 @@ end
 
 Dir.glob('tasks/*.rake').each { |r| import r }
 
-task :release => 'completion:zsh'
+task :release => ['completion:zsh', 'completion:bash']
 task :test => :spec
 task :default => [:spec, :rubocop]

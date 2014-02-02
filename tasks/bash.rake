@@ -38,9 +38,7 @@ module BashCompletion
 
       case "$topcmd" in
         #{comp_cases}
-        *)
-        completions="$COMMANDS"
-        ;;
+        *) completions="$COMMANDS" ;;
       esac
 
       COMPREPLY=( $( compgen -W "$completions" -- $cur ))
@@ -60,18 +58,19 @@ module BashCompletion
             subcmds = subcommands(cmd)
 
             subcommands_cases = subcmds.map do |sn|
-                "#{sn})\n\t\tcompletions='#{options_str}'\n\t\t;;"
+                "#{sn}) completions='#{options_str}' ;;"
             end.join("\n")
 
-
-            %Q[#{cmd.name})
-        case "$prev" in
-            #{cmd.name})
-                completions='#{subcmds.join(' ')}';;
-            #{subcommands_cases}
-            *)
-                completions='#{options_str}';;
-        esac;;\n]
+            if subcmds.empty?
+                "#{cmd.name}) completions='#{options_str}';;"
+            else
+                %Q[#{cmd.name})
+                    case "$prev" in
+                    #{cmd.name}) completions='#{subcmds.join(' ')}';;
+                    #{subcommands_cases}
+                    *) completions='#{options_str}';;
+                    esac;;\n]
+            end
 
         end.join("\n")
 
@@ -94,7 +93,7 @@ module BashCompletion
     end
 
     def global_options
-      %w(-H --host --color -U --no-ssl -P --profile)
+      %w(-H --host -C --color -U --no-ssl -P --profile)
     end
 
     def subcommands(cmd=nil)

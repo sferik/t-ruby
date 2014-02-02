@@ -253,12 +253,12 @@ used by `t`:
 ![List](https://github.com/sferik/t/raw/master/screenshots/list.png)
 
 ## Shell completion
-If you're running Zsh, you can source one of the [bundled completion
+If you're running Zsh or Bash, you can source one of the [bundled completion
 files][completion] to get shell completion for `t` commands, subcommands, and
 flags.
 
-Don't run Zsh? Why not [contribute][] completion support for your favorite
-shell?
+Don't run Zsh or Bash? Why not [contribute][] completion support for your
+favorite shell?
 
 [completion]: https://github.com/sferik/t/tree/master/etc
 [contribute]: https://github.com/sferik/t/blob/master/CONTRIBUTING.md

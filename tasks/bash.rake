@@ -10,10 +10,10 @@ namespace :completion do
     File.open(file_path, 'w') { |f| f.write BashCompletion.generate }
 
     git_status = %x[git status -s]
-    if !!git_status[%r{M #{output_path}}]
-    cmd = "git add #{output_path} && git commit -m 'Updating Bash completion'"
-    result = system cmd
-    fail("Could not commit changes") unless result
+    if git_status[/M #{output_path}/]
+      cmd = "git add #{output_path} && git commit -m 'Updating Bash completion'"
+      result = system cmd
+      fail('Could not commit changes') unless result
     end
   end
 end

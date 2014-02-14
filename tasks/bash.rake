@@ -9,12 +9,12 @@ namespace :completion do
     puts "Compiling bash completion to #{output_path}"
     File.open(file_path, 'w') { |f| f.write BashCompletion.generate }
 
-#    git_status = %x[git status -s]
-#    if !!git_status[%r{M #{output_path}}]
-#      cmd = "git add #{output_path} && git commit -m 'Updating Bash completion'"
-#      result = system cmd
-#      fail("Could not commit changes") unless result
-#    end
+    git_status = %x[git status -s]
+    if !!git_status[%r{M #{output_path}}]
+    cmd = "git add #{output_path} && git commit -m 'Updating Bash completion'"
+    result = system cmd
+    fail("Could not commit changes") unless result
+    end
   end
 end
 

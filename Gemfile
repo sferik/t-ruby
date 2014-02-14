@@ -6,7 +6,6 @@ gem 'jruby-openssl', :platforms => :jruby
 group :development do
   gem 'guard-rspec'
   gem 'pry'
-  gem 'pry-rescue'
   platforms :ruby_19, :ruby_20 do
     gem 'pry-debugger'
     gem 'pry-stack_explorer'

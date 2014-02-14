@@ -844,7 +844,7 @@ module T
         array << ['Since', "#{ls_formatted_time(user, :created_at, false)} (#{time_ago_in_words(user.created_at)} ago)"]
         array << ['Last update', "#{decode_full_text(user.status, options['decode_uris']).gsub(/\n+/, ' ')} (#{time_ago_in_words(user.status.created_at)} ago)"] unless user.status.nil?
         array << ['Screen name', "@#{user.screen_name}"]
-        array << [user.verified ? 'Name (Verified)' : 'Name', user.name] unless user.name.nil?
+        array << [user.verified ? 'Name (Verified)' : 'Name', user.name] unless user.name.nil? # rubocop:disable BlockNesting
         array << ['Tweets', number_with_delimiter(user.statuses_count)]
         array << ['Favorites', number_with_delimiter(user.favorites_count)]
         array << ['Listed', number_with_delimiter(user.listed_count)]

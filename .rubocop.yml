@@ -11,13 +11,23 @@ ParameterLists:
   Max: 3
   CountKeywordArgs: true
 
+# Thor makes it hard to write short classes
+ClassLength:
+  Enabled: false
+
+LineLength:
+  Enabled: false
+
+# Thor makes it hard to write short methods
+MethodLength:
+  Enabled: false
+
 # Avoid more than `Max` levels of nesting.
 BlockNesting:
-  Max: 3
+  Max: 2
 
-# This threashold should be lowered back down to 6 over time
 CyclomaticComplexity:
-  Max: 11
+  Max: 11 # TODO: Lower to 6
 
 # Align with the style guide.
 CollectionMethods:
@@ -26,10 +36,6 @@ CollectionMethods:
     reduce:   'inject'
     find:     'detect'
     find_all: 'select'
-
-# Limit line length
-LineLength:
-  Enabled: false
 
 # Disable documentation checking until a class needs to be documented once
 Documentation:
@@ -60,14 +66,6 @@ EmptyLinesAroundAccessModifier:
 
 # Trailing whitespace is required to test output
 TrailingWhitespace:
-  Enabled: false
-
-# Thor makes it hard to write short classes
-ClassLength:
-  Enabled: false
-
-# Thor makes it hard to write short methods
-MethodLength:
   Enabled: false
 
 # Align ends correctly

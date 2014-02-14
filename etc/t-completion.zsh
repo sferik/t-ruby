@@ -56,6 +56,7 @@ _t (){
       "users[Returns a list of users you specify.]" \
       "version[Show version.]" \
       "whois[Retrieves profile information for the user.]" \
+      "whoami[Retrieves profile information for the authenticated user.]" \
       "delete[Delete Tweets, Direct Messages, etc.]" \
       "list[Do various things with lists.]" \
       "search[Search through Tweets.]" \
@@ -397,6 +398,15 @@ _t_whois() {
     $t_general_options && ret=0
 }
 
+_t_whoami() {
+  _arguments \
+    "(-c --csv)"{-c,--csv}"[Output in CSV format.]" \
+    "(-d --decode_uris)"{-d,--decode_uris}"[Decodes t.co URLs into their original form.]" \
+    "(-l --long)"{-l,--long}"[Output in long format.]" \
+    "(-a --relative_dates)"{-a,--relative_dates}"[Show relative dates.]" \
+    $t_general_options && ret=0
+}
+
 
 __t_delete_arguments() {
   _args=(block
@@ -450,6 +460,7 @@ __t_set_arguments() {
 
 __t_stream_arguments() {
   _args=(all
+    list
     matrix
     search
     timeline

@@ -28,6 +28,7 @@ module T
     method_option 'csv', :aliases => '-c', :type => :boolean, :desc => 'Output in CSV format.'
     method_option 'decode_uris', :aliases => '-d', :type => :boolean, :desc => 'Decodes t.co URLs into their original form.'
     method_option 'long', :aliases => '-l', :type => :boolean, :desc => 'Output in long format.'
+    method_option 'no-retweets', :type => :boolean, :desc => 'Exclude retweets'
     def all
       streaming_client.before_request do
         if options['csv']
@@ -42,6 +43,7 @@ module T
       end
       streaming_client.sample do |tweet|
         next unless tweet.is_a?(Twitter::Tweet)
+        next if options['no-retweets'] && tweet.retweet?
         if options['csv']
           print_csv_tweet(tweet)
         elsif options['long']
@@ -60,6 +62,7 @@ module T
     method_option 'decode_uris', :aliases => '-d', :type => :boolean, :desc => 'Decodes t.co URLs into their original form.'
     method_option 'id', :aliases => '-i', :type => :boolean, :desc => 'Specify user via ID instead of screen name.'
     method_option 'long', :aliases => '-l', :type => :boolean, :desc => 'Output in long format.'
+    method_option 'no-retweets', :type => :boolean, :desc => 'Exclude retweets'
     method_option 'reverse', :aliases => '-r', :type => :boolean, :desc => 'Reverse the order of the sort.'
     def list(user_list)
       owner, list_name = extract_owner(user_list, options)
@@ -74,6 +77,7 @@ module T
       user_ids = client.list_members(owner, list_name).collect(&:id)
       streaming_client.filter(:follow => user_ids.join(',')) do |tweet|
         next unless tweet.is_a?(Twitter::Tweet)
+        next if options['no-retweets'] && tweet.retweet?
         if options['csv']
           print_csv_tweet(tweet)
         elsif options['long']
@@ -100,6 +104,7 @@ module T
     method_option 'csv', :aliases => '-c', :type => :boolean, :desc => 'Output in CSV format.'
     method_option 'decode_uris', :aliases => '-d', :type => :boolean, :desc => 'Decodes t.co URLs into their original form.'
     method_option 'long', :aliases => '-l', :type => :boolean, :desc => 'Output in long format.'
+    method_option 'no-retweets', :type => :boolean, :desc => 'Exclude retweets'
     def search(keyword, *keywords)
       keywords.unshift(keyword)
       require 't/search'
@@ -112,6 +117,7 @@ module T
       end
       streaming_client.filter(:track => keywords.join(',')) do |tweet|
         next unless tweet.is_a?(Twitter::Tweet)
+        next if options['no-retweets'] && tweet.retweet?
         if options['csv']
           print_csv_tweet(tweet)
         elsif options['long']
@@ -129,6 +135,7 @@ module T
     method_option 'csv', :aliases => '-c', :type => :boolean, :desc => 'Output in CSV format.'
     method_option 'decode_uris', :aliases => '-d', :type => :boolean, :desc => 'Decodes t.co URLs into their original form.'
     method_option 'long', :aliases => '-l', :type => :boolean, :desc => 'Output in long format.'
+    method_option 'no-retweets', :type => :boolean, :desc => 'Exclude retweets'
     def timeline
       require 't/cli'
       streaming_client.before_request do
@@ -140,6 +147,7 @@ module T
       end
       streaming_client.user do |tweet|
         next unless tweet.is_a?(Twitter::Tweet)
+        next if options['no-retweets'] && tweet.retweet?
         if options['csv']
           print_csv_tweet(tweet)
         elsif options['long']
@@ -157,6 +165,7 @@ module T
     method_option 'csv', :aliases => '-c', :type => :boolean, :desc => 'Output in CSV format.'
     method_option 'decode_uris', :aliases => '-d', :type => :boolean, :desc => 'Decodes t.co URLs into their original form.'
     method_option 'long', :aliases => '-l', :type => :boolean, :desc => 'Output in long format.'
+    method_option 'no-retweets', :type => :boolean, :desc => 'Exclude retweets'
     def users(user_id, *user_ids)
       user_ids.unshift(user_id)
       user_ids.collect!(&:to_i)
@@ -173,6 +182,7 @@ module T
       end
       streaming_client.filter(:follow => user_ids.join(',')) do |tweet|
         next unless tweet.is_a?(Twitter::Tweet)
+        next if options['no-retweets'] && tweet.retweet?
         if options['csv']
           print_csv_tweet(tweet)
         elsif options['long']

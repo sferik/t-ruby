@@ -25,6 +25,7 @@ module T
 
     DEFAULT_NUM_RESULTS = 20
     DIRECT_MESSAGE_HEADINGS = ['ID', 'Posted at', 'Screen name', 'Text']
+    MAX_SEARCH_RESULTS = 100
     TREND_HEADINGS = ['WOEID', 'Parent ID', 'Type', 'Name', 'Country']
 
     check_unknown_options!
@@ -499,7 +500,13 @@ module T
     end
 
     desc 'matrix', 'Unfortunately, no one can be told what the Matrix is. You have to see it for yourself.'
-    def_delegator :"T::Stream.new", :matrix # rubocop:disable SymbolName
+    def matrix
+      opts = {:count => MAX_SEARCH_RESULTS, :include_entities => false}
+      tweets = client.search('lang:ja', opts)
+      tweets.each do |tweet|
+        say(tweet.text.gsub(/[^\u3000\u3040-\u309f]/, '').reverse, [:bold, :green, :on_black], false)
+      end
+    end
 
     desc 'mentions', "Returns the #{DEFAULT_NUM_RESULTS} most recent Tweets mentioning you."
     method_option 'csv', :aliases => '-c', :type => :boolean, :desc => 'Output in CSV format.'

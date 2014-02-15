@@ -130,15 +130,24 @@ describe T::Stream do
 
   describe '#matrix' do
     before do
-      allow(@streaming_client).to receive(:sample).and_yield(@status)
+      stub_get('/1.1/search/tweets.json').with(:query => {:q => 'lang:ja', :count => 100, :include_entities => 'false'}).to_return(:body => fixture('empty_cursor.json'))
     end
     it 'outputs the tweet status' do
+      allow(@streaming_client).to receive(:before_request).and_return
+      allow(@streaming_client).to receive(:sample).and_yield(@status)
       expect(@stream).to receive(:say).with(any_args)
       @stream.matrix
     end
-    it 'invokes Twitter::Streaming::Client.sample' do
+    it 'invokes Twitter::Streaming::Client#sample' do
+      allow(@streaming_client).to receive(:before_request).and_return
+      allow(@streaming_client).to receive(:sample).and_yield(@status)
       expect(@streaming_client).to receive(:sample)
       @stream.matrix
+    end
+    it 'requests the correct resource' do
+      allow(@streaming_client).to receive(:before_request).and_yield
+      @stream.matrix
+      expect(a_get('/1.1/search/tweets.json').with(:query => {:q => 'lang:ja', :count => 100, :include_entities => 'false'})).to have_been_made
     end
   end
 

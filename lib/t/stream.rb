@@ -94,9 +94,14 @@ module T
 
     desc 'matrix', 'Unfortunately, no one can be told what the Matrix is. You have to see it for yourself.'
     def matrix
+      require 't/cli'
+      streaming_client.before_request do
+        cli = T::CLI.new
+        cli.matrix
+      end
       streaming_client.sample(:language => 'ja') do |tweet|
         next unless tweet.is_a?(Twitter::Tweet)
-        say(tweet.full_text.gsub("\n", '').reverse, [:bold, :green, :on_black])
+        say(tweet.text.gsub(/[^\u3000\u3040-\u309f]/, '').reverse, [:bold, :green, :on_black], false)
       end
     end
 

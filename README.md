@@ -2,11 +2,11 @@
 [icon]: https://github.com/sferik/t/raw/master/icon/t.png
 
 # Twitter CLI
-[![Gem Version](https://badge.fury.io/rb/t.png)][gem]
-[![Build Status](https://secure.travis-ci.org/sferik/t.png?branch=master)][travis]
-[![Dependency Status](https://gemnasium.com/sferik/t.png?travis)][gemnasium]
-[![Coverage Status](https://coveralls.io/repos/sferik/t/badge.png?branch=master)][coveralls]
-[![Gittip](http://img.shields.io/gittip/gems.png)][gittip]
+[![Gem Version](http://img.shields.io/gem/v/t.svg)][gem]
+[![Build Status](http://img.shields.io/travis/sferik/t.svg)][travis]
+[![Dependency Status](http://img.shields.io/gemnasium/sferik/t.svg)][gemnasium]
+[![Coverage Status](http://img.shields.io/coveralls/sferik/t.svg)][coveralls]
+[![Gittip](http://img.shields.io/gittip/gems.svg)][gittip]
 
 [gem]: https://rubygems.org/gems/t
 [travis]: http://travis-ci.org/sferik/t

@@ -56,14 +56,13 @@ module T
       if @rcfile.empty?
         say "Welcome! Before you can use t, you'll first need to register an"
         say 'application with Twitter. Just follow the steps below:'
-        say '  1. Sign in to the Twitter Developer site and click'
-        say "     \"Create a new application\"."
+        say '  1. Sign in to the Twitter Application Management site and click'
+        say '     "Create New App".'
         say '  2. Complete the required fields and submit the form.'
         say '     Note: Your application must have a unique name.'
-        say "     We recommend: \"<your handle>/t\"."
-        say '  3. Go to the Settings tab of your application, and change the'
-        say "     Access setting to \"Read, Write and Access direct messages\"."
-        say '  4. Go to the Details tab to view the consumer key and secret,'
+        say '  3. Go to the Permissions tab of your application, and change the'
+        say '     Access setting to "Read, Write and Access direct messages".'
+        say '  4. Go to the API Keys tab to view the consumer key and secret,'
         say "     which you'll need to copy and paste below when prompted."
         say
         ask 'Press [Enter] to open the Twitter Developer site.'
@@ -79,9 +78,9 @@ module T
         say
       end
       require 'launchy'
-      open_or_print('https://dev.twitter.com/apps', :dry_run => options['display-uri'])
-      key = ask 'Enter your consumer key:'
-      secret = ask 'Enter your consumer secret:'
+      open_or_print('https://apps.twitter.com', :dry_run => options['display-uri'])
+      key = ask 'Enter your API key:'
+      secret = ask 'Enter your API secret:'
       consumer = OAuth::Consumer.new(key, secret, :site => Twitter::REST::Client::ENDPOINT)
       request_token = consumer.get_request_token
       uri = generate_authorize_uri(consumer, request_token)
@@ -89,7 +88,7 @@ module T
       say 'In a moment, you will be directed to the Twitter app authorization page.'
       say 'Perform the following steps to complete the authorization process:'
       say '  1. Sign in to Twitter.'
-      say "  2. Press \"Authorize app\"."
+      say '  2. Press "Authorize app".'
       say '  3. Copy and paste the supplied PIN below when prompted.'
       say
       ask 'Press [Enter] to open the Twitter app authorization page.'

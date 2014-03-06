@@ -14,7 +14,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'bundler', '~> 1.0'
   spec.author = 'Erik Michaels-Ober'
   spec.bindir = 'bin'
-  spec.cert_chain = %w[certs/sferik.pem]
   spec.description = %q{A command-line power tool for Twitter.}
   spec.email = 'sferik@gmail.com'
   spec.executables = %w[t]
@@ -28,7 +27,6 @@ Gem::Specification.new do |spec|
   spec.require_paths = %w[lib]
   spec.required_ruby_version = '>= 1.9.2'
   spec.required_rubygems_version = '>= 1.3.5'
-  spec.signing_key = File.expand_path('~/.gem/private_key.pem') if $PROGRAM_NAME =~ /gem\z/
   spec.summary = %q{CLI for Twitter}
   spec.test_files = Dir.glob('spec/**/*')
   spec.version = T::Version

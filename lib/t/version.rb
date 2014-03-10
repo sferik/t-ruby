@@ -1,7 +1,7 @@
 module T
   class Version
     MAJOR = 2
-    MINOR = 4
+    MINOR = 5
     PATCH = 0
     PRE = nil
 

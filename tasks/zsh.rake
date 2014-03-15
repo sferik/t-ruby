@@ -9,7 +9,7 @@ namespace :completion do
     puts "Compiling zsh completion to #{output_path}"
     File.open(file_path, 'w') { |f| f.write zsh_completion }
 
-    git_status = %x[git status -s]
+    git_status = %x(git status -s)
     if git_status[/M #{output_path}/]
       cmd = "git add #{output_path} && git commit -m 'Updating Zsh completion'"
       result = system cmd

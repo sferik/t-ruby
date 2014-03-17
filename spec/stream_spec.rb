@@ -73,7 +73,7 @@ describe T::Stream do
 
   describe '#list' do
     before do
-      stub_get('/1.1/lists/members.json').with(:query => {:cursor => '-1', :owner_screen_name => 'testcli', :slug => 'presidents'}).to_return(:body => fixture('users_list.json'))
+      stub_get('/1.1/lists/members.json').with(:query => {:cursor => '-1', :owner_screen_name => 'testcli', :slug => 'presidents'}).to_return(:body => fixture('users_list.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
     end
     it 'prints the tweet status' do
       expect(@stream).to receive(:print_message)
@@ -130,7 +130,7 @@ describe T::Stream do
 
   describe '#matrix' do
     before do
-      stub_get('/1.1/search/tweets.json').with(:query => {:q => 'lang:ja', :count => 100, :include_entities => 'false'}).to_return(:body => fixture('empty_cursor.json'))
+      stub_get('/1.1/search/tweets.json').with(:query => {:q => 'lang:ja', :count => 100, :include_entities => 'false'}).to_return(:body => fixture('empty_cursor.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
     end
     it 'outputs the tweet status' do
       allow(@streaming_client).to receive(:before_request).and_return

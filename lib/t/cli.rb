@@ -652,12 +652,12 @@ module T
       opts[:include_entities] = !!options['decode_uris']
       status = client.status(status_id.to_i, opts)
       location = if status.place?
-        if status.place.name && status.place.attributes && status.place.attributes[:street_address] && status.place.attributes[:locality] && status.place.attributes[:region] && status.place.country
-          [status.place.name, status.place.attributes[:street_address], status.place.attributes[:locality], status.place.attributes[:region], status.place.country].join(', ')
-        elsif status.place.name && status.place.attributes && status.place.attributes[:locality] && status.place.attributes[:region] && status.place.country
-          [status.place.name, status.place.attributes[:locality], status.place.attributes[:region], status.place.country].join(', ')
-        elsif status.place.full_name && status.place.attributes && status.place.attributes[:region] && status.place.country
-          [status.place.full_name, status.place.attributes[:region], status.place.country].join(', ')
+        if status.place.name && status.place.attributes && status.place.attributes['street_address'] && status.place.attributes['locality'] && status.place.attributes['region'] && status.place.country
+          [status.place.name, status.place.attributes['street_address'], status.place.attributes['locality'], status.place.attributes['region'], status.place.country].join(', ')
+        elsif status.place.name && status.place.attributes && status.place.attributes['locality'] && status.place.attributes['region'] && status.place.country
+          [status.place.name, status.place.attributes['locality'], status.place.attributes['region'], status.place.country].join(', ')
+        elsif status.place.full_name && status.place.attributes && status.place.attributes['region'] && status.place.country
+          [status.place.full_name, status.place.attributes['region'], status.place.country].join(', ')
         elsif status.place.full_name && status.place.country
           [status.place.full_name, status.place.country].join(', ')
         elsif status.place.full_name

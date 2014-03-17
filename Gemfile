@@ -1,6 +1,8 @@
 source 'https://rubygems.org'
 
 gem 'rake'
+gem 'twitter', :git => 'https://github.com/sferik/twitter.git', :branch => 'http'
+gem 'http', :git => 'https://github.com/tarcieri/http.git'
 gem 'jruby-openssl', :platforms => :jruby
 
 group :development do

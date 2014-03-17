@@ -74,5 +74,5 @@ def fixture(file)
 end
 
 def status_from_fixture(file)
-  Twitter::Status.new(JSON.parse(fixture(file).read, :symbolize_names => true))
+  Twitter::Status.new(JSON.parse(fixture(file).read))
 end

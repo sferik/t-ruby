@@ -889,6 +889,77 @@ module T
     desc 'stream SUBCOMMAND ...ARGS', 'Commands for streaming Tweets.'
     subcommand 'stream', T::Stream
 
+    desc 'place PLACE_ID', 'Retrives detailed information about a Place.'
+    def place(place_id)
+      place = client.place place_id
+      if place
+        puts place
+      else
+        say "Could not find a Place with ID: #{place_id}"
+      end
+    end
+
+    desc 'my_location', 'Retrieves Place information for your geolocated IP'
+    def my_location
+      puts ip_location
+    end
+    
+    desc 'places "NAME" [ADDRESS]', 'Retrives places with similar names near your IP or the provided address.'
+    def places(name, *address)
+      address = address.join ' '
+      if address.length
+        # say "Searching geolocation for address: #{address}"
+        require 'geokit'
+        geoloc = Geokit::Geocoders::MultiGeocoder.geocode address
+      else
+        geoloc = ip_location
+      end
+      if geoloc.success
+        # say "Found coords [#{geoloc.lat}, #{geoloc.lng}] for address: #{address}"
+        places = client.similar_places :name => name, :lat => geoloc.lat, :long => geoloc.lng
+        say "Found #{places.count} like '#{name}' near '#{address}'..."
+        say "------------------------"
+        places.each do |p|
+          row = []
+          row << ['ID', p.id]
+          row << ['Type', p.place_type]
+          row << ['Name', p.full_name]
+          print_table row
+          say "------------------------"
+        end
+      else
+        say "Could not geolocate address: #{address}!"
+      end
+    end
+    
+    desc 'nearby_places [ADDRESS]', 'Retrieves nearby places using an address or your IP geolocation if no address is provided.'
+    def nearby_places(*address)
+      address = address.join ' '
+      if address.length
+        # say "Searching geolocation for address: #{address}"
+        require 'geokit'
+        geoloc = Geokit::Geocoders::MultiGeocoder.geocode address
+      else
+        geoloc = ip_location
+      end
+      if geoloc.success
+        # say "Found coords [#{geoloc.lat}, #{geoloc.lng}] for address: #{address}"
+        places = client.reverse_geocode :lat => geoloc.lat, :long => geoloc.lng
+        say "Found #{places.count} places near '#{address}'..."
+        say "------------------------"
+        places.each do |p|
+          row = []
+          row << ['ID', p.id]
+          row << ['Type', p.place_type]
+          row << ['Name', p.full_name]
+          print_table row
+          say "------------------------"
+        end
+      else
+        say "Could not geolocate address: #{address}!"
+      end
+    end
+
   private
 
     def extract_mentioned_screen_names(text)
@@ -923,19 +994,19 @@ module T
 
     def add_location!(options, opts)
       if options['location']
-        lat, lng = options['location'] == 'location' ? [location.lat, location.lng] : options['location'].split(',').collect(&:to_f)
+        lat, lng = options['location'] == 'location' ? [ip_location.lat, ip_location.lng] : options['location'].split(',').collect(&:to_f)
         opts.merge!(:lat => lat, :long => lng)
       end
     end
 
-    def location
-      return @location if @location
+    def ip_location
+      return @ip_location if @ip_location
       require 'geokit'
       require 'open-uri'
       ip_address = Kernel.open('http://checkip.dyndns.org/') do |body|
         /(?:\d{1,3}\.){3}\d{1,3}/.match(body.read)[0]
       end
-      @location = Geokit::Geocoders::MultiGeocoder.geocode(ip_address)
+      @ip_location = Geokit::Geocoders::MultiGeocoder.geocode(ip_address)
     end
 
     def reverse_geocode(geo)

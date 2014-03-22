@@ -67,7 +67,7 @@ module T
         array << ['Created at', "#{ls_formatted_time(list, :created_at, false)} (#{time_ago_in_words(list.created_at)} ago)"]
         array << ['Members', number_with_delimiter(list.member_count)]
         array << ['Subscribers', number_with_delimiter(list.subscriber_count)]
-        array << ['Status', list.following ? 'Following' : 'Not following']
+        array << ['Status', list.following? ? 'Following' : 'Not following']
         array << ['Mode', list.mode]
         array << ['URL', list.uri]
         print_table(array)

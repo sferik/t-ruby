@@ -609,6 +609,16 @@ ID          Posted at     Screen name  Text
           @cli.does_follow('20', '428004849')
           expect($stdout.string.chomp).to eq 'Yes, @sferik follows @sferik.'
         end
+        it 'cannot follow yourself' do
+          expect do
+            @cli.does_follow 'testcli'
+          end.to raise_error(SystemExit)
+        end
+        it 'cannot check same account' do
+          expect do
+            @cli.does_follow('sferik', 'sferik')
+          end.to raise_error(SystemExit)
+        end
       end
     end
     context 'false' do

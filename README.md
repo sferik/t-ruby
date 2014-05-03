@@ -112,8 +112,11 @@ TASK` to get help for a specific command.
 
 **Note**: If your tweet includes special characters (e.g. `!`), make sure to
 wrap it in single quotes instead of double quotes, so those characters are not
-interpreted by your shell. (However, if you use single quotes, your Tweet
-obviously can't contain any apostrophes.)
+interpreted by your shell.
+If you use single quotes, your Tweet obviously can't contain any
+apostrophes unless you prefix them with a backslash `\`:
+
+    t update 'I\'m tweeting from the command line. Isn\'t that special?'
 
 #### Retrieve detailed information about a Twitter user
     t whois @sferik

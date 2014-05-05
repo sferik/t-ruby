@@ -36,7 +36,7 @@ module T
       end
       return collection if tweets.nil? || tweets == previous || page >= MAX_PAGE
       collection += tweets
-      tweets.empty? ? collection.flatten.uniq : collect_with_page(collection, page + 1, tweets, &block)
+      tweets.empty? ? collection.flatten : collect_with_page(collection, page + 1, tweets, &block)
     end
   end
 end

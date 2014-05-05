@@ -30,7 +30,7 @@ module T
       end.flatten.compact
     end
 
-    def collect_with_page(collection = ::Set.new, page = 1, previous = nil, &block)
+    def collect_with_page(collection = ::Set.new, page = 1, previous = nil, &block) # rubocop:disable ParameterLists
       tweets = retryable(:tries => 3, :on => Twitter::Error, :sleep => 0) do
         block.call(page)
       end

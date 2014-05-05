@@ -816,10 +816,8 @@ ID                  Posted at     Screen name  Text
     end
     it 'requests the correct resource' do
       @search.users('Erik')
-      1.upto(50).each do |page|
-        expect(a_get('/1.1/users/search.json').with(:query => {:page => '1', :q => 'Erik'})).to have_been_made
-        expect(a_get('/1.1/users/search.json').with(:query => {:page => '2', :q => 'Erik'})).to have_been_made
-      end
+      expect(a_get('/1.1/users/search.json').with(:query => {:page => '1', :q => 'Erik'})).to have_been_made
+      expect(a_get('/1.1/users/search.json').with(:query => {:page => '2', :q => 'Erik'})).to have_been_made
     end
     it 'has the correct output' do
       @search.users('Erik')

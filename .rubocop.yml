@@ -1,5 +1,5 @@
 AllCops:
-  Includes:
+  Include:
     - 'Gemfile'
     - 'Rakefile'
     - 'tasks/*.rake'
@@ -33,6 +33,7 @@ CyclomaticComplexity:
 CollectionMethods:
   PreferredMethods:
     map:      'collect'
+    map!:     'collect!'
     reduce:   'inject'
     find:     'detect'
     find_all: 'select'

@@ -7,7 +7,7 @@ module Kernel
     Integer(arg, base)
   end
 
-  def NilClass(arg) # rubocop:disable MethodName
+  def NilClass(_) # rubocop:disable MethodName
     nil
   end
 end

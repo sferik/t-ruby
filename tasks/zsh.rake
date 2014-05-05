@@ -65,7 +65,7 @@ def option_completion(thor_option)
 end
 
 def command_function_arguments(command)
-  body = command.options.collect { |name, option | option_completion(option) }
+  body = command.options.collect { |_, option | option_completion(option) }
   body << '$t_general_options && ret=0'
 
   body.join("\n    ")
@@ -79,7 +79,7 @@ def task_completions
 end
 
 def commands
-  T::CLI.tasks.reject { |name, task| T::CLI.subcommands.include?(name) }.collect(&:last)
+  T::CLI.tasks.reject { |name, _| T::CLI.subcommands.include?(name) }.collect(&:last)
 end
 
 def command_function(command)
@@ -98,7 +98,7 @@ end
 
 def subcommands
   T::CLI.tasks.
-    select { |name, task| T::CLI.subcommands.include?(name) }.
+    select { |name, _| T::CLI.subcommands.include?(name) }.
     collect(&:last)
 end
 

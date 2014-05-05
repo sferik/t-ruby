@@ -44,7 +44,7 @@ module T
       @rcfile.profiles.each do |profile|
         say profile[0]
         profile[1].keys.each do |key|
-          say "  #{key}#{@rcfile.active_profile[0] == profile[0] && @rcfile.active_profile[1] == key ? " (active)" : nil}"
+          say "  #{key}#{@rcfile.active_profile[0] == profile[0] && @rcfile.active_profile[1] == key ? ' (active)' : nil}"
         end
       end
     end
@@ -619,12 +619,11 @@ module T
     desc 'retweets_of_me', "Returns the #{DEFAULT_NUM_RESULTS} most recent Tweets of the authenticated user that have been retweeted by others."
     method_option 'csv', :aliases => '-c', :type => :boolean, :desc => 'Output in CSV format.'
     method_option 'decode_uris', :aliases => '-d', :type => :boolean, :desc => 'Decodes t.co URLs into their original form.'
-    method_option 'id', :aliases => '-i', :type => :boolean, :desc => 'Specify user via ID instead of screen name.'
     method_option 'long', :aliases => '-l', :type => :boolean, :desc => 'Output in long format.'
     method_option 'number', :aliases => '-n', :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => 'Limit the number of results.'
     method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
     method_option 'reverse', :aliases => '-r', :type => :boolean, :desc => 'Reverse the order of the sort.'
-    def retweets_of_me(user = nil)
+    def retweets_of_me
       count = options['number'] || DEFAULT_NUM_RESULTS
       opts = {}
       opts[:include_entities] = !!options['decode_uris']
@@ -902,7 +901,7 @@ module T
 
       return [] if text !~ at_signs
 
-      text.to_s.scan(valid_mentions).collect do |before, at, screen_name|
+      text.to_s.scan(valid_mentions).collect do |_, _, screen_name|
         screen_name
       end
     end

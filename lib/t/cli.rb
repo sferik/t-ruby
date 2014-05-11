@@ -413,10 +413,10 @@ module T
       end
       follower_ids = Thread.new { client.follower_ids(user).to_a }
       following_ids = Thread.new { client.friend_ids(user).to_a }
-      disciple_ids = (follower_ids.value - following_ids.value)
+      groupie_ids = (follower_ids.value - following_ids.value)
       require 'retryable'
       users = retryable(:tries => 3, :on => Twitter::Error, :sleep => 0) do
-        client.users(disciple_ids)
+        client.users(groupie_ids)
       end
       print_users(users)
     end

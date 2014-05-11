@@ -2433,6 +2433,22 @@ ID                   Posted at     Screen name       Text
     end
   end
 
+  describe '#reach' do
+    before do
+      stub_get('/1.1/statuses/show/55709764298092545.json').with(:query => {:include_my_retweet => 'false'}).to_return(:body => fixture('status.json'))
+      stub_get('/1.1/statuses/retweets/55709764298092545.json').to_return(:body => fixture('statuses.json'))
+    end
+    it 'requests the correct resources' do
+      @cli.reach('55709764298092545')
+      expect(a_get('/1.1/statuses/show/55709764298092545.json').with(:query => {:include_my_retweet => 'false'})).to have_been_made
+      expect(a_get('/1.1/statuses/retweets/55709764298092545.json')).to have_been_made
+    end
+    it 'has the correct output' do
+      @cli.reach('55709764298092545')
+      expect($stdout.string.split("\n").first).to eq '20,132,702'
+    end
+  end
+
   describe '#reply' do
     before do
       @cli.options = @cli.options.merge('profile' => fixture_path + '/.trc', 'location' => nil)

@@ -543,6 +543,21 @@ module T
       end
     end
 
+    desc 'reach TWEET_ID', 'Shows the maximum number of people who may have seen the specified tweet in their timeline.'
+    def reach(tweet_id)
+      require 't/core_ext/string'
+      thread1 = Thread.new do
+        status = client.status(tweet_id.to_i, :include_my_retweet => false)
+        status.user.followers_count
+      end
+      thread2 = Thread.new do
+        retweets = client.retweets(tweet_id.to_i)
+        retweets.collect { |tweet| tweet.user.followers_count }.inject(0) { |m, e| m + e }
+      end
+      reach = thread1.value + thread2.value
+      say number_with_delimiter(reach)
+    end
+
     desc 'reply TWEET_ID MESSAGE', 'Post your Tweet as a reply directed at another person.'
     method_option 'all', :aliases => '-a', :type => :boolean, :desc => 'Reply to all users mentioned in the Tweet.'
     method_option 'location', :aliases => '-l', :type => :string, :default => nil, :desc => "Add location information. If the optional 'latitude,longitude' parameter is not supplied, looks up location by IP address."

@@ -546,16 +546,22 @@ module T
     desc 'reach TWEET_ID', 'Shows the maximum number of people who may have seen the specified tweet in their timeline.'
     def reach(tweet_id)
       require 't/core_ext/string'
-      thread1 = Thread.new do
-        status = client.status(tweet_id.to_i, :include_my_retweet => false)
-        status.user.followers_count
+      require 'set'
+      status_thread = Thread.new { client.status(tweet_id.to_i, :include_my_retweet => false) }
+      threads = []
+      client.retweeters_ids(tweet_id.to_i).each do |retweeter_id|
+        threads << Thread.new(retweeter_id) do |user_id|
+          client.follower_ids(user_id).to_a
+        end
       end
-      thread2 = Thread.new do
-        retweets = client.retweets(tweet_id.to_i)
-        retweets.collect { |tweet| tweet.user.followers_count }.inject(0) { |m, e| m + e }
+      status = status_thread.value
+      threads << Thread.new(status.user.id) do |user_id|
+        client.follower_ids(user_id).to_a
       end
-      reach = thread1.value + thread2.value
-      say number_with_delimiter(reach)
+      reach = ::Set.new
+      threads.each { |thread| reach += thread.value }
+      reach.delete(status.user.id)
+      say number_with_delimiter(reach.size)
     end
 
     desc 'reply TWEET_ID MESSAGE', 'Post your Tweet as a reply directed at another person.'

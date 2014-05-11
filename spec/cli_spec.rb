@@ -2435,17 +2435,25 @@ ID                   Posted at     Screen name       Text
 
   describe '#reach' do
     before do
-      stub_get('/1.1/statuses/show/55709764298092545.json').with(:query => {:include_my_retweet => 'false'}).to_return(:body => fixture('status.json'))
-      stub_get('/1.1/statuses/retweets/55709764298092545.json').to_return(:body => fixture('statuses.json'))
+      stub_get('/1.1/statuses/show/55709764298092545.json').with(:query => {:include_my_retweet => 'false'}).to_return(:body => fixture('status.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
+      stub_get('/1.1/statuses/retweeters/ids.json').with(:query => {:id => '55709764298092545', :cursor => '-1'}).to_return(:body => fixture('ids_list.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
+      stub_get('/1.1/statuses/retweeters/ids.json').with(:query => {:id => '55709764298092545', :cursor => '1305102810874389703'}).to_return(:body => fixture('ids_list2.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
+      stub_get('/1.1/followers/ids.json').with(:query => {:cursor => '-1', :user_id => '7505382'}).to_return(:body => fixture('followers_ids.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
+      stub_get('/1.1/followers/ids.json').with(:query => {:cursor => '-1', :user_id => '20009713'}).to_return(:body => fixture('followers_ids.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
+      stub_get('/1.1/followers/ids.json').with(:query => {:cursor => '-1', :user_id => '14100886'}).to_return(:body => fixture('followers_ids.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
     end
     it 'requests the correct resources' do
       @cli.reach('55709764298092545')
       expect(a_get('/1.1/statuses/show/55709764298092545.json').with(:query => {:include_my_retweet => 'false'})).to have_been_made
-      expect(a_get('/1.1/statuses/retweets/55709764298092545.json')).to have_been_made
+      expect(a_get('/1.1/statuses/retweeters/ids.json').with(:query => {:id => '55709764298092545', :cursor => '-1'})).to have_been_made
+      expect(a_get('/1.1/statuses/retweeters/ids.json').with(:query => {:id => '55709764298092545', :cursor => '1305102810874389703'})).to have_been_made
+      expect(a_get('/1.1/followers/ids.json').with(:query => {:cursor => '-1', :user_id => '7505382'})).to have_been_made
+      expect(a_get('/1.1/followers/ids.json').with(:query => {:cursor => '-1', :user_id => '20009713'})).to have_been_made
+      expect(a_get('/1.1/followers/ids.json').with(:query => {:cursor => '-1', :user_id => '14100886'})).to have_been_made
     end
     it 'has the correct output' do
       @cli.reach('55709764298092545')
-      expect($stdout.string.split("\n").first).to eq '20,132,702'
+      expect($stdout.string.split("\n").first).to eq '2'
     end
   end
 

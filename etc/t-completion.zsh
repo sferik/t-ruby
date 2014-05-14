@@ -40,7 +40,9 @@ _t (){
       "lists[Returns the lists created by a user.]" \
       "matrix[Unfortunately, no one can be told what the Matrix is. You have to see it for yourself.]" \
       "mentions[Returns the 20 most recent Tweets mentioning you.]" \
+      "mute[Mute users.]" \
       "open[Opens that user\'s profile in a web browser.]" \
+      "reach[Shows the maximum number of people who may have seen the specified tweet in their timeline.]" \
       "reply[Post your Tweet as a reply directed at another person.]" \
       "report_spam[Report users for spam.]" \
       "retweet[Sends Tweets to your followers.]" \
@@ -261,11 +263,22 @@ _t_mentions() {
     $t_general_options && ret=0
 }
 
+_t_mute() {
+  _arguments \
+    "(-i --id)"{-i,--id}"[Specify input as Twitter user IDs instead of screen names.]" \
+    $t_general_options && ret=0
+}
+
 _t_open() {
   _arguments \
     "(-d --display-uri)"{-d,--display-uri}"[Display the requested URL instead of attempting to open it.]" \
     "(-i --id)"{-i,--id}"[Specify user via ID instead of screen name.]" \
     "(-s --status)"{-s,--status}"[Specify input as a Twitter status ID instead of a screen name.]" \
+    $t_general_options && ret=0
+}
+
+_t_reach() {
+  _arguments \
     $t_general_options && ret=0
 }
 
@@ -303,7 +316,6 @@ _t_retweets_of_me() {
   _arguments \
     "(-c --csv)"{-c,--csv}"[Output in CSV format.]" \
     "(-d --decode_uris)"{-d,--decode_uris}"[Decodes t.co URLs into their original form.]" \
-    "(-i --id)"{-i,--id}"[Specify user via ID instead of screen name.]" \
     "(-l --long)"{-l,--long}"[Output in long format.]" \
     "(-n --number)"{-n,--number}"[Limit the number of results.]" \
     "(-a --relative_dates)"{-a,--relative_dates}"[Show relative dates.]" \
@@ -413,6 +425,7 @@ __t_delete_arguments() {
     dm
     favorite
     list
+    mute
     status
     help
   )

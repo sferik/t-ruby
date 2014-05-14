@@ -10,7 +10,7 @@
         topcmd=${COMP_WORDS[1]}
         prev=${COMP_WORDS[COMP_CWORD-1]}
 
-        COMMANDS='accounts authorize block direct_messages direct_messages_sent dm does_contain does_follow favorite favorites follow followings followings_following followers friends groupies intersection leaders lists matrix mentions open reply report_spam retweet retweets retweets_of_me ruler status timeline trends trend_locations unfollow update users version whois whoami delete list search set stream'
+        COMMANDS='accounts authorize block direct_messages direct_messages_sent dm does_contain does_follow favorite favorites follow followings followings_following followers friends groupies intersection leaders lists matrix mentions mute open reach reply report_spam retweet retweets retweets_of_me ruler status timeline trends trend_locations unfollow update users version whois whoami delete list search set stream'
 
         case "$topcmd" in
           accounts)
@@ -191,12 +191,28 @@ mentions)
               *) completions='--csv -c --decode_uris -d --long -l --number -n --relative_dates -a --reverse -r -H --host -C --color -P --profile' ;;
               esac;;
 
+mute)
+              case "$prev" in
+              
+              -C|--color) completions='auto never' ;;
+
+              *) completions='--id -i -H --host -C --color -P --profile' ;;
+              esac;;
+
 open)
               case "$prev" in
               
               -C|--color) completions='auto never' ;;
 
               *) completions='--display-uri -d --id -i --status -s -H --host -C --color -P --profile' ;;
+              esac;;
+
+reach)
+              case "$prev" in
+              
+              -C|--color) completions='auto never' ;;
+
+              *) completions='-H --host -C --color -P --profile' ;;
               esac;;
 
 reply)
@@ -236,7 +252,7 @@ retweets_of_me)
               
               -C|--color) completions='auto never' ;;
 
-              *) completions='--csv -c --decode_uris -d --id -i --long -l --number -n --relative_dates -a --reverse -r -H --host -C --color -P --profile' ;;
+              *) completions='--csv -c --decode_uris -d --long -l --number -n --relative_dates -a --reverse -r -H --host -C --color -P --profile' ;;
               esac;;
 
 ruler)
@@ -332,11 +348,12 @@ whoami)
 
 delete)
               case "$prev" in
-              delete) completions='block dm favorite list status help';;
+              delete) completions='block dm favorite list mute status help';;
               block) completions='-H --host -C --color -P --profile' ;;
 dm) completions='-H --host -C --color -P --profile' ;;
 favorite) completions='-H --host -C --color -P --profile' ;;
 list) completions='-H --host -C --color -P --profile' ;;
+mute) completions='-H --host -C --color -P --profile' ;;
 status) completions='-H --host -C --color -P --profile' ;;
 help) completions='-H --host -C --color -P --profile' ;;
               

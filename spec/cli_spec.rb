@@ -937,15 +937,15 @@ ID                   Posted at     Screen name       Text
     end
     context 'one user' do
       before do
-        stub_get('/1.1/account/verify_credentials.json').to_return(:body => fixture('sferik.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
-        stub_get('/1.1/friends/ids.json').with(:query => {:cursor => '-1', :screen_name => 'sferik'}).to_return(:body => fixture('friends_ids.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
+        stub_get('/1.1/account/verify_credentials.json').with(:query => {:include_entities => 'false', :skip_status => 'true'}).to_return(:body => fixture('sferik.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
+        stub_get('/1.1/friends/ids.json').with(:query => {:cursor => '-1', :user_id => '7505382'}).to_return(:body => fixture('friends_ids.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
         stub_post('/1.1/users/lookup.json').with(:body => {:screen_name => 'sferik,pengwynn'}).to_return(:body => fixture('users.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
         stub_post('/1.1/friendships/create.json').with(:body => {:user_id => '14100886'}).to_return(:body => fixture('sferik.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
       end
       it 'requests the correct resource' do
         @cli.follow('sferik', 'pengwynn')
-        expect(a_get('/1.1/account/verify_credentials.json')).to have_been_made
-        expect(a_get('/1.1/friends/ids.json').with(:query => {:cursor => '-1', :screen_name => 'sferik'})).to have_been_made
+        expect(a_get('/1.1/account/verify_credentials.json').with(:query => {:include_entities => 'false', :skip_status => 'true'})).to have_been_made
+        expect(a_get('/1.1/friends/ids.json').with(:query => {:cursor => '-1', :user_id => '7505382'})).to have_been_made
         expect(a_post('/1.1/users/lookup.json').with(:body => {:screen_name => 'sferik,pengwynn'})).to have_been_made
         expect(a_post('/1.1/friendships/create.json').with(:body => {:user_id => '14100886'})).to have_been_made
       end
@@ -956,26 +956,26 @@ ID                   Posted at     Screen name       Text
       context '--id' do
         before do
           @cli.options = @cli.options.merge('id' => true)
-          stub_get('/1.1/friends/ids.json').with(:query => {:cursor => '-1', :screen_name => 'sferik'}).to_return(:body => fixture('friends_ids.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
+          stub_get('/1.1/friends/ids.json').with(:query => {:cursor => '-1', :user_id => '7505382'}).to_return(:body => fixture('friends_ids.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
           stub_post('/1.1/users/lookup.json').with(:body => {:user_id => '7505382,14100886'}).to_return(:body => fixture('users.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
           stub_post('/1.1/friendships/create.json').with(:body => {:user_id => '14100886'}).to_return(:body => fixture('sferik.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
         end
         it 'requests the correct resource' do
           @cli.follow('7505382', '14100886')
-          expect(a_get('/1.1/friends/ids.json').with(:query => {:cursor => '-1', :screen_name => 'sferik'})).to have_been_made
+          expect(a_get('/1.1/friends/ids.json').with(:query => {:cursor => '-1', :user_id => '7505382'})).to have_been_made
           expect(a_post('/1.1/users/lookup.json').with(:body => {:user_id => '7505382,14100886'})).to have_been_made
           expect(a_post('/1.1/friendships/create.json').with(:body => {:user_id => '14100886'})).to have_been_made
         end
       end
       context 'Twitter is down' do
         it 'retries 3 times and then raise an error' do
-          stub_get('/1.1/friends/ids.json').with(:query => {:cursor => '-1', :screen_name => 'sferik'}).to_return(:body => fixture('friends_ids.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
+          stub_get('/1.1/friends/ids.json').with(:query => {:cursor => '-1', :user_id => '7505382'}).to_return(:body => fixture('friends_ids.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
           stub_post('/1.1/users/lookup.json').with(:body => {:screen_name => 'sferik,pengwynn'}).to_return(:body => fixture('users.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
           stub_post('/1.1/friendships/create.json').with(:body => {:user_id => '14100886'}).to_return(:status => 502, :headers => {:content_type => 'application/json; charset=utf-8'})
           expect do
             @cli.follow('sferik', 'pengwynn')
           end.to raise_error(Twitter::Error::BadGateway)
-          expect(a_get('/1.1/friends/ids.json').with(:query => {:cursor => '-1', :screen_name => 'sferik'})).to have_been_made.times(3)
+          expect(a_get('/1.1/friends/ids.json').with(:query => {:cursor => '-1', :user_id => '7505382'})).to have_been_made.times(3)
           expect(a_post('/1.1/users/lookup.json').with(:body => {:screen_name => 'sferik,pengwynn'})).to have_been_made.times(3)
           expect(a_post('/1.1/friendships/create.json').with(:body => {:user_id => '14100886'})).to have_been_made.times(3)
         end
@@ -985,14 +985,14 @@ ID                   Posted at     Screen name       Text
 
   describe '#followings' do
     before do
-      stub_get('/1.1/account/verify_credentials.json').to_return(:body => fixture('sferik.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
-      stub_get('/1.1/friends/ids.json').with(:query => {:cursor => '-1', :screen_name => 'sferik'}).to_return(:body => fixture('friends_ids.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
+      stub_get('/1.1/account/verify_credentials.json').with(:query => {:include_entities => 'false', :skip_status => 'true'}).to_return(:body => fixture('sferik.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
+      stub_get('/1.1/friends/ids.json').with(:query => {:cursor => '-1', :user_id => '7505382'}).to_return(:body => fixture('friends_ids.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
       stub_post('/1.1/users/lookup.json').with(:body => {:user_id => '7505382'}).to_return(:body => fixture('users.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
     end
     it 'requests the correct resource' do
       @cli.followings
-      expect(a_get('/1.1/account/verify_credentials.json')).to have_been_made
-      expect(a_get('/1.1/friends/ids.json').with(:query => {:cursor => '-1', :screen_name => 'sferik'})).to have_been_made
+      expect(a_get('/1.1/account/verify_credentials.json').with(:query => {:include_entities => 'false', :skip_status => 'true'})).to have_been_made
+      expect(a_get('/1.1/friends/ids.json').with(:query => {:cursor => '-1', :user_id => '7505382'})).to have_been_made
       expect(a_post('/1.1/users/lookup.json').with(:body => {:user_id => '7505382'})).to have_been_made
     end
     it 'has the correct output' do
@@ -1281,14 +1281,14 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
 
   describe '#followers' do
     before do
-      stub_get('/1.1/account/verify_credentials.json').to_return(:body => fixture('sferik.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
-      stub_get('/1.1/followers/ids.json').with(:query => {:cursor => '-1', :screen_name => 'sferik'}).to_return(:body => fixture('friends_ids.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
+      stub_get('/1.1/account/verify_credentials.json').with(:query => {:include_entities => 'false', :skip_status => 'true'}).to_return(:body => fixture('sferik.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
+      stub_get('/1.1/followers/ids.json').with(:query => {:cursor => '-1', :user_id => '7505382'}).to_return(:body => fixture('friends_ids.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
       stub_post('/1.1/users/lookup.json').with(:body => {:user_id => '7505382'}).to_return(:body => fixture('users.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
     end
     it 'requests the correct resource' do
       @cli.followers
-      expect(a_get('/1.1/account/verify_credentials.json')).to have_been_made
-      expect(a_get('/1.1/followers/ids.json').with(:query => {:cursor => '-1', :screen_name => 'sferik'})).to have_been_made
+      expect(a_get('/1.1/account/verify_credentials.json').with(:query => {:include_entities => 'false', :skip_status => 'true'})).to have_been_made
+      expect(a_get('/1.1/followers/ids.json').with(:query => {:cursor => '-1', :user_id => '7505382'})).to have_been_made
       expect(a_post('/1.1/users/lookup.json').with(:body => {:user_id => '7505382'})).to have_been_made
     end
     it 'has the correct output' do

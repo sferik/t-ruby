@@ -181,6 +181,31 @@ describe T::Delete do
     end
   end
 
+  describe '#mute' do
+    before do
+      @delete.options = @delete.options.merge('profile' => fixture_path + '/.trc')
+      stub_post('/1.1/mutes/users/destroy.json').with(:body => {:screen_name => 'sferik'}).to_return(:body => fixture('sferik.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
+    end
+    it 'requests the correct resource' do
+      @delete.mute('sferik')
+      expect(a_post('/1.1/mutes/users/destroy.json').with(:body => {:screen_name => 'sferik'})).to have_been_made
+    end
+    it 'has the correct output' do
+      @delete.mute('sferik')
+      expect($stdout.string).to match(/^@testcli unmuted 1 user\.$/)
+    end
+    context '--id' do
+      before do
+        @delete.options = @delete.options.merge('id' => true)
+        stub_post('/1.1/mutes/users/destroy.json').with(:body => {:user_id => '7505382'}).to_return(:body => fixture('sferik.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
+      end
+      it 'requests the correct resource' do
+        @delete.mute('7505382')
+        expect(a_post('/1.1/mutes/users/destroy.json').with(:body => {:user_id => '7505382'})).to have_been_made
+      end
+    end
+  end
+
   describe '#status' do
     before do
       @delete.options = @delete.options.merge('profile' => fixture_path + '/.trc')

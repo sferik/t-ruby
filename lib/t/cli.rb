@@ -525,6 +525,17 @@ module T
     end
     map %w[replies] => :mentions
 
+    desc 'mute USER [USER...]', 'Mute users.'
+    method_option 'id', :aliases => '-i', :type => :boolean, :desc => 'Specify input as Twitter user IDs instead of screen names.'
+    def mute(user, *users)
+      muted_users, number = fetch_users(users.unshift(user), options) do |users_to_mute|
+        client.mute(users_to_mute)
+      end
+      say "@#{@rcfile.active_profile[0]} muted #{pluralize(number, 'user')}."
+      say
+      say "Run `#{File.basename($PROGRAM_NAME)} delete mute #{muted_users.collect { |muted_user| "@#{muted_user.screen_name}" }.join(' ')}` to unmute."
+    end
+
     desc 'open USER', "Opens that user's profile in a web browser."
     method_option 'display-uri', :aliases => '-d', :type => :boolean, :desc => 'Display the requested URL instead of attempting to open it.'
     method_option 'id', :aliases => '-i', :type => :boolean, :desc => 'Specify user via ID instead of screen name.'

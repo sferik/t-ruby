@@ -154,6 +154,9 @@ example, here's how to send a user a direct message only if they already follow 
 #### List all your leaders (people you follow who don't follow you back)
     t leaders -l --sort=followers
 
+#### Mute everyone you follow
+    t followings | xargs t mute
+
 #### Unfollow everyone you follow who doesn't follow you back
     t leaders | xargs t unfollow
 

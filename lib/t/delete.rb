@@ -88,6 +88,18 @@ module T
       say "@#{@rcfile.active_profile[0]} deleted the list \"#{list.name}\"."
     end
 
+    desc 'mute USER [USER...]', 'Unmute users.'
+    method_option 'id', :aliases => '-i', :type => :boolean, :desc => 'Specify input as Twitter user IDs instead of screen names.'
+    method_option 'force', :aliases => '-f', :type => :boolean
+    def mute(user, *users)
+      unmuted_users, number = fetch_users(users.unshift(user), options) do |users_to_unmute|
+        client.unmute(users_to_unmute)
+      end
+      say "@#{@rcfile.active_profile[0]} unmuted #{pluralize(number, 'user')}."
+      say
+      say "Run `#{File.basename($PROGRAM_NAME)} mute #{unmuted_users.collect { |unmuted_user| "@#{unmuted_user.screen_name}" }.join(' ')}` to mute."
+    end
+
     desc 'status TWEET_ID [TWEET_ID...]', 'Delete Tweets.'
     method_option 'force', :aliases => '-f', :type => :boolean
     def status(status_id, *status_ids)

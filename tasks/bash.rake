@@ -9,7 +9,7 @@ namespace :completion do
     puts "Compiling bash completion to #{output_path}"
     File.open(file_path, 'w') { |f| f.write BashCompletion.generate }
 
-    git_status = %x(git status -s)
+    git_status = `git status -s`
     if git_status[/M #{output_path}/]
       cmd = "git add #{output_path} && git commit -m 'Updating Bash completion'"
       result = system cmd

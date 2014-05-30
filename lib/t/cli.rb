@@ -667,7 +667,7 @@ module T
     map %w[retweetsofme] => :retweets_of_me
 
     desc 'ruler', 'Prints a 140-character ruler'
-    method_option 'indent', :aliases => '-i', :type => :numeric, :default => 0, :desc => 'The number of space to print before the ruler.'
+    method_option 'indent', :aliases => '-i', :type => :numeric, :default => 0, :desc => 'The number of spaces to print before the ruler.'
     def ruler
       markings = '----|'.chars.cycle.take(140).join
       say "#{' ' * options['indent'].to_i}#{markings}"
@@ -953,10 +953,9 @@ module T
     end
 
     def add_location!(options, opts)
-      if options['location']
-        lat, lng = options['location'] == 'location' ? [location.lat, location.lng] : options['location'].split(',').collect(&:to_f)
-        opts.merge!(:lat => lat, :long => lng)
-      end
+      return nil unless options['location']
+      lat, lng = options['location'] == 'location' ? [location.lat, location.lng] : options['location'].split(',').collect(&:to_f)
+      opts.merge!(:lat => lat, :long => lng)
     end
 
     def location

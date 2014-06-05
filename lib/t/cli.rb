@@ -594,6 +594,11 @@ module T
       say number_with_delimiter(reach.size)
     end
 
+    desc 'remove_account SCREEN_NAME', 'remove account from t'
+    def remove_account(account)
+      @rcfile.remove_profile(account)
+    end
+
     desc 'reply TWEET_ID MESSAGE', 'Post your Tweet as a reply directed at another person.'
     method_option 'all', :aliases => '-a', :type => :boolean, :desc => 'Reply to all users mentioned in the Tweet.'
     method_option 'location', :aliases => '-l', :type => :string, :default => nil, :desc => "Add location information. If the optional 'latitude,longitude' parameter is not supplied, looks up location by IP address."

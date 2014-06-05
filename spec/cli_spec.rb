@@ -2510,6 +2510,34 @@ ID                   Posted at     Screen name       Text
     end
   end
 
+  describe '#remove_account' do
+    before do
+      @cli.options = @cli.options.merge('profile' => fixture_path + '/.trc')
+      delete_cli = {
+        'delete_cli' => {
+          'dw123' => {
+            'consumer_key' => 'abc123',
+            'secret' => 'epzrjvxtumoc',
+            'token' => '428004849-cebdct6bwobn',
+            'username' => 'deletecli',
+            'consumer_secret' => 'asdfasd223sd2'
+          }
+        }
+      }
+      rcfile = @cli.instance_variable_get(:@rcfile)
+      rcfile.profiles.merge!(delete_cli)
+      rcfile.send(:write)
+    end
+    it 'has the correct output' do
+      @cli.remove_account('delete_cli')
+      @cli.accounts
+      expect($stdout.string).to eq <<-eos
+testcli
+  abc123 (active)
+      eos
+    end
+  end
+
   describe '#reply' do
     before do
       @cli.options = @cli.options.merge('profile' => fixture_path + '/.trc', 'location' => nil)

@@ -3,7 +3,7 @@ require 'helper'
 describe T::Stream do
   let(:t_class) do
     klass = Class.new
-    allow(klass).to receive(:options=).and_return
+    allow(klass).to receive(:options=).and_return(true)
     allow(klass).to receive(:options).and_return({})
     klass
   end
@@ -17,7 +17,7 @@ describe T::Stream do
     @streaming_client = double('Twitter::Streaming::Client').as_null_object
     @stream = T::Stream.new
     allow(@stream).to receive(:streaming_client) { @streaming_client }
-    allow(@stream).to receive(:say).and_return
+    allow(@stream).to receive(:say).and_return(true)
     allow(STDOUT).to receive(:tty?).and_return(true)
   end
 
@@ -35,12 +35,12 @@ describe T::Stream do
       end
       it 'outputs headings when the stream initializes' do
         allow(@streaming_client).to receive(:before_request).and_yield
-        allow(@streaming_client).to receive(:sample).and_return
+        allow(@streaming_client).to receive(:sample).and_return(true)
         expect(@stream).to receive(:say).with("ID,Posted at,Screen name,Text\n")
         @stream.all
       end
       it 'outputs in CSV format' do
-        allow(@streaming_client).to receive(:before_request).and_return
+        allow(@streaming_client).to receive(:before_request).and_return(true)
         allow(@streaming_client).to receive(:sample).and_yield(@status)
         expect(@stream).to receive(:print_csv_tweet).with(any_args)
         @stream.all
@@ -52,20 +52,20 @@ describe T::Stream do
       end
       it 'outputs headings when the stream initializes' do
         allow(@streaming_client).to receive(:before_request).and_yield
-        allow(@streaming_client).to receive(:sample).and_return
+        allow(@streaming_client).to receive(:sample).and_return(true)
         expect(@stream).to receive(:print_table).with(any_args)
         @stream.all
       end
       it 'outputs in long text format' do
-        allow(@streaming_client).to receive(:before_request).and_return
+        allow(@streaming_client).to receive(:before_request).and_return(true)
         allow(@streaming_client).to receive(:sample).and_yield(@status)
         expect(@stream).to receive(:print_table).with(any_args)
         @stream.all
       end
     end
     it 'invokes Twitter::Streaming::Client#sample' do
-      allow(@streaming_client).to receive(:before_request).and_return
-      allow(@streaming_client).to receive(:sample).and_return
+      allow(@streaming_client).to receive(:before_request).and_return(true)
+      allow(@streaming_client).to receive(:sample).and_return(true)
       expect(@streaming_client).to receive(:sample)
       @stream.all
     end
@@ -89,7 +89,7 @@ describe T::Stream do
         @stream.options = @stream.options.merge('csv' => true)
       end
       it 'outputs in CSV format' do
-        allow(@streaming_client).to receive(:before_request).and_return
+        allow(@streaming_client).to receive(:before_request).and_return(true)
         allow(@streaming_client).to receive(:filter).and_yield(@status)
         expect(@stream).to receive(:print_csv_tweet).with(any_args)
         @stream.list('presidents')
@@ -104,7 +104,7 @@ describe T::Stream do
         @stream.options = @stream.options.merge('long' => true)
       end
       it 'outputs in long text format' do
-        allow(@streaming_client).to receive(:before_request).and_return
+        allow(@streaming_client).to receive(:before_request).and_return(true)
         allow(@streaming_client).to receive(:filter).and_yield(@status)
         expect(@stream).to receive(:print_table).with(any_args)
         @stream.list('presidents')
@@ -116,13 +116,13 @@ describe T::Stream do
     end
     it 'performs a REST search when the stream initializes' do
       allow(@streaming_client).to receive(:before_request).and_yield
-      allow(@streaming_client).to receive(:filter).and_return
+      allow(@streaming_client).to receive(:filter).and_return(true)
       allow(T::List).to receive(:new).and_return(t_class)
-      expect(t_class).to receive(:timeline).and_return
+      expect(t_class).to receive(:timeline).and_return(true)
       @stream.list('presidents')
     end
     it 'invokes Twitter::Streaming::Client#userstream' do
-      allow(@streaming_client).to receive(:filter).and_return
+      allow(@streaming_client).to receive(:filter).and_return(nil)
       expect(@streaming_client).to receive(:filter)
       @stream.list('presidents')
     end
@@ -133,13 +133,13 @@ describe T::Stream do
       stub_get('/1.1/search/tweets.json').with(:query => {:q => 'lang:ja', :count => 100, :include_entities => 'false'}).to_return(:body => fixture('empty_cursor.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
     end
     it 'outputs the tweet status' do
-      allow(@streaming_client).to receive(:before_request).and_return
+      allow(@streaming_client).to receive(:before_request).and_return(true)
       allow(@streaming_client).to receive(:sample).and_yield(@status)
       expect(@stream).to receive(:say).with(any_args)
       @stream.matrix
     end
     it 'invokes Twitter::Streaming::Client#sample' do
-      allow(@streaming_client).to receive(:before_request).and_return
+      allow(@streaming_client).to receive(:before_request).and_return(true)
       allow(@streaming_client).to receive(:sample).and_yield(@status)
       expect(@streaming_client).to receive(:sample)
       @stream.matrix
@@ -164,7 +164,7 @@ describe T::Stream do
         @stream.options = @stream.options.merge('csv' => true)
       end
       it 'outputs in CSV format' do
-        allow(@streaming_client).to receive(:before_request).and_return
+        allow(@streaming_client).to receive(:before_request).and_return(true)
         expect(@stream).to receive(:print_csv_tweet).with(any_args)
         @stream.search(%w[twitter gem])
       end
@@ -174,7 +174,7 @@ describe T::Stream do
         @stream.options = @stream.options.merge('long' => true)
       end
       it 'outputs in long text format' do
-        allow(@streaming_client).to receive(:before_request).and_return
+        allow(@streaming_client).to receive(:before_request).and_return(true)
         allow(@streaming_client).to receive(:filter).with(:track => 'twitter,gem').and_yield(@status)
         expect(@stream).to receive(:print_table).with(any_args)
         @stream.search(%w[twitter gem])
@@ -182,13 +182,13 @@ describe T::Stream do
     end
     it 'performs a REST search when the stream initializes' do
       allow(@streaming_client).to receive(:before_request).and_yield
-      allow(@streaming_client).to receive(:filter).and_return
+      allow(@streaming_client).to receive(:filter).and_return(true)
       allow(T::Search).to receive(:new).and_return(t_class)
-      expect(t_class).to receive(:all).with('t OR gem').and_return
+      expect(t_class).to receive(:all).with('t OR gem').and_return(true)
       @stream.search('t', 'gem')
     end
     it 'invokes Twitter::Streaming::Client#filter' do
-      allow(@streaming_client).to receive(:filter).and_return
+      allow(@streaming_client).to receive(:filter).and_return(true)
       expect(@streaming_client).to receive(:filter).with(:track => 'twitter,gem')
       @stream.search(%w[twitter gem])
     end
@@ -207,7 +207,7 @@ describe T::Stream do
         @stream.options = @stream.options.merge('csv' => true)
       end
       it 'outputs in CSV format' do
-        allow(@streaming_client).to receive(:before_request).and_return
+        allow(@streaming_client).to receive(:before_request).and_return(true)
         expect(@stream).to receive(:print_csv_tweet).with(any_args)
         @stream.timeline
       end
@@ -217,20 +217,20 @@ describe T::Stream do
         @stream.options = @stream.options.merge('long' => true)
       end
       it 'outputs in long text format' do
-        allow(@streaming_client).to receive(:before_request).and_return
+        allow(@streaming_client).to receive(:before_request).and_return(true)
         expect(@stream).to receive(:print_table).with(any_args)
         @stream.timeline
       end
     end
     it 'performs a REST search when the stream initializes' do
       allow(@streaming_client).to receive(:before_request).and_yield
-      allow(@streaming_client).to receive(:user).and_return
+      allow(@streaming_client).to receive(:user).and_return(true)
       allow(T::CLI).to receive(:new).and_return(t_class)
-      expect(t_class).to receive(:timeline).and_return
+      expect(t_class).to receive(:timeline).and_return(true)
       @stream.timeline
     end
     it 'invokes Twitter::Streaming::Client#userstream' do
-      allow(@streaming_client).to receive(:user).and_return
+      allow(@streaming_client).to receive(:user).and_return(true)
       expect(@streaming_client).to receive(:user)
       @stream.timeline
     end
@@ -250,12 +250,12 @@ describe T::Stream do
       end
       it 'outputs headings when the stream initializes' do
         allow(@streaming_client).to receive(:before_request).and_yield
-        allow(@streaming_client).to receive(:filter).and_return
+        allow(@streaming_client).to receive(:filter).and_return(true)
         expect(@stream).to receive(:say).with("ID,Posted at,Screen name,Text\n")
         @stream.users('123')
       end
       it 'outputs in CSV format' do
-        allow(@streaming_client).to receive(:before_request).and_return
+        allow(@streaming_client).to receive(:before_request).and_return(true)
         expect(@stream).to receive(:print_csv_tweet).with(any_args)
         @stream.users('123')
       end
@@ -266,19 +266,19 @@ describe T::Stream do
       end
       it 'outputs headings when the stream initializes' do
         allow(@streaming_client).to receive(:before_request).and_yield
-        allow(@streaming_client).to receive(:filter).and_return
+        allow(@streaming_client).to receive(:filter).and_return(true)
         expect(@stream).to receive(:print_table).with(any_args)
         @stream.users('123')
       end
       it 'outputs in long text format' do
-        allow(@streaming_client).to receive(:before_request).and_return
+        allow(@streaming_client).to receive(:before_request).and_return(true)
         allow(@streaming_client).to receive(:filter).and_yield(@status)
         expect(@stream).to receive(:print_table).with(any_args)
         @stream.users('123')
       end
     end
     it 'invokes Twitter::Streaming::Client#follow' do
-      allow(@streaming_client).to receive(:filter).and_return
+      allow(@streaming_client).to receive(:filter).and_return(true)
       expect(@streaming_client).to receive(:filter).with(:follow => '123,456,789')
       @stream.users('123', '456', '789')
     end

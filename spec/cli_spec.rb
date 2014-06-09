@@ -3201,7 +3201,7 @@ Location     Blowfish Sushi To Die For
     context 'with no place' do
       before do
         stub_get('/1.1/statuses/show/55709764298092545.json').with(:query => {:include_my_retweet => 'false', :include_entities => 'false'}).to_return(:body => fixture('status_no_place.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
-        stub_request(:get, 'http://maps.google.com/maps/api/geocode/json').with(:query => {:latlng => '37.75963095,-122.410067', :sensor => 'false'}).to_return(:body => fixture('geo.json'), :headers => {:content_type => 'application/json; charset=UTF-8'})
+        stub_request(:get, 'https://maps.google.com/maps/api/geocode/json').with(:query => {:latlng => '37.75963095,-122.410067', :sensor => 'false'}).to_return(:body => fixture('geo.json'), :headers => {:content_type => 'application/json; charset=UTF-8'})
       end
       it 'has the correct output' do
         @cli.status('55709764298092545')
@@ -3231,7 +3231,7 @@ Posted at    Apr  6  2011 (8 months ago)
 Retweets     320
 Favorites    50
 Source       Twitter for iPhone
-Location     CA, United States
+Location     San Francisco, CA, United States
           eos
         end
       end
@@ -3250,7 +3250,7 @@ Posted at    Apr  6  2011 (8 months ago)
 Retweets     320
 Favorites    50
 Source       Twitter for iPhone
-Location     United States
+Location     San Francisco, CA, United States
           eos
         end
       end

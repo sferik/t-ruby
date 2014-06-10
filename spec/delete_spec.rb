@@ -128,14 +128,14 @@ describe T::Delete do
   describe '#list' do
     before do
       @delete.options = @delete.options.merge('profile' => fixture_path + '/.trc')
-      stub_get('/1.1/account/verify_credentials.json').with(:query => {:include_entities => 'false', :skip_status => 'true'}).to_return(:body => fixture('sferik.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
+      stub_get('/1.1/account/verify_credentials.json').with(:query => {:skip_status => 'true'}).to_return(:body => fixture('sferik.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
       stub_get('/1.1/lists/show.json').with(:query => {:owner_id => '7505382', :slug => 'presidents'}).to_return(:body => fixture('list.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
       stub_post('/1.1/lists/destroy.json').with(:body => {:owner_id => '7505382', :list_id => '8863586'}).to_return(:body => fixture('list.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
     end
     it 'requests the correct resource' do
       expect(Readline).to receive(:readline).with("Are you sure you want to permanently delete the list \"presidents\"? [y/N] ", false).and_return('yes')
       @delete.list('presidents')
-      expect(a_get('/1.1/account/verify_credentials.json').with(:query => {:include_entities => 'false', :skip_status => 'true'})).to have_been_made
+      expect(a_get('/1.1/account/verify_credentials.json').with(:query => {:skip_status => 'true'})).to have_been_made
       expect(a_post('/1.1/lists/destroy.json').with(:body => {:owner_id => '7505382', :list_id => '8863586'})).to have_been_made
     end
     context 'yes' do
@@ -158,7 +158,7 @@ describe T::Delete do
       end
       it 'requests the correct resource' do
         @delete.list('presidents')
-        expect(a_get('/1.1/account/verify_credentials.json').with(:query => {:include_entities => 'false', :skip_status => 'true'})).to have_been_made
+        expect(a_get('/1.1/account/verify_credentials.json').with(:query => {:skip_status => 'true'})).to have_been_made
         expect(a_post('/1.1/lists/destroy.json').with(:body => {:owner_id => '7505382', :list_id => '8863586'})).to have_been_made
       end
       it 'has the correct output' do
@@ -175,7 +175,7 @@ describe T::Delete do
         expect(Readline).to receive(:readline).with("Are you sure you want to permanently delete the list \"presidents\"? [y/N] ", false).and_return('yes')
         @delete.list('8863586')
         expect(a_get('/1.1/lists/show.json').with(:query => {:owner_id => '7505382', :list_id => '8863586'})).to have_been_made
-        expect(a_get('/1.1/account/verify_credentials.json').with(:query => {:include_entities => 'false', :skip_status => 'true'})).to have_been_made
+        expect(a_get('/1.1/account/verify_credentials.json').with(:query => {:skip_status => 'true'})).to have_been_made
         expect(a_post('/1.1/lists/destroy.json').with(:body => {:owner_id => '7505382', :list_id => '8863586'})).to have_been_made
       end
     end

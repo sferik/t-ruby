@@ -10,7 +10,7 @@ SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
 
 SimpleCov.start do
   add_filter '/spec/'
-  minimum_coverage(99.26)
+  minimum_coverage(99.27)
 end
 
 require 't'

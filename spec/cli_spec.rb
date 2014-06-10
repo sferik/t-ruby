@@ -47,7 +47,7 @@ testcli
       @cli.options = @cli.options.merge('profile' => project_path + '/tmp/authorize', 'display-uri' => true)
       stub_post('/oauth/request_token').to_return(:body => fixture('request_token'))
       stub_post('/oauth/access_token').to_return(:body => fixture('access_token'))
-      stub_get('/1.1/account/verify_credentials.json').with(:query => {:include_entities => 'false', :skip_status => 'true'}).to_return(:body => fixture('sferik.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
+      stub_get('/1.1/account/verify_credentials.json').with(:query => {:skip_status => 'true'}).to_return(:body => fixture('sferik.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
     end
     it 'requests the correct resource' do
       expect(Readline).to receive(:readline).with('Press [Enter] to open the Twitter Developer site. ', true).and_return("\n")
@@ -58,7 +58,7 @@ testcli
       @cli.authorize
       expect(a_post('/oauth/request_token')).to have_been_made
       expect(a_post('/oauth/access_token')).to have_been_made
-      expect(a_get('/1.1/account/verify_credentials.json').with(:query => {:include_entities => 'false', :skip_status => 'true'})).to have_been_made
+      expect(a_get('/1.1/account/verify_credentials.json').with(:query => {:skip_status => 'true'})).to have_been_made
     end
     it 'does not raise error' do
       expect do
@@ -86,7 +86,7 @@ testcli
         @cli.authorize
         expect(a_post('/oauth/request_token')).to have_been_made
         expect(a_post('/oauth/access_token')).to have_been_made
-        expect(a_get('/1.1/account/verify_credentials.json').with(:query => {:include_entities => 'false', :skip_status => 'true'})).to have_been_made
+        expect(a_get('/1.1/account/verify_credentials.json').with(:query => {:skip_status => 'true'})).to have_been_made
       end
       it 'does not raise error' do
         expect do
@@ -937,14 +937,14 @@ ID                   Posted at     Screen name       Text
     end
     context 'one user' do
       before do
-        stub_get('/1.1/account/verify_credentials.json').with(:query => {:include_entities => 'false', :skip_status => 'true'}).to_return(:body => fixture('sferik.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
+        stub_get('/1.1/account/verify_credentials.json').with(:query => {:skip_status => 'true'}).to_return(:body => fixture('sferik.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
         stub_get('/1.1/friends/ids.json').with(:query => {:cursor => '-1', :user_id => '7505382'}).to_return(:body => fixture('friends_ids.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
         stub_post('/1.1/users/lookup.json').with(:body => {:screen_name => 'sferik,pengwynn'}).to_return(:body => fixture('users.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
         stub_post('/1.1/friendships/create.json').with(:body => {:user_id => '14100886'}).to_return(:body => fixture('sferik.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
       end
       it 'requests the correct resource' do
         @cli.follow('sferik', 'pengwynn')
-        expect(a_get('/1.1/account/verify_credentials.json').with(:query => {:include_entities => 'false', :skip_status => 'true'})).to have_been_made
+        expect(a_get('/1.1/account/verify_credentials.json').with(:query => {:skip_status => 'true'})).to have_been_made
         expect(a_get('/1.1/friends/ids.json').with(:query => {:cursor => '-1', :user_id => '7505382'})).to have_been_made
         expect(a_post('/1.1/users/lookup.json').with(:body => {:screen_name => 'sferik,pengwynn'})).to have_been_made
         expect(a_post('/1.1/friendships/create.json').with(:body => {:user_id => '14100886'})).to have_been_made
@@ -985,13 +985,13 @@ ID                   Posted at     Screen name       Text
 
   describe '#followings' do
     before do
-      stub_get('/1.1/account/verify_credentials.json').with(:query => {:include_entities => 'false', :skip_status => 'true'}).to_return(:body => fixture('sferik.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
+      stub_get('/1.1/account/verify_credentials.json').with(:query => {:skip_status => 'true'}).to_return(:body => fixture('sferik.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
       stub_get('/1.1/friends/ids.json').with(:query => {:cursor => '-1', :user_id => '7505382'}).to_return(:body => fixture('friends_ids.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
       stub_post('/1.1/users/lookup.json').with(:body => {:user_id => '7505382'}).to_return(:body => fixture('users.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
     end
     it 'requests the correct resource' do
       @cli.followings
-      expect(a_get('/1.1/account/verify_credentials.json').with(:query => {:include_entities => 'false', :skip_status => 'true'})).to have_been_made
+      expect(a_get('/1.1/account/verify_credentials.json').with(:query => {:skip_status => 'true'})).to have_been_made
       expect(a_get('/1.1/friends/ids.json').with(:query => {:cursor => '-1', :user_id => '7505382'})).to have_been_made
       expect(a_post('/1.1/users/lookup.json').with(:body => {:user_id => '7505382'})).to have_been_made
     end
@@ -1281,13 +1281,13 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
 
   describe '#followers' do
     before do
-      stub_get('/1.1/account/verify_credentials.json').with(:query => {:include_entities => 'false', :skip_status => 'true'}).to_return(:body => fixture('sferik.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
+      stub_get('/1.1/account/verify_credentials.json').with(:query => {:skip_status => 'true'}).to_return(:body => fixture('sferik.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
       stub_get('/1.1/followers/ids.json').with(:query => {:cursor => '-1', :user_id => '7505382'}).to_return(:body => fixture('friends_ids.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
       stub_post('/1.1/users/lookup.json').with(:body => {:user_id => '7505382'}).to_return(:body => fixture('users.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
     end
     it 'requests the correct resource' do
       @cli.followers
-      expect(a_get('/1.1/account/verify_credentials.json').with(:query => {:include_entities => 'false', :skip_status => 'true'})).to have_been_made
+      expect(a_get('/1.1/account/verify_credentials.json').with(:query => {:skip_status => 'true'})).to have_been_made
       expect(a_get('/1.1/followers/ids.json').with(:query => {:cursor => '-1', :user_id => '7505382'})).to have_been_made
       expect(a_post('/1.1/users/lookup.json').with(:body => {:user_id => '7505382'})).to have_been_made
     end
@@ -3219,7 +3219,7 @@ Location     San Francisco, CA, United States
       context 'with no city' do
         before do
           stub_get('/1.1/statuses/show/55709764298092545.json').with(:query => {:include_my_retweet => 'false', :include_entities => 'false'}).to_return(:body => fixture('status_no_place.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
-          stub_request(:get, 'http://maps.google.com/maps/api/geocode/json').with(:query => {:latlng => '37.75963095,-122.410067', :sensor => 'false'}).to_return(:body => fixture('geo_no_city.json'), :headers => {:content_type => 'application/json; charset=UTF-8'})
+          stub_request(:get, 'https://maps.google.com/maps/api/geocode/json').with(:query => {:latlng => '37.75963095,-122.410067', :sensor => 'false'}).to_return(:body => fixture('geo_no_city.json'), :headers => {:content_type => 'application/json; charset=UTF-8'})
         end
         it 'has the correct output' do
           @cli.status('55709764298092545')
@@ -3231,14 +3231,14 @@ Posted at    Apr  6  2011 (8 months ago)
 Retweets     320
 Favorites    50
 Source       Twitter for iPhone
-Location     San Francisco, CA, United States
+Location     CA, United States
           eos
         end
       end
       context 'with no state' do
         before do
           stub_get('/1.1/statuses/show/55709764298092545.json').with(:query => {:include_my_retweet => 'false', :include_entities => 'false'}).to_return(:body => fixture('status_no_place.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
-          stub_request(:get, 'http://maps.google.com/maps/api/geocode/json').with(:query => {:latlng => '37.75963095,-122.410067', :sensor => 'false'}).to_return(:body => fixture('geo_no_state.json'), :headers => {:content_type => 'application/json; charset=UTF-8'})
+          stub_request(:get, 'https://maps.google.com/maps/api/geocode/json').with(:query => {:latlng => '37.75963095,-122.410067', :sensor => 'false'}).to_return(:body => fixture('geo_no_state.json'), :headers => {:content_type => 'application/json; charset=UTF-8'})
         end
         it 'has the correct output' do
           @cli.status('55709764298092545')
@@ -3250,7 +3250,7 @@ Posted at    Apr  6  2011 (8 months ago)
 Retweets     320
 Favorites    50
 Source       Twitter for iPhone
-Location     San Francisco, CA, United States
+Location     United States
           eos
         end
       end

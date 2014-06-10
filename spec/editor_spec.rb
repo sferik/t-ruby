@@ -5,7 +5,7 @@ describe T::Editor do
 
   context 'when editing a file' do
     before do
-      T::Editor.stub(:edit) do |path|
+      allow(T::Editor).to receive(:edit) do |path|
         File.open(path, 'wb') do |f|
           f.write('A tweet!!!!')
         end

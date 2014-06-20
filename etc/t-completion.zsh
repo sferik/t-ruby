@@ -325,7 +325,7 @@ _t_retweets_of_me() {
 
 _t_ruler() {
   _arguments \
-    "(-i --indent)"{-i,--indent}"[The number of space to print before the ruler.]" \
+    "(-i --indent)"{-i,--indent}"[The number of spaces to print before the ruler.]" \
     $t_general_options && ret=0
 }
 

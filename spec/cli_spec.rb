@@ -2071,9 +2071,9 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
         @cli.lists
         expect($stdout.string).to eq <<-eos
 ID,Created at,Screen name,Slug,Members,Subscribers,Mode,Description
-1129440,2009-10-30 14:39:25 +0000,pengwynn,rubyists,499,39,public,""
-574,2009-09-23 01:18:01 +0000,twitter,team,1199,78078,other,""
-73546689,2012-07-08 22:19:05 +0000,sferik,test,2,0,private,""
+1129440,2009-10-30 14:39:25 +0000,pengwynn,rubyists,499,39,public,
+574,2009-09-23 01:18:01 +0000,twitter,team,1199,78078,other,
+73546689,2012-07-08 22:19:05 +0000,sferik,test,2,0,private,
         eos
       end
     end
@@ -3709,7 +3709,7 @@ WOEID,Parent ID,Type,Name,Country
 2487956,23424977,Town,San Francisco,United States
 1587677,23424942,Unknown,Soweto,South Africa
 23424977,1,Country,United States,United States
-1,0,Supername,Worldwide,""
+1,0,Supername,Worldwide,
         eos
       end
     end
@@ -3743,7 +3743,7 @@ WOEID     Parent ID  Type       Name           Country
       end
       it 'sorts by the country name' do
         @cli.trend_locations
-        expect($stdout.string.chomp).to eq 'Worldwide      Soweto         San Francisco  United States'
+        expect($stdout.string.chomp).to eq 'Soweto         San Francisco  United States  Worldwide'
       end
     end
     context '--sort=parent' do

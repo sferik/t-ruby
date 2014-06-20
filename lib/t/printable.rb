@@ -100,6 +100,7 @@ module T
         require 't/core_ext/kernel'
         array.collect! do |row|
           row.each_with_index.collect do |element, index|
+            next if element.nil?
             Kernel.send(element.class.name.to_sym, format[index] % element)
           end
         end

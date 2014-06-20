@@ -6,13 +6,11 @@
 [![Build Status](http://img.shields.io/travis/sferik/t.svg)][travis]
 [![Dependency Status](http://img.shields.io/gemnasium/sferik/t.svg)][gemnasium]
 [![Coverage Status](http://img.shields.io/coveralls/sferik/t.svg)][coveralls]
-[![Gittip](http://img.shields.io/gittip/gems.svg)][gittip]
 
 [gem]: https://rubygems.org/gems/t
 [travis]: http://travis-ci.org/sferik/t
 [gemnasium]: https://gemnasium.com/sferik/t
 [coveralls]: https://coveralls.io/r/sferik/t
-[gittip]: https://www.gittip.com/gems/
 
 #### A command-line power tool for Twitter.
 The CLI takes syntactic cues from the [Twitter SMS commands][sms], but it

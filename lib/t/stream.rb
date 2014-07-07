@@ -30,6 +30,7 @@ module T
     method_option 'long', :aliases => '-l', :type => :boolean, :desc => 'Output in long format.'
     method_option 'no-replies', :type => :boolean, :desc => 'Exclude replies.'
     method_option 'no-retweets', :type => :boolean, :desc => 'Exclude retweets.'
+    method_option 'showname', :aliases => '-n', :type => :boolean, :desc => 'Show twitter name in addition to @screenName.'
     def all
       streaming_client.before_request do
         if options['csv']
@@ -67,6 +68,7 @@ module T
     method_option 'no-replies', :type => :boolean, :desc => 'Exclude replies.'
     method_option 'no-retweets', :type => :boolean, :desc => 'Exclude retweets.'
     method_option 'reverse', :aliases => '-r', :type => :boolean, :desc => 'Reverse the order of the sort.'
+    method_option 'showname', :aliases => '-n', :type => :boolean, :desc => 'Show twitter name in addition to @screenName.'
     def list(user_list)
       owner, list_name = extract_owner(user_list, options)
       require 't/list'
@@ -115,6 +117,7 @@ module T
     method_option 'long', :aliases => '-l', :type => :boolean, :desc => 'Output in long format.'
     method_option 'no-replies', :type => :boolean, :desc => 'Exclude replies.'
     method_option 'no-retweets', :type => :boolean, :desc => 'Exclude retweets.'
+    method_option 'showname', :aliases => '-n', :type => :boolean, :desc => 'Show twitter name in addition to @screenName.'
     def search(keyword, *keywords)
       keywords.unshift(keyword)
       require 't/search'
@@ -148,6 +151,7 @@ module T
     method_option 'long', :aliases => '-l', :type => :boolean, :desc => 'Output in long format.'
     method_option 'no-replies', :type => :boolean, :desc => 'Exclude replies.'
     method_option 'no-retweets', :type => :boolean, :desc => 'Exclude retweets.'
+    method_option 'showname', :aliases => '-n', :type => :boolean, :desc => 'Show twitter name in addition to @screenName.'
     def timeline
       require 't/cli'
       streaming_client.before_request do
@@ -180,6 +184,7 @@ module T
     method_option 'long', :aliases => '-l', :type => :boolean, :desc => 'Output in long format.'
     method_option 'no-replies', :type => :boolean, :desc => 'Exclude replies.'
     method_option 'no-retweets', :type => :boolean, :desc => 'Exclude retweets.'
+    method_option 'showname', :aliases => '-n', :type => :boolean, :desc => 'Show twitter name in addition to @screenName.'
     def users(user_id, *user_ids)
       user_ids.unshift(user_id)
       user_ids.collect!(&:to_i)

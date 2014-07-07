@@ -111,17 +111,26 @@ module T
     end
 
     def print_message(from_user, message)
+      # puts YAML::dump(from_user)
       case options['color']
       when 'auto'
-        say("#{from_user.name}",[:bold, :cyan],false)
-        say(" - (",[],false)
-        say("@#{from_user.screen_name}", [:bold, :yellow],false)
-        say(")")      
+        if (options['showname']) 
+          say("#{from_user.name}",[:bold, :cyan],false)
+          say(" - (",[],false)
+        end
+        say("@#{from_user.screen_name}", [:bold, :yellow],(options['showname'])?false:true)
+        if (options['showname'])
+          say(")")   
+        end   
       else
-        say("#{from_user.name}",[],false)
-        say(" - (",[],false)
-        say("@#{from_user.screen_name}", [],false)
-        say(")")
+        if (options['showname']) 
+          say("#{from_user.name}",[],false)
+          say(" - (",[],false)
+        end
+        say("@#{from_user.screen_name}", [],(options['showname'])?false:true)
+        if (options['showname'])
+          say(")")   
+        end   
       end
       require 'htmlentities'
       print_wrapped(HTMLEntities.new.decode(message), :indent => 3)

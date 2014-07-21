@@ -14,7 +14,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'bundler', '~> 1.0'
   spec.author = 'Erik Michaels-Ober'
   spec.bindir = 'bin'
-  spec.description = %q(A command-line power tool for Twitter.)
+  spec.description = 'A command-line power tool for Twitter.'
   spec.email = 'sferik@gmail.com'
   spec.executables = %w[t]
   spec.files = %w[CONTRIBUTING.md LICENSE.md README.md Rakefile t.gemspec]
@@ -27,7 +27,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = %w[lib]
   spec.required_ruby_version = '>= 1.9.2'
   spec.required_rubygems_version = '>= 1.3.5'
-  spec.summary = %q(CLI for Twitter)
+  spec.summary = 'CLI for Twitter'
   spec.test_files = Dir.glob('spec/**/*')
   spec.version = T::Version
 end

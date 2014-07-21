@@ -3,13 +3,10 @@ ENV['THOR_COLUMNS'] = '80'
 require 'simplecov'
 require 'coveralls'
 
-SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
-  SimpleCov::Formatter::HTMLFormatter,
-  Coveralls::SimpleCov::Formatter
-]
+SimpleCov.formatters = [SimpleCov::Formatter::HTMLFormatter, Coveralls::SimpleCov::Formatter]
 
 SimpleCov.start do
-  add_filter '/spec/'
+  add_filter '/spec'
   minimum_coverage(99.27)
 end
 

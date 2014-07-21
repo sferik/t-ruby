@@ -13,10 +13,10 @@ group :development do
 end
 
 group :test do
-  gem 'coveralls', :require => false
+  gem 'coveralls'
   gem 'rspec', '>= 3'
   gem 'rubocop', '>= 0.23', :platforms => [:ruby_19, :ruby_20, :ruby_21]
-  gem 'simplecov', :require => false
+  gem 'simplecov', '>= 0.9'
   gem 'timecop'
   gem 'webmock', '>= 1.10.1'
 end

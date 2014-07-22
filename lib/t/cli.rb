@@ -536,6 +536,23 @@ module T
       say "Run `#{File.basename($PROGRAM_NAME)} delete mute #{muted_users.collect { |muted_user| "@#{muted_user.screen_name}" }.join(' ')}` to unmute."
     end
 
+    desc 'muted [USER]', 'Returns a list of the people you have muted on Twitter.'
+    method_option 'csv', :aliases => '-c', :type => :boolean, :desc => 'Output in CSV format.'
+    method_option 'long', :aliases => '-l', :type => :boolean, :desc => 'Output in long format.'
+    method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
+    method_option 'reverse', :aliases => '-r', :type => :boolean, :desc => 'Reverse the order of the sort.'
+    method_option 'sort', :aliases => '-s', :type => :string, :enum => %w[favorites followers friends listed screen_name since tweets tweeted], :default => 'screen_name', :desc => 'Specify the order of the results.', :banner => 'ORDER'
+    method_option 'unsorted', :aliases => '-u', :type => :boolean, :desc => 'Output is not sorted.'
+    def muted
+      muted_ids = client.muted_ids.to_a
+      require 'retryable'
+      muted_users = retryable(:tries => 3, :on => Twitter::Error, :sleep => 0) do
+        client.users(muted_ids)
+      end
+      print_users(muted_users)
+    end
+    map %w[mutes] => :muted
+
     desc 'open USER', "Opens that user's profile in a web browser."
     method_option 'display-uri', :aliases => '-d', :type => :boolean, :desc => 'Display the requested URL instead of attempting to open it.'
     method_option 'id', :aliases => '-i', :type => :boolean, :desc => 'Specify user via ID instead of screen name.'

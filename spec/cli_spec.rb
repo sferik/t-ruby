@@ -2422,6 +2422,22 @@ ID                   Posted at     Screen name       Text
     end
   end
 
+  describe '#muted' do
+    before do
+      stub_get('/1.1/mutes/users/ids.json').with(:query => {:cursor => '-1'}).to_return(:body => fixture('muted_ids.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
+      stub_post('/1.1/users/lookup.json').with(:body => {:user_id => '14098423'}).to_return(:body => fixture('muted_users.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
+    end
+    it 'requests the correct resource' do
+      @cli.muted
+      expect(a_get('/1.1/mutes/users/ids.json').with(:query => {:cursor => '-1'})).to have_been_made
+      expect(a_post('/1.1/users/lookup.json').with(:body => {:user_id => '14098423'})).to have_been_made
+    end
+    it 'has the correct output' do
+      @cli.muted
+      expect($stdout.string.chomp).to eq 'johndbritton'
+    end
+  end
+
   describe '#open' do
     before do
       @cli.options = @cli.options.merge('display-uri' => true)

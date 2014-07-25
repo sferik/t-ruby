@@ -595,6 +595,7 @@ module T
     desc 'reply TWEET_ID MESSAGE', 'Post your Tweet as a reply directed at another person.'
     method_option 'all', :aliases => '-a', :type => :boolean, :desc => 'Reply to all users mentioned in the Tweet.'
     method_option 'location', :aliases => '-l', :type => :string, :default => nil, :desc => "Add location information. If the optional 'latitude,longitude' parameter is not supplied, looks up location by IP address."
+    method_option 'file', :aliases => '-f', :type => :string, :desc => 'The path to an image to attach to your tweet.'
     def reply(status_id, message)
       status = client.status(status_id.to_i, :include_my_retweet => false)
       users = Array(status.user.screen_name)
@@ -607,7 +608,11 @@ module T
       users.collect!(&:prepend_at)
       opts = {:in_reply_to_status_id => status.id, :trim_user => true}
       add_location!(options, opts)
-      reply = client.update("#{users.join(' ')} #{message}", opts)
+      reply = if options['file']
+        client.update_with_media("#{users.join(' ')} #{message}", File.new(File.expand_path(options['file'])), opts)
+      else
+        client.update("#{users.join(' ')} #{message}", opts)
+      end
       say "Reply posted by @#{@rcfile.active_profile[0]} to #{users.join(' ')}."
       say
       say "Run `#{File.basename($PROGRAM_NAME)} delete status #{reply.id}` to delete."

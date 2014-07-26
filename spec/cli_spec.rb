@@ -2534,6 +2534,20 @@ ID                   Posted at     Screen name       Text
         expect($stdout.string.split("\n").first).to eq 'Reply posted by @testcli to @joshfrench @sferik.'
       end
     end
+    context 'with file' do
+      before do
+        @cli.options = @cli.options.merge('file' => fixture_path + '/long.png')
+        stub_post('/1.1/statuses/update_with_media.json').to_return(:body => fixture('status.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
+      end
+      it 'requests the correct resource' do
+        @cli.reply('263813522369159169', 'Testing')
+        expect(a_post('/1.1/statuses/update_with_media.json')).to have_been_made
+      end
+      it 'has the correct output' do
+        @cli.reply('263813522369159169', 'Testing')
+        expect($stdout.string.split("\n").first).to eq 'Reply posted by @testcli to @joshfrench.'
+      end
+    end
     context '--location' do
       before do
         @cli.options = @cli.options.merge('location' => 'location')

@@ -27,6 +27,8 @@ module T
     DIRECT_MESSAGE_HEADINGS = ['ID', 'Posted at', 'Screen name', 'Text']
     MAX_SEARCH_RESULTS = 100
     TREND_HEADINGS = ['WOEID', 'Parent ID', 'Type', 'Name', 'Country']
+    MAX_NUM_USER_TIMELINE_TWEETS = 3200
+    MAX_NUM_HOME_TIMELINE_TWEETS = 800
 
     check_unknown_options!
 
@@ -751,12 +753,17 @@ module T
     method_option 'id', :aliases => '-i', :type => :boolean, :desc => 'Specify user via ID instead of screen name.'
     method_option 'long', :aliases => '-l', :type => :boolean, :desc => 'Output in long format.'
     method_option 'max_id', :aliases => '-m', :type => :numeric, :desc => 'Returns only the results with an ID less than the specified ID.'
+    method_option 'max_results', :type => :boolean, :default => false, :desc => 'Attempts to receive the maximum number of tweets allowed by the API'
     method_option 'number', :aliases => '-n', :type => :numeric, :default => DEFAULT_NUM_RESULTS, :desc => 'Limit the number of results.'
     method_option 'relative_dates', :aliases => '-a', :type => :boolean, :desc => 'Show relative dates.'
     method_option 'reverse', :aliases => '-r', :type => :boolean, :desc => 'Reverse the order of the sort.'
     method_option 'since_id', :aliases => '-s', :type => :numeric, :desc => 'Returns only the results with an ID greater than the specified ID.'
-    def timeline(user = nil)
-      count = options['number'] || DEFAULT_NUM_RESULTS
+    def timeline(user = nil) # rubocop:disable CyclomaticComplexity
+      if options[:max_results]
+        count = MAX_NUM_USER_TIMELINE_TWEETS
+      else
+        count = options['number'] || DEFAULT_NUM_RESULTS
+      end
       opts = {}
       opts[:exclude_replies] = true if options['exclude'] == 'replies'
       opts[:include_entities] = !!options['decode_uris']
@@ -766,13 +773,23 @@ module T
       if user
         require 't/core_ext/string'
         user = options['id'] ? user.to_i : user.strip_ats
-        tweets = collect_with_count(count) do |count_opts|
-          client.user_timeline(user, count_opts.merge(opts))
-        end
+        timeline_args = [:user_timeline, user]
       else
-        tweets = collect_with_count(count) do |count_opts|
-          client.home_timeline(count_opts.merge(opts))
-        end
+        timeline_args = [:home_timeline]
+        # just incase count is set to 800+; the home_timeline is
+        # restricted to 800 tweets, not 3,200
+        count = MAX_NUM_HOME_TIMELINE_TWEETS if count > MAX_NUM_HOME_TIMELINE_TWEETS
+      end
+      tweets = []
+      begin
+        collect_with_count(count) do |count_opts|        
+          arr = client.send(*timeline_args, count_opts.merge(opts))
+          tweets.concat(arr)
+          arr
+        end        
+      rescue Twitter::Error => err
+        # if there aren't any tweets collected, just error out
+        raise err if tweets.nil? || tweets.empty?
       end
       print_tweets(tweets)
     end

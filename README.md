@@ -45,7 +45,7 @@ or for Red Hat-based distros like Fedora and CentOS, type:
 (if necessary, adapt for your package manager)
 
 **On Windows**, you can install Ruby with [RubyInstaller][].
-[rubyinstaller]: http://rubyinstaller.org/
+[rubyinstaller]: http://rubyinstaller.org/downloads/
 
 Once you've verified that Ruby is installed:
 

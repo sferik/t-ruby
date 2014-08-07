@@ -6,6 +6,7 @@
 [![Build Status](http://img.shields.io/travis/sferik/t.svg)][travis]
 [![Dependency Status](http://img.shields.io/gemnasium/sferik/t.svg)][gemnasium]
 [![Coverage Status](http://img.shields.io/coveralls/sferik/t.svg)][coveralls]
+[![tip for next commit](https://tip4commit.com/projects/102.svg)](https://tip4commit.com/github/sferik/t)
 
 [gem]: https://rubygems.org/gems/t
 [travis]: http://travis-ci.org/sferik/t

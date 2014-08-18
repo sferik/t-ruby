@@ -104,7 +104,7 @@ follow)
 followings)
               case "$prev" in
               --sort|-s)
-             completions='favorites followers friends listed screen_name since tweets tweeted' ;;
+              completions='favorites followers friends listed screen_name since tweets tweeted' ;;
               -C|--color) completions='auto never' ;;
 
               *) completions='--csv -c --id -i --long -l --relative_dates -a --reverse -r --sort -s --unsorted -u -H --host -C --color -P --profile' ;;
@@ -113,7 +113,7 @@ followings)
 followings_following)
               case "$prev" in
               --sort|-s)
-             completions='favorites followers friends listed screen_name since tweets tweeted' ;;
+              completions='favorites followers friends listed screen_name since tweets tweeted' ;;
               -C|--color) completions='auto never' ;;
 
               *) completions='--csv -c --id -i --long -l --relative_dates -a --reverse -r --sort -s --unsorted -u -H --host -C --color -P --profile' ;;
@@ -122,7 +122,7 @@ followings_following)
 followers)
               case "$prev" in
               --sort|-s)
-             completions='favorites followers friends listed screen_name since tweets tweeted' ;;
+              completions='favorites followers friends listed screen_name since tweets tweeted' ;;
               -C|--color) completions='auto never' ;;
 
               *) completions='--csv -c --id -i --long -l --relative_dates -a --reverse -r --sort -s --unsorted -u -H --host -C --color -P --profile' ;;
@@ -131,7 +131,7 @@ followers)
 friends)
               case "$prev" in
               --sort|-s)
-             completions='favorites followers friends listed screen_name since tweets tweeted' ;;
+              completions='favorites followers friends listed screen_name since tweets tweeted' ;;
               -C|--color) completions='auto never' ;;
 
               *) completions='--csv -c --id -i --long -l --relative_dates -a --reverse -r --sort -s --unsorted -u -H --host -C --color -P --profile' ;;
@@ -169,7 +169,7 @@ leaders)
 lists)
               case "$prev" in
               --sort|-s)
-             completions='members mode since slug subscribers' ;;
+              completions='members mode since slug subscribers' ;;
               -C|--color) completions='auto never' ;;
 
               *) completions='--csv -c --id -i --long -l --relative_dates -a --reverse -r --sort -s --unsorted -u -H --host -C --color -P --profile' ;;
@@ -350,12 +350,12 @@ delete)
               case "$prev" in
               delete) completions='block dm favorite list mute status help';;
               block) completions='-H --host -C --color -P --profile' ;;
-dm) completions='-H --host -C --color -P --profile' ;;
-favorite) completions='-H --host -C --color -P --profile' ;;
-list) completions='-H --host -C --color -P --profile' ;;
-mute) completions='-H --host -C --color -P --profile' ;;
-status) completions='-H --host -C --color -P --profile' ;;
-help) completions='-H --host -C --color -P --profile' ;;
+              dm) completions='-H --host -C --color -P --profile' ;;
+              favorite) completions='-H --host -C --color -P --profile' ;;
+              list) completions='-H --host -C --color -P --profile' ;;
+              mute) completions='-H --host -C --color -P --profile' ;;
+              status) completions='-H --host -C --color -P --profile' ;;
+              help) completions='-H --host -C --color -P --profile' ;;
               
               -C|--color) completions='auto never' ;;
 
@@ -366,12 +366,12 @@ list)
               case "$prev" in
               list) completions='add create information members remove timeline help';;
               add) completions='-H --host -C --color -P --profile' ;;
-create) completions='-H --host -C --color -P --profile' ;;
-information) completions='-H --host -C --color -P --profile' ;;
-members) completions='-H --host -C --color -P --profile' ;;
-remove) completions='-H --host -C --color -P --profile' ;;
-timeline) completions='-H --host -C --color -P --profile' ;;
-help) completions='-H --host -C --color -P --profile' ;;
+              create) completions='-H --host -C --color -P --profile' ;;
+              information) completions='-H --host -C --color -P --profile' ;;
+              members) completions='-H --host -C --color -P --profile' ;;
+              remove) completions='-H --host -C --color -P --profile' ;;
+              timeline) completions='-H --host -C --color -P --profile' ;;
+              help) completions='-H --host -C --color -P --profile' ;;
               
               -C|--color) completions='auto never' ;;
 
@@ -382,13 +382,13 @@ search)
               case "$prev" in
               search) completions='all favorites list mentions retweets timeline users help';;
               all) completions='-H --host -C --color -P --profile' ;;
-favorites) completions='-H --host -C --color -P --profile' ;;
-list) completions='-H --host -C --color -P --profile' ;;
-mentions) completions='-H --host -C --color -P --profile' ;;
-retweets) completions='-H --host -C --color -P --profile' ;;
-timeline) completions='-H --host -C --color -P --profile' ;;
-users) completions='-H --host -C --color -P --profile' ;;
-help) completions='-H --host -C --color -P --profile' ;;
+              favorites) completions='-H --host -C --color -P --profile' ;;
+              list) completions='-H --host -C --color -P --profile' ;;
+              mentions) completions='-H --host -C --color -P --profile' ;;
+              retweets) completions='-H --host -C --color -P --profile' ;;
+              timeline) completions='-H --host -C --color -P --profile' ;;
+              users) completions='-H --host -C --color -P --profile' ;;
+              help) completions='-H --host -C --color -P --profile' ;;
               
               -C|--color) completions='auto never' ;;
 
@@ -399,14 +399,14 @@ set)
               case "$prev" in
               set) completions='active bio language location name profile_background_image profile_image website help';;
               active) completions='-H --host -C --color -P --profile' ;;
-bio) completions='-H --host -C --color -P --profile' ;;
-language) completions='-H --host -C --color -P --profile' ;;
-location) completions='-H --host -C --color -P --profile' ;;
-name) completions='-H --host -C --color -P --profile' ;;
-profile_background_image) completions='-H --host -C --color -P --profile' ;;
-profile_image) completions='-H --host -C --color -P --profile' ;;
-website) completions='-H --host -C --color -P --profile' ;;
-help) completions='-H --host -C --color -P --profile' ;;
+              bio) completions='-H --host -C --color -P --profile' ;;
+              language) completions='-H --host -C --color -P --profile' ;;
+              location) completions='-H --host -C --color -P --profile' ;;
+              name) completions='-H --host -C --color -P --profile' ;;
+              profile_background_image) completions='-H --host -C --color -P --profile' ;;
+              profile_image) completions='-H --host -C --color -P --profile' ;;
+              website) completions='-H --host -C --color -P --profile' ;;
+              help) completions='-H --host -C --color -P --profile' ;;
               
               -C|--color) completions='auto never' ;;
 
@@ -417,19 +417,19 @@ stream)
               case "$prev" in
               stream) completions='all list matrix search timeline users help';;
               all) completions='-H --host -C --color -P --profile' ;;
-list) completions='-H --host -C --color -P --profile' ;;
-matrix) completions='-H --host -C --color -P --profile' ;;
-search) completions='-H --host -C --color -P --profile' ;;
-timeline) completions='-H --host -C --color -P --profile' ;;
-users) completions='-H --host -C --color -P --profile' ;;
-help) completions='-H --host -C --color -P --profile' ;;
+              list) completions='-H --host -C --color -P --profile' ;;
+              matrix) completions='-H --host -C --color -P --profile' ;;
+              search) completions='-H --host -C --color -P --profile' ;;
+              timeline) completions='-H --host -C --color -P --profile' ;;
+              users) completions='-H --host -C --color -P --profile' ;;
+              help) completions='-H --host -C --color -P --profile' ;;
               
               -C|--color) completions='auto never' ;;
 
               *) completions='-H --host -C --color -P --profile';;
               esac;;
 
-          *) completions="$COMMANDS" ;;
+              *) completions="$COMMANDS" ;;
         esac
 
         COMPREPLY=( $( compgen -W "$completions" -- $cur ))

@@ -7,9 +7,8 @@ rvm:
   - rbx-2
   - ruby-head
 matrix:
-  include:
   allow_failures:
     - rvm: rbx-2
     - rvm: ruby-head
   fast_finish: true
-script: bundle exec rake default
+sudo: false

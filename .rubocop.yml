@@ -28,6 +28,9 @@ BlockNesting:
 CyclomaticComplexity:
   Max: 11 # TODO: Lower to 6
 
+PerceivedComplexity:
+  Max: 28 # TODO: Lower to 7
+
 # Align with the style guide.
 CollectionMethods:
   PreferredMethods:

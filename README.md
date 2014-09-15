@@ -64,6 +64,8 @@ messages", otherwise you'll receive an error that looks like this:
 
     Error processing your OAuth request: Read-only application cannot POST
 
+A mobile phone number must be associated with your account in order to obtain write privileges. If your carrier is not supported by Twitter and you are unable to add a number, contact Twitter using <https://support.twitter.com/forms/platform>, selecting the last checkbox. Some users have reported success adding their number using the mobile site, <https://mobile.twitter.com/settings>, which seems to bypass the carrier check at the moment.
+
 Now, you're ready to authorize a Twitter account with your application. To
 proceed, type the following command at the prompt and follow the instructions:
 

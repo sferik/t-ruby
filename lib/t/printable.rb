@@ -55,13 +55,13 @@ module T
     def print_lists(lists)
       lists = case options['sort']
       when 'members'
-        lists.sort_by { |user| user.member_count }
+        lists.sort_by(&:member_count)
       when 'mode'
-        lists.sort_by { |user| user.mode }
+        lists.sort_by(&:mode)
       when 'since'
-        lists.sort_by { |user| user.created_at }
+        lists.sort_by(&:created_at)
       when 'subscribers'
-        lists.sort_by { |user| user.subscriber_count }
+        lists.sort_by(&:subscriber_count)
       else
         lists.sort_by { |list| list.slug.downcase }
       end unless options['unsorted']
@@ -154,7 +154,7 @@ module T
       when 'listed'
         users.sort_by { |user| user.listed_count.to_i }
       when 'since'
-        users.sort_by { |user| user.created_at }
+        users.sort_by(&:created_at)
       when 'tweets'
         users.sort_by { |user| user.statuses_count.to_i }
       when 'tweeted'

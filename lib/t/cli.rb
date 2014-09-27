@@ -43,7 +43,7 @@ module T
       @rcfile.path = options['profile'] if options['profile']
       @rcfile.profiles.each do |profile|
         say profile[0]
-        profile[1].keys.each do |key|
+        profile[1].each_key do |key|
           say "  #{key}#{@rcfile.active_profile[0] == profile[0] && @rcfile.active_profile[1] == key ? ' (active)' : nil}"
         end
       end

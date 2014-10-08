@@ -17,10 +17,7 @@ Gem::Specification.new do |spec|
   spec.description = 'A command-line power tool for Twitter.'
   spec.email = 'sferik@gmail.com'
   spec.executables = %w[t]
-  spec.files = %w[CONTRIBUTING.md LICENSE.md README.md Rakefile t.gemspec]
-  spec.files += Dir.glob('lib/**/*.rb')
-  spec.files += Dir.glob('bin/**/*')
-  spec.files += Dir.glob('spec/**/*')
+  spec.files = %w[CONTRIBUTING.md LICENSE.md README.md t.gemspec] + Dir['bin/*'] + Dir['lib/**/*.rb']
   spec.homepage = 'http://sferik.github.com/t/'
   spec.licenses = %w[MIT]
   spec.name = 't'
@@ -28,6 +25,5 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = '>= 1.9.2'
   spec.required_rubygems_version = '>= 1.3.5'
   spec.summary = 'CLI for Twitter'
-  spec.test_files = Dir.glob('spec/**/*')
   spec.version = T::Version
 end

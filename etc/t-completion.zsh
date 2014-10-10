@@ -1,6 +1,13 @@
 #compdef t
 
-# Completion for Zsh. Source from somewhere in your $fpath.
+# t completion for ZSH.
+#
+# The preferred way to add these completions to your ZSH configuration
+# is to copy this file at: `~/.zsh/_t`, and add `~/.zsh` to your
+# `$fpath` variable, like this:
+#
+#     fpath=( ~/.zsh $fpath )
+#
 
 _t (){
   local -a t_general_options

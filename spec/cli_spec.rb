@@ -612,11 +612,13 @@ ID          Posted at     Screen name  Text
         it 'cannot follow yourself' do
           expect do
             @cli.does_follow 'testcli'
+            expect($stderr.string.chomp).to eq 'No, you are not following yourself.'
           end.to raise_error(SystemExit)
         end
         it 'cannot check same account' do
           expect do
             @cli.does_follow('sferik', 'sferik')
+            expect($stderr.string.chomp).to eq 'No, @sferik is not following themself.'
           end.to raise_error(SystemExit)
         end
       end

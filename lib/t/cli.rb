@@ -223,14 +223,8 @@ module T
     desc 'does_follow USER [USER]', 'Find out whether one user follows another.'
     method_option 'id', :aliases => '-i', :type => :boolean, :desc => 'Specify user via ID instead of screen name.'
     def does_follow(user1, user2 = nil)
-      if user2.nil? && user1 == @rcfile.active_profile[0].downcase
-        abort "You cannot follow yourself!"
-      end
-
-      if user1 == user2
-        abort "It's a same account!"
-      end
-
+      abort 'No, you are not following yourself.' if user2.nil? && user1 == @rcfile.active_profile[0].downcase
+      abort "No, @#{user1} is not following themself." if user1 == user2
       require 't/core_ext/string'
       thread1 = if options['id']
         Thread.new { client.user(user1.to_i).screen_name }

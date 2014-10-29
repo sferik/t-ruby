@@ -14,8 +14,6 @@ module T
     include T::Utils
 
     DEFAULT_NUM_RESULTS = 20
-    MAX_USERS_PER_LIST = 500
-    MAX_USERS_PER_REQUEST = 100
 
     check_unknown_options!
 

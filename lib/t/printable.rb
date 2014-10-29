@@ -108,6 +108,7 @@ module T
       else
         print_table(array)
       end
+      STDOUT.flush
     end
 
     def print_message(from_user, message)

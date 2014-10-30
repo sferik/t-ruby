@@ -41,6 +41,7 @@ _t (){
       "matrix[Unfortunately, no one can be told what the Matrix is. You have to see it for yourself.]" \
       "mentions[Returns the 20 most recent Tweets mentioning you.]" \
       "mute[Mute users.]" \
+      "muted[Returns a list of the people you have muted on Twitter.]" \
       "open[Opens that user\'s profile in a web browser.]" \
       "reach[Shows the maximum number of people who may have seen the specified tweet in their timeline.]" \
       "reply[Post your Tweet as a reply directed at another person.]" \
@@ -269,6 +270,17 @@ _t_mute() {
     $t_general_options && ret=0
 }
 
+_t_muted() {
+  _arguments \
+    "(-c --csv)"{-c,--csv}"[Output in CSV format.]" \
+    "(-l --long)"{-l,--long}"[Output in long format.]" \
+    "(-a --relative_dates)"{-a,--relative_dates}"[Show relative dates.]" \
+    "(-r --reverse)"{-r,--reverse}"[Reverse the order of the sort.]" \
+    "(-s --sort)"{-s,--sort}"[Specify the order of the results.]" \
+    "(-u --unsorted)"{-u,--unsorted}"[Output is not sorted.]" \
+    $t_general_options && ret=0
+}
+
 _t_open() {
   _arguments \
     "(-d --display-uri)"{-d,--display-uri}"[Display the requested URL instead of attempting to open it.]" \
@@ -286,6 +298,7 @@ _t_reply() {
   _arguments \
     "(-a --all)"{-a,--all}"[Reply to all users mentioned in the Tweet.]" \
     "(-l --location)"{-l,--location}"[Add location information. If the optional \'latitude,longitude\' parameter is not supplied, looks up location by IP address.]" \
+    "(-f --file)"{-f,--file}"[The path to an image to attach to your tweet.]" \
     $t_general_options && ret=0
 }
 

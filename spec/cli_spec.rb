@@ -3785,7 +3785,7 @@ WOEID     Parent ID  Type       Name           Country
       end
       it 'sorts by the country name' do
         @cli.trend_locations
-        expect($stdout.string.chomp).to eq 'Soweto         San Francisco  United States  Worldwide'
+        expect($stdout.string.chomp).to eq 'Worldwide      Soweto         San Francisco  United States'
       end
     end
     context '--sort=parent' do

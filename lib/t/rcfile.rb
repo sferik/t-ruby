@@ -96,6 +96,16 @@ module T
       send(:initialize)
     end
 
+    def delete_profile(profile)
+      profiles.delete(profile)
+      write
+    end
+
+    def delete_key(profile, key)
+      profiles[profile].delete(key)
+      write
+    end
+
   private
 
     def active_profile?

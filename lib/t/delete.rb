@@ -100,6 +100,18 @@ module T
       say "Run `#{File.basename($PROGRAM_NAME)} mute #{unmuted_users.collect { |unmuted_user| "@#{unmuted_user.screen_name}" }.join(' ')}` to mute."
     end
 
+    desc 'account SCREEN_NAME [CONSUMER_KEY]', 'delete account or consumer key from t'
+    def account(account, key = nil)
+      if key && @rcfile.profiles[account].keys.length == 1
+        continue = ask 'There is only one API key associated with this account, removing it will disable all functionality, are you sure you want to delete it? [y/N]'
+        return if continue.downcase != 'y'
+      elsif key
+        return @rcfile.delete_key(account, key)
+      else
+        @rcfile.delete_profile(account)
+      end
+    end
+
     desc 'status TWEET_ID [TWEET_ID...]', 'Delete Tweets.'
     method_option 'force', :aliases => '-f', :type => :boolean
     def status(status_id, *status_ids)

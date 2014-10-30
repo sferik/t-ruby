@@ -10,7 +10,7 @@
         topcmd=${COMP_WORDS[1]}
         prev=${COMP_WORDS[COMP_CWORD-1]}
 
-        COMMANDS='accounts authorize block direct_messages direct_messages_sent dm does_contain does_follow favorite favorites follow followings followings_following followers friends groupies intersection leaders lists matrix mentions mute open reach reply report_spam retweet retweets retweets_of_me ruler status timeline trends trend_locations unfollow update users version whois whoami delete list search set stream'
+        COMMANDS='accounts authorize block direct_messages direct_messages_sent dm does_contain does_follow favorite favorites follow followings followings_following followers friends groupies intersection leaders lists matrix mentions mute muted open reach reply report_spam retweet retweets retweets_of_me ruler status timeline trends trend_locations unfollow update users version whois whoami delete list search set stream'
 
         case "$topcmd" in
           accounts)
@@ -199,6 +199,15 @@ mute)
               *) completions='--id -i -H --host -C --color -P --profile' ;;
               esac;;
 
+muted)
+              case "$prev" in
+              --sort|-s)
+             completions='favorites followers friends listed screen_name since tweets tweeted' ;;
+              -C|--color) completions='auto never' ;;
+
+              *) completions='--csv -c --long -l --relative_dates -a --reverse -r --sort -s --unsorted -u -H --host -C --color -P --profile' ;;
+              esac;;
+
 open)
               case "$prev" in
               
@@ -220,7 +229,7 @@ reply)
               
               -C|--color) completions='auto never' ;;
 
-              *) completions='--all -a --location -l -H --host -C --color -P --profile' ;;
+              *) completions='--all -a --location -l --file -f -H --host -C --color -P --profile' ;;
               esac;;
 
 report_spam)

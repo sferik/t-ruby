@@ -206,6 +206,101 @@ describe T::Delete do
     end
   end
 
+  describe '#delete_consumer_key_cancel' do
+    before do
+      @delete.options = @delete.options.merge('profile' => fixture_path + '/.trc')
+      delete_cli = {
+        'delete_cli' => {
+          'dw123' => {
+            'consumer_key' => 'abc123',
+            'secret' => 'epzrjvxtumoc',
+            'token' => '428004849-cebdct6bwobn',
+            'username' => 'deletecli',
+            'consumer_secret' => 'asdfasd223sd2'
+          }
+        }
+      }
+      rcfile = @delete.instance_variable_get(:@rcfile)
+      rcfile.profiles.merge!(delete_cli)
+      rcfile.send(:write)
+    end
+
+    after do
+      rcfile = @delete.instance_variable_get(:@rcfile)
+      rcfile.delete_profile('delete_cli')
+    end
+
+    it 'does not delete the key' do
+      expect(Readline).to receive(:readline).with('There is only one API key associated with this account, removing it will disable all functionality, are you sure you want to delete it? [y/N] ', true).and_return('N')
+      @delete.account('delete_cli', 'dw1234')
+      rcfile = @delete.instance_variable_get(:@rcfile)
+      expect(rcfile.profiles['delete_cli'].keys.include?('dw123')).to eq true
+    end
+  end
+
+  describe '#delete_key' do
+    before do
+      @delete.options = @delete.options.merge('profile' => fixture_path + '/.trc')
+      delete_cli = {
+        'delete_cli' => {
+          'dw123' => {
+            'consumer_key' => 'abc123',
+            'secret' => 'epzrjvxtumoc',
+            'token' => '428004849-cebdct6bwobn',
+            'username' => 'deletecli',
+            'consumer_secret' => 'asdfasd223sd2'
+          },
+          'dw1234' => {
+            'consumer_key' => 'abc1234',
+            'secret' => 'epzrjvxtumoc',
+            'token' => '428004849-cebdct6bwobn',
+            'username' => 'deletecli',
+            'consumer_secret' => 'asdfasd223sd2'
+          }
+        }
+      }
+      rcfile = @delete.instance_variable_get(:@rcfile)
+      rcfile.profiles.merge!(delete_cli)
+      rcfile.send(:write)
+    end
+
+    after do
+      rcfile = @delete.instance_variable_get(:@rcfile)
+      rcfile.delete_profile('delete_cli')
+    end
+
+    it 'deletes the key' do
+      @delete.account('delete_cli', 'dw1234')
+      rcfile = @delete.instance_variable_get(:@rcfile)
+      expect(rcfile.profiles['delete_cli'].keys.include?('dw1234')).to eq false
+    end
+  end
+
+  describe '#delete_account' do
+    before do
+      @delete.options = @delete.options.merge('profile' => fixture_path + '/.trc')
+      delete_cli = {
+        'delete_cli' => {
+          'dw123' => {
+            'consumer_key' => 'abc123',
+            'secret' => 'epzrjvxtumoc',
+            'token' => '428004849-cebdct6bwobn',
+            'username' => 'deletecli',
+            'consumer_secret' => 'asdfasd223sd2'
+          }
+        }
+      }
+      rcfile = @delete.instance_variable_get(:@rcfile)
+      rcfile.profiles.merge!(delete_cli)
+      rcfile.send(:write)
+    end
+    it 'deletes the account' do
+      @delete.account('delete_cli')
+      rcfile = @delete.instance_variable_get(:@rcfile)
+      expect(rcfile.profiles.keys.include?('delete_cli')).to eq false
+    end
+  end
+
   describe '#status' do
     before do
       @delete.options = @delete.options.merge('profile' => fixture_path + '/.trc')

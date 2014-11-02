@@ -1,105 +1,75 @@
-AllCops:
-  Include:
-    - 'Gemfile'
-    - 'Rakefile'
-    - 'bin/t'
-    - 't.gemspec'
+Lint/EndAlignment:
+  AlignWith: variable
 
-# Avoid long parameter lists
-ParameterLists:
-  Max: 3
-  CountKeywordArgs: true
-
-# Thor makes it hard to write short classes
-ClassLength:
+Metrics/AbcSize:
   Enabled: false
 
-LineLength:
-  Enabled: false
-
-# Thor makes it hard to write short methods
-MethodLength:
-  Enabled: false
-
-# Avoid more than `Max` levels of nesting.
-BlockNesting:
+Metrics/BlockNesting:
   Max: 2
 
-CyclomaticComplexity:
+Metrics/ClassLength:
+  Enabled: false
+
+Metrics/CyclomaticComplexity:
   Max: 11 # TODO: Lower to 6
 
-PerceivedComplexity:
+Metrics/LineLength:
+  AllowURI: true
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/ParameterLists:
+  Max: 4
+  CountKeywordArgs: true
+
+Metrics/PerceivedComplexity:
   Max: 28 # TODO: Lower to 7
 
-# Align with the style guide.
-CollectionMethods:
+Style/AccessModifierIndentation:
+  EnforcedStyle: outdent
+
+Style/CollectionMethods:
   PreferredMethods:
     map:      'collect'
-    map!:     'collect!'
     reduce:   'inject'
     find:     'detect'
     find_all: 'select'
 
-# Disable documentation checking until a class needs to be documented once
-Documentation:
-  Enabled: false
-
-# Enforce Ruby 1.8-compatible hash syntax
-HashSyntax:
-  EnforcedStyle: hash_rockets
-
-# No spaces inside hash literals
-SpaceInsideHashLiteralBraces:
-  EnforcedStyle: no_space
-
-# Allow dots at the end of lines
-DotPosition:
-  Enabled: false
-
-# Don't require magic comment at the top of every file
-Encoding:
-  Enabled: false
-
-# Enforce outdenting of access modifiers (i.e. public, private, protected)
-AccessModifierIndentation:
-  EnforcedStyle: outdent
-
-EmptyLinesAroundAccessModifier:
-  Enabled: true
-
-# Trailing whitespace is required to test output
-TrailingWhitespace:
-  Enabled: false
-
-# Align ends correctly
-EndAlignment:
-  AlignWith: variable
-
-# Indentation of when/else
-CaseIndentation:
+Style/CaseIndentation:
   IndentWhenRelativeTo: end
-  IndentOneStep: false
 
-Lambda:
+Style/Documentation:
   Enabled: false
 
-RaiseArgs:
+Style/DotPosition:
+  EnforcedStyle: trailing
+
+Style/DoubleNegation:
+  Enabled: false
+
+Style/EachWithObject:
+  Enabled: false
+
+Style/Encoding:
+  Enabled: false
+
+Style/Lambda:
+  Enabled: false
+
+Style/RaiseArgs:
   EnforcedStyle: compact
 
-TrailingComma:
-  Enabled: false
+Style/RegexpLiteral:
+  Exclude:
+    - 'Guardfile'
 
-DoubleNegation:
-  Enabled: false
+Style/SpaceInsideHashLiteralBraces:
+  EnforcedStyle: no_space
 
-PercentLiteralDelimiters:
-  PreferredDelimiters:
-    '%':  ()
-    '%i': ()
-    '%q': ()
-    '%Q': ()
-    '%r': '{}'
-    '%s': ()
-    '%w': '[]'
-    '%W': '[]'
-    '%x': ()
+Style/TrailingComma:
+  EnforcedStyleForMultiline: 'comma'
+
+Style/TrailingWhitespace:
+  Enabled: false

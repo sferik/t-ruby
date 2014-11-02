@@ -8,7 +8,7 @@ module T
     MAX_PAGE = 51
 
     def collect_with_max_id(collection = [], max_id = nil, &block)
-      tweets = retryable(:tries => 3, :on => Twitter::Error, :sleep => 0) do
+      tweets = retryable(tries: 3, on: Twitter::Error, sleep: 0) do
         yield(max_id)
       end
       return collection if tweets.nil?
@@ -31,7 +31,7 @@ module T
     end
 
     def collect_with_page(collection = ::Set.new, page = 1, previous = nil, &block) # rubocop:disable ParameterLists
-      tweets = retryable(:tries => 3, :on => Twitter::Error, :sleep => 0) do
+      tweets = retryable(tries: 3, on: Twitter::Error, sleep: 0) do
         block.call(page)
       end
       return collection if tweets.nil? || tweets == previous || page >= MAX_PAGE

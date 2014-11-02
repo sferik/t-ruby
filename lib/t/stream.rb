@@ -25,9 +25,9 @@ module T
     end
 
     desc 'all', 'Stream a random sample of all Tweets (Control-C to stop)'
-    method_option 'csv', :aliases => '-c', :type => :boolean, :desc => 'Output in CSV format.'
-    method_option 'decode_uris', :aliases => '-d', :type => :boolean, :desc => 'Decodes t.co URLs into their original form.'
-    method_option 'long', :aliases => '-l', :type => :boolean, :desc => 'Output in long format.'
+    method_option 'csv', aliases: '-c', type: :boolean, desc: 'Output in CSV format.'
+    method_option 'decode_uris', aliases: '-d', type: :boolean, desc: 'Decodes t.co URLs into their original form.'
+    method_option 'long', aliases: '-l', type: :boolean, desc: 'Output in long format.'
     def all
       streaming_client.before_request do
         if options['csv']
@@ -48,7 +48,7 @@ module T
           array = build_long_tweet(tweet).each_with_index.collect do |element, index|
             TWEET_HEADINGS_FORMATTING[index] % element
           end
-          print_table([array], :truncate => STDOUT.tty?)
+          print_table([array], truncate: STDOUT.tty?)
         else
           print_message(tweet.user.screen_name, tweet.text)
         end
@@ -56,23 +56,23 @@ module T
     end
 
     desc 'list [USER/]LIST', 'Stream a timeline for members of the specified list (Control-C to stop)'
-    method_option 'csv', :aliases => '-c', :type => :boolean, :desc => 'Output in CSV format.'
-    method_option 'decode_uris', :aliases => '-d', :type => :boolean, :desc => 'Decodes t.co URLs into their original form.'
-    method_option 'id', :aliases => '-i', :type => :boolean, :desc => 'Specify user via ID instead of screen name.'
-    method_option 'long', :aliases => '-l', :type => :boolean, :desc => 'Output in long format.'
-    method_option 'reverse', :aliases => '-r', :type => :boolean, :desc => 'Reverse the order of the sort.'
+    method_option 'csv', aliases: '-c', type: :boolean, desc: 'Output in CSV format.'
+    method_option 'decode_uris', aliases: '-d', type: :boolean, desc: 'Decodes t.co URLs into their original form.'
+    method_option 'id', aliases: '-i', type: :boolean, desc: 'Specify user via ID instead of screen name.'
+    method_option 'long', aliases: '-l', type: :boolean, desc: 'Output in long format.'
+    method_option 'reverse', aliases: '-r', type: :boolean, desc: 'Reverse the order of the sort.'
     def list(user_list)
       owner, list_name = extract_owner(user_list, options)
       require 't/list'
       streaming_client.before_request do
         list = T::List.new
         list.options = list.options.merge(options)
-        list.options = list.options.merge(:reverse => true)
-        list.options = list.options.merge(:format => TWEET_HEADINGS_FORMATTING)
+        list.options = list.options.merge(reverse: true)
+        list.options = list.options.merge(format: TWEET_HEADINGS_FORMATTING)
         list.timeline(user_list)
       end
       user_ids = client.list_members(owner, list_name).collect(&:id)
-      streaming_client.filter(:follow => user_ids.join(',')) do |tweet|
+      streaming_client.filter(follow: user_ids.join(',')) do |tweet|
         next unless tweet.is_a?(Twitter::Tweet)
         if options['csv']
           print_csv_tweet(tweet)
@@ -80,13 +80,13 @@ module T
           array = build_long_tweet(tweet).each_with_index.collect do |element, index|
             TWEET_HEADINGS_FORMATTING[index] % element
           end
-          print_table([array], :truncate => STDOUT.tty?)
+          print_table([array], truncate: STDOUT.tty?)
         else
           print_message(tweet.user.screen_name, tweet.text)
         end
       end
     end
-    map %w[tl] => :timeline
+    map %w(tl) => :timeline
 
     desc 'matrix', 'Unfortunately, no one can be told what the Matrix is. You have to see it for yourself.'
     def matrix
@@ -95,27 +95,27 @@ module T
         cli = T::CLI.new
         cli.matrix
       end
-      streaming_client.sample(:language => 'ja') do |tweet|
+      streaming_client.sample(language: 'ja') do |tweet|
         next unless tweet.is_a?(Twitter::Tweet)
         say(tweet.text.gsub(/[^\u3000\u3040-\u309f]/, '').reverse, [:bold, :green, :on_black], false)
       end
     end
 
     desc 'search KEYWORD [KEYWORD...]', 'Stream Tweets that contain specified keywords, joined with logical ORs (Control-C to stop)'
-    method_option 'csv', :aliases => '-c', :type => :boolean, :desc => 'Output in CSV format.'
-    method_option 'decode_uris', :aliases => '-d', :type => :boolean, :desc => 'Decodes t.co URLs into their original form.'
-    method_option 'long', :aliases => '-l', :type => :boolean, :desc => 'Output in long format.'
+    method_option 'csv', aliases: '-c', type: :boolean, desc: 'Output in CSV format.'
+    method_option 'decode_uris', aliases: '-d', type: :boolean, desc: 'Decodes t.co URLs into their original form.'
+    method_option 'long', aliases: '-l', type: :boolean, desc: 'Output in long format.'
     def search(keyword, *keywords)
       keywords.unshift(keyword)
       require 't/search'
       streaming_client.before_request do
         search = T::Search.new
         search.options = search.options.merge(options)
-        search.options = search.options.merge(:reverse => true)
-        search.options = search.options.merge(:format => TWEET_HEADINGS_FORMATTING)
+        search.options = search.options.merge(reverse: true)
+        search.options = search.options.merge(format: TWEET_HEADINGS_FORMATTING)
         search.all(keywords.join(' OR '))
       end
-      streaming_client.filter(:track => keywords.join(',')) do |tweet|
+      streaming_client.filter(track: keywords.join(',')) do |tweet|
         next unless tweet.is_a?(Twitter::Tweet)
         if options['csv']
           print_csv_tweet(tweet)
@@ -123,7 +123,7 @@ module T
           array = build_long_tweet(tweet).each_with_index.collect do |element, index|
             TWEET_HEADINGS_FORMATTING[index] % element
           end
-          print_table([array], :truncate => STDOUT.tty?)
+          print_table([array], truncate: STDOUT.tty?)
         else
           print_message(tweet.user.screen_name, tweet.text)
         end
@@ -131,16 +131,16 @@ module T
     end
 
     desc 'timeline', 'Stream your timeline (Control-C to stop)'
-    method_option 'csv', :aliases => '-c', :type => :boolean, :desc => 'Output in CSV format.'
-    method_option 'decode_uris', :aliases => '-d', :type => :boolean, :desc => 'Decodes t.co URLs into their original form.'
-    method_option 'long', :aliases => '-l', :type => :boolean, :desc => 'Output in long format.'
+    method_option 'csv', aliases: '-c', type: :boolean, desc: 'Output in CSV format.'
+    method_option 'decode_uris', aliases: '-d', type: :boolean, desc: 'Decodes t.co URLs into their original form.'
+    method_option 'long', aliases: '-l', type: :boolean, desc: 'Output in long format.'
     def timeline
       require 't/cli'
       streaming_client.before_request do
         cli = T::CLI.new
         cli.options = cli.options.merge(options)
-        cli.options = cli.options.merge(:reverse => true)
-        cli.options = cli.options.merge(:format => TWEET_HEADINGS_FORMATTING)
+        cli.options = cli.options.merge(reverse: true)
+        cli.options = cli.options.merge(format: TWEET_HEADINGS_FORMATTING)
         cli.timeline
       end
       streaming_client.user do |tweet|
@@ -151,7 +151,7 @@ module T
           array = build_long_tweet(tweet).each_with_index.collect do |element, index|
             TWEET_HEADINGS_FORMATTING[index] % element
           end
-          print_table([array], :truncate => STDOUT.tty?)
+          print_table([array], truncate: STDOUT.tty?)
         else
           print_message(tweet.user.screen_name, tweet.text)
         end
@@ -159,9 +159,9 @@ module T
     end
 
     desc 'users USER_ID [USER_ID...]', 'Stream Tweets either from or in reply to specified users (Control-C to stop)'
-    method_option 'csv', :aliases => '-c', :type => :boolean, :desc => 'Output in CSV format.'
-    method_option 'decode_uris', :aliases => '-d', :type => :boolean, :desc => 'Decodes t.co URLs into their original form.'
-    method_option 'long', :aliases => '-l', :type => :boolean, :desc => 'Output in long format.'
+    method_option 'csv', aliases: '-c', type: :boolean, desc: 'Output in CSV format.'
+    method_option 'decode_uris', aliases: '-d', type: :boolean, desc: 'Decodes t.co URLs into their original form.'
+    method_option 'long', aliases: '-l', type: :boolean, desc: 'Output in long format.'
     def users(user_id, *user_ids)
       user_ids.unshift(user_id)
       user_ids.collect!(&:to_i)
@@ -176,7 +176,7 @@ module T
           print_table([headings])
         end
       end
-      streaming_client.filter(:follow => user_ids.join(',')) do |tweet|
+      streaming_client.filter(follow: user_ids.join(',')) do |tweet|
         next unless tweet.is_a?(Twitter::Tweet)
         if options['csv']
           print_csv_tweet(tweet)
@@ -184,7 +184,7 @@ module T
           array = build_long_tweet(tweet).each_with_index.collect do |element, index|
             TWEET_HEADINGS_FORMATTING[index] % element
           end
-          print_table([array], :truncate => STDOUT.tty?)
+          print_table([array], truncate: STDOUT.tty?)
         else
           print_message(tweet.user.screen_name, tweet.text)
         end

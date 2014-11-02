@@ -22,7 +22,7 @@ end
 module BashCompletion
   class << self
     def generate
-      %Q[# Completion for Bash. Copy it in /etc/bash_completion.d/ or source it
+      %[# Completion for Bash. Copy it in /etc/bash_completion.d/ or source it
       # somewhere in your ~/.bashrc
 
       _t() {
@@ -58,12 +58,12 @@ module BashCompletion
 
         opts_args = cmd.options.collect do |_, opt|
           cases = opt.enum
-          %Q[#{option_str(opt).gsub(/ /, '|')})
+          %[#{option_str(opt).gsub(/ /, '|')})
              completions='#{cases.join(' ')}' ;;] if cases
         end.compact
 
         if subcmds.empty?
-          %Q[#{cmd.name})
+          %[#{cmd.name})
               case "$prev" in
               #{opts_args.join("\n") unless opts_args.empty?}
               #{global_options_args}
@@ -74,7 +74,7 @@ module BashCompletion
             "#{sn}) completions='#{options_str}' ;;"
           end.join("\n")
 
-          %Q[#{cmd.name})
+          %[#{cmd.name})
               case "$prev" in
               #{cmd.name}) completions='#{subcmds.join(' ')}';;
               #{subcommands_cases}
@@ -103,7 +103,7 @@ module BashCompletion
     end
 
     def global_options
-      %w[-H --host -C --color -P --profile]
+      %w(-H --host -C --color -P --profile)
     end
 
     def global_options_args

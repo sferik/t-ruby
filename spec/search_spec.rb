@@ -31,11 +31,11 @@ describe T::Search do
 
   describe '#all' do
     before do
-      stub_get('/1.1/search/tweets.json').with(:query => {:q => 'twitter', :count => '100', :include_entities => 'false'}).to_return(:body => fixture('search.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
+      stub_get('/1.1/search/tweets.json').with(query: {q: 'twitter', count: '100', include_entities: 'false'}).to_return(body: fixture('search.json'), headers: {content_type: 'application/json; charset=utf-8'})
     end
     it 'requests the correct resource' do
       @search.all('twitter')
-      expect(a_get('/1.1/search/tweets.json').with(:query => {:q => 'twitter', :count => '100', :include_entities => 'false'})).to have_been_made
+      expect(a_get('/1.1/search/tweets.json').with(query: {q: 'twitter', count: '100', include_entities: 'false'})).to have_been_made
     end
     it 'has the correct output' do
       @search.all('twitter')
@@ -180,33 +180,33 @@ ID                  Posted at     Screen name       Text
     end
     context '--number' do
       before do
-        stub_get('/1.1/search/tweets.json').with(:query => {:q => 'twitter', :count => '1', :include_entities => 'false'}).to_return(:body => fixture('search2.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
-        stub_get('/1.1/search/tweets.json').with(:query => {:q => 'twitter', :count => '100', :include_entities => 'false'}).to_return(:body => fixture('search.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
-        stub_get('/1.1/search/tweets.json').with(:query => {:q => 'twitter', :count => '100', :include_entities => '1', :max_id => '415600158693675007'}).to_return(:body => fixture('search2.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
+        stub_get('/1.1/search/tweets.json').with(query: {q: 'twitter', count: '1', include_entities: 'false'}).to_return(body: fixture('search2.json'), headers: {content_type: 'application/json; charset=utf-8'})
+        stub_get('/1.1/search/tweets.json').with(query: {q: 'twitter', count: '100', include_entities: 'false'}).to_return(body: fixture('search.json'), headers: {content_type: 'application/json; charset=utf-8'})
+        stub_get('/1.1/search/tweets.json').with(query: {q: 'twitter', count: '100', include_entities: '1', max_id: '415600158693675007'}).to_return(body: fixture('search2.json'), headers: {content_type: 'application/json; charset=utf-8'})
       end
       it 'limits the number of results to 1' do
         @search.options = @search.options.merge('number' => 1)
         @search.all('twitter')
-        expect(a_get('/1.1/search/tweets.json').with(:query => {:q => 'twitter', :count => '100', :include_entities => 'false'})).to have_been_made
+        expect(a_get('/1.1/search/tweets.json').with(query: {q: 'twitter', count: '100', include_entities: 'false'})).to have_been_made
       end
       it 'limits the number of results to 201' do
         @search.options = @search.options.merge('number' => 201)
         @search.all('twitter')
-        expect(a_get('/1.1/search/tweets.json').with(:query => {:q => 'twitter', :count => '100', :include_entities => 'false'})).to have_been_made
-        expect(a_get('/1.1/search/tweets.json').with(:query => {:q => 'twitter', :count => '100', :include_entities => '1', :max_id => '415600158693675007'})).to have_been_made
+        expect(a_get('/1.1/search/tweets.json').with(query: {q: 'twitter', count: '100', include_entities: 'false'})).to have_been_made
+        expect(a_get('/1.1/search/tweets.json').with(query: {q: 'twitter', count: '100', include_entities: '1', max_id: '415600158693675007'})).to have_been_made
       end
     end
   end
 
   describe '#favorites' do
     before do
-      stub_get('/1.1/favorites/list.json').with(:query => {:count => '200', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
-      stub_get('/1.1/favorites/list.json').with(:query => {:count => '200', :max_id => '244099460672679937', :include_entities => 'false'}).to_return(:body => fixture('empty_array.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
+      stub_get('/1.1/favorites/list.json').with(query: {count: '200', include_entities: 'false'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
+      stub_get('/1.1/favorites/list.json').with(query: {count: '200', max_id: '244099460672679937', include_entities: 'false'}).to_return(body: fixture('empty_array.json'), headers: {content_type: 'application/json; charset=utf-8'})
     end
     it 'requests the correct resource' do
       @search.favorites('twitter')
-      expect(a_get('/1.1/favorites/list.json').with(:query => {:count => '200', :include_entities => 'false'})).to have_been_made
-      expect(a_get('/1.1/favorites/list.json').with(:query => {:count => '200', :max_id => '244099460672679937', :include_entities => 'false'})).to have_been_made
+      expect(a_get('/1.1/favorites/list.json').with(query: {count: '200', include_entities: 'false'})).to have_been_made
+      expect(a_get('/1.1/favorites/list.json').with(query: {count: '200', max_id: '244099460672679937', include_entities: 'false'})).to have_been_made
     end
     it 'has the correct output' do
       @search.favorites('twitter')
@@ -236,13 +236,13 @@ ID,Posted at,Screen name,Text
     context '--decode-uris' do
       before(:each) do
         @search.options = @search.options.merge('decode_uris' => true)
-        stub_get('/1.1/favorites/list.json').with(:query => {:count => '200', :include_entities => 'true'}).to_return(:body => fixture('statuses.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
-        stub_get('/1.1/favorites/list.json').with(:query => {:count => '200', :include_entities => 'true', :max_id => '244099460672679937'}).to_return(:body => fixture('empty_array.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
+        stub_get('/1.1/favorites/list.json').with(query: {count: '200', include_entities: 'true'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
+        stub_get('/1.1/favorites/list.json').with(query: {count: '200', include_entities: 'true', max_id: '244099460672679937'}).to_return(body: fixture('empty_array.json'), headers: {content_type: 'application/json; charset=utf-8'})
       end
       it 'requests the correct resource' do
         @search.favorites('twitter')
-        expect(a_get('/1.1/favorites/list.json').with(:query => {:count => '200', :include_entities => 'true'})).to have_been_made
-        expect(a_get('/1.1/favorites/list.json').with(:query => {:count => '200', :include_entities => 'true', :max_id => '244099460672679937'})).to have_been_made
+        expect(a_get('/1.1/favorites/list.json').with(query: {count: '200', include_entities: 'true'})).to have_been_made
+        expect(a_get('/1.1/favorites/list.json').with(query: {count: '200', include_entities: 'true', max_id: '244099460672679937'})).to have_been_made
       end
       it 'decodes URLs' do
         @search.favorites('twitter')
@@ -264,22 +264,22 @@ ID                  Posted at     Screen name  Text
     end
     context 'Twitter is down' do
       it 'retries 3 times and then raise an error' do
-        stub_get('/1.1/favorites/list.json').with(:query => {:count => '200', :include_entities => 'false'}).to_return(:status => 502, :headers => {:content_type => 'application/json; charset=utf-8'})
+        stub_get('/1.1/favorites/list.json').with(query: {count: '200', include_entities: 'false'}).to_return(status: 502, headers: {content_type: 'application/json; charset=utf-8'})
         expect do
           @search.favorites('twitter')
         end.to raise_error(Twitter::Error::BadGateway)
-        expect(a_get('/1.1/favorites/list.json').with(:query => {:count => '200', :include_entities => 'false'})).to have_been_made.times(3)
+        expect(a_get('/1.1/favorites/list.json').with(query: {count: '200', include_entities: 'false'})).to have_been_made.times(3)
       end
     end
     context 'with a user passed' do
       before do
-        stub_get('/1.1/favorites/list.json').with(:query => {:count => '200', :screen_name => 'sferik', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
-        stub_get('/1.1/favorites/list.json').with(:query => {:count => '200', :max_id => '244099460672679937', :screen_name => 'sferik', :include_entities => 'false'}).to_return(:body => fixture('empty_array.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
+        stub_get('/1.1/favorites/list.json').with(query: {count: '200', screen_name: 'sferik', include_entities: 'false'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
+        stub_get('/1.1/favorites/list.json').with(query: {count: '200', max_id: '244099460672679937', screen_name: 'sferik', include_entities: 'false'}).to_return(body: fixture('empty_array.json'), headers: {content_type: 'application/json; charset=utf-8'})
       end
       it 'requests the correct resource' do
         @search.favorites('sferik', 'twitter')
-        expect(a_get('/1.1/favorites/list.json').with(:query => {:count => '200', :screen_name => 'sferik', :include_entities => 'false'})).to have_been_made
-        expect(a_get('/1.1/favorites/list.json').with(:query => {:count => '200', :max_id => '244099460672679937', :screen_name => 'sferik', :include_entities => 'false'})).to have_been_made
+        expect(a_get('/1.1/favorites/list.json').with(query: {count: '200', screen_name: 'sferik', include_entities: 'false'})).to have_been_made
+        expect(a_get('/1.1/favorites/list.json').with(query: {count: '200', max_id: '244099460672679937', screen_name: 'sferik', include_entities: 'false'})).to have_been_made
       end
       it 'has the correct output' do
         @search.favorites('sferik', 'twitter')
@@ -296,13 +296,13 @@ ID                  Posted at     Screen name  Text
       context '--id' do
         before do
           @search.options = @search.options.merge('id' => true)
-          stub_get('/1.1/favorites/list.json').with(:query => {:count => '200', :user_id => '7505382', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
-          stub_get('/1.1/favorites/list.json').with(:query => {:count => '200', :max_id => '244099460672679937', :user_id => '7505382', :include_entities => 'false'}).to_return(:body => fixture('empty_array.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
+          stub_get('/1.1/favorites/list.json').with(query: {count: '200', user_id: '7505382', include_entities: 'false'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
+          stub_get('/1.1/favorites/list.json').with(query: {count: '200', max_id: '244099460672679937', user_id: '7505382', include_entities: 'false'}).to_return(body: fixture('empty_array.json'), headers: {content_type: 'application/json; charset=utf-8'})
         end
         it 'requests the correct resource' do
           @search.favorites('7505382', 'twitter')
-          expect(a_get('/1.1/favorites/list.json').with(:query => {:count => '200', :user_id => '7505382', :include_entities => 'false'})).to have_been_made
-          expect(a_get('/1.1/favorites/list.json').with(:query => {:count => '200', :max_id => '244099460672679937', :user_id => '7505382', :include_entities => 'false'})).to have_been_made
+          expect(a_get('/1.1/favorites/list.json').with(query: {count: '200', user_id: '7505382', include_entities: 'false'})).to have_been_made
+          expect(a_get('/1.1/favorites/list.json').with(query: {count: '200', max_id: '244099460672679937', user_id: '7505382', include_entities: 'false'})).to have_been_made
         end
         it 'has the correct output' do
           @search.favorites('7505382', 'twitter')
@@ -322,13 +322,13 @@ ID                  Posted at     Screen name  Text
 
   describe '#mentions' do
     before do
-      stub_get('/1.1/statuses/mentions_timeline.json').with(:query => {:count => '200', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
-      stub_get('/1.1/statuses/mentions_timeline.json').with(:query => {:count => '200', :max_id => '244099460672679937', :include_entities => 'false'}).to_return(:body => fixture('empty_array.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
+      stub_get('/1.1/statuses/mentions_timeline.json').with(query: {count: '200', include_entities: 'false'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
+      stub_get('/1.1/statuses/mentions_timeline.json').with(query: {count: '200', max_id: '244099460672679937', include_entities: 'false'}).to_return(body: fixture('empty_array.json'), headers: {content_type: 'application/json; charset=utf-8'})
     end
     it 'requests the correct resource' do
       @search.mentions('twitter')
-      expect(a_get('/1.1/statuses/mentions_timeline.json').with(:query => {:count => '200', :include_entities => 'false'})).to have_been_made
-      expect(a_get('/1.1/statuses/mentions_timeline.json').with(:query => {:count => '200', :max_id => '244099460672679937', :include_entities => 'false'})).to have_been_made
+      expect(a_get('/1.1/statuses/mentions_timeline.json').with(query: {count: '200', include_entities: 'false'})).to have_been_made
+      expect(a_get('/1.1/statuses/mentions_timeline.json').with(query: {count: '200', max_id: '244099460672679937', include_entities: 'false'})).to have_been_made
     end
     it 'has the correct output' do
       @search.mentions('twitter')
@@ -358,13 +358,13 @@ ID,Posted at,Screen name,Text
     context '--decode-uris' do
       before(:each) do
         @search.options = @search.options.merge('decode_uris' => true)
-        stub_get('/1.1/statuses/mentions_timeline.json').with(:query => {:count => '200', :include_entities => 'true'}).to_return(:body => fixture('statuses.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
-        stub_get('/1.1/statuses/mentions_timeline.json').with(:query => {:count => '200', :include_entities => 'true', :max_id => '244099460672679937'}).to_return(:body => fixture('empty_array.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
+        stub_get('/1.1/statuses/mentions_timeline.json').with(query: {count: '200', include_entities: 'true'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
+        stub_get('/1.1/statuses/mentions_timeline.json').with(query: {count: '200', include_entities: 'true', max_id: '244099460672679937'}).to_return(body: fixture('empty_array.json'), headers: {content_type: 'application/json; charset=utf-8'})
       end
       it 'requests the correct resource' do
         @search.mentions('twitter')
-        expect(a_get('/1.1/statuses/mentions_timeline.json').with(:query => {:count => '200', :include_entities => 'true'})).to have_been_made
-        expect(a_get('/1.1/statuses/mentions_timeline.json').with(:query => {:count => '200', :include_entities => 'true', :max_id => '244099460672679937'})).to have_been_made
+        expect(a_get('/1.1/statuses/mentions_timeline.json').with(query: {count: '200', include_entities: 'true'})).to have_been_made
+        expect(a_get('/1.1/statuses/mentions_timeline.json').with(query: {count: '200', include_entities: 'true', max_id: '244099460672679937'})).to have_been_made
       end
       it 'decodes URLs' do
         @search.mentions('twitter')
@@ -386,24 +386,24 @@ ID                  Posted at     Screen name  Text
     end
     context 'Twitter is down' do
       it 'retries 3 times and then raise an error' do
-        stub_get('/1.1/statuses/mentions_timeline.json').with(:query => {:count => '200', :include_entities => 'false'}).to_return(:status => 502, :headers => {:content_type => 'application/json; charset=utf-8'})
+        stub_get('/1.1/statuses/mentions_timeline.json').with(query: {count: '200', include_entities: 'false'}).to_return(status: 502, headers: {content_type: 'application/json; charset=utf-8'})
         expect do
           @search.mentions('twitter')
         end.to raise_error(Twitter::Error::BadGateway)
-        expect(a_get('/1.1/statuses/mentions_timeline.json').with(:query => {:count => '200', :include_entities => 'false'})).to have_been_made.times(3)
+        expect(a_get('/1.1/statuses/mentions_timeline.json').with(query: {count: '200', include_entities: 'false'})).to have_been_made.times(3)
       end
     end
   end
 
   describe '#list' do
     before do
-      stub_get('/1.1/lists/statuses.json').with(:query => {:count => '200', :owner_screen_name => 'testcli', :slug => 'presidents', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
-      stub_get('/1.1/lists/statuses.json').with(:query => {:count => '200', :max_id => '244099460672679937', :owner_screen_name => 'testcli', :slug => 'presidents', :include_entities => 'false'}).to_return(:body => fixture('empty_array.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
+      stub_get('/1.1/lists/statuses.json').with(query: {count: '200', owner_screen_name: 'testcli', slug: 'presidents', include_entities: 'false'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
+      stub_get('/1.1/lists/statuses.json').with(query: {count: '200', max_id: '244099460672679937', owner_screen_name: 'testcli', slug: 'presidents', include_entities: 'false'}).to_return(body: fixture('empty_array.json'), headers: {content_type: 'application/json; charset=utf-8'})
     end
     it 'requests the correct resource' do
       @search.list('presidents', 'twitter')
-      expect(a_get('/1.1/lists/statuses.json').with(:query => {:count => '200', :owner_screen_name => 'testcli', :slug => 'presidents', :include_entities => 'false'})).to have_been_made
-      expect(a_get('/1.1/lists/statuses.json').with(:query => {:count => '200', :max_id => '244099460672679937', :owner_screen_name => 'testcli', :slug => 'presidents', :include_entities => 'false'})).to have_been_made
+      expect(a_get('/1.1/lists/statuses.json').with(query: {count: '200', owner_screen_name: 'testcli', slug: 'presidents', include_entities: 'false'})).to have_been_made
+      expect(a_get('/1.1/lists/statuses.json').with(query: {count: '200', max_id: '244099460672679937', owner_screen_name: 'testcli', slug: 'presidents', include_entities: 'false'})).to have_been_made
     end
     it 'has the correct output' do
       @search.list('presidents', 'twitter')
@@ -433,13 +433,13 @@ ID,Posted at,Screen name,Text
     context '--decode-uris' do
       before(:each) do
         @search.options = @search.options.merge('decode_uris' => true)
-        stub_get('/1.1/lists/statuses.json').with(:query => {:count => '200', :owner_screen_name => 'testcli', :slug => 'presidents', :include_entities => 'true'}).to_return(:body => fixture('statuses.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
-        stub_get('/1.1/lists/statuses.json').with(:query => {:count => '200', :max_id => '244099460672679937', :owner_screen_name => 'testcli', :slug => 'presidents', :include_entities => 'true'}).to_return(:body => fixture('empty_array.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
+        stub_get('/1.1/lists/statuses.json').with(query: {count: '200', owner_screen_name: 'testcli', slug: 'presidents', include_entities: 'true'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
+        stub_get('/1.1/lists/statuses.json').with(query: {count: '200', max_id: '244099460672679937', owner_screen_name: 'testcli', slug: 'presidents', include_entities: 'true'}).to_return(body: fixture('empty_array.json'), headers: {content_type: 'application/json; charset=utf-8'})
       end
       it 'requests the correct resource' do
         @search.list('presidents', 'twitter')
-        expect(a_get('/1.1/lists/statuses.json').with(:query => {:count => '200', :owner_screen_name => 'testcli', :slug => 'presidents', :include_entities => 'true'})).to have_been_made
-        expect(a_get('/1.1/lists/statuses.json').with(:query => {:count => '200', :max_id => '244099460672679937', :owner_screen_name => 'testcli', :slug => 'presidents', :include_entities => 'true'})).to have_been_made
+        expect(a_get('/1.1/lists/statuses.json').with(query: {count: '200', owner_screen_name: 'testcli', slug: 'presidents', include_entities: 'true'})).to have_been_made
+        expect(a_get('/1.1/lists/statuses.json').with(query: {count: '200', max_id: '244099460672679937', owner_screen_name: 'testcli', slug: 'presidents', include_entities: 'true'})).to have_been_made
       end
       it 'decodes URLs' do
         @search.list('presidents', 'twitter')
@@ -462,41 +462,41 @@ ID                  Posted at     Screen name  Text
     context 'with a user passed' do
       it 'requests the correct resource' do
         @search.list('testcli/presidents', 'twitter')
-        expect(a_get('/1.1/lists/statuses.json').with(:query => {:count => '200', :owner_screen_name => 'testcli', :slug => 'presidents', :include_entities => 'false'})).to have_been_made
+        expect(a_get('/1.1/lists/statuses.json').with(query: {count: '200', owner_screen_name: 'testcli', slug: 'presidents', include_entities: 'false'})).to have_been_made
       end
       context '--id' do
         before do
           @search.options = @search.options.merge('id' => true)
-          stub_get('/1.1/lists/statuses.json').with(:query => {:count => '200', :owner_id => '7505382', :slug => 'presidents', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
-          stub_get('/1.1/lists/statuses.json').with(:query => {:count => '200', :max_id => '244099460672679937', :owner_id => '7505382', :slug => 'presidents', :include_entities => 'false'}).to_return(:body => fixture('empty_array.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
+          stub_get('/1.1/lists/statuses.json').with(query: {count: '200', owner_id: '7505382', slug: 'presidents', include_entities: 'false'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
+          stub_get('/1.1/lists/statuses.json').with(query: {count: '200', max_id: '244099460672679937', owner_id: '7505382', slug: 'presidents', include_entities: 'false'}).to_return(body: fixture('empty_array.json'), headers: {content_type: 'application/json; charset=utf-8'})
         end
         it 'requests the correct resource' do
           @search.list('7505382/presidents', 'twitter')
-          expect(a_get('/1.1/lists/statuses.json').with(:query => {:count => '200', :owner_id => '7505382', :slug => 'presidents', :include_entities => 'false'})).to have_been_made
-          expect(a_get('/1.1/lists/statuses.json').with(:query => {:count => '200', :max_id => '244099460672679937', :owner_id => '7505382', :slug => 'presidents', :include_entities => 'false'})).to have_been_made
+          expect(a_get('/1.1/lists/statuses.json').with(query: {count: '200', owner_id: '7505382', slug: 'presidents', include_entities: 'false'})).to have_been_made
+          expect(a_get('/1.1/lists/statuses.json').with(query: {count: '200', max_id: '244099460672679937', owner_id: '7505382', slug: 'presidents', include_entities: 'false'})).to have_been_made
         end
       end
     end
     context 'Twitter is down' do
       it 'retries 3 times and then raise an error' do
-        stub_get('/1.1/lists/statuses.json').with(:query => {:count => '200', :owner_screen_name => 'testcli', :slug => 'presidents', :include_entities => 'false'}).to_return(:status => 502, :headers => {:content_type => 'application/json; charset=utf-8'})
+        stub_get('/1.1/lists/statuses.json').with(query: {count: '200', owner_screen_name: 'testcli', slug: 'presidents', include_entities: 'false'}).to_return(status: 502, headers: {content_type: 'application/json; charset=utf-8'})
         expect do
           @search.list('presidents', 'twitter')
         end.to raise_error(Twitter::Error::BadGateway)
-        expect(a_get('/1.1/lists/statuses.json').with(:query => {:count => '200', :owner_screen_name => 'testcli', :slug => 'presidents', :include_entities => 'false'})).to have_been_made.times(3)
+        expect(a_get('/1.1/lists/statuses.json').with(query: {count: '200', owner_screen_name: 'testcli', slug: 'presidents', include_entities: 'false'})).to have_been_made.times(3)
       end
     end
   end
 
   describe '#retweets' do
     before do
-      stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
-      stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :max_id => '244102729860009983', :include_entities => 'false'}).to_return(:body => fixture('empty_array.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
+      stub_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', include_rts: 'true', include_entities: 'false'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
+      stub_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', include_rts: 'true', max_id: '244102729860009983', include_entities: 'false'}).to_return(body: fixture('empty_array.json'), headers: {content_type: 'application/json; charset=utf-8'})
     end
     it 'requests the correct resource' do
       @search.retweets('mosaic')
-      expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :include_entities => 'false'})).to have_been_made
-      expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :max_id => '244102729860009983', :include_entities => 'false'})).to have_been_made.times(2)
+      expect(a_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', include_rts: 'true', include_entities: 'false'})).to have_been_made
+      expect(a_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', include_rts: 'true', max_id: '244102729860009983', include_entities: 'false'})).to have_been_made.times(2)
     end
     it 'has the correct output' do
       @search.retweets('mosaic')
@@ -521,13 +521,13 @@ ID,Posted at,Screen name,Text
     context '--decode-uris' do
       before(:each) do
         @search.options = @search.options.merge('decode_uris' => true)
-        stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :include_entities => 'true'}).to_return(:body => fixture('statuses.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
-        stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :max_id => '244102729860009983', :include_entities => 'true'}).to_return(:body => fixture('empty_array.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
+        stub_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', include_rts: 'true', include_entities: 'true'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
+        stub_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', include_rts: 'true', max_id: '244102729860009983', include_entities: 'true'}).to_return(body: fixture('empty_array.json'), headers: {content_type: 'application/json; charset=utf-8'})
       end
       it 'requests the correct resource' do
         @search.retweets('mosaic')
-        expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :include_entities => 'true'})).to have_been_made
-        expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :max_id => '244102729860009983', :include_entities => 'true'})).to have_been_made.times(2)
+        expect(a_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', include_rts: 'true', include_entities: 'true'})).to have_been_made
+        expect(a_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', include_rts: 'true', max_id: '244102729860009983', include_entities: 'true'})).to have_been_made.times(2)
       end
       it 'decodes URLs' do
         @search.retweets('mosaic')
@@ -548,22 +548,22 @@ ID                  Posted at     Screen name   Text
     end
     context 'Twitter is down' do
       it 'retries 3 times and then raise an error' do
-        stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :include_entities => 'false'}).to_return(:status => 502, :headers => {:content_type => 'application/json; charset=utf-8'})
+        stub_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', include_rts: 'true', include_entities: 'false'}).to_return(status: 502, headers: {content_type: 'application/json; charset=utf-8'})
         expect do
           @search.retweets('mosaic')
         end.to raise_error(Twitter::Error::BadGateway)
-        expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :include_entities => 'false'})).to have_been_made.times(3)
+        expect(a_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', include_rts: 'true', include_entities: 'false'})).to have_been_made.times(3)
       end
     end
     context 'with a user passed' do
       before do
-        stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :screen_name => 'sferik', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
-        stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :screen_name => 'sferik', :max_id => '244102729860009983', :include_entities => 'false'}).to_return(:body => fixture('empty_array.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
+        stub_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', include_rts: 'true', screen_name: 'sferik', include_entities: 'false'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
+        stub_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', include_rts: 'true', screen_name: 'sferik', max_id: '244102729860009983', include_entities: 'false'}).to_return(body: fixture('empty_array.json'), headers: {content_type: 'application/json; charset=utf-8'})
       end
       it 'requests the correct resource' do
         @search.retweets('sferik', 'mosaic')
-        expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :screen_name => 'sferik', :include_entities => 'false'})).to have_been_made
-        expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :screen_name => 'sferik', :max_id => '244102729860009983', :include_entities => 'false'})).to have_been_made.times(2)
+        expect(a_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', include_rts: 'true', screen_name: 'sferik', include_entities: 'false'})).to have_been_made
+        expect(a_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', include_rts: 'true', screen_name: 'sferik', max_id: '244102729860009983', include_entities: 'false'})).to have_been_made.times(2)
       end
       it 'has the correct output' do
         @search.retweets('sferik', 'mosaic')
@@ -576,13 +576,13 @@ ID                  Posted at     Screen name   Text
       context '--id' do
         before do
           @search.options = @search.options.merge('id' => true)
-          stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :user_id => '7505382', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
-          stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :user_id => '7505382', :max_id => '244102729860009983', :include_entities => 'false'}).to_return(:body => fixture('empty_array.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
+          stub_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', include_rts: 'true', user_id: '7505382', include_entities: 'false'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
+          stub_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', include_rts: 'true', user_id: '7505382', max_id: '244102729860009983', include_entities: 'false'}).to_return(body: fixture('empty_array.json'), headers: {content_type: 'application/json; charset=utf-8'})
         end
         it 'requests the correct resource' do
           @search.retweets('7505382', 'mosaic')
-          expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :user_id => '7505382', :include_entities => 'false'})).to have_been_made
-          expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :include_rts => 'true', :user_id => '7505382', :max_id => '244102729860009983', :include_entities => 'false'})).to have_been_made.times(2)
+          expect(a_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', include_rts: 'true', user_id: '7505382', include_entities: 'false'})).to have_been_made
+          expect(a_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', include_rts: 'true', user_id: '7505382', max_id: '244102729860009983', include_entities: 'false'})).to have_been_made.times(2)
         end
         it 'has the correct output' do
           @search.retweets('7505382', 'mosaic')
@@ -598,13 +598,13 @@ ID                  Posted at     Screen name   Text
 
   describe '#timeline' do
     before do
-      stub_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '200', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
-      stub_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '200', :max_id => '244099460672679937', :include_entities => 'false'}).to_return(:body => fixture('empty_array.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
+      stub_get('/1.1/statuses/home_timeline.json').with(query: {count: '200', include_entities: 'false'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
+      stub_get('/1.1/statuses/home_timeline.json').with(query: {count: '200', max_id: '244099460672679937', include_entities: 'false'}).to_return(body: fixture('empty_array.json'), headers: {content_type: 'application/json; charset=utf-8'})
     end
     it 'requests the correct resource' do
       @search.timeline('twitter')
-      expect(a_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '200', :include_entities => 'false'})).to have_been_made
-      expect(a_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '200', :max_id => '244099460672679937', :include_entities => 'false'})).to have_been_made
+      expect(a_get('/1.1/statuses/home_timeline.json').with(query: {count: '200', include_entities: 'false'})).to have_been_made
+      expect(a_get('/1.1/statuses/home_timeline.json').with(query: {count: '200', max_id: '244099460672679937', include_entities: 'false'})).to have_been_made
     end
     it 'has the correct output' do
       @search.timeline('twitter')
@@ -634,13 +634,13 @@ ID,Posted at,Screen name,Text
     context '--decode-uris' do
       before(:each) do
         @search.options = @search.options.merge('decode_uris' => true)
-        stub_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '200', :include_entities => 'true'}).to_return(:body => fixture('statuses.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
-        stub_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '200', :max_id => '244099460672679937', :include_entities => 'true'}).to_return(:body => fixture('empty_array.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
+        stub_get('/1.1/statuses/home_timeline.json').with(query: {count: '200', include_entities: 'true'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
+        stub_get('/1.1/statuses/home_timeline.json').with(query: {count: '200', max_id: '244099460672679937', include_entities: 'true'}).to_return(body: fixture('empty_array.json'), headers: {content_type: 'application/json; charset=utf-8'})
       end
       it 'requests the correct resource' do
         @search.timeline('twitter')
-        expect(a_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '200', :include_entities => 'true'})).to have_been_made
-        expect(a_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '200', :max_id => '244099460672679937', :include_entities => 'true'})).to have_been_made
+        expect(a_get('/1.1/statuses/home_timeline.json').with(query: {count: '200', include_entities: 'true'})).to have_been_made
+        expect(a_get('/1.1/statuses/home_timeline.json').with(query: {count: '200', max_id: '244099460672679937', include_entities: 'true'})).to have_been_made
       end
       it 'decodes URLs' do
         @search.timeline('twitter')
@@ -650,25 +650,25 @@ ID,Posted at,Screen name,Text
     context '--exclude=replies' do
       before do
         @search.options = @search.options.merge('exclude' => 'replies')
-        stub_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '200', :exclude_replies => 'true', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
-        stub_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '200', :exclude_replies => 'true', :max_id => '244099460672679937', :include_entities => 'false'}).to_return(:body => fixture('empty_array.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
+        stub_get('/1.1/statuses/home_timeline.json').with(query: {count: '200', exclude_replies: 'true', include_entities: 'false'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
+        stub_get('/1.1/statuses/home_timeline.json').with(query: {count: '200', exclude_replies: 'true', max_id: '244099460672679937', include_entities: 'false'}).to_return(body: fixture('empty_array.json'), headers: {content_type: 'application/json; charset=utf-8'})
       end
       it 'excludes replies' do
         @search.timeline
-        expect(a_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '200', :exclude_replies => 'true', :include_entities => 'false'})).to have_been_made
-        expect(a_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '200', :exclude_replies => 'true', :max_id => '244099460672679937', :include_entities => 'false'})).to have_been_made
+        expect(a_get('/1.1/statuses/home_timeline.json').with(query: {count: '200', exclude_replies: 'true', include_entities: 'false'})).to have_been_made
+        expect(a_get('/1.1/statuses/home_timeline.json').with(query: {count: '200', exclude_replies: 'true', max_id: '244099460672679937', include_entities: 'false'})).to have_been_made
       end
     end
     context '--exclude=retweets' do
       before do
         @search.options = @search.options.merge('exclude' => 'retweets')
-        stub_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '200', :include_rts => 'false', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
-        stub_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '200', :include_rts => 'false', :max_id => '244099460672679937', :include_entities => 'false'}).to_return(:body => fixture('empty_array.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
+        stub_get('/1.1/statuses/home_timeline.json').with(query: {count: '200', include_rts: 'false', include_entities: 'false'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
+        stub_get('/1.1/statuses/home_timeline.json').with(query: {count: '200', include_rts: 'false', max_id: '244099460672679937', include_entities: 'false'}).to_return(body: fixture('empty_array.json'), headers: {content_type: 'application/json; charset=utf-8'})
       end
       it 'excludes retweets' do
         @search.timeline
-        expect(a_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '200', :include_rts => 'false', :include_entities => 'false'})).to have_been_made
-        expect(a_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '200', :include_rts => 'false', :max_id => '244099460672679937', :include_entities => 'false'})).to have_been_made
+        expect(a_get('/1.1/statuses/home_timeline.json').with(query: {count: '200', include_rts: 'false', include_entities: 'false'})).to have_been_made
+        expect(a_get('/1.1/statuses/home_timeline.json').with(query: {count: '200', include_rts: 'false', max_id: '244099460672679937', include_entities: 'false'})).to have_been_made
       end
     end
     context '--long' do
@@ -687,43 +687,43 @@ ID                  Posted at     Screen name  Text
     context '--max-id' do
       before do
         @search.options = @search.options.merge('max_id' => 244_104_558_433_951_744)
-        stub_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '200', :max_id => '244104558433951744', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
+        stub_get('/1.1/statuses/home_timeline.json').with(query: {count: '200', max_id: '244104558433951744', include_entities: 'false'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
       end
       it 'requests the correct resource' do
         @search.timeline('twitter')
-        expect(a_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '200', :max_id => '244104558433951744', :include_entities => 'false'})).to have_been_made
+        expect(a_get('/1.1/statuses/home_timeline.json').with(query: {count: '200', max_id: '244104558433951744', include_entities: 'false'})).to have_been_made
       end
     end
     context '--since-id' do
       before do
         @search.options = @search.options.merge('since_id' => 244_104_558_433_951_744)
-        stub_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '200', :since_id => '244104558433951744', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
-        stub_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '200', :max_id => '244099460672679937', :since_id => '244104558433951744', :include_entities => 'false'}).to_return(:body => fixture('empty_array.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
+        stub_get('/1.1/statuses/home_timeline.json').with(query: {count: '200', since_id: '244104558433951744', include_entities: 'false'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
+        stub_get('/1.1/statuses/home_timeline.json').with(query: {count: '200', max_id: '244099460672679937', since_id: '244104558433951744', include_entities: 'false'}).to_return(body: fixture('empty_array.json'), headers: {content_type: 'application/json; charset=utf-8'})
       end
       it 'requests the correct resource' do
         @search.timeline('twitter')
-        expect(a_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '200', :since_id => '244104558433951744', :include_entities => 'false'})).to have_been_made
-        expect(a_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '200', :max_id => '244099460672679937', :since_id => '244104558433951744', :include_entities => 'false'})).to have_been_made
+        expect(a_get('/1.1/statuses/home_timeline.json').with(query: {count: '200', since_id: '244104558433951744', include_entities: 'false'})).to have_been_made
+        expect(a_get('/1.1/statuses/home_timeline.json').with(query: {count: '200', max_id: '244099460672679937', since_id: '244104558433951744', include_entities: 'false'})).to have_been_made
       end
     end
     context 'Twitter is down' do
       it 'retries 3 times and then raise an error' do
-        stub_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '200', :include_entities => 'false'}).to_return(:status => 502, :headers => {:content_type => 'application/json; charset=utf-8'})
+        stub_get('/1.1/statuses/home_timeline.json').with(query: {count: '200', include_entities: 'false'}).to_return(status: 502, headers: {content_type: 'application/json; charset=utf-8'})
         expect do
           @search.timeline('twitter')
         end.to raise_error(Twitter::Error::BadGateway)
-        expect(a_get('/1.1/statuses/home_timeline.json').with(:query => {:count => '200', :include_entities => 'false'})).to have_been_made.times(3)
+        expect(a_get('/1.1/statuses/home_timeline.json').with(query: {count: '200', include_entities: 'false'})).to have_been_made.times(3)
       end
     end
     context 'with a user passed' do
       before do
-        stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :screen_name => 'sferik', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
-        stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :max_id => '244099460672679937', :screen_name => 'sferik', :include_entities => 'false'}).to_return(:body => fixture('empty_array.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
+        stub_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', screen_name: 'sferik', include_entities: 'false'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
+        stub_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', max_id: '244099460672679937', screen_name: 'sferik', include_entities: 'false'}).to_return(body: fixture('empty_array.json'), headers: {content_type: 'application/json; charset=utf-8'})
       end
       it 'requests the correct resource' do
         @search.timeline('sferik', 'twitter')
-        expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :screen_name => 'sferik', :include_entities => 'false'})).to have_been_made
-        expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :max_id => '244099460672679937', :screen_name => 'sferik', :include_entities => 'false'})).to have_been_made
+        expect(a_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', screen_name: 'sferik', include_entities: 'false'})).to have_been_made
+        expect(a_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', max_id: '244099460672679937', screen_name: 'sferik', include_entities: 'false'})).to have_been_made
       end
       it 'has the correct output' do
         @search.timeline('sferik', 'twitter')
@@ -753,13 +753,13 @@ ID,Posted at,Screen name,Text
       context '--id' do
         before do
           @search.options = @search.options.merge('id' => true)
-          stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :user_id => '7505382', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
-          stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :max_id => '244099460672679937', :user_id => '7505382', :include_entities => 'false'}).to_return(:body => fixture('empty_array.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
+          stub_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', user_id: '7505382', include_entities: 'false'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
+          stub_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', max_id: '244099460672679937', user_id: '7505382', include_entities: 'false'}).to_return(body: fixture('empty_array.json'), headers: {content_type: 'application/json; charset=utf-8'})
         end
         it 'requests the correct resource' do
           @search.timeline('7505382', 'twitter')
-          expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :user_id => '7505382', :include_entities => 'false'})).to have_been_made
-          expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :max_id => '244099460672679937', :user_id => '7505382', :include_entities => 'false'})).to have_been_made
+          expect(a_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', user_id: '7505382', include_entities: 'false'})).to have_been_made
+          expect(a_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', max_id: '244099460672679937', user_id: '7505382', include_entities: 'false'})).to have_been_made
         end
       end
       context '--long' do
@@ -778,32 +778,32 @@ ID                  Posted at     Screen name  Text
       context '--max-id' do
         before do
           @search.options = @search.options.merge('max_id' => 244_104_558_433_951_744)
-          stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :screen_name => 'sferik', :max_id => '244104558433951744', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
+          stub_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', screen_name: 'sferik', max_id: '244104558433951744', include_entities: 'false'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
         end
         it 'requests the correct resource' do
           @search.timeline('sferik', 'twitter')
-          expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :screen_name => 'sferik', :max_id => '244104558433951744', :include_entities => 'false'})).to have_been_made
+          expect(a_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', screen_name: 'sferik', max_id: '244104558433951744', include_entities: 'false'})).to have_been_made
         end
       end
       context '--since-id' do
         before do
           @search.options = @search.options.merge('since_id' => 244_104_558_433_951_744)
-          stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :screen_name => 'sferik', :since_id => '244104558433951744', :include_entities => 'false'}).to_return(:body => fixture('statuses.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
-          stub_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :screen_name => 'sferik', :max_id => '244099460672679937', :since_id => '244104558433951744', :include_entities => 'false'}).to_return(:body => fixture('empty_array.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
+          stub_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', screen_name: 'sferik', since_id: '244104558433951744', include_entities: 'false'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
+          stub_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', screen_name: 'sferik', max_id: '244099460672679937', since_id: '244104558433951744', include_entities: 'false'}).to_return(body: fixture('empty_array.json'), headers: {content_type: 'application/json; charset=utf-8'})
         end
         it 'requests the correct resource' do
           @search.timeline('sferik', 'twitter')
-          expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :screen_name => 'sferik', :since_id => '244104558433951744', :include_entities => 'false'})).to have_been_made
-          expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:count => '200', :screen_name => 'sferik', :max_id => '244099460672679937', :since_id => '244104558433951744', :include_entities => 'false'})).to have_been_made
+          expect(a_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', screen_name: 'sferik', since_id: '244104558433951744', include_entities: 'false'})).to have_been_made
+          expect(a_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', screen_name: 'sferik', max_id: '244099460672679937', since_id: '244104558433951744', include_entities: 'false'})).to have_been_made
         end
       end
       context 'Twitter is down' do
         it 'retries 3 times and then raise an error' do
-          stub_get('/1.1/statuses/user_timeline.json').with(:query => {:screen_name => 'sferik', :count => '200', :include_entities => 'false'}).to_return(:status => 502, :headers => {:content_type => 'application/json; charset=utf-8'})
+          stub_get('/1.1/statuses/user_timeline.json').with(query: {screen_name: 'sferik', count: '200', include_entities: 'false'}).to_return(status: 502, headers: {content_type: 'application/json; charset=utf-8'})
           expect do
             @search.timeline('sferik', 'twitter')
           end.to raise_error(Twitter::Error::BadGateway)
-          expect(a_get('/1.1/statuses/user_timeline.json').with(:query => {:screen_name => 'sferik', :count => '200', :include_entities => 'false'})).to have_been_made.times(3)
+          expect(a_get('/1.1/statuses/user_timeline.json').with(query: {screen_name: 'sferik', count: '200', include_entities: 'false'})).to have_been_made.times(3)
         end
       end
     end
@@ -811,13 +811,13 @@ ID                  Posted at     Screen name  Text
 
   describe '#users' do
     before do
-      stub_get('/1.1/users/search.json').with(:query => {:page => '1', :q => 'Erik'}).to_return(:body => fixture('users.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
-      stub_get('/1.1/users/search.json').with(:query => {:page => '2', :q => 'Erik'}).to_return(:body => fixture('empty_array.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
+      stub_get('/1.1/users/search.json').with(query: {page: '1', q: 'Erik'}).to_return(body: fixture('users.json'), headers: {content_type: 'application/json; charset=utf-8'})
+      stub_get('/1.1/users/search.json').with(query: {page: '2', q: 'Erik'}).to_return(body: fixture('empty_array.json'), headers: {content_type: 'application/json; charset=utf-8'})
     end
     it 'requests the correct resource' do
       @search.users('Erik')
-      expect(a_get('/1.1/users/search.json').with(:query => {:page => '1', :q => 'Erik'})).to have_been_made
-      expect(a_get('/1.1/users/search.json').with(:query => {:page => '2', :q => 'Erik'})).to have_been_made
+      expect(a_get('/1.1/users/search.json').with(query: {page: '1', q: 'Erik'})).to have_been_made
+      expect(a_get('/1.1/users/search.json').with(query: {page: '2', q: 'Erik'})).to have_been_made
     end
     it 'has the correct output' do
       @search.users('Erik')
@@ -932,11 +932,11 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
     end
     context 'Twitter is down' do
       it 'retries 3 times and then raise an error' do
-        stub_get('/1.1/users/search.json').with(:query => {:page => '2', :q => 'Erik'}).to_return(:status => 502, :headers => {:content_type => 'application/json; charset=utf-8'})
+        stub_get('/1.1/users/search.json').with(query: {page: '2', q: 'Erik'}).to_return(status: 502, headers: {content_type: 'application/json; charset=utf-8'})
         expect do
           @search.users('Erik')
         end.to raise_error(Twitter::Error::BadGateway)
-        expect(a_get('/1.1/users/search.json').with(:query => {:page => '2', :q => 'Erik'})).to have_been_made.times(3)
+        expect(a_get('/1.1/users/search.json').with(query: {page: '2', q: 'Erik'})).to have_been_made.times(3)
       end
     end
   end

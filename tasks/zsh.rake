@@ -19,7 +19,7 @@ namespace :completion do
 end
 
 def zsh_completion
-  %Q(#compdef t
+  %(#compdef t
 
 # Completion for Zsh. Source from somewhere in your $fpath.
 
@@ -48,7 +48,7 @@ _t (){
 end
 
 def general_options_completions
-  %Q(t_general_options=("(-H --host)"{-H,--host=}"[Twitter API server]:URL:_urls"
+  %(t_general_options=("(-H --host)"{-H,--host=}"[Twitter API server]:URL:_urls"
     "(-C --color)"{-C,--color}"[Control how color is used in output]"
     "(-U --no-ssl)"{-U,--no-ssl}"[Disable SSL]"
     "(-P --profile)"{-P,--profile=}"[Path to RC file]:file:_files"
@@ -61,7 +61,7 @@ def option_completion(thor_option)
   aliases = thor_option.aliases
   name = thor_option.name
   desc = thor_option.description.to_s.gsub "'", "\\\\'"
-  %Q("(#{aliases.join(' ')} --#{name})"{#{aliases.join(',')},--#{name}}"[#{desc}]" \\)
+  %("(#{aliases.join(' ')} --#{name})"{#{aliases.join(',')},--#{name}}"[#{desc}]" \\)
 end
 
 def command_function_arguments(command)
@@ -74,7 +74,7 @@ end
 def task_completions
   T::CLI.tasks.collect(&:last).collect do |task|
     desc = task.description.to_s.gsub "'", "\\\\'"
-    %Q(      \"#{task.name}[#{desc}]\" \\)
+    %(      \"#{task.name}[#{desc}]\" \\)
   end.join("\n")
 end
 
@@ -83,7 +83,7 @@ def commands
 end
 
 def command_function(command)
-  %Q(_t_#{command.name}() {
+  %(_t_#{command.name}() {
   _arguments \\
     #{ command_function_arguments(command) }
 }
@@ -103,7 +103,7 @@ def subcommands
 end
 
 def subcommand_function(command)
-  %Q(_t_#{command.name}() {
+  %(_t_#{command.name}() {
   _arguments \\
     ":argument:__t_#{command.name}_arguments" \\
     $t_general_options && ret=0
@@ -119,7 +119,7 @@ end
 
 def arguments_function(subcommand)
   klass = T.const_get subcommand.name.capitalize
-  %Q(__t_#{subcommand.name}_arguments() {
+  %(__t_#{subcommand.name}_arguments() {
   _args=(#{klass.tasks.collect { |t| t.last.name }.join("\n    ") }
   )
   compadd "$@" -k _args

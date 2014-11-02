@@ -22,7 +22,7 @@ RSpec.configure do |config|
   end
 
   config.before(:each) do
-    stub_post('/oauth2/token').with(:body => 'grant_type=client_credentials').to_return(:body => fixture('bearer_token.json'), :headers => {:content_type => 'application/json; charset=utf-8'})
+    stub_post('/oauth2/token').with(body: 'grant_type=client_credentials').to_return(body: fixture('bearer_token.json'), headers: {content_type: 'application/json; charset=utf-8'})
   end
 end
 
@@ -71,5 +71,5 @@ def fixture(file)
 end
 
 def status_from_fixture(file)
-  Twitter::Status.new(JSON.parse(fixture(file).read, :symbolize_names => true))
+  Twitter::Status.new(JSON.parse(fixture(file).read, symbolize_names: true))
 end

@@ -50,7 +50,7 @@ module T
     def fetch_users(users, options)
       format_users!(users, options)
       require 'retryable'
-      users = retryable(:tries => 3, :on => Twitter::Error, :sleep => 0) do
+      users = retryable(tries: 3, on: Twitter::Error, sleep: 0) do
         yield users
       end
       [users, users.length]

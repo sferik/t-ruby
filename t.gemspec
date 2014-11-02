@@ -13,13 +13,12 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'twitter', '~> 5.12'
   spec.add_development_dependency 'bundler', '~> 1.0'
   spec.author = 'Erik Michaels-Ober'
-  spec.bindir = 'bin'
   spec.description = 'A command-line power tool for Twitter.'
   spec.email = 'sferik@gmail.com'
-  spec.executables = %w[t]
-  spec.files = %w[CONTRIBUTING.md LICENSE.md README.md t.gemspec] + Dir['bin/*'] + Dir['lib/**/*.rb']
+  spec.executables = Dir['bin/*'].map { |f| File.basename(f) }
+  spec.files = %w(CONTRIBUTING.md LICENSE.md README.md t.gemspec) + Dir['bin/*'] + Dir['lib/**/*.rb']
   spec.homepage = 'http://sferik.github.com/t/'
-  spec.licenses = %w[MIT]
+  spec.licenses = %w(MIT)
   spec.name = 't'
   spec.require_paths = %w[lib]
   spec.required_ruby_version = '>= 1.9.2'

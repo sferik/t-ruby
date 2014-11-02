@@ -173,6 +173,13 @@ example, here's how to send a user a direct message only if they already follow 
 #### Output the last 200 tweets in your timeline to a CSV file
     t timeline -n 200 --csv > timeline.csv
 
+#### Output the max number (3200) of a user's specific timeline
+    t timeline @ev --max_results --csv > timeline.csv
+
+#### Output the max number (800) of authenticating user's timeline
+    t timeline --max_results --csv > timeline.csv
+
+
 #### Start streaming your timeline (Control-C to stop)
     t stream timeline
 

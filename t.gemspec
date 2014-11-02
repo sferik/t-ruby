@@ -20,8 +20,8 @@ Gem::Specification.new do |spec|
   spec.homepage = 'http://sferik.github.com/t/'
   spec.licenses = %w(MIT)
   spec.name = 't'
-  spec.require_paths = %w[lib]
-  spec.required_ruby_version = '>= 1.9.2'
+  spec.require_paths = %w(lib)
+  spec.required_ruby_version = '>= 1.9.3'
   spec.required_rubygems_version = '>= 1.3.5'
   spec.summary = 'CLI for Twitter'
   spec.version = T::Version

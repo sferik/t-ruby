@@ -81,7 +81,7 @@ module T
       open_or_print('https://apps.twitter.com', dry_run: options['display-uri'])
       key = ask 'Enter your API key:'
       secret = ask 'Enter your API secret:'
-      consumer = OAuth::Consumer.new(key, secret, site: Twitter::REST::Client::ENDPOINT)
+      consumer = OAuth::Consumer.new(key, secret, site: Twitter::REST::Client::BASE_URL)
       request_token = consumer.get_request_token
       uri = generate_authorize_uri(consumer, request_token)
       say
@@ -969,7 +969,7 @@ module T
         value =~ /"(.*?)"/
         "#{key}=#{CGI.escape(Regexp.last_match[1])}"
       end.join('&')
-      "#{Twitter::REST::Client::ENDPOINT}#{request.path}?#{params}"
+      "#{Twitter::REST::Client::BASE_URL}#{request.path}?#{params}"
     end
 
     def pin_auth_parameters

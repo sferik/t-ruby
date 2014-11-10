@@ -70,6 +70,6 @@ def fixture(file)
   File.new(fixture_path + '/' + file)
 end
 
-def status_from_fixture(file)
-  Twitter::Status.new(JSON.parse(fixture(file).read, symbolize_names: true))
+def tweet_from_fixture(file)
+  Twitter::Tweet.new(JSON.parse(fixture(file).read, symbolize_names: true))
 end

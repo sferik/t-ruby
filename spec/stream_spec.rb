@@ -9,7 +9,7 @@ describe T::Stream do
   end
 
   before :all do
-    @status = status_from_fixture('status.json')
+    @tweet = tweet_from_fixture('status.json')
   end
 
   before do
@@ -23,9 +23,9 @@ describe T::Stream do
 
   describe '#all' do
     before do
-      allow(@streaming_client).to receive(:sample).and_yield(@status)
+      allow(@streaming_client).to receive(:sample).and_yield(@tweet)
     end
-    it 'prints the tweet status' do
+    it 'prints the tweet' do
       expect(@stream).to receive(:print_message)
       @stream.all
     end
@@ -41,7 +41,7 @@ describe T::Stream do
       end
       it 'outputs in CSV format' do
         allow(@streaming_client).to receive(:before_request)
-        allow(@streaming_client).to receive(:sample).and_yield(@status)
+        allow(@streaming_client).to receive(:sample).and_yield(@tweet)
         expect(@stream).to receive(:print_csv_tweet).with(any_args)
         @stream.all
       end
@@ -58,7 +58,7 @@ describe T::Stream do
       end
       it 'outputs in long text format' do
         allow(@streaming_client).to receive(:before_request)
-        allow(@streaming_client).to receive(:sample).and_yield(@status)
+        allow(@streaming_client).to receive(:sample).and_yield(@tweet)
         expect(@stream).to receive(:print_table).with(any_args)
         @stream.all
       end
@@ -75,9 +75,9 @@ describe T::Stream do
     before do
       stub_get('/1.1/lists/members.json').with(query: {cursor: '-1', owner_screen_name: 'testcli', slug: 'presidents'}).to_return(body: fixture('users_list.json'), headers: {content_type: 'application/json; charset=utf-8'})
     end
-    it 'prints the tweet status' do
+    it 'prints the tweet' do
       expect(@stream).to receive(:print_message)
-      allow(@streaming_client).to receive(:filter).and_yield(@status)
+      allow(@streaming_client).to receive(:filter).and_yield(@tweet)
       @stream.list('presidents')
     end
     it 'requests the correct resource' do
@@ -90,7 +90,7 @@ describe T::Stream do
       end
       it 'outputs in CSV format' do
         allow(@streaming_client).to receive(:before_request)
-        allow(@streaming_client).to receive(:filter).and_yield(@status)
+        allow(@streaming_client).to receive(:filter).and_yield(@tweet)
         expect(@stream).to receive(:print_csv_tweet).with(any_args)
         @stream.list('presidents')
       end
@@ -105,7 +105,7 @@ describe T::Stream do
       end
       it 'outputs in long text format' do
         allow(@streaming_client).to receive(:before_request)
-        allow(@streaming_client).to receive(:filter).and_yield(@status)
+        allow(@streaming_client).to receive(:filter).and_yield(@tweet)
         expect(@stream).to receive(:print_table).with(any_args)
         @stream.list('presidents')
       end
@@ -132,15 +132,15 @@ describe T::Stream do
     before do
       stub_get('/1.1/search/tweets.json').with(query: {q: 'lang:ja', count: 100, include_entities: 'false'}).to_return(body: fixture('empty_cursor.json'), headers: {content_type: 'application/json; charset=utf-8'})
     end
-    it 'outputs the tweet status' do
+    it 'outputs the tweet' do
       allow(@streaming_client).to receive(:before_request)
-      allow(@streaming_client).to receive(:sample).and_yield(@status)
+      allow(@streaming_client).to receive(:sample).and_yield(@tweet)
       expect(@stream).to receive(:say).with(any_args)
       @stream.matrix
     end
     it 'invokes Twitter::Streaming::Client#sample' do
       allow(@streaming_client).to receive(:before_request)
-      allow(@streaming_client).to receive(:sample).and_yield(@status)
+      allow(@streaming_client).to receive(:sample).and_yield(@tweet)
       expect(@streaming_client).to receive(:sample)
       @stream.matrix
     end
@@ -153,9 +153,9 @@ describe T::Stream do
 
   describe '#search' do
     before do
-      allow(@streaming_client).to receive(:filter).with(track: 'twitter,gem').and_yield(@status)
+      allow(@streaming_client).to receive(:filter).with(track: 'twitter,gem').and_yield(@tweet)
     end
-    it 'prints the tweet status' do
+    it 'prints the tweet' do
       expect(@stream).to receive(:print_message)
       @stream.search(%w(twitter gem))
     end
@@ -175,7 +175,7 @@ describe T::Stream do
       end
       it 'outputs in long text format' do
         allow(@streaming_client).to receive(:before_request)
-        allow(@streaming_client).to receive(:filter).with(track: 'twitter,gem').and_yield(@status)
+        allow(@streaming_client).to receive(:filter).with(track: 'twitter,gem').and_yield(@tweet)
         expect(@stream).to receive(:print_table).with(any_args)
         @stream.search(%w(twitter gem))
       end
@@ -196,9 +196,9 @@ describe T::Stream do
 
   describe '#timeline' do
     before do
-      allow(@streaming_client).to receive(:user).and_yield(@status)
+      allow(@streaming_client).to receive(:user).and_yield(@tweet)
     end
-    it 'prints the tweet status' do
+    it 'prints the tweet' do
       expect(@stream).to receive(:print_message)
       @stream.timeline
     end
@@ -238,9 +238,9 @@ describe T::Stream do
 
   describe '#users' do
     before do
-      allow(@streaming_client).to receive(:filter).and_yield(@status)
+      allow(@streaming_client).to receive(:filter).and_yield(@tweet)
     end
-    it 'prints the tweet status' do
+    it 'prints the tweet' do
       expect(@stream).to receive(:print_message)
       @stream.users('123')
     end
@@ -272,7 +272,7 @@ describe T::Stream do
       end
       it 'outputs in long text format' do
         allow(@streaming_client).to receive(:before_request)
-        allow(@streaming_client).to receive(:filter).and_yield(@status)
+        allow(@streaming_client).to receive(:filter).and_yield(@tweet)
         expect(@stream).to receive(:print_table).with(any_args)
         @stream.users('123')
       end

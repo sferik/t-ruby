@@ -925,8 +925,12 @@ module T
     method_option 'long', aliases: '-l', type: :boolean, desc: 'Output in long format.'
     method_option 'relative_dates', aliases: '-a', type: :boolean, desc: 'Show relative dates.'
     def whoami
-      user = @rcfile.active_profile[0]
-      whois(user)
+      if @rcfile.active_profile && @rcfile.active_profile[0]
+        user = @rcfile.active_profile[0]
+        whois(user)
+      else
+        $stderr.puts "You haven't authorized an account, run `t authorize` to get started."
+      end
     end
 
     desc 'delete SUBCOMMAND ...ARGS', 'Delete Tweets, Direct Messages, etc.'

@@ -4178,6 +4178,14 @@ ID       Since         Last tweeted at  Tweets  Favorites  Listed  Following ...
         eos
       end
     end
+    context 'no configuration' do
+      it 'prints a helpful message and no errors' do
+        T::RCFile.instance.path = ''
+        @cli = T::CLI.new
+        @cli.whoami
+        expect($stderr.string).to eq "You haven't authorized an account, run `t authorize` to get started.\n"
+      end
+    end
   end
 
 end

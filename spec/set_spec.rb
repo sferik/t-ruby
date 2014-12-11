@@ -2,7 +2,6 @@
 require 'helper'
 
 describe T::Set do
-
   before do
     T::RCFile.instance.path = fixture_path + '/.trc'
     @set = T::Set.new
@@ -150,5 +149,4 @@ describe T::Set do
       expect($stdout.string.chomp).to eq "@testcli's website has been updated."
     end
   end
-
 end

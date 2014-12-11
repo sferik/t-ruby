@@ -2,7 +2,6 @@
 require 'helper'
 
 describe T::List do
-
   before :all do
     Timecop.freeze(Time.utc(2011, 11, 24, 16, 20, 0))
     T.utc_offset = 'PST'
@@ -808,5 +807,4 @@ ID                   Posted at     Screen name       Text
       end
     end
   end
-
 end

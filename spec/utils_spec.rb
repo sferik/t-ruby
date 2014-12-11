@@ -2,7 +2,6 @@
 require 'helper'
 
 describe T::Utils do
-
   before :all do
     Timecop.freeze(Time.utc(2011, 11, 24, 16, 20, 0))
     T.utc_offset = -28_800
@@ -92,5 +91,4 @@ describe T::Utils do
       end
     end
   end
-
 end

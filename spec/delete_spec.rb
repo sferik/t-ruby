@@ -2,7 +2,6 @@
 require 'helper'
 
 describe T::Delete do
-
   before do
     T::RCFile.instance.path = fixture_path + '/.trc'
     @delete = T::Delete.new
@@ -341,5 +340,4 @@ describe T::Delete do
       end
     end
   end
-
 end

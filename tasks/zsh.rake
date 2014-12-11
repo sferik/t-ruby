@@ -1,7 +1,6 @@
 namespace :completion do
   desc 'Generate zsh completion file'
   task :zsh do
-
     Bundler.require(:default)
 
     output_path = 'etc/t-completion.zsh'

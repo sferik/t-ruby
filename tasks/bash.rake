@@ -1,7 +1,6 @@
 namespace :completion do
   desc 'Generate bash completion file'
   task :bash do
-
     Bundler.require(:default)
 
     output_path = 'etc/t-completion.sh'
@@ -52,7 +51,6 @@ module BashCompletion
 
     def comp_cases
       commands.collect do |cmd|
-
         options_str = options(cmd).join(' ')
         subcmds = subcommands(cmd)
 

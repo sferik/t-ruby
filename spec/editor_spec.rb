@@ -2,7 +2,6 @@
 require 'helper'
 
 describe T::Editor do
-
   context 'when editing a file' do
     before do
       allow(T::Editor).to receive(:edit) do |path|
@@ -98,5 +97,4 @@ describe T::Editor do
       end
     end
   end
-
 end

@@ -2,7 +2,6 @@
 require 'helper'
 
 describe T::Search do
-
   before :all do
     Timecop.freeze(Time.utc(2011, 11, 24, 16, 20, 0))
     T.utc_offset = 'PST'
@@ -940,5 +939,4 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       end
     end
   end
-
 end

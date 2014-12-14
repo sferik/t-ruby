@@ -394,6 +394,20 @@ ID                  Posted at     Screen name  Text
     end
   end
 
+  describe '#replies' do
+    before do
+      stub_get('/1.1/statuses/mentions_timeline.json').with(query: {count: '200', include_entities: 'false'}).to_return(body: fixture('statuses_with_mention.json'), headers: {content_type: 'application/json; charset=utf-8'})
+    end
+    it 'has the correct output' do
+      @search.replies(263_810_294_395_072_513)
+      expect($stdout.string).to eq <<-eos
+   @joshfrench
+   @sferik Excellent
+
+      eos
+    end
+  end
+
   describe '#list' do
     before do
       stub_get('/1.1/lists/statuses.json').with(query: {count: '200', owner_screen_name: 'testcli', slug: 'presidents', include_entities: 'false'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})

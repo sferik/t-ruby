@@ -124,7 +124,21 @@ module T
       end
       print_tweets(tweets)
     end
-    map %w(replies) => :mentions
+
+    desc 'replies STATUS_ID', 'Returns replies to the given tweet.'
+    method_option 'csv', aliases: '-c', type: :boolean, desc: 'Output in CSV format.'
+    method_option 'decode_uris', aliases: '-d', type: :boolean, desc: 'Decodes t.co URLs into their original form.'
+    method_option 'long', aliases: '-l', type: :boolean, desc: 'Output in long format.'
+    method_option 'relative_dates', aliases: '-a', type: :boolean, desc: 'Show relative dates.'
+    def replies(status_id)
+      opts = {count: MAX_NUM_RESULTS}
+      opts[:include_entities] = !!options['decode_uris']
+      tweets = client.mentions(opts)
+      tweets = tweets.select do |tweet|
+        tweet.in_reply_to_status_id.to_i == status_id.to_i 
+      end
+      print_tweets(tweets)
+    end
 
     desc 'retweets [USER] QUERY', "Returns Tweets you've retweeted that match the specified query."
     method_option 'csv', aliases: '-c', type: :boolean, desc: 'Output in CSV format.'

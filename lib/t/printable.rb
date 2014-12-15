@@ -111,12 +111,13 @@ module T
       STDOUT.flush
     end
 
-    def print_message(from_user, message)
+    def print_message(from_user, date, message)
       case options['color']
       when 'auto'
-        say("   @#{from_user}", [:bold, :yellow])
+        say("   @#{from_user} ", [:bold, :yellow])
+        say("(#{date})")
       else
-        say("   @#{from_user}")
+        say("   @#{from_user} (#{date})")
       end
       require 'htmlentities'
       print_wrapped(HTMLEntities.new.decode(message), indent: 3)
@@ -139,7 +140,7 @@ module T
         print_table_with_headings(array, TWEET_HEADINGS, format)
       else
         tweets.each do |tweet|
-          print_message(tweet.user.screen_name, decode_uris(tweet.full_text, options['decode_uris'] ? tweet.uris : nil))
+          print_message(tweet.user.screen_name, ls_formatted_time(tweet), decode_uris(tweet.full_text, options['decode_uris'] ? tweet.uris : nil))
         end
       end
     end

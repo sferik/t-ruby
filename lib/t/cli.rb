@@ -151,7 +151,7 @@ module T
         print_table_with_headings(array, DIRECT_MESSAGE_HEADINGS, format)
       else
         direct_messages.each do |direct_message|
-          print_message(direct_message.sender.screen_name, direct_message.text)
+          print_message(direct_message.sender.screen_name, ls_formatted_time(direct_message), direct_message.text)
         end
       end
     end
@@ -186,7 +186,7 @@ module T
         print_table_with_headings(array, DIRECT_MESSAGE_HEADINGS, format)
       else
         direct_messages.each do |direct_message|
-          print_message(direct_message.recipient.screen_name, direct_message.text)
+          print_message(direct_message.recipient.screen_name, ls_formatted_time(direct_message), direct_message.text)
         end
       end
     end

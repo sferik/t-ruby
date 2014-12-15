@@ -336,82 +336,82 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
     it 'has the correct output' do
       @list.timeline('presidents')
       expect($stdout.string).to eq <<-eos
-   @mutgoff
+   @mutgoff (Sep  7 08:35)
    Happy Birthday @imdane. Watch out for those @rally pranksters!
 
-   @ironicsans
+   @ironicsans (Sep  7 08:33)
    If you like good real-life stories, check out @NarrativelyNY's just-launched 
    site http://t.co/wiUL07jE (and also visit http://t.co/ZoyQxqWA)
 
-   @pat_shaughnessy
+   @pat_shaughnessy (Sep  7 08:30)
    Something else to vote for: "New Rails workshops to bring more women into the 
    Boston software scene" http://t.co/eNBuckHc /cc @bostonrb
 
-   @calebelston
+   @calebelston (Sep  7 08:28)
    Pushing the button to launch the site. http://t.co/qLoEn5jG
 
-   @calebelston
+   @calebelston (Sep  7 08:23)
    RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
 
-   @fivethirtyeight
+   @fivethirtyeight (Sep  7 08:20)
    The Weatherman is Not a Moron: http://t.co/ZwL5Gnq5. An excerpt from my book, 
    THE SIGNAL AND THE NOISE (http://t.co/fNXj8vCE)
 
-   @codeforamerica
+   @codeforamerica (Sep  7 08:20)
    RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat, 
    Sep 8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica 
    @TheaClay
 
-   @fbjork
+   @fbjork (Sep  7 08:17)
    RT @jondot: Just published: "Pragmatic Concurrency With #Ruby" 
    http://t.co/kGEykswZ /cc @JRuby @headius
 
-   @mbostock
+   @mbostock (Sep  7 08:14)
    If you are wondering how we computed the split bubbles: http://t.co/BcaqSs5u
 
-   @FakeDorsey
+   @FakeDorsey (Sep  7 08:11)
    "Write drunk. Edit sober."—Ernest Hemingway
 
-   @al3x
+   @al3x (Sep  7 08:07)
    RT @wcmaier: Better banking through better ops: build something new with us 
    @Simplify (remote, PDX) http://t.co/8WgzKZH3
 
-   @calebelston
+   @calebelston (Sep  7 08:05)
    We just announced Mosaic, what we've been working on since the Yobongo 
    acquisition. My personal post, http://t.co/ELOyIRZU @heymosaic
 
-   @BarackObama
+   @BarackObama (Sep  7 08:01)
    Donate $10 or more --> get your favorite car magnet: http://t.co/NfRhl2s2 
    #Obama2012
 
-   @JEG2
+   @JEG2 (Sep  7 08:00)
    RT @tenderlove: If corporations are people, can we use them to drive in the 
    carpool lane?
 
-   @eveningedition
+   @eveningedition (Sep  7 08:00)
    LDN—Obama's nomination; Putin woos APEC; Bombs hit Damascus; Quakes shake 
    China; Canada cuts Iran ties; weekend read: http://t.co/OFs6dVW4
 
-   @dhh
+   @dhh (Sep  7 08:00)
    RT @ggreenwald: Democrats parade Osama bin Laden's corpse as their proudest 
    achievement: why this goulish jingoism is so warped http://t.co/kood278s
 
-   @jasonfried
+   @jasonfried (Sep  7 07:59)
    The story of Mars Curiosity's gears, made by a factory in Rockford, IL: 
    http://t.co/MwCRsHQg
 
-   @sferik
+   @sferik (Sep  7 07:57)
    @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem 
    to be missing "1.1" from the URL.
 
-   @sferik
+   @sferik (Sep  7 07:50)
    @episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
 
-   @dwiskus
+   @dwiskus (Sep  7 07:47)
    Gentlemen, you can't fight in here! This is the war room! 
    http://t.co/kMxMYyqF
 
-      eos
+        eos
     end
     context '--color=never' do
       before do
@@ -420,78 +420,78 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       it 'outputs without color' do
         @list.timeline('presidents')
         expect($stdout.string).to eq <<-eos
-   @mutgoff
+   @mutgoff (Sep  7 08:35)
    Happy Birthday @imdane. Watch out for those @rally pranksters!
 
-   @ironicsans
+   @ironicsans (Sep  7 08:33)
    If you like good real-life stories, check out @NarrativelyNY's just-launched 
    site http://t.co/wiUL07jE (and also visit http://t.co/ZoyQxqWA)
 
-   @pat_shaughnessy
+   @pat_shaughnessy (Sep  7 08:30)
    Something else to vote for: "New Rails workshops to bring more women into the 
    Boston software scene" http://t.co/eNBuckHc /cc @bostonrb
 
-   @calebelston
+   @calebelston (Sep  7 08:28)
    Pushing the button to launch the site. http://t.co/qLoEn5jG
 
-   @calebelston
+   @calebelston (Sep  7 08:23)
    RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
 
-   @fivethirtyeight
+   @fivethirtyeight (Sep  7 08:20)
    The Weatherman is Not a Moron: http://t.co/ZwL5Gnq5. An excerpt from my book, 
    THE SIGNAL AND THE NOISE (http://t.co/fNXj8vCE)
 
-   @codeforamerica
+   @codeforamerica (Sep  7 08:20)
    RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat, 
    Sep 8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica 
    @TheaClay
 
-   @fbjork
+   @fbjork (Sep  7 08:17)
    RT @jondot: Just published: "Pragmatic Concurrency With #Ruby" 
    http://t.co/kGEykswZ /cc @JRuby @headius
 
-   @mbostock
+   @mbostock (Sep  7 08:14)
    If you are wondering how we computed the split bubbles: http://t.co/BcaqSs5u
 
-   @FakeDorsey
+   @FakeDorsey (Sep  7 08:11)
    "Write drunk. Edit sober."—Ernest Hemingway
 
-   @al3x
+   @al3x (Sep  7 08:07)
    RT @wcmaier: Better banking through better ops: build something new with us 
    @Simplify (remote, PDX) http://t.co/8WgzKZH3
 
-   @calebelston
+   @calebelston (Sep  7 08:05)
    We just announced Mosaic, what we've been working on since the Yobongo 
    acquisition. My personal post, http://t.co/ELOyIRZU @heymosaic
 
-   @BarackObama
+   @BarackObama (Sep  7 08:01)
    Donate $10 or more --> get your favorite car magnet: http://t.co/NfRhl2s2 
    #Obama2012
 
-   @JEG2
+   @JEG2 (Sep  7 08:00)
    RT @tenderlove: If corporations are people, can we use them to drive in the 
    carpool lane?
 
-   @eveningedition
+   @eveningedition (Sep  7 08:00)
    LDN—Obama's nomination; Putin woos APEC; Bombs hit Damascus; Quakes shake 
    China; Canada cuts Iran ties; weekend read: http://t.co/OFs6dVW4
 
-   @dhh
+   @dhh (Sep  7 08:00)
    RT @ggreenwald: Democrats parade Osama bin Laden's corpse as their proudest 
    achievement: why this goulish jingoism is so warped http://t.co/kood278s
 
-   @jasonfried
+   @jasonfried (Sep  7 07:59)
    The story of Mars Curiosity's gears, made by a factory in Rockford, IL: 
    http://t.co/MwCRsHQg
 
-   @sferik
+   @sferik (Sep  7 07:57)
    @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem 
    to be missing "1.1" from the URL.
 
-   @sferik
+   @sferik (Sep  7 07:50)
    @episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
 
-   @dwiskus
+   @dwiskus (Sep  7 07:47)
    Gentlemen, you can't fight in here! This is the war room! 
    http://t.co/kMxMYyqF
 
@@ -505,78 +505,78 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       it 'outputs without color when stdout is not a tty' do
         @list.timeline('presidents')
         expect($stdout.string).to eq <<-eos
-   @mutgoff
+   @mutgoff (Sep  7 08:35)
    Happy Birthday @imdane. Watch out for those @rally pranksters!
 
-   @ironicsans
+   @ironicsans (Sep  7 08:33)
    If you like good real-life stories, check out @NarrativelyNY's just-launched 
    site http://t.co/wiUL07jE (and also visit http://t.co/ZoyQxqWA)
 
-   @pat_shaughnessy
+   @pat_shaughnessy (Sep  7 08:30)
    Something else to vote for: "New Rails workshops to bring more women into the 
    Boston software scene" http://t.co/eNBuckHc /cc @bostonrb
 
-   @calebelston
+   @calebelston (Sep  7 08:28)
    Pushing the button to launch the site. http://t.co/qLoEn5jG
 
-   @calebelston
+   @calebelston (Sep  7 08:23)
    RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
 
-   @fivethirtyeight
+   @fivethirtyeight (Sep  7 08:20)
    The Weatherman is Not a Moron: http://t.co/ZwL5Gnq5. An excerpt from my book, 
    THE SIGNAL AND THE NOISE (http://t.co/fNXj8vCE)
 
-   @codeforamerica
+   @codeforamerica (Sep  7 08:20)
    RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat, 
    Sep 8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica 
    @TheaClay
 
-   @fbjork
+   @fbjork (Sep  7 08:17)
    RT @jondot: Just published: "Pragmatic Concurrency With #Ruby" 
    http://t.co/kGEykswZ /cc @JRuby @headius
 
-   @mbostock
+   @mbostock (Sep  7 08:14)
    If you are wondering how we computed the split bubbles: http://t.co/BcaqSs5u
 
-   @FakeDorsey
+   @FakeDorsey (Sep  7 08:11)
    "Write drunk. Edit sober."—Ernest Hemingway
 
-   @al3x
+   @al3x (Sep  7 08:07)
    RT @wcmaier: Better banking through better ops: build something new with us 
    @Simplify (remote, PDX) http://t.co/8WgzKZH3
 
-   @calebelston
+   @calebelston (Sep  7 08:05)
    We just announced Mosaic, what we've been working on since the Yobongo 
    acquisition. My personal post, http://t.co/ELOyIRZU @heymosaic
 
-   @BarackObama
+   @BarackObama (Sep  7 08:01)
    Donate $10 or more --> get your favorite car magnet: http://t.co/NfRhl2s2 
    #Obama2012
 
-   @JEG2
+   @JEG2 (Sep  7 08:00)
    RT @tenderlove: If corporations are people, can we use them to drive in the 
    carpool lane?
 
-   @eveningedition
+   @eveningedition (Sep  7 08:00)
    LDN—Obama's nomination; Putin woos APEC; Bombs hit Damascus; Quakes shake 
    China; Canada cuts Iran ties; weekend read: http://t.co/OFs6dVW4
 
-   @dhh
+   @dhh (Sep  7 08:00)
    RT @ggreenwald: Democrats parade Osama bin Laden's corpse as their proudest 
    achievement: why this goulish jingoism is so warped http://t.co/kood278s
 
-   @jasonfried
+   @jasonfried (Sep  7 07:59)
    The story of Mars Curiosity's gears, made by a factory in Rockford, IL: 
    http://t.co/MwCRsHQg
 
-   @sferik
+   @sferik (Sep  7 07:57)
    @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem 
    to be missing "1.1" from the URL.
 
-   @sferik
+   @sferik (Sep  7 07:50)
    @episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
 
-   @dwiskus
+   @dwiskus (Sep  7 07:47)
    Gentlemen, you can't fight in here! This is the war room! 
    http://t.co/kMxMYyqF
 
@@ -586,78 +586,78 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
         allow($stdout).to receive(:"tty?").and_return(true)
         @list.timeline('presidents')
         expect($stdout.string).to eq <<-eos
-\e[1m\e[33m   @mutgoff\e[0m
+\e[1m\e[33m   @mutgoff \e[0m(Sep  7 08:35)
    Happy Birthday @imdane. Watch out for those @rally pranksters!
 
-\e[1m\e[33m   @ironicsans\e[0m
+\e[1m\e[33m   @ironicsans \e[0m(Sep  7 08:33)
    If you like good real-life stories, check out @NarrativelyNY's just-launched 
    site http://t.co/wiUL07jE (and also visit http://t.co/ZoyQxqWA)
 
-\e[1m\e[33m   @pat_shaughnessy\e[0m
+\e[1m\e[33m   @pat_shaughnessy \e[0m(Sep  7 08:30)
    Something else to vote for: "New Rails workshops to bring more women into the 
    Boston software scene" http://t.co/eNBuckHc /cc @bostonrb
 
-\e[1m\e[33m   @calebelston\e[0m
+\e[1m\e[33m   @calebelston \e[0m(Sep  7 08:28)
    Pushing the button to launch the site. http://t.co/qLoEn5jG
 
-\e[1m\e[33m   @calebelston\e[0m
+\e[1m\e[33m   @calebelston \e[0m(Sep  7 08:23)
    RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
 
-\e[1m\e[33m   @fivethirtyeight\e[0m
+\e[1m\e[33m   @fivethirtyeight \e[0m(Sep  7 08:20)
    The Weatherman is Not a Moron: http://t.co/ZwL5Gnq5. An excerpt from my book, 
    THE SIGNAL AND THE NOISE (http://t.co/fNXj8vCE)
 
-\e[1m\e[33m   @codeforamerica\e[0m
+\e[1m\e[33m   @codeforamerica \e[0m(Sep  7 08:20)
    RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat, 
    Sep 8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica 
    @TheaClay
 
-\e[1m\e[33m   @fbjork\e[0m
+\e[1m\e[33m   @fbjork \e[0m(Sep  7 08:17)
    RT @jondot: Just published: "Pragmatic Concurrency With #Ruby" 
    http://t.co/kGEykswZ /cc @JRuby @headius
 
-\e[1m\e[33m   @mbostock\e[0m
+\e[1m\e[33m   @mbostock \e[0m(Sep  7 08:14)
    If you are wondering how we computed the split bubbles: http://t.co/BcaqSs5u
 
-\e[1m\e[33m   @FakeDorsey\e[0m
+\e[1m\e[33m   @FakeDorsey \e[0m(Sep  7 08:11)
    "Write drunk. Edit sober."—Ernest Hemingway
 
-\e[1m\e[33m   @al3x\e[0m
+\e[1m\e[33m   @al3x \e[0m(Sep  7 08:07)
    RT @wcmaier: Better banking through better ops: build something new with us 
    @Simplify (remote, PDX) http://t.co/8WgzKZH3
 
-\e[1m\e[33m   @calebelston\e[0m
+\e[1m\e[33m   @calebelston \e[0m(Sep  7 08:05)
    We just announced Mosaic, what we've been working on since the Yobongo 
    acquisition. My personal post, http://t.co/ELOyIRZU @heymosaic
 
-\e[1m\e[33m   @BarackObama\e[0m
+\e[1m\e[33m   @BarackObama \e[0m(Sep  7 08:01)
    Donate $10 or more --> get your favorite car magnet: http://t.co/NfRhl2s2 
    #Obama2012
 
-\e[1m\e[33m   @JEG2\e[0m
+\e[1m\e[33m   @JEG2 \e[0m(Sep  7 08:00)
    RT @tenderlove: If corporations are people, can we use them to drive in the 
    carpool lane?
 
-\e[1m\e[33m   @eveningedition\e[0m
+\e[1m\e[33m   @eveningedition \e[0m(Sep  7 08:00)
    LDN—Obama's nomination; Putin woos APEC; Bombs hit Damascus; Quakes shake 
    China; Canada cuts Iran ties; weekend read: http://t.co/OFs6dVW4
 
-\e[1m\e[33m   @dhh\e[0m
+\e[1m\e[33m   @dhh \e[0m(Sep  7 08:00)
    RT @ggreenwald: Democrats parade Osama bin Laden's corpse as their proudest 
    achievement: why this goulish jingoism is so warped http://t.co/kood278s
 
-\e[1m\e[33m   @jasonfried\e[0m
+\e[1m\e[33m   @jasonfried \e[0m(Sep  7 07:59)
    The story of Mars Curiosity's gears, made by a factory in Rockford, IL: 
    http://t.co/MwCRsHQg
 
-\e[1m\e[33m   @sferik\e[0m
+\e[1m\e[33m   @sferik \e[0m(Sep  7 07:57)
    @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem 
    to be missing "1.1" from the URL.
 
-\e[1m\e[33m   @sferik\e[0m
+\e[1m\e[33m   @sferik \e[0m(Sep  7 07:50)
    @episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
 
-\e[1m\e[33m   @dwiskus\e[0m
+\e[1m\e[33m   @dwiskus \e[0m(Sep  7 07:47)
    Gentlemen, you can't fight in here! This is the war room! 
    http://t.co/kMxMYyqF
 

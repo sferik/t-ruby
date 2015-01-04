@@ -664,6 +664,129 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
         eos
       end
     end
+    context '--color=icon' do
+      before do
+        @list.options = @list.options.merge('color' => 'icon')
+      end
+      it 'outputs with color when stdout is a tty' do
+        allow($stdout).to receive(:"tty?").and_return(true)
+        @list.timeline('presidents')
+
+        names = %w(mutgoff ironicsans pat_shaughnessy calebelston fivethirtyeight
+                   codeforamerica fbjork mbostock FakeDorsey al3x BarackObama
+                   JEG2 eveningedition dhh jasonfried sferik dwiskus)
+
+        icons = names.inject({}) { |a, e| a.update(e.intern => T::Identicon.for_user_name(e)) }
+
+        expect($stdout.string).to eq <<-eos
+  #{icons[:mutgoff].lines[0]}\e[1m\e[33m  @mutgoff\e[0m
+  #{icons[:mutgoff].lines[1]}  Happy Birthday @imdane. Watch out for those @rally pranksters!
+  #{icons[:mutgoff].lines[2]}
+
+
+  #{icons[:ironicsans].lines[0]}\e[1m\e[33m  @ironicsans\e[0m
+  #{icons[:ironicsans].lines[1]}  If you like good real-life stories, check out @NarrativelyNY's 
+  #{icons[:ironicsans].lines[2]}  just-launched site http://t.co/wiUL07jE (and also visit 
+          http://t.co/ZoyQxqWA)
+
+
+  #{icons[:pat_shaughnessy].lines[0]}\e[1m\e[33m  @pat_shaughnessy\e[0m
+  #{icons[:pat_shaughnessy].lines[1]}  Something else to vote for: "New Rails workshops to bring more women 
+  #{icons[:pat_shaughnessy].lines[2]}  into the Boston software scene" http://t.co/eNBuckHc /cc @bostonrb
+
+
+  #{icons[:calebelston].lines[0]}\e[1m\e[33m  @calebelston\e[0m
+  #{icons[:calebelston].lines[1]}  Pushing the button to launch the site. http://t.co/qLoEn5jG
+  #{icons[:calebelston].lines[2]}
+
+
+  #{icons[:calebelston].lines[0]}\e[1m\e[33m  @calebelston\e[0m
+  #{icons[:calebelston].lines[1]}  RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
+  #{icons[:calebelston].lines[2]}
+
+
+  #{icons[:fivethirtyeight].lines[0]}\e[1m\e[33m  @fivethirtyeight\e[0m
+  #{icons[:fivethirtyeight].lines[1]}  The Weatherman is Not a Moron: http://t.co/ZwL5Gnq5. An excerpt from 
+  #{icons[:fivethirtyeight].lines[2]}  my book, THE SIGNAL AND THE NOISE (http://t.co/fNXj8vCE)
+
+
+  #{icons[:codeforamerica].lines[0]}\e[1m\e[33m  @codeforamerica\e[0m
+  #{icons[:codeforamerica].lines[1]}  RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, 
+  #{icons[:codeforamerica].lines[2]}  Sat, Sep 8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok 
+          @codeforamerica @TheaClay
+
+
+  #{icons[:fbjork].lines[0]}\e[1m\e[33m  @fbjork\e[0m
+  #{icons[:fbjork].lines[1]}  RT @jondot: Just published: "Pragmatic Concurrency With #Ruby" 
+  #{icons[:fbjork].lines[2]}  http://t.co/kGEykswZ /cc @JRuby @headius
+
+
+  #{icons[:mbostock].lines[0]}\e[1m\e[33m  @mbostock\e[0m
+  #{icons[:mbostock].lines[1]}  If you are wondering how we computed the split bubbles: 
+  #{icons[:mbostock].lines[2]}  http://t.co/BcaqSs5u
+
+
+  #{icons[:FakeDorsey].lines[0]}\e[1m\e[33m  @FakeDorsey\e[0m
+  #{icons[:FakeDorsey].lines[1]}  "Write drunk. Edit sober."—Ernest Hemingway
+  #{icons[:FakeDorsey].lines[2]}
+
+
+  #{icons[:al3x].lines[0]}\e[1m\e[33m  @al3x\e[0m
+  #{icons[:al3x].lines[1]}  RT @wcmaier: Better banking through better ops: build something new 
+  #{icons[:al3x].lines[2]}  with us @Simplify (remote, PDX) http://t.co/8WgzKZH3
+
+
+  #{icons[:calebelston].lines[0]}\e[1m\e[33m  @calebelston\e[0m
+  #{icons[:calebelston].lines[1]}  We just announced Mosaic, what we've been working on since the 
+  #{icons[:calebelston].lines[2]}  Yobongo acquisition. My personal post, http://t.co/ELOyIRZU 
+          @heymosaic
+
+
+  #{icons[:BarackObama].lines[0]}\e[1m\e[33m  @BarackObama\e[0m
+  #{icons[:BarackObama].lines[1]}  Donate $10 or more --> get your favorite car magnet: 
+  #{icons[:BarackObama].lines[2]}  http://t.co/NfRhl2s2 #Obama2012
+
+
+  #{icons[:JEG2].lines[0]}\e[1m\e[33m  @JEG2\e[0m
+  #{icons[:JEG2].lines[1]}  RT @tenderlove: If corporations are people, can we use them to drive 
+  #{icons[:JEG2].lines[2]}  in the carpool lane?
+
+
+  #{icons[:eveningedition].lines[0]}\e[1m\e[33m  @eveningedition\e[0m
+  #{icons[:eveningedition].lines[1]}  LDN—Obama's nomination; Putin woos APEC; Bombs hit Damascus; Quakes 
+  #{icons[:eveningedition].lines[2]}  shake China; Canada cuts Iran ties; weekend read: 
+          http://t.co/OFs6dVW4
+
+
+  #{icons[:dhh].lines[0]}\e[1m\e[33m  @dhh\e[0m
+  #{icons[:dhh].lines[1]}  RT @ggreenwald: Democrats parade Osama bin Laden's corpse as their 
+  #{icons[:dhh].lines[2]}  proudest achievement: why this goulish jingoism is so warped 
+          http://t.co/kood278s
+
+
+  #{icons[:jasonfried].lines[0]}\e[1m\e[33m  @jasonfried\e[0m
+  #{icons[:jasonfried].lines[1]}  The story of Mars Curiosity's gears, made by a factory in Rockford, 
+  #{icons[:jasonfried].lines[2]}  IL: http://t.co/MwCRsHQg
+
+
+  #{icons[:sferik].lines[0]}\e[1m\e[33m  @sferik\e[0m
+  #{icons[:sferik].lines[1]}  @episod @twitterapi now https://t.co/I17jUTu2 and 
+  #{icons[:sferik].lines[2]}  https://t.co/deDu4Hgw seem to be missing "1.1" from the URL.
+
+
+  #{icons[:sferik].lines[0]}\e[1m\e[33m  @sferik\e[0m
+  #{icons[:sferik].lines[1]}  @episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
+  #{icons[:sferik].lines[2]}
+
+
+  #{icons[:dwiskus].lines[0]}\e[1m\e[33m  @dwiskus\e[0m
+  #{icons[:dwiskus].lines[1]}  Gentlemen, you can't fight in here! This is the war room! 
+  #{icons[:dwiskus].lines[2]}  http://t.co/kMxMYyqF
+
+
+        eos
+      end
+    end
     
     context '--csv' do
       before do

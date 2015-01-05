@@ -30,7 +30,7 @@ module T
 
     check_unknown_options!
 
-    class_option 'color', aliases: '-C', type: :string, enum: %w(auto never), default: 'auto', desc: 'Control how color is used in output'
+    class_option 'color', aliases: '-C', type: :string, enum: %w(icon auto never), default: 'auto', desc: 'Control how color is used in output'
     class_option 'profile', aliases: '-P', type: :string, default: File.join(File.expand_path('~'), T::RCFile::FILE_NAME), desc: 'Path to RC file', banner: 'FILE'
 
     def initialize(*)

@@ -5,7 +5,7 @@ module T
   class << self
     # Convert time to local time by applying the `utc_offset` setting.
     def local_time(time)
-      utc_offset ? (time.dup.utc + utc_offset) : time.localtime
+      utc_offset ? (time.dup.utc + utc_offset) : time.dup.localtime
     end
 
     # UTC offset in seconds to apply time instances before displaying.

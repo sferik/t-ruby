@@ -33,7 +33,7 @@ module T
     def all(query)
       count = options['number'] || DEFAULT_NUM_RESULTS
       opts = {count: MAX_SEARCH_RESULTS}
-      opts[:include_entities] = !!options['decode_uris']
+      opts[:include_entities] = !!options['decode_uris'] || !!options['photos']
       tweets = client.search(query, opts).take(count)
       tweets.reverse! if options['reverse']
       if options['csv']
@@ -51,7 +51,7 @@ module T
       else
         say unless tweets.empty?
         tweets.each do |tweet|
-          print_message(tweet.user.screen_name, decode_full_text(tweet, options['decode_uris']))
+          print_message(tweet.user.screen_name, decode_full_text(tweet, options['decode_uris']), tweet.media)
         end
       end
     end
@@ -66,7 +66,7 @@ module T
       query = args.pop
       user = args.pop
       opts = {count: MAX_NUM_RESULTS}
-      opts[:include_entities] = !!options['decode_uris']
+      opts[:include_entities] = !!options['decode_uris'] || !!options['photos']
       if user
         require 't/core_ext/string'
         user = options['id'] ? user.to_i : user.strip_ats
@@ -96,7 +96,7 @@ module T
     def list(user_list, query)
       owner, list_name = extract_owner(user_list, options)
       opts = {count: MAX_NUM_RESULTS}
-      opts[:include_entities] = !!options['decode_uris']
+      opts[:include_entities] = !!options['decode_uris'] || !!options['photos']
       tweets = collect_with_max_id do |max_id|
         opts[:max_id] = max_id unless max_id.nil?
         client.list_timeline(owner, list_name, opts)
@@ -114,7 +114,7 @@ module T
     method_option 'relative_dates', aliases: '-a', type: :boolean, desc: 'Show relative dates.'
     def mentions(query)
       opts = {count: MAX_NUM_RESULTS}
-      opts[:include_entities] = !!options['decode_uris']
+      opts[:include_entities] = !!options['decode_uris'] || !!options['photos']
       tweets = collect_with_max_id do |max_id|
         opts[:max_id] = max_id unless max_id.nil?
         client.mentions(opts)
@@ -136,7 +136,7 @@ module T
       query = args.pop
       user = args.pop
       opts = {count: MAX_NUM_RESULTS}
-      opts[:include_entities] = !!options['decode_uris']
+      opts[:include_entities] = !!options['decode_uris'] || !!options['photos']
       if user
         require 't/core_ext/string'
         user = options['id'] ? user.to_i : user.strip_ats
@@ -171,7 +171,7 @@ module T
       user = args.pop
       opts = {count: MAX_NUM_RESULTS}
       opts[:exclude_replies] = true if options['exclude'] == 'replies'
-      opts[:include_entities] = !!options['decode_uris']
+      opts[:include_entities] = !!options['decode_uris'] || !!options['photos']
       opts[:include_rts] = false if options['exclude'] == 'retweets'
       opts[:max_id] = options['max_id'] if options['max_id']
       opts[:since_id] = options['since_id'] if options['since_id']

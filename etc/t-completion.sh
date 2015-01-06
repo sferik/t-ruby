@@ -90,7 +90,7 @@ favorites)
               
               -C|--color) completions='auto never icon' ;;
 
-              *) completions='--csv -c --decode_uris -d --id -i --long -l --max_id -m --number -n --relative_dates -a --reverse -r --since_id -s -H --host -C --color -P --profile' ;;
+              *) completions='--csv -c --decode_uris -d --id -i --long -l --max_id -m --number -n --relative_dates -a --reverse -r --since_id -s -H --host -C --color -P --profile --photos' ;;
               esac;;
 
 follow)
@@ -188,7 +188,7 @@ mentions)
               
               -C|--color) completions='auto never icon' ;;
 
-              *) completions='--csv -c --decode_uris -d --long -l --number -n --relative_dates -a --reverse -r -H --host -C --color -P --profile' ;;
+              *) completions='--csv -c --decode_uris -d --long -l --number -n --relative_dates -a --reverse -r -H --host -C --color -P --profile --photos' ;;
               esac;;
 
 mute)
@@ -253,7 +253,7 @@ retweets)
               
               -C|--color) completions='auto never icon' ;;
 
-              *) completions='--csv -c --decode_uris -d --id -i --long -l --number -n --relative_dates -a --reverse -r -H --host -C --color -P --profile' ;;
+              *) completions='--csv -c --decode_uris -d --id -i --long -l --number -n --relative_dates -a --reverse -r -H --host -C --color -P --profile --photos' ;;
               esac;;
 
 retweets_of_me)
@@ -261,7 +261,7 @@ retweets_of_me)
               
               -C|--color) completions='auto never icon' ;;
 
-              *) completions='--csv -c --decode_uris -d --long -l --number -n --relative_dates -a --reverse -r -H --host -C --color -P --profile' ;;
+              *) completions='--csv -c --decode_uris -d --long -l --number -n --relative_dates -a --reverse -r -H --host -C --color -P --profile --photos' ;;
               esac;;
 
 ruler)
@@ -286,7 +286,7 @@ timeline)
              completions='replies retweets' ;;
               -C|--color) completions='auto never icon' ;;
 
-              *) completions='--csv -c --decode_uris -d --exclude -e --id -i --long -l --max_id -m --number -n --relative_dates -a --reverse -r --since_id -s -H --host -C --color -P --profile' ;;
+              *) completions='--csv -c --decode_uris -d --exclude -e --id -i --long -l --max_id -m --number -n --relative_dates -a --reverse -r --since_id -s -H --host -C --color -P --profile --photos' ;;
               esac;;
 
 trends)
@@ -379,7 +379,7 @@ create) completions='-H --host -C --color -P --profile' ;;
 information) completions='-H --host -C --color -P --profile' ;;
 members) completions='-H --host -C --color -P --profile' ;;
 remove) completions='-H --host -C --color -P --profile' ;;
-timeline) completions='-H --host -C --color -P --profile' ;;
+timeline) completions='-H --host -C --color -P --profile --photos' ;;
 help) completions='-H --host -C --color -P --profile' ;;
               
               -C|--color) completions='auto never icon' ;;
@@ -391,11 +391,11 @@ search)
               case "$prev" in
               search) completions='all favorites list mentions retweets timeline users help';;
               all) completions='-H --host -C --color -P --profile' ;;
-favorites) completions='-H --host -C --color -P --profile' ;;
-list) completions='-H --host -C --color -P --profile' ;;
-mentions) completions='-H --host -C --color -P --profile' ;;
-retweets) completions='-H --host -C --color -P --profile' ;;
-timeline) completions='-H --host -C --color -P --profile' ;;
+favorites) completions='-H --host -C --color -P --profile --photos' ;;
+list) completions='-H --host -C --color -P --profile --photos' ;;
+mentions) completions='-H --host -C --color -P --profile --photos' ;;
+retweets) completions='-H --host -C --color -P --profile --photos' ;;
+timeline) completions='-H --host -C --color -P --profile --photos' ;;
 users) completions='-H --host -C --color -P --profile' ;;
 help) completions='-H --host -C --color -P --profile' ;;
               
@@ -426,11 +426,11 @@ stream)
               case "$prev" in
               stream) completions='all list matrix search timeline users help';;
               all) completions='-H --host -C --color -P --profile' ;;
-list) completions='-H --host -C --color -P --profile' ;;
+list) completions='-H --host -C --color -P --profile --photos' ;;
 matrix) completions='-H --host -C --color -P --profile' ;;
-search) completions='-H --host -C --color -P --profile' ;;
-timeline) completions='-H --host -C --color -P --profile' ;;
-users) completions='-H --host -C --color -P --profile' ;;
+search) completions='-H --host -C --color -P --profile --photos' ;;
+timeline) completions='-H --host -C --color -P --profile --photos' ;;
+users) completions='-H --host -C --color -P --profile --photos' ;;
 help) completions='-H --host -C --color -P --profile' ;;
               
               -C|--color) completions='auto never icon' ;;

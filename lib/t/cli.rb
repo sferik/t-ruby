@@ -32,6 +32,7 @@ module T
 
     class_option 'color', aliases: '-C', type: :string, enum: %w(icon auto never), default: 'auto', desc: 'Control how color is used in output'
     class_option 'profile', aliases: '-P', type: :string, default: File.join(File.expand_path('~'), T::RCFile::FILE_NAME), desc: 'Path to RC file', banner: 'FILE'
+    class_option 'photos', type: :boolean, default: false, desc: 'Render photos as ASCII (requires netpbm)'
 
     def initialize(*)
       @rcfile = T::RCFile.instance
@@ -278,7 +279,7 @@ module T
       count = options['number'] || DEFAULT_NUM_RESULTS
       opts = {}
       opts[:exclude_replies] = true if options['exclude'] == 'replies'
-      opts[:include_entities] = !!options['decode_uris']
+      opts[:include_entities] = !!options['decode_uris'] || !!options['photos']
       opts[:include_rts] = false if options['exclude'] == 'retweets'
       opts[:max_id] = options['max_id'] if options['max_id']
       opts[:since_id] = options['since_id'] if options['since_id']
@@ -519,7 +520,7 @@ module T
     def mentions
       count = options['number'] || DEFAULT_NUM_RESULTS
       opts = {}
-      opts[:include_entities] = !!options['decode_uris']
+      opts[:include_entities] = !!options['decode_uris'] || !!options['photos']
       tweets = collect_with_count(count) do |count_opts|
         client.mentions(count_opts.merge(opts))
       end
@@ -656,7 +657,7 @@ module T
     def retweets(user = nil)
       count = options['number'] || DEFAULT_NUM_RESULTS
       opts = {}
-      opts[:include_entities] = !!options['decode_uris']
+      opts[:include_entities] = !!options['decode_uris'] || !!options['photos']
       tweets = if user
         require 't/core_ext/string'
         user = options['id'] ? user.to_i : user.strip_ats
@@ -682,7 +683,7 @@ module T
     def retweets_of_me
       count = options['number'] || DEFAULT_NUM_RESULTS
       opts = {}
-      opts[:include_entities] = !!options['decode_uris']
+      opts[:include_entities] = !!options['decode_uris'] || !!options['photos']
       tweets = collect_with_count(count) do |count_opts|
         client.retweets_of_me(count_opts.merge(opts))
       end
@@ -761,7 +762,7 @@ module T
       count = options['number'] || DEFAULT_NUM_RESULTS
       opts = {}
       opts[:exclude_replies] = true if options['exclude'] == 'replies'
-      opts[:include_entities] = !!options['decode_uris']
+      opts[:include_entities] = !!options['decode_uris'] || !!options['photos']
       opts[:include_rts] = false if options['exclude'] == 'retweets'
       opts[:max_id] = options['max_id'] if options['max_id']
       opts[:since_id] = options['since_id'] if options['since_id']

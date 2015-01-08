@@ -122,6 +122,21 @@ module T
       say "Run `#{File.basename($PROGRAM_NAME)} delete block #{blocked_users.collect { |blocked_user| "@#{blocked_user.screen_name}" }.join(' ')}` to unblock."
     end
 
+    desc 'blocks', 'List blocked users.'
+    method_option 'csv', aliases: '-c', type: :boolean, desc: 'Output in CSV format.'
+    method_option 'long', aliases: '-l', type: :boolean, desc: 'Output in long format.'
+    method_option 'reverse', aliases: '-r', type: :boolean, desc: 'Reverse the order of the sort.'
+    method_option 'sort', aliases: '-s', type: :string, enum: %w(favorites followers friends listed screen_name since tweets tweeted), default: 'screen_name', desc: 'Specify the order of the results.', banner: 'ORDER'
+    method_option 'unsorted', aliases: '-u', type: :boolean, desc: 'Output is not sorted.'
+    def blocks()
+      blocked_ids = client.blocked_ids.to_a
+      require 'retryable'
+      users = retryable(tries: 3, on: Twitter::Error, sleep: 0) do
+        client.users(blocked_ids)
+      end
+      print_users(users)
+    end
+
     desc 'direct_messages', "Returns the #{DEFAULT_NUM_RESULTS} most recent Direct Messages sent to you."
     method_option 'csv', aliases: '-c', type: :boolean, desc: 'Output in CSV format.'
     method_option 'decode_uris', aliases: '-d', type: :boolean, desc: 'Decodes t.co URLs into their original form.'

@@ -254,7 +254,7 @@ module T
       status_ids.unshift(status_id)
       status_ids.collect!(&:to_i)
       require 'retryable'
-      favorites = retryable(tries: 3, on: Twitter::Error, sleep: 0) do
+      favorites = Retryable.retryable(tries: 3, on: Twitter::Error, sleep: 0) do
         client.favorite(status_ids)
       end
       number = favorites.length
@@ -319,7 +319,7 @@ module T
       end
       following_ids = client.friend_ids(user).to_a
       require 'retryable'
-      users = retryable(tries: 3, on: Twitter::Error, sleep: 0) do
+      users = Retryable.retryable(tries: 3, on: Twitter::Error, sleep: 0) do
         client.users(following_ids)
       end
       print_users(users)
@@ -345,7 +345,7 @@ module T
       following_ids = Thread.new { client.friend_ids(user2).to_a }
       followings_following_ids = follower_ids.value & following_ids.value
       require 'retryable'
-      users = retryable(tries: 3, on: Twitter::Error, sleep: 0) do
+      users = Retryable.retryable(tries: 3, on: Twitter::Error, sleep: 0) do
         client.users(followings_following_ids)
       end
       print_users(users)
@@ -367,7 +367,7 @@ module T
       end
       follower_ids = client.follower_ids(user).to_a
       require 'retryable'
-      users = retryable(tries: 3, on: Twitter::Error, sleep: 0) do
+      users = Retryable.retryable(tries: 3, on: Twitter::Error, sleep: 0) do
         client.users(follower_ids)
       end
       print_users(users)
@@ -392,7 +392,7 @@ module T
       follower_ids = Thread.new { client.follower_ids(user).to_a }
       friend_ids = following_ids.value & follower_ids.value
       require 'retryable'
-      users = retryable(tries: 3, on: Twitter::Error, sleep: 0) do
+      users = Retryable.retryable(tries: 3, on: Twitter::Error, sleep: 0) do
         client.users(friend_ids)
       end
       print_users(users)
@@ -417,7 +417,7 @@ module T
       following_ids = Thread.new { client.friend_ids(user).to_a }
       groupie_ids = (follower_ids.value - following_ids.value)
       require 'retryable'
-      users = retryable(tries: 3, on: Twitter::Error, sleep: 0) do
+      users = Retryable.retryable(tries: 3, on: Twitter::Error, sleep: 0) do
         client.users(groupie_ids)
       end
       print_users(users)
@@ -449,7 +449,7 @@ module T
       end
       intersection = sets.reduce(:&)
       require 'retryable'
-      users = retryable(tries: 3, on: Twitter::Error, sleep: 0) do
+      users = Retryable.retryable(tries: 3, on: Twitter::Error, sleep: 0) do
         client.users(intersection)
       end
       print_users(users)
@@ -475,7 +475,7 @@ module T
       follower_ids = Thread.new { client.follower_ids(user).to_a }
       leader_ids = (following_ids.value - follower_ids.value)
       require 'retryable'
-      users = retryable(tries: 3, on: Twitter::Error, sleep: 0) do
+      users = Retryable.retryable(tries: 3, on: Twitter::Error, sleep: 0) do
         client.users(leader_ids)
       end
       print_users(users)
@@ -548,7 +548,7 @@ module T
     def muted
       muted_ids = client.muted_ids.to_a
       require 'retryable'
-      muted_users = retryable(tries: 3, on: Twitter::Error, sleep: 0) do
+      muted_users = Retryable.retryable(tries: 3, on: Twitter::Error, sleep: 0) do
         client.users(muted_ids)
       end
       print_users(muted_users)
@@ -635,7 +635,7 @@ module T
       status_ids.unshift(status_id)
       status_ids.collect!(&:to_i)
       require 'retryable'
-      retweets = retryable(tries: 3, on: Twitter::Error, sleep: 0) do
+      retweets = Retryable.retryable(tries: 3, on: Twitter::Error, sleep: 0) do
         client.retweet(status_ids, trim_user: true)
       end
       number = retweets.length
@@ -871,7 +871,7 @@ module T
       require 't/core_ext/string'
       options['id'] ? users.collect!(&:to_i) : users.collect!(&:strip_ats)
       require 'retryable'
-      users = retryable(tries: 3, on: Twitter::Error, sleep: 0) do
+      users = Retryable.retryable(tries: 3, on: Twitter::Error, sleep: 0) do
         client.users(users)
       end
       print_users(users)

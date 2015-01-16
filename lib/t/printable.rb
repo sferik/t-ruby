@@ -184,6 +184,5 @@ module T
     def safe_screen_name(user)
       user.screen_name.is_a?(Twitter::NullObject) ? '' : user.screen_name.downcase
     end
-
   end
 end

@@ -439,6 +439,7 @@ __t_delete_arguments() {
     favorite
     list
     mute
+    account
     status
     help
   )

@@ -16,7 +16,7 @@
           accounts)
               case "$prev" in
               
-              -C|--color) completions='auto never icon' ;;
+              -C|--color) completions='auto never' ;;
 
               *) completions='-H --host -C --color -P --profile' ;;
               esac;;
@@ -24,7 +24,7 @@
 authorize)
               case "$prev" in
               
-              -C|--color) completions='auto never icon' ;;
+              -C|--color) completions='auto never' ;;
 
               *) completions='--display-uri -d -H --host -C --color -P --profile' ;;
               esac;;
@@ -32,7 +32,7 @@ authorize)
 block)
               case "$prev" in
               
-              -C|--color) completions='auto never icon' ;;
+              -C|--color) completions='auto never' ;;
 
               *) completions='--id -i -H --host -C --color -P --profile' ;;
               esac;;
@@ -40,7 +40,7 @@ block)
 direct_messages)
               case "$prev" in
               
-              -C|--color) completions='auto never icon' ;;
+              -C|--color) completions='auto never' ;;
 
               *) completions='--csv -c --decode_uris -d --long -l --number -n --relative_dates -a --reverse -r -H --host -C --color -P --profile' ;;
               esac;;
@@ -48,7 +48,7 @@ direct_messages)
 direct_messages_sent)
               case "$prev" in
               
-              -C|--color) completions='auto never icon' ;;
+              -C|--color) completions='auto never' ;;
 
               *) completions='--csv -c --decode_uris -d --long -l --number -n --relative_dates -a --reverse -r -H --host -C --color -P --profile' ;;
               esac;;
@@ -56,7 +56,7 @@ direct_messages_sent)
 dm)
               case "$prev" in
               
-              -C|--color) completions='auto never icon' ;;
+              -C|--color) completions='auto never' ;;
 
               *) completions='--id -i -H --host -C --color -P --profile' ;;
               esac;;
@@ -64,7 +64,7 @@ dm)
 does_contain)
               case "$prev" in
               
-              -C|--color) completions='auto never icon' ;;
+              -C|--color) completions='auto never' ;;
 
               *) completions='--id -i -H --host -C --color -P --profile' ;;
               esac;;
@@ -72,7 +72,7 @@ does_contain)
 does_follow)
               case "$prev" in
               
-              -C|--color) completions='auto never icon' ;;
+              -C|--color) completions='auto never' ;;
 
               *) completions='--id -i -H --host -C --color -P --profile' ;;
               esac;;
@@ -80,7 +80,7 @@ does_follow)
 favorite)
               case "$prev" in
               
-              -C|--color) completions='auto never icon' ;;
+              -C|--color) completions='auto never' ;;
 
               *) completions='-H --host -C --color -P --profile' ;;
               esac;;
@@ -88,7 +88,7 @@ favorite)
 favorites)
               case "$prev" in
               
-              -C|--color) completions='auto never icon' ;;
+              -C|--color) completions='auto never' ;;
 
               *) completions='--csv -c --decode_uris -d --id -i --long -l --max_id -m --number -n --relative_dates -a --reverse -r --since_id -s -H --host -C --color -P --profile' ;;
               esac;;
@@ -96,7 +96,7 @@ favorites)
 follow)
               case "$prev" in
               
-              -C|--color) completions='auto never icon' ;;
+              -C|--color) completions='auto never' ;;
 
               *) completions='--id -i -H --host -C --color -P --profile' ;;
               esac;;
@@ -105,7 +105,7 @@ followings)
               case "$prev" in
               --sort|-s)
              completions='favorites followers friends listed screen_name since tweets tweeted' ;;
-              -C|--color) completions='auto never icon' ;;
+              -C|--color) completions='auto never' ;;
 
               *) completions='--csv -c --id -i --long -l --relative_dates -a --reverse -r --sort -s --unsorted -u -H --host -C --color -P --profile' ;;
               esac;;
@@ -114,7 +114,7 @@ followings_following)
               case "$prev" in
               --sort|-s)
              completions='favorites followers friends listed screen_name since tweets tweeted' ;;
-              -C|--color) completions='auto never icon' ;;
+              -C|--color) completions='auto never' ;;
 
               *) completions='--csv -c --id -i --long -l --relative_dates -a --reverse -r --sort -s --unsorted -u -H --host -C --color -P --profile' ;;
               esac;;
@@ -123,7 +123,7 @@ followers)
               case "$prev" in
               --sort|-s)
              completions='favorites followers friends listed screen_name since tweets tweeted' ;;
-              -C|--color) completions='auto never icon' ;;
+              -C|--color) completions='auto never' ;;
 
               *) completions='--csv -c --id -i --long -l --relative_dates -a --reverse -r --sort -s --unsorted -u -H --host -C --color -P --profile' ;;
               esac;;
@@ -132,7 +132,7 @@ friends)
               case "$prev" in
               --sort|-s)
              completions='favorites followers friends listed screen_name since tweets tweeted' ;;
-              -C|--color) completions='auto never icon' ;;
+              -C|--color) completions='auto never' ;;
 
               *) completions='--csv -c --id -i --long -l --relative_dates -a --reverse -r --sort -s --unsorted -u -H --host -C --color -P --profile' ;;
               esac;;
@@ -141,7 +141,7 @@ groupies)
               case "$prev" in
               --sort|-s)
              completions='favorites followers friends listed screen_name since tweets tweeted' ;;
-              -C|--color) completions='auto never icon' ;;
+              -C|--color) completions='auto never' ;;
 
               *) completions='--csv -c --id -i --long -l --relative_dates -a --reverse -r --sort -s --unsorted -u -H --host -C --color -P --profile' ;;
               esac;;
@@ -152,7 +152,7 @@ intersection)
              completions='favorites followers friends listed screen_name since tweets tweeted' ;;
 --type|-t)
              completions='followers followings' ;;
-              -C|--color) completions='auto never icon' ;;
+              -C|--color) completions='auto never' ;;
 
               *) completions='--csv -c --id -i --long -l --relative_dates -a --reverse -r --sort -s --type -t --unsorted -u -H --host -C --color -P --profile' ;;
               esac;;
@@ -161,7 +161,7 @@ leaders)
               case "$prev" in
               --sort|-s)
              completions='favorites followers friends listed screen_name since tweets tweeted' ;;
-              -C|--color) completions='auto never icon' ;;
+              -C|--color) completions='auto never' ;;
 
               *) completions='--csv -c --id -i --long -l --relative_dates -a --reverse -r --sort -s --unsorted -u -H --host -C --color -P --profile' ;;
               esac;;
@@ -170,7 +170,7 @@ lists)
               case "$prev" in
               --sort|-s)
              completions='members mode since slug subscribers' ;;
-              -C|--color) completions='auto never icon' ;;
+              -C|--color) completions='auto never' ;;
 
               *) completions='--csv -c --id -i --long -l --relative_dates -a --reverse -r --sort -s --unsorted -u -H --host -C --color -P --profile' ;;
               esac;;
@@ -178,7 +178,7 @@ lists)
 matrix)
               case "$prev" in
               
-              -C|--color) completions='auto never icon' ;;
+              -C|--color) completions='auto never' ;;
 
               *) completions='-H --host -C --color -P --profile' ;;
               esac;;
@@ -186,7 +186,7 @@ matrix)
 mentions)
               case "$prev" in
               
-              -C|--color) completions='auto never icon' ;;
+              -C|--color) completions='auto never' ;;
 
               *) completions='--csv -c --decode_uris -d --long -l --number -n --relative_dates -a --reverse -r -H --host -C --color -P --profile' ;;
               esac;;
@@ -194,7 +194,7 @@ mentions)
 mute)
               case "$prev" in
               
-              -C|--color) completions='auto never icon' ;;
+              -C|--color) completions='auto never' ;;
 
               *) completions='--id -i -H --host -C --color -P --profile' ;;
               esac;;
@@ -203,7 +203,7 @@ muted)
               case "$prev" in
               --sort|-s)
              completions='favorites followers friends listed screen_name since tweets tweeted' ;;
-              -C|--color) completions='auto never icon' ;;
+              -C|--color) completions='auto never' ;;
 
               *) completions='--csv -c --long -l --relative_dates -a --reverse -r --sort -s --unsorted -u -H --host -C --color -P --profile' ;;
               esac;;
@@ -211,7 +211,7 @@ muted)
 open)
               case "$prev" in
               
-              -C|--color) completions='auto never icon' ;;
+              -C|--color) completions='auto never' ;;
 
               *) completions='--display-uri -d --id -i --status -s -H --host -C --color -P --profile' ;;
               esac;;
@@ -219,7 +219,7 @@ open)
 reach)
               case "$prev" in
               
-              -C|--color) completions='auto never icon' ;;
+              -C|--color) completions='auto never' ;;
 
               *) completions='-H --host -C --color -P --profile' ;;
               esac;;
@@ -227,7 +227,7 @@ reach)
 reply)
               case "$prev" in
               
-              -C|--color) completions='auto never icon' ;;
+              -C|--color) completions='auto never' ;;
 
               *) completions='--all -a --location -l --file -f -H --host -C --color -P --profile' ;;
               esac;;
@@ -235,7 +235,7 @@ reply)
 report_spam)
               case "$prev" in
               
-              -C|--color) completions='auto never icon' ;;
+              -C|--color) completions='auto never' ;;
 
               *) completions='--id -i -H --host -C --color -P --profile' ;;
               esac;;
@@ -243,7 +243,7 @@ report_spam)
 retweet)
               case "$prev" in
               
-              -C|--color) completions='auto never icon' ;;
+              -C|--color) completions='auto never' ;;
 
               *) completions='-H --host -C --color -P --profile' ;;
               esac;;
@@ -251,7 +251,7 @@ retweet)
 retweets)
               case "$prev" in
               
-              -C|--color) completions='auto never icon' ;;
+              -C|--color) completions='auto never' ;;
 
               *) completions='--csv -c --decode_uris -d --id -i --long -l --number -n --relative_dates -a --reverse -r -H --host -C --color -P --profile' ;;
               esac;;
@@ -259,7 +259,7 @@ retweets)
 retweets_of_me)
               case "$prev" in
               
-              -C|--color) completions='auto never icon' ;;
+              -C|--color) completions='auto never' ;;
 
               *) completions='--csv -c --decode_uris -d --long -l --number -n --relative_dates -a --reverse -r -H --host -C --color -P --profile' ;;
               esac;;
@@ -267,7 +267,7 @@ retweets_of_me)
 ruler)
               case "$prev" in
               
-              -C|--color) completions='auto never icon' ;;
+              -C|--color) completions='auto never' ;;
 
               *) completions='--indent -i -H --host -C --color -P --profile' ;;
               esac;;
@@ -275,7 +275,7 @@ ruler)
 status)
               case "$prev" in
               
-              -C|--color) completions='auto never icon' ;;
+              -C|--color) completions='auto never' ;;
 
               *) completions='--csv -c --decode_uris -d --long -l --relative_dates -a -H --host -C --color -P --profile' ;;
               esac;;
@@ -284,7 +284,7 @@ timeline)
               case "$prev" in
               --exclude|-e)
              completions='replies retweets' ;;
-              -C|--color) completions='auto never icon' ;;
+              -C|--color) completions='auto never' ;;
 
               *) completions='--csv -c --decode_uris -d --exclude -e --id -i --long -l --max_id -m --number -n --relative_dates -a --reverse -r --since_id -s -H --host -C --color -P --profile' ;;
               esac;;
@@ -292,7 +292,7 @@ timeline)
 trends)
               case "$prev" in
               
-              -C|--color) completions='auto never icon' ;;
+              -C|--color) completions='auto never' ;;
 
               *) completions='--exclude-hashtags -x -H --host -C --color -P --profile' ;;
               esac;;
@@ -301,7 +301,7 @@ trend_locations)
               case "$prev" in
               --sort|-s)
              completions='country name parent type woeid' ;;
-              -C|--color) completions='auto never icon' ;;
+              -C|--color) completions='auto never' ;;
 
               *) completions='--csv -c --long -l --relative_dates -a --reverse -r --sort -s --unsorted -u -H --host -C --color -P --profile' ;;
               esac;;
@@ -309,7 +309,7 @@ trend_locations)
 unfollow)
               case "$prev" in
               
-              -C|--color) completions='auto never icon' ;;
+              -C|--color) completions='auto never' ;;
 
               *) completions='--id -i -H --host -C --color -P --profile' ;;
               esac;;
@@ -317,7 +317,7 @@ unfollow)
 update)
               case "$prev" in
               
-              -C|--color) completions='auto never icon' ;;
+              -C|--color) completions='auto never' ;;
 
               *) completions='--location -l --file -f -H --host -C --color -P --profile' ;;
               esac;;
@@ -326,7 +326,7 @@ users)
               case "$prev" in
               --sort|-s)
              completions='favorites followers friends listed screen_name since tweets tweeted' ;;
-              -C|--color) completions='auto never icon' ;;
+              -C|--color) completions='auto never' ;;
 
               *) completions='--csv -c --id -i --long -l --relative_dates -a --reverse -r --sort -s --unsorted -u -H --host -C --color -P --profile' ;;
               esac;;
@@ -334,7 +334,7 @@ users)
 version)
               case "$prev" in
               
-              -C|--color) completions='auto never icon' ;;
+              -C|--color) completions='auto never' ;;
 
               *) completions='-H --host -C --color -P --profile' ;;
               esac;;
@@ -342,7 +342,7 @@ version)
 whois)
               case "$prev" in
               
-              -C|--color) completions='auto never icon' ;;
+              -C|--color) completions='auto never' ;;
 
               *) completions='--csv -c --decode_uris -d --id -i --long -l --relative_dates -a -H --host -C --color -P --profile' ;;
               esac;;
@@ -350,23 +350,24 @@ whois)
 whoami)
               case "$prev" in
               
-              -C|--color) completions='auto never icon' ;;
+              -C|--color) completions='auto never' ;;
 
               *) completions='--csv -c --decode_uris -d --long -l --relative_dates -a -H --host -C --color -P --profile' ;;
               esac;;
 
 delete)
               case "$prev" in
-              delete) completions='block dm favorite list mute status help';;
+              delete) completions='block dm favorite list mute account status help';;
               block) completions='-H --host -C --color -P --profile' ;;
 dm) completions='-H --host -C --color -P --profile' ;;
 favorite) completions='-H --host -C --color -P --profile' ;;
 list) completions='-H --host -C --color -P --profile' ;;
 mute) completions='-H --host -C --color -P --profile' ;;
+account) completions='-H --host -C --color -P --profile' ;;
 status) completions='-H --host -C --color -P --profile' ;;
 help) completions='-H --host -C --color -P --profile' ;;
               
-              -C|--color) completions='auto never icon' ;;
+              -C|--color) completions='auto never' ;;
 
               *) completions='-H --host -C --color -P --profile';;
               esac;;
@@ -382,7 +383,7 @@ remove) completions='-H --host -C --color -P --profile' ;;
 timeline) completions='-H --host -C --color -P --profile' ;;
 help) completions='-H --host -C --color -P --profile' ;;
               
-              -C|--color) completions='auto never icon' ;;
+              -C|--color) completions='auto never' ;;
 
               *) completions='-H --host -C --color -P --profile';;
               esac;;
@@ -399,7 +400,7 @@ timeline) completions='-H --host -C --color -P --profile' ;;
 users) completions='-H --host -C --color -P --profile' ;;
 help) completions='-H --host -C --color -P --profile' ;;
               
-              -C|--color) completions='auto never icon' ;;
+              -C|--color) completions='auto never' ;;
 
               *) completions='-H --host -C --color -P --profile';;
               esac;;
@@ -417,7 +418,7 @@ profile_image) completions='-H --host -C --color -P --profile' ;;
 website) completions='-H --host -C --color -P --profile' ;;
 help) completions='-H --host -C --color -P --profile' ;;
               
-              -C|--color) completions='auto never icon' ;;
+              -C|--color) completions='auto never' ;;
 
               *) completions='-H --host -C --color -P --profile';;
               esac;;
@@ -433,7 +434,7 @@ timeline) completions='-H --host -C --color -P --profile' ;;
 users) completions='-H --host -C --color -P --profile' ;;
 help) completions='-H --host -C --color -P --profile' ;;
               
-              -C|--color) completions='auto never icon' ;;
+              -C|--color) completions='auto never' ;;
 
               *) completions='-H --host -C --color -P --profile';;
               esac;;

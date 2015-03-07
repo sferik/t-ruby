@@ -73,11 +73,6 @@ Twitter using <https://support.twitter.com/forms/platform>, selecting the last c
 Some users have reported success adding their number using the mobile site, 
 <https://mobile.twitter.com/settings>, which seems to bypass the carrier check at the moment. 
 
-Twitter allows a given phone number to be associated with only one account. If you want
-t to have write access to more than one account, therefore, you should create an application
-with write permission in an account with an associated phone number, and then use the consumer 
-key and consumer secret from that application to authorize t for your other Twitter accounts.
-
 Now, you're ready to authorize a Twitter account with your application. To
 proceed, type the following command at the prompt and follow the instructions:
 
@@ -89,6 +84,14 @@ and then enter the returned PIN back into the
 terminal. If you type the PIN correctly, you should now be authorized to use
 `t` as that user. To authorize multiple accounts, simply repeat the last step,
 signing into Twitter as a different user.
+
+Twitter allows a given phone number to be associated with only one account. If you want
+t to have write access to more than one account, therefore, you should create an application
+with write permission in an account with an associated phone number, and then use the consumer 
+key and consumer secret from that application to authorize t for your other Twitter accounts.
+You can do this by starting the ```t authorize``` process, but ignore the step to
+create a new app. Instead, simply paste the consumer key and consumer secret from
+the existing app into the next step.
 
 You can see a list of all the accounts you've authorized by typing the command:
 

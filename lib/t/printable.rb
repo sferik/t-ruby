@@ -183,6 +183,7 @@ module T
     end
 
     def print_users(users) # rubocop:disable CyclomaticComplexity
+      return if users.nil?
       users = case options['sort']
       when 'favorites'
         users.sort_by { |user| user.favorites_count.to_i }

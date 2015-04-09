@@ -64,7 +64,7 @@ def option_completion(thor_option)
 end
 
 def command_function_arguments(command)
-  body = command.options.collect { |_, option | option_completion(option) }
+  body = command.options.collect { |_, option| option_completion(option) }
   body << '$t_general_options && ret=0'
 
   body.join("\n    ")

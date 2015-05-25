@@ -4,7 +4,6 @@ gem 'rake'
 gem 'jruby-openssl', platforms: :jruby
 
 group :development do
-  gem 'guard-rspec'
   gem 'pry'
   platforms :ruby_19, :ruby_20 do
     gem 'pry-debugger'

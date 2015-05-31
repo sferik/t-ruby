@@ -431,7 +431,7 @@ module T
     method_option 'relative_dates', aliases: '-a', type: :boolean, desc: 'Show relative dates.'
     method_option 'reverse', aliases: '-r', type: :boolean, desc: 'Reverse the order of the sort.'
     method_option 'sort', aliases: '-s', type: :string, enum: %w(favorites followers friends listed screen_name since tweets tweeted), default: 'screen_name', desc: 'Specify the order of the results.', banner: 'ORDER'
-    method_option 'type', aliases: '-t', type: :string, enum: %w(followers followings), default: 'followings', desc: 'Specify the typo of intersection.'
+    method_option 'type', aliases: '-t', type: :string, enum: %w(followers followings), default: 'followings', desc: 'Specify the type of intersection.'
     method_option 'unsorted', aliases: '-u', type: :boolean, desc: 'Output is not sorted.'
     def intersection(first_user, *users)
       users.push(first_user)

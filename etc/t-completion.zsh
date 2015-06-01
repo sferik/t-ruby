@@ -219,7 +219,7 @@ _t_intersection() {
     "(-a --relative_dates)"{-a,--relative_dates}"[Show relative dates.]" \
     "(-r --reverse)"{-r,--reverse}"[Reverse the order of the sort.]" \
     "(-s --sort)"{-s,--sort}"[Specify the order of the results.]" \
-    "(-t --type)"{-t,--type}"[Specify the typo of intersection.]" \
+    "(-t --type)"{-t,--type}"[Specify the type of intersection.]" \
     "(-u --unsorted)"{-u,--unsorted}"[Output is not sorted.]" \
     $t_general_options && ret=0
 }

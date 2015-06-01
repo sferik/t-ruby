@@ -240,7 +240,8 @@ module T
           Thread.new { user2.strip_ats }
         end
       end
-      user1, user2 = thread1.value, thread2.value
+      user1 = thread1.value
+      user2 = thread2.value
       if client.friendship?(user1, user2)
         say "Yes, @#{user1} follows @#{user2}."
       else

@@ -745,8 +745,34 @@ module T
         array << ['Location', location] unless location.nil?
         print_table(array)
       end
-    end
 
+      # showing information about conversation
+      if status.in_reply_to_status_id?
+        # print new line preparing for the thread tweet
+        print "\n";
+        print "In reply to ...\n\n"
+
+        # create an array in order to supply it to print_tweets
+        statusArray = Array.new
+
+        # if this tweet is a reply to the upper-in-level tweet, then also show that information out too
+        while status.in_reply_to_status_id?do
+           # get tweet, use the same options to get tweet supplied as parameter to this def
+           status = client.status(status.in_reply_to_status_id.to_i, opts)
+       
+           # add status to array
+           statusArray.push(status)    
+        end
+
+        # if array is not empty then print tweets out with respect to the options sending in
+        unless statusArray.empty?
+            # print tweet
+            # adhere to options sending in
+            print_tweets(statusArray)
+        end
+      end
+    end
+      
     desc 'timeline [USER]', "Returns the #{DEFAULT_NUM_RESULTS} most recent Tweets posted by a user."
     method_option 'csv', aliases: '-c', type: :boolean, desc: 'Output in CSV format.'
     method_option 'decode_uris', aliases: '-d', type: :boolean, desc: 'Decodes t.co URLs into their original form.'

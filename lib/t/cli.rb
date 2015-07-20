@@ -892,7 +892,7 @@ module T
     method_option 'id', aliases: '-i', type: :boolean, desc: 'Specify user via ID instead of screen name.'
     method_option 'long', aliases: '-l', type: :boolean, desc: 'Output in long format.'
     method_option 'relative_dates', aliases: '-a', type: :boolean, desc: 'Show relative dates.'
-    def whois(user) # rubocop:disable CyclomaticComplexity
+    def whois(user)
       require 't/core_ext/string'
       opts = {}
       opts[:include_entities] = !!options['decode_uris']

@@ -8,7 +8,7 @@ module T
 
     def initialize(number)
       # Bottom six bits
-      @bits  = number & 0x3f
+      @bits = number & 0x3f
 
       # Next highest eight bits
       @fcolor = (number >> 6) & 0xff

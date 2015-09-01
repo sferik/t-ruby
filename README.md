@@ -54,7 +54,10 @@ Once you've verified that Ruby is installed:
 
 ## Configuration
 Twitter API v1.1 requires OAuth for all of its functionality, so you'll need a
-registered Twitter application. If you've never registered a Twitter
+registered Twitter application. A pre-existing application may be used, even
+one belonging to a different Twitter user, provided you know the credentials. 
+
+If you've never registered a Twitter
 application before, it's easy! Just sign-in using your Twitter account and then
 fill out the short form at <http://dev.twitter.com/apps/new>. If you've
 previously registered a Twitter application, it should be listed at
@@ -64,7 +67,11 @@ messages", otherwise you'll receive an error that looks like this:
 
     Error processing your OAuth request: Read-only application cannot POST
 
-A mobile phone number must be associated with your account in order to obtain write privileges. If your carrier is not supported by Twitter and you are unable to add a number, contact Twitter using <https://support.twitter.com/forms/platform>, selecting the last checkbox. Some users have reported success adding their number using the mobile site, <https://mobile.twitter.com/settings>, which seems to bypass the carrier check at the moment.
+A mobile phone number must be associated with your account in order to obtain write privileges. 
+If your carrier is not supported by Twitter and you are unable to add a number, contact 
+Twitter using <https://support.twitter.com/forms/platform>, selecting the last checkbox. 
+Some users have reported success adding their number using the mobile site, 
+<https://mobile.twitter.com/settings>, which seems to bypass the carrier check at the moment. 
 
 Now, you're ready to authorize a Twitter account with your application. To
 proceed, type the following command at the prompt and follow the instructions:
@@ -72,10 +79,19 @@ proceed, type the following command at the prompt and follow the instructions:
     t authorize
 
 This command will direct you to a URL where you can sign-in to Twitter,
-authorize the application, and then enter the returned PIN back into the
+authorize the application with the consumer key and consumer secret, 
+and then enter the returned PIN back into the
 terminal. If you type the PIN correctly, you should now be authorized to use
 `t` as that user. To authorize multiple accounts, simply repeat the last step,
 signing into Twitter as a different user.
+
+Twitter allows a given phone number to be associated with only one account. If you want
+t to have write access to more than one account, therefore, you should create an application
+with write permission in an account with an associated phone number, and then use the consumer 
+key and consumer secret from that application to authorize t for your other Twitter accounts.
+You can do this by starting the ```t authorize``` process, but ignore the step to
+create a new app. Instead, simply paste the consumer key and consumer secret from
+the existing app into the next step.
 
 You can see a list of all the accounts you've authorized by typing the command:
 

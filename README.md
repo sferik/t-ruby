@@ -286,7 +286,8 @@ implementations:
 
 * Ruby 1.9.3
 * Ruby 2.0.0
-* Ruby 2.1.0
+* Ruby 2.1
+* Ruby 2.2
 
 If something doesn't work on one of these Ruby versions, it's a bug.
 
@@ -307,7 +308,7 @@ If you are running t on a remote computer you can use the flag --display-uri dur
     t authorize --display-uri
 
 ## Copyright
-Copyright (c) 2011-2014 Erik Michaels-Ober. See [LICENSE][] for details.
+Copyright (c) 2011-2015 Erik Michaels-Ober. See [LICENSE][] for details.
 Application icon by [@nvk][nvk].
 
 [license]: https://github.com/sferik/t/blob/master/LICENSE.md

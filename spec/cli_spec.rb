@@ -71,10 +71,12 @@ testcli
     end
     context 'empty RC file' do
       before do
-        @cli.options = @cli.options.merge('profile' => project_path + '/tmp/empty', 'display-uri' => true)
+        file_path = project_path + '/tmp/empty'
+        @cli.options = @cli.options.merge('profile' => file_path, 'display-uri' => true)
       end
       after do
-        File.delete(project_path + '/tmp/empty')
+        file_path = project_path + '/tmp/empty'
+        File.delete(file_path) if File.exist?(file_path)
       end
       it 'requests the correct resource' do
         expect(Readline).to receive(:readline).with('Press [Enter] to open the Twitter Developer site. ', true).and_return("\n")

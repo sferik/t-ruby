@@ -5,10 +5,10 @@ require 't/version'
 
 Gem::Specification.new do |spec|
   spec.add_dependency 'launchy', '~> 2.4'
-  spec.add_dependency 'geokit', ['>= 1.8.3', '< 2']
+  spec.add_dependency 'geokit', '~> 1.9'
   spec.add_dependency 'htmlentities', '~> 4.3'
   spec.add_dependency 'oauth', '~> 0.4.7'
-  spec.add_dependency 'retryable', '~> 1.3'
+  spec.add_dependency 'retryable', '~> 2.0'
   spec.add_dependency 'thor', ['>= 0.19.1', '< 2']
   spec.add_dependency 'twitter', '~> 5.13'
   spec.add_development_dependency 'bundler', '~> 1.0'
@@ -22,7 +22,6 @@ Gem::Specification.new do |spec|
   spec.name = 't'
   spec.require_paths = %w(lib)
   spec.required_ruby_version = '>= 1.9.3'
-  spec.required_rubygems_version = '>= 1.3.5'
   spec.summary = 'CLI for Twitter'
   spec.version = T::Version
 end

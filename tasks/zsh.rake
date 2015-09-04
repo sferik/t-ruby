@@ -64,7 +64,7 @@ def option_completion(thor_option)
 end
 
 def command_function_arguments(command)
-  body = command.options.collect { |_, option | option_completion(option) }
+  body = command.options.collect { |_, option| option_completion(option) }
   body << '$t_general_options && ret=0'
 
   body.join("\n    ")
@@ -84,7 +84,7 @@ end
 def command_function(command)
   %(_t_#{command.name}() {
   _arguments \\
-    #{ command_function_arguments(command) }
+    #{command_function_arguments(command)}
 }
 )
 end
@@ -119,7 +119,7 @@ end
 def arguments_function(subcommand)
   klass = T.const_get subcommand.name.capitalize
   %(__t_#{subcommand.name}_arguments() {
-  _args=(#{klass.tasks.collect { |t| t.last.name }.join("\n    ") }
+  _args=(#{klass.tasks.collect { |t| t.last.name }.join("\n    ")}
   )
   compadd "$@" -k _args
 }

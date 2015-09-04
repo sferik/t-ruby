@@ -241,7 +241,8 @@ module T
           Thread.new { user2.strip_ats }
         end
       end
-      user1, user2 = thread1.value, thread2.value
+      user1 = thread1.value
+      user2 = thread2.value
       if client.friendship?(user1, user2)
         say "Yes, @#{user1} follows @#{user2}."
       else
@@ -255,7 +256,7 @@ module T
       status_ids.unshift(status_id)
       status_ids.collect!(&:to_i)
       require 'retryable'
-      favorites = retryable(tries: 3, on: Twitter::Error, sleep: 0) do
+      favorites = Retryable.retryable(tries: 3, on: Twitter::Error, sleep: 0) do
         client.favorite(status_ids)
       end
       number = favorites.length
@@ -320,7 +321,7 @@ module T
       end
       following_ids = client.friend_ids(user).to_a
       require 'retryable'
-      users = retryable(tries: 3, on: Twitter::Error, sleep: 0) do
+      users = Retryable.retryable(tries: 3, on: Twitter::Error, sleep: 0) do
         client.users(following_ids)
       end
       print_users(users)
@@ -346,7 +347,7 @@ module T
       following_ids = Thread.new { client.friend_ids(user2).to_a }
       followings_following_ids = follower_ids.value & following_ids.value
       require 'retryable'
-      users = retryable(tries: 3, on: Twitter::Error, sleep: 0) do
+      users = Retryable.retryable(tries: 3, on: Twitter::Error, sleep: 0) do
         client.users(followings_following_ids)
       end
       print_users(users)
@@ -368,7 +369,7 @@ module T
       end
       follower_ids = client.follower_ids(user).to_a
       require 'retryable'
-      users = retryable(tries: 3, on: Twitter::Error, sleep: 0) do
+      users = Retryable.retryable(tries: 3, on: Twitter::Error, sleep: 0) do
         client.users(follower_ids)
       end
       print_users(users)
@@ -393,7 +394,7 @@ module T
       follower_ids = Thread.new { client.follower_ids(user).to_a }
       friend_ids = following_ids.value & follower_ids.value
       require 'retryable'
-      users = retryable(tries: 3, on: Twitter::Error, sleep: 0) do
+      users = Retryable.retryable(tries: 3, on: Twitter::Error, sleep: 0) do
         client.users(friend_ids)
       end
       print_users(users)
@@ -418,7 +419,7 @@ module T
       following_ids = Thread.new { client.friend_ids(user).to_a }
       groupie_ids = (follower_ids.value - following_ids.value)
       require 'retryable'
-      users = retryable(tries: 3, on: Twitter::Error, sleep: 0) do
+      users = Retryable.retryable(tries: 3, on: Twitter::Error, sleep: 0) do
         client.users(groupie_ids)
       end
       print_users(users)
@@ -432,7 +433,7 @@ module T
     method_option 'relative_dates', aliases: '-a', type: :boolean, desc: 'Show relative dates.'
     method_option 'reverse', aliases: '-r', type: :boolean, desc: 'Reverse the order of the sort.'
     method_option 'sort', aliases: '-s', type: :string, enum: %w(favorites followers friends listed screen_name since tweets tweeted), default: 'screen_name', desc: 'Specify the order of the results.', banner: 'ORDER'
-    method_option 'type', aliases: '-t', type: :string, enum: %w(followers followings), default: 'followings', desc: 'Specify the typo of intersection.'
+    method_option 'type', aliases: '-t', type: :string, enum: %w(followers followings), default: 'followings', desc: 'Specify the type of intersection.'
     method_option 'unsorted', aliases: '-u', type: :boolean, desc: 'Output is not sorted.'
     def intersection(first_user, *users)
       users.push(first_user)
@@ -450,7 +451,7 @@ module T
       end
       intersection = sets.reduce(:&)
       require 'retryable'
-      users = retryable(tries: 3, on: Twitter::Error, sleep: 0) do
+      users = Retryable.retryable(tries: 3, on: Twitter::Error, sleep: 0) do
         client.users(intersection)
       end
       print_users(users)
@@ -476,7 +477,7 @@ module T
       follower_ids = Thread.new { client.follower_ids(user).to_a }
       leader_ids = (following_ids.value - follower_ids.value)
       require 'retryable'
-      users = retryable(tries: 3, on: Twitter::Error, sleep: 0) do
+      users = Retryable.retryable(tries: 3, on: Twitter::Error, sleep: 0) do
         client.users(leader_ids)
       end
       print_users(users)
@@ -549,7 +550,7 @@ module T
     def muted
       muted_ids = client.muted_ids.to_a
       require 'retryable'
-      muted_users = retryable(tries: 3, on: Twitter::Error, sleep: 0) do
+      muted_users = Retryable.retryable(tries: 3, on: Twitter::Error, sleep: 0) do
         client.users(muted_ids)
       end
       print_users(muted_users)
@@ -636,7 +637,7 @@ module T
       status_ids.unshift(status_id)
       status_ids.collect!(&:to_i)
       require 'retryable'
-      retweets = retryable(tries: 3, on: Twitter::Error, sleep: 0) do
+      retweets = Retryable.retryable(tries: 3, on: Twitter::Error, sleep: 0) do
         client.retweet(status_ids, trim_user: true)
       end
       number = retweets.length
@@ -872,7 +873,7 @@ module T
       require 't/core_ext/string'
       options['id'] ? users.collect!(&:to_i) : users.collect!(&:strip_ats)
       require 'retryable'
-      users = retryable(tries: 3, on: Twitter::Error, sleep: 0) do
+      users = Retryable.retryable(tries: 3, on: Twitter::Error, sleep: 0) do
         client.users(users)
       end
       print_users(users)
@@ -892,7 +893,7 @@ module T
     method_option 'id', aliases: '-i', type: :boolean, desc: 'Specify user via ID instead of screen name.'
     method_option 'long', aliases: '-l', type: :boolean, desc: 'Output in long format.'
     method_option 'relative_dates', aliases: '-a', type: :boolean, desc: 'Show relative dates.'
-    def whois(user) # rubocop:disable CyclomaticComplexity
+    def whois(user)
       require 't/core_ext/string'
       opts = {}
       opts[:include_entities] = !!options['decode_uris']

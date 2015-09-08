@@ -77,6 +77,8 @@ terminal. If you type the PIN correctly, you should now be authorized to use
 `t` as that user. To authorize multiple accounts, simply repeat the last step,
 signing into Twitter as a different user.
 
+**NOTE**: If you have problems authorizing multiple accounts, open a new window in your browser in incognito/private-browsing mode and repeat the `t authorize` steps. This is apparently due to a bug in twitter's cookie handling.
+
 You can see a list of all the accounts you've authorized by typing the command:
 
     t accounts

@@ -676,7 +676,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
                    codeforamerica fbjork mbostock FakeDorsey al3x BarackObama
                    JEG2 eveningedition dhh jasonfried sferik dwiskus)
 
-        icons = names.inject({}) { |a, e| a.update(e.intern => T::Identicon.for_user_name(e)) }
+        icons = names.inject({}) { |a, e| a.update(e.to_sym => T::Identicon.for_user_name(e)) }
 
         expect($stdout.string).to eq <<-eos
   #{icons[:mutgoff].lines[0]}\e[1m\e[33m  @mutgoff\e[0m

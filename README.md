@@ -2,14 +2,14 @@
 [icon]: https://github.com/sferik/t/raw/master/icon/t.png
 
 # Twitter CLI
-[![Gem Version](http://img.shields.io/gem/v/t.svg)][gem]
-[![Build Status](http://img.shields.io/travis/sferik/t.svg)][travis]
-[![Dependency Status](http://img.shields.io/gemnasium/sferik/t.svg)][gemnasium]
-[![Coverage Status](http://img.shields.io/coveralls/sferik/t.svg)][coveralls]
+[![Gem Version](https://img.shields.io/gem/v/t.svg)][gem]
+[![Build Status](https://img.shields.io/travis/sferik/t.svg)][travis]
+[![Dependency Status](https://img.shields.io/gemnasium/sferik/t.svg)][gemnasium]
+[![Coverage Status](https://img.shields.io/coveralls/sferik/t.svg)][coveralls]
 [![tip for next commit](https://tip4commit.com/projects/102.svg)](https://tip4commit.com/github/sferik/t)
 
 [gem]: https://rubygems.org/gems/t
-[travis]: http://travis-ci.org/sferik/t
+[travis]: https://travis-ci.org/sferik/t
 [gemnasium]: https://gemnasium.com/sferik/t
 [coveralls]: https://coveralls.io/r/sferik/t
 
@@ -31,7 +31,7 @@ If the output looks something like this, you're in good shape:
     ruby 1.9.3p484 (2013-11-22 revision 43786) [x86_64-darwin13.0.0]
 
 If the output looks more like this, you need to [install Ruby][ruby]:
-[ruby]: http://www.ruby-lang.org/en/downloads/
+[ruby]: https://www.ruby-lang.org/en/downloads/
 
     ruby: command not found
 
@@ -56,9 +56,9 @@ Once you've verified that Ruby is installed:
 Twitter API v1.1 requires OAuth for all of its functionality, so you'll need a
 registered Twitter application. If you've never registered a Twitter
 application before, it's easy! Just sign-in using your Twitter account and then
-fill out the short form at <http://dev.twitter.com/apps/new>. If you've
+fill out the short form at <https://apps.twitter.com//new>. If you've
 previously registered a Twitter application, it should be listed at
-<http://dev.twitter.com/apps>. Once you've registered an application, make sure
+<https://apps.twitter.com/>. Once you've registered an application, make sure
 to set your application's Access Level to "Read, Write and Access direct
 messages", otherwise you'll receive an error that looks like this:
 
@@ -214,7 +214,7 @@ example, here's how to send a user a direct message only if they already follow 
   by adding the `--csv` flag.
 * 95% C0 Code Coverage: Well tested, with a 2.5:1 test-to-code ratio.
 
-[search]: https://dev.twitter.com/docs/using-search
+[search]: https://dev.twitter.com/rest/public/search
 
 ## Using T for Backup
 [@jphpsf][jphpsf] wrote a [blog post][blog] explaining how to use `t` to backup
@@ -227,9 +227,9 @@ your Twitter account.
 
 `t` was also discussed on [an episode of the Ruby Rogues podcast][rubyrogues].
 
-[ruby5]: http://ruby5.envylabs.com/episodes/273-episode-269-may-4th-2012/stories/2400-t-command-line-power-tool-for-twitter
+[ruby5]: https://ruby5.codeschool.com/episodes/273-episode-269-may-4th-2012/stories/2400-t-command-line-power-tool-for-twitter
 
-[rubyrogues]: http://rubyrogues.com/127-rr-erik-michaels-ober/
+[rubyrogues]: https://devchat.tv/ruby-rogues/127-rr-erik-michaels-ober
 
 If you discuss `t` in a blog post or podcast, [let me know][email] and I'll
 link it here.
@@ -314,4 +314,4 @@ Copyright (c) 2011-2015 Erik Michaels-Ober. See [LICENSE][] for details.
 Application icon by [@nvk][nvk].
 
 [license]: https://github.com/sferik/t/blob/master/LICENSE.md
-[nvk]: http://rodolfonovak.com
+[nvk]: http://www.rnvk.org

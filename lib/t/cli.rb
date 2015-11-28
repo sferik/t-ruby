@@ -62,8 +62,9 @@ module T
         say '     Note: Your application must have a unique name.'
         say '  3. Go to the Permissions tab of your application, and change the'
         say '     Access setting to "Read, Write and Access direct messages".'
-        say '  4. Go to the API Keys tab to view the consumer key and secret,'
-        say "     which you'll need to copy and paste below when prompted."
+        say '  4. Go to the Keys and Access Tokens tab to view the consumer key'
+        say "     and secret which you'll need to copy and paste below when"
+        say '     prompted.'
         say
         ask 'Press [Enter] to open the Twitter Developer site.'
         say

@@ -600,7 +600,8 @@ module T
     method_option 'all', aliases: '-a', type: :boolean, desc: 'Reply to all users mentioned in the Tweet.'
     method_option 'location', aliases: '-l', type: :string, default: nil, desc: "Add location information. If the optional 'latitude,longitude' parameter is not supplied, looks up location by IP address."
     method_option 'file', aliases: '-f', type: :string, desc: 'The path to an image to attach to your tweet.'
-    def reply(status_id, message)
+    def reply(status_id, message = nil)
+      message = T::Editor.gets if message.to_s.empty?
       status = client.status(status_id.to_i, include_my_retweet: false)
       users = Array(status.user.screen_name)
       if options['all']

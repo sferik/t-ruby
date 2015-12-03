@@ -2597,6 +2597,12 @@ ID                   Posted at     Screen name       Text
         expect($stdout.string.split("\n").first).to eq 'Reply posted by @testcli to @joshfrench.'
       end
     end
+    context 'no status provided' do
+      it 'opens an editor to prompt for the status' do
+        expect(T::Editor).to receive(:gets).and_return 'Testing'
+        @cli.reply('263813522369159169')
+      end
+    end
   end
 
   describe '#report_spam' do

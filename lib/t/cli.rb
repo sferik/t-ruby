@@ -846,7 +846,7 @@ module T
     method_option 'location', aliases: '-l', type: :string, default: nil, desc: "Add location information. If the optional 'latitude,longitude' parameter is not supplied, looks up location by IP address."
     method_option 'file', aliases: '-f', type: :string, desc: 'The path to an image to attach to your tweet.'
     def update(message = nil)
-      message = T::Editor.gets if message.nil? || message.empty?
+      message = T::Editor.gets if message.to_s.empty?
       opts = {trim_user: true}
       add_location!(options, opts)
       status = if options['file']

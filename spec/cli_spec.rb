@@ -3927,6 +3927,12 @@ WOEID     Parent ID  Type       Name           Country
         expect($stdout.string.split("\n").first).to eq 'Tweet posted by @testcli.'
       end
     end
+    context 'no status provided' do
+      it 'opens an editor to prompt for the status' do
+        expect(T::Editor).to receive(:gets).and_return 'Testing'
+        @cli.update
+      end
+    end
   end
 
   describe '#users' do

@@ -596,7 +596,7 @@ module T
       say number_with_delimiter(reach.size)
     end
 
-    desc 'reply TWEET_ID MESSAGE', 'Post your Tweet as a reply directed at another person.'
+    desc 'reply TWEET_ID [MESSAGE]', 'Post your Tweet as a reply directed at another person.'
     method_option 'all', aliases: '-a', type: :boolean, desc: 'Reply to all users mentioned in the Tweet.'
     method_option 'location', aliases: '-l', type: :string, default: nil, desc: "Add location information. If the optional 'latitude,longitude' parameter is not supplied, looks up location by IP address."
     method_option 'file', aliases: '-f', type: :string, desc: 'The path to an image to attach to your tweet.'

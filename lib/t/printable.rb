@@ -111,23 +111,42 @@ module T
       STDOUT.flush
     end
 
-    def print_message(from_user, message)
+    def print_message(from_user, message, media = [])
       require 'htmlentities'
 
       case options['color']
       when 'icon'
         print_identicon(from_user, message)
+        print_media(media.first) if options['photos'] && media.first
         say
         say
       when 'auto'
         say("   @#{from_user}", [:bold, :yellow])
         print_wrapped(HTMLEntities.new.decode(message), indent: 3)
+        print_media(media.first) if options['photos'] && media.first
         say
       else
         say("   @#{from_user}")
         print_wrapped(HTMLEntities.new.decode(message), indent: 3)
+        print_media(media.first) if options['photos'] && media.first
         say
       end
+    end
+
+    def print_media(media)
+      # Guess image format from file extension in URL
+      convert =
+        {'jpeg' => 'jpegtopnm - 2>/dev/null',
+         'jpg'  => 'jpegtopnm - 2>/dev/null',
+         'png'  => 'pngtopnm -',
+         'gif'  => 'giftopnm -'}[media.media_uri.to_s.downcase[/\.([^.]+)$/, 1]]
+      return if convert.nil?
+
+      indent = options['color'] == 'icon' ? 10 : 3
+      scale  = "pamscale -xyfill #{terminal_width - indent} 20 -"
+      output = `curl -s '#{media.media_uri}' | #{convert} | #{scale} | ppmtoascii -1x2`
+
+      $stdout.puts output.lines.map { |x| ' ' * indent << x }
     end
 
     def print_identicon(from_user, message)
@@ -177,7 +196,7 @@ module T
         print_table_with_headings(array, TWEET_HEADINGS, format)
       else
         tweets.each do |tweet|
-          print_message(tweet.user.screen_name, decode_uris(tweet.full_text, options['decode_uris'] ? tweet.uris : nil))
+          print_message(tweet.user.screen_name, decode_uris(tweet.full_text, options['decode_uris'] ? tweet.uris : nil), tweet.media)
         end
       end
     end

@@ -328,6 +328,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
     before do
       @list.options = @list.options.merge('color' => 'always')
       stub_get('/1.1/lists/statuses.json').with(query: {owner_screen_name: 'testcli', count: '20', slug: 'presidents', include_entities: 'false'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
+      stub_get('/1.1/lists/statuses.json').with(query: {owner_screen_name: 'testcli', count: '20', slug: 'presidents', include_entities: 'true'}).to_return(body: fixture('statuses_with_entities.json'), headers: {content_type: 'application/json; charset=utf-8'})
     end
     it 'requests the correct resource' do
       @list.timeline('presidents')
@@ -783,6 +784,101 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
   #{icons[:dwiskus].lines[1]}  Gentlemen, you can't fight in here! This is the war room! 
   #{icons[:dwiskus].lines[2]}  http://t.co/kMxMYyqF
 
+
+        eos
+      end
+    end
+    context '--photos' do
+      before do
+        @list.options = @list.options.merge('photos' => true)
+      end
+      it 'downloads photo and converts to ASCII with netpbm' do
+        expect(@list).to receive(:`).with("curl -s 'http://pbs.twimg.com/media/BcSEmMuCEAALt3v.png' | pngtopnm - | pamscale -xyfill 77 20 - | ppmtoascii -1x2").and_return(['ASCII 10', 'ASCII 11'].join("\n"))
+        expect(@list).to receive(:`).with("curl -s 'http://pbs.twimg.com/media/BcR7UBmCcAEOnQx.jpg' | jpegtopnm - 2>/dev/null | pamscale -xyfill 77 20 - | ppmtoascii -1x2").and_return(['ASCII 20', 'ASCII 21'].join("\n"))
+        expect(@list).to receive(:`).with("curl -s 'http://pbs.twimg.com/media/BcSC8gaIEAAPC11.gif' | giftopnm - | pamscale -xyfill 77 20 - | ppmtoascii -1x2").and_return(['ASCII 30', 'ASCII 31'].join("\n"))
+
+        @list.timeline('presidents')
+        expect($stdout.string).to eq <<-eos
+   @mutgoff
+   Happy Birthday @imdane. Watch out for those @rally pranksters!
+   ASCII 10
+   ASCII 11
+
+   @ironicsans
+   If you like good real-life stories, check out @NarrativelyNY's just-launched 
+   site http://t.co/wiUL07jE (and also visit http://t.co/ZoyQxqWA)
+
+   @pat_shaughnessy
+   Something else to vote for: "New Rails workshops to bring more women into the 
+   Boston software scene" http://t.co/eNBuckHc /cc @bostonrb
+   ASCII 20
+   ASCII 21
+
+   @calebelston
+   Pushing the button to launch the site. http://t.co/qLoEn5jG
+   ASCII 30
+   ASCII 31
+
+   @calebelston
+   RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
+
+   @fivethirtyeight
+   The Weatherman is Not a Moron: http://t.co/ZwL5Gnq5. An excerpt from my book, 
+   THE SIGNAL AND THE NOISE (http://t.co/fNXj8vCE)
+
+   @codeforamerica
+   RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat, 
+   Sep 8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica 
+   @TheaClay
+
+   @fbjork
+   RT @jondot: Just published: "Pragmatic Concurrency With #Ruby" 
+   http://t.co/kGEykswZ /cc @JRuby @headius
+
+   @mbostock
+   If you are wondering how we computed the split bubbles: http://t.co/BcaqSs5u
+
+   @FakeDorsey
+   "Write drunk. Edit sober."—Ernest Hemingway
+
+   @al3x
+   RT @wcmaier: Better banking through better ops: build something new with us 
+   @Simplify (remote, PDX) http://t.co/8WgzKZH3
+
+   @calebelston
+   We just announced Mosaic, what we've been working on since the Yobongo 
+   acquisition. My personal post, http://t.co/ELOyIRZU @heymosaic
+
+   @BarackObama
+   Donate $10 or more --> get your favorite car magnet: http://t.co/NfRhl2s2 
+   #Obama2012
+
+   @JEG2
+   RT @tenderlove: If corporations are people, can we use them to drive in the 
+   carpool lane?
+
+   @eveningedition
+   LDN—Obama's nomination; Putin woos APEC; Bombs hit Damascus; Quakes shake 
+   China; Canada cuts Iran ties; weekend read: http://t.co/OFs6dVW4
+
+   @dhh
+   RT @ggreenwald: Democrats parade Osama bin Laden's corpse as their proudest 
+   achievement: why this goulish jingoism is so warped http://t.co/kood278s
+
+   @jasonfried
+   The story of Mars Curiosity's gears, made by a factory in Rockford, IL: 
+   http://t.co/MwCRsHQg
+
+   @sferik
+   @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem 
+   to be missing "1.1" from the URL.
+
+   @sferik
+   @episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
+
+   @dwiskus
+   Gentlemen, you can't fight in here! This is the war room! 
+   http://t.co/kMxMYyqF
 
         eos
       end

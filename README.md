@@ -56,7 +56,7 @@ Once you've verified that Ruby is installed:
 Twitter API v1.1 requires OAuth for all of its functionality, so you'll need a
 registered Twitter application. If you've never registered a Twitter
 application before, it's easy! Just sign-in using your Twitter account and then
-fill out the short form at <https://apps.twitter.com//new>. If you've
+fill out the short form at <https://apps.twitter.com/app/new>. If you've
 previously registered a Twitter application, it should be listed at
 <https://apps.twitter.com/>. Once you've registered an application, make sure
 to set your application's Access Level to "Read, Write and Access direct

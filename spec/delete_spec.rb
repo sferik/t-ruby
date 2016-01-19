@@ -216,8 +216,8 @@ describe T::Delete do
             'token' => '428004849-cebdct6bwobn',
             'username' => 'deletecli',
             'consumer_secret' => 'asdfasd223sd2',
-          }
-        }
+          },
+        },
       }
       rcfile = @delete.instance_variable_get(:@rcfile)
       rcfile.profiles.merge!(delete_cli)
@@ -256,7 +256,7 @@ describe T::Delete do
             'username' => 'deletecli',
             'consumer_secret' => 'asdfasd223sd2',
           },
-        }
+        },
       }
       rcfile = @delete.instance_variable_get(:@rcfile)
       rcfile.profiles.merge!(delete_cli)
@@ -286,8 +286,8 @@ describe T::Delete do
             'token' => '428004849-cebdct6bwobn',
             'username' => 'deletecli',
             'consumer_secret' => 'asdfasd223sd2',
-          }
-        }
+          },
+        },
       }
       rcfile = @delete.instance_variable_get(:@rcfile)
       rcfile.profiles.merge!(delete_cli)

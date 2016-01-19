@@ -33,7 +33,7 @@ describe T::RCFile do
           consumer_secret: 'def456',
           token: 'ghi789',
           secret: 'jkl012',
-        }
+        },
       }
       expect(rcfile['testcli'].keys).to eq %w(abc123)
     end
@@ -47,7 +47,7 @@ describe T::RCFile do
           consumer_secret: 'def456',
           token: 'ghi789',
           secret: 'jkl012',
-        }
+        },
       }
       expect(rcfile['testcli'].keys).to eq %w(abc123)
     end
@@ -61,7 +61,7 @@ describe T::RCFile do
           consumer_secret: 'def456',
           token: 'ghi789',
           secret: 'jkl012',
-        }
+        },
       }
       expect(File.world_writable?(rcfile.path)).to be nil
     end
@@ -75,7 +75,7 @@ describe T::RCFile do
           consumer_secret: 'def456',
           token: 'ghi789',
           secret: 'jkl012',
-        }
+        },
       }
       expect(File.world_readable?(rcfile.path)).to be nil
     end

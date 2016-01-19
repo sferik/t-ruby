@@ -106,7 +106,7 @@ module T
           'consumer_secret' => secret,
           'token' => access_token.token,
           'secret' => access_token.secret,
-        }
+        },
       }
       @rcfile.active_profile = {'username' => screen_name, 'consumer_key' => key}
       say 'Authorization successful.'

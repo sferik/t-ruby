@@ -231,12 +231,10 @@ module T
       end
       thread2 = if user2.nil?
         Thread.new { @rcfile.active_profile[0] }
+      elsif options['id']
+        Thread.new { client.user(user2.to_i).screen_name }
       else
-        if options['id']
-          Thread.new { client.user(user2.to_i).screen_name }
-        else
-          Thread.new { user2.strip_ats }
-        end
+        Thread.new { user2.strip_ats }
       end
       user1 = thread1.value
       user2 = thread2.value

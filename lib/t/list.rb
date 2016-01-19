@@ -42,7 +42,7 @@ module T
     method_option 'private', aliases: '-p', type: :boolean
     def create(list_name, description = nil)
       opts = description ? {description: description} : {}
-      opts.merge!(mode: 'private') if options['private']
+      opts[:mode] = 'private' if options['private']
       client.create_list(list_name, opts)
       say "@#{@rcfile.active_profile[0]} created the list \"#{list_name}\"."
     end

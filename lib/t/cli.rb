@@ -784,7 +784,7 @@ module T
     method_option 'exclude-hashtags', aliases: '-x', type: :boolean, desc: 'Remove all hashtags from the trends list.'
     def trends(woe_id = 1)
       opts = {}
-      opts.merge!(exclude: 'hashtags') if options['exclude-hashtags']
+      opts[:exclude] = 'hashtags' if options['exclude-hashtags']
       trends = client.trends(woe_id, opts)
       print_attribute(trends, :name)
     end

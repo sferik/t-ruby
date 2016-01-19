@@ -34,7 +34,7 @@ module T
           require 'csv'
           say TWEET_HEADINGS.to_csv
         elsif options['long'] && STDOUT.tty?
-          headings = TWEET_HEADINGS.size.times.collect do |index|
+          headings = Array.new(TWEET_HEADINGS.size) do |index|
             TWEET_HEADINGS_FORMATTING[index] % TWEET_HEADINGS[index]
           end
           print_table([headings])
@@ -170,7 +170,7 @@ module T
           require 'csv'
           say TWEET_HEADINGS.to_csv
         elsif options['long'] && STDOUT.tty?
-          headings = TWEET_HEADINGS.size.times.collect do |index|
+          headings = Array.new(TWEET_HEADINGS.size) do |index|
             TWEET_HEADINGS_FORMATTING[index] % TWEET_HEADINGS[index]
           end
           print_table([headings])

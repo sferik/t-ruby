@@ -76,7 +76,7 @@ module T
         array = lists.collect do |list|
           build_long_list(list)
         end
-        format = options['format'] || LIST_HEADINGS.size.times.collect { '%s' }
+        format = options['format'] || Array.new(LIST_HEADINGS.size) { '%s' }
         print_table_with_headings(array, LIST_HEADINGS, format)
       else
         print_attribute(lists, :full_name)
@@ -138,7 +138,7 @@ module T
       # Save 6 chars for icon, ensure at least 3 lines long
       lines = wrapped(HTMLEntities.new.decode(message), indent: 2, width: terminal_width - (6 + 5))
       lines.unshift(set_color("  @#{from_user}", :bold, :yellow))
-      lines.push(*(3 - lines.length).times.map { '' })
+      lines.push(*Array.new([3 - lines.length, 0].max) { '' })
 
       $stdout.puts lines.zip(icon.lines).map { |x, i| "  #{i || '      '}#{x}" }
     end
@@ -173,7 +173,7 @@ module T
         array = tweets.collect do |tweet|
           build_long_tweet(tweet)
         end
-        format = options['format'] || TWEET_HEADINGS.size.times.collect { '%s' }
+        format = options['format'] || Array.new(TWEET_HEADINGS.size) { '%s' }
         print_table_with_headings(array, TWEET_HEADINGS, format)
       else
         tweets.each do |tweet|
@@ -212,7 +212,7 @@ module T
         array = users.collect do |user|
           build_long_user(user)
         end
-        format = options['format'] || USER_HEADINGS.size.times.collect { '%s' }
+        format = options['format'] || Array.new(USER_HEADINGS.size) { '%s' }
         print_table_with_headings(array, USER_HEADINGS, format)
       else
         print_attribute(users, :screen_name)

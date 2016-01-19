@@ -148,7 +148,7 @@ module T
         array = direct_messages.collect do |direct_message|
           [direct_message.id, ls_formatted_time(direct_message), "@#{direct_message.sender.screen_name}", decode_full_text(direct_message, options['decode_uris']).gsub(/\n+/, ' ')]
         end
-        format = options['format'] || DIRECT_MESSAGE_HEADINGS.size.times.collect { '%s' }
+        format = options['format'] || Array.new(DIRECT_MESSAGE_HEADINGS.size) { '%s' }
         print_table_with_headings(array, DIRECT_MESSAGE_HEADINGS, format)
       else
         direct_messages.each do |direct_message|
@@ -183,7 +183,7 @@ module T
         array = direct_messages.collect do |direct_message|
           [direct_message.id, ls_formatted_time(direct_message), "@#{direct_message.recipient.screen_name}", decode_full_text(direct_message, options['decode_uris']).gsub(/\n+/, ' ')]
         end
-        format = options['format'] || DIRECT_MESSAGE_HEADINGS.size.times.collect { '%s' }
+        format = options['format'] || Array.new(DIRECT_MESSAGE_HEADINGS.size) { '%s' }
         print_table_with_headings(array, DIRECT_MESSAGE_HEADINGS, format)
       else
         direct_messages.each do |direct_message|
@@ -733,7 +733,7 @@ module T
         say [status.id, csv_formatted_time(status), status.user.screen_name, decode_full_text(status, options['decode_uris']), status.retweet_count, status.favorite_count, strip_tags(status.source), location].to_csv
       elsif options['long']
         array = [status.id, ls_formatted_time(status), "@#{status.user.screen_name}", decode_full_text(status, options['decode_uris']).gsub(/\n+/, ' '), status.retweet_count, status.favorite_count, strip_tags(status.source), location]
-        format = options['format'] || status_headings.size.times.collect { '%s' }
+        format = options['format'] || Array.new(status_headings.size) { '%s' }
         print_table_with_headings([array], status_headings, format)
       else
         array = []
@@ -824,7 +824,7 @@ module T
         array = places.collect do |place|
           [place.woeid, place.parent_id, place.place_type, place.name, place.country]
         end
-        format = options['format'] || TREND_HEADINGS.size.times.collect { '%s' }
+        format = options['format'] || Array.new(TREND_HEADINGS.size) { '%s' }
         print_table_with_headings(array, TREND_HEADINGS, format)
       else
         print_attribute(places, :name)

@@ -44,8 +44,8 @@ module T
         format('%d years', (minutes.to_f / 525_600.0).round)
       end
     end
-    alias_method :time_ago_in_words, :distance_of_time_in_words
-    alias_method :time_from_now_in_words, :distance_of_time_in_words
+    alias time_ago_in_words distance_of_time_in_words
+    alias time_from_now_in_words distance_of_time_in_words
 
     def fetch_users(users, options)
       format_users!(users, options)

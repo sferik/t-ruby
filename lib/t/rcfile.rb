@@ -25,11 +25,11 @@ module T
     end
 
     def find_case_insensitive_match(username)
-      profiles.keys.detect { |u| username.downcase == u.downcase }
+      profiles.keys.detect { |u| username.casecmp(u).zero? }
     end
 
     def find_case_insensitive_possibilities(username)
-      profiles.keys.select { |u| username.downcase == u.downcase[0, username.length] }
+      profiles.keys.select { |u| username.casecmp(u[0, username.length]).zero? }
     end
 
     def []=(username, profile)

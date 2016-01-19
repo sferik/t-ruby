@@ -104,7 +104,7 @@ module T
     def account(account, key = nil)
       if key && @rcfile.profiles[account].keys.length == 1
         continue = ask 'There is only one API key associated with this account, removing it will disable all functionality, are you sure you want to delete it? [y/N]'
-        return if continue.downcase != 'y'
+        return unless continue.casecmp('y').zero?
       elsif key
         return @rcfile.delete_key(account, key)
       else

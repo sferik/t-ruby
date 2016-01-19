@@ -1,8 +1,8 @@
 module T
   module Printable # rubocop:disable ModuleLength
-    LIST_HEADINGS = ['ID', 'Created at', 'Screen name', 'Slug', 'Members', 'Subscribers', 'Mode', 'Description']
-    TWEET_HEADINGS = ['ID', 'Posted at', 'Screen name', 'Text']
-    USER_HEADINGS = ['ID', 'Since', 'Last tweeted at', 'Tweets', 'Favorites', 'Listed', 'Following', 'Followers', 'Screen name', 'Name', 'Verified', 'Protected', 'Bio', 'Status', 'Location', 'URL']
+    LIST_HEADINGS = ['ID', 'Created at', 'Screen name', 'Slug', 'Members', 'Subscribers', 'Mode', 'Description'].freeze
+    TWEET_HEADINGS = ['ID', 'Posted at', 'Screen name', 'Text'].freeze
+    USER_HEADINGS = ['ID', 'Since', 'Last tweeted at', 'Tweets', 'Favorites', 'Listed', 'Following', 'Followers', 'Screen name', 'Name', 'Verified', 'Protected', 'Bio', 'Status', 'Location', 'URL'].freeze
     MONTH_IN_SECONDS = 2_592_000
 
   private

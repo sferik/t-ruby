@@ -24,9 +24,9 @@ module T
     include T::Utils
 
     DEFAULT_NUM_RESULTS = 20
-    DIRECT_MESSAGE_HEADINGS = ['ID', 'Posted at', 'Screen name', 'Text']
+    DIRECT_MESSAGE_HEADINGS = ['ID', 'Posted at', 'Screen name', 'Text'].freeze
     MAX_SEARCH_RESULTS = 100
-    TREND_HEADINGS = ['WOEID', 'Parent ID', 'Type', 'Name', 'Country']
+    TREND_HEADINGS = ['WOEID', 'Parent ID', 'Type', 'Name', 'Country'].freeze
 
     check_unknown_options!
 

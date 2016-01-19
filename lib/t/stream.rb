@@ -15,7 +15,7 @@ module T
       '%-12s',  # Add padding to length of a timestamp formatted with ls_formatted_time
       '%-20s',  # Add padding to maximum length of a Twitter screen name
       '%s',     # Last element does not need special formatting
-    ]
+    ].freeze
 
     check_unknown_options!
 

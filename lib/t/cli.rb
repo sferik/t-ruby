@@ -65,19 +65,16 @@ module T
         say '  4. Go to the Keys and Access Tokens tab to view the consumer key'
         say "     and secret which you'll need to copy and paste below when"
         say '     prompted.'
-        say
-        ask 'Press [Enter] to open the Twitter Developer site.'
-        say
       else
         say "It looks like you've already registered an application with Twitter."
         say 'To authorize a new account, just follow the steps below:'
         say '  1. Sign in to the Twitter Developer site.'
         say "  2. Select the application for which you'd like to authorize an account."
         say '  3. Copy and paste the consumer key and secret below when prompted.'
-        say
-        ask 'Press [Enter] to open the Twitter Developer site.'
-        say
       end
+      say
+      ask 'Press [Enter] to open the Twitter Developer site.'
+      say
       require 'launchy'
       open_or_print('https://apps.twitter.com', dry_run: options['display-uri'])
       key = ask 'Enter your API key:'

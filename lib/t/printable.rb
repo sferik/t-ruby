@@ -118,16 +118,14 @@ module T
       when 'icon'
         print_identicon(from_user, message)
         say
-        say
       when 'auto'
         say("   @#{from_user}", [:bold, :yellow])
         print_wrapped(HTMLEntities.new.decode(message), indent: 3)
-        say
       else
         say("   @#{from_user}")
         print_wrapped(HTMLEntities.new.decode(message), indent: 3)
-        say
       end
+      say
     end
 
     def print_identicon(from_user, message)

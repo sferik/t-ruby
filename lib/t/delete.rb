@@ -102,11 +102,8 @@ module T
 
     desc 'account SCREEN_NAME [CONSUMER_KEY]', 'delete account or consumer key from t'
     def account(account, key = nil)
-      if key && @rcfile.profiles[account].keys.length == 1
-        continue = ask 'There is only one API key associated with this account, removing it will disable all functionality, are you sure you want to delete it? [y/N]'
-        return unless continue.casecmp('y').zero?
-      elsif key
-        return @rcfile.delete_key(account, key)
+      if key && @rcfile.profiles[account].keys.size > 1
+        @rcfile.delete_key(account, key)
       else
         @rcfile.delete_profile(account)
       end

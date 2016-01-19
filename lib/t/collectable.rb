@@ -32,7 +32,7 @@ module T
 
     def collect_with_page(collection = ::Set.new, page = 1, previous = nil, &block)
       tweets = Retryable.retryable(tries: 3, on: Twitter::Error, sleep: 0) do
-        block.call(page)
+        yield page
       end
       return collection if tweets.nil? || tweets == previous || page >= MAX_PAGE
       collection += tweets

@@ -40,7 +40,7 @@ describe T::List do
     end
     it 'has the correct output' do
       @list.add('presidents', 'BarackObama')
-      expect($stdout.string.split("\n").first).to eq "@testcli added 1 member to the list \"presidents\"."
+      expect($stdout.string.split("\n").first).to eq '@testcli added 1 member to the list "presidents".'
     end
     context '--id' do
       before do
@@ -75,7 +75,7 @@ describe T::List do
     end
     it 'has the correct output' do
       @list.create('presidents')
-      expect($stdout.string.chomp).to eq "@testcli created the list \"presidents\"."
+      expect($stdout.string.chomp).to eq '@testcli created the list "presidents".'
     end
   end
 
@@ -300,7 +300,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
     it 'has the correct output' do
       stub_post('/1.1/lists/members/destroy_all.json').with(body: {screen_name: 'BarackObama', slug: 'presidents', owner_id: '7505382'}).to_return(body: fixture('list.json'), headers: {content_type: 'application/json; charset=utf-8'})
       @list.remove('presidents', 'BarackObama')
-      expect($stdout.string.split("\n").first).to eq "@testcli removed 1 member from the list \"presidents\"."
+      expect($stdout.string.split("\n").first).to eq '@testcli removed 1 member from the list "presidents".'
     end
     context '--id' do
       before do

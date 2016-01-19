@@ -49,21 +49,21 @@ describe T::Delete do
       stub_post('/1.1/direct_messages/destroy.json').with(body: {id: '1773478249'}).to_return(body: fixture('direct_message.json'), headers: {content_type: 'application/json; charset=utf-8'})
     end
     it 'requests the correct resource' do
-      expect(Readline).to receive(:readline).with("Are you sure you want to permanently delete the direct message to @pengwynn: \"Creating a fixture for the Twitter gem\"? [y/N] ", false).and_return('yes')
+      expect(Readline).to receive(:readline).with('Are you sure you want to permanently delete the direct message to @pengwynn: "Creating a fixture for the Twitter gem"? [y/N] ', false).and_return('yes')
       @delete.dm('1773478249')
       expect(a_get('/1.1/direct_messages/show.json').with(query: {id: '1773478249'})).to have_been_made
       expect(a_post('/1.1/direct_messages/destroy.json').with(body: {id: '1773478249'})).to have_been_made
     end
     context 'yes' do
       it 'has the correct output' do
-        expect(Readline).to receive(:readline).with("Are you sure you want to permanently delete the direct message to @pengwynn: \"Creating a fixture for the Twitter gem\"? [y/N] ", false).and_return('yes')
+        expect(Readline).to receive(:readline).with('Are you sure you want to permanently delete the direct message to @pengwynn: "Creating a fixture for the Twitter gem"? [y/N] ', false).and_return('yes')
         @delete.dm('1773478249')
-        expect($stdout.string.chomp).to eq "@testcli deleted the direct message sent to @pengwynn: \"Creating a fixture for the Twitter gem\""
+        expect($stdout.string.chomp).to eq '@testcli deleted the direct message sent to @pengwynn: "Creating a fixture for the Twitter gem"'
       end
     end
     context 'no' do
       it 'has the correct output' do
-        expect(Readline).to receive(:readline).with("Are you sure you want to permanently delete the direct message to @pengwynn: \"Creating a fixture for the Twitter gem\"? [y/N] ", false).and_return('no')
+        expect(Readline).to receive(:readline).with('Are you sure you want to permanently delete the direct message to @pengwynn: "Creating a fixture for the Twitter gem"? [y/N] ', false).and_return('no')
         @delete.dm('1773478249')
         expect($stdout.string.chomp).to be_empty
       end
@@ -78,7 +78,7 @@ describe T::Delete do
       end
       it 'has the correct output' do
         @delete.dm('1773478249')
-        expect($stdout.string.chomp).to eq "@testcli deleted the direct message sent to @pengwynn: \"Creating a fixture for the Twitter gem\""
+        expect($stdout.string.chomp).to eq '@testcli deleted the direct message sent to @pengwynn: "Creating a fixture for the Twitter gem"'
       end
     end
   end
@@ -132,21 +132,21 @@ describe T::Delete do
       stub_post('/1.1/lists/destroy.json').with(body: {owner_id: '7505382', list_id: '8863586'}).to_return(body: fixture('list.json'), headers: {content_type: 'application/json; charset=utf-8'})
     end
     it 'requests the correct resource' do
-      expect(Readline).to receive(:readline).with("Are you sure you want to permanently delete the list \"presidents\"? [y/N] ", false).and_return('yes')
+      expect(Readline).to receive(:readline).with('Are you sure you want to permanently delete the list "presidents"? [y/N] ', false).and_return('yes')
       @delete.list('presidents')
       expect(a_get('/1.1/account/verify_credentials.json').with(query: {skip_status: 'true'})).to have_been_made
       expect(a_post('/1.1/lists/destroy.json').with(body: {owner_id: '7505382', list_id: '8863586'})).to have_been_made
     end
     context 'yes' do
       it 'has the correct output' do
-        expect(Readline).to receive(:readline).with("Are you sure you want to permanently delete the list \"presidents\"? [y/N] ", false).and_return('yes')
+        expect(Readline).to receive(:readline).with('Are you sure you want to permanently delete the list "presidents"? [y/N] ', false).and_return('yes')
         @delete.list('presidents')
-        expect($stdout.string.chomp).to eq "@testcli deleted the list \"presidents\"."
+        expect($stdout.string.chomp).to eq '@testcli deleted the list "presidents".'
       end
     end
     context 'no' do
       it 'has the correct output' do
-        expect(Readline).to receive(:readline).with("Are you sure you want to permanently delete the list \"presidents\"? [y/N] ", false).and_return('no')
+        expect(Readline).to receive(:readline).with('Are you sure you want to permanently delete the list "presidents"? [y/N] ', false).and_return('no')
         @delete.list('presidents')
         expect($stdout.string.chomp).to be_empty
       end
@@ -162,7 +162,7 @@ describe T::Delete do
       end
       it 'has the correct output' do
         @delete.list('presidents')
-        expect($stdout.string.chomp).to eq "@testcli deleted the list \"presidents\"."
+        expect($stdout.string.chomp).to eq '@testcli deleted the list "presidents".'
       end
     end
     context '--id' do
@@ -171,7 +171,7 @@ describe T::Delete do
         stub_get('/1.1/lists/show.json').with(query: {owner_id: '7505382', list_id: '8863586'}).to_return(body: fixture('list.json'), headers: {content_type: 'application/json; charset=utf-8'})
       end
       it 'requests the correct resource' do
-        expect(Readline).to receive(:readline).with("Are you sure you want to permanently delete the list \"presidents\"? [y/N] ", false).and_return('yes')
+        expect(Readline).to receive(:readline).with('Are you sure you want to permanently delete the list "presidents"? [y/N] ', false).and_return('yes')
         @delete.list('8863586')
         expect(a_get('/1.1/lists/show.json').with(query: {owner_id: '7505382', list_id: '8863586'})).to have_been_made
         expect(a_get('/1.1/account/verify_credentials.json').with(query: {skip_status: 'true'})).to have_been_made

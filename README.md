@@ -19,7 +19,7 @@ offers vastly more commands and capabilities than are available via SMS.
 
 [sms]: https://support.twitter.com/articles/14020-twitter-sms-command
 
-## Installation
+## Dependencies
 First, make sure you have Ruby installed.
 
 **On a Mac**, open `/Applications/Utilities/Terminal.app` and type:
@@ -48,6 +48,7 @@ or for Red Hat-based distros like Fedora and CentOS, type:
 **On Windows**, you can install Ruby with [RubyInstaller][].
 [rubyinstaller]: http://rubyinstaller.org/downloads/
 
+## Installation
 Once you've verified that Ruby is installed:
 
     gem install t

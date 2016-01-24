@@ -65,6 +65,9 @@ Style/RegexpLiteral:
   Exclude:
     - 'Guardfile'
 
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
 Style/SpaceInsideHashLiteralBraces:
   EnforcedStyle: no_space
 

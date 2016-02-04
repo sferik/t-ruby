@@ -12,7 +12,7 @@ namespace :completion do
     if git_status[/M #{output_path}/]
       cmd = "git add #{output_path} && git commit -m 'Updating Bash completion'"
       result = system cmd
-      fail('Could not commit changes') unless result
+      raise('Could not commit changes') unless result
     end
   end
 end

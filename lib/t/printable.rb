@@ -179,7 +179,7 @@ module T
         print_table_with_headings(array, TWEET_HEADINGS, format)
       elsif options['medium']
         array = tweets.collect do |tweet|
-          build_long_tweet(tweet)
+          build_medium_tweet(tweet)
         end
         format = options['format'] || Array.new(TWEET_HEADINGS.size) { '%s' }
         print_table_with_headings(array, TWEET_HEADINGS, format)

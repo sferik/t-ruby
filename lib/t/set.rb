@@ -73,7 +73,7 @@ module T
     authenticating user’s profile page on twitter.com. '
     def profile_link_color(color_code)
       client.update_profile(profile_link_color: color_code)
-      say "@#{@rcfile.active_profile[0]}'s profile color code has been updated."
+      say "@#{@rcfile.active_profile[0]}'s profile link color has been updated."
     end
   end
 end

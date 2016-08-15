@@ -52,7 +52,7 @@ _t (){
       "ruler[Prints a 140-character ruler]" \
       "status[Retrieves detailed information about a Tweet.]" \
       "timeline[Returns the 20 most recent Tweets posted by a user.]" \
-      "trends[Returns the top 10 trending topics.]" \
+      "trends[Returns the top 50 trending topics.]" \
       "trend_locations[Returns the locations for which Twitter has trending topic information.]" \
       "unfollow[Allows you to stop following users.]" \
       "update[Post a Tweet.]" \

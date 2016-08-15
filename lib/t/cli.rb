@@ -778,7 +778,7 @@ module T
     end
     map %w(tl) => :timeline
 
-    desc 'trends [WOEID]', 'Returns the top 10 trending topics.'
+    desc 'trends [WOEID]', 'Returns the top 50 trending topics.'
     method_option 'exclude-hashtags', aliases: '-x', type: :boolean, desc: 'Remove all hashtags from the trends list.'
     def trends(woe_id = 1)
       opts = {}

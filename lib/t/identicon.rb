@@ -30,7 +30,7 @@ module T
     end
 
     def bg(bit)
-      bit == 0 ? "\033[48;5;#{@bcolor}m" : "\033[48;5;#{@fcolor}m"
+      bit.zero? ? "\033[48;5;#{@bcolor}m" : "\033[48;5;#{@fcolor}m"
     end
   end
 

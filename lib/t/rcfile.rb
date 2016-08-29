@@ -20,7 +20,7 @@ module T
       if possibilities.size == 1
         possibilities.first
       else
-        raise(ArgumentError.new("Username #{username} is #{possibilities.size < 1 ? 'not found.' : 'ambiguous, matching ' + possibilities.join(', ')}"))
+        raise(ArgumentError.new("Username #{username} is #{possibilities.empty? ? 'not found.' : 'ambiguous, matching ' + possibilities.join(', ')}"))
       end
     end
 
@@ -118,7 +118,7 @@ module T
 
     def write
       require 'yaml'
-      File.open(@path, File::RDWR | File::TRUNC | File::CREAT, 0600) do |rcfile|
+      File.open(@path, File::RDWR | File::TRUNC | File::CREAT, 0o0600) do |rcfile|
         rcfile.write @data.to_yaml
       end
     end

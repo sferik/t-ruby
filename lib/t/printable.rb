@@ -136,7 +136,7 @@ module T
       # Save 6 chars for icon, ensure at least 3 lines long
       lines = wrapped(HTMLEntities.new.decode(message), indent: 2, width: terminal_width - (6 + 5))
       lines.unshift(set_color("  @#{from_user}", :bold, :yellow))
-      lines.push(*Array.new([3 - lines.length, 0].max) { '' })
+      lines.concat(Array.new([3 - lines.length, 0].max) { '' })
 
       $stdout.puts lines.zip(icon.lines).map { |x, i| "  #{i || '      '}#{x}" }
     end

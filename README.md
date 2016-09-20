@@ -28,7 +28,7 @@ First, make sure you have Ruby installed.
 
 If the output looks something like this, you're in good shape:
 
-    ruby 1.9.3p484 (2013-11-22 revision 43786) [x86_64-darwin13.0.0]
+    ruby 2.3.1p112 (2016-04-26 revision 54768) [x86_64-darwin15]
 
 If the output looks more like this, you need to [install Ruby][ruby]:
 [ruby]: https://www.ruby-lang.org/en/downloads/
@@ -287,10 +287,10 @@ the original code.
 This library aims to support and is [tested against][travis] the following Ruby
 implementations:
 
-* Ruby 1.9.3
 * Ruby 2.0.0
 * Ruby 2.1
 * Ruby 2.2
+* Ruby 2.3
 
 If something doesn't work on one of these Ruby versions, it's a bug.
 

@@ -17,6 +17,7 @@ group :test do
   gem 'rubocop', '>= 0.37'
   gem 'simplecov', '>= 0.9'
   gem 'timecop'
+  gem 'tins', '~> 1.6.0', platforms: :ruby_19
   gem 'webmock', '>= 1.10.1'
 end
 

@@ -17,11 +17,8 @@ module T
 
     def find(username)
       possibilities = Array(find_case_insensitive_match(username) || find_case_insensitive_possibilities(username))
-      if possibilities.size == 1
-        possibilities.first
-      else
-        raise(ArgumentError.new("Username #{username} is #{possibilities.empty? ? 'not found.' : 'ambiguous, matching ' + possibilities.join(', ')}"))
-      end
+      raise(ArgumentError.new("Username #{username} is #{possibilities.empty? ? 'not found.' : 'ambiguous, matching ' + possibilities.join(', ')}")) unless possibilities.size == 1
+      possibilities.first
     end
 
     def find_case_insensitive_match(username)

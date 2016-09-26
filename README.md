@@ -199,6 +199,10 @@ example, here's how to send a user a direct message only if they already follow 
 
 #### Search Tweets in your timeline that match a specified query
     t search timeline "query"
+**Note**: In Twitter API parlance, your “home timeline” is your “Newsfeed” whereas your “user timeline” are the tweets tweeted (and retweeted) by you. 
+
+#### Search your own Tweets that match a specific query
+    t search timeline @yourtwitterhandle "query"
 
 #### Search Tweets in another user's timeline that match a specified query
     t search timeline @sferik "query"

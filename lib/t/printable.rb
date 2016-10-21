@@ -197,7 +197,7 @@ module T
       when 'tweeted'
         users.sort_by { |user| user.status? ? user.status.created_at : Time.at(0) } # rubocop:disable BlockNesting
       else
-        users.sort_by { |user| user.screen_name.downcase }
+        users.sort_by { |user| safe_screen_name(user) }
       end unless options['unsorted']
       users.reverse! if options['reverse']
       if options['csv']
@@ -215,6 +215,10 @@ module T
       else
         print_attribute(users, :screen_name)
       end
+    end
+
+    def safe_screen_name(user)
+      user.screen_name.is_a?(Twitter::NullObject) ? '' : user.screen_name.downcase
     end
   end
 end

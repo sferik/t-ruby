@@ -5,8 +5,12 @@ gem 'jruby-openssl', platforms: :jruby
 
 group :development do
   gem 'pry'
-  platforms :ruby_19, :ruby_20 do
+  platforms :ruby_19 do
     gem 'pry-debugger'
+    gem 'pry-stack_explorer'
+  end
+  platforms :ruby_20 do
+    gem 'pry-byebug'
     gem 'pry-stack_explorer'
   end
 end

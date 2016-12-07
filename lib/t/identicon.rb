@@ -43,7 +43,7 @@ module T
 
     def digest(string)
       require 'digest'
-      Digest::MD5.digest(string).chars.inject(0) { |a, e| (a << 8) | e.ord }
+      Digest::MD5.digest(string).chars.inject(0) { |acc, elem| (acc << 8) | elem.ord }
     end
   end
 end

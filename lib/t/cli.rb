@@ -796,18 +796,20 @@ module T
     method_option 'unsorted', aliases: '-u', type: :boolean, desc: 'Output is not sorted.'
     def trend_locations
       places = client.trend_locations
-      places = case options['sort']
-      when 'country'
-        places.sort_by { |place| place.country.downcase }
-      when 'parent'
-        places.sort_by { |place| place.parent_id.to_i }
-      when 'type'
-        places.sort_by { |place| place.place_type.downcase }
-      when 'woeid'
-        places.sort_by { |place| place.woeid.to_i }
-      else
-        places.sort_by { |place| place.name.downcase }
-      end unless options['unsorted']
+      unless options['unsorted']
+        places = case options['sort']
+        when 'country'
+          places.sort_by { |place| place.country.downcase }
+        when 'parent'
+          places.sort_by { |place| place.parent_id.to_i }
+        when 'type'
+          places.sort_by { |place| place.place_type.downcase }
+        when 'woeid'
+          places.sort_by { |place| place.woeid.to_i }
+        else
+          places.sort_by { |place| place.name.downcase }
+        end
+      end
       places.reverse! if options['reverse']
       if options['csv']
         require 'csv'

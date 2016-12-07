@@ -56,8 +56,10 @@ module BashCompletion
 
         opts_args = cmd.options.collect do |_, opt|
           cases = opt.enum
-          %[#{option_str(opt).tr(' ', '|')})
-             completions='#{cases.join(' ')}' ;;] if cases
+          if cases
+            %[#{option_str(opt).tr(' ', '|')})
+               completions='#{cases.join(' ')}' ;;]
+          end
         end.compact
 
         if subcmds.empty?

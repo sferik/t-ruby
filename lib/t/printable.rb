@@ -53,18 +53,20 @@ module T
     end
 
     def print_lists(lists)
-      lists = case options['sort']
-      when 'members'
-        lists.sort_by(&:member_count)
-      when 'mode'
-        lists.sort_by(&:mode)
-      when 'since'
-        lists.sort_by(&:created_at)
-      when 'subscribers'
-        lists.sort_by(&:subscriber_count)
-      else
-        lists.sort_by { |list| list.slug.downcase }
-      end unless options['unsorted']
+      unless options['unsorted']
+        lists = case options['sort']
+        when 'members'
+          lists.sort_by(&:member_count)
+        when 'mode'
+          lists.sort_by(&:mode)
+        when 'since'
+          lists.sort_by(&:created_at)
+        when 'subscribers'
+          lists.sort_by(&:subscriber_count)
+        else
+          lists.sort_by { |list| list.slug.downcase }
+        end
+      end
       lists.reverse! if options['reverse']
       if options['csv']
         require 'csv'
@@ -181,24 +183,26 @@ module T
     end
 
     def print_users(users) # rubocop:disable CyclomaticComplexity
-      users = case options['sort']
-      when 'favorites'
-        users.sort_by { |user| user.favorites_count.to_i }
-      when 'followers'
-        users.sort_by { |user| user.followers_count.to_i }
-      when 'friends'
-        users.sort_by { |user| user.friends_count.to_i }
-      when 'listed'
-        users.sort_by { |user| user.listed_count.to_i }
-      when 'since'
-        users.sort_by(&:created_at)
-      when 'tweets'
-        users.sort_by { |user| user.statuses_count.to_i }
-      when 'tweeted'
-        users.sort_by { |user| user.status? ? user.status.created_at : Time.at(0) } # rubocop:disable BlockNesting
-      else
-        users.sort_by { |user| user.screen_name.downcase }
-      end unless options['unsorted']
+      unless options['unsorted']
+        users = case options['sort']
+        when 'favorites'
+          users.sort_by { |user| user.favorites_count.to_i }
+        when 'followers'
+          users.sort_by { |user| user.followers_count.to_i }
+        when 'friends'
+          users.sort_by { |user| user.friends_count.to_i }
+        when 'listed'
+          users.sort_by { |user| user.listed_count.to_i }
+        when 'since'
+          users.sort_by(&:created_at)
+        when 'tweets'
+          users.sort_by { |user| user.statuses_count.to_i }
+        when 'tweeted'
+          users.sort_by { |user| user.status? ? user.status.created_at : Time.at(0) } # rubocop:disable BlockNesting
+        else
+          users.sort_by { |user| user.screen_name.downcase }
+        end
+      end
       users.reverse! if options['reverse']
       if options['csv']
         require 'csv'

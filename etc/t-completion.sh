@@ -104,7 +104,7 @@ follow)
 followings)
               case "$prev" in
               --sort|-s)
-             completions='favorites followers friends listed screen_name since tweets tweeted' ;;
+               completions='favorites followers friends listed screen_name since tweets tweeted' ;;
               -C|--color) completions='auto never' ;;
 
               *) completions='--csv -c --id -i --long -l --relative_dates -a --reverse -r --sort -s --unsorted -u -H --host -C --color -P --profile' ;;
@@ -113,7 +113,7 @@ followings)
 followings_following)
               case "$prev" in
               --sort|-s)
-             completions='favorites followers friends listed screen_name since tweets tweeted' ;;
+               completions='favorites followers friends listed screen_name since tweets tweeted' ;;
               -C|--color) completions='auto never' ;;
 
               *) completions='--csv -c --id -i --long -l --relative_dates -a --reverse -r --sort -s --unsorted -u -H --host -C --color -P --profile' ;;
@@ -122,7 +122,7 @@ followings_following)
 followers)
               case "$prev" in
               --sort|-s)
-             completions='favorites followers friends listed screen_name since tweets tweeted' ;;
+               completions='favorites followers friends listed screen_name since tweets tweeted' ;;
               -C|--color) completions='auto never' ;;
 
               *) completions='--csv -c --id -i --long -l --relative_dates -a --reverse -r --sort -s --unsorted -u -H --host -C --color -P --profile' ;;
@@ -131,7 +131,7 @@ followers)
 friends)
               case "$prev" in
               --sort|-s)
-             completions='favorites followers friends listed screen_name since tweets tweeted' ;;
+               completions='favorites followers friends listed screen_name since tweets tweeted' ;;
               -C|--color) completions='auto never' ;;
 
               *) completions='--csv -c --id -i --long -l --relative_dates -a --reverse -r --sort -s --unsorted -u -H --host -C --color -P --profile' ;;
@@ -140,7 +140,7 @@ friends)
 groupies)
               case "$prev" in
               --sort|-s)
-             completions='favorites followers friends listed screen_name since tweets tweeted' ;;
+               completions='favorites followers friends listed screen_name since tweets tweeted' ;;
               -C|--color) completions='auto never' ;;
 
               *) completions='--csv -c --id -i --long -l --relative_dates -a --reverse -r --sort -s --unsorted -u -H --host -C --color -P --profile' ;;
@@ -149,9 +149,9 @@ groupies)
 intersection)
               case "$prev" in
               --sort|-s)
-             completions='favorites followers friends listed screen_name since tweets tweeted' ;;
+               completions='favorites followers friends listed screen_name since tweets tweeted' ;;
 --type|-t)
-             completions='followers followings' ;;
+               completions='followers followings' ;;
               -C|--color) completions='auto never' ;;
 
               *) completions='--csv -c --id -i --long -l --relative_dates -a --reverse -r --sort -s --type -t --unsorted -u -H --host -C --color -P --profile' ;;
@@ -160,7 +160,7 @@ intersection)
 leaders)
               case "$prev" in
               --sort|-s)
-             completions='favorites followers friends listed screen_name since tweets tweeted' ;;
+               completions='favorites followers friends listed screen_name since tweets tweeted' ;;
               -C|--color) completions='auto never' ;;
 
               *) completions='--csv -c --id -i --long -l --relative_dates -a --reverse -r --sort -s --unsorted -u -H --host -C --color -P --profile' ;;
@@ -169,7 +169,7 @@ leaders)
 lists)
               case "$prev" in
               --sort|-s)
-             completions='members mode since slug subscribers' ;;
+               completions='members mode since slug subscribers' ;;
               -C|--color) completions='auto never' ;;
 
               *) completions='--csv -c --id -i --long -l --relative_dates -a --reverse -r --sort -s --unsorted -u -H --host -C --color -P --profile' ;;
@@ -202,7 +202,7 @@ mute)
 muted)
               case "$prev" in
               --sort|-s)
-             completions='favorites followers friends listed screen_name since tweets tweeted' ;;
+               completions='favorites followers friends listed screen_name since tweets tweeted' ;;
               -C|--color) completions='auto never' ;;
 
               *) completions='--csv -c --long -l --relative_dates -a --reverse -r --sort -s --unsorted -u -H --host -C --color -P --profile' ;;
@@ -283,7 +283,7 @@ status)
 timeline)
               case "$prev" in
               --exclude|-e)
-             completions='replies retweets' ;;
+               completions='replies retweets' ;;
               -C|--color) completions='auto never' ;;
 
               *) completions='--csv -c --decode_uris -d --exclude -e --id -i --long -l --max_id -m --number -n --relative_dates -a --reverse -r --since_id -s -H --host -C --color -P --profile' ;;
@@ -300,7 +300,7 @@ trends)
 trend_locations)
               case "$prev" in
               --sort|-s)
-             completions='country name parent type woeid' ;;
+               completions='country name parent type woeid' ;;
               -C|--color) completions='auto never' ;;
 
               *) completions='--csv -c --long -l --relative_dates -a --reverse -r --sort -s --unsorted -u -H --host -C --color -P --profile' ;;
@@ -325,7 +325,7 @@ update)
 users)
               case "$prev" in
               --sort|-s)
-             completions='favorites followers friends listed screen_name since tweets tweeted' ;;
+               completions='favorites followers friends listed screen_name since tweets tweeted' ;;
               -C|--color) completions='auto never' ;;
 
               *) completions='--csv -c --id -i --long -l --relative_dates -a --reverse -r --sort -s --unsorted -u -H --host -C --color -P --profile' ;;

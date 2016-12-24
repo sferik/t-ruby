@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'launchy', '~> 2.4'
   spec.add_dependency 'geokit', '~> 1.9'
   spec.add_dependency 'htmlentities', '~> 4.3'
-  spec.add_dependency 'oauth', '~> 0.4.7'
+  spec.add_dependency 'oauth', '~> 0.5.1'
   spec.add_dependency 'retryable', '~> 2.0'
   spec.add_dependency 'thor', ['>= 0.19.1', '< 2']
   spec.add_dependency 'twitter', '~> 6.0'

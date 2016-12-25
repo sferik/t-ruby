@@ -15,7 +15,7 @@
         case "$topcmd" in
           accounts)
               case "$prev" in
-              
+
               -C|--color) completions='auto never' ;;
 
               *) completions='-H --host -C --color -P --profile' ;;
@@ -23,7 +23,7 @@
 
 authorize)
               case "$prev" in
-              
+
               -C|--color) completions='auto never' ;;
 
               *) completions='--display-uri -d -H --host -C --color -P --profile' ;;
@@ -31,7 +31,7 @@ authorize)
 
 block)
               case "$prev" in
-              
+
               -C|--color) completions='auto never' ;;
 
               *) completions='--id -i -H --host -C --color -P --profile' ;;
@@ -39,7 +39,7 @@ block)
 
 direct_messages)
               case "$prev" in
-              
+
               -C|--color) completions='auto never' ;;
 
               *) completions='--csv -c --decode_uris -d --long -l --number -n --relative_dates -a --reverse -r -H --host -C --color -P --profile' ;;
@@ -47,7 +47,7 @@ direct_messages)
 
 direct_messages_sent)
               case "$prev" in
-              
+
               -C|--color) completions='auto never' ;;
 
               *) completions='--csv -c --decode_uris -d --long -l --number -n --relative_dates -a --reverse -r -H --host -C --color -P --profile' ;;
@@ -55,7 +55,7 @@ direct_messages_sent)
 
 dm)
               case "$prev" in
-              
+
               -C|--color) completions='auto never' ;;
 
               *) completions='--id -i -H --host -C --color -P --profile' ;;
@@ -63,7 +63,7 @@ dm)
 
 does_contain)
               case "$prev" in
-              
+
               -C|--color) completions='auto never' ;;
 
               *) completions='--id -i -H --host -C --color -P --profile' ;;
@@ -71,7 +71,7 @@ does_contain)
 
 does_follow)
               case "$prev" in
-              
+
               -C|--color) completions='auto never' ;;
 
               *) completions='--id -i -H --host -C --color -P --profile' ;;
@@ -79,7 +79,7 @@ does_follow)
 
 favorite)
               case "$prev" in
-              
+
               -C|--color) completions='auto never' ;;
 
               *) completions='-H --host -C --color -P --profile' ;;
@@ -87,7 +87,7 @@ favorite)
 
 favorites)
               case "$prev" in
-              
+
               -C|--color) completions='auto never' ;;
 
               *) completions='--csv -c --decode_uris -d --id -i --long -l --max_id -m --number -n --relative_dates -a --reverse -r --since_id -s -H --host -C --color -P --profile' ;;
@@ -95,7 +95,7 @@ favorites)
 
 follow)
               case "$prev" in
-              
+
               -C|--color) completions='auto never' ;;
 
               *) completions='--id -i -H --host -C --color -P --profile' ;;
@@ -177,7 +177,7 @@ lists)
 
 matrix)
               case "$prev" in
-              
+
               -C|--color) completions='auto never' ;;
 
               *) completions='-H --host -C --color -P --profile' ;;
@@ -185,7 +185,7 @@ matrix)
 
 mentions)
               case "$prev" in
-              
+
               -C|--color) completions='auto never' ;;
 
               *) completions='--csv -c --decode_uris -d --long -l --number -n --relative_dates -a --reverse -r -H --host -C --color -P --profile' ;;
@@ -193,7 +193,7 @@ mentions)
 
 mute)
               case "$prev" in
-              
+
               -C|--color) completions='auto never' ;;
 
               *) completions='--id -i -H --host -C --color -P --profile' ;;
@@ -210,7 +210,7 @@ muted)
 
 open)
               case "$prev" in
-              
+
               -C|--color) completions='auto never' ;;
 
               *) completions='--display-uri -d --id -i --status -s -H --host -C --color -P --profile' ;;
@@ -218,7 +218,7 @@ open)
 
 reach)
               case "$prev" in
-              
+
               -C|--color) completions='auto never' ;;
 
               *) completions='-H --host -C --color -P --profile' ;;
@@ -226,7 +226,7 @@ reach)
 
 reply)
               case "$prev" in
-              
+
               -C|--color) completions='auto never' ;;
 
               *) completions='--all -a --location -l --file -f -H --host -C --color -P --profile' ;;
@@ -234,7 +234,7 @@ reply)
 
 report_spam)
               case "$prev" in
-              
+
               -C|--color) completions='auto never' ;;
 
               *) completions='--id -i -H --host -C --color -P --profile' ;;
@@ -242,7 +242,7 @@ report_spam)
 
 retweet)
               case "$prev" in
-              
+
               -C|--color) completions='auto never' ;;
 
               *) completions='-H --host -C --color -P --profile' ;;
@@ -250,7 +250,7 @@ retweet)
 
 retweets)
               case "$prev" in
-              
+
               -C|--color) completions='auto never' ;;
 
               *) completions='--csv -c --decode_uris -d --id -i --long -l --number -n --relative_dates -a --reverse -r -H --host -C --color -P --profile' ;;
@@ -258,7 +258,7 @@ retweets)
 
 retweets_of_me)
               case "$prev" in
-              
+
               -C|--color) completions='auto never' ;;
 
               *) completions='--csv -c --decode_uris -d --long -l --number -n --relative_dates -a --reverse -r -H --host -C --color -P --profile' ;;
@@ -266,7 +266,7 @@ retweets_of_me)
 
 ruler)
               case "$prev" in
-              
+
               -C|--color) completions='auto never' ;;
 
               *) completions='--indent -i -H --host -C --color -P --profile' ;;
@@ -274,7 +274,7 @@ ruler)
 
 status)
               case "$prev" in
-              
+
               -C|--color) completions='auto never' ;;
 
               *) completions='--csv -c --decode_uris -d --long -l --relative_dates -a -H --host -C --color -P --profile' ;;
@@ -291,7 +291,7 @@ timeline)
 
 trends)
               case "$prev" in
-              
+
               -C|--color) completions='auto never' ;;
 
               *) completions='--exclude-hashtags -x -H --host -C --color -P --profile' ;;
@@ -308,7 +308,7 @@ trend_locations)
 
 unfollow)
               case "$prev" in
-              
+
               -C|--color) completions='auto never' ;;
 
               *) completions='--id -i -H --host -C --color -P --profile' ;;
@@ -316,7 +316,7 @@ unfollow)
 
 update)
               case "$prev" in
-              
+
               -C|--color) completions='auto never' ;;
 
               *) completions='--location -l --file -f -H --host -C --color -P --profile' ;;
@@ -333,7 +333,7 @@ users)
 
 version)
               case "$prev" in
-              
+
               -C|--color) completions='auto never' ;;
 
               *) completions='-H --host -C --color -P --profile' ;;
@@ -341,7 +341,7 @@ version)
 
 whois)
               case "$prev" in
-              
+
               -C|--color) completions='auto never' ;;
 
               *) completions='--csv -c --decode_uris -d --id -i --long -l --relative_dates -a -H --host -C --color -P --profile' ;;
@@ -349,7 +349,7 @@ whois)
 
 whoami)
               case "$prev" in
-              
+
               -C|--color) completions='auto never' ;;
 
               *) completions='--csv -c --decode_uris -d --long -l --relative_dates -a -H --host -C --color -P --profile' ;;
@@ -366,7 +366,7 @@ mute) completions='-H --host -C --color -P --profile' ;;
 account) completions='-H --host -C --color -P --profile' ;;
 status) completions='-H --host -C --color -P --profile' ;;
 help) completions='-H --host -C --color -P --profile' ;;
-              
+
               -C|--color) completions='auto never' ;;
 
               *) completions='-H --host -C --color -P --profile';;
@@ -382,7 +382,7 @@ members) completions='-H --host -C --color -P --profile' ;;
 remove) completions='-H --host -C --color -P --profile' ;;
 timeline) completions='-H --host -C --color -P --profile' ;;
 help) completions='-H --host -C --color -P --profile' ;;
-              
+
               -C|--color) completions='auto never' ;;
 
               *) completions='-H --host -C --color -P --profile';;
@@ -399,7 +399,7 @@ retweets) completions='-H --host -C --color -P --profile' ;;
 timeline) completions='-H --host -C --color -P --profile' ;;
 users) completions='-H --host -C --color -P --profile' ;;
 help) completions='-H --host -C --color -P --profile' ;;
-              
+
               -C|--color) completions='auto never' ;;
 
               *) completions='-H --host -C --color -P --profile';;
@@ -417,7 +417,7 @@ profile_background_image) completions='-H --host -C --color -P --profile' ;;
 profile_image) completions='-H --host -C --color -P --profile' ;;
 website) completions='-H --host -C --color -P --profile' ;;
 help) completions='-H --host -C --color -P --profile' ;;
-              
+
               -C|--color) completions='auto never' ;;
 
               *) completions='-H --host -C --color -P --profile';;
@@ -433,7 +433,7 @@ search) completions='-H --host -C --color -P --profile' ;;
 timeline) completions='-H --host -C --color -P --profile' ;;
 users) completions='-H --host -C --color -P --profile' ;;
 help) completions='-H --host -C --color -P --profile' ;;
-              
+
               -C|--color) completions='auto never' ;;
 
               *) completions='-H --host -C --color -P --profile';;
@@ -448,4 +448,4 @@ help) completions='-H --host -C --color -P --profile' ;;
       }
 
       complete -F _t $filenames t
-      
+

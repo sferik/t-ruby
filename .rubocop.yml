@@ -75,4 +75,5 @@ Style/TrailingCommaInLiteral:
   EnforcedStyleForMultiline: 'comma'
 
 Style/TrailingWhitespace:
-  Enabled: false
+  Exclude:
+    - 'spec/**/*'

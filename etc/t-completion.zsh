@@ -527,4 +527,3 @@ _t_stream() {
     ":argument:__t_stream_arguments" \
     $t_general_options && ret=0
 }
-

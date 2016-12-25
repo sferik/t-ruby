@@ -442,10 +442,10 @@ help) completions='-H --host -C --color -P --profile' ;;
           *) completions="$COMMANDS" ;;
         esac
 
-        COMPREPLY=( $( compgen -W "$completions" -- $cur ))
+        COMPREPLY=( $( compgen -W "$completions" -- "$cur" ))
         return 0
 
       }
 
-      complete -F _t $filenames t
+      complete -F _t "$filenames" t
       

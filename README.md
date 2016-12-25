@@ -53,6 +53,8 @@ Once you've verified that Ruby is installed:
 
     gem install t
 
+*More information on ruby is available [here](https://www.ruby-lang.org/en/).*
+
 ## Configuration
 Twitter API v1.1 requires OAuth for all of its functionality, so you'll need a
 registered Twitter application. If you've never registered a Twitter

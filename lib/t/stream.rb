@@ -134,6 +134,7 @@ module T
     method_option 'csv', aliases: '-c', type: :boolean, desc: 'Output in CSV format.'
     method_option 'decode_uris', aliases: '-d', type: :boolean, desc: 'Decodes t.co URLs into their original form.'
     method_option 'long', aliases: '-l', type: :boolean, desc: 'Output in long format.'
+    method_option 'medium', aliases: '-m', type: :boolean, desc: 'Output in medium format.'
     def timeline
       require 't/cli'
       streaming_client.before_request do
@@ -149,6 +150,11 @@ module T
           print_csv_tweet(tweet)
         elsif options['long']
           array = build_long_tweet(tweet).each_with_index.collect do |element, index|
+            TWEET_HEADINGS_FORMATTING[index] % element
+          end
+          print_table([array], truncate: STDOUT.tty?)
+        elsif options['medium']
+          array = build_medium_tweet(tweet).each_with_index.collect do |element, index|
             TWEET_HEADINGS_FORMATTING[index] % element
           end
           print_table([array], truncate: STDOUT.tty?)

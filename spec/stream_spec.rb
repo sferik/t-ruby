@@ -222,6 +222,16 @@ describe T::Stream do
         @stream.timeline
       end
     end
+    context '--medium' do
+      before do
+        @stream.options = @stream.options.merge('medium' => true)
+      end
+      it 'outputs in medium text format' do
+        allow(@streaming_client).to receive(:before_request)
+        expect(@stream).to receive(:print_table).with(any_args)
+        @stream.timeline
+      end
+    end
     it 'performs a REST search when the stream initializes' do
       allow(@streaming_client).to receive(:before_request).and_yield
       allow(@streaming_client).to receive(:user)

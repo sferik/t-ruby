@@ -124,7 +124,7 @@ apostrophes unless you prefix them with a backslash `\`:
 
 #### Delete your status
     t delete status tweet_id
-**Note**: A Tweet ID can be when viewing your Tweets in long format.
+**Note**: A Tweet ID can be found next to a Tweet when viewing your timeline in long format.
 
 #### Retrieve detailed information about a Twitter user
     t whois @sferik

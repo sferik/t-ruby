@@ -91,7 +91,7 @@ module T
       require 'htmlentities'
       text = HTMLEntities.new.decode(message.full_text)
       text = decode_uris(text, message.uris) if decode_full_uris
-      text
+      text.gsub(/\n+/,' ')
     end
 
     def decode_uris(full_text, uri_entities)

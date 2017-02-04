@@ -125,13 +125,9 @@ ID,Posted at,Screen name,Text
 415600159486005248,2013-12-24 21:49:34 +0000,_KAIRYALS,My birthday cake was bomb http://t.co/LquXc7JXj4
 415600159456632832,2013-12-24 21:49:34 +0000,frozenharryx,RT @LouisTexts: whos tessa? http://t.co/7DJQlmCfuu
 415600159452438528,2013-12-24 21:49:34 +0000,MIKEFANTASMA,"Pues nada, aquí armando mi regalo de navidad solo me falta la cara y ya hago mi pedido con santa!.. http://t.co/iDC7bE9o4M"
-415600159444439040,2013-12-24 21:49:34 +0000,EleManera,"RT @xmyband: La gente che si arrabbia perché Harry non ha fatto gli auguri a Lou su Twitter.
-Non vorrei smontarvi, ma esistono i cellulari e i messaggi."
+415600159444439040,2013-12-24 21:49:34 +0000,EleManera,"RT @xmyband: La gente che si arrabbia perché Harry non ha fatto gli auguri a Lou su Twitter. Non vorrei smontarvi, ma esistono i cellulari e i messaggi."
 415600159444434944,2013-12-24 21:49:34 +0000,BigAlFerguson,“@IrishRace; Merry Christmas to all our friends and followers from all @IrishRaceRally have a good one! http://t.co/rXFsC2ncFo” @Danloi1
-415600159436066816,2013-12-24 21:49:34 +0000,goksantezgel,"RT @nederlandline: Tayyip bey evladımızı severiz Biz ona dua ediyoruz.Fitnelere SAKIN HA!
-Mahmud Efndi (ks)
-#BedduayaLanetDuayaDavet 
-http://t.co/h6MUyHxr9x"""
+415600159436066816,2013-12-24 21:49:34 +0000,goksantezgel,"RT @nederlandline: Tayyip bey evladımızı severiz Biz ona dua ediyoruz.Fitnelere SAKIN HA! Mahmud Efndi (ks) #BedduayaLanetDuayaDavet  http://t.co/h6MUyHxr9x"""
 415600159427670016,2013-12-24 21:49:34 +0000,MaimounaLvb,RT @sissokodiaro: Miss mali pa pour les moche mon ga http://t.co/4WnwzoLgAD
 415600159423483904,2013-12-24 21:49:34 +0000,MrSilpy,@MrKATANI http://t.co/psk7K8rcND
 415600159423094784,2013-12-24 21:49:34 +0000,hunterdl19,RT @MadisonBertini: Jakes turnt http://t.co/P60gYZNL8z

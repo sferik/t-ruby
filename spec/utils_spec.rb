@@ -76,15 +76,15 @@ describe T::Utils do
   end
 
   describe '#decode_full_text' do
-    encoded_text = "RT @person_1: #tag1 test tweet with url. https://test.com/testurl"
+    encoded_text = 'RT @person_1: #tag1 test tweet with url. https://test.com/testurl'
     tweet1 = Twitter::Tweet.new(id: 1, text: encoded_text)
     it 'returns decoded string' do
       expect(@test.send(:decode_full_text, tweet1, true)).to eq(encoded_text)
     end
     context 'with new line character in text' do
-      encoded_text_with_new_line = "RT @person_1: #tag1 test tweet with
+      encoded_text_with_new_line = 'RT @person_1: #tag1 test tweet with
 url.
-https://test.com/testurl"
+https://test.com/testurl'
       tweet2 = Twitter::Tweet.new(id: 1, text: encoded_text_with_new_line)
       it 'returns decoded string with out new line character' do
         expect(@test.send(:decode_full_text, tweet2, true)).to eq(encoded_text)

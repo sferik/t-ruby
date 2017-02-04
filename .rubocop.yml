@@ -1,6 +1,14 @@
 Lint/EndAlignment:
   EnforcedStyleAlignWith: variable
 
+Metrics/ModuleLength:
+  Exclude:
+    - "**/*_spec.rb"
+
+Metrics/BlockLength:
+  Exclude:
+    - "**/*_spec.rb"
+
 Metrics/AbcSize:
   Enabled: false
 

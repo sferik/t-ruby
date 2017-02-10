@@ -61,7 +61,7 @@ fill out the short form at <https://apps.twitter.com/app/new>. If you've
 previously registered a Twitter application, it should be listed at
 <https://apps.twitter.com/>. Once you've registered an application, make sure
 to set your application's Access Level to "Read, Write and Access direct
-messages", otherwise you'll receive an error that looks like this:
+messages," otherwise you'll receive an error that looks like this:
 
     Error processing your OAuth request: Read-only application cannot POST
 

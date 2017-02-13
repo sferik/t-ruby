@@ -1,5 +1,13 @@
 Lint/EndAlignment:
-  AlignWith: variable
+  EnforcedStyleAlignWith: variable
+
+Metrics/ModuleLength:
+  Exclude:
+    - "**/*_spec.rb"
+
+Metrics/BlockLength:
+  Exclude:
+    - "**/*_spec.rb"
 
 Metrics/AbcSize:
   Enabled: false
@@ -38,7 +46,7 @@ Style/CollectionMethods:
     find_all: 'select'
 
 Style/CaseIndentation:
-  IndentWhenRelativeTo: end
+  EnforcedStyle: end
 
 Style/Documentation:
   Enabled: false

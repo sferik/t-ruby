@@ -22,11 +22,11 @@ module T
       end
 
       def editor
-        ENV['VISUAL'] || ENV['EDITOR'] || system_editor
+        #ENV['VISUAL'] || ENV['EDITOR'] || system_editor
       end
 
       def system_editor
-        RbConfig::CONFIG['host_os'] =~ /mswin|mingw/ ? 'notepad' : 'vi'
+        #RbConfig::CONFIG['host_os'] =~ /mswin|mingw/ ? 'notepad' : 'vi'
       end
     end
   end

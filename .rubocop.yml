@@ -38,7 +38,7 @@ Style/CollectionMethods:
     find_all: 'select'
 
 Style/CaseIndentation:
-  IndentWhenRelativeTo: end
+  EnforcedStyle: end
 
 Style/Documentation:
   Enabled: false

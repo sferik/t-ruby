@@ -1,5 +1,5 @@
 Lint/EndAlignment:
-  AlignWith: variable
+  EnforcedStyleAlignWith: variable
 
 Metrics/AbcSize:
   Enabled: false

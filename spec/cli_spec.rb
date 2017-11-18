@@ -952,14 +952,14 @@ ID                   Posted at     Screen name       Text
       before do
         stub_get('/1.1/account/verify_credentials.json').with(query: {skip_status: 'true'}).to_return(body: fixture('sferik.json'), headers: {content_type: 'application/json; charset=utf-8'})
         stub_get('/1.1/friends/ids.json').with(query: {cursor: '-1', user_id: '7505382'}).to_return(body: fixture('friends_ids.json'), headers: {content_type: 'application/json; charset=utf-8'})
-        stub_post('/1.1/users/lookup.json').with(body: {screen_name: 'sferik,pengwynn'}).to_return(body: fixture('users.json'), headers: {content_type: 'application/json; charset=utf-8'})
+        stub_get('/1.1/users/lookup.json').with(query: {screen_name: 'sferik,pengwynn'}).to_return(body: fixture('users.json'), headers: {content_type: 'application/json; charset=utf-8'})
         stub_post('/1.1/friendships/create.json').with(body: {user_id: '14100886'}).to_return(body: fixture('sferik.json'), headers: {content_type: 'application/json; charset=utf-8'})
       end
       it 'requests the correct resource' do
         @cli.follow('sferik', 'pengwynn')
         expect(a_get('/1.1/account/verify_credentials.json').with(query: {skip_status: 'true'})).to have_been_made
         expect(a_get('/1.1/friends/ids.json').with(query: {cursor: '-1', user_id: '7505382'})).to have_been_made
-        expect(a_post('/1.1/users/lookup.json').with(body: {screen_name: 'sferik,pengwynn'})).to have_been_made
+        expect(a_get('/1.1/users/lookup.json').with(query: {screen_name: 'sferik,pengwynn'})).to have_been_made
         expect(a_post('/1.1/friendships/create.json').with(body: {user_id: '14100886'})).to have_been_made
       end
       it 'has the correct output' do
@@ -970,26 +970,26 @@ ID                   Posted at     Screen name       Text
         before do
           @cli.options = @cli.options.merge('id' => true)
           stub_get('/1.1/friends/ids.json').with(query: {cursor: '-1', user_id: '7505382'}).to_return(body: fixture('friends_ids.json'), headers: {content_type: 'application/json; charset=utf-8'})
-          stub_post('/1.1/users/lookup.json').with(body: {user_id: '7505382,14100886'}).to_return(body: fixture('users.json'), headers: {content_type: 'application/json; charset=utf-8'})
+          stub_get('/1.1/users/lookup.json').with(query: {user_id: '7505382,14100886'}).to_return(body: fixture('users.json'), headers: {content_type: 'application/json; charset=utf-8'})
           stub_post('/1.1/friendships/create.json').with(body: {user_id: '14100886'}).to_return(body: fixture('sferik.json'), headers: {content_type: 'application/json; charset=utf-8'})
         end
         it 'requests the correct resource' do
           @cli.follow('7505382', '14100886')
           expect(a_get('/1.1/friends/ids.json').with(query: {cursor: '-1', user_id: '7505382'})).to have_been_made
-          expect(a_post('/1.1/users/lookup.json').with(body: {user_id: '7505382,14100886'})).to have_been_made
+          expect(a_get('/1.1/users/lookup.json').with(query: {user_id: '7505382,14100886'})).to have_been_made
           expect(a_post('/1.1/friendships/create.json').with(body: {user_id: '14100886'})).to have_been_made
         end
       end
       context 'Twitter is down' do
         it 'retries 3 times and then raise an error' do
           stub_get('/1.1/friends/ids.json').with(query: {cursor: '-1', user_id: '7505382'}).to_return(body: fixture('friends_ids.json'), headers: {content_type: 'application/json; charset=utf-8'})
-          stub_post('/1.1/users/lookup.json').with(body: {screen_name: 'sferik,pengwynn'}).to_return(body: fixture('users.json'), headers: {content_type: 'application/json; charset=utf-8'})
+          stub_get('/1.1/users/lookup.json').with(query: {screen_name: 'sferik,pengwynn'}).to_return(body: fixture('users.json'), headers: {content_type: 'application/json; charset=utf-8'})
           stub_post('/1.1/friendships/create.json').with(body: {user_id: '14100886'}).to_return(status: 502, headers: {content_type: 'application/json; charset=utf-8'})
           expect do
             @cli.follow('sferik', 'pengwynn')
           end.to raise_error(Twitter::Error::BadGateway)
           expect(a_get('/1.1/friends/ids.json').with(query: {cursor: '-1', user_id: '7505382'})).to have_been_made.times(3)
-          expect(a_post('/1.1/users/lookup.json').with(body: {screen_name: 'sferik,pengwynn'})).to have_been_made.times(3)
+          expect(a_get('/1.1/users/lookup.json').with(query: {screen_name: 'sferik,pengwynn'})).to have_been_made.times(3)
           expect(a_post('/1.1/friendships/create.json').with(body: {user_id: '14100886'})).to have_been_made.times(3)
         end
       end
@@ -1000,13 +1000,13 @@ ID                   Posted at     Screen name       Text
     before do
       stub_get('/1.1/account/verify_credentials.json').with(query: {skip_status: 'true'}).to_return(body: fixture('sferik.json'), headers: {content_type: 'application/json; charset=utf-8'})
       stub_get('/1.1/friends/ids.json').with(query: {cursor: '-1', user_id: '7505382'}).to_return(body: fixture('friends_ids.json'), headers: {content_type: 'application/json; charset=utf-8'})
-      stub_post('/1.1/users/lookup.json').with(body: {user_id: '7505382'}).to_return(body: fixture('users.json'), headers: {content_type: 'application/json; charset=utf-8'})
+      stub_get('/1.1/users/lookup.json').with(query: {user_id: '7505382'}).to_return(body: fixture('users.json'), headers: {content_type: 'application/json; charset=utf-8'})
     end
     it 'requests the correct resource' do
       @cli.followings
       expect(a_get('/1.1/account/verify_credentials.json').with(query: {skip_status: 'true'})).to have_been_made
       expect(a_get('/1.1/friends/ids.json').with(query: {cursor: '-1', user_id: '7505382'})).to have_been_made
-      expect(a_post('/1.1/users/lookup.json').with(body: {user_id: '7505382'})).to have_been_made
+      expect(a_get('/1.1/users/lookup.json').with(query: {user_id: '7505382'})).to have_been_made
     end
     it 'has the correct output' do
       @cli.followings
@@ -1126,7 +1126,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       it 'requests the correct resource' do
         @cli.followings('sferik')
         expect(a_get('/1.1/friends/ids.json').with(query: {cursor: '-1', screen_name: 'sferik'})).to have_been_made
-        expect(a_post('/1.1/users/lookup.json').with(body: {user_id: '7505382'})).to have_been_made
+        expect(a_get('/1.1/users/lookup.json').with(query: {user_id: '7505382'})).to have_been_made
       end
     end
     context '--id' do
@@ -1137,7 +1137,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       it 'requests the correct resource' do
         @cli.followings('7505382')
         expect(a_get('/1.1/friends/ids.json').with(query: {cursor: '-1', user_id: '7505382'})).to have_been_made
-        expect(a_post('/1.1/users/lookup.json').with(body: {user_id: '7505382'})).to have_been_made
+        expect(a_get('/1.1/users/lookup.json').with(query: {user_id: '7505382'})).to have_been_made
       end
     end
   end
@@ -1146,13 +1146,13 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
     before do
       stub_get('/1.1/friends/ids.json').with(query: {cursor: '-1', screen_name: 'testcli'}).to_return(body: fixture('friends_ids.json'), headers: {content_type: 'application/json; charset=utf-8'})
       stub_get('/1.1/followers/ids.json').with(query: {cursor: '-1', screen_name: 'sferik'}).to_return(body: fixture('friends_ids.json'), headers: {content_type: 'application/json; charset=utf-8'})
-      stub_post('/1.1/users/lookup.json').with(body: {user_id: '7505382'}).to_return(body: fixture('users.json'), headers: {content_type: 'application/json; charset=utf-8'})
+      stub_get('/1.1/users/lookup.json').with(query: {user_id: '7505382'}).to_return(body: fixture('users.json'), headers: {content_type: 'application/json; charset=utf-8'})
     end
     it 'requests the correct resource' do
       @cli.followings_following('sferik')
       expect(a_get('/1.1/friends/ids.json').with(query: {cursor: '-1', screen_name: 'testcli'})).to have_been_made
       expect(a_get('/1.1/followers/ids.json').with(query: {cursor: '-1', screen_name: 'sferik'})).to have_been_made
-      expect(a_post('/1.1/users/lookup.json').with(body: {user_id: '7505382'})).to have_been_made
+      expect(a_get('/1.1/users/lookup.json').with(query: {user_id: '7505382'})).to have_been_made
     end
     it 'has the correct output' do
       @cli.followings_following('sferik')
@@ -1274,7 +1274,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
         @cli.followings_following('sferik', 'pengwynn')
         expect(a_get('/1.1/friends/ids.json').with(query: {cursor: '-1', screen_name: 'pengwynn'})).to have_been_made
         expect(a_get('/1.1/followers/ids.json').with(query: {cursor: '-1', screen_name: 'sferik'})).to have_been_made
-        expect(a_post('/1.1/users/lookup.json').with(body: {user_id: '7505382'})).to have_been_made
+        expect(a_get('/1.1/users/lookup.json').with(query: {user_id: '7505382'})).to have_been_made
       end
       context '--id' do
         before do
@@ -1286,7 +1286,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
           @cli.followings_following('7505382', '14100886')
           expect(a_get('/1.1/friends/ids.json').with(query: {cursor: '-1', user_id: '14100886'})).to have_been_made
           expect(a_get('/1.1/followers/ids.json').with(query: {cursor: '-1', user_id: '7505382'})).to have_been_made
-          expect(a_post('/1.1/users/lookup.json').with(body: {user_id: '7505382'})).to have_been_made
+          expect(a_get('/1.1/users/lookup.json').with(query: {user_id: '7505382'})).to have_been_made
         end
       end
     end
@@ -1296,13 +1296,13 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
     before do
       stub_get('/1.1/account/verify_credentials.json').with(query: {skip_status: 'true'}).to_return(body: fixture('sferik.json'), headers: {content_type: 'application/json; charset=utf-8'})
       stub_get('/1.1/followers/ids.json').with(query: {cursor: '-1', user_id: '7505382'}).to_return(body: fixture('friends_ids.json'), headers: {content_type: 'application/json; charset=utf-8'})
-      stub_post('/1.1/users/lookup.json').with(body: {user_id: '7505382'}).to_return(body: fixture('users.json'), headers: {content_type: 'application/json; charset=utf-8'})
+      stub_get('/1.1/users/lookup.json').with(query: {user_id: '7505382'}).to_return(body: fixture('users.json'), headers: {content_type: 'application/json; charset=utf-8'})
     end
     it 'requests the correct resource' do
       @cli.followers
       expect(a_get('/1.1/account/verify_credentials.json').with(query: {skip_status: 'true'})).to have_been_made
       expect(a_get('/1.1/followers/ids.json').with(query: {cursor: '-1', user_id: '7505382'})).to have_been_made
-      expect(a_post('/1.1/users/lookup.json').with(body: {user_id: '7505382'})).to have_been_made
+      expect(a_get('/1.1/users/lookup.json').with(query: {user_id: '7505382'})).to have_been_made
     end
     it 'has the correct output' do
       @cli.followers
@@ -1418,12 +1418,12 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
     context 'with a user passed' do
       before do
         stub_get('/1.1/followers/ids.json').with(query: {cursor: '-1', screen_name: 'sferik'}).to_return(body: fixture('friends_ids.json'), headers: {content_type: 'application/json; charset=utf-8'})
-        stub_post('/1.1/users/lookup.json').with(body: {user_id: '213747670,428004849'}).to_return(body: fixture('users.json'), headers: {content_type: 'application/json; charset=utf-8'})
+        stub_get('/1.1/users/lookup.json').with(query: {user_id: '213747670,428004849'}).to_return(body: fixture('users.json'), headers: {content_type: 'application/json; charset=utf-8'})
       end
       it 'requests the correct resource' do
         @cli.followers('sferik')
         expect(a_get('/1.1/followers/ids.json').with(query: {cursor: '-1', screen_name: 'sferik'})).to have_been_made
-        expect(a_post('/1.1/users/lookup.json').with(body: {user_id: '7505382'})).to have_been_made
+        expect(a_get('/1.1/users/lookup.json').with(query: {user_id: '7505382'})).to have_been_made
       end
       context '--id' do
         before do
@@ -1433,7 +1433,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
         it 'requests the correct resource' do
           @cli.followers('7505382')
           expect(a_get('/1.1/followers/ids.json').with(query: {cursor: '-1', user_id: '7505382'})).to have_been_made
-          expect(a_post('/1.1/users/lookup.json').with(body: {user_id: '7505382'})).to have_been_made
+          expect(a_get('/1.1/users/lookup.json').with(query: {user_id: '7505382'})).to have_been_made
         end
       end
     end
@@ -1444,14 +1444,14 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       stub_get('/1.1/account/verify_credentials.json').to_return(body: fixture('sferik.json'), headers: {content_type: 'application/json; charset=utf-8'})
       stub_get('/1.1/friends/ids.json').with(query: {cursor: '-1', screen_name: 'sferik'}).to_return(body: fixture('friends_ids.json'), headers: {content_type: 'application/json; charset=utf-8'})
       stub_get('/1.1/followers/ids.json').with(query: {cursor: '-1', screen_name: 'sferik'}).to_return(body: fixture('friends_ids.json'), headers: {content_type: 'application/json; charset=utf-8'})
-      stub_post('/1.1/users/lookup.json').with(body: {user_id: '7505382'}).to_return(body: fixture('users.json'), headers: {content_type: 'application/json; charset=utf-8'})
+      stub_get('/1.1/users/lookup.json').with(query: {user_id: '7505382'}).to_return(body: fixture('users.json'), headers: {content_type: 'application/json; charset=utf-8'})
     end
     it 'requests the correct resource' do
       @cli.friends
       expect(a_get('/1.1/account/verify_credentials.json')).to have_been_made
       expect(a_get('/1.1/friends/ids.json').with(query: {cursor: '-1', screen_name: 'sferik'})).to have_been_made
       expect(a_get('/1.1/followers/ids.json').with(query: {cursor: '-1', screen_name: 'sferik'})).to have_been_made
-      expect(a_post('/1.1/users/lookup.json').with(body: {user_id: '7505382'})).to have_been_made
+      expect(a_get('/1.1/users/lookup.json').with(query: {user_id: '7505382'})).to have_been_made
     end
     it 'has the correct output' do
       @cli.friends
@@ -1573,7 +1573,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
         @cli.friends('sferik')
         expect(a_get('/1.1/friends/ids.json').with(query: {cursor: '-1', screen_name: 'sferik'})).to have_been_made
         expect(a_get('/1.1/followers/ids.json').with(query: {cursor: '-1', screen_name: 'sferik'})).to have_been_made
-        expect(a_post('/1.1/users/lookup.json').with(body: {user_id: '7505382'})).to have_been_made
+        expect(a_get('/1.1/users/lookup.json').with(query: {user_id: '7505382'})).to have_been_made
       end
       context '--id' do
         before do
@@ -1585,7 +1585,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
           @cli.friends('7505382')
           expect(a_get('/1.1/friends/ids.json').with(query: {cursor: '-1', user_id: '7505382'})).to have_been_made
           expect(a_get('/1.1/followers/ids.json').with(query: {cursor: '-1', user_id: '7505382'})).to have_been_made
-          expect(a_post('/1.1/users/lookup.json').with(body: {user_id: '7505382'})).to have_been_made
+          expect(a_get('/1.1/users/lookup.json').with(query: {user_id: '7505382'})).to have_been_made
         end
       end
     end
@@ -1596,14 +1596,14 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       stub_get('/1.1/account/verify_credentials.json').to_return(body: fixture('sferik.json'), headers: {content_type: 'application/json; charset=utf-8'})
       stub_get('/1.1/followers/ids.json').with(query: {cursor: '-1', screen_name: 'sferik'}).to_return(body: fixture('followers_ids.json'), headers: {content_type: 'application/json; charset=utf-8'})
       stub_get('/1.1/friends/ids.json').with(query: {cursor: '-1', screen_name: 'sferik'}).to_return(body: fixture('friends_ids.json'), headers: {content_type: 'application/json; charset=utf-8'})
-      stub_post('/1.1/users/lookup.json').with(body: {user_id: '213747670,428004849'}).to_return(body: fixture('users.json'), headers: {content_type: 'application/json; charset=utf-8'})
+      stub_get('/1.1/users/lookup.json').with(query: {user_id: '213747670,428004849'}).to_return(body: fixture('users.json'), headers: {content_type: 'application/json; charset=utf-8'})
     end
     it 'requests the correct resource' do
       @cli.groupies
       expect(a_get('/1.1/account/verify_credentials.json')).to have_been_made
       expect(a_get('/1.1/followers/ids.json').with(query: {cursor: '-1', screen_name: 'sferik'})).to have_been_made
       expect(a_get('/1.1/friends/ids.json').with(query: {cursor: '-1', screen_name: 'sferik'})).to have_been_made
-      expect(a_post('/1.1/users/lookup.json').with(body: {user_id: '213747670,428004849'})).to have_been_made
+      expect(a_get('/1.1/users/lookup.json').with(query: {user_id: '213747670,428004849'})).to have_been_made
     end
     it 'has the correct output' do
       @cli.groupies
@@ -1725,7 +1725,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
         @cli.groupies('sferik')
         expect(a_get('/1.1/followers/ids.json').with(query: {cursor: '-1', screen_name: 'sferik'})).to have_been_made
         expect(a_get('/1.1/friends/ids.json').with(query: {cursor: '-1', screen_name: 'sferik'})).to have_been_made
-        expect(a_post('/1.1/users/lookup.json').with(body: {user_id: '213747670,428004849'})).to have_been_made
+        expect(a_get('/1.1/users/lookup.json').with(query: {user_id: '213747670,428004849'})).to have_been_made
       end
       context '--id' do
         before do
@@ -1737,7 +1737,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
           @cli.groupies('7505382')
           expect(a_get('/1.1/followers/ids.json').with(query: {cursor: '-1', user_id: '7505382'})).to have_been_made
           expect(a_get('/1.1/friends/ids.json').with(query: {cursor: '-1', user_id: '7505382'})).to have_been_made
-          expect(a_post('/1.1/users/lookup.json').with(body: {user_id: '213747670,428004849'})).to have_been_made
+          expect(a_get('/1.1/users/lookup.json').with(query: {user_id: '213747670,428004849'})).to have_been_made
         end
       end
     end
@@ -1748,13 +1748,13 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       @cli.options = @cli.options.merge('type' => 'followings')
       stub_get('/1.1/friends/ids.json').with(query: {cursor: '-1', screen_name: 'testcli'}).to_return(body: fixture('friends_ids.json'), headers: {content_type: 'application/json; charset=utf-8'})
       stub_get('/1.1/friends/ids.json').with(query: {cursor: '-1', screen_name: 'sferik'}).to_return(body: fixture('friends_ids.json'), headers: {content_type: 'application/json; charset=utf-8'})
-      stub_post('/1.1/users/lookup.json').with(body: {user_id: '7505382'}).to_return(body: fixture('users.json'), headers: {content_type: 'application/json; charset=utf-8'})
+      stub_get('/1.1/users/lookup.json').with(query: {user_id: '7505382'}).to_return(body: fixture('users.json'), headers: {content_type: 'application/json; charset=utf-8'})
     end
     it 'requests the correct resource' do
       @cli.intersection('sferik')
       expect(a_get('/1.1/friends/ids.json').with(query: {cursor: '-1', screen_name: 'testcli'})).to have_been_made
       expect(a_get('/1.1/friends/ids.json').with(query: {cursor: '-1', screen_name: 'sferik'})).to have_been_made
-      expect(a_post('/1.1/users/lookup.json').with(body: {user_id: '7505382'})).to have_been_made
+      expect(a_get('/1.1/users/lookup.json').with(query: {user_id: '7505382'})).to have_been_made
     end
     it 'has the correct output' do
       @cli.intersection('sferik')
@@ -1863,13 +1863,13 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
         @cli.options = @cli.options.merge('type' => 'followers')
         stub_get('/1.1/followers/ids.json').with(query: {cursor: '-1', screen_name: 'testcli'}).to_return(body: fixture('followers_ids.json'), headers: {content_type: 'application/json; charset=utf-8'})
         stub_get('/1.1/followers/ids.json').with(query: {cursor: '-1', screen_name: 'sferik'}).to_return(body: fixture('followers_ids.json'), headers: {content_type: 'application/json; charset=utf-8'})
-        stub_post('/1.1/users/lookup.json').with(body: {user_id: '213747670,428004849'}).to_return(body: fixture('users.json'), headers: {content_type: 'application/json; charset=utf-8'})
+        stub_get('/1.1/users/lookup.json').with(query: {user_id: '213747670,428004849'}).to_return(body: fixture('users.json'), headers: {content_type: 'application/json; charset=utf-8'})
       end
       it 'requests the correct resource' do
         @cli.intersection('sferik')
         expect(a_get('/1.1/followers/ids.json').with(query: {cursor: '-1', screen_name: 'testcli'})).to have_been_made
         expect(a_get('/1.1/followers/ids.json').with(query: {cursor: '-1', screen_name: 'sferik'})).to have_been_made
-        expect(a_post('/1.1/users/lookup.json').with(body: {user_id: '213747670,428004849'})).to have_been_made
+        expect(a_get('/1.1/users/lookup.json').with(query: {user_id: '213747670,428004849'})).to have_been_made
       end
       it 'has the correct output' do
         @cli.intersection('sferik')
@@ -1894,7 +1894,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
         @cli.intersection('sferik', 'pengwynn')
         expect(a_get('/1.1/friends/ids.json').with(query: {cursor: '-1', screen_name: 'pengwynn'})).to have_been_made
         expect(a_get('/1.1/friends/ids.json').with(query: {cursor: '-1', screen_name: 'sferik'})).to have_been_made
-        expect(a_post('/1.1/users/lookup.json').with(body: {user_id: '7505382'})).to have_been_made
+        expect(a_get('/1.1/users/lookup.json').with(query: {user_id: '7505382'})).to have_been_made
       end
       context '--id' do
         before do
@@ -1906,7 +1906,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
           @cli.intersection('7505382', '14100886')
           expect(a_get('/1.1/friends/ids.json').with(query: {cursor: '-1', user_id: '14100886'})).to have_been_made
           expect(a_get('/1.1/friends/ids.json').with(query: {cursor: '-1', user_id: '7505382'})).to have_been_made
-          expect(a_post('/1.1/users/lookup.json').with(body: {user_id: '7505382'})).to have_been_made
+          expect(a_get('/1.1/users/lookup.json').with(query: {user_id: '7505382'})).to have_been_made
         end
       end
     end
@@ -1917,14 +1917,14 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
       stub_get('/1.1/account/verify_credentials.json').to_return(body: fixture('sferik.json'), headers: {content_type: 'application/json; charset=utf-8'})
       stub_get('/1.1/friends/ids.json').with(query: {cursor: '-1', screen_name: 'sferik'}).to_return(body: fixture('friends_ids.json'), headers: {content_type: 'application/json; charset=utf-8'})
       stub_get('/1.1/followers/ids.json').with(query: {cursor: '-1', screen_name: 'sferik'}).to_return(body: fixture('followers_ids.json'), headers: {content_type: 'application/json; charset=utf-8'})
-      stub_post('/1.1/users/lookup.json').with(body: {user_id: '7505382'}).to_return(body: fixture('users.json'), headers: {content_type: 'application/json; charset=utf-8'})
+      stub_get('/1.1/users/lookup.json').with(query: {user_id: '7505382'}).to_return(body: fixture('users.json'), headers: {content_type: 'application/json; charset=utf-8'})
     end
     it 'requests the correct resource' do
       @cli.leaders
       expect(a_get('/1.1/account/verify_credentials.json')).to have_been_made
       expect(a_get('/1.1/friends/ids.json').with(query: {cursor: '-1', screen_name: 'sferik'})).to have_been_made
       expect(a_get('/1.1/followers/ids.json').with(query: {cursor: '-1', screen_name: 'sferik'})).to have_been_made
-      expect(a_post('/1.1/users/lookup.json').with(body: {user_id: '7505382'})).to have_been_made
+      expect(a_get('/1.1/users/lookup.json').with(query: {user_id: '7505382'})).to have_been_made
     end
     it 'has the correct output' do
       @cli.leaders
@@ -2046,7 +2046,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
         @cli.leaders('sferik')
         expect(a_get('/1.1/friends/ids.json').with(query: {cursor: '-1', screen_name: 'sferik'})).to have_been_made
         expect(a_get('/1.1/followers/ids.json').with(query: {cursor: '-1', screen_name: 'sferik'})).to have_been_made
-        expect(a_post('/1.1/users/lookup.json').with(body: {user_id: '7505382'})).to have_been_made
+        expect(a_get('/1.1/users/lookup.json').with(query: {user_id: '7505382'})).to have_been_made
       end
       context '--id' do
         before do
@@ -2058,7 +2058,7 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
           @cli.leaders('7505382')
           expect(a_get('/1.1/friends/ids.json').with(query: {cursor: '-1', user_id: '7505382'})).to have_been_made
           expect(a_get('/1.1/followers/ids.json').with(query: {cursor: '-1', user_id: '7505382'})).to have_been_made
-          expect(a_post('/1.1/users/lookup.json').with(body: {user_id: '7505382'})).to have_been_made
+          expect(a_get('/1.1/users/lookup.json').with(query: {user_id: '7505382'})).to have_been_made
         end
       end
     end
@@ -2182,12 +2182,12 @@ ID        Created at    Screen name  Slug      Members  Subscribers  Mode    ...
   describe '#matrix' do
     before do
       stub_get('/1.1/search/tweets.json').with(query: {q: 'lang:ja', count: 100, include_entities: 'false'}).to_return(body: fixture('matrix.json'), headers: {content_type: 'application/json; charset=utf-8'})
-      stub_get('/1.1/search/tweets.json').with(query: {q: 'lang:ja', count: 100, max_id: '434642935557021697'}).to_return(body: fixture('empty_cursor.json'), headers: {content_type: 'application/json; charset=utf-8'})
+      stub_get('/1.1/search/tweets.json').with(query: {q: 'lang:ja', count: 100, max_id: '434642935557021697', include_entities: 'false'}).to_return(body: fixture('empty_cursor.json'), headers: {content_type: 'application/json; charset=utf-8'})
     end
     it 'requests the correct resource' do
       @cli.matrix
       expect(a_get('/1.1/search/tweets.json').with(query: {q: 'lang:ja', count: 100, include_entities: 'false'})).to have_been_made
-      expect(a_get('/1.1/search/tweets.json').with(query: {q: 'lang:ja', count: 100, max_id: '434642935557021697'})).to have_been_made
+      expect(a_get('/1.1/search/tweets.json').with(query: {q: 'lang:ja', count: 100, max_id: '434642935557021697', include_entities: 'false'})).to have_been_made
     end
     it 'has the correct output' do
       @cli.matrix
@@ -2438,12 +2438,12 @@ ID                   Posted at     Screen name       Text
   describe '#muted' do
     before do
       stub_get('/1.1/mutes/users/ids.json').with(query: {cursor: '-1'}).to_return(body: fixture('muted_ids.json'), headers: {content_type: 'application/json; charset=utf-8'})
-      stub_post('/1.1/users/lookup.json').with(body: {user_id: '14098423'}).to_return(body: fixture('muted_users.json'), headers: {content_type: 'application/json; charset=utf-8'})
+      stub_get('/1.1/users/lookup.json').with(query: {user_id: '14098423'}).to_return(body: fixture('muted_users.json'), headers: {content_type: 'application/json; charset=utf-8'})
     end
     it 'requests the correct resource' do
       @cli.muted
       expect(a_get('/1.1/mutes/users/ids.json').with(query: {cursor: '-1'})).to have_been_made
-      expect(a_post('/1.1/users/lookup.json').with(body: {user_id: '14098423'})).to have_been_made
+      expect(a_get('/1.1/users/lookup.json').with(query: {user_id: '14098423'})).to have_been_made
     end
     it 'has the correct output' do
       @cli.muted
@@ -2550,11 +2550,13 @@ ID                   Posted at     Screen name       Text
     context 'with file' do
       before do
         @cli.options = @cli.options.merge('file' => fixture_path + '/long.png')
-        stub_post('/1.1/statuses/update_with_media.json').to_return(body: fixture('status.json'), headers: {content_type: 'application/json; charset=utf-8'})
+        stub_request(:post, 'https://upload.twitter.com/1.1/media/upload.json')
+        stub_post('/1.1/statuses/update.json').to_return(body: fixture('status.json'), headers: {content_type: 'application/json; charset=utf-8'})
       end
       it 'requests the correct resource' do
         @cli.reply('263813522369159169', 'Testing')
-        expect(a_post('/1.1/statuses/update_with_media.json')).to have_been_made
+        expect(a_request(:post, 'https://upload.twitter.com/1.1/media/upload.json')).to have_been_made
+        expect(a_post('/1.1/statuses/update.json')).to have_been_made
       end
       it 'has the correct output' do
         @cli.reply('263813522369159169', 'Testing')
@@ -3890,10 +3892,12 @@ WOEID     Parent ID  Type       Name           Country
     context 'with file' do
       before do
         @cli.options = @cli.options.merge('file' => fixture_path + '/long.png')
-        stub_post('/1.1/statuses/update_with_media.json').to_return(body: fixture('status.json'), headers: {content_type: 'application/json; charset=utf-8'})
+        stub_request(:post, 'https://upload.twitter.com/1.1/media/upload.json')
+        stub_post('/1.1/statuses/update.json').to_return(body: fixture('status.json'), headers: {content_type: 'application/json; charset=utf-8'})
       end
       it 'requests the correct resource' do
         @cli.update('Testing')
+        expect(a_request(:post, 'https://upload.twitter.com/1.1/media/upload.json')).to have_been_made
         expect(a_post('/1.1/statuses/update_with_media.json')).to have_been_made
       end
       it 'has the correct output' do
@@ -3943,11 +3947,11 @@ WOEID     Parent ID  Type       Name           Country
 
   describe '#users' do
     before do
-      stub_post('/1.1/users/lookup.json').with(body: {screen_name: 'sferik,pengwynn'}).to_return(body: fixture('users.json'), headers: {content_type: 'application/json; charset=utf-8'})
+      stub_get('/1.1/users/lookup.json').with(query: {screen_name: 'sferik,pengwynn'}).to_return(body: fixture('users.json'), headers: {content_type: 'application/json; charset=utf-8'})
     end
     it 'requests the correct resource' do
       @cli.users('sferik', 'pengwynn')
-      expect(a_post('/1.1/users/lookup.json').with(body: {screen_name: 'sferik,pengwynn'})).to have_been_made
+      expect(a_get('/1.1/users/lookup.json').with(query: {screen_name: 'sferik,pengwynn'})).to have_been_made
     end
     it 'has the correct output' do
       @cli.users('sferik', 'pengwynn')
@@ -4018,11 +4022,11 @@ ID        Since         Last tweeted at  Tweets  Favorites  Listed  Following...
     context '--id' do
       before do
         @cli.options = @cli.options.merge('id' => true)
-        stub_post('/1.1/users/lookup.json').with(body: {user_id: '7505382,14100886'}).to_return(body: fixture('users.json'), headers: {content_type: 'application/json; charset=utf-8'})
+        stub_get('/1.1/users/lookup.json').with(query: {user_id: '7505382,14100886'}).to_return(body: fixture('users.json'), headers: {content_type: 'application/json; charset=utf-8'})
       end
       it 'requests the correct resource' do
         @cli.users('7505382', '14100886')
-        expect(a_post('/1.1/users/lookup.json').with(body: {user_id: '7505382,14100886'})).to have_been_made
+        expect(a_get('/1.1/users/lookup.json').with(query: {user_id: '7505382,14100886'})).to have_been_made
       end
     end
     context '--sort=listed' do

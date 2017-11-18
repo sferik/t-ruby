@@ -1,3 +1,18 @@
+Layout/AccessModifierIndentation:
+  EnforcedStyle: outdent
+
+Layout/CaseIndentation:
+  EnforcedStyle: end
+
+Layout/DotPosition:
+  EnforcedStyle: trailing
+
+Layout/SpaceInsideHashLiteralBraces:
+  EnforcedStyle: no_space
+
+Layout/TrailingWhitespace:
+  Enabled: false
+
 Lint/EndAlignment:
   EnforcedStyleAlignWith: variable
 
@@ -27,9 +42,6 @@ Metrics/ParameterLists:
 Metrics/PerceivedComplexity:
   Max: 28 # TODO: Lower to 7
 
-Style/AccessModifierIndentation:
-  EnforcedStyle: outdent
-
 Style/CollectionMethods:
   PreferredMethods:
     map:      'collect'
@@ -37,14 +49,8 @@ Style/CollectionMethods:
     find:     'detect'
     find_all: 'select'
 
-Style/CaseIndentation:
-  EnforcedStyle: end
-
 Style/Documentation:
   Enabled: false
-
-Style/DotPosition:
-  EnforcedStyle: trailing
 
 Style/DoubleNegation:
   Enabled: false
@@ -68,11 +74,5 @@ Style/RegexpLiteral:
 Style/FrozenStringLiteralComment:
   Enabled: false
 
-Style/SpaceInsideHashLiteralBraces:
-  EnforcedStyle: no_space
-
 Style/TrailingCommaInLiteral:
   EnforcedStyleForMultiline: 'comma'
-
-Style/TrailingWhitespace:
-  Enabled: false

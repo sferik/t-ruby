@@ -122,6 +122,10 @@ apostrophes unless you prefix them with a backslash `\`:
 
     t update 'I\'m tweeting from the command line. Isn\'t that special?'
 
+#### Delete your status
+    t delete status tweet_id
+**Note**: A Tweet ID can be found next to a Tweet when viewing your timeline in long format.
+
 #### Retrieve detailed information about a Twitter user
     t whois @sferik
 

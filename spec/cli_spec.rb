@@ -3898,7 +3898,7 @@ WOEID     Parent ID  Type       Name           Country
       it 'requests the correct resource' do
         @cli.update('Testing')
         expect(a_request(:post, 'https://upload.twitter.com/1.1/media/upload.json')).to have_been_made
-        expect(a_post('/1.1/statuses/update_with_media.json')).to have_been_made
+        expect(a_post('/1.1/statuses/update.json')).to have_been_made
       end
       it 'has the correct output' do
         @cli.update('Testing')

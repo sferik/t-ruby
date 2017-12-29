@@ -688,7 +688,7 @@ module T
     end
     map %w(retweetsofme) => :retweets_of_me
 
-    desc 'ruler', 'Prints a 140-character ruler'
+    desc 'ruler', 'Prints a 280-character ruler'
     method_option 'indent', aliases: '-i', type: :numeric, default: 0, desc: 'The number of spaces to print before the ruler.'
     def ruler
       markings = '----|'.chars.cycle.take(140).join

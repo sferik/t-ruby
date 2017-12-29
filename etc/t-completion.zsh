@@ -49,7 +49,7 @@ _t (){
       "retweet[Sends Tweets to your followers.]" \
       "retweets[Returns the 20 most recent Retweets by a user.]" \
       "retweets_of_me[Returns the 20 most recent Tweets of the authenticated user that have been retweeted by others.]" \
-      "ruler[Prints a 140-character ruler]" \
+      "ruler[Prints a 280-character ruler]" \
       "status[Retrieves detailed information about a Tweet.]" \
       "timeline[Returns the 20 most recent Tweets posted by a user.]" \
       "trends[Returns the top 50 trending topics.]" \

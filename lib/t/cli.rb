@@ -14,7 +14,6 @@ require 't/search'
 require 't/set'
 require 't/stream'
 require 't/utils'
-require 'byebug'
 
 module T
   class CLI < Thor
@@ -114,7 +113,7 @@ module T
     method_option 'id', aliases: '-i', type: :boolean, desc: 'Specify input as Twitter user IDs instead of screen names.'
     def block(user, *users)
       return if invalid_users_present(user, users)
-      byebug
+
       blocked_users, number = fetch_users(users.unshift(user), options) do |users_to_block|
         client.block(users_to_block)
       end

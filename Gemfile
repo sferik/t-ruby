@@ -14,7 +14,6 @@ group :test do
   gem 'timecop'
   gem 'tins'
   gem 'webmock', '>= 1.10.1'
-  gem 'byebug'
 end
 
 gemspec

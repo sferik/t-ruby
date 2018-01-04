@@ -112,6 +112,7 @@ module T
     desc 'block USER [USER...]', 'Block users.'
     method_option 'id', aliases: '-i', type: :boolean, desc: 'Specify input as Twitter user IDs instead of screen names.'
     def block(user, *users)
+      return if invalid_users_present(user, users)
       blocked_users, number = fetch_users(users.unshift(user), options) do |users_to_block|
         client.block(users_to_block)
       end
@@ -949,6 +950,34 @@ module T
     subcommand 'stream', T::Stream
 
   private
+
+    def invalid_users_present(user, users)
+      begin
+        return true if user_already_blocked?(user)
+      rescue
+        say "#{user} was not found"
+        return true
+      end
+      not_found_flag = false
+      users.each do |user|
+        begin
+          return true if user_already_blocked?(user)
+        rescue
+          say "#{user} not found \n"
+          not_found_flag = true
+          next
+        end
+      end
+      not_found_flag ?  true : false
+    end
+
+    def user_already_blocked?(user)
+      if client.block?(user)
+        say "#{user} is already blocked"
+        return true
+      end
+      return false
+    end
 
     def extract_mentioned_screen_names(text)
       valid_mention_preceding_chars = /(?:[^a-zA-Z0-9_!#\$%&*@＠]|^|RT:?)/o

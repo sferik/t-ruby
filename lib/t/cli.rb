@@ -14,6 +14,7 @@ require 't/search'
 require 't/set'
 require 't/stream'
 require 't/utils'
+require 'byebug'
 
 module T
   class CLI < Thor
@@ -113,6 +114,7 @@ module T
     method_option 'id', aliases: '-i', type: :boolean, desc: 'Specify input as Twitter user IDs instead of screen names.'
     def block(user, *users)
       return if invalid_users_present(user, users)
+      byebug
       blocked_users, number = fetch_users(users.unshift(user), options) do |users_to_block|
         client.block(users_to_block)
       end
@@ -952,23 +954,27 @@ module T
   private
 
     def invalid_users_present(user, users)
-      begin
-        return true if user_already_blocked?(user)
-      rescue
-        say "#{user} was not found"
-        return true
-      end
       not_found_flag = false
-      users.each do |user|
-        begin
-          return true if user_already_blocked?(user)
+      begin
+        if user_already_blocked?(user)
+          say "#{user} is already blocked\n"
+        end
         rescue
           say "#{user} not found \n"
-          not_found_flag = true
-          next
-        end
+          return true if users.empty?
+        ensure
+          users.each do |user|
+            begin
+              return true if user_already_blocked?(user)
+            rescue
+              say "#{user} not found \n"
+              not_found_flag = true
+              next
+            end
+          end
+          not_found_flag
       end
-      not_found_flag ?  true : false
+      not_found_flag
     end
 
     def user_already_blocked?(user)

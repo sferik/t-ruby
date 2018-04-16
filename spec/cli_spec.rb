@@ -143,36 +143,36 @@ testcli
    Sounds good. Meeting Tuesday is fine.
 
    @sferik
-   That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does 
+   That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does
    that work for you?
 
    @sferik
-   I asked Yehuda about the stipend. I believe it has already been sent. Glad 
+   I asked Yehuda about the stipend. I believe it has already been sent. Glad
    you're feeling better.
 
    @sferik
    Just checking in. How's everything going?
 
    @sferik
-   Not sure about the payment. Feel free to ask Leah or Yehuda directly. Think 
+   Not sure about the payment. Feel free to ask Leah or Yehuda directly. Think
    you'll be able to finish up your work on graphs this weekend?
 
    @sferik
    How are the graph enhancements coming?
 
    @sferik
-   How are the graphs coming? I'm really looking forward to seeing what you do 
+   How are the graphs coming? I'm really looking forward to seeing what you do
    with Raphaël.
 
    @sferik
    Awesome! Any luck duplicating the Gemfile.lock error with Ruby 1.9.2 final?
 
    @sferik
-   I just committed a bunch of cleanup and fixes to RailsAdmin that touched many 
+   I just committed a bunch of cleanup and fixes to RailsAdmin that touched many
    of files. Make sure you pull to avoid conflicts.
 
    @sferik
-   I'm trying to debug the issue you were having with the Bundler Gemfile.lock 
+   I'm trying to debug the issue you were having with the Bundler Gemfile.lock
    shortref. What version of Ruby and RubyGems are you running?
 
       eos
@@ -256,36 +256,36 @@ ID          Posted at     Screen name  Text
         @cli.direct_messages
         expect($stdout.string).to eq <<-eos
    @sferik
-   I'm trying to debug the issue you were having with the Bundler Gemfile.lock 
+   I'm trying to debug the issue you were having with the Bundler Gemfile.lock
    shortref. What version of Ruby and RubyGems are you running?
 
    @sferik
-   I just committed a bunch of cleanup and fixes to RailsAdmin that touched many 
+   I just committed a bunch of cleanup and fixes to RailsAdmin that touched many
    of files. Make sure you pull to avoid conflicts.
 
    @sferik
    Awesome! Any luck duplicating the Gemfile.lock error with Ruby 1.9.2 final?
 
    @sferik
-   How are the graphs coming? I'm really looking forward to seeing what you do 
+   How are the graphs coming? I'm really looking forward to seeing what you do
    with Raphaël.
 
    @sferik
    How are the graph enhancements coming?
 
    @sferik
-   Not sure about the payment. Feel free to ask Leah or Yehuda directly. Think 
+   Not sure about the payment. Feel free to ask Leah or Yehuda directly. Think
    you'll be able to finish up your work on graphs this weekend?
 
    @sferik
    Just checking in. How's everything going?
 
    @sferik
-   I asked Yehuda about the stipend. I believe it has already been sent. Glad 
+   I asked Yehuda about the stipend. I believe it has already been sent. Glad
    you're feeling better.
 
    @sferik
-   That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does 
+   That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does
    that work for you?
 
    @sferik
@@ -312,36 +312,36 @@ ID          Posted at     Screen name  Text
    Sounds good. Meeting Tuesday is fine.
 
    @hurrycane
-   That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does 
+   That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does
    that work for you?
 
    @hurrycane
-   I asked Yehuda about the stipend. I believe it has already been sent. Glad 
+   I asked Yehuda about the stipend. I believe it has already been sent. Glad
    you're feeling better.
 
    @hurrycane
    Just checking in. How's everything going?
 
    @hurrycane
-   Not sure about the payment. Feel free to ask Leah or Yehuda directly. Think 
+   Not sure about the payment. Feel free to ask Leah or Yehuda directly. Think
    you'll be able to finish up your work on graphs this weekend?
 
    @hurrycane
    How are the graph enhancements coming?
 
    @hurrycane
-   How are the graphs coming? I'm really looking forward to seeing what you do 
+   How are the graphs coming? I'm really looking forward to seeing what you do
    with Raphaël.
 
    @hurrycane
    Awesome! Any luck duplicating the Gemfile.lock error with Ruby 1.9.2 final?
 
    @hurrycane
-   I just committed a bunch of cleanup and fixes to RailsAdmin that touched many 
+   I just committed a bunch of cleanup and fixes to RailsAdmin that touched many
    of files. Make sure you pull to avoid conflicts.
 
    @hurrycane
-   I'm trying to debug the issue you were having with the Bundler Gemfile.lock 
+   I'm trying to debug the issue you were having with the Bundler Gemfile.lock
    shortref. What version of Ruby and RubyGems are you running?
 
       eos
@@ -425,36 +425,36 @@ ID          Posted at     Screen name  Text
         @cli.direct_messages_sent
         expect($stdout.string).to eq <<-eos
    @hurrycane
-   I'm trying to debug the issue you were having with the Bundler Gemfile.lock 
+   I'm trying to debug the issue you were having with the Bundler Gemfile.lock
    shortref. What version of Ruby and RubyGems are you running?
 
    @hurrycane
-   I just committed a bunch of cleanup and fixes to RailsAdmin that touched many 
+   I just committed a bunch of cleanup and fixes to RailsAdmin that touched many
    of files. Make sure you pull to avoid conflicts.
 
    @hurrycane
    Awesome! Any luck duplicating the Gemfile.lock error with Ruby 1.9.2 final?
 
    @hurrycane
-   How are the graphs coming? I'm really looking forward to seeing what you do 
+   How are the graphs coming? I'm really looking forward to seeing what you do
    with Raphaël.
 
    @hurrycane
    How are the graph enhancements coming?
 
    @hurrycane
-   Not sure about the payment. Feel free to ask Leah or Yehuda directly. Think 
+   Not sure about the payment. Feel free to ask Leah or Yehuda directly. Think
    you'll be able to finish up your work on graphs this weekend?
 
    @hurrycane
    Just checking in. How's everything going?
 
    @hurrycane
-   I asked Yehuda about the stipend. I believe it has already been sent. Glad 
+   I asked Yehuda about the stipend. I believe it has already been sent. Glad
    you're feeling better.
 
    @hurrycane
-   That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does 
+   That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does
    that work for you?
 
    @hurrycane
@@ -667,11 +667,11 @@ ID          Posted at     Screen name  Text
    Happy Birthday @imdane. Watch out for those @rally pranksters!
 
    @ironicsans
-   If you like good real-life stories, check out @NarrativelyNY's just-launched 
+   If you like good real-life stories, check out @NarrativelyNY's just-launched
    site http://t.co/wiUL07jE (and also visit http://t.co/ZoyQxqWA)
 
    @pat_shaughnessy
-   Something else to vote for: "New Rails workshops to bring more women into the 
+   Something else to vote for: "New Rails workshops to bring more women into the
    Boston software scene" http://t.co/eNBuckHc /cc @bostonrb
 
    @calebelston
@@ -681,16 +681,16 @@ ID          Posted at     Screen name  Text
    RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
 
    @fivethirtyeight
-   The Weatherman is Not a Moron: http://t.co/ZwL5Gnq5. An excerpt from my book, 
+   The Weatherman is Not a Moron: http://t.co/ZwL5Gnq5. An excerpt from my book,
    THE SIGNAL AND THE NOISE (http://t.co/fNXj8vCE)
 
    @codeforamerica
-   RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat, 
-   Sep 8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica 
+   RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat,
+   Sep 8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica
    @TheaClay
 
    @fbjork
-   RT @jondot: Just published: "Pragmatic Concurrency With #Ruby" 
+   RT @jondot: Just published: "Pragmatic Concurrency With #Ruby"
    http://t.co/kGEykswZ /cc @JRuby @headius
 
    @mbostock
@@ -700,42 +700,42 @@ ID          Posted at     Screen name  Text
    "Write drunk. Edit sober."—Ernest Hemingway
 
    @al3x
-   RT @wcmaier: Better banking through better ops: build something new with us 
+   RT @wcmaier: Better banking through better ops: build something new with us
    @Simplify (remote, PDX) http://t.co/8WgzKZH3
 
    @calebelston
-   We just announced Mosaic, what we've been working on since the Yobongo 
+   We just announced Mosaic, what we've been working on since the Yobongo
    acquisition. My personal post, http://t.co/ELOyIRZU @heymosaic
 
    @BarackObama
-   Donate $10 or more --> get your favorite car magnet: http://t.co/NfRhl2s2 
+   Donate $10 or more --> get your favorite car magnet: http://t.co/NfRhl2s2
    #Obama2012
 
    @JEG2
-   RT @tenderlove: If corporations are people, can we use them to drive in the 
+   RT @tenderlove: If corporations are people, can we use them to drive in the
    carpool lane?
 
    @eveningedition
-   LDN—Obama's nomination; Putin woos APEC; Bombs hit Damascus; Quakes shake 
+   LDN—Obama's nomination; Putin woos APEC; Bombs hit Damascus; Quakes shake
    China; Canada cuts Iran ties; weekend read: http://t.co/OFs6dVW4
 
    @dhh
-   RT @ggreenwald: Democrats parade Osama bin Laden's corpse as their proudest 
+   RT @ggreenwald: Democrats parade Osama bin Laden's corpse as their proudest
    achievement: why this goulish jingoism is so warped http://t.co/kood278s
 
    @jasonfried
-   The story of Mars Curiosity's gears, made by a factory in Rockford, IL: 
+   The story of Mars Curiosity's gears, made by a factory in Rockford, IL:
    http://t.co/MwCRsHQg
 
    @sferik
-   @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem 
+   @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem
    to be missing "1.1" from the URL.
 
    @sferik
    @episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
 
    @dwiskus
-   Gentlemen, you can't fight in here! This is the war room! 
+   Gentlemen, you can't fight in here! This is the war room!
    http://t.co/kMxMYyqF
 
       eos
@@ -2098,9 +2098,9 @@ ID,Created at,Screen name,Slug,Members,Subscribers,Mode,Description
         @cli.lists
         expect($stdout.string).to eq <<-eos
 ID        Created at    Screen name  Slug      Members  Subscribers  Mode    ...
- 1129440  Oct 30  2009  @pengwynn    rubyists      499           39  public   
-     574  Sep 22  2009  @twitter     team         1199        78078  other    
-73546689  Jul  8 14:19  @sferik      test            2            0  private  
+ 1129440  Oct 30  2009  @pengwynn    rubyists      499           39  public
+     574  Sep 22  2009  @twitter     team         1199        78078  other
+73546689  Jul  8 14:19  @sferik      test            2            0  private
         eos
       end
     end
@@ -2210,11 +2210,11 @@ ID        Created at    Screen name  Slug      Members  Subscribers  Mode    ...
    Happy Birthday @imdane. Watch out for those @rally pranksters!
 
    @ironicsans
-   If you like good real-life stories, check out @NarrativelyNY's just-launched 
+   If you like good real-life stories, check out @NarrativelyNY's just-launched
    site http://t.co/wiUL07jE (and also visit http://t.co/ZoyQxqWA)
 
    @pat_shaughnessy
-   Something else to vote for: "New Rails workshops to bring more women into the 
+   Something else to vote for: "New Rails workshops to bring more women into the
    Boston software scene" http://t.co/eNBuckHc /cc @bostonrb
 
    @calebelston
@@ -2224,16 +2224,16 @@ ID        Created at    Screen name  Slug      Members  Subscribers  Mode    ...
    RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
 
    @fivethirtyeight
-   The Weatherman is Not a Moron: http://t.co/ZwL5Gnq5. An excerpt from my book, 
+   The Weatherman is Not a Moron: http://t.co/ZwL5Gnq5. An excerpt from my book,
    THE SIGNAL AND THE NOISE (http://t.co/fNXj8vCE)
 
    @codeforamerica
-   RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat, 
-   Sep 8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica 
+   RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat,
+   Sep 8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica
    @TheaClay
 
    @fbjork
-   RT @jondot: Just published: "Pragmatic Concurrency With #Ruby" 
+   RT @jondot: Just published: "Pragmatic Concurrency With #Ruby"
    http://t.co/kGEykswZ /cc @JRuby @headius
 
    @mbostock
@@ -2243,42 +2243,42 @@ ID        Created at    Screen name  Slug      Members  Subscribers  Mode    ...
    "Write drunk. Edit sober."—Ernest Hemingway
 
    @al3x
-   RT @wcmaier: Better banking through better ops: build something new with us 
+   RT @wcmaier: Better banking through better ops: build something new with us
    @Simplify (remote, PDX) http://t.co/8WgzKZH3
 
    @calebelston
-   We just announced Mosaic, what we've been working on since the Yobongo 
+   We just announced Mosaic, what we've been working on since the Yobongo
    acquisition. My personal post, http://t.co/ELOyIRZU @heymosaic
 
    @BarackObama
-   Donate $10 or more --> get your favorite car magnet: http://t.co/NfRhl2s2 
+   Donate $10 or more --> get your favorite car magnet: http://t.co/NfRhl2s2
    #Obama2012
 
    @JEG2
-   RT @tenderlove: If corporations are people, can we use them to drive in the 
+   RT @tenderlove: If corporations are people, can we use them to drive in the
    carpool lane?
 
    @eveningedition
-   LDN—Obama's nomination; Putin woos APEC; Bombs hit Damascus; Quakes shake 
+   LDN—Obama's nomination; Putin woos APEC; Bombs hit Damascus; Quakes shake
    China; Canada cuts Iran ties; weekend read: http://t.co/OFs6dVW4
 
    @dhh
-   RT @ggreenwald: Democrats parade Osama bin Laden's corpse as their proudest 
+   RT @ggreenwald: Democrats parade Osama bin Laden's corpse as their proudest
    achievement: why this goulish jingoism is so warped http://t.co/kood278s
 
    @jasonfried
-   The story of Mars Curiosity's gears, made by a factory in Rockford, IL: 
+   The story of Mars Curiosity's gears, made by a factory in Rockford, IL:
    http://t.co/MwCRsHQg
 
    @sferik
-   @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem 
+   @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem
    to be missing "1.1" from the URL.
 
    @sferik
    @episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
 
    @dwiskus
-   Gentlemen, you can't fight in here! This is the war room! 
+   Gentlemen, you can't fight in here! This is the war room!
    http://t.co/kMxMYyqF
 
       eos
@@ -2665,80 +2665,80 @@ ID                   Posted at     Screen name       Text
    RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
 
    @codeforamerica
-   RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat, 
-   Sep 8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica 
+   RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat,
+   Sep 8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica
    @TheaClay
 
    @fbjork
-   RT @jondot: Just published: "Pragmatic Concurrency With #Ruby" 
+   RT @jondot: Just published: "Pragmatic Concurrency With #Ruby"
    http://t.co/kGEykswZ /cc @JRuby @headius
 
    @al3x
-   RT @wcmaier: Better banking through better ops: build something new with us 
+   RT @wcmaier: Better banking through better ops: build something new with us
    @Simplify (remote, PDX) http://t.co/8WgzKZH3
 
    @JEG2
-   RT @tenderlove: If corporations are people, can we use them to drive in the 
+   RT @tenderlove: If corporations are people, can we use them to drive in the
    carpool lane?
 
    @dhh
-   RT @ggreenwald: Democrats parade Osama bin Laden's corpse as their proudest 
+   RT @ggreenwald: Democrats parade Osama bin Laden's corpse as their proudest
    achievement: why this goulish jingoism is so warped http://t.co/kood278s
 
    @calebelston
    RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
 
    @codeforamerica
-   RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat, 
-   Sep 8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica 
+   RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat,
+   Sep 8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica
    @TheaClay
 
    @fbjork
-   RT @jondot: Just published: "Pragmatic Concurrency With #Ruby" 
+   RT @jondot: Just published: "Pragmatic Concurrency With #Ruby"
    http://t.co/kGEykswZ /cc @JRuby @headius
 
    @al3x
-   RT @wcmaier: Better banking through better ops: build something new with us 
+   RT @wcmaier: Better banking through better ops: build something new with us
    @Simplify (remote, PDX) http://t.co/8WgzKZH3
 
    @JEG2
-   RT @tenderlove: If corporations are people, can we use them to drive in the 
+   RT @tenderlove: If corporations are people, can we use them to drive in the
    carpool lane?
 
    @dhh
-   RT @ggreenwald: Democrats parade Osama bin Laden's corpse as their proudest 
+   RT @ggreenwald: Democrats parade Osama bin Laden's corpse as their proudest
    achievement: why this goulish jingoism is so warped http://t.co/kood278s
 
    @calebelston
    RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
 
    @codeforamerica
-   RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat, 
-   Sep 8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica 
+   RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat,
+   Sep 8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica
    @TheaClay
 
    @fbjork
-   RT @jondot: Just published: "Pragmatic Concurrency With #Ruby" 
+   RT @jondot: Just published: "Pragmatic Concurrency With #Ruby"
    http://t.co/kGEykswZ /cc @JRuby @headius
 
    @al3x
-   RT @wcmaier: Better banking through better ops: build something new with us 
+   RT @wcmaier: Better banking through better ops: build something new with us
    @Simplify (remote, PDX) http://t.co/8WgzKZH3
 
    @JEG2
-   RT @tenderlove: If corporations are people, can we use them to drive in the 
+   RT @tenderlove: If corporations are people, can we use them to drive in the
    carpool lane?
 
    @dhh
-   RT @ggreenwald: Democrats parade Osama bin Laden's corpse as their proudest 
+   RT @ggreenwald: Democrats parade Osama bin Laden's corpse as their proudest
    achievement: why this goulish jingoism is so warped http://t.co/kood278s
 
    @calebelston
    RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
 
    @codeforamerica
-   RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat, 
-   Sep 8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica 
+   RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat,
+   Sep 8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica
    @TheaClay
 
         eos
@@ -2907,11 +2907,11 @@ ID                  Posted at     Screen name      Text
    Happy Birthday @imdane. Watch out for those @rally pranksters!
 
    @ironicsans
-   If you like good real-life stories, check out @NarrativelyNY's just-launched 
+   If you like good real-life stories, check out @NarrativelyNY's just-launched
    site http://t.co/wiUL07jE (and also visit http://t.co/ZoyQxqWA)
 
    @pat_shaughnessy
-   Something else to vote for: "New Rails workshops to bring more women into the 
+   Something else to vote for: "New Rails workshops to bring more women into the
    Boston software scene" http://t.co/eNBuckHc /cc @bostonrb
 
    @calebelston
@@ -2921,16 +2921,16 @@ ID                  Posted at     Screen name      Text
    RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
 
    @fivethirtyeight
-   The Weatherman is Not a Moron: http://t.co/ZwL5Gnq5. An excerpt from my book, 
+   The Weatherman is Not a Moron: http://t.co/ZwL5Gnq5. An excerpt from my book,
    THE SIGNAL AND THE NOISE (http://t.co/fNXj8vCE)
 
    @codeforamerica
-   RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat, 
-   Sep 8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica 
+   RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat,
+   Sep 8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica
    @TheaClay
 
    @fbjork
-   RT @jondot: Just published: "Pragmatic Concurrency With #Ruby" 
+   RT @jondot: Just published: "Pragmatic Concurrency With #Ruby"
    http://t.co/kGEykswZ /cc @JRuby @headius
 
    @mbostock
@@ -2940,42 +2940,42 @@ ID                  Posted at     Screen name      Text
    "Write drunk. Edit sober."—Ernest Hemingway
 
    @al3x
-   RT @wcmaier: Better banking through better ops: build something new with us 
+   RT @wcmaier: Better banking through better ops: build something new with us
    @Simplify (remote, PDX) http://t.co/8WgzKZH3
 
    @calebelston
-   We just announced Mosaic, what we've been working on since the Yobongo 
+   We just announced Mosaic, what we've been working on since the Yobongo
    acquisition. My personal post, http://t.co/ELOyIRZU @heymosaic
 
    @BarackObama
-   Donate $10 or more --> get your favorite car magnet: http://t.co/NfRhl2s2 
+   Donate $10 or more --> get your favorite car magnet: http://t.co/NfRhl2s2
    #Obama2012
 
    @JEG2
-   RT @tenderlove: If corporations are people, can we use them to drive in the 
+   RT @tenderlove: If corporations are people, can we use them to drive in the
    carpool lane?
 
    @eveningedition
-   LDN—Obama's nomination; Putin woos APEC; Bombs hit Damascus; Quakes shake 
+   LDN—Obama's nomination; Putin woos APEC; Bombs hit Damascus; Quakes shake
    China; Canada cuts Iran ties; weekend read: http://t.co/OFs6dVW4
 
    @dhh
-   RT @ggreenwald: Democrats parade Osama bin Laden's corpse as their proudest 
+   RT @ggreenwald: Democrats parade Osama bin Laden's corpse as their proudest
    achievement: why this goulish jingoism is so warped http://t.co/kood278s
 
    @jasonfried
-   The story of Mars Curiosity's gears, made by a factory in Rockford, IL: 
+   The story of Mars Curiosity's gears, made by a factory in Rockford, IL:
    http://t.co/MwCRsHQg
 
    @sferik
-   @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem 
+   @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem
    to be missing "1.1" from the URL.
 
    @sferik
    @episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
 
    @dwiskus
-   Gentlemen, you can't fight in here! This is the war room! 
+   Gentlemen, you can't fight in here! This is the war room!
    http://t.co/kMxMYyqF
 
         eos
@@ -3111,7 +3111,7 @@ ID                   Posted at     Screen name       Text
   describe '#ruler' do
     it 'has the correct output' do
       @cli.ruler
-      expect($stdout.string.chomp.size).to eq 140
+      expect($stdout.string.chomp.size).to eq 280
       expect($stdout.string.chomp).to eq '----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|'
     end
     context 'with indentation' do
@@ -3398,11 +3398,11 @@ ID                 Posted at     Screen name  Text                           ...
    Happy Birthday @imdane. Watch out for those @rally pranksters!
 
    @ironicsans
-   If you like good real-life stories, check out @NarrativelyNY's just-launched 
+   If you like good real-life stories, check out @NarrativelyNY's just-launched
    site http://t.co/wiUL07jE (and also visit http://t.co/ZoyQxqWA)
 
    @pat_shaughnessy
-   Something else to vote for: "New Rails workshops to bring more women into the 
+   Something else to vote for: "New Rails workshops to bring more women into the
    Boston software scene" http://t.co/eNBuckHc /cc @bostonrb
 
    @calebelston
@@ -3412,16 +3412,16 @@ ID                 Posted at     Screen name  Text                           ...
    RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
 
    @fivethirtyeight
-   The Weatherman is Not a Moron: http://t.co/ZwL5Gnq5. An excerpt from my book, 
+   The Weatherman is Not a Moron: http://t.co/ZwL5Gnq5. An excerpt from my book,
    THE SIGNAL AND THE NOISE (http://t.co/fNXj8vCE)
 
    @codeforamerica
-   RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat, 
-   Sep 8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica 
+   RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat,
+   Sep 8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica
    @TheaClay
 
    @fbjork
-   RT @jondot: Just published: "Pragmatic Concurrency With #Ruby" 
+   RT @jondot: Just published: "Pragmatic Concurrency With #Ruby"
    http://t.co/kGEykswZ /cc @JRuby @headius
 
    @mbostock
@@ -3431,42 +3431,42 @@ ID                 Posted at     Screen name  Text                           ...
    "Write drunk. Edit sober."—Ernest Hemingway
 
    @al3x
-   RT @wcmaier: Better banking through better ops: build something new with us 
+   RT @wcmaier: Better banking through better ops: build something new with us
    @Simplify (remote, PDX) http://t.co/8WgzKZH3
 
    @calebelston
-   We just announced Mosaic, what we've been working on since the Yobongo 
+   We just announced Mosaic, what we've been working on since the Yobongo
    acquisition. My personal post, http://t.co/ELOyIRZU @heymosaic
 
    @BarackObama
-   Donate $10 or more --> get your favorite car magnet: http://t.co/NfRhl2s2 
+   Donate $10 or more --> get your favorite car magnet: http://t.co/NfRhl2s2
    #Obama2012
 
    @JEG2
-   RT @tenderlove: If corporations are people, can we use them to drive in the 
+   RT @tenderlove: If corporations are people, can we use them to drive in the
    carpool lane?
 
    @eveningedition
-   LDN—Obama's nomination; Putin woos APEC; Bombs hit Damascus; Quakes shake 
+   LDN—Obama's nomination; Putin woos APEC; Bombs hit Damascus; Quakes shake
    China; Canada cuts Iran ties; weekend read: http://t.co/OFs6dVW4
 
    @dhh
-   RT @ggreenwald: Democrats parade Osama bin Laden's corpse as their proudest 
+   RT @ggreenwald: Democrats parade Osama bin Laden's corpse as their proudest
    achievement: why this goulish jingoism is so warped http://t.co/kood278s
 
    @jasonfried
-   The story of Mars Curiosity's gears, made by a factory in Rockford, IL: 
+   The story of Mars Curiosity's gears, made by a factory in Rockford, IL:
    http://t.co/MwCRsHQg
 
    @sferik
-   @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem 
+   @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem
    to be missing "1.1" from the URL.
 
    @sferik
    @episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
 
    @dwiskus
-   Gentlemen, you can't fight in here! This is the war room! 
+   Gentlemen, you can't fight in here! This is the war room!
    http://t.co/kMxMYyqF
 
         eos
@@ -3775,7 +3775,7 @@ WOEID     Parent ID  Type       Name           Country
  2487956   23424977  Town       San Francisco  United States
  1587677   23424942  Unknown    Soweto         South Africa
 23424977          1  Country    United States  United States
-       1          0  Supername  Worldwide      
+       1          0  Supername  Worldwide
         eos
       end
     end

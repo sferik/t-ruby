@@ -274,9 +274,9 @@ module T
     def favorites(user = nil)
       count = options['number'] || DEFAULT_NUM_RESULTS
       opts = {}
-      opts[:exclude_replies] = true if options['exclude'] == 'replies'
+      opts[:exclude_replies] = true if options['exclude'].include? 'replies'
       opts[:include_entities] = !!options['decode_uris']
-      opts[:include_rts] = false if options['exclude'] == 'retweets'
+      opts[:include_rts] = false if options['exclude'].include? 'retweets'
       opts[:max_id] = options['max_id'] if options['max_id']
       opts[:since_id] = options['since_id'] if options['since_id']
       if user
@@ -747,7 +747,7 @@ module T
     desc 'timeline [USER]', "Returns the #{DEFAULT_NUM_RESULTS} most recent Tweets posted by a user."
     method_option 'csv', aliases: '-c', type: :boolean, desc: 'Output in CSV format.'
     method_option 'decode_uris', aliases: '-d', type: :boolean, desc: 'Decodes t.co URLs into their original form.'
-    method_option 'exclude', aliases: '-e', type: :string, enum: %w(replies retweets), desc: 'Exclude certain types of Tweets from the results.', banner: 'TYPE'
+    method_option 'exclude', aliases: '-e', type: :array, enum: %w(replies retweets), desc: 'Exclude certain types of Tweets from the results.', banner: 'TYPE'
     method_option 'id', aliases: '-i', type: :boolean, desc: 'Specify user via ID instead of screen name.'
     method_option 'long', aliases: '-l', type: :boolean, desc: 'Output in long format.'
     method_option 'max_id', aliases: '-m', type: :numeric, desc: 'Returns only the results with an ID less than the specified ID.'
@@ -758,9 +758,9 @@ module T
     def timeline(user = nil)
       count = options['number'] || DEFAULT_NUM_RESULTS
       opts = {}
-      opts[:exclude_replies] = true if options['exclude'] == 'replies'
+      opts[:exclude_replies] = true if options['exclude'].include? 'replies'
       opts[:include_entities] = !!options['decode_uris']
-      opts[:include_rts] = false if options['exclude'] == 'retweets'
+      opts[:include_rts] = false if options['exclude'].include? 'retweets'
       opts[:max_id] = options['max_id'] if options['max_id']
       opts[:since_id] = options['since_id'] if options['since_id']
       if user

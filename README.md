@@ -163,6 +163,9 @@ example, here's how to send a user a direct message only if they already follow 
 
 #### Unfollow everyone you follow who doesn't follow you back
     t leaders | xargs t unfollow
+    
+#### Unfollow everyone
+    t followings | xargs t unfollow
 
 #### Unfollow 10 people who haven't tweeted in the longest time
     t followings -l --sort=tweeted | head -10 | awk '{print $1}' | xargs t unfollow -i

@@ -12,6 +12,7 @@ end
 
 require 't'
 require 'json'
+require 'readline'
 require 'rspec'
 require 'timecop'
 require 'webmock/rspec'

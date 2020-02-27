@@ -210,6 +210,17 @@ describe T::CLI do
         expect(a_get('/1.1/direct_messages.json').with(query: {count: '20', include_entities: 'true'})).to have_been_made
       end
     end
+    context '--full-text' do
+      before do
+        @cli.options = @cli.options.merge('full_text' => true)
+        stub_get('/1.1/direct_messages.json').with(query: {count: '20', include_entities: 'false', full_text: 'true'}).to_return(body: fixture('direct_messages.json'), headers: {content_type: 'application/json; charset=utf-8'})
+        stub_get('/1.1/direct_messages.json').with(query: {count: '10', max_id: '1624782205', include_entities: 'false', full_text: 'true'}).to_return(body: fixture('empty_array.json'), headers: {content_type: 'application/json; charset=utf-8'})
+      end
+      it 'requests the correct resource' do
+        @cli.direct_messages
+        expect(a_get('/1.1/direct_messages.json').with(query: {count: '20', include_entities: 'false', full_text: 'true'})).to have_been_made
+      end
+    end
     context '--long' do
       before do
         @cli.options = @cli.options.merge('long' => true)

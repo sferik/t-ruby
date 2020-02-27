@@ -125,6 +125,7 @@ module T
     method_option 'csv', aliases: '-c', type: :boolean, desc: 'Output in CSV format.'
     method_option 'decode_uris', aliases: '-d', type: :boolean, desc: 'Decodes t.co URLs into their original form.'
     method_option 'long', aliases: '-l', type: :boolean, desc: 'Output in long format.'
+    method_option 'full_text', aliases: '-f', type: :boolean, desc: 'Fetch full texts.'
     method_option 'number', aliases: '-n', type: :numeric, default: DEFAULT_NUM_RESULTS, desc: 'Limit the number of results.'
     method_option 'relative_dates', aliases: '-a', type: :boolean, desc: 'Show relative dates.'
     method_option 'reverse', aliases: '-r', type: :boolean, desc: 'Reverse the order of the sort.'
@@ -132,6 +133,7 @@ module T
       count = options['number'] || DEFAULT_NUM_RESULTS
       opts = {}
       opts[:include_entities] = !!options['decode_uris']
+      opts[:full_text] = true if options['full_text']
       direct_messages = collect_with_count(count) do |count_opts|
         client.direct_messages(count_opts.merge(opts))
       end

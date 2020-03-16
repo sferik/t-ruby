@@ -112,6 +112,12 @@ describe T::CLI do
       @cli.block('sferik')
       expect(a_post('/1.1/blocks/create.json').with(body: {screen_name: 'sferik'})).to have_been_made
     end
+
+    it 'notifies of invalid user' do
+      @cli.block('vinuthalan')
+      expect($stdout.string).to match('@testcli blocked 1 user')
+    end
+    
     it 'has the correct output' do
       @cli.block('sferik')
       expect($stdout.string).to match(/^@testcli blocked 1 user/)

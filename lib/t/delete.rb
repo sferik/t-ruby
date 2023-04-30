@@ -35,17 +35,18 @@ module T
       require 't/core_ext/string'
       direct_message_ids.collect!(&:to_i)
       if options['force']
-        direct_messages = client.destroy_direct_message(direct_message_ids)
-        direct_messages.each do |direct_message|
-          say "@#{@rcfile.active_profile[0]} deleted the direct message sent to @#{direct_message.recipient.screen_name}: \"#{direct_message.text}\""
-        end
+        client.destroy_direct_message(*direct_message_ids)
+        say "@#{@rcfile.active_profile[0]} deleted #{direct_message_ids.size} direct message#{direct_message_ids.size == 1 ? '' : 's'}."
       else
         direct_message_ids.each do |direct_message_id_to_delete|
           direct_message = client.direct_message(direct_message_id_to_delete)
-          next unless yes? "Are you sure you want to permanently delete the direct message to @#{direct_message.recipient.screen_name}: \"#{direct_message.text}\"? [y/N]"
+          if direct_message
+            recipient = client.user(direct_message.recipient_id)
+            next unless yes? "Are you sure you want to permanently delete the direct message to @#{recipient.screen_name}: \"#{direct_message.text}\"? [y/N]"
 
-          client.destroy_direct_message(direct_message_id_to_delete)
-          say "@#{@rcfile.active_profile[0]} deleted the direct message sent to @#{direct_message.recipient.screen_name}: \"#{direct_message.text}\""
+            client.destroy_direct_message(direct_message_id_to_delete)
+            say "@#{@rcfile.active_profile[0]} deleted the direct message sent to @#{recipient.screen_name}: \"#{direct_message.text}\""
+          end
         end
       end
     end

@@ -1,0 +1,1 @@
+{"event":{"type":"message_create","id":"1006278767680131076","created_timestamp":"1528750528627","message_create":{"target":{"recipient_id":"58983"},"sender_id":"124294236","message_data":{"text":"testing","entities":{"hashtags":[],"symbols":[],"user_mentions":[],"urls":[]}}}}}

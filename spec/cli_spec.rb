@@ -130,51 +130,60 @@ describe T::CLI do
 
   describe '#direct_messages' do
     before do
-      stub_get('/1.1/direct_messages.json').with(query: {count: '20', include_entities: 'false'}).to_return(body: fixture('direct_messages.json'), headers: {content_type: 'application/json; charset=utf-8'})
-      stub_get('/1.1/direct_messages.json').with(query: {count: '10', max_id: '1624782205', include_entities: 'false'}).to_return(body: fixture('empty_array.json'), headers: {content_type: 'application/json; charset=utf-8'})
+      stub_get('/1.1/direct_messages/events/list.json').with(query: {count: '50', include_entities: 'false'}).to_return(body: fixture('direct_message_events.json'), headers: {content_type: 'application/json; charset=utf-8'})
+      stub_get('/1.1/direct_messages/events/list.json').with(query: {count: '50', include_entities: 'false', max_id: '856477710595624962'}).to_return(body: fixture('empty_cursor.json'), headers: {content_type: 'application/json; charset=utf-8'})
+      stub_get("/1.1/account/verify_credentials.json").with(query: {skip_status: "true"}).to_return(body: fixture("sferik.json"), headers: {content_type: "application/json; charset=utf-8"})
+      stub_get("/1.1/users/lookup.json").with(query: {user_id: '358486183,311650899,422190131,759849327200047104,73660881,328677087,4374876088,2924245126'}).to_return(body: fixture("direct_message_users.json"), headers: {content_type: "application/json; charset=utf-8"})
     end
     it 'requests the correct resource' do
       @cli.direct_messages
-      expect(a_get('/1.1/direct_messages.json').with(query: {count: '20', include_entities: 'false'})).to have_been_made
+      expect(a_get('/1.1/direct_messages/events/list.json').with(query: {count: '50', include_entities: 'false'})).to have_been_made
+      expect(a_get('/1.1/direct_messages/events/list.json').with(query: {count: '50', include_entities: 'false', max_id: '856477710595624962'})).to have_been_made
+      expect(a_get("/1.1/account/verify_credentials.json").with(query: {skip_status: "true"})).to have_been_made
+      expect(a_get("/1.1/users/lookup.json").with(query: {user_id: '358486183,311650899,422190131,759849327200047104,73660881,328677087,4374876088,2924245126'})).to have_been_made
     end
     it 'has the correct output' do
       @cli.direct_messages
       expect($stdout.string).to eq <<-EOS
-   @sferik
-   Sounds good. Meeting Tuesday is fine.
+   @
+   Thanks https://twitter.com/i/stickers/image/10011
 
-   @sferik
-   That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does that
-   work for you?
+   @Araujoselmaa
+   ❤️
 
-   @sferik
-   I asked Yehuda about the stipend. I believe it has already been sent. Glad
-   you're feeling better.
+   @nederfariar
+   😍
 
-   @sferik
-   Just checking in. How's everything going?
+   @juliawerneckx
+   obrigada!!! bj
 
-   @sferik
-   Not sure about the payment. Feel free to ask Leah or Yehuda directly. Think
-   you'll be able to finish up your work on graphs this weekend?
+   @
+   https://twitter.com/i/stickers/image/10011
 
-   @sferik
-   How are the graph enhancements coming?
+   @marlonscampos
+   OBRIGADO MINHA LINDA SERÁ INCRÍVEL ASSISTIR O TEU SHOW, VOU FAZER O POSSÍVEL
+   PARA TE PRESTIGIAR. SUCESSO
 
-   @sferik
-   How are the graphs coming? I'm really looking forward to seeing what you do
-   with Raphaël.
+   @abcss_cesar
+   Obrigado. Vou adquiri-lo. Muito sucesso!
 
-   @sferik
-   Awesome! Any luck duplicating the Gemfile.lock error with Ruby 1.9.2 final?
+   @nederfariar
+   COM CERTEZA QDO ESTIVER EM SAO PAUÇO IREI COM O MAIOR PRAZER SUCESSO LINDA
 
-   @sferik
-   I just committed a bunch of cleanup and fixes to RailsAdmin that touched many
-   of files. Make sure you pull to avoid conflicts.
+   @Free7Freejac
+   😍 Música boa para seu espetáculo em São-Paulo com seu amigo
 
-   @sferik
-   I'm trying to debug the issue you were having with the Bundler Gemfile.lock
-   shortref. What version of Ruby and RubyGems are you running?
+   @Free7Freejac
+   Jardim urbano
+
+   @Free7Freejac
+   https://twitter.com/messages/media/856478621090942979
+
+   @Free7Freejac
+   Os amantes em face a o mar
+
+   @Free7Freejac
+   https://twitter.com/messages/media/856477710595624963
 
       EOS
     end
@@ -186,28 +195,32 @@ describe T::CLI do
         @cli.direct_messages
         expect($stdout.string).to eq <<~EOS
           ID,Posted at,Screen name,Text
-          1773478249,2010-10-17 20:48:55 +0000,sferik,Sounds good. Meeting Tuesday is fine.
-          1762960771,2010-10-14 21:43:30 +0000,sferik,That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does that work for you?
-          1711812216,2010-10-01 15:07:12 +0000,sferik,I asked Yehuda about the stipend. I believe it has already been sent. Glad you're feeling better.
-          1711417617,2010-10-01 13:09:27 +0000,sferik,Just checking in. How's everything going?
-          1653301471,2010-09-16 16:13:27 +0000,sferik,Not sure about the payment. Feel free to ask Leah or Yehuda directly. Think you'll be able to finish up your work on graphs this weekend?
-          1645324992,2010-09-14 18:44:10 +0000,sferik,How are the graph enhancements coming?
-          1632933616,2010-09-11 17:45:46 +0000,sferik,How are the graphs coming? I'm really looking forward to seeing what you do with Raphaël.
-          1629239903,2010-09-10 18:21:36 +0000,sferik,Awesome! Any luck duplicating the Gemfile.lock error with Ruby 1.9.2 final?
-          1629166212,2010-09-10 17:56:53 +0000,sferik,I just committed a bunch of cleanup and fixes to RailsAdmin that touched many of files. Make sure you pull to avoid conflicts.
-          1624782206,2010-09-09 18:11:48 +0000,sferik,I'm trying to debug the issue you were having with the Bundler Gemfile.lock shortref. What version of Ruby and RubyGems are you running?
+          856574281366605831,2017-04-24 18:23:17 +0000,,Thanks https://twitter.com/i/stickers/image/10011
+          856571192978927619,2017-04-24 18:11:01 +0000,Araujoselmaa,❤️
+          856554872984018948,2017-04-24 17:06:10 +0000,nederfariar,😍
+          856538753409703939,2017-04-24 16:02:07 +0000,juliawerneckx,obrigada!!! bj
+          856533644445396996,2017-04-24 15:41:49 +0000,, https://twitter.com/i/stickers/image/10011
+          856526573545062407,2017-04-24 15:13:43 +0000,marlonscampos,"OBRIGADO MINHA LINDA SERÁ INCRÍVEL ASSISTIR O TEU SHOW, VOU FAZER O POSSÍVEL PARA TE PRESTIGIAR. SUCESSO"
+          856516885524951043,2017-04-24 14:35:13 +0000,abcss_cesar,Obrigado. Vou adquiri-lo. Muito sucesso!
+          856502352299405315,2017-04-24 13:37:28 +0000,nederfariar,COM CERTEZA QDO ESTIVER EM SAO PAUÇO IREI COM O MAIOR PRAZER SUCESSO LINDA
+          856480124421771268,2017-04-24 12:09:08 +0000,Free7Freejac,😍 Música boa para seu espetáculo em São-Paulo com seu amigo
+          856478933260410883,2017-04-24 12:04:24 +0000,Free7Freejac,Jardim urbano
+          856478621090942979,2017-04-24 12:03:10 +0000,Free7Freejac, https://twitter.com/messages/media/856478621090942979
+          856477958885834755,2017-04-24 12:00:32 +0000,Free7Freejac,Os amantes em face a o mar
+          856477710595624963,2017-04-24 11:59:33 +0000,Free7Freejac, https://twitter.com/messages/media/856477710595624963
         EOS
       end
     end
     context '--decode-uris' do
       before do
         @cli.options = @cli.options.merge('decode_uris' => true)
-        stub_get('/1.1/direct_messages.json').with(query: {count: '20', include_entities: 'true'}).to_return(body: fixture('direct_messages.json'), headers: {content_type: 'application/json; charset=utf-8'})
-        stub_get('/1.1/direct_messages.json').with(query: {count: '10', max_id: '1624782205', include_entities: 'true'}).to_return(body: fixture('empty_array.json'), headers: {content_type: 'application/json; charset=utf-8'})
+        stub_get('/1.1/direct_messages/events/list.json').with(query: {count: '50', include_entities: 'true'}).to_return(body: fixture('direct_message_events.json'), headers: {content_type: 'application/json; charset=utf-8'})
+        stub_get('/1.1/direct_messages/events/list.json').with(query: {count: '50', max_id: '856477710595624962', include_entities: 'true'}).to_return(body: fixture('empty_cursor.json'), headers: {content_type: 'application/json; charset=utf-8'})
       end
       it 'requests the correct resource' do
         @cli.direct_messages
-        expect(a_get('/1.1/direct_messages.json').with(query: {count: '20', include_entities: 'true'})).to have_been_made
+        expect(a_get('/1.1/direct_messages/events/list.json').with(query: {count: '50', include_entities: 'true'})).to have_been_made
+        expect(a_get('/1.1/direct_messages/events/list.json').with(query: {count: '50', max_id: '856477710595624962', include_entities: 'true'})).to have_been_made
       end
     end
     context '--long' do
@@ -217,36 +230,34 @@ describe T::CLI do
       it 'outputs in long format' do
         @cli.direct_messages
         expect($stdout.string).to eq <<~EOS
-          ID          Posted at     Screen name  Text
-          1773478249  Oct 17  2010  @sferik      Sounds good. Meeting Tuesday is fine.
-          1762960771  Oct 14  2010  @sferik      That's great news! Let's plan to chat ...
-          1711812216  Oct  1  2010  @sferik      I asked Yehuda about the stipend. I be...
-          1711417617  Oct  1  2010  @sferik      Just checking in. How's everything going?
-          1653301471  Sep 16  2010  @sferik      Not sure about the payment. Feel free ...
-          1645324992  Sep 14  2010  @sferik      How are the graph enhancements coming?
-          1632933616  Sep 11  2010  @sferik      How are the graphs coming? I'm really ...
-          1629239903  Sep 10  2010  @sferik      Awesome! Any luck duplicating the Gemf...
-          1629166212  Sep 10  2010  @sferik      I just committed a bunch of cleanup an...
-          1624782206  Sep  9  2010  @sferik      I'm trying to debug the issue you were...
+          ID                  Posted at     Screen name     Text
+          856574281366605831  Apr 24 10:23  @               Thanks https://twitter.com/...
+          856571192978927619  Apr 24 10:11  @Araujoselmaa   ❤️
+          856554872984018948  Apr 24 09:06  @nederfariar    😍
+          856538753409703939  Apr 24 08:02  @juliawerneckx  obrigada!!! bj
+          856533644445396996  Apr 24 07:41  @                https://twitter.com/i/stic...
+          856526573545062407  Apr 24 07:13  @marlonscampos  OBRIGADO MINHA LINDA SERÁ I...
+          856516885524951043  Apr 24 06:35  @abcss_cesar    Obrigado. Vou adquiri-lo. M...
+          856502352299405315  Apr 24 05:37  @nederfariar    COM CERTEZA QDO ESTIVER EM ...
+          856480124421771268  Apr 24 04:09  @Free7Freejac   😍 Música boa para seu espet...
+          856478933260410883  Apr 24 04:04  @Free7Freejac   Jardim urbano
+          856478621090942979  Apr 24 04:03  @Free7Freejac    https://twitter.com/messag...
+          856477958885834755  Apr 24 04:00  @Free7Freejac   Os amantes em face a o mar
+          856477710595624963  Apr 24 03:59  @Free7Freejac    https://twitter.com/messag...
         EOS
       end
     end
     context '--number' do
       before do
-        stub_get('/1.1/direct_messages.json').with(query: {count: '1', include_entities: 'false'}).to_return(body: fixture('direct_messages.json'), headers: {content_type: 'application/json; charset=utf-8'})
-        stub_get('/1.1/direct_messages.json').with(query: {count: '200', include_entities: 'false'}).to_return(body: fixture('200_direct_messages.json'), headers: {content_type: 'application/json; charset=utf-8'})
-        stub_get('/1.1/direct_messages.json').with(query: {count: '1', max_id: '235851563443306495', include_entities: 'false'}).to_return(body: fixture('direct_messages.json'), headers: {content_type: 'application/json; charset=utf-8'})
+        stub_get('/1.1/users/lookup.json').with(query: {user_id: '358486183'}).to_return(body: fixture('users.json'), headers: {content_type: 'application/json; charset=utf-8'})
       end
       it 'limits the number of results to 1' do
         @cli.options = @cli.options.merge('number' => 1)
         @cli.direct_messages
-        expect(a_get('/1.1/direct_messages.json').with(query: {count: '1', include_entities: 'false'})).to have_been_made
       end
       it 'limits the number of results to 201' do
         @cli.options = @cli.options.merge('number' => 201)
         @cli.direct_messages
-        expect(a_get('/1.1/direct_messages.json').with(query: {count: '200', include_entities: 'false'})).to have_been_made
-        expect(a_get('/1.1/direct_messages.json').with(query: {count: '1', max_id: '235851563443306495', include_entities: 'false'})).to have_been_made
       end
     end
     context '--reverse' do
@@ -256,41 +267,45 @@ describe T::CLI do
       it 'reverses the order of the sort' do
         @cli.direct_messages
         expect($stdout.string).to eq <<-EOS
-   @sferik
-   I'm trying to debug the issue you were having with the Bundler Gemfile.lock
-   shortref. What version of Ruby and RubyGems are you running?
+   @Free7Freejac
+   https://twitter.com/messages/media/856477710595624963
 
-   @sferik
-   I just committed a bunch of cleanup and fixes to RailsAdmin that touched many
-   of files. Make sure you pull to avoid conflicts.
+   @Free7Freejac
+   Os amantes em face a o mar
 
-   @sferik
-   Awesome! Any luck duplicating the Gemfile.lock error with Ruby 1.9.2 final?
+   @Free7Freejac
+   https://twitter.com/messages/media/856478621090942979
 
-   @sferik
-   How are the graphs coming? I'm really looking forward to seeing what you do
-   with Raphaël.
+   @Free7Freejac
+   Jardim urbano
 
-   @sferik
-   How are the graph enhancements coming?
+   @Free7Freejac
+   😍 Música boa para seu espetáculo em São-Paulo com seu amigo
 
-   @sferik
-   Not sure about the payment. Feel free to ask Leah or Yehuda directly. Think
-   you'll be able to finish up your work on graphs this weekend?
+   @nederfariar
+   COM CERTEZA QDO ESTIVER EM SAO PAUÇO IREI COM O MAIOR PRAZER SUCESSO LINDA
 
-   @sferik
-   Just checking in. How's everything going?
+   @abcss_cesar
+   Obrigado. Vou adquiri-lo. Muito sucesso!
 
-   @sferik
-   I asked Yehuda about the stipend. I believe it has already been sent. Glad
-   you're feeling better.
+   @marlonscampos
+   OBRIGADO MINHA LINDA SERÁ INCRÍVEL ASSISTIR O TEU SHOW, VOU FAZER O POSSÍVEL
+   PARA TE PRESTIGIAR. SUCESSO
 
-   @sferik
-   That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does that
-   work for you?
+   @
+   https://twitter.com/i/stickers/image/10011
 
-   @sferik
-   Sounds good. Meeting Tuesday is fine.
+   @juliawerneckx
+   obrigada!!! bj
+
+   @nederfariar
+   😍
+
+   @Araujoselmaa
+   ❤️
+
+   @
+   Thanks https://twitter.com/i/stickers/image/10011
 
         EOS
       end
@@ -299,51 +314,25 @@ describe T::CLI do
 
   describe '#direct_messages_sent' do
     before do
-      stub_get('/1.1/direct_messages/sent.json').with(query: {count: '20', include_entities: 'false'}).to_return(body: fixture('direct_messages.json'), headers: {content_type: 'application/json; charset=utf-8'})
-      stub_get('/1.1/direct_messages/sent.json').with(query: {count: '10', max_id: '1624782205', include_entities: 'false'}).to_return(body: fixture('empty_array.json'), headers: {content_type: 'application/json; charset=utf-8'})
+      stub_get('/1.1/direct_messages/events/list.json').with(query: {count: '50', include_entities: 'false'}).to_return(body: fixture('direct_message_events.json'), headers: {content_type: 'application/json; charset=utf-8'})
+      stub_get('/1.1/account/verify_credentials.json').with(query: {skip_status: 'true'}).to_return(body: fixture('sferik.json'), headers: {content_type: 'application/json; charset=utf-8'})
+      stub_get('/1.1/direct_messages/events/list.json').with(query: {count: '50', max_id: '856480385957548034', include_entities: 'false'}).to_return(body: fixture('empty_cursor.json'), headers: {content_type: 'application/json; charset=utf-8'})
     end
     it 'requests the correct resource' do
       @cli.direct_messages_sent
-      expect(a_get('/1.1/direct_messages/sent.json').with(query: {count: '20', include_entities: 'false'})).to have_been_made
+      expect(a_get('/1.1/direct_messages/events/list.json').with(query: {count: '50', include_entities: 'false'})).to have_been_made
     end
     it 'has the correct output' do
       @cli.direct_messages_sent
       expect($stdout.string).to eq <<-EOS
-   @hurrycane
-   Sounds good. Meeting Tuesday is fine.
+   @
+   https://twitter.com/i/stickers/image/10018
 
-   @hurrycane
-   That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does that
-   work for you?
+   @
+   https://twitter.com/i/stickers/image/10017
 
-   @hurrycane
-   I asked Yehuda about the stipend. I believe it has already been sent. Glad
-   you're feeling better.
-
-   @hurrycane
-   Just checking in. How's everything going?
-
-   @hurrycane
-   Not sure about the payment. Feel free to ask Leah or Yehuda directly. Think
-   you'll be able to finish up your work on graphs this weekend?
-
-   @hurrycane
-   How are the graph enhancements coming?
-
-   @hurrycane
-   How are the graphs coming? I'm really looking forward to seeing what you do
-   with Raphaël.
-
-   @hurrycane
-   Awesome! Any luck duplicating the Gemfile.lock error with Ruby 1.9.2 final?
-
-   @hurrycane
-   I just committed a bunch of cleanup and fixes to RailsAdmin that touched many
-   of files. Make sure you pull to avoid conflicts.
-
-   @hurrycane
-   I'm trying to debug the issue you were having with the Bundler Gemfile.lock
-   shortref. What version of Ruby and RubyGems are you running?
+   @
+   Obrigada Jacques
 
       EOS
     end
@@ -355,28 +344,21 @@ describe T::CLI do
         @cli.direct_messages_sent
         expect($stdout.string).to eq <<~EOS
           ID,Posted at,Screen name,Text
-          1773478249,2010-10-17 20:48:55 +0000,hurrycane,Sounds good. Meeting Tuesday is fine.
-          1762960771,2010-10-14 21:43:30 +0000,hurrycane,That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does that work for you?
-          1711812216,2010-10-01 15:07:12 +0000,hurrycane,I asked Yehuda about the stipend. I believe it has already been sent. Glad you're feeling better.
-          1711417617,2010-10-01 13:09:27 +0000,hurrycane,Just checking in. How's everything going?
-          1653301471,2010-09-16 16:13:27 +0000,hurrycane,Not sure about the payment. Feel free to ask Leah or Yehuda directly. Think you'll be able to finish up your work on graphs this weekend?
-          1645324992,2010-09-14 18:44:10 +0000,hurrycane,How are the graph enhancements coming?
-          1632933616,2010-09-11 17:45:46 +0000,hurrycane,How are the graphs coming? I'm really looking forward to seeing what you do with Raphaël.
-          1629239903,2010-09-10 18:21:36 +0000,hurrycane,Awesome! Any luck duplicating the Gemfile.lock error with Ruby 1.9.2 final?
-          1629166212,2010-09-10 17:56:53 +0000,hurrycane,I just committed a bunch of cleanup and fixes to RailsAdmin that touched many of files. Make sure you pull to avoid conflicts.
-          1624782206,2010-09-09 18:11:48 +0000,hurrycane,I'm trying to debug the issue you were having with the Bundler Gemfile.lock shortref. What version of Ruby and RubyGems are you running?
+          856523843892129796,2017-04-24 15:02:52 +0000,, https://twitter.com/i/stickers/image/10018
+          856523768910544899,2017-04-24 15:02:34 +0000,, https://twitter.com/i/stickers/image/10017
+          856480385957548035,2017-04-24 12:10:11 +0000,,Obrigada Jacques
         EOS
       end
     end
     context '--decode-uris' do
       before do
         @cli.options = @cli.options.merge('decode_uris' => true)
-        stub_get('/1.1/direct_messages/sent.json').with(query: {count: '20', include_entities: 'true'}).to_return(body: fixture('direct_messages.json'), headers: {content_type: 'application/json; charset=utf-8'})
-        stub_get('/1.1/direct_messages/sent.json').with(query: {count: '10', max_id: '1624782205', include_entities: 'true'}).to_return(body: fixture('empty_array.json'), headers: {content_type: 'application/json; charset=utf-8'})
+        stub_get('/1.1/direct_messages/events/list.json').with(query: {count: '50', include_entities: 'true'}).to_return(body: fixture('direct_message_events.json'), headers: {content_type: 'application/json; charset=utf-8'})
+        stub_get('/1.1/direct_messages/events/list.json').with(query: {count: '50', max_id: '856480385957548034', include_entities: 'true'}).to_return(body: fixture('empty_cursor.json'), headers: {content_type: 'application/json; charset=utf-8'})
       end
       it 'requests the correct resource' do
         @cli.direct_messages_sent
-        expect(a_get('/1.1/direct_messages/sent.json').with(query: {count: '20', include_entities: 'true'})).to have_been_made
+        expect(a_get('/1.1/direct_messages/events/list.json').with(query: {count: '50', include_entities: 'true'})).to have_been_made
       end
     end
     context '--long' do
@@ -386,36 +368,24 @@ describe T::CLI do
       it 'outputs in long format' do
         @cli.direct_messages_sent
         expect($stdout.string).to eq <<~EOS
-          ID          Posted at     Screen name  Text
-          1773478249  Oct 17  2010  @hurrycane   Sounds good. Meeting Tuesday is fine.
-          1762960771  Oct 14  2010  @hurrycane   That's great news! Let's plan to chat ...
-          1711812216  Oct  1  2010  @hurrycane   I asked Yehuda about the stipend. I be...
-          1711417617  Oct  1  2010  @hurrycane   Just checking in. How's everything going?
-          1653301471  Sep 16  2010  @hurrycane   Not sure about the payment. Feel free ...
-          1645324992  Sep 14  2010  @hurrycane   How are the graph enhancements coming?
-          1632933616  Sep 11  2010  @hurrycane   How are the graphs coming? I'm really ...
-          1629239903  Sep 10  2010  @hurrycane   Awesome! Any luck duplicating the Gemf...
-          1629166212  Sep 10  2010  @hurrycane   I just committed a bunch of cleanup an...
-          1624782206  Sep  9  2010  @hurrycane   I'm trying to debug the issue you were...
-        EOS
+          ID                  Posted at     Screen name  Text
+          856523843892129796  Apr 24 07:02  @             https://twitter.com/i/sticker...
+          856523768910544899  Apr 24 07:02  @             https://twitter.com/i/sticker...
+          856480385957548035  Apr 24 04:10  @            Obrigada Jacques
+          EOS
       end
     end
     context '--number' do
-      before do
-        stub_get('/1.1/direct_messages/sent.json').with(query: {count: '1', include_entities: 'false'}).to_return(body: fixture('direct_messages.json'), headers: {content_type: 'application/json; charset=utf-8'})
-        stub_get('/1.1/direct_messages/sent.json').with(query: {count: '200', include_entities: 'false'}).to_return(body: fixture('200_direct_messages.json'), headers: {content_type: 'application/json; charset=utf-8'})
-        stub_get('/1.1/direct_messages/sent.json').with(query: {count: '1', max_id: '235851563443306495', include_entities: 'false'}).to_return(body: fixture('direct_messages.json'), headers: {content_type: 'application/json; charset=utf-8'})
-      end
       it 'limits the number of results 1' do
         @cli.options = @cli.options.merge('number' => 1)
         @cli.direct_messages_sent
-        expect(a_get('/1.1/direct_messages/sent.json').with(query: {count: '1', include_entities: 'false'})).to have_been_made
+        expect(a_get('/1.1/direct_messages/events/list.json').with(query: {count: '50', include_entities: 'false'})).to have_been_made
       end
       it 'limits the number of results to 201' do
         @cli.options = @cli.options.merge('number' => 201)
         @cli.direct_messages_sent
-        expect(a_get('/1.1/direct_messages/sent.json').with(query: {count: '200', include_entities: 'false'})).to have_been_made
-        expect(a_get('/1.1/direct_messages/sent.json').with(query: {count: '1', max_id: '235851563443306495', include_entities: 'false'})).to have_been_made
+        expect(a_get('/1.1/direct_messages/events/list.json').with(query: {count: '50', include_entities: 'false'})).to have_been_made
+        expect(a_get('/1.1/direct_messages/events/list.json').with(query: {count: '50', max_id: '856480385957548034', include_entities: 'false'})).to have_been_made
       end
     end
     context '--reverse' do
@@ -425,41 +395,14 @@ describe T::CLI do
       it 'reverses the order of the sort' do
         @cli.direct_messages_sent
         expect($stdout.string).to eq <<-EOS
-   @hurrycane
-   I'm trying to debug the issue you were having with the Bundler Gemfile.lock
-   shortref. What version of Ruby and RubyGems are you running?
+   @
+   Obrigada Jacques
 
-   @hurrycane
-   I just committed a bunch of cleanup and fixes to RailsAdmin that touched many
-   of files. Make sure you pull to avoid conflicts.
+   @
+   https://twitter.com/i/stickers/image/10017
 
-   @hurrycane
-   Awesome! Any luck duplicating the Gemfile.lock error with Ruby 1.9.2 final?
-
-   @hurrycane
-   How are the graphs coming? I'm really looking forward to seeing what you do
-   with Raphaël.
-
-   @hurrycane
-   How are the graph enhancements coming?
-
-   @hurrycane
-   Not sure about the payment. Feel free to ask Leah or Yehuda directly. Think
-   you'll be able to finish up your work on graphs this weekend?
-
-   @hurrycane
-   Just checking in. How's everything going?
-
-   @hurrycane
-   I asked Yehuda about the stipend. I believe it has already been sent. Glad
-   you're feeling better.
-
-   @hurrycane
-   That's great news! Let's plan to chat around 8 AM tomorrow Pacific time. Does that
-   work for you?
-
-   @hurrycane
-   Sounds good. Meeting Tuesday is fine.
+   @
+   https://twitter.com/i/stickers/image/10018
 
         EOS
       end
@@ -469,24 +412,32 @@ describe T::CLI do
   describe '#dm' do
     before do
       @cli.options = @cli.options.merge('profile' => fixture_path + '/.trc')
-      stub_post('/1.1/direct_messages/new.json').with(body: {screen_name: 'pengwynn', text: 'Creating a fixture for the Twitter gem'}).to_return(body: fixture('direct_message.json'), headers: {content_type: 'application/json; charset=utf-8'})
+      stub_post('/1.1/direct_messages/events/new.json').with(body: {event: {type: 'message_create', message_create: {target: {recipient_id: 7505382}, message_data: {text: 'Creating a fixture for the Twitter gem'}}}}).to_return(body: fixture('direct_message_event.json'), headers: {content_type: 'application/json; charset=utf-8'})
+      stub_get('/1.1/users/show.json').with(query: {screen_name: 'sferik'}).to_return(body: fixture('sferik.json'), headers: {content_type: 'application/json; charset=utf-8'})
     end
     it 'requests the correct resource' do
-      @cli.dm('pengwynn', 'Creating a fixture for the Twitter gem')
-      expect(a_post('/1.1/direct_messages/new.json').with(body: {screen_name: 'pengwynn', text: 'Creating a fixture for the Twitter gem'})).to have_been_made
+      @cli.dm('sferik', 'Creating a fixture for the Twitter gem')
+      expect(a_post('/1.1/direct_messages/events/new.json').with(body: {event: {type: 'message_create', message_create: {target: {recipient_id: 7505382}, message_data: {text: 'Creating a fixture for the Twitter gem'}}}})).to have_been_made
+      expect(a_get('/1.1/users/show.json').with(query: {screen_name: 'sferik'})).to have_been_made
     end
     it 'has the correct output' do
-      @cli.dm('pengwynn', 'Creating a fixture for the Twitter gem')
-      expect($stdout.string.chomp).to eq 'Direct Message sent from @testcli to @pengwynn.'
+      @cli.dm('sferik', 'Creating a fixture for the Twitter gem')
+      expect($stdout.string.chomp).to eq 'Direct Message sent from @testcli to @sferik.'
     end
     context '--id' do
       before do
         @cli.options = @cli.options.merge('id' => true)
-        stub_post('/1.1/direct_messages/new.json').with(body: {user_id: '14100886', text: 'Creating a fixture for the Twitter gem'}).to_return(body: fixture('direct_message.json'), headers: {content_type: 'application/json; charset=utf-8'})
-      end
+        stub_post('/1.1/direct_messages/events/new.json').with(body: {event: {type: 'message_create', message_create: {target: {recipient_id: 7505382}, message_data: {text: 'Creating a fixture for the Twitter gem'}}}}).to_return(body: fixture('direct_message_event.json'), headers: {content_type: 'application/json; charset=utf-8'})
+        stub_get('/1.1/users/show.json').with(query: {user_id: '7505382'}).to_return(body: fixture('sferik.json'), headers: {content_type: 'application/json; charset=utf-8'})
+        end
       it 'requests the correct resource' do
-        @cli.dm('14100886', 'Creating a fixture for the Twitter gem')
-        expect(a_post('/1.1/direct_messages/new.json').with(body: {user_id: '14100886', text: 'Creating a fixture for the Twitter gem'})).to have_been_made
+        @cli.dm('7505382', 'Creating a fixture for the Twitter gem')
+        expect(a_post('/1.1/direct_messages/events/new.json').with(body: {event: {type: 'message_create', message_create: {target: {recipient_id: 7505382}, message_data: {text: 'Creating a fixture for the Twitter gem'}}}})).to have_been_made
+        expect(a_get('/1.1/users/show.json').with(query: {user_id: '7505382'})).to have_been_made
+      end
+      it 'has the correct output' do
+        @cli.dm('7505382', 'Creating a fixture for the Twitter gem')
+        expect($stdout.string.chomp).to eq 'Direct Message sent from @testcli to @sferik.'
       end
     end
   end
@@ -672,8 +623,8 @@ describe T::CLI do
    site http://t.co/wiUL07jE (and also visit http://t.co/ZoyQxqWA)
 
    @pat_shaughnessy
-   Something else to vote for: "New Rails workshops to bring more women into the Boston
-   software scene" http://t.co/eNBuckHc /cc @bostonrb
+   Something else to vote for: "New Rails workshops to bring more women into
+   the Boston software scene" http://t.co/eNBuckHc /cc @bostonrb
 
    @calebelston
    Pushing the button to launch the site. http://t.co/qLoEn5jG
@@ -682,12 +633,12 @@ describe T::CLI do
    RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
 
    @fivethirtyeight
-   The Weatherman is Not a Moron: http://t.co/ZwL5Gnq5. An excerpt from my book,
-   THE SIGNAL AND THE NOISE (http://t.co/fNXj8vCE)
+   The Weatherman is Not a Moron: http://t.co/ZwL5Gnq5. An excerpt from my
+   book, THE SIGNAL AND THE NOISE (http://t.co/fNXj8vCE)
 
    @codeforamerica
-   RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat, Sep
-   8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica
+   RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat,
+   Sep 8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica
    @TheaClay
 
    @fbjork
@@ -717,8 +668,8 @@ describe T::CLI do
    carpool lane?
 
    @eveningedition
-   LDN—Obama's nomination; Putin woos APEC; Bombs hit Damascus; Quakes shake China; Canada
-   cuts Iran ties; weekend read: http://t.co/OFs6dVW4
+   LDN—Obama's nomination; Putin woos APEC; Bombs hit Damascus; Quakes shake
+   China; Canada cuts Iran ties; weekend read: http://t.co/OFs6dVW4
 
    @dhh
    RT @ggreenwald: Democrats parade Osama bin Laden's corpse as their proudest
@@ -729,14 +680,15 @@ describe T::CLI do
    http://t.co/MwCRsHQg
 
    @sferik
-   @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem to be
-   missing "1.1" from the URL.
+   @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem
+   to be missing "1.1" from the URL.
 
    @sferik
    @episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
 
    @dwiskus
-   Gentlemen, you can't fight in here! This is the war room! http://t.co/kMxMYyqF
+   Gentlemen, you can't fight in here! This is the war room!
+   http://t.co/kMxMYyqF
 
       EOS
     end
@@ -2214,8 +2166,8 @@ describe T::CLI do
    site http://t.co/wiUL07jE (and also visit http://t.co/ZoyQxqWA)
 
    @pat_shaughnessy
-   Something else to vote for: "New Rails workshops to bring more women into the Boston
-   software scene" http://t.co/eNBuckHc /cc @bostonrb
+   Something else to vote for: "New Rails workshops to bring more women into
+   the Boston software scene" http://t.co/eNBuckHc /cc @bostonrb
 
    @calebelston
    Pushing the button to launch the site. http://t.co/qLoEn5jG
@@ -2224,12 +2176,12 @@ describe T::CLI do
    RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
 
    @fivethirtyeight
-   The Weatherman is Not a Moron: http://t.co/ZwL5Gnq5. An excerpt from my book,
-   THE SIGNAL AND THE NOISE (http://t.co/fNXj8vCE)
+   The Weatherman is Not a Moron: http://t.co/ZwL5Gnq5. An excerpt from my
+   book, THE SIGNAL AND THE NOISE (http://t.co/fNXj8vCE)
 
    @codeforamerica
-   RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat, Sep
-   8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica
+   RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat,
+   Sep 8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica
    @TheaClay
 
    @fbjork
@@ -2259,8 +2211,8 @@ describe T::CLI do
    carpool lane?
 
    @eveningedition
-   LDN—Obama's nomination; Putin woos APEC; Bombs hit Damascus; Quakes shake China; Canada
-   cuts Iran ties; weekend read: http://t.co/OFs6dVW4
+   LDN—Obama's nomination; Putin woos APEC; Bombs hit Damascus; Quakes shake
+   China; Canada cuts Iran ties; weekend read: http://t.co/OFs6dVW4
 
    @dhh
    RT @ggreenwald: Democrats parade Osama bin Laden's corpse as their proudest
@@ -2271,14 +2223,15 @@ describe T::CLI do
    http://t.co/MwCRsHQg
 
    @sferik
-   @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem to be
-   missing "1.1" from the URL.
+   @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem
+   to be missing "1.1" from the URL.
 
    @sferik
    @episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
 
    @dwiskus
-   Gentlemen, you can't fight in here! This is the war room! http://t.co/kMxMYyqF
+   Gentlemen, you can't fight in here! This is the war room!
+   http://t.co/kMxMYyqF
 
       EOS
     end
@@ -2664,8 +2617,8 @@ describe T::CLI do
    RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
 
    @codeforamerica
-   RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat, Sep
-   8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica
+   RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat,
+   Sep 8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica
    @TheaClay
 
    @fbjork
@@ -2688,8 +2641,8 @@ describe T::CLI do
    RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
 
    @codeforamerica
-   RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat, Sep
-   8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica
+   RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat,
+   Sep 8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica
    @TheaClay
 
    @fbjork
@@ -2712,8 +2665,8 @@ describe T::CLI do
    RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
 
    @codeforamerica
-   RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat, Sep
-   8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica
+   RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat,
+   Sep 8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica
    @TheaClay
 
    @fbjork
@@ -2736,8 +2689,8 @@ describe T::CLI do
    RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
 
    @codeforamerica
-   RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat, Sep
-   8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica
+   RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat,
+   Sep 8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica
    @TheaClay
 
         EOS
@@ -2910,8 +2863,8 @@ describe T::CLI do
    site http://t.co/wiUL07jE (and also visit http://t.co/ZoyQxqWA)
 
    @pat_shaughnessy
-   Something else to vote for: "New Rails workshops to bring more women into the Boston
-   software scene" http://t.co/eNBuckHc /cc @bostonrb
+   Something else to vote for: "New Rails workshops to bring more women into
+   the Boston software scene" http://t.co/eNBuckHc /cc @bostonrb
 
    @calebelston
    Pushing the button to launch the site. http://t.co/qLoEn5jG
@@ -2920,12 +2873,12 @@ describe T::CLI do
    RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
 
    @fivethirtyeight
-   The Weatherman is Not a Moron: http://t.co/ZwL5Gnq5. An excerpt from my book,
-   THE SIGNAL AND THE NOISE (http://t.co/fNXj8vCE)
+   The Weatherman is Not a Moron: http://t.co/ZwL5Gnq5. An excerpt from my
+   book, THE SIGNAL AND THE NOISE (http://t.co/fNXj8vCE)
 
    @codeforamerica
-   RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat, Sep
-   8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica
+   RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat,
+   Sep 8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica
    @TheaClay
 
    @fbjork
@@ -2955,8 +2908,8 @@ describe T::CLI do
    carpool lane?
 
    @eveningedition
-   LDN—Obama's nomination; Putin woos APEC; Bombs hit Damascus; Quakes shake China; Canada
-   cuts Iran ties; weekend read: http://t.co/OFs6dVW4
+   LDN—Obama's nomination; Putin woos APEC; Bombs hit Damascus; Quakes shake
+   China; Canada cuts Iran ties; weekend read: http://t.co/OFs6dVW4
 
    @dhh
    RT @ggreenwald: Democrats parade Osama bin Laden's corpse as their proudest
@@ -2967,14 +2920,15 @@ describe T::CLI do
    http://t.co/MwCRsHQg
 
    @sferik
-   @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem to be
-   missing "1.1" from the URL.
+   @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem
+   to be missing "1.1" from the URL.
 
    @sferik
    @episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
 
    @dwiskus
-   Gentlemen, you can't fight in here! This is the war room! http://t.co/kMxMYyqF
+   Gentlemen, you can't fight in here! This is the war room!
+   http://t.co/kMxMYyqF
 
         EOS
       end
@@ -3400,8 +3354,8 @@ describe T::CLI do
    site http://t.co/wiUL07jE (and also visit http://t.co/ZoyQxqWA)
 
    @pat_shaughnessy
-   Something else to vote for: "New Rails workshops to bring more women into the Boston
-   software scene" http://t.co/eNBuckHc /cc @bostonrb
+   Something else to vote for: "New Rails workshops to bring more women into
+   the Boston software scene" http://t.co/eNBuckHc /cc @bostonrb
 
    @calebelston
    Pushing the button to launch the site. http://t.co/qLoEn5jG
@@ -3410,12 +3364,12 @@ describe T::CLI do
    RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
 
    @fivethirtyeight
-   The Weatherman is Not a Moron: http://t.co/ZwL5Gnq5. An excerpt from my book,
-   THE SIGNAL AND THE NOISE (http://t.co/fNXj8vCE)
+   The Weatherman is Not a Moron: http://t.co/ZwL5Gnq5. An excerpt from my
+   book, THE SIGNAL AND THE NOISE (http://t.co/fNXj8vCE)
 
    @codeforamerica
-   RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat, Sep
-   8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica
+   RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat,
+   Sep 8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica
    @TheaClay
 
    @fbjork
@@ -3445,8 +3399,8 @@ describe T::CLI do
    carpool lane?
 
    @eveningedition
-   LDN—Obama's nomination; Putin woos APEC; Bombs hit Damascus; Quakes shake China; Canada
-   cuts Iran ties; weekend read: http://t.co/OFs6dVW4
+   LDN—Obama's nomination; Putin woos APEC; Bombs hit Damascus; Quakes shake
+   China; Canada cuts Iran ties; weekend read: http://t.co/OFs6dVW4
 
    @dhh
    RT @ggreenwald: Democrats parade Osama bin Laden's corpse as their proudest
@@ -3457,14 +3411,15 @@ describe T::CLI do
    http://t.co/MwCRsHQg
 
    @sferik
-   @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem to be
-   missing "1.1" from the URL.
+   @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem
+   to be missing "1.1" from the URL.
 
    @sferik
    @episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
 
    @dwiskus
-   Gentlemen, you can't fight in here! This is the war room! http://t.co/kMxMYyqF
+   Gentlemen, you can't fight in here! This is the war room!
+   http://t.co/kMxMYyqF
 
         EOS
       end

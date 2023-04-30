@@ -345,8 +345,8 @@ describe T::List do
    site http://t.co/wiUL07jE (and also visit http://t.co/ZoyQxqWA)
 
    @pat_shaughnessy
-   Something else to vote for: "New Rails workshops to bring more women into the Boston
-   software scene" http://t.co/eNBuckHc /cc @bostonrb
+   Something else to vote for: "New Rails workshops to bring more women into
+   the Boston software scene" http://t.co/eNBuckHc /cc @bostonrb
 
    @calebelston
    Pushing the button to launch the site. http://t.co/qLoEn5jG
@@ -355,12 +355,12 @@ describe T::List do
    RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
 
    @fivethirtyeight
-   The Weatherman is Not a Moron: http://t.co/ZwL5Gnq5. An excerpt from my book,
-   THE SIGNAL AND THE NOISE (http://t.co/fNXj8vCE)
+   The Weatherman is Not a Moron: http://t.co/ZwL5Gnq5. An excerpt from my
+   book, THE SIGNAL AND THE NOISE (http://t.co/fNXj8vCE)
 
    @codeforamerica
-   RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat, Sep
-   8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica
+   RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat,
+   Sep 8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica
    @TheaClay
 
    @fbjork
@@ -390,8 +390,8 @@ describe T::List do
    carpool lane?
 
    @eveningedition
-   LDN—Obama's nomination; Putin woos APEC; Bombs hit Damascus; Quakes shake China; Canada
-   cuts Iran ties; weekend read: http://t.co/OFs6dVW4
+   LDN—Obama's nomination; Putin woos APEC; Bombs hit Damascus; Quakes shake
+   China; Canada cuts Iran ties; weekend read: http://t.co/OFs6dVW4
 
    @dhh
    RT @ggreenwald: Democrats parade Osama bin Laden's corpse as their proudest
@@ -402,14 +402,15 @@ describe T::List do
    http://t.co/MwCRsHQg
 
    @sferik
-   @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem to be
-   missing "1.1" from the URL.
+   @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem
+   to be missing "1.1" from the URL.
 
    @sferik
    @episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
 
    @dwiskus
-   Gentlemen, you can't fight in here! This is the war room! http://t.co/kMxMYyqF
+   Gentlemen, you can't fight in here! This is the war room!
+   http://t.co/kMxMYyqF
 
       EOS
     end
@@ -428,8 +429,8 @@ describe T::List do
    site http://t.co/wiUL07jE (and also visit http://t.co/ZoyQxqWA)
 
    @pat_shaughnessy
-   Something else to vote for: "New Rails workshops to bring more women into the Boston
-   software scene" http://t.co/eNBuckHc /cc @bostonrb
+   Something else to vote for: "New Rails workshops to bring more women into
+   the Boston software scene" http://t.co/eNBuckHc /cc @bostonrb
 
    @calebelston
    Pushing the button to launch the site. http://t.co/qLoEn5jG
@@ -438,12 +439,12 @@ describe T::List do
    RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
 
    @fivethirtyeight
-   The Weatherman is Not a Moron: http://t.co/ZwL5Gnq5. An excerpt from my book,
-   THE SIGNAL AND THE NOISE (http://t.co/fNXj8vCE)
+   The Weatherman is Not a Moron: http://t.co/ZwL5Gnq5. An excerpt from my
+   book, THE SIGNAL AND THE NOISE (http://t.co/fNXj8vCE)
 
    @codeforamerica
-   RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat, Sep
-   8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica
+   RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat,
+   Sep 8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica
    @TheaClay
 
    @fbjork
@@ -473,8 +474,8 @@ describe T::List do
    carpool lane?
 
    @eveningedition
-   LDN—Obama's nomination; Putin woos APEC; Bombs hit Damascus; Quakes shake China; Canada
-   cuts Iran ties; weekend read: http://t.co/OFs6dVW4
+   LDN—Obama's nomination; Putin woos APEC; Bombs hit Damascus; Quakes shake
+   China; Canada cuts Iran ties; weekend read: http://t.co/OFs6dVW4
 
    @dhh
    RT @ggreenwald: Democrats parade Osama bin Laden's corpse as their proudest
@@ -485,14 +486,15 @@ describe T::List do
    http://t.co/MwCRsHQg
 
    @sferik
-   @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem to be
-   missing "1.1" from the URL.
+   @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem
+   to be missing "1.1" from the URL.
 
    @sferik
    @episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
 
    @dwiskus
-   Gentlemen, you can't fight in here! This is the war room! http://t.co/kMxMYyqF
+   Gentlemen, you can't fight in here! This is the war room!
+   http://t.co/kMxMYyqF
 
         EOS
       end
@@ -512,8 +514,8 @@ describe T::List do
    site http://t.co/wiUL07jE (and also visit http://t.co/ZoyQxqWA)
 
    @pat_shaughnessy
-   Something else to vote for: "New Rails workshops to bring more women into the Boston
-   software scene" http://t.co/eNBuckHc /cc @bostonrb
+   Something else to vote for: "New Rails workshops to bring more women into
+   the Boston software scene" http://t.co/eNBuckHc /cc @bostonrb
 
    @calebelston
    Pushing the button to launch the site. http://t.co/qLoEn5jG
@@ -522,12 +524,12 @@ describe T::List do
    RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
 
    @fivethirtyeight
-   The Weatherman is Not a Moron: http://t.co/ZwL5Gnq5. An excerpt from my book,
-   THE SIGNAL AND THE NOISE (http://t.co/fNXj8vCE)
+   The Weatherman is Not a Moron: http://t.co/ZwL5Gnq5. An excerpt from my
+   book, THE SIGNAL AND THE NOISE (http://t.co/fNXj8vCE)
 
    @codeforamerica
-   RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat, Sep
-   8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica
+   RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat,
+   Sep 8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica
    @TheaClay
 
    @fbjork
@@ -557,8 +559,8 @@ describe T::List do
    carpool lane?
 
    @eveningedition
-   LDN—Obama's nomination; Putin woos APEC; Bombs hit Damascus; Quakes shake China; Canada
-   cuts Iran ties; weekend read: http://t.co/OFs6dVW4
+   LDN—Obama's nomination; Putin woos APEC; Bombs hit Damascus; Quakes shake
+   China; Canada cuts Iran ties; weekend read: http://t.co/OFs6dVW4
 
    @dhh
    RT @ggreenwald: Democrats parade Osama bin Laden's corpse as their proudest
@@ -569,14 +571,15 @@ describe T::List do
    http://t.co/MwCRsHQg
 
    @sferik
-   @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem to be
-   missing "1.1" from the URL.
+   @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem
+   to be missing "1.1" from the URL.
 
    @sferik
    @episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
 
    @dwiskus
-   Gentlemen, you can't fight in here! This is the war room! http://t.co/kMxMYyqF
+   Gentlemen, you can't fight in here! This is the war room!
+   http://t.co/kMxMYyqF
 
         EOS
       end
@@ -592,8 +595,8 @@ describe T::List do
              site http://t.co/wiUL07jE (and also visit http://t.co/ZoyQxqWA)
           
           \e[1m\e[33m   @pat_shaughnessy\e[0m
-             Something else to vote for: "New Rails workshops to bring more women into the Boston
-             software scene" http://t.co/eNBuckHc /cc @bostonrb
+             Something else to vote for: "New Rails workshops to bring more women into
+             the Boston software scene" http://t.co/eNBuckHc /cc @bostonrb
           
           \e[1m\e[33m   @calebelston\e[0m
              Pushing the button to launch the site. http://t.co/qLoEn5jG
@@ -602,12 +605,12 @@ describe T::List do
              RT @olivercameron: Mosaic looks cool: http://t.co/A8013C9k
           
           \e[1m\e[33m   @fivethirtyeight\e[0m
-             The Weatherman is Not a Moron: http://t.co/ZwL5Gnq5. An excerpt from my book,
-             THE SIGNAL AND THE NOISE (http://t.co/fNXj8vCE)
+             The Weatherman is Not a Moron: http://t.co/ZwL5Gnq5. An excerpt from my
+             book, THE SIGNAL AND THE NOISE (http://t.co/fNXj8vCE)
           
           \e[1m\e[33m   @codeforamerica\e[0m
-             RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat, Sep
-             8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica
+             RT @randomhacks: Going to Code Across Austin II: Y'all Come Hack Now, Sat,
+             Sep 8 http://t.co/Sk5BM7U3 We'll see y'all there! #rhok @codeforamerica
              @TheaClay
           
           \e[1m\e[33m   @fbjork\e[0m
@@ -637,8 +640,8 @@ describe T::List do
              carpool lane?
           
           \e[1m\e[33m   @eveningedition\e[0m
-             LDN—Obama's nomination; Putin woos APEC; Bombs hit Damascus; Quakes shake China; Canada
-             cuts Iran ties; weekend read: http://t.co/OFs6dVW4
+             LDN—Obama's nomination; Putin woos APEC; Bombs hit Damascus; Quakes shake
+             China; Canada cuts Iran ties; weekend read: http://t.co/OFs6dVW4
           
           \e[1m\e[33m   @dhh\e[0m
              RT @ggreenwald: Democrats parade Osama bin Laden's corpse as their proudest
@@ -649,14 +652,15 @@ describe T::List do
              http://t.co/MwCRsHQg
           
           \e[1m\e[33m   @sferik\e[0m
-             @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem to be
-             missing "1.1" from the URL.
+             @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem
+             to be missing "1.1" from the URL.
           
           \e[1m\e[33m   @sferik\e[0m
              @episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
           
           \e[1m\e[33m   @dwiskus\e[0m
-             Gentlemen, you can't fight in here! This is the war room! http://t.co/kMxMYyqF
+             Gentlemen, you can't fight in here! This is the war room!
+             http://t.co/kMxMYyqF
           
         EOS
       end

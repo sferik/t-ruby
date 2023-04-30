@@ -60,16 +60,16 @@ describe T::Search do
    RT @LouisTexts: whos tessa? http://t.co/7DJQlmCfuu
 
    @MIKEFANTASMA
-   Pues nada, aquí armando mi regalo de navidad solo me falta la cara y ya hago mi
-   pedido con santa!.. http://t.co/iDC7bE9o4M
+   Pues nada, aquí armando mi regalo de navidad solo me falta la cara y ya hago
+   mi pedido con santa!.. http://t.co/iDC7bE9o4M
 
    @EleManera
    RT @xmyband: La gente che si arrabbia perché Harry non ha fatto gli auguri a
    Lou su Twitter. Non vorrei smontarvi, ma esistono i cellulari e i messaggi.
 
    @BigAlFerguson
-   “@IrishRace; Merry Christmas to all our friends and followers from all @IrishRaceRally
-   have a good one! http://t.co/rXFsC2ncFo” @Danloi1
+   “@IrishRace; Merry Christmas to all our friends and followers from all
+   @IrishRaceRally have a good one! http://t.co/rXFsC2ncFo” @Danloi1
 
    @goksantezgel
    RT @nederlandline: Tayyip bey evladımızı severiz Biz ona dua
@@ -212,8 +212,8 @@ describe T::Search do
       @search.favorites('twitter')
       expect($stdout.string).to eq <<-EOS
    @sferik
-   @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem to be
-   missing "1.1" from the URL.
+   @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem
+   to be missing "1.1" from the URL.
 
    @sferik
    @episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
@@ -285,8 +285,8 @@ describe T::Search do
         @search.favorites('sferik', 'twitter')
         expect($stdout.string).to eq <<-EOS
    @sferik
-   @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem to be
-   missing "1.1" from the URL.
+   @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem
+   to be missing "1.1" from the URL.
 
    @sferik
    @episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
@@ -308,8 +308,8 @@ describe T::Search do
           @search.favorites('7505382', 'twitter')
           expect($stdout.string).to eq <<-EOS
    @sferik
-   @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem to be
-   missing "1.1" from the URL.
+   @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem
+   to be missing "1.1" from the URL.
 
    @sferik
    @episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
@@ -334,8 +334,8 @@ describe T::Search do
       @search.mentions('twitter')
       expect($stdout.string).to eq <<-EOS
    @sferik
-   @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem to be
-   missing "1.1" from the URL.
+   @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem
+   to be missing "1.1" from the URL.
 
    @sferik
    @episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
@@ -409,8 +409,8 @@ describe T::Search do
       @search.list('presidents', 'twitter')
       expect($stdout.string).to eq <<-EOS
    @sferik
-   @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem to be
-   missing "1.1" from the URL.
+   @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem
+   to be missing "1.1" from the URL.
 
    @sferik
    @episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
@@ -610,8 +610,8 @@ describe T::Search do
       @search.timeline('twitter')
       expect($stdout.string).to eq <<-EOS
    @sferik
-   @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem to be
-   missing "1.1" from the URL.
+   @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem
+   to be missing "1.1" from the URL.
 
    @sferik
    @episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?
@@ -729,8 +729,8 @@ describe T::Search do
         @search.timeline('sferik', 'twitter')
         expect($stdout.string).to eq <<-EOS
    @sferik
-   @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem to be
-   missing "1.1" from the URL.
+   @episod @twitterapi now https://t.co/I17jUTu2 and https://t.co/deDu4Hgw seem
+   to be missing "1.1" from the URL.
 
    @sferik
    @episod @twitterapi Did you catch https://t.co/VHsQvZT0 as well?

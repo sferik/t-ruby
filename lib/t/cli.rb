@@ -133,24 +133,30 @@ module T
       opts = {}
       opts[:include_entities] = !!options['decode_uris']
       direct_messages = collect_with_count(count) do |count_opts|
-        client.direct_messages(count_opts.merge(opts))
+        client.direct_messages_received(count_opts.merge(opts))
       end
+      users = direct_messages.empty? ? [] : client.users(direct_messages.map(&:sender_id))
+      users_hash = users.each_with_object({}) { |user, hash| hash[user.id] = user }
+
       direct_messages.reverse! if options['reverse']
       if options['csv']
         require 'csv'
         say DIRECT_MESSAGE_HEADINGS.to_csv unless direct_messages.empty?
         direct_messages.each do |direct_message|
-          say [direct_message.id, csv_formatted_time(direct_message), direct_message.sender.screen_name, decode_full_text(direct_message, options['decode_uris'])].to_csv
+          sender = users_hash[direct_message.sender_id] || Twitter::NullObject.new
+          say [direct_message.id, csv_formatted_time(direct_message), sender.screen_name, decode_full_text(direct_message, options['decode_uris'])].to_csv
         end
       elsif options['long']
         array = direct_messages.collect do |direct_message|
-          [direct_message.id, ls_formatted_time(direct_message), "@#{direct_message.sender.screen_name}", decode_full_text(direct_message, options['decode_uris']).gsub(/\n+/, ' ')]
+          sender = users_hash[direct_message.sender_id] || Twitter::NullObject.new
+          [direct_message.id, ls_formatted_time(direct_message), "@#{sender.screen_name}", decode_full_text(direct_message, options['decode_uris']).gsub(/\n+/, ' ')]
         end
         format = options['format'] || Array.new(DIRECT_MESSAGE_HEADINGS.size) { '%s' }
         print_table_with_headings(array, DIRECT_MESSAGE_HEADINGS, format)
       else
         direct_messages.each do |direct_message|
-          print_message(direct_message.sender.screen_name, direct_message.text)
+          sender = users_hash[direct_message.sender_id] || Twitter::NullObject.new
+          print_message(sender.screen_name, direct_message.text)
         end
       end
     end
@@ -195,9 +201,9 @@ module T
     method_option 'id', aliases: '-i', type: :boolean, desc: 'Specify user via ID instead of screen name.'
     def dm(user, message)
       require 't/core_ext/string'
-      user = options['id'] ? user.to_i : user.strip_ats
-      direct_message = client.create_direct_message(user, message)
-      say "Direct Message sent from @#{@rcfile.active_profile[0]} to @#{direct_message.recipient.screen_name}."
+      recipient = options['id'] ? client.user(user.to_i) : client.user(user.strip_ats)
+      direct_message = client.create_direct_message_event(recipient, message)
+      say "Direct Message sent from @#{@rcfile.active_profile[0]} to @#{recipient.screen_name}."
     end
     map %w[d m] => :dm
 
@@ -205,11 +211,11 @@ module T
     method_option 'id', aliases: '-i', type: :boolean, desc: 'Specify user via ID instead of screen name.'
     def does_contain(user_list, user = nil)
       owner, list_name = extract_owner(user_list, options)
-      if user.nil?
-        user = @rcfile.active_profile[0]
+      user = if user.nil?
+        @rcfile.active_profile[0]
       else
         require 't/core_ext/string'
-        user = options['id'] ? client.user(user.to_i).screen_name : user.strip_ats
+        options['id'] ? client.user(user.to_i).screen_name : user.strip_ats
       end
       if client.list_member?(owner, list_name, user)
         say "Yes, #{list_name} contains @#{user}."
@@ -993,7 +999,7 @@ module T
 
       require 'geokit'
       require 'open-uri'
-      ip_address = Kernel.open('http://checkip.dyndns.org/') do |body|
+      ip_address = URI.open('http://checkip.dyndns.org/') do |body|
         /(?:\d{1,3}\.){3}\d{1,3}/.match(body.read)[0]
       end
       @location = Geokit::Geocoders::MultiGeocoder.geocode(ip_address)

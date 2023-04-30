@@ -6,9 +6,7 @@ describe T::Editor do
   context 'when editing a file' do
     before do
       allow(T::Editor).to receive(:edit) do |path|
-        File.open(path, 'wb') do |f|
-          f.write('A tweet!!!!')
-        end
+        File.binwrite(path, 'A tweet!!!!')
       end
     end
 

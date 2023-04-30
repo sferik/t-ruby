@@ -148,7 +148,7 @@ describe T::RCFile do
   describe '#delete' do
     it 'deletes the rcfile' do
       path = project_path + '/tmp/trc'
-      File.open(path, 'w') { |file| file.write(YAML.dump({})) }
+      File.write(path, YAML.dump({}))
       expect(File.exist?(path)).to be true
       rcfile = T::RCFile.instance
       rcfile.path = path

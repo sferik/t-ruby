@@ -6,7 +6,7 @@ namespace :completion do
     output_path = 'etc/t-completion.sh'
     file_path = File.expand_path(output_path)
     puts "Compiling bash completion to #{output_path}"
-    File.open(file_path, 'w') { |f| f.write BashCompletion.generate }
+    File.write(file_path, BashCompletion.generate)
 
     git_status = `git status -s`
     if git_status[/M #{output_path}/]

@@ -6,7 +6,7 @@ namespace :completion do
     output_path = 'etc/t-completion.zsh'
     file_path = File.expand_path(output_path)
     puts "Compiling zsh completion to #{output_path}"
-    File.open(file_path, 'w') { |f| f.write zsh_completion }
+    File.write(file_path, zsh_completion)
 
     git_status = `git status -s`
     if git_status[/M #{output_path}/]

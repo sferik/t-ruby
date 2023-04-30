@@ -67,6 +67,7 @@ describe T::Delete do
         expect($stdout.string.chomp).to eq '@testcli deleted the direct message sent to @sferik: "testing"'
       end
     end
+
     context 'no' do
       it 'has the correct output' do
         expect(Readline).to receive(:readline).with('Are you sure you want to permanently delete the direct message to @sferik: "testing"? [y/N] ', false).and_return('no')
@@ -74,6 +75,7 @@ describe T::Delete do
         expect($stdout.string.chomp).to be_empty
       end
     end
+
     context '--force' do
       before do
         @delete.options = @delete.options.merge('force' => true)
@@ -110,6 +112,7 @@ describe T::Delete do
         expect($stdout.string).to match(/^@testcli unfavorited @sferik's status: "The problem with your code is that it's doing exactly what you told it to do\."$/)
       end
     end
+
     context 'no' do
       it 'has the correct output' do
         expect(Readline).to receive(:readline).with("Are you sure you want to remove @sferik's status: \"The problem with your code is that it's doing exactly what you told it to do.\" from your favorites? [y/N] ", false).and_return('no')
@@ -117,6 +120,7 @@ describe T::Delete do
         expect($stdout.string.chomp).to be_empty
       end
     end
+
     context '--force' do
       before do
         @delete.options = @delete.options.merge('force' => true)
@@ -154,6 +158,7 @@ describe T::Delete do
         expect($stdout.string.chomp).to eq '@testcli deleted the list "presidents".'
       end
     end
+
     context 'no' do
       it 'has the correct output' do
         expect(Readline).to receive(:readline).with('Are you sure you want to permanently delete the list "presidents"? [y/N] ', false).and_return('no')
@@ -161,6 +166,7 @@ describe T::Delete do
         expect($stdout.string.chomp).to be_empty
       end
     end
+
     context '--force' do
       before do
         @delete.options = @delete.options.merge('force' => true)
@@ -176,6 +182,7 @@ describe T::Delete do
         expect($stdout.string.chomp).to eq '@testcli deleted the list "presidents".'
       end
     end
+
     context '--id' do
       before do
         @delete.options = @delete.options.merge('id' => true)
@@ -283,6 +290,7 @@ describe T::Delete do
         expect($stdout.string.chomp).to eq "@testcli deleted the Tweet: \"The problem with your code is that it's doing exactly what you told it to do.\""
       end
     end
+
     context 'no' do
       it 'has the correct output' do
         expect(Readline).to receive(:readline).with("Are you sure you want to permanently delete @sferik's status: \"The problem with your code is that it's doing exactly what you told it to do.\"? [y/N] ", false).and_return('no')
@@ -290,6 +298,7 @@ describe T::Delete do
         expect($stdout.string.chomp).to be_empty
       end
     end
+
     context '--force' do
       before do
         @delete.options = @delete.options.merge('force' => true)

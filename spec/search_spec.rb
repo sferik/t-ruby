@@ -149,6 +149,7 @@ describe T::Search do
         EOS
       end
     end
+
     context '--long' do
       before do
         @search.options = @search.options.merge('long' => true)
@@ -181,6 +182,7 @@ describe T::Search do
         EOS
       end
     end
+
     context '--number' do
       before do
         stub_get('/1.1/search/tweets.json').with(query: {q: 'twitter', count: '1', include_entities: 'false'}).to_return(body: fixture('search2.json'), headers: {content_type: 'application/json; charset=utf-8'})
@@ -239,6 +241,7 @@ describe T::Search do
         EOS
       end
     end
+
     context '--decode-uris' do
       before do
         @search.options = @search.options.merge('decode_uris' => true)
@@ -256,6 +259,7 @@ describe T::Search do
         expect($stdout.string).to include 'https://twitter.com/sferik/status/243988000076337152'
       end
     end
+
     context '--long' do
       before do
         @search.options = @search.options.merge('long' => true)
@@ -270,6 +274,7 @@ describe T::Search do
         EOS
       end
     end
+
     context 'Twitter is down' do
       it 'retries 3 times and then raise an error' do
         stub_get('/1.1/favorites/list.json').with(query: {count: '200', include_entities: 'false'}).to_return(status: 502, headers: {content_type: 'application/json; charset=utf-8'})
@@ -279,6 +284,7 @@ describe T::Search do
         expect(a_get('/1.1/favorites/list.json').with(query: {count: '200', include_entities: 'false'})).to have_been_made.times(3)
       end
     end
+
     context 'with a user passed' do
       before do
         stub_get('/1.1/favorites/list.json').with(query: {count: '200', screen_name: 'sferik', include_entities: 'false'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
@@ -367,6 +373,7 @@ describe T::Search do
         EOS
       end
     end
+
     context '--decode-uris' do
       before do
         @search.options = @search.options.merge('decode_uris' => true)
@@ -384,6 +391,7 @@ describe T::Search do
         expect($stdout.string).to include 'https://twitter.com/sferik/status/243988000076337152'
       end
     end
+
     context '--long' do
       before do
         @search.options = @search.options.merge('long' => true)
@@ -398,6 +406,7 @@ describe T::Search do
         EOS
       end
     end
+
     context 'Twitter is down' do
       it 'retries 3 times and then raise an error' do
         stub_get('/1.1/statuses/mentions_timeline.json').with(query: {count: '200', include_entities: 'false'}).to_return(status: 502, headers: {content_type: 'application/json; charset=utf-8'})
@@ -446,6 +455,7 @@ describe T::Search do
         EOS
       end
     end
+
     context '--decode-uris' do
       before do
         @search.options = @search.options.merge('decode_uris' => true)
@@ -463,6 +473,7 @@ describe T::Search do
         expect($stdout.string).to include 'https://dev.twitter.com/docs/api/post/direct_messages/destroy'
       end
     end
+
     context '--long' do
       before do
         @search.options = @search.options.merge('long' => true)
@@ -477,6 +488,7 @@ describe T::Search do
         EOS
       end
     end
+
     context 'with a user passed' do
       it 'requests the correct resource' do
         @search.list('testcli/presidents', 'twitter')
@@ -496,6 +508,7 @@ describe T::Search do
         end
       end
     end
+
     context 'Twitter is down' do
       it 'retries 3 times and then raise an error' do
         stub_get('/1.1/lists/statuses.json').with(query: {count: '200', owner_screen_name: 'testcli', slug: 'presidents', include_entities: 'false'}).to_return(status: 502, headers: {content_type: 'application/json; charset=utf-8'})
@@ -539,6 +552,7 @@ describe T::Search do
         EOS
       end
     end
+
     context '--decode-uris' do
       before do
         @search.options = @search.options.merge('decode_uris' => true)
@@ -556,6 +570,7 @@ describe T::Search do
         expect($stdout.string).to include 'http://heymosaic.com/i/1Z8ssK'
       end
     end
+
     context '--long' do
       before do
         @search.options = @search.options.merge('long' => true)
@@ -569,6 +584,7 @@ describe T::Search do
         EOS
       end
     end
+
     context 'Twitter is down' do
       it 'retries 3 times and then raise an error' do
         stub_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', include_rts: 'true', include_entities: 'false'}).to_return(status: 502, headers: {content_type: 'application/json; charset=utf-8'})
@@ -578,6 +594,7 @@ describe T::Search do
         expect(a_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', include_rts: 'true', include_entities: 'false'})).to have_been_made.times(3)
       end
     end
+
     context 'with a user passed' do
       before do
         stub_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', include_rts: 'true', screen_name: 'sferik', include_entities: 'false'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
@@ -658,6 +675,7 @@ describe T::Search do
         EOS
       end
     end
+
     context '--decode-uris' do
       before do
         @search.options = @search.options.merge('decode_uris' => true)
@@ -675,6 +693,7 @@ describe T::Search do
         expect($stdout.string).to include 'https://dev.twitter.com/docs/api/post/direct_messages/destroy'
       end
     end
+
     context '--exclude=replies' do
       before do
         @search.options = @search.options.merge('exclude' => 'replies')
@@ -688,6 +707,7 @@ describe T::Search do
         expect(a_get('/1.1/statuses/home_timeline.json').with(query: {count: '200', exclude_replies: 'true', max_id: '244099460672679937', include_entities: 'false'})).to have_been_made
       end
     end
+
     context '--exclude=retweets' do
       before do
         @search.options = @search.options.merge('exclude' => 'retweets')
@@ -701,6 +721,7 @@ describe T::Search do
         expect(a_get('/1.1/statuses/home_timeline.json').with(query: {count: '200', include_rts: 'false', max_id: '244099460672679937', include_entities: 'false'})).to have_been_made
       end
     end
+
     context '--long' do
       before do
         @search.options = @search.options.merge('long' => true)
@@ -715,6 +736,7 @@ describe T::Search do
         EOS
       end
     end
+
     context '--max-id' do
       before do
         @search.options = @search.options.merge('max_id' => 244_104_558_433_951_744)
@@ -726,6 +748,7 @@ describe T::Search do
         expect(a_get('/1.1/statuses/home_timeline.json').with(query: {count: '200', max_id: '244104558433951744', include_entities: 'false'})).to have_been_made
       end
     end
+
     context '--since-id' do
       before do
         @search.options = @search.options.merge('since_id' => 244_104_558_433_951_744)
@@ -739,6 +762,7 @@ describe T::Search do
         expect(a_get('/1.1/statuses/home_timeline.json').with(query: {count: '200', max_id: '244099460672679937', since_id: '244104558433951744', include_entities: 'false'})).to have_been_made
       end
     end
+
     context 'Twitter is down' do
       it 'retries 3 times and then raise an error' do
         stub_get('/1.1/statuses/home_timeline.json').with(query: {count: '200', include_entities: 'false'}).to_return(status: 502, headers: {content_type: 'application/json; charset=utf-8'})
@@ -748,6 +772,7 @@ describe T::Search do
         expect(a_get('/1.1/statuses/home_timeline.json').with(query: {count: '200', include_entities: 'false'})).to have_been_made.times(3)
       end
     end
+
     context 'with a user passed' do
       before do
         stub_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', screen_name: 'sferik', include_entities: 'false'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
@@ -785,6 +810,7 @@ describe T::Search do
           EOS
         end
       end
+
       context '--id' do
         before do
           @search.options = @search.options.merge('id' => true)
@@ -798,6 +824,7 @@ describe T::Search do
           expect(a_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', max_id: '244099460672679937', user_id: '7505382', include_entities: 'false'})).to have_been_made
         end
       end
+
       context '--long' do
         before do
           @search.options = @search.options.merge('long' => true)
@@ -812,6 +839,7 @@ describe T::Search do
           EOS
         end
       end
+
       context '--max-id' do
         before do
           @search.options = @search.options.merge('max_id' => 244_104_558_433_951_744)
@@ -823,6 +851,7 @@ describe T::Search do
           expect(a_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', screen_name: 'sferik', max_id: '244104558433951744', include_entities: 'false'})).to have_been_made
         end
       end
+
       context '--since-id' do
         before do
           @search.options = @search.options.merge('since_id' => 244_104_558_433_951_744)
@@ -836,6 +865,7 @@ describe T::Search do
           expect(a_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', screen_name: 'sferik', max_id: '244099460672679937', since_id: '244104558433951744', include_entities: 'false'})).to have_been_made
         end
       end
+
       context 'Twitter is down' do
         it 'retries 3 times and then raise an error' do
           stub_get('/1.1/statuses/user_timeline.json').with(query: {screen_name: 'sferik', count: '200', include_entities: 'false'}).to_return(status: 502, headers: {content_type: 'application/json; charset=utf-8'})
@@ -877,6 +907,7 @@ describe T::Search do
         EOS
       end
     end
+
     context '--long' do
       before do
         @search.options = @search.options.merge('long' => true)
@@ -891,6 +922,7 @@ describe T::Search do
         EOS
       end
     end
+
     context '--reverse' do
       before do
         @search.options = @search.options.merge('reverse' => true)
@@ -901,6 +933,7 @@ describe T::Search do
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
+
     context '--sort=favorites' do
       before do
         @search.options = @search.options.merge('sort' => 'favorites')
@@ -911,6 +944,7 @@ describe T::Search do
         expect($stdout.string.chomp).to eq 'pengwynn  sferik'
       end
     end
+
     context '--sort=followers' do
       before do
         @search.options = @search.options.merge('sort' => 'followers')
@@ -921,6 +955,7 @@ describe T::Search do
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
+
     context '--sort=friends' do
       before do
         @search.options = @search.options.merge('sort' => 'friends')
@@ -931,6 +966,7 @@ describe T::Search do
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
+
     context '--sort=listed' do
       before do
         @search.options = @search.options.merge('sort' => 'listed')
@@ -941,6 +977,7 @@ describe T::Search do
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
+
     context '--sort=since' do
       before do
         @search.options = @search.options.merge('sort' => 'since')
@@ -951,6 +988,7 @@ describe T::Search do
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
+
     context '--sort=tweets' do
       before do
         @search.options = @search.options.merge('sort' => 'tweets')
@@ -961,6 +999,7 @@ describe T::Search do
         expect($stdout.string.chomp).to eq 'pengwynn  sferik'
       end
     end
+
     context '--sort=tweeted' do
       before do
         @search.options = @search.options.merge('sort' => 'tweeted')
@@ -971,6 +1010,7 @@ describe T::Search do
         expect($stdout.string.chomp).to eq 'pengwynn  sferik'
       end
     end
+
     context '--unsorted' do
       before do
         @search.options = @search.options.merge('unsorted' => true)
@@ -981,6 +1021,7 @@ describe T::Search do
         expect($stdout.string.chomp).to eq 'pengwynn  sferik'
       end
     end
+
     context 'Twitter is down' do
       it 'retries 3 times and then raise an error' do
         stub_get('/1.1/users/search.json').with(query: {page: '2', q: 'Erik'}).to_return(status: 502, headers: {content_type: 'application/json; charset=utf-8'})

@@ -219,6 +219,7 @@ describe T::CLI do
         EOS
       end
     end
+
     context '--decode-uris' do
       before do
         @cli.options = @cli.options.merge('decode_uris' => true)
@@ -232,6 +233,7 @@ describe T::CLI do
         expect(a_get('/1.1/direct_messages/events/list.json').with(query: {count: '50', max_id: '856477710595624962', include_entities: 'true'})).to have_been_made
       end
     end
+
     context '--long' do
       before do
         @cli.options = @cli.options.merge('long' => true)
@@ -257,6 +259,7 @@ describe T::CLI do
         EOS
       end
     end
+
     context '--number' do
       before do
         stub_get('/1.1/users/lookup.json').with(query: {user_id: '358486183'}).to_return(body: fixture('users.json'), headers: {content_type: 'application/json; charset=utf-8'})
@@ -268,6 +271,7 @@ describe T::CLI do
         expect(a_get('/1.1/users/lookup.json').with(query: {user_id: '358486183'})).to have_been_made
       end
     end
+
     context '--reverse' do
       before do
         @cli.options = @cli.options.merge('reverse' => true)
@@ -361,6 +365,7 @@ describe T::CLI do
         EOS
       end
     end
+
     context '--decode-uris' do
       before do
         @cli.options = @cli.options.merge('decode_uris' => true)
@@ -373,6 +378,7 @@ describe T::CLI do
         expect(a_get('/1.1/direct_messages/events/list.json').with(query: {count: '50', include_entities: 'true'})).to have_been_made
       end
     end
+
     context '--long' do
       before do
         @cli.options = @cli.options.merge('long' => true)
@@ -388,6 +394,7 @@ describe T::CLI do
         EOS
       end
     end
+
     context '--number' do
       it 'limits the number of results 1' do
         @cli.options = @cli.options.merge('number' => 1)
@@ -401,6 +408,7 @@ describe T::CLI do
         expect(a_get('/1.1/direct_messages/events/list.json').with(query: {count: '50', max_id: '856480385957548034', include_entities: 'false'})).to have_been_made
       end
     end
+
     context '--reverse' do
       before do
         @cli.options = @cli.options.merge('reverse' => true)
@@ -485,6 +493,7 @@ describe T::CLI do
         expect(a_get('/1.1/lists/members/show.json').with(query: {owner_screen_name: 'testcli', screen_name: 'sferik', slug: 'presidents'})).to have_been_made
       end
     end
+
     context 'with an owner passed' do
       it 'has the correct output' do
         @cli.does_contain('testcli/presidents', 'testcli')
@@ -504,12 +513,14 @@ describe T::CLI do
         end
       end
     end
+
     context 'with a user passed' do
       it 'has the correct output' do
         @cli.does_contain('presidents', 'testcli')
         expect($stdout.string.chomp).to eq 'Yes, presidents contains @testcli.'
       end
     end
+
     context 'false' do
       before do
         stub_get('/1.1/lists/members/show.json').with(query: {owner_screen_name: 'testcli', screen_name: 'testcli', slug: 'presidents'}).to_return(body: fixture('not_found.json'), status: 404, headers: {content_type: 'application/json; charset=utf-8'})
@@ -555,6 +566,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'Yes, @sferik follows @testcli.'
       end
     end
+
     context 'with a user passed' do
       before do
         stub_get('/1.1/friendships/show.json').with(query: {source_screen_name: 'ev', target_screen_name: 'sferik'}).to_return(body: fixture('following.json'), headers: {content_type: 'application/json; charset=utf-8'})
@@ -600,6 +612,7 @@ describe T::CLI do
         end
       end
     end
+
     context 'false' do
       before do
         stub_get('/1.1/friendships/show.json').with(query: {source_screen_name: 'ev', target_screen_name: 'testcli'}).to_return(body: fixture('not_following.json'), headers: {content_type: 'application/json; charset=utf-8'})
@@ -751,6 +764,7 @@ describe T::CLI do
         EOS
       end
     end
+
     context '--decode-uris' do
       before do
         @cli.options = @cli.options.merge('decode_uris' => true)
@@ -766,6 +780,7 @@ describe T::CLI do
         expect($stdout.string).to include 'https://twitter.com/sferik/status/243988000076337152'
       end
     end
+
     context '--long' do
       before do
         @cli.options = @cli.options.merge('long' => true)
@@ -830,6 +845,7 @@ describe T::CLI do
         end
       end
     end
+
     context '--max-id' do
       before do
         @cli.options = @cli.options.merge('max_id' => 244_104_558_433_951_744)
@@ -841,6 +857,7 @@ describe T::CLI do
         expect(a_get('/1.1/favorites/list.json').with(query: {count: '20', max_id: '244104558433951744', include_entities: 'false'})).to have_been_made
       end
     end
+
     context '--number' do
       before do
         stub_get('/1.1/favorites/list.json').with(query: {count: '1', include_entities: 'false'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
@@ -860,6 +877,7 @@ describe T::CLI do
         expect(a_get('/1.1/favorites/list.json').with(query: {count: '1', max_id: '265500541700956160', include_entities: 'false'})).to have_been_made
       end
     end
+
     context '--since-id' do
       before do
         @cli.options = @cli.options.merge('since_id' => 244_104_558_433_951_744)
@@ -871,6 +889,7 @@ describe T::CLI do
         expect(a_get('/1.1/favorites/list.json').with(query: {count: '20', since_id: '244104558433951744', include_entities: 'false'})).to have_been_made
       end
     end
+
     context 'with a user passed' do
       before do
         stub_get('/1.1/favorites/list.json').with(query: {count: '20', screen_name: 'sferik', include_entities: 'false'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
@@ -891,6 +910,7 @@ describe T::CLI do
           expect(a_get('/1.1/favorites/list.json').with(query: {user_id: '7505382', count: '20', include_entities: 'false'})).to have_been_made
         end
       end
+
       context '--max-id' do
         before do
           @cli.options = @cli.options.merge('max_id' => 244_104_558_433_951_744)
@@ -902,6 +922,7 @@ describe T::CLI do
           expect(a_get('/1.1/favorites/list.json').with(query: {count: '20', screen_name: 'sferik', max_id: '244104558433951744', include_entities: 'false'})).to have_been_made
         end
       end
+
       context '--number' do
         before do
           stub_get('/1.1/favorites/list.json').with(query: {count: '1', screen_name: 'sferik', include_entities: 'false'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
@@ -921,6 +942,7 @@ describe T::CLI do
           expect(a_get('/1.1/favorites/list.json').with(query: {count: '1', screen_name: 'sferik', max_id: '265500541700956160', include_entities: 'false'})).to have_been_made
         end
       end
+
       context '--since-id' do
         before do
           @cli.options = @cli.options.merge('since_id' => 244_104_558_433_951_744)
@@ -974,6 +996,7 @@ describe T::CLI do
           expect(a_post('/1.1/friendships/create.json').with(body: {user_id: '14100886'})).to have_been_made
         end
       end
+
       context 'Twitter is down' do
         it 'retries 3 times and then raise an error' do
           stub_get('/1.1/friends/ids.json').with(query: {cursor: '-1', user_id: '7505382'}).to_return(body: fixture('friends_ids.json'), headers: {content_type: 'application/json; charset=utf-8'})
@@ -1021,6 +1044,7 @@ describe T::CLI do
         EOS
       end
     end
+
     context '--long' do
       before do
         @cli.options = @cli.options.merge('long' => true)
@@ -1035,6 +1059,7 @@ describe T::CLI do
         EOS
       end
     end
+
     context '--reverse' do
       before do
         @cli.options = @cli.options.merge('reverse' => true)
@@ -1045,6 +1070,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
+
     context '--sort=favorites' do
       before do
         @cli.options = @cli.options.merge('sort' => 'favorites')
@@ -1055,6 +1081,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'pengwynn  sferik'
       end
     end
+
     context '--sort=followers' do
       before do
         @cli.options = @cli.options.merge('sort' => 'followers')
@@ -1065,6 +1092,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
+
     context '--sort=friends' do
       before do
         @cli.options = @cli.options.merge('sort' => 'friends')
@@ -1075,6 +1103,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
+
     context '--sort=listed' do
       before do
         @cli.options = @cli.options.merge('sort' => 'listed')
@@ -1085,6 +1114,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
+
     context '--sort=since' do
       before do
         @cli.options = @cli.options.merge('sort' => 'since')
@@ -1095,6 +1125,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
+
     context '--sort=tweets' do
       before do
         @cli.options = @cli.options.merge('sort' => 'tweets')
@@ -1105,6 +1136,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'pengwynn  sferik'
       end
     end
+
     context '--sort=tweeted' do
       before do
         @cli.options = @cli.options.merge('sort' => 'tweeted')
@@ -1115,6 +1147,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'pengwynn  sferik'
       end
     end
+
     context '--unsorted' do
       before do
         @cli.options = @cli.options.merge('unsorted' => true)
@@ -1125,6 +1158,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'pengwynn  sferik'
       end
     end
+
     context 'with a user passed' do
       before do
         stub_get('/1.1/friends/ids.json').with(query: {cursor: '-1', screen_name: 'sferik'}).to_return(body: fixture('friends_ids.json'), headers: {content_type: 'application/json; charset=utf-8'})
@@ -1136,6 +1170,7 @@ describe T::CLI do
         expect(a_get('/1.1/users/lookup.json').with(query: {user_id: '7505382'})).to have_been_made
       end
     end
+
     context '--id' do
       before do
         @cli.options = @cli.options.merge('id' => true)
@@ -1181,6 +1216,7 @@ describe T::CLI do
         EOS
       end
     end
+
     context '--long' do
       before do
         @cli.options = @cli.options.merge('long' => true)
@@ -1195,6 +1231,7 @@ describe T::CLI do
         EOS
       end
     end
+
     context '--reverse' do
       before do
         @cli.options = @cli.options.merge('reverse' => true)
@@ -1205,6 +1242,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
+
     context '--sort=favorites' do
       before do
         @cli.options = @cli.options.merge('sort' => 'favorites')
@@ -1215,6 +1253,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'pengwynn  sferik'
       end
     end
+
     context '--sort=followers' do
       before do
         @cli.options = @cli.options.merge('sort' => 'followers')
@@ -1225,6 +1264,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
+
     context '--sort=friends' do
       before do
         @cli.options = @cli.options.merge('sort' => 'friends')
@@ -1235,6 +1275,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
+
     context '--sort=listed' do
       before do
         @cli.options = @cli.options.merge('sort' => 'listed')
@@ -1245,6 +1286,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
+
     context '--sort=since' do
       before do
         @cli.options = @cli.options.merge('sort' => 'since')
@@ -1255,6 +1297,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
+
     context '--sort=tweets' do
       before do
         @cli.options = @cli.options.merge('sort' => 'tweets')
@@ -1265,6 +1308,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'pengwynn  sferik'
       end
     end
+
     context '--sort=tweeted' do
       before do
         @cli.options = @cli.options.merge('sort' => 'tweeted')
@@ -1275,6 +1319,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'pengwynn  sferik'
       end
     end
+
     context '--unsorted' do
       before do
         @cli.options = @cli.options.merge('unsorted' => true)
@@ -1285,6 +1330,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'pengwynn  sferik'
       end
     end
+
     context 'with two users passed' do
       before do
         stub_get('/1.1/friends/ids.json').with(query: {cursor: '-1', screen_name: 'pengwynn'}).to_return(body: fixture('friends_ids.json'), headers: {content_type: 'application/json; charset=utf-8'})
@@ -1345,6 +1391,7 @@ describe T::CLI do
         EOS
       end
     end
+
     context '--long' do
       before do
         @cli.options = @cli.options.merge('long' => true)
@@ -1359,6 +1406,7 @@ describe T::CLI do
         EOS
       end
     end
+
     context '--reverse' do
       before do
         @cli.options = @cli.options.merge('reverse' => true)
@@ -1369,6 +1417,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
+
     context '--sort=favorites' do
       before do
         @cli.options = @cli.options.merge('sort' => 'favorites')
@@ -1379,6 +1428,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'pengwynn  sferik'
       end
     end
+
     context '--sort=followers' do
       before do
         @cli.options = @cli.options.merge('sort' => 'followers')
@@ -1389,6 +1439,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
+
     context '--sort=friends' do
       before do
         @cli.options = @cli.options.merge('sort' => 'friends')
@@ -1399,6 +1450,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
+
     context '--sort=listed' do
       before do
         @cli.options = @cli.options.merge('sort' => 'listed')
@@ -1409,6 +1461,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
+
     context '--sort=since' do
       before do
         @cli.options = @cli.options.merge('sort' => 'since')
@@ -1419,6 +1472,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
+
     context '--sort=tweets' do
       before do
         @cli.options = @cli.options.merge('sort' => 'tweets')
@@ -1429,6 +1483,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'pengwynn  sferik'
       end
     end
+
     context '--sort=tweeted' do
       before do
         @cli.options = @cli.options.merge('sort' => 'tweeted')
@@ -1439,6 +1494,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'pengwynn  sferik'
       end
     end
+
     context '--unsorted' do
       before do
         @cli.options = @cli.options.merge('unsorted' => true)
@@ -1449,6 +1505,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'pengwynn  sferik'
       end
     end
+
     context 'with a user passed' do
       before do
         stub_get('/1.1/followers/ids.json').with(query: {cursor: '-1', screen_name: 'sferik'}).to_return(body: fixture('friends_ids.json'), headers: {content_type: 'application/json; charset=utf-8'})
@@ -1508,6 +1565,7 @@ describe T::CLI do
         EOS
       end
     end
+
     context '--long' do
       before do
         @cli.options = @cli.options.merge('long' => true)
@@ -1522,6 +1580,7 @@ describe T::CLI do
         EOS
       end
     end
+
     context '--reverse' do
       before do
         @cli.options = @cli.options.merge('reverse' => true)
@@ -1532,6 +1591,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
+
     context '--sort=favorites' do
       before do
         @cli.options = @cli.options.merge('sort' => 'favorites')
@@ -1542,6 +1602,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'pengwynn  sferik'
       end
     end
+
     context '--sort=followers' do
       before do
         @cli.options = @cli.options.merge('sort' => 'followers')
@@ -1552,6 +1613,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
+
     context '--sort=friends' do
       before do
         @cli.options = @cli.options.merge('sort' => 'friends')
@@ -1562,6 +1624,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
+
     context '--sort=listed' do
       before do
         @cli.options = @cli.options.merge('sort' => 'listed')
@@ -1572,6 +1635,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
+
     context '--sort=since' do
       before do
         @cli.options = @cli.options.merge('sort' => 'since')
@@ -1582,6 +1646,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
+
     context '--sort=tweets' do
       before do
         @cli.options = @cli.options.merge('sort' => 'tweets')
@@ -1592,6 +1657,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'pengwynn  sferik'
       end
     end
+
     context '--sort=tweeted' do
       before do
         @cli.options = @cli.options.merge('sort' => 'tweeted')
@@ -1602,6 +1668,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'pengwynn  sferik'
       end
     end
+
     context '--unsorted' do
       before do
         @cli.options = @cli.options.merge('unsorted' => true)
@@ -1612,6 +1679,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'pengwynn  sferik'
       end
     end
+
     context 'with a user passed' do
       before do
         stub_get('/1.1/friends/ids.json').with(query: {cursor: '-1', screen_name: 'sferik'}).to_return(body: fixture('friends_ids.json'), headers: {content_type: 'application/json; charset=utf-8'})
@@ -1674,6 +1742,7 @@ describe T::CLI do
         EOS
       end
     end
+
     context '--long' do
       before do
         @cli.options = @cli.options.merge('long' => true)
@@ -1688,6 +1757,7 @@ describe T::CLI do
         EOS
       end
     end
+
     context '--reverse' do
       before do
         @cli.options = @cli.options.merge('reverse' => true)
@@ -1698,6 +1768,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
+
     context '--sort=favorites' do
       before do
         @cli.options = @cli.options.merge('sort' => 'favorites')
@@ -1708,6 +1779,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'pengwynn  sferik'
       end
     end
+
     context '--sort=followers' do
       before do
         @cli.options = @cli.options.merge('sort' => 'followers')
@@ -1718,6 +1790,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
+
     context '--sort=friends' do
       before do
         @cli.options = @cli.options.merge('sort' => 'friends')
@@ -1728,6 +1801,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
+
     context '--sort=listed' do
       before do
         @cli.options = @cli.options.merge('sort' => 'listed')
@@ -1738,6 +1812,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
+
     context '--sort=since' do
       before do
         @cli.options = @cli.options.merge('sort' => 'since')
@@ -1748,6 +1823,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
+
     context '--sort=tweets' do
       before do
         @cli.options = @cli.options.merge('sort' => 'tweets')
@@ -1758,6 +1834,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'pengwynn  sferik'
       end
     end
+
     context '--sort=tweeted' do
       before do
         @cli.options = @cli.options.merge('sort' => 'tweeted')
@@ -1768,6 +1845,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'pengwynn  sferik'
       end
     end
+
     context '--unsorted' do
       before do
         @cli.options = @cli.options.merge('unsorted' => true)
@@ -1778,6 +1856,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'pengwynn  sferik'
       end
     end
+
     context 'with a user passed' do
       before do
         stub_get('/1.1/followers/ids.json').with(query: {cursor: '-1', screen_name: 'sferik'}).to_return(body: fixture('followers_ids.json'), headers: {content_type: 'application/json; charset=utf-8'})
@@ -1839,6 +1918,7 @@ describe T::CLI do
         EOS
       end
     end
+
     context '--long' do
       before do
         @cli.options = @cli.options.merge('long' => true)
@@ -1853,6 +1933,7 @@ describe T::CLI do
         EOS
       end
     end
+
     context '--reverse' do
       before do
         @cli.options = @cli.options.merge('reverse' => true)
@@ -1863,6 +1944,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
+
     context '--sort=favorites' do
       before do
         @cli.options = @cli.options.merge('sort' => 'favorites')
@@ -1873,6 +1955,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'pengwynn  sferik'
       end
     end
+
     context '--sort=followers' do
       before do
         @cli.options = @cli.options.merge('sort' => 'followers')
@@ -1883,6 +1966,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
+
     context '--sort=friends' do
       before do
         @cli.options = @cli.options.merge('sort' => 'friends')
@@ -1893,6 +1977,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
+
     context '--sort=listed' do
       before do
         @cli.options = @cli.options.merge('sort' => 'listed')
@@ -1903,6 +1988,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
+
     context '--sort=since' do
       before do
         @cli.options = @cli.options.merge('sort' => 'since')
@@ -1913,6 +1999,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
+
     context '--sort=tweets' do
       before do
         @cli.options = @cli.options.merge('sort' => 'tweets')
@@ -1923,6 +2010,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'pengwynn  sferik'
       end
     end
+
     context '--sort=tweeted' do
       before do
         @cli.options = @cli.options.merge('sort' => 'tweeted')
@@ -1933,6 +2021,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'pengwynn  sferik'
       end
     end
+
     context '--type=followers' do
       before do
         @cli.options = @cli.options.merge('type' => 'followers')
@@ -1952,6 +2041,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'pengwynn  sferik'
       end
     end
+
     context '--unsorted' do
       before do
         @cli.options = @cli.options.merge('unsorted' => true)
@@ -1962,6 +2052,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'pengwynn  sferik'
       end
     end
+
     context 'with two users passed' do
       before do
         stub_get('/1.1/friends/ids.json').with(query: {cursor: '-1', screen_name: 'pengwynn'}).to_return(body: fixture('friends_ids.json'), headers: {content_type: 'application/json; charset=utf-8'})
@@ -2024,6 +2115,7 @@ describe T::CLI do
         EOS
       end
     end
+
     context '--long' do
       before do
         @cli.options = @cli.options.merge('long' => true)
@@ -2038,6 +2130,7 @@ describe T::CLI do
         EOS
       end
     end
+
     context '--reverse' do
       before do
         @cli.options = @cli.options.merge('reverse' => true)
@@ -2048,6 +2141,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
+
     context '--sort=favorites' do
       before do
         @cli.options = @cli.options.merge('sort' => 'favorites')
@@ -2058,6 +2152,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'pengwynn  sferik'
       end
     end
+
     context '--sort=followers' do
       before do
         @cli.options = @cli.options.merge('sort' => 'followers')
@@ -2068,6 +2163,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
+
     context '--sort=friends' do
       before do
         @cli.options = @cli.options.merge('sort' => 'friends')
@@ -2078,6 +2174,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
+
     context '--sort=listed' do
       before do
         @cli.options = @cli.options.merge('sort' => 'listed')
@@ -2088,6 +2185,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
+
     context '--sort=since' do
       before do
         @cli.options = @cli.options.merge('sort' => 'since')
@@ -2098,6 +2196,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
+
     context '--sort=tweets' do
       before do
         @cli.options = @cli.options.merge('sort' => 'tweets')
@@ -2108,6 +2207,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'pengwynn  sferik'
       end
     end
+
     context '--sort=tweeted' do
       before do
         @cli.options = @cli.options.merge('sort' => 'tweeted')
@@ -2118,6 +2218,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'pengwynn  sferik'
       end
     end
+
     context '--unsorted' do
       before do
         @cli.options = @cli.options.merge('unsorted' => true)
@@ -2128,6 +2229,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'pengwynn  sferik'
       end
     end
+
     context 'with a user passed' do
       before do
         stub_get('/1.1/friends/ids.json').with(query: {cursor: '-1', screen_name: 'sferik'}).to_return(body: fixture('friends_ids.json'), headers: {content_type: 'application/json; charset=utf-8'})
@@ -2185,6 +2287,7 @@ describe T::CLI do
         EOS
       end
     end
+
     context '--long' do
       before do
         @cli.options = @cli.options.merge('long' => true)
@@ -2200,6 +2303,7 @@ describe T::CLI do
         EOS
       end
     end
+
     context '--reverse' do
       before do
         @cli.options = @cli.options.merge('reverse' => true)
@@ -2210,6 +2314,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq '@sferik/test        @twitter/team       @pengwynn/rubyists'
       end
     end
+
     context '--sort=members' do
       before do
         @cli.options = @cli.options.merge('sort' => 'members')
@@ -2220,6 +2325,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq '@sferik/test        @pengwynn/rubyists  @twitter/team'
       end
     end
+
     context '--sort=mode' do
       before do
         @cli.options = @cli.options.merge('sort' => 'mode')
@@ -2230,6 +2336,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq '@twitter/team       @sferik/test        @pengwynn/rubyists'
       end
     end
+
     context '--sort=since' do
       before do
         @cli.options = @cli.options.merge('sort' => 'since')
@@ -2240,6 +2347,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq '@twitter/team       @pengwynn/rubyists  @sferik/test'
       end
     end
+
     context '--sort=subscribers' do
       before do
         @cli.options = @cli.options.merge('sort' => 'subscribers')
@@ -2250,6 +2358,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq '@sferik/test        @pengwynn/rubyists  @twitter/team'
       end
     end
+
     context '--unsorted' do
       before do
         @cli.options = @cli.options.merge('unsorted' => true)
@@ -2260,6 +2369,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq '@pengwynn/rubyists  @twitter/team       @sferik/test'
       end
     end
+
     context 'with a user passed' do
       before do
         stub_get('/1.1/lists/list.json').with(query: {screen_name: 'sferik'}).to_return(body: fixture('lists.json'), headers: {content_type: 'application/json; charset=utf-8'})
@@ -2421,6 +2531,7 @@ describe T::CLI do
         EOS
       end
     end
+
     context '--decode-uris' do
       before do
         @cli.options = @cli.options.merge('decode_uris' => true)
@@ -2436,6 +2547,7 @@ describe T::CLI do
         expect($stdout.string).to include 'https://twitter.com/sferik/status/243988000076337152'
       end
     end
+
     context '--long' do
       before do
         @cli.options = @cli.options.merge('long' => true)
@@ -2500,6 +2612,7 @@ describe T::CLI do
         end
       end
     end
+
     context '--number' do
       before do
         stub_get('/1.1/statuses/mentions_timeline.json').with(query: {count: '1', include_entities: 'false'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
@@ -2586,6 +2699,7 @@ describe T::CLI do
         expect(a_get('/1.1/users/show.json').with(query: {user_id: '420'})).to have_been_made
       end
     end
+
     context '--status' do
       before do
         @cli.options = @cli.options.merge('status' => true)
@@ -2667,6 +2781,7 @@ describe T::CLI do
         expect($stdout.string.split("\n").first).to eq 'Reply posted by @testcli to @joshfrench @sferik.'
       end
     end
+
     context 'with file' do
       before do
         @cli.options = @cli.options.merge('file' => "#{fixture_path}/long.png")
@@ -2684,6 +2799,7 @@ describe T::CLI do
         expect($stdout.string.split("\n").first).to eq 'Reply posted by @testcli to @joshfrench.'
       end
     end
+
     context '--location' do
       before do
         @cli.options = @cli.options.merge('location' => 'location')
@@ -2703,6 +2819,7 @@ describe T::CLI do
         expect($stdout.string.split("\n").first).to eq 'Reply posted by @testcli to @joshfrench.'
       end
     end
+
     context "--location 'latitude,longitude'" do
       before do
         @cli.options = @cli.options.merge('location' => '41.03132,28.9869')
@@ -2722,6 +2839,7 @@ describe T::CLI do
         expect($stdout.string.split("\n").first).to eq 'Reply posted by @testcli to @joshfrench.'
       end
     end
+
     context 'no status provided' do
       it 'opens an editor to prompt for the status' do
         expect(T::Editor).to receive(:gets).and_return 'Testing'
@@ -2871,6 +2989,7 @@ describe T::CLI do
         EOS
       end
     end
+
     context '--csv' do
       before do
         @cli.options = @cli.options.merge('csv' => true)
@@ -2903,6 +3022,7 @@ describe T::CLI do
         EOS
       end
     end
+
     context '--decode-uris' do
       before do
         @cli.options = @cli.options.merge('decode_uris' => true)
@@ -2916,6 +3036,7 @@ describe T::CLI do
         expect(a_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', include_rts: 'true', max_id: '244102729860009983', include_entities: 'true'})).to have_been_made.times(3)
       end
     end
+
     context '--long' do
       before do
         @cli.options = @cli.options.merge('long' => true)
@@ -2980,6 +3101,7 @@ describe T::CLI do
         end
       end
     end
+
     context '--number' do
       before do
         stub_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', include_rts: 'true', include_entities: 'false'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
@@ -2998,6 +3120,7 @@ describe T::CLI do
         expect(a_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', include_rts: 'true', max_id: '244107823733174271', include_entities: 'false'})).to have_been_made
       end
     end
+
     context 'with a user passed' do
       before do
         stub_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', include_rts: 'true', screen_name: 'sferik', include_entities: 'false'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
@@ -3116,6 +3239,7 @@ describe T::CLI do
         EOS
       end
     end
+
     context '--csv' do
       before do
         @cli.options = @cli.options.merge('csv' => true)
@@ -3148,6 +3272,7 @@ describe T::CLI do
         EOS
       end
     end
+
     context '--decode-uris' do
       before do
         @cli.options = @cli.options.merge('decode_uris' => true)
@@ -3159,6 +3284,7 @@ describe T::CLI do
         expect(a_get('/1.1/statuses/retweets_of_me.json').with(query: {count: '20', include_entities: 'true'})).to have_been_made
       end
     end
+
     context '--long' do
       before do
         @cli.options = @cli.options.merge('long' => true)
@@ -3223,6 +3349,7 @@ describe T::CLI do
         end
       end
     end
+
     context '--number' do
       before do
         stub_get('/1.1/statuses/retweets_of_me.json').with(query: {count: '1', include_entities: 'false'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
@@ -3302,6 +3429,7 @@ describe T::CLI do
         EOS
       end
     end
+
     context 'with no street address' do
       before do
         stub_get('/1.1/statuses/show/55709764298092545.json').with(query: {include_my_retweet: 'false', include_entities: 'false'}).to_return(body: fixture('status_no_street_address.json'), headers: {content_type: 'application/json; charset=utf-8'})
@@ -3321,6 +3449,7 @@ describe T::CLI do
         EOS
       end
     end
+
     context 'with no locality' do
       before do
         stub_get('/1.1/statuses/show/55709764298092545.json').with(query: {include_my_retweet: 'false', include_entities: 'false'}).to_return(body: fixture('status_no_locality.json'), headers: {content_type: 'application/json; charset=utf-8'})
@@ -3340,6 +3469,7 @@ describe T::CLI do
         EOS
       end
     end
+
     context 'with no attributes' do
       before do
         stub_get('/1.1/statuses/show/55709764298092545.json').with(query: {include_my_retweet: 'false', include_entities: 'false'}).to_return(body: fixture('status_no_attributes.json'), headers: {content_type: 'application/json; charset=utf-8'})
@@ -3359,6 +3489,7 @@ describe T::CLI do
         EOS
       end
     end
+
     context 'with no country' do
       before do
         stub_get('/1.1/statuses/show/55709764298092545.json').with(query: {include_my_retweet: 'false', include_entities: 'false'}).to_return(body: fixture('status_no_country.json'), headers: {content_type: 'application/json; charset=utf-8'})
@@ -3378,6 +3509,7 @@ describe T::CLI do
         EOS
       end
     end
+
     context 'with no full name' do
       before do
         stub_get('/1.1/statuses/show/55709764298092545.json').with(query: {include_my_retweet: 'false', include_entities: 'false'}).to_return(body: fixture('status_no_full_name.json'), headers: {content_type: 'application/json; charset=utf-8'})
@@ -3397,6 +3529,7 @@ describe T::CLI do
         EOS
       end
     end
+
     context 'with no place' do
       before do
         stub_get('/1.1/statuses/show/55709764298092545.json').with(query: {include_my_retweet: 'false', include_entities: 'false'}).to_return(body: fixture('status_no_place.json'), headers: {content_type: 'application/json; charset=utf-8'})
@@ -3436,6 +3569,7 @@ describe T::CLI do
           EOS
         end
       end
+
       context 'with no state' do
         before do
           stub_get('/1.1/statuses/show/55709764298092545.json').with(query: {include_my_retweet: 'false', include_entities: 'false'}).to_return(body: fixture('status_no_place.json'), headers: {content_type: 'application/json; charset=utf-8'})
@@ -3457,6 +3591,7 @@ describe T::CLI do
         end
       end
     end
+
     context '--long' do
       before do
         @cli.options = @cli.options.merge('long' => true)
@@ -3470,6 +3605,7 @@ describe T::CLI do
         EOS
       end
     end
+
     describe '--relative-dates' do
       before do
         stub_get('/1.1/statuses/show/55709764298092545.json').with(query: {include_my_retweet: 'false', include_entities: 'false'}).to_return(body: fixture('status.json'), headers: {content_type: 'application/json; charset=utf-8'})
@@ -3521,6 +3657,7 @@ describe T::CLI do
           EOS
         end
       end
+
       context '--long' do
         before do
           @cli.options = @cli.options.merge('long' => true)
@@ -3628,6 +3765,7 @@ describe T::CLI do
         EOS
       end
     end
+
     context '--csv' do
       before do
         @cli.options = @cli.options.merge('csv' => true)
@@ -3660,6 +3798,7 @@ describe T::CLI do
         EOS
       end
     end
+
     context '--decode-uris' do
       before do
         @cli.options = @cli.options.merge('decode_uris' => true)
@@ -3675,6 +3814,7 @@ describe T::CLI do
         expect($stdout.string).to include 'https://twitter.com/sferik/status/243988000076337152'
       end
     end
+
     context '--exclude=replies' do
       before do
         @cli.options = @cli.options.merge('exclude' => 'replies')
@@ -3686,6 +3826,7 @@ describe T::CLI do
         expect(a_get('/1.1/statuses/home_timeline.json').with(query: {count: '20', exclude_replies: 'true', include_entities: 'false'})).to have_been_made
       end
     end
+
     context '--exclude=retweets' do
       before do
         @cli.options = @cli.options.merge('exclude' => 'retweets')
@@ -3697,6 +3838,7 @@ describe T::CLI do
         expect(a_get('/1.1/statuses/home_timeline.json').with(query: {count: '20', include_rts: 'false', include_entities: 'false'})).to have_been_made
       end
     end
+
     context '--long' do
       before do
         @cli.options = @cli.options.merge('long' => true)
@@ -3761,6 +3903,7 @@ describe T::CLI do
         end
       end
     end
+
     context '--max-id' do
       before do
         @cli.options = @cli.options.merge('max_id' => 244_104_558_433_951_744)
@@ -3772,6 +3915,7 @@ describe T::CLI do
         expect(a_get('/1.1/statuses/home_timeline.json').with(query: {count: '20', max_id: '244104558433951744', include_entities: 'false'})).to have_been_made
       end
     end
+
     context '--number' do
       before do
         stub_get('/1.1/statuses/home_timeline.json').with(query: {count: '1', include_entities: 'false'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
@@ -3791,6 +3935,7 @@ describe T::CLI do
         expect(a_get('/1.1/statuses/home_timeline.json').with(query: {count: '1', max_id: '265500541700956160', include_entities: 'false'})).to have_been_made
       end
     end
+
     context '--since-id' do
       before do
         @cli.options = @cli.options.merge('since_id' => 244_104_558_433_951_744)
@@ -3802,6 +3947,7 @@ describe T::CLI do
         expect(a_get('/1.1/statuses/home_timeline.json').with(query: {count: '20', since_id: '244104558433951744', include_entities: 'false'})).to have_been_made
       end
     end
+
     context 'with a user passed' do
       before do
         stub_get('/1.1/statuses/user_timeline.json').with(query: {count: '20', screen_name: 'sferik', include_entities: 'false'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
@@ -3822,6 +3968,7 @@ describe T::CLI do
           expect(a_get('/1.1/statuses/user_timeline.json').with(query: {count: '20', user_id: '7505382', include_entities: 'false'})).to have_been_made
         end
       end
+
       context '--max-id' do
         before do
           @cli.options = @cli.options.merge('max_id' => 244_104_558_433_951_744)
@@ -3833,6 +3980,7 @@ describe T::CLI do
           expect(a_get('/1.1/statuses/user_timeline.json').with(query: {count: '20', screen_name: 'sferik', max_id: '244104558433951744', include_entities: 'false'})).to have_been_made
         end
       end
+
       context '--number' do
         before do
           stub_get('/1.1/statuses/user_timeline.json').with(query: {count: '1', screen_name: 'sferik', include_entities: 'false'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
@@ -3852,6 +4000,7 @@ describe T::CLI do
           expect(a_get('/1.1/statuses/user_timeline.json').with(query: {count: '1', screen_name: 'sferik', max_id: '265500541700956160', include_entities: 'false'})).to have_been_made
         end
       end
+
       context '--since-id' do
         before do
           @cli.options = @cli.options.merge('since_id' => 244_104_558_433_951_744)
@@ -3894,6 +4043,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq '#sevenwordsaftersex  Walkman              Allen Iverson'
       end
     end
+
     context 'with a WOEID passed' do
       before do
         stub_get('/1.1/trends/place.json').with(query: {id: '2487956'}).to_return(body: fixture('trends.json'), headers: {content_type: 'application/json; charset=utf-8'})
@@ -3939,6 +4089,7 @@ describe T::CLI do
         EOS
       end
     end
+
     context '--long' do
       before do
         @cli.options = @cli.options.merge('long' => true)
@@ -3955,6 +4106,7 @@ describe T::CLI do
         EOS
       end
     end
+
     context '--reverse' do
       before do
         @cli.options = @cli.options.merge('reverse' => true)
@@ -3965,6 +4117,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'Worldwide      United States  Soweto         San Francisco'
       end
     end
+
     context '--sort=country' do
       before do
         @cli.options = @cli.options.merge('sort' => 'country')
@@ -3975,6 +4128,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'Worldwide      Soweto         San Francisco  United States'
       end
     end
+
     context '--sort=parent' do
       before do
         @cli.options = @cli.options.merge('sort' => 'parent')
@@ -3985,6 +4139,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'Worldwide      United States  Soweto         San Francisco'
       end
     end
+
     context '--sort=type' do
       before do
         @cli.options = @cli.options.merge('sort' => 'type')
@@ -3995,6 +4150,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'United States  Worldwide      San Francisco  Soweto'
       end
     end
+
     context '--sort=woeid' do
       before do
         @cli.options = @cli.options.merge('sort' => 'woeid')
@@ -4005,6 +4161,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'Worldwide      Soweto         San Francisco  United States'
       end
     end
+
     context '--unsorted' do
       before do
         @cli.options = @cli.options.merge('unsorted' => true)
@@ -4044,6 +4201,7 @@ describe T::CLI do
           expect(a_post('/1.1/friendships/destroy.json').with(body: {user_id: '7505382'})).to have_been_made
         end
       end
+
       context 'Twitter is down' do
         it 'retries 3 times and then raise an error' do
           stub_post('/1.1/friendships/destroy.json').with(body: {screen_name: 'sferik'}).to_return(status: 502, headers: {content_type: 'application/json; charset=utf-8'})
@@ -4091,6 +4249,7 @@ describe T::CLI do
         expect($stdout.string.split("\n").first).to eq 'Tweet posted by @testcli.'
       end
     end
+
     context '--location' do
       before do
         @cli.options = @cli.options.merge('location' => 'location')
@@ -4108,6 +4267,7 @@ describe T::CLI do
         expect($stdout.string.split("\n").first).to eq 'Tweet posted by @testcli.'
       end
     end
+
     context "--location 'latitude,longitude'" do
       before do
         @cli.options = @cli.options.merge('location' => '41.03132,28.9869')
@@ -4125,6 +4285,7 @@ describe T::CLI do
         expect($stdout.string.split("\n").first).to eq 'Tweet posted by @testcli.'
       end
     end
+
     context 'no status provided' do
       it 'opens an editor to prompt for the status' do
         expect(T::Editor).to receive(:gets).and_return 'Testing'
@@ -4160,6 +4321,7 @@ describe T::CLI do
         EOS
       end
     end
+
     context '--long' do
       before do
         @cli.options = @cli.options.merge('long' => true)
@@ -4174,6 +4336,7 @@ describe T::CLI do
         EOS
       end
     end
+
     context '--reverse' do
       before do
         @cli.options = @cli.options.merge('reverse' => true)
@@ -4184,6 +4347,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
+
     context '--sort=favorites' do
       before do
         @cli.options = @cli.options.merge('sort' => 'favorites')
@@ -4194,6 +4358,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'pengwynn  sferik'
       end
     end
+
     context '--sort=followers' do
       before do
         @cli.options = @cli.options.merge('sort' => 'followers')
@@ -4204,6 +4369,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
+
     context '--sort=friends' do
       before do
         @cli.options = @cli.options.merge('sort' => 'friends')
@@ -4214,6 +4380,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
+
     context '--id' do
       before do
         @cli.options = @cli.options.merge('id' => true)
@@ -4225,6 +4392,7 @@ describe T::CLI do
         expect(a_get('/1.1/users/lookup.json').with(query: {user_id: '7505382,14100886'})).to have_been_made
       end
     end
+
     context '--sort=listed' do
       before do
         @cli.options = @cli.options.merge('sort' => 'listed')
@@ -4235,6 +4403,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
+
     context '--sort=since' do
       before do
         @cli.options = @cli.options.merge('sort' => 'since')
@@ -4245,6 +4414,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
+
     context '--sort=tweets' do
       before do
         @cli.options = @cli.options.merge('sort' => 'tweets')
@@ -4255,6 +4425,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'pengwynn  sferik'
       end
     end
+
     context '--sort=tweeted' do
       before do
         @cli.options = @cli.options.merge('sort' => 'tweeted')
@@ -4265,6 +4436,7 @@ describe T::CLI do
         expect($stdout.string.chomp).to eq 'pengwynn  sferik'
       end
     end
+
     context '--unsorted' do
       before do
         @cli.options = @cli.options.merge('unsorted' => true)
@@ -4324,6 +4496,7 @@ describe T::CLI do
         EOS
       end
     end
+
     context '--id' do
       before do
         @cli.options = @cli.options.merge('id' => true)
@@ -4335,6 +4508,7 @@ describe T::CLI do
         expect(a_get('/1.1/users/show.json').with(query: {user_id: '7505382', include_entities: 'false'})).to have_been_made
       end
     end
+
     context '--long' do
       before do
         @cli.options = @cli.options.merge('long' => true)
@@ -4390,6 +4564,7 @@ describe T::CLI do
         EOS
       end
     end
+
     context '--long' do
       before do
         @cli.options = @cli.options.merge('long' => true)
@@ -4403,6 +4578,7 @@ describe T::CLI do
         EOS
       end
     end
+
     context 'no configuration' do
       it 'prints a helpful message and no errors' do
         T::RCFile.instance.path = ''

@@ -145,6 +145,7 @@ describe T::RCFile do
         expect(rcfile.empty?).to be false
       end
     end
+
     context 'when file does not exist at path' do
       it 'returns true' do
         rcfile = T::RCFile.instance
@@ -162,6 +163,7 @@ describe T::RCFile do
         expect(rcfile.load_file['profiles']['testcli']['abc123']['username']).to eq 'testcli'
       end
     end
+
     context 'when file does not exist at path' do
       it 'loads default structure' do
         rcfile = T::RCFile.instance

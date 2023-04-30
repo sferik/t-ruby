@@ -48,6 +48,7 @@ describe T::Stream do
         @stream.all
       end
     end
+
     context '--long' do
       before do
         @stream.options = @stream.options.merge('long' => true)
@@ -66,6 +67,7 @@ describe T::Stream do
         @stream.all
       end
     end
+
     it 'invokes Twitter::Streaming::Client#sample' do
       allow(@streaming_client).to receive(:before_request)
       allow(@streaming_client).to receive(:sample)
@@ -104,6 +106,7 @@ describe T::Stream do
         expect(a_get('/1.1/lists/members.json').with(query: {cursor: '-1', owner_screen_name: 'testcli', slug: 'presidents'})).to have_been_made
       end
     end
+
     context '--long' do
       before do
         @stream.options = @stream.options.merge('long' => true)
@@ -120,6 +123,7 @@ describe T::Stream do
         expect(a_get('/1.1/lists/members.json').with(query: {cursor: '-1', owner_screen_name: 'testcli', slug: 'presidents'})).to have_been_made
       end
     end
+
     it 'performs a REST search when the stream initializes' do
       allow(@streaming_client).to receive(:before_request).and_yield
       allow(@streaming_client).to receive(:filter)
@@ -178,6 +182,7 @@ describe T::Stream do
         @stream.search(%w[twitter gem])
       end
     end
+
     context '--long' do
       before do
         @stream.options = @stream.options.merge('long' => true)
@@ -190,6 +195,7 @@ describe T::Stream do
         @stream.search(%w[twitter gem])
       end
     end
+
     it 'performs a REST search when the stream initializes' do
       allow(@streaming_client).to receive(:before_request).and_yield
       allow(@streaming_client).to receive(:filter)
@@ -224,6 +230,7 @@ describe T::Stream do
         @stream.timeline
       end
     end
+
     context '--long' do
       before do
         @stream.options = @stream.options.merge('long' => true)
@@ -235,6 +242,7 @@ describe T::Stream do
         @stream.timeline
       end
     end
+
     it 'performs a REST search when the stream initializes' do
       allow(@streaming_client).to receive(:before_request).and_yield
       allow(@streaming_client).to receive(:user)
@@ -275,6 +283,7 @@ describe T::Stream do
         @stream.users('123')
       end
     end
+
     context '--long' do
       before do
         @stream.options = @stream.options.merge('long' => true)
@@ -293,6 +302,7 @@ describe T::Stream do
         @stream.users('123')
       end
     end
+
     it 'invokes Twitter::Streaming::Client#follow' do
       allow(@streaming_client).to receive(:filter)
       expect(@streaming_client).to receive(:filter).with(follow: '123,456,789')

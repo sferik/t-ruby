@@ -56,6 +56,7 @@ describe T::List do
         expect(a_post('/1.1/lists/members/create_all.json').with(body: {user_id: '7505382', slug: 'presidents', owner_id: '7505382'})).to have_been_made
       end
     end
+
     context 'Twitter is down' do
       it 'retries 3 times and then raise an error' do
         stub_post('/1.1/lists/members/create_all.json').with(body: {screen_name: 'BarackObama', slug: 'presidents', owner_id: '7505382'}).to_return(status: 502, headers: {content_type: 'application/json; charset=utf-8'})
@@ -141,6 +142,7 @@ describe T::List do
         end
       end
     end
+
     context '--csv' do
       before do
         @list.options = @list.options.merge('csv' => true)
@@ -183,6 +185,7 @@ describe T::List do
         EOS
       end
     end
+
     context '--long' do
       before do
         @list.options = @list.options.merge('long' => true)
@@ -197,6 +200,7 @@ describe T::List do
         EOS
       end
     end
+
     context '--reverse' do
       before do
         @list.options = @list.options.merge('reverse' => true)
@@ -207,6 +211,7 @@ describe T::List do
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
+
     context '--sort=favorites' do
       before do
         @list.options = @list.options.merge('sort' => 'favorites')
@@ -217,6 +222,7 @@ describe T::List do
         expect($stdout.string.chomp).to eq 'pengwynn  sferik'
       end
     end
+
     context '--sort=followers' do
       before do
         @list.options = @list.options.merge('sort' => 'followers')
@@ -227,6 +233,7 @@ describe T::List do
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
+
     context '--sort=friends' do
       before do
         @list.options = @list.options.merge('sort' => 'friends')
@@ -237,6 +244,7 @@ describe T::List do
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
+
     context '--sort=listed' do
       before do
         @list.options = @list.options.merge('sort' => 'listed')
@@ -247,6 +255,7 @@ describe T::List do
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
+
     context '--sort=since' do
       before do
         @list.options = @list.options.merge('sort' => 'since')
@@ -257,6 +266,7 @@ describe T::List do
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
+
     context '--sort=tweets' do
       before do
         @list.options = @list.options.merge('sort' => 'tweets')
@@ -267,6 +277,7 @@ describe T::List do
         expect($stdout.string.chomp).to eq 'pengwynn  sferik'
       end
     end
+
     context '--sort=tweeted' do
       before do
         @list.options = @list.options.merge('sort' => 'tweeted')
@@ -277,6 +288,7 @@ describe T::List do
         expect($stdout.string.chomp).to eq 'pengwynn  sferik'
       end
     end
+
     context '--unsorted' do
       before do
         @list.options = @list.options.merge('unsorted' => true)
@@ -287,6 +299,7 @@ describe T::List do
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
       end
     end
+
     context 'with a user passed' do
       it 'requests the correct resource' do
         @list.members('testcli/presidents')
@@ -335,6 +348,7 @@ describe T::List do
         expect(a_post('/1.1/lists/members/destroy_all.json').with(body: {user_id: '7505382', slug: 'presidents', owner_id: '7505382'})).to have_been_made
       end
     end
+
     context 'Twitter is down' do
       it 'retries 3 times and then raise an error' do
         stub_post('/1.1/lists/members/destroy_all.json').with(body: {screen_name: 'BarackObama', slug: 'presidents', owner_id: '7505382'}).to_return(status: 502, headers: {content_type: 'application/json; charset=utf-8'})
@@ -522,6 +536,7 @@ describe T::List do
         EOS
       end
     end
+
     context '--color=auto' do
       before do
         @list.options = @list.options.merge('color' => 'auto')
@@ -689,6 +704,7 @@ describe T::List do
         EOS
       end
     end
+
     context '--color=icon' do
       before do
         @list.options = @list.options.merge('color' => 'icon')
@@ -846,6 +862,7 @@ describe T::List do
         EOS
       end
     end
+
     context '--decode-uris' do
       before do
         @list.options = @list.options.merge('decode_uris' => true)
@@ -861,6 +878,7 @@ describe T::List do
         expect($stdout.string).to include 'https://twitter.com/sferik/status/243988000076337152'
       end
     end
+
     context '--long' do
       before do
         @list.options = @list.options.merge('long' => true)
@@ -925,6 +943,7 @@ describe T::List do
         end
       end
     end
+
     context '--number' do
       before do
         stub_get('/1.1/lists/statuses.json').with(query: {owner_screen_name: 'testcli', count: '1', slug: 'presidents', include_entities: 'false'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
@@ -944,6 +963,7 @@ describe T::List do
         expect(a_get('/1.1/lists/statuses.json').with(query: {owner_screen_name: 'testcli', count: '1', max_id: '265500541700956160', slug: 'presidents', include_entities: 'false'})).to have_been_made
       end
     end
+
     context 'with a user passed' do
       it 'requests the correct resource' do
         @list.timeline('testcli/presidents')

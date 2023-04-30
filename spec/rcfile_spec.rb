@@ -64,7 +64,7 @@ describe T::RCFile do
           secret: 'jkl012',
         },
       }
-      expect(File.world_writable?(rcfile.path)).to be nil
+      expect(File.world_writable?(rcfile.path)).to be_nil
     end
     it 'is not be world readable' do
       rcfile = T::RCFile.instance
@@ -78,7 +78,7 @@ describe T::RCFile do
           secret: 'jkl012',
         },
       }
-      expect(File.world_readable?(rcfile.path)).to be nil
+      expect(File.world_readable?(rcfile.path)).to be_nil
     end
   end
 

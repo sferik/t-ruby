@@ -584,7 +584,7 @@ describe T::List do
         EOS
       end
       it 'outputs with color when stdout is a tty' do
-        allow($stdout).to receive(:'tty?').and_return(true)
+        allow($stdout).to receive(:tty?).and_return(true)
         @list.timeline('presidents')
         expect($stdout.string).to eq <<~EOS
           \e[1m\e[33m   @mutgoff\e[0m
@@ -670,7 +670,7 @@ describe T::List do
         @list.options = @list.options.merge('color' => 'icon')
       end
       it 'outputs with color when stdout is a tty' do
-        allow($stdout).to receive(:'tty?').and_return(true)
+        allow($stdout).to receive(:tty?).and_return(true)
         @list.timeline('presidents')
 
         names = %w[mutgoff ironicsans pat_shaughnessy calebelston fivethirtyeight

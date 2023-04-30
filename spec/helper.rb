@@ -22,7 +22,7 @@ RSpec.configure do |config|
     c.syntax = :expect
   end
 
-  config.before(:each) do
+  config.before do
     stub_post('/oauth2/token').with(body: 'grant_type=client_credentials').to_return(body: fixture('bearer_token.json'), headers: {content_type: 'application/json; charset=utf-8'})
   end
 end

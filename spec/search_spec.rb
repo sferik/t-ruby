@@ -234,7 +234,7 @@ describe T::Search do
       end
     end
     context '--decode-uris' do
-      before(:each) do
+      before do
         @search.options = @search.options.merge('decode_uris' => true)
         stub_get('/1.1/favorites/list.json').with(query: {count: '200', include_entities: 'true'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
         stub_get('/1.1/favorites/list.json').with(query: {count: '200', include_entities: 'true', max_id: '244099460672679937'}).to_return(body: fixture('empty_array.json'), headers: {content_type: 'application/json; charset=utf-8'})
@@ -356,7 +356,7 @@ describe T::Search do
       end
     end
     context '--decode-uris' do
-      before(:each) do
+      before do
         @search.options = @search.options.merge('decode_uris' => true)
         stub_get('/1.1/statuses/mentions_timeline.json').with(query: {count: '200', include_entities: 'true'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
         stub_get('/1.1/statuses/mentions_timeline.json').with(query: {count: '200', include_entities: 'true', max_id: '244099460672679937'}).to_return(body: fixture('empty_array.json'), headers: {content_type: 'application/json; charset=utf-8'})
@@ -431,7 +431,7 @@ describe T::Search do
       end
     end
     context '--decode-uris' do
-      before(:each) do
+      before do
         @search.options = @search.options.merge('decode_uris' => true)
         stub_get('/1.1/lists/statuses.json').with(query: {count: '200', owner_screen_name: 'testcli', slug: 'presidents', include_entities: 'true'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
         stub_get('/1.1/lists/statuses.json').with(query: {count: '200', max_id: '244099460672679937', owner_screen_name: 'testcli', slug: 'presidents', include_entities: 'true'}).to_return(body: fixture('empty_array.json'), headers: {content_type: 'application/json; charset=utf-8'})
@@ -519,7 +519,7 @@ describe T::Search do
       end
     end
     context '--decode-uris' do
-      before(:each) do
+      before do
         @search.options = @search.options.merge('decode_uris' => true)
         stub_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', include_rts: 'true', include_entities: 'true'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
         stub_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', include_rts: 'true', max_id: '244102729860009983', include_entities: 'true'}).to_return(body: fixture('empty_array.json'), headers: {content_type: 'application/json; charset=utf-8'})
@@ -632,7 +632,7 @@ describe T::Search do
       end
     end
     context '--decode-uris' do
-      before(:each) do
+      before do
         @search.options = @search.options.merge('decode_uris' => true)
         stub_get('/1.1/statuses/home_timeline.json').with(query: {count: '200', include_entities: 'true'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
         stub_get('/1.1/statuses/home_timeline.json').with(query: {count: '200', max_id: '244099460672679937', include_entities: 'true'}).to_return(body: fixture('empty_array.json'), headers: {content_type: 'application/json; charset=utf-8'})

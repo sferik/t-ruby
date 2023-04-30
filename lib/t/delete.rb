@@ -41,6 +41,7 @@ module T
         direct_message_ids.each do |direct_message_id_to_delete|
           direct_message = client.direct_message(direct_message_id_to_delete)
           next unless direct_message
+
           recipient = client.user(direct_message.recipient_id)
           next unless yes? "Are you sure you want to permanently delete the direct message to @#{recipient.screen_name}: \"#{direct_message.text}\"? [y/N]"
 
@@ -84,6 +85,7 @@ module T
       end
       list = client.list(list)
       return if !options['force'] && !(yes? "Are you sure you want to permanently delete the list \"#{list.name}\"? [y/N]")
+
       client.destroy_list(list)
       say "@#{@rcfile.active_profile[0]} deleted the list \"#{list.name}\"."
     end

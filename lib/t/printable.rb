@@ -153,7 +153,7 @@ module T
       paras = message.split("\n\n")
 
       paras.map! do |unwrapped|
-        unwrapped.strip.squeeze(' ').gsub(/.{1,#{width}}(?:\s|\Z)/) { ($& + 5.chr).gsub(/\n\005/, "\n").gsub(/\005/, "\n") }
+        unwrapped.strip.squeeze(' ').gsub(/.{1,#{width}}(?:\s|\Z)/) { (::Regexp.last_match(0) + 5.chr).gsub(/\n\005/, "\n").gsub(/\005/, "\n") }
       end
 
       lines = paras.inject([]) do |memo, para|

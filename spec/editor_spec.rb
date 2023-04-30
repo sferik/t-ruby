@@ -82,6 +82,7 @@ describe T::Editor do
       before do
         RbConfig::CONFIG['host_os'] = 'darwin12.2.0'
       end
+
       it "returns 'vi' on a unix machine" do
         expect(T::Editor.system_editor).to eq('vi')
       end
@@ -91,6 +92,7 @@ describe T::Editor do
       before do
         RbConfig::CONFIG['host_os'] = 'mswin'
       end
+
       it "returns 'notepad' on a windows box" do
         expect(T::Editor.system_editor).to eq('notepad')
       end

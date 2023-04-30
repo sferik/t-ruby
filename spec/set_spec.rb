@@ -22,6 +22,7 @@ describe T::Set do
     before do
       @set.options = @set.options.merge('profile' => "#{fixture_path}/.trc_set")
     end
+
     it 'has the correct output' do
       @set.active('testcli', 'abc123')
       expect($stdout.string.chomp).to eq 'Active account has been updated to testcli.'
@@ -51,6 +52,7 @@ describe T::Set do
       @set.options = @set.options.merge('profile' => "#{fixture_path}/.trc")
       stub_post('/1.1/account/update_profile.json').with(body: {description: 'Vagabond.'}).to_return(body: fixture('sferik.json'), headers: {content_type: 'application/json; charset=utf-8'})
     end
+
     it 'requests the correct resource' do
       @set.bio('Vagabond.')
       expect(a_post('/1.1/account/update_profile.json').with(body: {description: 'Vagabond.'})).to have_been_made
@@ -66,6 +68,7 @@ describe T::Set do
       @set.options = @set.options.merge('profile' => "#{fixture_path}/.trc")
       stub_post('/1.1/account/settings.json').with(body: {lang: 'en'}).to_return(body: fixture('settings.json'), headers: {content_type: 'application/json; charset=utf-8'})
     end
+
     it 'requests the correct resource' do
       @set.language('en')
       expect(a_post('/1.1/account/settings.json').with(body: {lang: 'en'})).to have_been_made
@@ -81,6 +84,7 @@ describe T::Set do
       @set.options = @set.options.merge('profile' => "#{fixture_path}/.trc")
       stub_post('/1.1/account/update_profile.json').with(body: {location: 'San Francisco'}).to_return(body: fixture('sferik.json'), headers: {content_type: 'application/json; charset=utf-8'})
     end
+
     it 'requests the correct resource' do
       @set.location('San Francisco')
       expect(a_post('/1.1/account/update_profile.json').with(body: {location: 'San Francisco'})).to have_been_made
@@ -96,6 +100,7 @@ describe T::Set do
       @set.options = @set.options.merge('profile' => "#{fixture_path}/.trc")
       stub_post('/1.1/account/update_profile.json').with(body: {name: 'Erik Michaels-Ober'}).to_return(body: fixture('sferik.json'), headers: {content_type: 'application/json; charset=utf-8'})
     end
+
     it 'requests the correct resource' do
       @set.name('Erik Michaels-Ober')
       expect(a_post('/1.1/account/update_profile.json').with(body: {name: 'Erik Michaels-Ober'})).to have_been_made
@@ -111,6 +116,7 @@ describe T::Set do
       @set.options = @set.options.merge('profile' => "#{fixture_path}/.trc")
       stub_post('/1.1/account/update_profile_background_image.json').to_return(body: fixture('sferik.json'), headers: {content_type: 'application/json; charset=utf-8'})
     end
+
     it 'requests the correct resource' do
       @set.profile_background_image("#{fixture_path}/we_concept_bg2.png")
       expect(a_post('/1.1/account/update_profile_background_image.json')).to have_been_made
@@ -126,6 +132,7 @@ describe T::Set do
       @set.options = @set.options.merge('profile' => "#{fixture_path}/.trc")
       stub_post('/1.1/account/update_profile_image.json').to_return(body: fixture('sferik.json'), headers: {content_type: 'application/json; charset=utf-8'})
     end
+
     it 'requests the correct resource' do
       @set.profile_image("#{fixture_path}/me.jpg")
       expect(a_post('/1.1/account/update_profile_image.json')).to have_been_made
@@ -141,6 +148,7 @@ describe T::Set do
       @set.options = @set.options.merge('profile' => "#{fixture_path}/.trc")
       stub_post('/1.1/account/update_profile.json').with(body: {url: 'https://github.com/sferik'}).to_return(body: fixture('sferik.json'), headers: {content_type: 'application/json; charset=utf-8'})
     end
+
     it 'requests the correct resource' do
       @set.website('https://github.com/sferik')
       expect(a_post('/1.1/account/update_profile.json').with(body: {url: 'https://github.com/sferik'})).to have_been_made

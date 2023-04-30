@@ -34,6 +34,7 @@ describe T::List do
       stub_get('/1.1/account/verify_credentials.json').with(query: {skip_status: 'true'}).to_return(body: fixture('sferik.json'), headers: {content_type: 'application/json; charset=utf-8'})
       stub_post('/1.1/lists/members/create_all.json').with(body: {screen_name: 'BarackObama', slug: 'presidents', owner_id: '7505382'}).to_return(body: fixture('list.json'), headers: {content_type: 'application/json; charset=utf-8'})
     end
+
     it 'requests the correct resource' do
       @list.add('presidents', 'BarackObama')
       expect(a_get('/1.1/account/verify_credentials.json').with(query: {skip_status: 'true'})).to have_been_made
@@ -48,6 +49,7 @@ describe T::List do
         @list.options = @list.options.merge('id' => true)
         stub_post('/1.1/lists/members/create_all.json').with(body: {user_id: '7505382', slug: 'presidents', owner_id: '7505382'}).to_return(body: fixture('list.json'), headers: {content_type: 'application/json; charset=utf-8'})
       end
+
       it 'requests the correct resource' do
         @list.add('presidents', '7505382')
         expect(a_get('/1.1/account/verify_credentials.json').with(query: {skip_status: 'true'})).to have_been_made
@@ -70,6 +72,7 @@ describe T::List do
       @list.options = @list.options.merge('profile' => "#{fixture_path}/.trc")
       stub_post('/1.1/lists/create.json').with(body: {name: 'presidents'}).to_return(body: fixture('list.json'), headers: {content_type: 'application/json; charset=utf-8'})
     end
+
     it 'requests the correct resource' do
       @list.create('presidents')
       expect(a_post('/1.1/lists/create.json').with(body: {name: 'presidents'})).to have_been_made
@@ -85,6 +88,7 @@ describe T::List do
       @list.options = @list.options.merge('profile' => "#{fixture_path}/.trc")
       stub_get('/1.1/lists/show.json').with(query: {owner_screen_name: 'testcli', slug: 'presidents'}).to_return(body: fixture('list.json'), headers: {content_type: 'application/json; charset=utf-8'})
     end
+
     it 'requests the correct resource' do
       @list.information('presidents')
       expect(a_get('/1.1/lists/show.json').with(query: {owner_screen_name: 'testcli', slug: 'presidents'})).to have_been_made
@@ -130,6 +134,7 @@ describe T::List do
           @list.options = @list.options.merge('id' => true)
           stub_get('/1.1/lists/show.json').with(query: {owner_id: '7505382', slug: 'presidents'}).to_return(body: fixture('list.json'), headers: {content_type: 'application/json; charset=utf-8'})
         end
+
         it 'requests the correct resource' do
           @list.information('7505382/presidents')
           expect(a_get('/1.1/lists/show.json').with(query: {owner_id: '7505382', slug: 'presidents'})).to have_been_made
@@ -140,6 +145,7 @@ describe T::List do
       before do
         @list.options = @list.options.merge('csv' => true)
       end
+
       it 'has the correct output' do
         @list.information('presidents')
         expect($stdout.string).to eq <<~EOS
@@ -154,6 +160,7 @@ describe T::List do
     before do
       stub_get('/1.1/lists/members.json').with(query: {cursor: '-1', owner_screen_name: 'testcli', slug: 'presidents'}).to_return(body: fixture('users_list.json'), headers: {content_type: 'application/json; charset=utf-8'})
     end
+
     it 'requests the correct resource' do
       @list.members('presidents')
       expect(a_get('/1.1/lists/members.json').with(query: {cursor: '-1', owner_screen_name: 'testcli', slug: 'presidents'})).to have_been_made
@@ -166,6 +173,7 @@ describe T::List do
       before do
         @list.options = @list.options.merge('csv' => true)
       end
+
       it 'outputs in CSV format' do
         @list.members('presidents')
         expect($stdout.string).to eq <<~EOS
@@ -179,6 +187,7 @@ describe T::List do
       before do
         @list.options = @list.options.merge('long' => true)
       end
+
       it 'outputs in long format' do
         @list.members('presidents')
         expect($stdout.string).to eq <<~EOS
@@ -192,6 +201,7 @@ describe T::List do
       before do
         @list.options = @list.options.merge('reverse' => true)
       end
+
       it 'reverses the order of the sort' do
         @list.members('presidents')
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
@@ -201,6 +211,7 @@ describe T::List do
       before do
         @list.options = @list.options.merge('sort' => 'favorites')
       end
+
       it 'sorts by the number of favorites' do
         @list.members('presidents')
         expect($stdout.string.chomp).to eq 'pengwynn  sferik'
@@ -210,6 +221,7 @@ describe T::List do
       before do
         @list.options = @list.options.merge('sort' => 'followers')
       end
+
       it 'sorts by the number of followers' do
         @list.members('presidents')
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
@@ -219,6 +231,7 @@ describe T::List do
       before do
         @list.options = @list.options.merge('sort' => 'friends')
       end
+
       it 'sorts by the number of friends' do
         @list.members('presidents')
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
@@ -228,6 +241,7 @@ describe T::List do
       before do
         @list.options = @list.options.merge('sort' => 'listed')
       end
+
       it 'sorts by the number of list memberships' do
         @list.members('presidents')
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
@@ -237,6 +251,7 @@ describe T::List do
       before do
         @list.options = @list.options.merge('sort' => 'since')
       end
+
       it 'sorts by the time when Twitter account was created' do
         @list.members('presidents')
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
@@ -246,6 +261,7 @@ describe T::List do
       before do
         @list.options = @list.options.merge('sort' => 'tweets')
       end
+
       it 'sorts by the number of Tweets' do
         @list.members('presidents')
         expect($stdout.string.chomp).to eq 'pengwynn  sferik'
@@ -255,6 +271,7 @@ describe T::List do
       before do
         @list.options = @list.options.merge('sort' => 'tweeted')
       end
+
       it 'sorts by the time of the last Tweet' do
         @list.members('presidents')
         expect($stdout.string.chomp).to eq 'pengwynn  sferik'
@@ -264,6 +281,7 @@ describe T::List do
       before do
         @list.options = @list.options.merge('unsorted' => true)
       end
+
       it 'is not sorted' do
         @list.members('presidents')
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
@@ -279,6 +297,7 @@ describe T::List do
           @list.options = @list.options.merge('id' => true)
           stub_get('/1.1/lists/members.json').with(query: {cursor: '-1', owner_id: '7505382', slug: 'presidents'}).to_return(body: fixture('users_list.json'), headers: {content_type: 'application/json; charset=utf-8'})
         end
+
         it 'requests the correct resource' do
           @list.members('7505382/presidents')
           expect(a_get('/1.1/lists/members.json').with(query: {cursor: '-1', owner_id: '7505382', slug: 'presidents'})).to have_been_made
@@ -292,6 +311,7 @@ describe T::List do
       @list.options = @list.options.merge('profile' => "#{fixture_path}/.trc")
       stub_get('/1.1/account/verify_credentials.json').with(query: {skip_status: 'true'}).to_return(body: fixture('sferik.json'), headers: {content_type: 'application/json; charset=utf-8'})
     end
+
     it 'requests the correct resource' do
       stub_post('/1.1/lists/members/destroy_all.json').with(body: {screen_name: 'BarackObama', slug: 'presidents', owner_id: '7505382'}).to_return(body: fixture('list.json'), headers: {content_type: 'application/json; charset=utf-8'})
       @list.remove('presidents', 'BarackObama')
@@ -308,6 +328,7 @@ describe T::List do
         @list.options = @list.options.merge('id' => true)
         stub_post('/1.1/lists/members/destroy_all.json').with(body: {user_id: '7505382', slug: 'presidents', owner_id: '7505382'}).to_return(body: fixture('list.json'), headers: {content_type: 'application/json; charset=utf-8'})
       end
+
       it 'requests the correct resource' do
         @list.remove('presidents', '7505382')
         expect(a_get('/1.1/account/verify_credentials.json').with(query: {skip_status: 'true'})).to have_been_made
@@ -330,6 +351,7 @@ describe T::List do
       @list.options = @list.options.merge('color' => 'always')
       stub_get('/1.1/lists/statuses.json').with(query: {owner_screen_name: 'testcli', count: '20', slug: 'presidents', include_entities: 'false'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
     end
+
     it 'requests the correct resource' do
       @list.timeline('presidents')
       expect(a_get('/1.1/lists/statuses.json').with(query: {owner_screen_name: 'testcli', count: '20', slug: 'presidents', include_entities: 'false'})).to have_been_made
@@ -418,6 +440,7 @@ describe T::List do
       before do
         @list.options = @list.options.merge('color' => 'never')
       end
+
       it 'outputs without color' do
         @list.timeline('presidents')
         expect($stdout.string).to eq <<-EOS
@@ -503,6 +526,7 @@ describe T::List do
       before do
         @list.options = @list.options.merge('color' => 'auto')
       end
+
       it 'outputs without color when stdout is not a tty' do
         @list.timeline('presidents')
         expect($stdout.string).to eq <<-EOS
@@ -669,6 +693,7 @@ describe T::List do
       before do
         @list.options = @list.options.merge('color' => 'icon')
       end
+
       it 'outputs with color when stdout is a tty' do
         allow($stdout).to receive(:tty?).and_return(true)
         @list.timeline('presidents')
@@ -793,6 +818,7 @@ describe T::List do
       before do
         @list.options = @list.options.merge('csv' => true)
       end
+
       it 'outputs in long format' do
         @list.timeline('presidents')
         expect($stdout.string).to eq <<~EOS
@@ -825,6 +851,7 @@ describe T::List do
         @list.options = @list.options.merge('decode_uris' => true)
         stub_get('/1.1/lists/statuses.json').with(query: {owner_screen_name: 'testcli', count: '20', slug: 'presidents', include_entities: 'true'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
       end
+
       it 'requests the correct resource' do
         @list.timeline('presidents')
         expect(a_get('/1.1/lists/statuses.json').with(query: {owner_screen_name: 'testcli', count: '20', slug: 'presidents', include_entities: 'true'})).to have_been_made
@@ -838,6 +865,7 @@ describe T::List do
       before do
         @list.options = @list.options.merge('long' => true)
       end
+
       it 'outputs in long format' do
         @list.timeline('presidents')
         expect($stdout.string).to eq <<~EOS
@@ -868,6 +896,7 @@ describe T::List do
         before do
           @list.options = @list.options.merge('reverse' => true)
         end
+
         it 'reverses the order of the sort' do
           @list.timeline('presidents')
           expect($stdout.string).to eq <<~EOS
@@ -902,6 +931,7 @@ describe T::List do
         stub_get('/1.1/lists/statuses.json').with(query: {owner_screen_name: 'testcli', count: '200', slug: 'presidents', include_entities: 'false'}).to_return(body: fixture('200_statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
         stub_get('/1.1/lists/statuses.json').with(query: {owner_screen_name: 'testcli', count: '1', max_id: '265500541700956160', slug: 'presidents', include_entities: 'false'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
       end
+
       it 'limits the number of results to 1' do
         @list.options = @list.options.merge('number' => 1)
         @list.timeline('presidents')
@@ -924,6 +954,7 @@ describe T::List do
           @list.options = @list.options.merge('id' => true)
           stub_get('/1.1/lists/statuses.json').with(query: {owner_id: '7505382', count: '20', slug: 'presidents', include_entities: 'false'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
         end
+
         it 'requests the correct resource' do
           @list.timeline('7505382/presidents')
           expect(a_get('/1.1/lists/statuses.json').with(query: {owner_id: '7505382', count: '20', slug: 'presidents', include_entities: 'false'})).to have_been_made

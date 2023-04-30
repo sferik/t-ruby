@@ -33,6 +33,7 @@ describe T::Search do
     before do
       stub_get('/1.1/search/tweets.json').with(query: {q: 'twitter', count: '100', include_entities: 'false'}).to_return(body: fixture('search.json'), headers: {content_type: 'application/json; charset=utf-8'})
     end
+
     it 'requests the correct resource' do
       @search.all('twitter')
       expect(a_get('/1.1/search/tweets.json').with(query: {q: 'twitter', count: '100', include_entities: 'false'})).to have_been_made
@@ -116,6 +117,7 @@ describe T::Search do
       before do
         @search.options = @search.options.merge('csv' => true)
       end
+
       it 'outputs in CSV format' do
         @search.all('twitter')
         expect($stdout.string).to eq <<~EOS
@@ -151,6 +153,7 @@ describe T::Search do
       before do
         @search.options = @search.options.merge('long' => true)
       end
+
       it 'outputs in long format' do
         @search.all('twitter')
         expect($stdout.string).to eq <<~EOS
@@ -184,6 +187,7 @@ describe T::Search do
         stub_get('/1.1/search/tweets.json').with(query: {q: 'twitter', count: '100', include_entities: 'false'}).to_return(body: fixture('search.json'), headers: {content_type: 'application/json; charset=utf-8'})
         stub_get('/1.1/search/tweets.json').with(query: {q: 'twitter', count: '100', include_entities: '1', max_id: '415600158693675007'}).to_return(body: fixture('search2.json'), headers: {content_type: 'application/json; charset=utf-8'})
       end
+
       it 'limits the number of results to 1' do
         @search.options = @search.options.merge('number' => 1)
         @search.all('twitter')
@@ -203,6 +207,7 @@ describe T::Search do
       stub_get('/1.1/favorites/list.json').with(query: {count: '200', include_entities: 'false'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
       stub_get('/1.1/favorites/list.json').with(query: {count: '200', max_id: '244099460672679937', include_entities: 'false'}).to_return(body: fixture('empty_array.json'), headers: {content_type: 'application/json; charset=utf-8'})
     end
+
     it 'requests the correct resource' do
       @search.favorites('twitter')
       expect(a_get('/1.1/favorites/list.json').with(query: {count: '200', include_entities: 'false'})).to have_been_made
@@ -224,6 +229,7 @@ describe T::Search do
       before do
         @search.options = @search.options.merge('csv' => true)
       end
+
       it 'outputs in CSV format' do
         @search.favorites('twitter')
         expect($stdout.string).to eq <<~EOS
@@ -239,6 +245,7 @@ describe T::Search do
         stub_get('/1.1/favorites/list.json').with(query: {count: '200', include_entities: 'true'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
         stub_get('/1.1/favorites/list.json').with(query: {count: '200', include_entities: 'true', max_id: '244099460672679937'}).to_return(body: fixture('empty_array.json'), headers: {content_type: 'application/json; charset=utf-8'})
       end
+
       it 'requests the correct resource' do
         @search.favorites('twitter')
         expect(a_get('/1.1/favorites/list.json').with(query: {count: '200', include_entities: 'true'})).to have_been_made
@@ -253,6 +260,7 @@ describe T::Search do
       before do
         @search.options = @search.options.merge('long' => true)
       end
+
       it 'outputs in long format' do
         @search.favorites('twitter')
         expect($stdout.string).to eq <<~EOS
@@ -276,6 +284,7 @@ describe T::Search do
         stub_get('/1.1/favorites/list.json').with(query: {count: '200', screen_name: 'sferik', include_entities: 'false'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
         stub_get('/1.1/favorites/list.json').with(query: {count: '200', max_id: '244099460672679937', screen_name: 'sferik', include_entities: 'false'}).to_return(body: fixture('empty_array.json'), headers: {content_type: 'application/json; charset=utf-8'})
       end
+
       it 'requests the correct resource' do
         @search.favorites('sferik', 'twitter')
         expect(a_get('/1.1/favorites/list.json').with(query: {count: '200', screen_name: 'sferik', include_entities: 'false'})).to have_been_made
@@ -299,6 +308,7 @@ describe T::Search do
           stub_get('/1.1/favorites/list.json').with(query: {count: '200', user_id: '7505382', include_entities: 'false'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
           stub_get('/1.1/favorites/list.json').with(query: {count: '200', max_id: '244099460672679937', user_id: '7505382', include_entities: 'false'}).to_return(body: fixture('empty_array.json'), headers: {content_type: 'application/json; charset=utf-8'})
         end
+
         it 'requests the correct resource' do
           @search.favorites('7505382', 'twitter')
           expect(a_get('/1.1/favorites/list.json').with(query: {count: '200', user_id: '7505382', include_entities: 'false'})).to have_been_made
@@ -325,6 +335,7 @@ describe T::Search do
       stub_get('/1.1/statuses/mentions_timeline.json').with(query: {count: '200', include_entities: 'false'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
       stub_get('/1.1/statuses/mentions_timeline.json').with(query: {count: '200', max_id: '244099460672679937', include_entities: 'false'}).to_return(body: fixture('empty_array.json'), headers: {content_type: 'application/json; charset=utf-8'})
     end
+
     it 'requests the correct resource' do
       @search.mentions('twitter')
       expect(a_get('/1.1/statuses/mentions_timeline.json').with(query: {count: '200', include_entities: 'false'})).to have_been_made
@@ -346,6 +357,7 @@ describe T::Search do
       before do
         @search.options = @search.options.merge('csv' => true)
       end
+
       it 'outputs in CSV format' do
         @search.mentions('twitter')
         expect($stdout.string).to eq <<~EOS
@@ -361,6 +373,7 @@ describe T::Search do
         stub_get('/1.1/statuses/mentions_timeline.json').with(query: {count: '200', include_entities: 'true'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
         stub_get('/1.1/statuses/mentions_timeline.json').with(query: {count: '200', include_entities: 'true', max_id: '244099460672679937'}).to_return(body: fixture('empty_array.json'), headers: {content_type: 'application/json; charset=utf-8'})
       end
+
       it 'requests the correct resource' do
         @search.mentions('twitter')
         expect(a_get('/1.1/statuses/mentions_timeline.json').with(query: {count: '200', include_entities: 'true'})).to have_been_made
@@ -375,6 +388,7 @@ describe T::Search do
       before do
         @search.options = @search.options.merge('long' => true)
       end
+
       it 'outputs in long format' do
         @search.mentions('twitter')
         expect($stdout.string).to eq <<~EOS
@@ -400,6 +414,7 @@ describe T::Search do
       stub_get('/1.1/lists/statuses.json').with(query: {count: '200', owner_screen_name: 'testcli', slug: 'presidents', include_entities: 'false'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
       stub_get('/1.1/lists/statuses.json').with(query: {count: '200', max_id: '244099460672679937', owner_screen_name: 'testcli', slug: 'presidents', include_entities: 'false'}).to_return(body: fixture('empty_array.json'), headers: {content_type: 'application/json; charset=utf-8'})
     end
+
     it 'requests the correct resource' do
       @search.list('presidents', 'twitter')
       expect(a_get('/1.1/lists/statuses.json').with(query: {count: '200', owner_screen_name: 'testcli', slug: 'presidents', include_entities: 'false'})).to have_been_made
@@ -421,6 +436,7 @@ describe T::Search do
       before do
         @search.options = @search.options.merge('csv' => true)
       end
+
       it 'outputs in CSV format' do
         @search.list('presidents', 'twitter')
         expect($stdout.string).to eq <<~EOS
@@ -436,6 +452,7 @@ describe T::Search do
         stub_get('/1.1/lists/statuses.json').with(query: {count: '200', owner_screen_name: 'testcli', slug: 'presidents', include_entities: 'true'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
         stub_get('/1.1/lists/statuses.json').with(query: {count: '200', max_id: '244099460672679937', owner_screen_name: 'testcli', slug: 'presidents', include_entities: 'true'}).to_return(body: fixture('empty_array.json'), headers: {content_type: 'application/json; charset=utf-8'})
       end
+
       it 'requests the correct resource' do
         @search.list('presidents', 'twitter')
         expect(a_get('/1.1/lists/statuses.json').with(query: {count: '200', owner_screen_name: 'testcli', slug: 'presidents', include_entities: 'true'})).to have_been_made
@@ -450,6 +467,7 @@ describe T::Search do
       before do
         @search.options = @search.options.merge('long' => true)
       end
+
       it 'outputs in long format' do
         @search.list('presidents', 'twitter')
         expect($stdout.string).to eq <<~EOS
@@ -470,6 +488,7 @@ describe T::Search do
           stub_get('/1.1/lists/statuses.json').with(query: {count: '200', owner_id: '7505382', slug: 'presidents', include_entities: 'false'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
           stub_get('/1.1/lists/statuses.json').with(query: {count: '200', max_id: '244099460672679937', owner_id: '7505382', slug: 'presidents', include_entities: 'false'}).to_return(body: fixture('empty_array.json'), headers: {content_type: 'application/json; charset=utf-8'})
         end
+
         it 'requests the correct resource' do
           @search.list('7505382/presidents', 'twitter')
           expect(a_get('/1.1/lists/statuses.json').with(query: {count: '200', owner_id: '7505382', slug: 'presidents', include_entities: 'false'})).to have_been_made
@@ -493,6 +512,7 @@ describe T::Search do
       stub_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', include_rts: 'true', include_entities: 'false'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
       stub_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', include_rts: 'true', max_id: '244102729860009983', include_entities: 'false'}).to_return(body: fixture('empty_array.json'), headers: {content_type: 'application/json; charset=utf-8'})
     end
+
     it 'requests the correct resource' do
       @search.retweets('mosaic')
       expect(a_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', include_rts: 'true', include_entities: 'false'})).to have_been_made
@@ -510,6 +530,7 @@ describe T::Search do
       before do
         @search.options = @search.options.merge('csv' => true)
       end
+
       it 'outputs in CSV format' do
         @search.retweets('mosaic')
         expect($stdout.string).to eq <<~EOS
@@ -524,6 +545,7 @@ describe T::Search do
         stub_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', include_rts: 'true', include_entities: 'true'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
         stub_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', include_rts: 'true', max_id: '244102729860009983', include_entities: 'true'}).to_return(body: fixture('empty_array.json'), headers: {content_type: 'application/json; charset=utf-8'})
       end
+
       it 'requests the correct resource' do
         @search.retweets('mosaic')
         expect(a_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', include_rts: 'true', include_entities: 'true'})).to have_been_made
@@ -538,6 +560,7 @@ describe T::Search do
       before do
         @search.options = @search.options.merge('long' => true)
       end
+
       it 'outputs in long format' do
         @search.retweets('mosaic')
         expect($stdout.string).to eq <<~EOS
@@ -560,6 +583,7 @@ describe T::Search do
         stub_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', include_rts: 'true', screen_name: 'sferik', include_entities: 'false'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
         stub_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', include_rts: 'true', screen_name: 'sferik', max_id: '244102729860009983', include_entities: 'false'}).to_return(body: fixture('empty_array.json'), headers: {content_type: 'application/json; charset=utf-8'})
       end
+
       it 'requests the correct resource' do
         @search.retweets('sferik', 'mosaic')
         expect(a_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', include_rts: 'true', screen_name: 'sferik', include_entities: 'false'})).to have_been_made
@@ -579,6 +603,7 @@ describe T::Search do
           stub_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', include_rts: 'true', user_id: '7505382', include_entities: 'false'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
           stub_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', include_rts: 'true', user_id: '7505382', max_id: '244102729860009983', include_entities: 'false'}).to_return(body: fixture('empty_array.json'), headers: {content_type: 'application/json; charset=utf-8'})
         end
+
         it 'requests the correct resource' do
           @search.retweets('7505382', 'mosaic')
           expect(a_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', include_rts: 'true', user_id: '7505382', include_entities: 'false'})).to have_been_made
@@ -601,6 +626,7 @@ describe T::Search do
       stub_get('/1.1/statuses/home_timeline.json').with(query: {count: '200', include_entities: 'false'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
       stub_get('/1.1/statuses/home_timeline.json').with(query: {count: '200', max_id: '244099460672679937', include_entities: 'false'}).to_return(body: fixture('empty_array.json'), headers: {content_type: 'application/json; charset=utf-8'})
     end
+
     it 'requests the correct resource' do
       @search.timeline('twitter')
       expect(a_get('/1.1/statuses/home_timeline.json').with(query: {count: '200', include_entities: 'false'})).to have_been_made
@@ -622,6 +648,7 @@ describe T::Search do
       before do
         @search.options = @search.options.merge('csv' => true)
       end
+
       it 'outputs in CSV format' do
         @search.timeline('twitter')
         expect($stdout.string).to eq <<~EOS
@@ -637,6 +664,7 @@ describe T::Search do
         stub_get('/1.1/statuses/home_timeline.json').with(query: {count: '200', include_entities: 'true'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
         stub_get('/1.1/statuses/home_timeline.json').with(query: {count: '200', max_id: '244099460672679937', include_entities: 'true'}).to_return(body: fixture('empty_array.json'), headers: {content_type: 'application/json; charset=utf-8'})
       end
+
       it 'requests the correct resource' do
         @search.timeline('twitter')
         expect(a_get('/1.1/statuses/home_timeline.json').with(query: {count: '200', include_entities: 'true'})).to have_been_made
@@ -653,6 +681,7 @@ describe T::Search do
         stub_get('/1.1/statuses/home_timeline.json').with(query: {count: '200', exclude_replies: 'true', include_entities: 'false'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
         stub_get('/1.1/statuses/home_timeline.json').with(query: {count: '200', exclude_replies: 'true', max_id: '244099460672679937', include_entities: 'false'}).to_return(body: fixture('empty_array.json'), headers: {content_type: 'application/json; charset=utf-8'})
       end
+
       it 'excludes replies' do
         @search.timeline
         expect(a_get('/1.1/statuses/home_timeline.json').with(query: {count: '200', exclude_replies: 'true', include_entities: 'false'})).to have_been_made
@@ -665,6 +694,7 @@ describe T::Search do
         stub_get('/1.1/statuses/home_timeline.json').with(query: {count: '200', include_rts: 'false', include_entities: 'false'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
         stub_get('/1.1/statuses/home_timeline.json').with(query: {count: '200', include_rts: 'false', max_id: '244099460672679937', include_entities: 'false'}).to_return(body: fixture('empty_array.json'), headers: {content_type: 'application/json; charset=utf-8'})
       end
+
       it 'excludes retweets' do
         @search.timeline
         expect(a_get('/1.1/statuses/home_timeline.json').with(query: {count: '200', include_rts: 'false', include_entities: 'false'})).to have_been_made
@@ -675,6 +705,7 @@ describe T::Search do
       before do
         @search.options = @search.options.merge('long' => true)
       end
+
       it 'outputs in long format' do
         @search.timeline('twitter')
         expect($stdout.string).to eq <<~EOS
@@ -689,6 +720,7 @@ describe T::Search do
         @search.options = @search.options.merge('max_id' => 244_104_558_433_951_744)
         stub_get('/1.1/statuses/home_timeline.json').with(query: {count: '200', max_id: '244104558433951744', include_entities: 'false'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
       end
+
       it 'requests the correct resource' do
         @search.timeline('twitter')
         expect(a_get('/1.1/statuses/home_timeline.json').with(query: {count: '200', max_id: '244104558433951744', include_entities: 'false'})).to have_been_made
@@ -700,6 +732,7 @@ describe T::Search do
         stub_get('/1.1/statuses/home_timeline.json').with(query: {count: '200', since_id: '244104558433951744', include_entities: 'false'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
         stub_get('/1.1/statuses/home_timeline.json').with(query: {count: '200', max_id: '244099460672679937', since_id: '244104558433951744', include_entities: 'false'}).to_return(body: fixture('empty_array.json'), headers: {content_type: 'application/json; charset=utf-8'})
       end
+
       it 'requests the correct resource' do
         @search.timeline('twitter')
         expect(a_get('/1.1/statuses/home_timeline.json').with(query: {count: '200', since_id: '244104558433951744', include_entities: 'false'})).to have_been_made
@@ -720,6 +753,7 @@ describe T::Search do
         stub_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', screen_name: 'sferik', include_entities: 'false'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
         stub_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', max_id: '244099460672679937', screen_name: 'sferik', include_entities: 'false'}).to_return(body: fixture('empty_array.json'), headers: {content_type: 'application/json; charset=utf-8'})
       end
+
       it 'requests the correct resource' do
         @search.timeline('sferik', 'twitter')
         expect(a_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', screen_name: 'sferik', include_entities: 'false'})).to have_been_made
@@ -741,6 +775,7 @@ describe T::Search do
         before do
           @search.options = @search.options.merge('csv' => true)
         end
+
         it 'outputs in CSV format' do
           @search.timeline('sferik', 'twitter')
           expect($stdout.string).to eq <<~EOS
@@ -756,6 +791,7 @@ describe T::Search do
           stub_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', user_id: '7505382', include_entities: 'false'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
           stub_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', max_id: '244099460672679937', user_id: '7505382', include_entities: 'false'}).to_return(body: fixture('empty_array.json'), headers: {content_type: 'application/json; charset=utf-8'})
         end
+
         it 'requests the correct resource' do
           @search.timeline('7505382', 'twitter')
           expect(a_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', user_id: '7505382', include_entities: 'false'})).to have_been_made
@@ -766,6 +802,7 @@ describe T::Search do
         before do
           @search.options = @search.options.merge('long' => true)
         end
+
         it 'outputs in long format' do
           @search.timeline('sferik', 'twitter')
           expect($stdout.string).to eq <<~EOS
@@ -780,6 +817,7 @@ describe T::Search do
           @search.options = @search.options.merge('max_id' => 244_104_558_433_951_744)
           stub_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', screen_name: 'sferik', max_id: '244104558433951744', include_entities: 'false'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
         end
+
         it 'requests the correct resource' do
           @search.timeline('sferik', 'twitter')
           expect(a_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', screen_name: 'sferik', max_id: '244104558433951744', include_entities: 'false'})).to have_been_made
@@ -791,6 +829,7 @@ describe T::Search do
           stub_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', screen_name: 'sferik', since_id: '244104558433951744', include_entities: 'false'}).to_return(body: fixture('statuses.json'), headers: {content_type: 'application/json; charset=utf-8'})
           stub_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', screen_name: 'sferik', max_id: '244099460672679937', since_id: '244104558433951744', include_entities: 'false'}).to_return(body: fixture('empty_array.json'), headers: {content_type: 'application/json; charset=utf-8'})
         end
+
         it 'requests the correct resource' do
           @search.timeline('sferik', 'twitter')
           expect(a_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', screen_name: 'sferik', since_id: '244104558433951744', include_entities: 'false'})).to have_been_made
@@ -814,6 +853,7 @@ describe T::Search do
       stub_get('/1.1/users/search.json').with(query: {page: '1', q: 'Erik'}).to_return(body: fixture('users.json'), headers: {content_type: 'application/json; charset=utf-8'})
       stub_get('/1.1/users/search.json').with(query: {page: '2', q: 'Erik'}).to_return(body: fixture('empty_array.json'), headers: {content_type: 'application/json; charset=utf-8'})
     end
+
     it 'requests the correct resource' do
       @search.users('Erik')
       expect(a_get('/1.1/users/search.json').with(query: {page: '1', q: 'Erik'})).to have_been_made
@@ -827,6 +867,7 @@ describe T::Search do
       before do
         @search.options = @search.options.merge('csv' => true)
       end
+
       it 'outputs in CSV format' do
         @search.users('Erik')
         expect($stdout.string).to eq <<~EOS
@@ -840,6 +881,7 @@ describe T::Search do
       before do
         @search.options = @search.options.merge('long' => true)
       end
+
       it 'outputs in long format' do
         @search.users('Erik')
         expect($stdout.string).to eq <<~EOS
@@ -853,6 +895,7 @@ describe T::Search do
       before do
         @search.options = @search.options.merge('reverse' => true)
       end
+
       it 'reverses the order of the sort' do
         @search.users('Erik')
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
@@ -862,6 +905,7 @@ describe T::Search do
       before do
         @search.options = @search.options.merge('sort' => 'favorites')
       end
+
       it 'sorts by the number of favorites' do
         @search.users('Erik')
         expect($stdout.string.chomp).to eq 'pengwynn  sferik'
@@ -871,6 +915,7 @@ describe T::Search do
       before do
         @search.options = @search.options.merge('sort' => 'followers')
       end
+
       it 'sorts by the number of followers' do
         @search.users('Erik')
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
@@ -880,6 +925,7 @@ describe T::Search do
       before do
         @search.options = @search.options.merge('sort' => 'friends')
       end
+
       it 'sorts by the number of friends' do
         @search.users('Erik')
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
@@ -889,6 +935,7 @@ describe T::Search do
       before do
         @search.options = @search.options.merge('sort' => 'listed')
       end
+
       it 'sorts by the number of list memberships' do
         @search.users('Erik')
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
@@ -898,6 +945,7 @@ describe T::Search do
       before do
         @search.options = @search.options.merge('sort' => 'since')
       end
+
       it 'sorts by the time when Twitter account was created' do
         @search.users('Erik')
         expect($stdout.string.chomp).to eq 'sferik    pengwynn'
@@ -907,6 +955,7 @@ describe T::Search do
       before do
         @search.options = @search.options.merge('sort' => 'tweets')
       end
+
       it 'sorts by the number of Tweets' do
         @search.users('Erik')
         expect($stdout.string.chomp).to eq 'pengwynn  sferik'
@@ -916,6 +965,7 @@ describe T::Search do
       before do
         @search.options = @search.options.merge('sort' => 'tweeted')
       end
+
       it 'sorts by the time of the last Tweet' do
         @search.users('Erik')
         expect($stdout.string.chomp).to eq 'pengwynn  sferik'
@@ -925,6 +975,7 @@ describe T::Search do
       before do
         @search.options = @search.options.merge('unsorted' => true)
       end
+
       it 'is not sorted' do
         @search.users('Erik')
         expect($stdout.string.chomp).to eq 'pengwynn  sferik'

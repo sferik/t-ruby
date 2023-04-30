@@ -38,20 +38,6 @@ describe T::RCFile do
       }
       expect(rcfile['testcli'].keys).to eq %w[abc123]
     end
-    it 'writes the data to a file' do
-      rcfile = T::RCFile.instance
-      rcfile.path = project_path + '/tmp/trc'
-      rcfile['testcli'] = {
-        'abc123' => {
-          username: 'testcli',
-          consumer_key: 'abc123',
-          consumer_secret: 'def456',
-          token: 'ghi789',
-          secret: 'jkl012',
-        },
-      }
-      expect(rcfile['testcli'].keys).to eq %w[abc123]
-    end
     it 'is not be world writable' do
       rcfile = T::RCFile.instance
       rcfile.path = project_path + '/tmp/trc'
@@ -116,12 +102,6 @@ describe T::RCFile do
 
   describe '#active_profile=' do
     it 'sets default profile' do
-      rcfile = T::RCFile.instance
-      rcfile.path = project_path + '/tmp/trc'
-      rcfile.active_profile = {'username' => 'testcli', 'consumer_key' => 'abc123'}
-      expect(rcfile.active_profile).to eq %w[testcli abc123]
-    end
-    it 'writes the data to a file' do
       rcfile = T::RCFile.instance
       rcfile.path = project_path + '/tmp/trc'
       rcfile.active_profile = {'username' => 'testcli', 'consumer_key' => 'abc123'}

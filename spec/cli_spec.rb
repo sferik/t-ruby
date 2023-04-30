@@ -132,15 +132,15 @@ describe T::CLI do
     before do
       stub_get('/1.1/direct_messages/events/list.json').with(query: {count: '50', include_entities: 'false'}).to_return(body: fixture('direct_message_events.json'), headers: {content_type: 'application/json; charset=utf-8'})
       stub_get('/1.1/direct_messages/events/list.json').with(query: {count: '50', include_entities: 'false', max_id: '856477710595624962'}).to_return(body: fixture('empty_cursor.json'), headers: {content_type: 'application/json; charset=utf-8'})
-      stub_get("/1.1/account/verify_credentials.json").with(query: {skip_status: "true"}).to_return(body: fixture("sferik.json"), headers: {content_type: "application/json; charset=utf-8"})
-      stub_get("/1.1/users/lookup.json").with(query: {user_id: '358486183,311650899,422190131,759849327200047104,73660881,328677087,4374876088,2924245126'}).to_return(body: fixture("direct_message_users.json"), headers: {content_type: "application/json; charset=utf-8"})
+      stub_get('/1.1/account/verify_credentials.json').with(query: {skip_status: 'true'}).to_return(body: fixture('sferik.json'), headers: {content_type: 'application/json; charset=utf-8'})
+      stub_get('/1.1/users/lookup.json').with(query: {user_id: '358486183,311650899,422190131,759849327200047104,73660881,328677087,4374876088,2924245126'}).to_return(body: fixture('direct_message_users.json'), headers: {content_type: 'application/json; charset=utf-8'})
     end
     it 'requests the correct resource' do
       @cli.direct_messages
       expect(a_get('/1.1/direct_messages/events/list.json').with(query: {count: '50', include_entities: 'false'})).to have_been_made
       expect(a_get('/1.1/direct_messages/events/list.json').with(query: {count: '50', include_entities: 'false', max_id: '856477710595624962'})).to have_been_made
-      expect(a_get("/1.1/account/verify_credentials.json").with(query: {skip_status: "true"})).to have_been_made
-      expect(a_get("/1.1/users/lookup.json").with(query: {user_id: '358486183,311650899,422190131,759849327200047104,73660881,328677087,4374876088,2924245126'})).to have_been_made
+      expect(a_get('/1.1/account/verify_credentials.json').with(query: {skip_status: 'true'})).to have_been_made
+      expect(a_get('/1.1/users/lookup.json').with(query: {user_id: '358486183,311650899,422190131,759849327200047104,73660881,328677087,4374876088,2924245126'})).to have_been_made
     end
     it 'has the correct output' do
       @cli.direct_messages

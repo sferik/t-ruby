@@ -78,7 +78,7 @@ def task_completions
 end
 
 def commands
-  T::CLI.tasks.reject { |name, _| T::CLI.subcommands.include?(name) }.collect(&:last)
+  T::CLI.tasks.except(*T::CLI.subcommands).collect(&:last)
 end
 
 def command_function(command)

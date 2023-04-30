@@ -73,7 +73,7 @@ end
 def task_completions
   T::CLI.tasks.collect(&:last).collect do |task|
     desc = task.description.to_s.gsub "'", "\\\\'"
-    %(      \"#{task.name}[#{desc}]\" \\)
+    %(      "#{task.name}[#{desc}]" \\)
   end.join("\n")
 end
 

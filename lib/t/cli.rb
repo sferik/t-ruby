@@ -202,7 +202,7 @@ module T
     def dm(user, message)
       require 't/core_ext/string'
       recipient = options['id'] ? client.user(user.to_i) : client.user(user.strip_ats)
-      direct_message = client.create_direct_message_event(recipient, message)
+      client.create_direct_message_event(recipient, message)
       say "Direct Message sent from @#{@rcfile.active_profile[0]} to @#{recipient.screen_name}."
     end
     map %w[d m] => :dm

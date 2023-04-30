@@ -67,7 +67,7 @@ module T
     end
 
     def delete
-      File.delete(@path) if File.exist?(@path)
+      FileUtils.rm_f(@path)
     end
 
     def empty?

@@ -5,7 +5,7 @@ require 'helper'
 describe T::RCFile do
   after do
     T::RCFile.instance.reset
-    File.delete(project_path + '/tmp/trc') if File.exist?(project_path + '/tmp/trc')
+    FileUtils.rm_f(project_path + '/tmp/trc')
   end
 
   it 'is a singleton' do

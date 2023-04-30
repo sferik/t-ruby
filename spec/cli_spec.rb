@@ -77,7 +77,7 @@ describe T::CLI do
       end
       after do
         file_path = project_path + '/tmp/empty'
-        File.delete(file_path) if File.exist?(file_path)
+        FileUtils.rm_f(file_path)
       end
       it 'requests the correct resource' do
         expect(Readline).to receive(:readline).with('Press [Enter] to open the Twitter Developer site. ', true).and_return("\n")

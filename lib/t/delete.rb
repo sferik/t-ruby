@@ -40,13 +40,12 @@ module T
       else
         direct_message_ids.each do |direct_message_id_to_delete|
           direct_message = client.direct_message(direct_message_id_to_delete)
-          if direct_message
-            recipient = client.user(direct_message.recipient_id)
-            next unless yes? "Are you sure you want to permanently delete the direct message to @#{recipient.screen_name}: \"#{direct_message.text}\"? [y/N]"
+          next unless direct_message
+          recipient = client.user(direct_message.recipient_id)
+          next unless yes? "Are you sure you want to permanently delete the direct message to @#{recipient.screen_name}: \"#{direct_message.text}\"? [y/N]"
 
-            client.destroy_direct_message(direct_message_id_to_delete)
-            say "@#{@rcfile.active_profile[0]} deleted the direct message sent to @#{recipient.screen_name}: \"#{direct_message.text}\""
-          end
+          client.destroy_direct_message(direct_message_id_to_delete)
+          say "@#{@rcfile.active_profile[0]} deleted the direct message sent to @#{recipient.screen_name}: \"#{direct_message.text}\""
         end
       end
     end

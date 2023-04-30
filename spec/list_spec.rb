@@ -40,10 +40,12 @@ describe T::List do
       expect(a_get('/1.1/account/verify_credentials.json').with(query: {skip_status: 'true'})).to have_been_made
       expect(a_post('/1.1/lists/members/create_all.json').with(body: {screen_name: 'BarackObama', slug: 'presidents', owner_id: '7505382'})).to have_been_made
     end
+
     it 'has the correct output' do
       @list.add('presidents', 'BarackObama')
       expect($stdout.string.split("\n").first).to eq '@testcli added 1 member to the list "presidents".'
     end
+
     context '--id' do
       before do
         @list.options = @list.options.merge('id' => true)
@@ -78,6 +80,7 @@ describe T::List do
       @list.create('presidents')
       expect(a_post('/1.1/lists/create.json').with(body: {name: 'presidents'})).to have_been_made
     end
+
     it 'has the correct output' do
       @list.create('presidents')
       expect($stdout.string.chomp).to eq '@testcli created the list "presidents".'
@@ -94,6 +97,7 @@ describe T::List do
       @list.information('presidents')
       expect(a_get('/1.1/lists/show.json').with(query: {owner_screen_name: 'testcli', slug: 'presidents'})).to have_been_made
     end
+
     it 'has the correct output' do
       @list.information('presidents')
       expect($stdout.string).to eq <<~EOS
@@ -109,6 +113,7 @@ describe T::List do
         URL          https://twitter.com/sferik/presidents
       EOS
     end
+
     it 'has the correct output with --relative-dates turned on' do
       @list.options = @list.options.merge('relative_dates' => true)
       @list.information('presidents')
@@ -125,11 +130,13 @@ describe T::List do
         URL          https://twitter.com/sferik/presidents
       EOS
     end
+
     context 'with a user passed' do
       it 'requests the correct resource' do
         @list.information('testcli/presidents')
         expect(a_get('/1.1/lists/show.json').with(query: {owner_screen_name: 'testcli', slug: 'presidents'})).to have_been_made
       end
+
       context '--id' do
         before do
           @list.options = @list.options.merge('id' => true)
@@ -167,10 +174,12 @@ describe T::List do
       @list.members('presidents')
       expect(a_get('/1.1/lists/members.json').with(query: {cursor: '-1', owner_screen_name: 'testcli', slug: 'presidents'})).to have_been_made
     end
+
     it 'has the correct output' do
       @list.members('presidents')
       expect($stdout.string.chomp).to eq 'pengwynn  sferik'
     end
+
     context '--csv' do
       before do
         @list.options = @list.options.merge('csv' => true)
@@ -305,6 +314,7 @@ describe T::List do
         @list.members('testcli/presidents')
         expect(a_get('/1.1/lists/members.json').with(query: {cursor: '-1', owner_screen_name: 'testcli', slug: 'presidents'})).to have_been_made
       end
+
       context '--id' do
         before do
           @list.options = @list.options.merge('id' => true)
@@ -331,11 +341,13 @@ describe T::List do
       expect(a_get('/1.1/account/verify_credentials.json').with(query: {skip_status: 'true'})).to have_been_made
       expect(a_post('/1.1/lists/members/destroy_all.json').with(body: {screen_name: 'BarackObama', slug: 'presidents', owner_id: '7505382'})).to have_been_made
     end
+
     it 'has the correct output' do
       stub_post('/1.1/lists/members/destroy_all.json').with(body: {screen_name: 'BarackObama', slug: 'presidents', owner_id: '7505382'}).to_return(body: fixture('list.json'), headers: {content_type: 'application/json; charset=utf-8'})
       @list.remove('presidents', 'BarackObama')
       expect($stdout.string.split("\n").first).to eq '@testcli removed 1 member from the list "presidents".'
     end
+
     context '--id' do
       before do
         @list.options = @list.options.merge('id' => true)
@@ -370,6 +382,7 @@ describe T::List do
       @list.timeline('presidents')
       expect(a_get('/1.1/lists/statuses.json').with(query: {owner_screen_name: 'testcli', count: '20', slug: 'presidents', include_entities: 'false'})).to have_been_made
     end
+
     it 'has the correct output' do
       @list.timeline('presidents')
       expect($stdout.string).to eq <<-EOS
@@ -450,6 +463,7 @@ describe T::List do
 
       EOS
     end
+
     context '--color=never' do
       before do
         @list.options = @list.options.merge('color' => 'never')
@@ -622,6 +636,7 @@ describe T::List do
 
         EOS
       end
+
       it 'outputs with color when stdout is a tty' do
         allow($stdout).to receive(:tty?).and_return(true)
         @list.timeline('presidents')
@@ -873,6 +888,7 @@ describe T::List do
         @list.timeline('presidents')
         expect(a_get('/1.1/lists/statuses.json').with(query: {owner_screen_name: 'testcli', count: '20', slug: 'presidents', include_entities: 'true'})).to have_been_made
       end
+
       it 'decodes URLs' do
         @list.timeline('presidents')
         expect($stdout.string).to include 'https://twitter.com/sferik/status/243988000076337152'
@@ -910,6 +926,7 @@ describe T::List do
            244099460672679938  Sep  7 07:47  @dwiskus          Gentlemen, you can't fig...
         EOS
       end
+
       context '--reverse' do
         before do
           @list.options = @list.options.merge('reverse' => true)
@@ -956,6 +973,7 @@ describe T::List do
         @list.timeline('presidents')
         expect(a_get('/1.1/lists/statuses.json').with(query: {owner_screen_name: 'testcli', count: '1', slug: 'presidents', include_entities: 'false'})).to have_been_made
       end
+
       it 'limits the number of results to 201' do
         @list.options = @list.options.merge('number' => 201)
         @list.timeline('presidents')
@@ -969,6 +987,7 @@ describe T::List do
         @list.timeline('testcli/presidents')
         expect(a_get('/1.1/lists/statuses.json').with(query: {owner_screen_name: 'testcli', count: '20', slug: 'presidents', include_entities: 'false'})).to have_been_made
       end
+
       context '--id' do
         before do
           @list.options = @list.options.merge('id' => true)

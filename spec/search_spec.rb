@@ -38,6 +38,7 @@ describe T::Search do
       @search.all('twitter')
       expect(a_get('/1.1/search/tweets.json').with(query: {q: 'twitter', count: '100', include_entities: 'false'})).to have_been_made
     end
+
     it 'has the correct output' do
       @search.all('twitter')
       expect($stdout.string).to eq <<-EOS
@@ -113,6 +114,7 @@ describe T::Search do
 
       EOS
     end
+
     context '--csv' do
       before do
         @search.options = @search.options.merge('csv' => true)
@@ -195,6 +197,7 @@ describe T::Search do
         @search.all('twitter')
         expect(a_get('/1.1/search/tweets.json').with(query: {q: 'twitter', count: '100', include_entities: 'false'})).to have_been_made
       end
+
       it 'limits the number of results to 201' do
         @search.options = @search.options.merge('number' => 201)
         @search.all('twitter')
@@ -215,6 +218,7 @@ describe T::Search do
       expect(a_get('/1.1/favorites/list.json').with(query: {count: '200', include_entities: 'false'})).to have_been_made
       expect(a_get('/1.1/favorites/list.json').with(query: {count: '200', max_id: '244099460672679937', include_entities: 'false'})).to have_been_made
     end
+
     it 'has the correct output' do
       @search.favorites('twitter')
       expect($stdout.string).to eq <<-EOS
@@ -227,6 +231,7 @@ describe T::Search do
 
       EOS
     end
+
     context '--csv' do
       before do
         @search.options = @search.options.merge('csv' => true)
@@ -254,6 +259,7 @@ describe T::Search do
         expect(a_get('/1.1/favorites/list.json').with(query: {count: '200', include_entities: 'true'})).to have_been_made
         expect(a_get('/1.1/favorites/list.json').with(query: {count: '200', include_entities: 'true', max_id: '244099460672679937'})).to have_been_made
       end
+
       it 'decodes URLs' do
         @search.favorites('twitter')
         expect($stdout.string).to include 'https://twitter.com/sferik/status/243988000076337152'
@@ -296,6 +302,7 @@ describe T::Search do
         expect(a_get('/1.1/favorites/list.json').with(query: {count: '200', screen_name: 'sferik', include_entities: 'false'})).to have_been_made
         expect(a_get('/1.1/favorites/list.json').with(query: {count: '200', max_id: '244099460672679937', screen_name: 'sferik', include_entities: 'false'})).to have_been_made
       end
+
       it 'has the correct output' do
         @search.favorites('sferik', 'twitter')
         expect($stdout.string).to eq <<-EOS
@@ -308,6 +315,7 @@ describe T::Search do
 
         EOS
       end
+
       context '--id' do
         before do
           @search.options = @search.options.merge('id' => true)
@@ -320,6 +328,7 @@ describe T::Search do
           expect(a_get('/1.1/favorites/list.json').with(query: {count: '200', user_id: '7505382', include_entities: 'false'})).to have_been_made
           expect(a_get('/1.1/favorites/list.json').with(query: {count: '200', max_id: '244099460672679937', user_id: '7505382', include_entities: 'false'})).to have_been_made
         end
+
         it 'has the correct output' do
           @search.favorites('7505382', 'twitter')
           expect($stdout.string).to eq <<-EOS
@@ -347,6 +356,7 @@ describe T::Search do
       expect(a_get('/1.1/statuses/mentions_timeline.json').with(query: {count: '200', include_entities: 'false'})).to have_been_made
       expect(a_get('/1.1/statuses/mentions_timeline.json').with(query: {count: '200', max_id: '244099460672679937', include_entities: 'false'})).to have_been_made
     end
+
     it 'has the correct output' do
       @search.mentions('twitter')
       expect($stdout.string).to eq <<-EOS
@@ -359,6 +369,7 @@ describe T::Search do
 
       EOS
     end
+
     context '--csv' do
       before do
         @search.options = @search.options.merge('csv' => true)
@@ -386,6 +397,7 @@ describe T::Search do
         expect(a_get('/1.1/statuses/mentions_timeline.json').with(query: {count: '200', include_entities: 'true'})).to have_been_made
         expect(a_get('/1.1/statuses/mentions_timeline.json').with(query: {count: '200', include_entities: 'true', max_id: '244099460672679937'})).to have_been_made
       end
+
       it 'decodes URLs' do
         @search.mentions('twitter')
         expect($stdout.string).to include 'https://twitter.com/sferik/status/243988000076337152'
@@ -429,6 +441,7 @@ describe T::Search do
       expect(a_get('/1.1/lists/statuses.json').with(query: {count: '200', owner_screen_name: 'testcli', slug: 'presidents', include_entities: 'false'})).to have_been_made
       expect(a_get('/1.1/lists/statuses.json').with(query: {count: '200', max_id: '244099460672679937', owner_screen_name: 'testcli', slug: 'presidents', include_entities: 'false'})).to have_been_made
     end
+
     it 'has the correct output' do
       @search.list('presidents', 'twitter')
       expect($stdout.string).to eq <<-EOS
@@ -441,6 +454,7 @@ describe T::Search do
 
       EOS
     end
+
     context '--csv' do
       before do
         @search.options = @search.options.merge('csv' => true)
@@ -468,6 +482,7 @@ describe T::Search do
         expect(a_get('/1.1/lists/statuses.json').with(query: {count: '200', owner_screen_name: 'testcli', slug: 'presidents', include_entities: 'true'})).to have_been_made
         expect(a_get('/1.1/lists/statuses.json').with(query: {count: '200', max_id: '244099460672679937', owner_screen_name: 'testcli', slug: 'presidents', include_entities: 'true'})).to have_been_made
       end
+
       it 'decodes URLs' do
         @search.list('presidents', 'twitter')
         expect($stdout.string).to include 'https://dev.twitter.com/docs/api/post/direct_messages/destroy'
@@ -494,6 +509,7 @@ describe T::Search do
         @search.list('testcli/presidents', 'twitter')
         expect(a_get('/1.1/lists/statuses.json').with(query: {count: '200', owner_screen_name: 'testcli', slug: 'presidents', include_entities: 'false'})).to have_been_made
       end
+
       context '--id' do
         before do
           @search.options = @search.options.merge('id' => true)
@@ -531,6 +547,7 @@ describe T::Search do
       expect(a_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', include_rts: 'true', include_entities: 'false'})).to have_been_made
       expect(a_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', include_rts: 'true', max_id: '244102729860009983', include_entities: 'false'})).to have_been_made.times(2)
     end
+
     it 'has the correct output' do
       @search.retweets('mosaic')
       expect($stdout.string).to eq <<-EOS
@@ -539,6 +556,7 @@ describe T::Search do
 
       EOS
     end
+
     context '--csv' do
       before do
         @search.options = @search.options.merge('csv' => true)
@@ -565,6 +583,7 @@ describe T::Search do
         expect(a_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', include_rts: 'true', include_entities: 'true'})).to have_been_made
         expect(a_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', include_rts: 'true', max_id: '244102729860009983', include_entities: 'true'})).to have_been_made.times(2)
       end
+
       it 'decodes URLs' do
         @search.retweets('mosaic')
         expect($stdout.string).to include 'http://heymosaic.com/i/1Z8ssK'
@@ -606,6 +625,7 @@ describe T::Search do
         expect(a_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', include_rts: 'true', screen_name: 'sferik', include_entities: 'false'})).to have_been_made
         expect(a_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', include_rts: 'true', screen_name: 'sferik', max_id: '244102729860009983', include_entities: 'false'})).to have_been_made.times(2)
       end
+
       it 'has the correct output' do
         @search.retweets('sferik', 'mosaic')
         expect($stdout.string).to eq <<-EOS
@@ -614,6 +634,7 @@ describe T::Search do
 
         EOS
       end
+
       context '--id' do
         before do
           @search.options = @search.options.merge('id' => true)
@@ -626,6 +647,7 @@ describe T::Search do
           expect(a_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', include_rts: 'true', user_id: '7505382', include_entities: 'false'})).to have_been_made
           expect(a_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', include_rts: 'true', user_id: '7505382', max_id: '244102729860009983', include_entities: 'false'})).to have_been_made.times(2)
         end
+
         it 'has the correct output' do
           @search.retweets('7505382', 'mosaic')
           expect($stdout.string).to eq <<-EOS
@@ -649,6 +671,7 @@ describe T::Search do
       expect(a_get('/1.1/statuses/home_timeline.json').with(query: {count: '200', include_entities: 'false'})).to have_been_made
       expect(a_get('/1.1/statuses/home_timeline.json').with(query: {count: '200', max_id: '244099460672679937', include_entities: 'false'})).to have_been_made
     end
+
     it 'has the correct output' do
       @search.timeline('twitter')
       expect($stdout.string).to eq <<-EOS
@@ -661,6 +684,7 @@ describe T::Search do
 
       EOS
     end
+
     context '--csv' do
       before do
         @search.options = @search.options.merge('csv' => true)
@@ -688,6 +712,7 @@ describe T::Search do
         expect(a_get('/1.1/statuses/home_timeline.json').with(query: {count: '200', include_entities: 'true'})).to have_been_made
         expect(a_get('/1.1/statuses/home_timeline.json').with(query: {count: '200', max_id: '244099460672679937', include_entities: 'true'})).to have_been_made
       end
+
       it 'decodes URLs' do
         @search.timeline('twitter')
         expect($stdout.string).to include 'https://dev.twitter.com/docs/api/post/direct_messages/destroy'
@@ -784,6 +809,7 @@ describe T::Search do
         expect(a_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', screen_name: 'sferik', include_entities: 'false'})).to have_been_made
         expect(a_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', max_id: '244099460672679937', screen_name: 'sferik', include_entities: 'false'})).to have_been_made
       end
+
       it 'has the correct output' do
         @search.timeline('sferik', 'twitter')
         expect($stdout.string).to eq <<-EOS
@@ -796,6 +822,7 @@ describe T::Search do
 
         EOS
       end
+
       context '--csv' do
         before do
           @search.options = @search.options.merge('csv' => true)
@@ -889,10 +916,12 @@ describe T::Search do
       expect(a_get('/1.1/users/search.json').with(query: {page: '1', q: 'Erik'})).to have_been_made
       expect(a_get('/1.1/users/search.json').with(query: {page: '2', q: 'Erik'})).to have_been_made
     end
+
     it 'has the correct output' do
       @search.users('Erik')
       expect($stdout.string.chomp).to eq 'pengwynn  sferik'
     end
+
     context '--csv' do
       before do
         @search.options = @search.options.merge('csv' => true)

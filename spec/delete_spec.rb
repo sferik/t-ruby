@@ -28,10 +28,12 @@ describe T::Delete do
       @delete.block('sferik')
       expect(a_post('/1.1/blocks/destroy.json').with(body: {screen_name: 'sferik'})).to have_been_made
     end
+
     it 'has the correct output' do
       @delete.block('sferik')
       expect($stdout.string).to match(/^@testcli unblocked 1 user\.$/)
     end
+
     context '--id' do
       before do
         @delete.options = @delete.options.merge('id' => true)
@@ -60,6 +62,7 @@ describe T::Delete do
       expect(a_delete('/1.1/direct_messages/events/destroy.json').with(query: {id: '1773478249'})).to have_been_made
       expect(a_get('/1.1/users/show.json').with(query: {user_id: '58983'})).to have_been_made
     end
+
     context 'yes' do
       it 'has the correct output' do
         expect(Readline).to receive(:readline).with('Are you sure you want to permanently delete the direct message to @sferik: "testing"? [y/N] ', false).and_return('yes')
@@ -85,6 +88,7 @@ describe T::Delete do
         @delete.dm('1773478249')
         expect(a_delete('/1.1/direct_messages/events/destroy.json').with(query: {id: '1773478249'})).to have_been_made
       end
+
       it 'has the correct output' do
         @delete.dm('1773478249')
         expect($stdout.string.chomp).to eq '@testcli deleted 1 direct message.'
@@ -105,6 +109,7 @@ describe T::Delete do
       expect(a_get('/1.1/statuses/show/28439861609.json').with(query: {include_my_retweet: 'false'})).to have_been_made
       expect(a_post('/1.1/favorites/destroy.json').with(body: {id: '28439861609'})).to have_been_made
     end
+
     context 'yes' do
       it 'has the correct output' do
         expect(Readline).to receive(:readline).with("Are you sure you want to remove @sferik's status: \"The problem with your code is that it's doing exactly what you told it to do.\" from your favorites? [y/N] ", false).and_return('yes')
@@ -130,6 +135,7 @@ describe T::Delete do
         @delete.favorite('28439861609')
         expect(a_post('/1.1/favorites/destroy.json').with(body: {id: '28439861609'})).to have_been_made
       end
+
       it 'has the correct output' do
         @delete.favorite('28439861609')
         expect($stdout.string).to match(/^@testcli unfavorited @sferik's status: "The problem with your code is that it's doing exactly what you told it to do\."$/)
@@ -151,6 +157,7 @@ describe T::Delete do
       expect(a_get('/1.1/account/verify_credentials.json').with(query: {skip_status: 'true'})).to have_been_made
       expect(a_post('/1.1/lists/destroy.json').with(body: {owner_id: '7505382', list_id: '8863586'})).to have_been_made
     end
+
     context 'yes' do
       it 'has the correct output' do
         expect(Readline).to receive(:readline).with('Are you sure you want to permanently delete the list "presidents"? [y/N] ', false).and_return('yes')
@@ -177,6 +184,7 @@ describe T::Delete do
         expect(a_get('/1.1/account/verify_credentials.json').with(query: {skip_status: 'true'})).to have_been_made
         expect(a_post('/1.1/lists/destroy.json').with(body: {owner_id: '7505382', list_id: '8863586'})).to have_been_made
       end
+
       it 'has the correct output' do
         @delete.list('presidents')
         expect($stdout.string.chomp).to eq '@testcli deleted the list "presidents".'
@@ -209,10 +217,12 @@ describe T::Delete do
       @delete.mute('sferik')
       expect(a_post('/1.1/mutes/users/destroy.json').with(body: {screen_name: 'sferik'})).to have_been_made
     end
+
     it 'has the correct output' do
       @delete.mute('sferik')
       expect($stdout.string).to match(/^@testcli unmuted 1 user\.$/)
     end
+
     context '--id' do
       before do
         @delete.options = @delete.options.merge('id' => true)
@@ -283,6 +293,7 @@ describe T::Delete do
       expect(a_get('/1.1/statuses/show/26755176471724032.json').with(query: {include_my_retweet: 'false'})).to have_been_made
       expect(a_post('/1.1/statuses/destroy/26755176471724032.json').with(body: {trim_user: 'true'})).to have_been_made
     end
+
     context 'yes' do
       it 'has the correct output' do
         expect(Readline).to receive(:readline).with("Are you sure you want to permanently delete @sferik's status: \"The problem with your code is that it's doing exactly what you told it to do.\"? [y/N] ", false).and_return('yes')
@@ -308,6 +319,7 @@ describe T::Delete do
         @delete.status('26755176471724032')
         expect(a_post('/1.1/statuses/destroy/26755176471724032.json').with(body: {trim_user: 'true'})).to have_been_made
       end
+
       it 'has the correct output' do
         @delete.status('26755176471724032')
         expect($stdout.string.chomp).to eq "@testcli deleted the Tweet: \"The problem with your code is that it's doing exactly what you told it to do.\""

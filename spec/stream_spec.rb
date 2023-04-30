@@ -30,6 +30,7 @@ describe T::Stream do
       expect(@stream).to receive(:print_message)
       @stream.all
     end
+
     context '--csv' do
       before do
         @stream.options = @stream.options.merge('csv' => true)
@@ -41,6 +42,7 @@ describe T::Stream do
         expect(@stream).to receive(:say).with("ID,Posted at,Screen name,Text\n")
         @stream.all
       end
+
       it 'outputs in CSV format' do
         allow(@streaming_client).to receive(:before_request)
         allow(@streaming_client).to receive(:sample).and_yield(@tweet)
@@ -60,6 +62,7 @@ describe T::Stream do
         expect(@stream).to receive(:print_table).with(any_args)
         @stream.all
       end
+
       it 'outputs in long text format' do
         allow(@streaming_client).to receive(:before_request)
         allow(@streaming_client).to receive(:sample).and_yield(@tweet)
@@ -86,10 +89,12 @@ describe T::Stream do
       allow(@streaming_client).to receive(:filter).and_yield(@tweet)
       @stream.list('presidents')
     end
+
     it 'requests the correct resource' do
       @stream.list('presidents')
       expect(a_get('/1.1/lists/members.json').with(query: {cursor: '-1', owner_screen_name: 'testcli', slug: 'presidents'})).to have_been_made
     end
+
     context '--csv' do
       before do
         @stream.options = @stream.options.merge('csv' => true)
@@ -101,6 +106,7 @@ describe T::Stream do
         expect(@stream).to receive(:print_csv_tweet).with(any_args)
         @stream.list('presidents')
       end
+
       it 'requests the correct resource' do
         @stream.list('presidents')
         expect(a_get('/1.1/lists/members.json').with(query: {cursor: '-1', owner_screen_name: 'testcli', slug: 'presidents'})).to have_been_made
@@ -118,6 +124,7 @@ describe T::Stream do
         expect(@stream).to receive(:print_table).with(any_args)
         @stream.list('presidents')
       end
+
       it 'requests the correct resource' do
         @stream.list('presidents')
         expect(a_get('/1.1/lists/members.json').with(query: {cursor: '-1', owner_screen_name: 'testcli', slug: 'presidents'})).to have_been_made
@@ -131,6 +138,7 @@ describe T::Stream do
       expect(t_class).to receive(:timeline)
       @stream.list('presidents')
     end
+
     it 'invokes Twitter::Streaming::Client#userstream' do
       allow(@streaming_client).to receive(:filter)
       expect(@streaming_client).to receive(:filter)
@@ -149,12 +157,14 @@ describe T::Stream do
       expect(@stream).to receive(:say).with(any_args)
       @stream.matrix
     end
+
     it 'invokes Twitter::Streaming::Client#sample' do
       allow(@streaming_client).to receive(:before_request)
       allow(@streaming_client).to receive(:sample).and_yield(@tweet)
       expect(@streaming_client).to receive(:sample)
       @stream.matrix
     end
+
     it 'requests the correct resource' do
       allow(@streaming_client).to receive(:before_request).and_yield
       @stream.matrix
@@ -171,6 +181,7 @@ describe T::Stream do
       expect(@stream).to receive(:print_message)
       @stream.search(%w[twitter gem])
     end
+
     context '--csv' do
       before do
         @stream.options = @stream.options.merge('csv' => true)
@@ -203,6 +214,7 @@ describe T::Stream do
       expect(t_class).to receive(:all).with('t OR gem')
       @stream.search('t', 'gem')
     end
+
     it 'invokes Twitter::Streaming::Client#filter' do
       allow(@streaming_client).to receive(:filter)
       expect(@streaming_client).to receive(:filter).with(track: 'twitter,gem')
@@ -219,6 +231,7 @@ describe T::Stream do
       expect(@stream).to receive(:print_message)
       @stream.timeline
     end
+
     context '--csv' do
       before do
         @stream.options = @stream.options.merge('csv' => true)
@@ -250,6 +263,7 @@ describe T::Stream do
       expect(t_class).to receive(:timeline)
       @stream.timeline
     end
+
     it 'invokes Twitter::Streaming::Client#userstream' do
       allow(@streaming_client).to receive(:user)
       expect(@streaming_client).to receive(:user)
@@ -266,6 +280,7 @@ describe T::Stream do
       expect(@stream).to receive(:print_message)
       @stream.users('123')
     end
+
     context '--csv' do
       before do
         @stream.options = @stream.options.merge('csv' => true)
@@ -277,6 +292,7 @@ describe T::Stream do
         expect(@stream).to receive(:say).with("ID,Posted at,Screen name,Text\n")
         @stream.users('123')
       end
+
       it 'outputs in CSV format' do
         allow(@streaming_client).to receive(:before_request)
         expect(@stream).to receive(:print_csv_tweet).with(any_args)
@@ -295,6 +311,7 @@ describe T::Stream do
         expect(@stream).to receive(:print_table).with(any_args)
         @stream.users('123')
       end
+
       it 'outputs in long text format' do
         allow(@streaming_client).to receive(:before_request)
         allow(@streaming_client).to receive(:filter).and_yield(@tweet)

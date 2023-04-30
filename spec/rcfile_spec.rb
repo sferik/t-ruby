@@ -38,6 +38,7 @@ describe T::RCFile do
       }
       expect(rcfile['testcli'].keys).to eq %w[abc123]
     end
+
     it 'is not be world writable' do
       rcfile = T::RCFile.instance
       rcfile.path = "#{project_path}/tmp/trc"
@@ -52,6 +53,7 @@ describe T::RCFile do
       }
       expect(File.world_writable?(rcfile.path)).to be_nil
     end
+
     it 'is not be world readable' do
       rcfile = T::RCFile.instance
       rcfile.path = "#{project_path}/tmp/trc"
@@ -185,6 +187,7 @@ describe T::RCFile do
       rcfile.path = "#{project_path}/tmp/trc"
       expect(rcfile.path).to eq "#{project_path}/tmp/trc"
     end
+
     it 'reloads data' do
       rcfile = T::RCFile.instance
       rcfile.path = "#{fixture_path}/.trc"

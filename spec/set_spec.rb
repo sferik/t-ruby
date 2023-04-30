@@ -27,19 +27,23 @@ describe T::Set do
       @set.active('testcli', 'abc123')
       expect($stdout.string.chomp).to eq 'Active account has been updated to testcli.'
     end
+
     it 'accepts an account name without a consumer key' do
       @set.active('testcli')
       expect($stdout.string.chomp).to eq 'Active account has been updated to testcli.'
     end
+
     it 'is case insensitive' do
       @set.active('TestCLI', 'abc123')
       expect($stdout.string.chomp).to eq 'Active account has been updated to testcli.'
     end
+
     it 'raises an error if username is ambiguous' do
       expect do
         @set.active('test', 'abc123')
       end.to raise_error(ArgumentError, /Username test is ambiguous/)
     end
+
     it 'raises an error if the username is not found' do
       expect do
         @set.active('clitest')
@@ -57,6 +61,7 @@ describe T::Set do
       @set.bio('Vagabond.')
       expect(a_post('/1.1/account/update_profile.json').with(body: {description: 'Vagabond.'})).to have_been_made
     end
+
     it 'has the correct output' do
       @set.bio('Vagabond.')
       expect($stdout.string.chomp).to eq "@testcli's bio has been updated."
@@ -73,6 +78,7 @@ describe T::Set do
       @set.language('en')
       expect(a_post('/1.1/account/settings.json').with(body: {lang: 'en'})).to have_been_made
     end
+
     it 'has the correct output' do
       @set.language('en')
       expect($stdout.string.chomp).to eq "@testcli's language has been updated."
@@ -89,6 +95,7 @@ describe T::Set do
       @set.location('San Francisco')
       expect(a_post('/1.1/account/update_profile.json').with(body: {location: 'San Francisco'})).to have_been_made
     end
+
     it 'has the correct output' do
       @set.location('San Francisco')
       expect($stdout.string.chomp).to eq "@testcli's location has been updated."
@@ -105,6 +112,7 @@ describe T::Set do
       @set.name('Erik Michaels-Ober')
       expect(a_post('/1.1/account/update_profile.json').with(body: {name: 'Erik Michaels-Ober'})).to have_been_made
     end
+
     it 'has the correct output' do
       @set.name('Erik Michaels-Ober')
       expect($stdout.string.chomp).to eq "@testcli's name has been updated."
@@ -121,6 +129,7 @@ describe T::Set do
       @set.profile_background_image("#{fixture_path}/we_concept_bg2.png")
       expect(a_post('/1.1/account/update_profile_background_image.json')).to have_been_made
     end
+
     it 'has the correct output' do
       @set.profile_background_image("#{fixture_path}/we_concept_bg2.png")
       expect($stdout.string.chomp).to eq "@testcli's background image has been updated."
@@ -137,6 +146,7 @@ describe T::Set do
       @set.profile_image("#{fixture_path}/me.jpg")
       expect(a_post('/1.1/account/update_profile_image.json')).to have_been_made
     end
+
     it 'has the correct output' do
       @set.profile_image("#{fixture_path}/me.jpg")
       expect($stdout.string.chomp).to eq "@testcli's image has been updated."
@@ -153,6 +163,7 @@ describe T::Set do
       @set.website('https://github.com/sferik')
       expect(a_post('/1.1/account/update_profile.json').with(body: {url: 'https://github.com/sferik'})).to have_been_made
     end
+
     it 'has the correct output' do
       @set.website('https://github.com/sferik')
       expect($stdout.string.chomp).to eq "@testcli's website has been updated."

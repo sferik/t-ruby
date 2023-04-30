@@ -62,6 +62,7 @@ describe T::CLI do
       expect(a_post('/oauth/access_token')).to have_been_made
       expect(a_get('/1.1/account/verify_credentials.json').with(query: {skip_status: 'true'})).to have_been_made
     end
+
     it 'does not raise error' do
       expect do
         expect(Readline).to receive(:readline).with('Press [Enter] to open the Twitter Developer site. ', true).and_return("\n")
@@ -72,6 +73,7 @@ describe T::CLI do
         @cli.authorize
       end.not_to raise_error
     end
+
     context 'empty RC file' do
       before do
         file_path = "#{project_path}/tmp/empty"
@@ -94,6 +96,7 @@ describe T::CLI do
         expect(a_post('/oauth/access_token')).to have_been_made
         expect(a_get('/1.1/account/verify_credentials.json').with(query: {skip_status: 'true'})).to have_been_made
       end
+
       it 'does not raise error' do
         expect do
           expect(Readline).to receive(:readline).with('Press [Enter] to open the Twitter Developer site. ', true).and_return("\n")
@@ -117,10 +120,12 @@ describe T::CLI do
       @cli.block('sferik')
       expect(a_post('/1.1/blocks/create.json').with(body: {screen_name: 'sferik'})).to have_been_made
     end
+
     it 'has the correct output' do
       @cli.block('sferik')
       expect($stdout.string).to match(/^@testcli blocked 1 user/)
     end
+
     context '--id' do
       before do
         @cli.options = @cli.options.merge('id' => true)
@@ -149,6 +154,7 @@ describe T::CLI do
       expect(a_get('/1.1/account/verify_credentials.json').with(query: {skip_status: 'true'})).to have_been_made
       expect(a_get('/1.1/users/lookup.json').with(query: {user_id: '358486183,311650899,422190131,759849327200047104,73660881,328677087,4374876088,2924245126'})).to have_been_made
     end
+
     it 'has the correct output' do
       @cli.direct_messages
       expect($stdout.string).to eq <<-EOS
@@ -194,6 +200,7 @@ describe T::CLI do
 
       EOS
     end
+
     context '--csv' do
       before do
         @cli.options = @cli.options.merge('csv' => true)
@@ -336,6 +343,7 @@ describe T::CLI do
       @cli.direct_messages_sent
       expect(a_get('/1.1/direct_messages/events/list.json').with(query: {count: '50', include_entities: 'false'})).to have_been_made
     end
+
     it 'has the correct output' do
       @cli.direct_messages_sent
       expect($stdout.string).to eq <<-EOS
@@ -350,6 +358,7 @@ describe T::CLI do
 
       EOS
     end
+
     context '--csv' do
       before do
         @cli.options = @cli.options.merge('csv' => true)
@@ -401,6 +410,7 @@ describe T::CLI do
         @cli.direct_messages_sent
         expect(a_get('/1.1/direct_messages/events/list.json').with(query: {count: '50', include_entities: 'false'})).to have_been_made
       end
+
       it 'limits the number of results to 201' do
         @cli.options = @cli.options.merge('number' => 201)
         @cli.direct_messages_sent
@@ -443,10 +453,12 @@ describe T::CLI do
       expect(a_post('/1.1/direct_messages/events/new.json').with(body: {event: {type: 'message_create', message_create: {target: {recipient_id: 7_505_382}, message_data: {text: 'Creating a fixture for the Twitter gem'}}}})).to have_been_made
       expect(a_get('/1.1/users/show.json').with(query: {screen_name: 'sferik'})).to have_been_made
     end
+
     it 'has the correct output' do
       @cli.dm('sferik', 'Creating a fixture for the Twitter gem')
       expect($stdout.string.chomp).to eq 'Direct Message sent from @testcli to @sferik.'
     end
+
     context '--id' do
       before do
         @cli.options = @cli.options.merge('id' => true)
@@ -459,6 +471,7 @@ describe T::CLI do
         expect(a_post('/1.1/direct_messages/events/new.json').with(body: {event: {type: 'message_create', message_create: {target: {recipient_id: 7_505_382}, message_data: {text: 'Creating a fixture for the Twitter gem'}}}})).to have_been_made
         expect(a_get('/1.1/users/show.json').with(query: {user_id: '7505382'})).to have_been_made
       end
+
       it 'has the correct output' do
         @cli.dm('7505382', 'Creating a fixture for the Twitter gem')
         expect($stdout.string.chomp).to eq 'Direct Message sent from @testcli to @sferik.'
@@ -476,10 +489,12 @@ describe T::CLI do
       @cli.does_contain('presidents')
       expect(a_get('/1.1/lists/members/show.json').with(query: {owner_screen_name: 'testcli', screen_name: 'testcli', slug: 'presidents'})).to have_been_made
     end
+
     it 'has the correct output' do
       @cli.does_contain('presidents')
       expect($stdout.string.chomp).to eq 'Yes, presidents contains @testcli.'
     end
+
     context '--id' do
       before do
         @cli.options = @cli.options.merge('id' => true)
@@ -499,6 +514,7 @@ describe T::CLI do
         @cli.does_contain('testcli/presidents', 'testcli')
         expect($stdout.string.chomp).to eq 'Yes, presidents contains @testcli.'
       end
+
       context '--id' do
         before do
           @cli.options = @cli.options.merge('id' => true)
@@ -545,10 +561,12 @@ describe T::CLI do
       @cli.does_follow('ev')
       expect(a_get('/1.1/friendships/show.json').with(query: {source_screen_name: 'ev', target_screen_name: 'testcli'})).to have_been_made
     end
+
     it 'has the correct output' do
       @cli.does_follow('ev')
       expect($stdout.string.chomp).to eq 'Yes, @ev follows @testcli.'
     end
+
     context '--id' do
       before do
         @cli.options = @cli.options.merge('id' => true)
@@ -561,6 +579,7 @@ describe T::CLI do
         expect(a_get('/1.1/users/show.json').with(query: {user_id: '20'})).to have_been_made
         expect(a_get('/1.1/friendships/show.json').with(query: {source_screen_name: 'sferik', target_screen_name: 'testcli'})).to have_been_made
       end
+
       it 'has the correct output' do
         @cli.does_follow('20')
         expect($stdout.string.chomp).to eq 'Yes, @sferik follows @testcli.'
@@ -576,10 +595,12 @@ describe T::CLI do
         @cli.does_follow('ev', 'sferik')
         expect(a_get('/1.1/friendships/show.json').with(query: {source_screen_name: 'ev', target_screen_name: 'sferik'})).to have_been_made
       end
+
       it 'has the correct output' do
         @cli.does_follow('ev', 'sferik')
         expect($stdout.string.chomp).to eq 'Yes, @ev follows @sferik.'
       end
+
       context '--id' do
         before do
           @cli.options = @cli.options.merge('id' => true)
@@ -594,16 +615,19 @@ describe T::CLI do
           expect(a_get('/1.1/users/show.json').with(query: {user_id: '428004849'})).to have_been_made
           expect(a_get('/1.1/friendships/show.json').with(query: {source_screen_name: 'sferik', target_screen_name: 'sferik'})).to have_been_made
         end
+
         it 'has the correct output' do
           @cli.does_follow('20', '428004849')
           expect($stdout.string.chomp).to eq 'Yes, @sferik follows @sferik.'
         end
+
         it 'cannot follow yourself' do
           expect do
             @cli.does_follow 'testcli'
             expect($stderr.string.chomp).to eq 'No, you are not following yourself.'
           end.to raise_error(SystemExit)
         end
+
         it 'cannot check same account' do
           expect do
             @cli.does_follow('sferik', 'sferik')
@@ -637,6 +661,7 @@ describe T::CLI do
       @cli.favorite('26755176471724032')
       expect(a_post('/1.1/favorites/create.json').with(body: {id: '26755176471724032'})).to have_been_made
     end
+
     it 'has the correct output' do
       @cli.favorite('26755176471724032')
       expect($stdout.string).to match(/^@testcli favorited 1 tweet.$/)
@@ -652,6 +677,7 @@ describe T::CLI do
       @cli.favorites
       expect(a_get('/1.1/favorites/list.json').with(query: {count: '20', include_entities: 'false'})).to have_been_made
     end
+
     it 'has the correct output' do
       @cli.favorites
       expect($stdout.string).to eq <<-EOS
@@ -732,6 +758,7 @@ describe T::CLI do
 
       EOS
     end
+
     context '--csv' do
       before do
         @cli.options = @cli.options.merge('csv' => true)
@@ -775,6 +802,7 @@ describe T::CLI do
         @cli.favorites
         expect(a_get('/1.1/favorites/list.json').with(query: {count: '20', include_entities: 'true'})).to have_been_made
       end
+
       it 'decodes URLs' do
         @cli.favorites
         expect($stdout.string).to include 'https://twitter.com/sferik/status/243988000076337152'
@@ -812,6 +840,7 @@ describe T::CLI do
            244099460672679938  Sep  7 07:47  @dwiskus          Gentlemen, you can't fig...
         EOS
       end
+
       context '--reverse' do
         before do
           @cli.options = @cli.options.merge('reverse' => true)
@@ -870,6 +899,7 @@ describe T::CLI do
         @cli.favorites
         expect(a_get('/1.1/favorites/list.json').with(query: {count: '1', include_entities: 'false'})).to have_been_made
       end
+
       it 'limits the number of results to 201' do
         @cli.options = @cli.options.merge('number' => 201)
         @cli.favorites
@@ -899,6 +929,7 @@ describe T::CLI do
         @cli.favorites('sferik')
         expect(a_get('/1.1/favorites/list.json').with(query: {count: '20', screen_name: 'sferik', include_entities: 'false'})).to have_been_made
       end
+
       context '--id' do
         before do
           @cli.options = @cli.options.merge('id' => true)
@@ -935,6 +966,7 @@ describe T::CLI do
           @cli.favorites('sferik')
           expect(a_get('/1.1/favorites/list.json').with(query: {count: '1', screen_name: 'sferik', include_entities: 'false'})).to have_been_made
         end
+
         it 'limits the number of results to 201' do
           @cli.options = @cli.options.merge('number' => 201)
           @cli.favorites('sferik')
@@ -977,10 +1009,12 @@ describe T::CLI do
         expect(a_get('/1.1/users/lookup.json').with(query: {screen_name: 'sferik,pengwynn'})).to have_been_made
         expect(a_post('/1.1/friendships/create.json').with(body: {user_id: '14100886'})).to have_been_made
       end
+
       it 'has the correct output' do
         @cli.follow('sferik', 'pengwynn')
         expect($stdout.string).to match(/^@testcli is now following 1 more user\.$/)
       end
+
       context '--id' do
         before do
           @cli.options = @cli.options.merge('id' => true)
@@ -1026,10 +1060,12 @@ describe T::CLI do
       expect(a_get('/1.1/friends/ids.json').with(query: {cursor: '-1', user_id: '7505382'})).to have_been_made
       expect(a_get('/1.1/users/lookup.json').with(query: {user_id: '7505382'})).to have_been_made
     end
+
     it 'has the correct output' do
       @cli.followings
       expect($stdout.string.chomp).to eq 'pengwynn  sferik'
     end
+
     context '--csv' do
       before do
         @cli.options = @cli.options.merge('csv' => true)
@@ -1198,10 +1234,12 @@ describe T::CLI do
       expect(a_get('/1.1/followers/ids.json').with(query: {cursor: '-1', screen_name: 'sferik'})).to have_been_made
       expect(a_get('/1.1/users/lookup.json').with(query: {user_id: '7505382'})).to have_been_made
     end
+
     it 'has the correct output' do
       @cli.followings_following('sferik')
       expect($stdout.string.chomp).to eq 'pengwynn  sferik'
     end
+
     context '--csv' do
       before do
         @cli.options = @cli.options.merge('csv' => true)
@@ -1343,6 +1381,7 @@ describe T::CLI do
         expect(a_get('/1.1/followers/ids.json').with(query: {cursor: '-1', screen_name: 'sferik'})).to have_been_made
         expect(a_get('/1.1/users/lookup.json').with(query: {user_id: '7505382'})).to have_been_made
       end
+
       context '--id' do
         before do
           @cli.options = @cli.options.merge('id' => true)
@@ -1373,10 +1412,12 @@ describe T::CLI do
       expect(a_get('/1.1/followers/ids.json').with(query: {cursor: '-1', user_id: '7505382'})).to have_been_made
       expect(a_get('/1.1/users/lookup.json').with(query: {user_id: '7505382'})).to have_been_made
     end
+
     it 'has the correct output' do
       @cli.followers
       expect($stdout.string.chomp).to eq 'pengwynn  sferik'
     end
+
     context '--csv' do
       before do
         @cli.options = @cli.options.merge('csv' => true)
@@ -1517,6 +1558,7 @@ describe T::CLI do
         expect(a_get('/1.1/followers/ids.json').with(query: {cursor: '-1', screen_name: 'sferik'})).to have_been_made
         expect(a_get('/1.1/users/lookup.json').with(query: {user_id: '7505382'})).to have_been_made
       end
+
       context '--id' do
         before do
           @cli.options = @cli.options.merge('id' => true)
@@ -1547,10 +1589,12 @@ describe T::CLI do
       expect(a_get('/1.1/followers/ids.json').with(query: {cursor: '-1', screen_name: 'sferik'})).to have_been_made
       expect(a_get('/1.1/users/lookup.json').with(query: {user_id: '7505382'})).to have_been_made
     end
+
     it 'has the correct output' do
       @cli.friends
       expect($stdout.string.chomp).to eq 'pengwynn  sferik'
     end
+
     context '--csv' do
       before do
         @cli.options = @cli.options.merge('csv' => true)
@@ -1692,6 +1736,7 @@ describe T::CLI do
         expect(a_get('/1.1/followers/ids.json').with(query: {cursor: '-1', screen_name: 'sferik'})).to have_been_made
         expect(a_get('/1.1/users/lookup.json').with(query: {user_id: '7505382'})).to have_been_made
       end
+
       context '--id' do
         before do
           @cli.options = @cli.options.merge('id' => true)
@@ -1724,10 +1769,12 @@ describe T::CLI do
       expect(a_get('/1.1/friends/ids.json').with(query: {cursor: '-1', screen_name: 'sferik'})).to have_been_made
       expect(a_get('/1.1/users/lookup.json').with(query: {user_id: '213747670,428004849'})).to have_been_made
     end
+
     it 'has the correct output' do
       @cli.groupies
       expect($stdout.string.chomp).to eq 'pengwynn  sferik'
     end
+
     context '--csv' do
       before do
         @cli.options = @cli.options.merge('csv' => true)
@@ -1869,6 +1916,7 @@ describe T::CLI do
         expect(a_get('/1.1/friends/ids.json').with(query: {cursor: '-1', screen_name: 'sferik'})).to have_been_made
         expect(a_get('/1.1/users/lookup.json').with(query: {user_id: '213747670,428004849'})).to have_been_made
       end
+
       context '--id' do
         before do
           @cli.options = @cli.options.merge('id' => true)
@@ -1900,10 +1948,12 @@ describe T::CLI do
       expect(a_get('/1.1/friends/ids.json').with(query: {cursor: '-1', screen_name: 'sferik'})).to have_been_made
       expect(a_get('/1.1/users/lookup.json').with(query: {user_id: '7505382'})).to have_been_made
     end
+
     it 'has the correct output' do
       @cli.intersection('sferik')
       expect($stdout.string.chomp).to eq 'pengwynn  sferik'
     end
+
     context '--csv' do
       before do
         @cli.options = @cli.options.merge('csv' => true)
@@ -2036,6 +2086,7 @@ describe T::CLI do
         expect(a_get('/1.1/followers/ids.json').with(query: {cursor: '-1', screen_name: 'sferik'})).to have_been_made
         expect(a_get('/1.1/users/lookup.json').with(query: {user_id: '213747670,428004849'})).to have_been_made
       end
+
       it 'has the correct output' do
         @cli.intersection('sferik')
         expect($stdout.string.chomp).to eq 'pengwynn  sferik'
@@ -2065,6 +2116,7 @@ describe T::CLI do
         expect(a_get('/1.1/friends/ids.json').with(query: {cursor: '-1', screen_name: 'sferik'})).to have_been_made
         expect(a_get('/1.1/users/lookup.json').with(query: {user_id: '7505382'})).to have_been_made
       end
+
       context '--id' do
         before do
           @cli.options = @cli.options.merge('id' => true)
@@ -2097,10 +2149,12 @@ describe T::CLI do
       expect(a_get('/1.1/followers/ids.json').with(query: {cursor: '-1', screen_name: 'sferik'})).to have_been_made
       expect(a_get('/1.1/users/lookup.json').with(query: {user_id: '7505382'})).to have_been_made
     end
+
     it 'has the correct output' do
       @cli.leaders
       expect($stdout.string.chomp).to eq 'pengwynn  sferik'
     end
+
     context '--csv' do
       before do
         @cli.options = @cli.options.merge('csv' => true)
@@ -2242,6 +2296,7 @@ describe T::CLI do
         expect(a_get('/1.1/followers/ids.json').with(query: {cursor: '-1', screen_name: 'sferik'})).to have_been_made
         expect(a_get('/1.1/users/lookup.json').with(query: {user_id: '7505382'})).to have_been_made
       end
+
       context '--id' do
         before do
           @cli.options = @cli.options.merge('id' => true)
@@ -2268,10 +2323,12 @@ describe T::CLI do
       @cli.lists
       expect(a_get('/1.1/lists/list.json')).to have_been_made
     end
+
     it 'has the correct output' do
       @cli.lists
       expect($stdout.string.chomp).to eq '@pengwynn/rubyists  @twitter/team       @sferik/test'
     end
+
     context '--csv' do
       before do
         @cli.options = @cli.options.merge('csv' => true)
@@ -2379,6 +2436,7 @@ describe T::CLI do
         @cli.lists('sferik')
         expect(a_get('/1.1/lists/list.json').with(query: {screen_name: 'sferik'})).to have_been_made
       end
+
       context '--id' do
         before do
           @cli.options = @cli.options.merge('id' => true)
@@ -2404,6 +2462,7 @@ describe T::CLI do
       expect(a_get('/1.1/search/tweets.json').with(query: {q: 'lang:ja', count: 100, include_entities: 'false'})).to have_been_made
       expect(a_get('/1.1/search/tweets.json').with(query: {q: 'lang:ja', count: 100, max_id: '434642935557021697', include_entities: 'false'})).to have_been_made
     end
+
     it 'has the correct output' do
       @cli.matrix
       expect($stdout.string).to eq('すまてっんさすでらなるあでかんせまいるきでいおすでいたりにずらさなもはういとざいうよいなしにいおでんせまてっはもらかのはにののずらかかるれらけでついらかがはがすでろこといたいとにいおにばらなくいばれたあんゃちあさかじましたあいしのくうよめやのうとこういうそたみてっがんくをまさかうょしでのるれくていでいてってっねよるれなくとのもなんみばれなくとのがいななんそよいなくしてしかんけでのとのいいゃちめ　んくけったっだもどけるあはえたっあてっのやににめたのあたっかしこそあしだうそもなねうろだんるなになとっもらたてっにもしもるうおんぶたすまりなにはにかいちんゃにぃちほでいなしにのいいばれしことななんみわだいわこま　　いたきのわふわっふくじたすましらかいならわたでんびにでれそんけやなかのたっゃちしとかよたてちにのねいさだくてきすましにりぱっやにいつがたしまりあはろことうろいろいあまねんもだにうとがりあいなてえかしとこたれらててれさてれさてれさきはいなてえうなるがゃちっめつっおいばやらかたてっすでのいばやいばやまんほねよすでかだんなかたしでうそりはやいわかりきっすしがんせまりあはでのていつにのなかのいなはにいらくるがなもとまてめせるけぬしをるすいならをるすいなてめじなにずらわかかもにのなとんにあにあてうゃちんさばおよすでてくなゃじすではのるてっがんさがすましででのいなおはてっあがつやるすにいたみをるあのとのるでいなきでかしではんくどんえっへすでみらたぎすらかんさのらかれこかすでるけべとっずをねいさだくでんにでのなびなんそてんなだねるめたかとこのせゆるねいがすさたっかはのこいなえりあぇふっぇふっぇふいらくとだらかだいらくでいたみゃちっめっもはてくないくしてっやのゆこそこきとなんこういてみのたしねどけうといぞうどるえもでんなででのみるぐいぬでさのでででべなきでききでるてっでぬいねもでくつりがのうよしうどいなくたきうもわこのだねすでうそええいなえかしおらかてっとおよだのいがのてっなくないがういとだぎゃじなをたっかなえとおでまだんでんをのてきてちおらかかったっかなくきのけにいたけにをいなえかしにでてべすのいらくれそできがにももいたりをのそるえうそとたっかよにとこたえにえかすまりかわかるいてっがすまいでんがいながすでのるすをいむにのるすのるいていかをたまてっよにくいてっがらかりすうよたれさにまさいながいのとのるてったいとっょちぜだんなつやいいるてっなにとこなてれがのそっくみいたきいるあではにずはいがりよえかちてしとにせらがにでたえばつにでのるすをれことんほ　いのと　すがるかわるてしはのてんないならをれあるあがぁぁぁぐっっべやかえねゃじんすらなれこよてままいがとれそねよいもれそぱっやをいいねてしごをいしうとがりあもうとがりあもいさゃにみすやおいまうがのすましいおばろぉふらたっかよすまきだたいてせさろぉふすまいざごうとがりあのたしまりなくすできらかいのこたみていかたてってっいたみていにすまいざごうよはおすではつつらからかうもちっこうそあわうたっへこどにでとるぎすなんみがのうよてしのかはのいがかだとみゃしくにうよすまりあでるれでがのにのたっやいてっらこいによはらかだたっかなかついかしいらくいえてえかすまてっでねすでりえかおよたっゃちっいさなんめごたしあうろやでらながっええたしましうとがりあうろをできいさなみすやおるらがなえをいなのくべるなかうこでういうどのでかしつかはてさいばやはれそいばやいばやんらまたんらまたうもらかやきたっかとんほいめやおいなけでどけいたき')
@@ -2419,6 +2478,7 @@ describe T::CLI do
       @cli.mentions
       expect(a_get('/1.1/statuses/mentions_timeline.json').with(query: {count: '20', include_entities: 'false'})).to have_been_made
     end
+
     it 'has the correct output' do
       @cli.mentions
       expect($stdout.string).to eq <<-EOS
@@ -2499,6 +2559,7 @@ describe T::CLI do
 
       EOS
     end
+
     context '--csv' do
       before do
         @cli.options = @cli.options.merge('csv' => true)
@@ -2542,6 +2603,7 @@ describe T::CLI do
         @cli.mentions
         expect(a_get('/1.1/statuses/mentions_timeline.json').with(query: {count: '20', include_entities: 'true'})).to have_been_made
       end
+
       it 'decodes URLs' do
         @cli.mentions
         expect($stdout.string).to include 'https://twitter.com/sferik/status/243988000076337152'
@@ -2579,6 +2641,7 @@ describe T::CLI do
            244099460672679938  Sep  7 07:47  @dwiskus          Gentlemen, you can't fig...
         EOS
       end
+
       context '--reverse' do
         before do
           @cli.options = @cli.options.merge('reverse' => true)
@@ -2625,6 +2688,7 @@ describe T::CLI do
         @cli.mentions
         expect(a_get('/1.1/statuses/mentions_timeline.json').with(query: {count: '1', include_entities: 'false'})).to have_been_made
       end
+
       it 'limits the number of results to 201' do
         @cli.options = @cli.options.merge('number' => 201)
         @cli.mentions
@@ -2644,10 +2708,12 @@ describe T::CLI do
       @cli.mute('sferik')
       expect(a_post('/1.1/mutes/users/create.json').with(body: {screen_name: 'sferik'})).to have_been_made
     end
+
     it 'has the correct output' do
       @cli.mute('sferik')
       expect($stdout.string).to match(/^@testcli muted 1 user/)
     end
+
     context '--id' do
       before do
         @cli.options = @cli.options.merge('id' => true)
@@ -2672,6 +2738,7 @@ describe T::CLI do
       expect(a_get('/1.1/mutes/users/ids.json').with(query: {cursor: '-1'})).to have_been_made
       expect(a_get('/1.1/users/lookup.json').with(query: {user_id: '14098423'})).to have_been_made
     end
+
     it 'has the correct output' do
       @cli.muted
       expect($stdout.string.chomp).to eq 'johndbritton'
@@ -2688,6 +2755,7 @@ describe T::CLI do
         @cli.open('sferik')
       end.not_to raise_error
     end
+
     context '--id' do
       before do
         @cli.options = @cli.options.merge('id' => true)
@@ -2710,6 +2778,7 @@ describe T::CLI do
         @cli.open('55709764298092545')
         expect(a_get('/1.1/statuses/show/55709764298092545.json').with(query: {include_my_retweet: 'false'})).to have_been_made
       end
+
       it 'has the correct output' do
         expect do
           @cli.open('55709764298092545')
@@ -2737,6 +2806,7 @@ describe T::CLI do
       expect(a_get('/1.1/followers/ids.json').with(query: {cursor: '-1', user_id: '20009713'})).to have_been_made
       expect(a_get('/1.1/followers/ids.json').with(query: {cursor: '-1', user_id: '14100886'})).to have_been_made
     end
+
     it 'has the correct output' do
       @cli.reach('55709764298092545')
       expect($stdout.string.split("\n").first).to eq '2'
@@ -2759,10 +2829,12 @@ describe T::CLI do
       expect(a_request(:get, 'http://checkip.dyndns.org/')).not_to have_been_made
       expect(a_request(:get, 'http://www.geoplugin.net/xml.gp?ip=50.131.22.169')).not_to have_been_made
     end
+
     it 'has the correct output' do
       @cli.reply('263813522369159169', 'Testing')
       expect($stdout.string.split("\n").first).to eq 'Reply posted by @testcli to @joshfrench.'
     end
+
     context '--all' do
       before do
         @cli.options = @cli.options.merge('all' => true)
@@ -2776,6 +2848,7 @@ describe T::CLI do
         expect(a_request(:get, 'http://checkip.dyndns.org/')).not_to have_been_made
         expect(a_request(:get, 'http://www.geoplugin.net/xml.gp?ip=50.131.22.169')).not_to have_been_made
       end
+
       it 'has the correct output' do
         @cli.reply('263813522369159169', 'Testing')
         expect($stdout.string.split("\n").first).to eq 'Reply posted by @testcli to @joshfrench @sferik.'
@@ -2794,6 +2867,7 @@ describe T::CLI do
         expect(a_request(:post, 'https://upload.twitter.com/1.1/media/upload.json')).to have_been_made
         expect(a_post('/1.1/statuses/update.json')).to have_been_made
       end
+
       it 'has the correct output' do
         @cli.reply('263813522369159169', 'Testing')
         expect($stdout.string.split("\n").first).to eq 'Reply posted by @testcli to @joshfrench.'
@@ -2814,6 +2888,7 @@ describe T::CLI do
         expect(a_request(:get, 'http://checkip.dyndns.org/')).to have_been_made
         expect(a_request(:get, 'http://www.geoplugin.net/xml.gp?ip=50.131.22.169')).to have_been_made
       end
+
       it 'has the correct output' do
         @cli.reply('263813522369159169', 'Testing')
         expect($stdout.string.split("\n").first).to eq 'Reply posted by @testcli to @joshfrench.'
@@ -2834,6 +2909,7 @@ describe T::CLI do
         expect(a_request(:get, 'http://checkip.dyndns.org/')).not_to have_been_made
         expect(a_request(:get, 'http://www.geoplugin.net/xml.gp?ip=50.131.22.169')).not_to have_been_made
       end
+
       it 'has the correct output' do
         @cli.reply('263813522369159169', 'Testing')
         expect($stdout.string.split("\n").first).to eq 'Reply posted by @testcli to @joshfrench.'
@@ -2858,10 +2934,12 @@ describe T::CLI do
       @cli.report_spam('sferik')
       expect(a_post('/1.1/users/report_spam.json').with(body: {screen_name: 'sferik'})).to have_been_made
     end
+
     it 'has the correct output' do
       @cli.report_spam('sferik')
       expect($stdout.string).to match(/^@testcli reported 1 user/)
     end
+
     context '--id' do
       before do
         @cli.options = @cli.options.merge('id' => true)
@@ -2885,6 +2963,7 @@ describe T::CLI do
       @cli.retweet('26755176471724032')
       expect(a_post('/1.1/statuses/retweet/26755176471724032.json')).to have_been_made
     end
+
     it 'has the correct output' do
       @cli.retweet('26755176471724032')
       expect($stdout.string).to match(/^@testcli retweeted 1 tweet.$/)
@@ -2903,6 +2982,7 @@ describe T::CLI do
         expect(a_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', include_rts: 'true', include_entities: 'false'})).to have_been_made
         expect(a_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', include_rts: 'true', max_id: '244102729860009983', include_entities: 'false'})).to have_been_made.times(3)
       end
+
       it 'has the correct output' do
         @cli.retweets
         expect($stdout.string).to eq <<-EOS
@@ -3068,6 +3148,7 @@ describe T::CLI do
           244107823733174272  Sep  7 08:20  @codeforamerica  RT @randomhacks: Going to ...
         EOS
       end
+
       context '--reverse' do
         before do
           @cli.options = @cli.options.merge('reverse' => true)
@@ -3113,6 +3194,7 @@ describe T::CLI do
         @cli.retweets
         expect(a_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', include_rts: 'true', include_entities: 'false'})).to have_been_made
       end
+
       it 'limits the number of results to 201' do
         @cli.options = @cli.options.merge('number' => 201)
         @cli.retweets
@@ -3132,6 +3214,7 @@ describe T::CLI do
         expect(a_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', include_rts: 'true', screen_name: 'sferik', include_entities: 'false'})).to have_been_made
         expect(a_get('/1.1/statuses/user_timeline.json').with(query: {count: '200', include_rts: 'true', screen_name: 'sferik', max_id: '244102729860009983', include_entities: 'false'})).to have_been_made.times(3)
       end
+
       context '--id' do
         before do
           @cli.options = @cli.options.merge('id' => true)
@@ -3158,6 +3241,7 @@ describe T::CLI do
         @cli.retweets_of_me
         expect(a_get('/1.1/statuses/retweets_of_me.json').with(query: {count: '20', include_entities: 'false'})).to have_been_made
       end
+
       it 'has the correct output' do
         @cli.retweets_of_me
         expect($stdout.string).to eq <<-EOS
@@ -3316,6 +3400,7 @@ describe T::CLI do
            244099460672679938  Sep  7 07:47  @dwiskus          Gentlemen, you can't fig...
         EOS
       end
+
       context '--reverse' do
         before do
           @cli.options = @cli.options.merge('reverse' => true)
@@ -3364,6 +3449,7 @@ describe T::CLI do
         @cli.retweets_of_me
         expect(a_get('/1.1/statuses/retweets_of_me.json').with(query: {count: '1', include_entities: 'false'})).to have_been_made
       end
+
       it 'limits the number of results to 201' do
         @cli.options = @cli.options.merge('number' => 201)
         @cli.retweets_of_me
@@ -3381,6 +3467,7 @@ describe T::CLI do
       expect($stdout.string.chomp.size).to eq 140
       expect($stdout.string.chomp).to eq '----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|'
     end
+
     context 'with indentation' do
       before do
         @cli.options = @cli.options.merge('indent' => 2)
@@ -3403,6 +3490,7 @@ describe T::CLI do
       @cli.status('55709764298092545')
       expect(a_get('/1.1/statuses/show/55709764298092545.json').with(query: {include_my_retweet: 'false', include_entities: 'false'})).to have_been_made
     end
+
     it 'has the correct output' do
       @cli.status('55709764298092545')
       expect($stdout.string).to eq <<~EOS
@@ -3416,6 +3504,7 @@ describe T::CLI do
         Location     Blowfish Sushi To Die For, 2170 Bryant St, San Francisco, California, United States
       EOS
     end
+
     context '--csv' do
       before do
         @cli.options = @cli.options.merge('csv' => true)
@@ -3549,6 +3638,7 @@ describe T::CLI do
           Location     San Francisco, CA, United States
         EOS
       end
+
       context 'with no city' do
         before do
           stub_get('/1.1/statuses/show/55709764298092545.json').with(query: {include_my_retweet: 'false', include_entities: 'false'}).to_return(body: fixture('status_no_place.json'), headers: {content_type: 'application/json; charset=utf-8'})
@@ -3626,6 +3716,7 @@ describe T::CLI do
           Location     Blowfish Sushi To Die For, 2170 Bryant St, San Francisco, California, United States
         EOS
       end
+
       it 'whois has the correct output (absolute and relative date together)' do
         @cli.whois('sferik')
         expect($stdout.string).to eq <<~EOS
@@ -3644,6 +3735,7 @@ describe T::CLI do
           URL          https://github.com/sferik
         EOS
       end
+
       context '--csv' do
         before do
           @cli.options = @cli.options.merge('csv' => true)
@@ -3684,6 +3776,7 @@ describe T::CLI do
         @cli.timeline
         expect(a_get('/1.1/statuses/home_timeline.json').with(query: {count: '20', include_entities: 'false'})).to have_been_made
       end
+
       it 'has the correct output' do
         @cli.timeline
         expect($stdout.string).to eq <<-EOS
@@ -3809,6 +3902,7 @@ describe T::CLI do
         @cli.timeline
         expect(a_get('/1.1/statuses/home_timeline.json').with(query: {count: '20', include_entities: 'true'})).to have_been_made
       end
+
       it 'decodes URLs' do
         @cli.timeline
         expect($stdout.string).to include 'https://twitter.com/sferik/status/243988000076337152'
@@ -3870,6 +3964,7 @@ describe T::CLI do
            244099460672679938  Sep  7 07:47  @dwiskus          Gentlemen, you can't fig...
         EOS
       end
+
       context '--reverse' do
         before do
           @cli.options = @cli.options.merge('reverse' => true)
@@ -3928,6 +4023,7 @@ describe T::CLI do
         @cli.timeline
         expect(a_get('/1.1/statuses/home_timeline.json').with(query: {count: '1', include_entities: 'false'})).to have_been_made
       end
+
       it 'limits the number of results to 201' do
         @cli.options = @cli.options.merge('number' => 201)
         @cli.timeline
@@ -3957,6 +4053,7 @@ describe T::CLI do
         @cli.timeline('sferik')
         expect(a_get('/1.1/statuses/user_timeline.json').with(query: {count: '20', screen_name: 'sferik', include_entities: 'false'})).to have_been_made
       end
+
       context '--id' do
         before do
           @cli.options = @cli.options.merge('id' => true)
@@ -3993,6 +4090,7 @@ describe T::CLI do
           @cli.timeline('sferik')
           expect(a_get('/1.1/statuses/user_timeline.json').with(query: {count: '1', screen_name: 'sferik', include_entities: 'false'})).to have_been_made
         end
+
         it 'limits the number of results to 201' do
           @cli.options = @cli.options.merge('number' => 201)
           @cli.timeline('sferik')
@@ -4024,10 +4122,12 @@ describe T::CLI do
       @cli.trends
       expect(a_get('/1.1/trends/place.json').with(query: {id: '1'})).to have_been_made
     end
+
     it 'has the correct output' do
       @cli.trends
       expect($stdout.string.chomp).to eq '#sevenwordsaftersex  Walkman              Allen Iverson'
     end
+
     context '--exclude-hashtags' do
       before do
         @cli.options = @cli.options.merge('exclude-hashtags' => true)
@@ -4038,6 +4138,7 @@ describe T::CLI do
         @cli.trends
         expect(a_get('/1.1/trends/place.json').with(query: {id: '1', exclude: 'hashtags'})).to have_been_made
       end
+
       it 'has the correct output' do
         @cli.trends
         expect($stdout.string.chomp).to eq '#sevenwordsaftersex  Walkman              Allen Iverson'
@@ -4053,6 +4154,7 @@ describe T::CLI do
         @cli.trends('2487956')
         expect(a_get('/1.1/trends/place.json').with(query: {id: '2487956'})).to have_been_made
       end
+
       it 'has the correct output' do
         @cli.trends('2487956')
         expect($stdout.string.chomp).to eq '#sevenwordsaftersex  Walkman              Allen Iverson'
@@ -4069,10 +4171,12 @@ describe T::CLI do
       @cli.trend_locations
       expect(a_get('/1.1/trends/available.json')).to have_been_made
     end
+
     it 'has the correct output' do
       @cli.trend_locations
       expect($stdout.string.chomp).to eq 'San Francisco  Soweto         United States  Worldwide'
     end
+
     context '--csv' do
       before do
         @cli.options = @cli.options.merge('csv' => true)
@@ -4185,11 +4289,13 @@ describe T::CLI do
         @cli.unfollow('sferik')
         expect(a_post('/1.1/friendships/destroy.json').with(body: {screen_name: 'sferik'})).to have_been_made
       end
+
       it 'has the correct output' do
         stub_post('/1.1/friendships/destroy.json').with(body: {screen_name: 'sferik'}).to_return(body: fixture('sferik.json'), headers: {content_type: 'application/json; charset=utf-8'})
         @cli.unfollow('sferik')
         expect($stdout.string).to match(/^@testcli is no longer following 1 user\.$/)
       end
+
       context '--id' do
         before do
           @cli.options = @cli.options.merge('id' => true)
@@ -4228,10 +4334,12 @@ describe T::CLI do
       expect(a_request(:get, 'http://checkip.dyndns.org/')).not_to have_been_made
       expect(a_request(:get, 'http://www.geoplugin.net/xml.gp?ip=50.131.22.169')).not_to have_been_made
     end
+
     it 'has the correct output' do
       @cli.update('Testing')
       expect($stdout.string.split("\n").first).to eq 'Tweet posted by @testcli.'
     end
+
     context 'with file' do
       before do
         @cli.options = @cli.options.merge('file' => "#{fixture_path}/long.png")
@@ -4244,6 +4352,7 @@ describe T::CLI do
         expect(a_request(:post, 'https://upload.twitter.com/1.1/media/upload.json')).to have_been_made
         expect(a_post('/1.1/statuses/update.json')).to have_been_made
       end
+
       it 'has the correct output' do
         @cli.update('Testing')
         expect($stdout.string.split("\n").first).to eq 'Tweet posted by @testcli.'
@@ -4262,6 +4371,7 @@ describe T::CLI do
         expect(a_request(:get, 'http://checkip.dyndns.org/')).to have_been_made
         expect(a_request(:get, 'http://www.geoplugin.net/xml.gp?ip=50.131.22.169')).to have_been_made
       end
+
       it 'has the correct output' do
         @cli.update('Testing')
         expect($stdout.string.split("\n").first).to eq 'Tweet posted by @testcli.'
@@ -4280,6 +4390,7 @@ describe T::CLI do
         expect(a_request(:get, 'http://checkip.dyndns.org/')).not_to have_been_made
         expect(a_request(:get, 'http://www.geoplugin.net/xml.gp?ip=50.131.22.169')).not_to have_been_made
       end
+
       it 'has the correct output' do
         @cli.update('Testing')
         expect($stdout.string.split("\n").first).to eq 'Tweet posted by @testcli.'
@@ -4303,10 +4414,12 @@ describe T::CLI do
       @cli.users('sferik', 'pengwynn')
       expect(a_get('/1.1/users/lookup.json').with(query: {screen_name: 'sferik,pengwynn'})).to have_been_made
     end
+
     it 'has the correct output' do
       @cli.users('sferik', 'pengwynn')
       expect($stdout.string.chomp).to eq 'pengwynn  sferik'
     end
+
     context '--csv' do
       before do
         @cli.options = @cli.options.merge('csv' => true)
@@ -4465,6 +4578,7 @@ describe T::CLI do
       @cli.whois('sferik')
       expect(a_get('/1.1/users/show.json').with(query: {screen_name: 'sferik', include_entities: 'false'})).to have_been_made
     end
+
     it 'has the correct output' do
       @cli.whois('sferik')
       expect($stdout.string).to eq <<~EOS
@@ -4483,6 +4597,7 @@ describe T::CLI do
         URL          https://github.com/sferik
       EOS
     end
+
     context '--csv' do
       before do
         @cli.options = @cli.options.merge('csv' => true)
@@ -4533,6 +4648,7 @@ describe T::CLI do
       @cli.whoami
       expect(a_get('/1.1/users/show.json').with(query: {screen_name: 'testcli', include_entities: 'false'})).to have_been_made
     end
+
     it 'has the correct output' do
       @cli.whoami
       expect($stdout.string).to eq <<~EOS
@@ -4551,6 +4667,7 @@ describe T::CLI do
         URL          https://github.com/sferik
       EOS
     end
+
     context '--csv' do
       before do
         @cli.options = @cli.options.merge('csv' => true)

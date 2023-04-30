@@ -19,6 +19,7 @@ Gem::Specification.new do |spec|
   spec.files = %w[CONTRIBUTING.md LICENSE.md README.md t.gemspec] + Dir['bin/*'] + Dir['lib/**/*.rb']
   spec.homepage = 'http://sferik.github.com/t/'
   spec.licenses = %w[MIT]
+  spec.metadata['rubygems_mfa_required'] = 'true'
   spec.name = 't'
   spec.require_paths = %w[lib]
   spec.required_ruby_version = '>= 3.0'

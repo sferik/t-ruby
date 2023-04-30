@@ -4,6 +4,7 @@ module T
   class RCFile
     include Singleton
     attr_reader :path
+
     FILE_NAME = '.trc'.freeze
 
     def initialize

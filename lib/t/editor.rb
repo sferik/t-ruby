@@ -26,7 +26,7 @@ module T
       end
 
       def system_editor
-        RbConfig::CONFIG["host_os"] =~ /mswin|mingw/ ? "notepad" : "vi"
+        /mswin|mingw/.match?(RbConfig::CONFIG["host_os"]) ? "notepad" : "vi"
       end
     end
   end

@@ -582,9 +582,8 @@ module T
       require "t/core_ext/string"
       require "set"
       status_thread = Thread.new { client.status(tweet_id.to_i, include_my_retweet: false) }
-      threads = []
-      client.retweeters_ids(tweet_id.to_i).each do |retweeter_id|
-        threads << Thread.new(retweeter_id) do |user_id|
+      threads = client.retweeters_ids(tweet_id.to_i).collect do |retweeter_id|
+        Thread.new(retweeter_id) do |user_id|
           client.follower_ids(user_id).to_a
         end
       end

@@ -26,7 +26,7 @@ module T
 
     desc "bio DESCRIPTION", "Edits your Bio information on your Twitter profile."
     def bio(description)
-      client.update_profile(description: description)
+      client.update_profile(description:)
       say "@#{@rcfile.active_profile[0]}'s bio has been updated."
     end
 
@@ -44,7 +44,7 @@ module T
 
     desc "name NAME", "Sets the name field on your Twitter profile."
     def name(name)
-      client.update_profile(name: name)
+      client.update_profile(name:)
       say "@#{@rcfile.active_profile[0]}'s name has been updated."
     end
 

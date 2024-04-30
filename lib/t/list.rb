@@ -41,7 +41,7 @@ module T
     desc "create LIST [DESCRIPTION]", "Create a new list."
     method_option "private", aliases: "-p", type: :boolean
     def create(list_name, description = nil)
-      opts = description ? {description: description} : {}
+      opts = description ? {description:} : {}
       opts[:mode] = "private" if options["private"]
       client.create_list(list_name, opts)
       say "@#{@rcfile.active_profile[0]} created the list \"#{list_name}\"."

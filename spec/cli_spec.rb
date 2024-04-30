@@ -3440,7 +3440,7 @@ describe T::CLI do
         stub_get("/1.1/statuses/retweets_of_me.json").with(query: {count: "1", include_entities: "false"}).to_return(body: fixture("statuses.json"), headers: {content_type: "application/json; charset=utf-8"})
         stub_get("/1.1/statuses/retweets_of_me.json").with(query: {count: "200", include_entities: "false"}).to_return(body: fixture("statuses.json"), headers: {content_type: "application/json; charset=utf-8"})
         (1..181).step(20) do |count|
-          stub_get("/1.1/statuses/retweets_of_me.json").with(query: {count: count, max_id: "244099460672679937", include_entities: "false"}).to_return(body: fixture("statuses.json"), headers: {content_type: "application/json; charset=utf-8"})
+          stub_get("/1.1/statuses/retweets_of_me.json").with(query: {count:, max_id: "244099460672679937", include_entities: "false"}).to_return(body: fixture("statuses.json"), headers: {content_type: "application/json; charset=utf-8"})
         end
       end
 
@@ -3455,7 +3455,7 @@ describe T::CLI do
         @cli.retweets_of_me
         expect(a_get("/1.1/statuses/retweets_of_me.json").with(query: {count: "200", include_entities: "false"})).to have_been_made
         (1..181).step(20) do |count|
-          expect(a_get("/1.1/statuses/retweets_of_me.json").with(query: {count: count, max_id: "244099460672679937", include_entities: "false"})).to have_been_made
+          expect(a_get("/1.1/statuses/retweets_of_me.json").with(query: {count:, max_id: "244099460672679937", include_entities: "false"})).to have_been_made
         end
       end
     end

@@ -288,10 +288,9 @@ the original code.
 This library aims to support and is [tested against][travis] the following Ruby
 implementations:
 
-* Ruby 2.4
-* Ruby 2.5
-* Ruby 2.6
-* Ruby 2.7
+* Ruby 3.1
+* Ruby 3.2
+* Ruby 3.3
 
 If something doesn't work on one of these Ruby versions, it's a bug.
 

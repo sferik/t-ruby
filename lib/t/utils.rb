@@ -14,12 +14,12 @@ module T
         when 1...2
           "a second"
         when 2...60
-          format("%<seconds>d seconds", seconds: seconds)
+          format("%<seconds>d seconds", seconds:)
         end
       when 1...2
         "a minute"
       when 2...60
-        format("%<minutes>d minutes", minutes: minutes)
+        format("%<minutes>d minutes", minutes:)
       when 60...120
         "an hour"
       # 120 minutes up to 23.5 hours

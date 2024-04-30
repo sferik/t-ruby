@@ -580,7 +580,6 @@ module T
     desc "reach TWEET_ID", "Shows the maximum number of people who may have seen the specified tweet in their timeline."
     def reach(tweet_id)
       require "t/core_ext/string"
-      require "set"
       status_thread = Thread.new { client.status(tweet_id.to_i, include_my_retweet: false) }
       threads = client.retweeters_ids(tweet_id.to_i).collect do |retweeter_id|
         Thread.new(retweeter_id) do |user_id|
@@ -990,7 +989,7 @@ module T
       return nil unless options["location"]
 
       lat, lng = options["location"] == "location" ? [location.lat, location.lng] : options["location"].split(",").collect(&:to_f)
-      opts.merge!(lat: lat, long: lng)
+      opts.merge!(lat:, long: lng)
     end
 
     def location

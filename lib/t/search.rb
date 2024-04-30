@@ -204,7 +204,7 @@ module T
     method_option "unsorted", aliases: "-u", type: :boolean, desc: "Output is not sorted."
     def users(query)
       users = collect_with_page do |page|
-        client.user_search(query, page: page)
+        client.user_search(query, page:)
       end
       print_users(users)
     end

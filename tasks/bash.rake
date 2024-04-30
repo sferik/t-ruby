@@ -92,7 +92,7 @@ module BashCompletion
 
     def option_str(opt)
       if opt.aliases
-        "--#{opt.name} #{o.aliases.join(' ')}"
+        "--#{opt.name} #{opt.aliases.join(' ')}"
       else
         "--#{opt.name}"
       end

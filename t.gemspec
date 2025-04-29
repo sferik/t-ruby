@@ -19,7 +19,18 @@ Gem::Specification.new do |spec|
   spec.files = %w[CONTRIBUTING.md LICENSE.md README.md t.gemspec] + Dir["bin/*"] + Dir["lib/**/*.rb"]
   spec.homepage = "http://sferik.github.com/t/"
   spec.licenses = %w[MIT]
-  spec.metadata["rubygems_mfa_required"] = "true"
+
+  spec.metadata = {
+    "allowed_push_host" => "https://rubygems.org",
+    "bug_tracker_uri" => "https://github.com/sferik/t-ruby/issues",
+    "changelog_uri" => "https://github.com/sferik/t-ruby/blob/master/CHANGELOG.md",
+    "documentation_uri" => "https://rubydoc.info/gems/t/",
+    "funding_uri" => "https://github.com/sponsors/sferik/",
+    "homepage_uri" => spec.homepage,
+    "rubygems_mfa_required" => "true",
+    "source_code_uri" => "https://github.com/sferik/t-ruby",
+  }
+
   spec.name = "t"
   spec.require_paths = %w[lib]
   spec.required_ruby_version = ">= 3.2"

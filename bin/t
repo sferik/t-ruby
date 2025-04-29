@@ -27,8 +27,7 @@ rescue Twitter::Error::TooManyRequests => e
 rescue Twitter::Error::BadRequest => e
   pute e.message, "Run `t authorize` to authorize."
 rescue Twitter::Error::Forbidden, Twitter::Error::Unauthorized => e
-  if e.message == "Error processing your OAuth request: Read-only application cannot POST" ||
-     e.message == "This application is not allowed to access or delete your direct messages"
+  if ["Error processing your OAuth request: Read-only application cannot POST", "This application is not allowed to access or delete your direct messages"].include?(e.message)
     warn(%q(Make sure to set your Twitter application's Access Level to "Read, Write and Access direct messages".))
     require "thor"
     Thor::Shell::Basic.new.ask "Press [Enter] to open the Twitter Developer site."

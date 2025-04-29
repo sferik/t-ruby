@@ -97,7 +97,7 @@ end
 
 def subcommands
   T::CLI.tasks.
-    select { |name, _| T::CLI.subcommands.include?(name) }.
+    slice(*T::CLI.subcommands).
     collect(&:last)
 end
 
